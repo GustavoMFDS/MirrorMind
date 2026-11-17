@@ -1,0 +1,31 @@
+name: Engineering documentation catalog
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  symbol-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify checked-in symbol catalog when present
+        run: |
+          if test -f docs/engineering/generated/SYMBOLS.md; then
+            python scripts/docs/catalog.py --check
+          else
+            echo "First-run bootstrap: symbol catalog will be generated as a CI artifact."
+          fi
+      - name: Build source symbol catalog
+        run: |
+          python scripts/docs/catalog.py --write
+          python scripts/docs/catalog.py --check
+      - name: Upload browsable generated catalog
+        uses: actions/upload-artifact@v4
+        with:
+          name: engineering-symbol-catalog
+          path: docs/engineering/generated/SYMBOLS.md
+          if-no-files-found: error
