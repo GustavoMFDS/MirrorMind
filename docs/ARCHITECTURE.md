@@ -1,0 +1,29 @@
+# MirrorMind architecture — proposal 3.0
+
+## Product identity
+MirrorMind is a **general-purpose, evidence-driven decision-intelligence platform**. Retail inventory is the first bounded reference domain. No domain is hard-coded into the platform core.
+
+## Proposed modules
+1. **API/workspaces:** FastAPI, auth, tenant separation and job tracking.
+2. **AI orchestration:** goal interpretation and tool workflows (LangGraph candidate); human approval for sensitive actions.
+3. **Evidence Engine:** authorized source ingestion, structured data validation, provenance, document retrieval and RAG, freshness and access controls.
+4. **Forecast Engine:** time-series baselines, temporal backtesting, calibrated uncertainty and model versioning.
+5. **Simulation Gateway:** validates versioned specs, adapts to engines, checks compute budgets and converts results.
+6. **Decision/Evaluation:** compares objectives, risks, assumptions, uncertainty and outcomes.
+7. **Governance:** model token/call budgets and compute/time/concurrency budgets, audit, security and tracing.
+
+## Separation of truths
+- **Observations:** time-bounded recorded facts with source provenance.
+- **Forecasts:** model outputs with uncertainty, evaluation history, and cutoff date.
+- **Simulations:** consequences *within an explicit world model* under interventions and assumptions.
+
+A generative model must not fabricate measurements, forecasts or business performance. Predictions must come from evaluated statistical/ML models, with data leakage prevented by cutoff rules.
+
+## Dependency direction
+MirrorMind → `SimulationGateway` protocol → optional **independent** WorldKernel adapter. WorldKernel must not import MirrorMind. MirrorMind should boot without WorldKernel and its advanced simulation endpoint must report unavailable until configured.
+
+## Initial status
+Only the HTTP application, typed scenario contract, budget **input validation**, and a gateway Protocol are implemented. Budgets are **not enforced at execution** yet. No agents, RAG, forecasting, workers, multi-tenant auth or simulation endpoints exist.
+
+## Delivery philosophy
+Start as a modular monolith with replaceable workers and strong interface boundaries. Add Redis, Postgres, pgvector, DuckDB, LangGraph, OpenTelemetry, Docker workers and infrastructure only as needed by working features and tests.

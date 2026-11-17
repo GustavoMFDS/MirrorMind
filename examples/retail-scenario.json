@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1",
+  "world_type": "retail.inventory",
+  "world_version": "0.1",
+  "horizon_days": 28,
+  "runs": 100,
+  "seed": 42,
+  "initial_state": {"stock": 150},
+  "parameters": {"reorder_point": 30, "reorder_quantity": 75},
+  "interventions": [{"kind": "reorder_policy", "parameters": {"mode": "fixed"}}],
+  "evidence": [],
+  "forecast": null,
+  "budget": {
+    "max_simulation_runs": 200,
+    "max_model_calls": 0,
+    "max_output_tokens": 0,
+    "timeout_seconds": 60
+  }
+}
