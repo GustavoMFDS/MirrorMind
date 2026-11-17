@@ -45,5 +45,9 @@ Alternatively: `docker compose up --build` (requires Docker). Only the API scaff
 - [Roadmap and acceptance criteria](docs/ROADMAP.md)
 - [Security and evidence handling](docs/SECURITY.md)
 
+## Living engineering documentation
+
+The [engineering knowledge hub](docs/engineering/README.md) explains how to trace features, locate functions, diagnose failures, propose changes to coding agents and learn the implementation. For future changes, copy the [change request template](docs/engineering/CHANGE_REQUEST_TEMPLATE.md), follow [AGENTS.md](AGENTS.md) and regenerate the Python symbol catalog with `python scripts/docs/catalog.py --write`. These docs do not change runtime capabilities or project scope.
+
 ## License
 Not selected yet. Repository is private; a release/license decision is deferred.
