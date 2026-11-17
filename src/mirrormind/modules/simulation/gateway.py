@@ -1,9 +1,9 @@
-"""Adapter contract; adapters may target WorldKernel or a test simulator."""
+"""Adapter contract; implementations may target WorldKernel or a test simulator."""
 from typing import Protocol
 
 from pydantic import BaseModel
 
-from ..contracts import ScenarioSpec
+from ...core.contracts import ScenarioSpec
 
 
 class SimulationSummary(BaseModel):

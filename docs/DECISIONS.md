@@ -14,3 +14,5 @@ Status: **Accepted**, **Proposed**, **Deferred**. Accepted describes design inte
 | MM-008 | Accepted | Modular monolith for MVP before splitting services. | Scope and operational simplicity. |
 | MM-009 | Deferred | Production claims, licensing, hosting and real-company integrations. | Require evidence, tests and owner decisions. |
 | MM-010 | Accepted | Starting demonstration: replenishment-policy comparison under forecast uncertainty. | Measurable without pretending to estimate price-promotion causality. |
+
+| MM-011 | Accepted | Source uses one installable Python package: thin HTTP routes in `api/`, shared contracts in `core/`, independent feature modules in `modules/`, and tests split by unit/integration boundary. | Keep the modular monolith extensible without premature microservices or empty feature trees. |

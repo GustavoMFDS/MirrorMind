@@ -17,6 +17,9 @@ MirrorMind is a **general-purpose** platform for grounded decisions: authorized 
 - Future modules: evidence engine (authorized sources and RAG), forecast engine (time-series backtesting), agentic orchestration (candidate: LangGraph), decision evaluation, security and observability.
 - Simulation gateway with a replaceable adapter. **WorldKernel is an independent Python engine** and an optional integration, not a module inside MirrorMind.
 
+## Repository organization
+The API has thin routes; shared contracts live in `core/`; business capabilities are isolated under `modules/`. **Only simulation-gateway interfaces exist today; evidence, forecasting, agents and decisions are future modules.** See [structure](docs/STRUCTURE.md).
+
 ## Run the scaffold
 ```bash
 python -m venv .venv
@@ -34,6 +37,7 @@ Open `http://127.0.0.1:8000/docs`. Current routes:
 Alternatively: `docker compose up --build` (requires Docker). Only the API scaffold is started.
 
 ## Reference documentation
+- [Repository structure](docs/STRUCTURE.md)
 - [Architecture and boundaries](docs/ARCHITECTURE.md)
 - [Accepted decisions](docs/DECISIONS.md)
 - [Scenario contract](docs/CONTRACTS.md)

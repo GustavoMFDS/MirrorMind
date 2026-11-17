@@ -27,3 +27,6 @@ Only the HTTP application, typed scenario contract, budget **input validation**,
 
 ## Delivery philosophy
 Start as a modular monolith with replaceable workers and strong interface boundaries. Add Redis, Postgres, pgvector, DuckDB, LangGraph, OpenTelemetry, Docker workers and infrastructure only as needed by working features and tests.
+
+## Physical source layout (2026-11-17)
+`src/mirrormind/api/` contains HTTP adapters and must not implement forecasts, RAG, simulation or business rules. `src/mirrormind/core/` contains versioned shared contracts. `src/mirrormind/modules/` contains domain-neutral capability modules (currently only `simulation/gateway.py`). Domain-specific adapters (starting with retail) and UI/workers should be introduced when there are tested implementations, rather than empty speculative directories. See [STRUCTURE.md](STRUCTURE.md).
