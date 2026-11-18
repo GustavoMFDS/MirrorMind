@@ -253,3 +253,25 @@ Explain why missing internal dates cannot
 prove lost customer demand, and why
 a complete series needs independent
 evidence of expected business operating days.
+
+## Guided exercise 21 — transaction time cannot prove publication time (40 minutes)
+
+Read [the retail projection method guide](UCI_RETAIL_PROJECTION.md)
+and follow
+`src/mirrormind/domains/retail/uci_transactions.py:
+project_uci_retail_rows`.
+For three fictional positive lines from the same
+product/day plus a cancelled invoice and one
+negative return, predict the aggregated positive
+quantity and exclusion counts. Read
+`tests/unit/test_uci_retail_projection.py::
+test_customer_columns_are_not_accessed_or_serialized`
+and explain what privacy boundaries the test
+does **not** protect upstream.
+
+Next, attempt to identify a trusted `available_on`
+for a 2011 `InvoiceDate`. Why does it not exist?
+What additional source release history, authorization,
+deduplication policy and real-data signoff are required
+before such data could be used for a historical
+forecast or WorldKernel scenario?
