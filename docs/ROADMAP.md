@@ -64,3 +64,15 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   cards record evaluation boundaries. **Real authorized data,
   availability-time controls, untouched empirical holdout,
   validated forecast accuracy and deployable inference remain planned.**
+
+- **MM-M1b-exp — Synthetic as-of availability preflight
+  (not authorized ingestion):** a local
+  [two-timestamp teaching exercise](engineering/M1_AVAILABILITY_PRECHECK.md)
+  separates observed date from declared publication date,
+  excludes late releases and future events at a fixed
+  retrospective cutoff and reports eligible synthetic
+  counts without imputation. Regressions cover unexpected
+  publication order, withheld-value independence,
+  missing/duplicate records and bounded generic CLI
+  errors. This **does not** implement real M5 ingestion,
+  authenticate source timestamps or establish data rights.
