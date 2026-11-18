@@ -71,3 +71,18 @@ direct exception text but is not a system-wide
 logging/redaction policy. Preserve independent
 access-control, privacy, licensing and
 retention reviews before any real-data use.
+
+## Even licensed source data require minimization
+
+The [UCI Online Retail license candidate](engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+offers an official CC BY 4.0 statement,
+but it contains customer and invoice
+identifiers. A source-specific approved
+pipeline must minimize identifiers **before**
+storage or model consumption, respect
+attribution and retention, and keep original
+files out of Git and CI. The license does
+not turn transaction event dates into
+verified historical data-release timestamps.
+No data are approved or ingested by
+this documentation-only review.
