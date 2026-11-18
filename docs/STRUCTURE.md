@@ -15,6 +15,8 @@ MirrorMind/
 │   ├── SECURITY.md
 │   └── STRUCTURE.md
 ├── examples/retail-scenario.json
+├── examples/synthetic-daily-sales.json      # Invented observations, not real data
+├── examples/m1_observation_preflight.py     # Standalone bounded preflight (experiment)
 ├── src/mirrormind/
 │   ├── __init__.py
 │   ├── api/
@@ -30,7 +32,9 @@ MirrorMind/
 │           └── gateway.py     # Engine-neutral simulation interface
 ├── tests/
 │   ├── unit/test_contracts.py
-│   └── integration/test_api.py
+│   ├── unit/test_m1_observation_preflight.py
+│   ├── integration/test_api.py
+│   └── integration/test_m1_observation_preflight_cli.py
 ├── pyproject.toml
 └── README.md
 ```
@@ -45,3 +49,20 @@ MirrorMind/
 - `tests/unit/` validates isolated contracts and algorithms; `tests/integration/` validates HTTP and adapters. Add an `e2e/` suite only when a real end-to-end flow exists.
 - Future React UI, background workers, and deployment manifests get dedicated `apps/` or `infra/` directories **only when needed**. Do not create empty directories or microservices prematurely.
 - Direct endpoint imports remain `uvicorn mirrormind.api:app` for compatibility.
+
+## Experimental examples are not production capabilities
+
+`examples/m1_observation_preflight.py` is intentionally
+outside `src/mirrormind/`: it is a reproducible standalone
+exercise with no real-data connector, no forecast and no
+WorldKernel adapter. It is tested and surfaced as
+`experimental` in the reviewed capability ledger,
+not as an implemented API evidence module.
+
+The first actual evidence/forecast module should only
+be added to `src/mirrormind/modules/` after its
+data-rights, availability/cutoff, quality, evaluation
+and security acceptance criteria are implemented
+and independently tested. See
+[M1 preflight](engineering/M1_DATA_PREFLIGHT.md)
+and [the capability gates](engineering/CAPABILITY_GATES.md).
