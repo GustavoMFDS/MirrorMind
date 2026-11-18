@@ -7,12 +7,12 @@ This module performs no I/O, persistence, network access or AI inference.
 from __future__ import annotations
 
 import csv
+import re
 from dataclasses import dataclass
 from datetime import date
 from hashlib import sha256
 from hmac import compare_digest
 from io import StringIO
-import re
 
 MAX_BYTES = 1_048_576
 MAX_ROWS = 10_000
