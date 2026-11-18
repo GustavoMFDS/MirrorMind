@@ -21,6 +21,7 @@ def capabilities() -> dict[str, object]:
             "synthetic_asof_rolling_backtest",
             "local_csv_snapshot_preflight",
             "local_staged_rolling_baselines",
+            "local_uci_transaction_projection",
         ],
         "planned": [
             "evidence_and_rag",
