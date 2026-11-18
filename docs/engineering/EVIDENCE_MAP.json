@@ -159,5 +159,33 @@
     "test": "tests/integration/test_local_snapshot_flow.py",
     "function": "test_local_example_receipt_and_historical_view_remain_unverified",
     "limitation": "Integration on an invented CSV fixture does not exercise genuine data permissions, source revisions, privacy or retention."
+  },
+  {
+    "id": "MM-RBL-001",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_staged_rolling_baselines_score_four_of_seven_after_late_publication",
+    "limitation": "Scoring four synthetic origins on invented weekly periodicity does not establish empirical predictive ability or source authenticity."
+  },
+  {
+    "id": "MM-RBL-002",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_all_forecast_inputs_precede_origin_and_have_available_seven_day_window",
+    "limitation": "Historical windows use caller-declared publication dates, which need external verification against real revisions and releases."
+  },
+  {
+    "id": "MM-RBL-003",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_all_origins_can_abstain_with_null_metrics_not_fake_winner",
+    "limitation": "Abstention avoids invented metrics but does not establish calibrated uncertainty, generalization or business benefit."
+  },
+  {
+    "id": "MM-RBL-004",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/integration/test_staged_rolling_flow.py",
+    "function": "test_staged_csv_to_matched_rolling_backtest_without_runtime_io",
+    "limitation": "End-to-end local fixture flow lacks rights validation, encrypted persistence, tenant isolation and external forecast serving."
   }
 ]
