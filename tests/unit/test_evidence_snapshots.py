@@ -83,6 +83,7 @@ def test_row_limit_checks_before_appending_more_records():
     HEADER + b"item-A,2025-01-02,2025-01-02,01\n",
     HEADER + b"item-A,2025-01-02,2025-01-02,1000000001\n",
     HEADER + b"item-A,2025-01-02,2025-01-02,1,secret\n",
+    HEADER + b"item-A,2025-01-02,2025-01-02,1\n\n",
     HEADER + b"=IMPORT,2025-01-02,2025-01-02,1\n",
     b"series_id,observed_on,observed_on,units\nitem-A,2025-01-01,2025-01-01,1\n",
     b"series_id,observed_on,available_on,units,pii\nitem-A,2025-01-01,2025-01-01,1,abc\n",
