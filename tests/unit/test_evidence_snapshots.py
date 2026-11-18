@@ -1,6 +1,7 @@
 """Staged local observations: structural and publication tests, not source rights."""
 from dataclasses import FrozenInstanceError
 from hashlib import sha256
+from io import BytesIO, StringIO
 
 import pytest
 
@@ -111,3 +112,89 @@ def test_unknown_series_and_invalid_date_abstain_without_fabrication():
         available_as_of(snap, series_id="item-A", origin_on="2025-02-31")
     with pytest.raises(ValueError, match="expected a staged"):
         available_as_of(None, series_id="item-A", origin_on="2025-01-03")
+
+
+def test_bounded_stream_matches_existing_snapshot_contract():
+    from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+    raw = HEADER + ROWS
+    expected = sha256(raw).hexdigest()
+    stream_result = read_staged_csv(BytesIO(raw), expected_sha256=expected)
+    byte_result = stage_csv_snapshot(raw, expected_sha256=expected)
+    assert stream_result == byte_result
+    assert stream_result.receipt()["status"] == "local_structure_checked_not_authorized"
+
+
+def test_partial_stream_reads_continue_until_eof_and_do_not_accept_prefix_hash():
+    from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+    class ShortRead:
+        def __init__(self, payload):
+            self.stream = BytesIO(payload)
+            self.calls = 0
+
+        def read(self, requested):
+            self.calls += 1
+            return self.stream.read(min(requested, 3))
+
+    raw = HEADER + ROWS
+    reader = ShortRead(raw)
+    result = read_staged_csv(reader, expected_sha256=sha256(raw).hexdigest())
+    assert result.receipt()["record_count"] == 4
+    assert reader.calls > 5
+
+    additional = raw + b"item-C,2025-01-04,2025-01-04,5\n"
+    reader = ShortRead(additional)
+    with pytest.raises(ValueError, match="do not match"):
+        read_staged_csv(reader, expected_sha256=sha256(raw).hexdigest())
+
+
+def test_bounded_reader_rejects_oversized_stream_before_full_read():
+    from mirrormind.modules.evidence.snapshots import MAX_BYTES, read_staged_csv
+
+    stream = BytesIO(b"x" * (MAX_BYTES + 25_000))
+    with pytest.raises(ValueError, match="exceeds byte limit"):
+        read_staged_csv(stream, expected_sha256="0" * 64)
+    assert stream.tell() == MAX_BYTES + 1
+    assert stream.tell() < len(stream.getbuffer())
+
+
+@pytest.mark.parametrize("bad_stream", [object(), None, StringIO("csv")])
+def test_bounded_reader_refuses_missing_or_text_read(bad_stream):
+    from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+    with pytest.raises(ValueError, match="binary snapshot stream|exact bytes"):
+        read_staged_csv(bad_stream, expected_sha256="0" * 64)
+
+
+def test_bounded_reader_rejects_stream_that_exceeds_requested_chunk():
+    from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+    class Misbehaving:
+        def read(self, requested):
+            return b"x" * (requested + 1)
+
+    with pytest.raises(ValueError, match="more than requested"):
+        read_staged_csv(Misbehaving(), expected_sha256="0" * 64)
+
+
+def test_bounded_reader_sanitizes_read_failures():
+    from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+    class ReadError:
+        def read(self, requested):
+            raise OSError("private-file-name-and-credential")
+
+    with pytest.raises(ValueError, match="failed to read binary snapshot stream") as exc:
+        read_staged_csv(ReadError(), expected_sha256="0" * 64)
+    assert "private-file-name" not in str(exc.value)
+
+
+def test_bounded_reader_preserves_downstream_row_limit():
+    from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+    raw = HEADER + ROWS
+    with pytest.raises(ValueError, match="row count"):
+        read_staged_csv(
+            BytesIO(raw), expected_sha256=sha256(raw).hexdigest(), max_rows=3
+        )
