@@ -14,7 +14,11 @@ def capabilities() -> dict[str, object]:
     return {
         "status": "scaffold",
         "implemented": ["scenario_contract_validation", "health"],
-        "experimental": ["synthetic_observation_preflight", "synthetic_rolling_backtest"],
+        "experimental": [
+            "synthetic_observation_preflight",
+            "synthetic_rolling_backtest",
+            "synthetic_asof_availability",
+        ],
         "planned": [
             "evidence_and_rag",
             "forecasting",
