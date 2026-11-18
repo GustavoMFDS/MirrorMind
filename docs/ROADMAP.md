@@ -30,3 +30,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   live API regression must catch claims that diverge from the actual
   `GET /v1/capabilities` response. This protects against overclaiming,
   but does not certify the implementation, scientific validity or security.
+
+- **MM-M1a — Experimental groundwork (not the M1 acceptance gate):**
+  standalone, bounded [synthetic daily-observation preflight](engineering/M1_DATA_PREFLIGHT.md)
+  with canonical dates, future-cutoff rejection, duplicate and
+  missing-day diagnosis, safe CLI errors and regression tests.
+  No source license/provenance verification, real-data connector,
+  temporal backtest, demand forecast, AI agent or WorldKernel
+  integration. `GET /v1/capabilities` labels the example
+  **experimental**; all real evidence/forecast functionality stays
+  planned until independently validated.
