@@ -163,3 +163,17 @@ and exposes no production inference endpoint.
 Do not promote the broader `forecasting` capability
 without independently verified provenance,
 empirical holdout review and authorization.
+
+## UCI-shaped row projection is not authorized source ingestion
+
+The new [retail-only projection](UCI_RETAIL_PROJECTION.md)
+is explicitly `experimental` on **invented** input
+mappings. It does not read the UCI workbook,
+authenticate user rights, retain a reviewed source
+snapshot, protect data upstream of its trusted
+caller or establish historical publisher
+publication dates. Output explicitly records
+`publication_time_status=unknown_not_derived_from_invoice_date`
+and has no `available_on` property.
+Never promote `evidence_and_rag` or
+`forecasting` from this output alone.

@@ -27,6 +27,11 @@ MirrorMind/
 │   │       └── scenarios.py   # Scenario validation
 │   ├── core/
 │   │   └── contracts.py       # Versioned shared Pydantic contracts
+│   ├── domains/
+│   │   ├── __init__.py
+│   │   └── retail/
+│   │       ├── __init__.py
+│   │       └── uci_transactions.py  # Offline UCI-shaped invented row aggregation
 │   └── modules/
 │       ├── evidence/
 │       │   ├── __init__.py
@@ -128,3 +133,19 @@ tests. The [source guide](engineering/M1_STAGED_ROLLING_BASELINES.md)
 and [model card](engineering/model_cards/STAGED_WEEKLY_BASELINES.md)
 document **4/7 availability coverage**, not real
 predictive performance or public inference serving.
+
+## Retail-domain offline transformation (no real source reader)
+
+[`src/mirrormind/domains/retail/uci_transactions.py`](../src/mirrormind/domains/retail/uci_transactions.py)
+provides bounded transaction-line-to-product-day
+aggregation outside the generic evidence and
+forecasting packages. It accepts only
+caller-supplied row mappings, has no XLSX
+reader or data rights policy, and preserves
+**unknown** historical publication times.
+See the [source guide](engineering/UCI_RETAIL_PROJECTION.md),
+[fictional data card](engineering/datasets/SYNTHETIC_UCI_ROWS_CARD.md)
+and [unit](../tests/unit/test_uci_retail_projection.py) /
+[integration](../tests/integration/test_uci_retail_projection_flow.py)
+regressions. This is not a live connector
+or WorldKernel simulation adapter.

@@ -30,3 +30,19 @@ Start as a modular monolith with replaceable workers and strong interface bounda
 
 ## Physical source layout (2026-11-17)
 `src/mirrormind/api/` contains HTTP adapters and must not implement forecasts, RAG, simulation or business rules. `src/mirrormind/core/` contains versioned shared contracts. `src/mirrormind/modules/` contains domain-neutral capability modules (currently `simulation/gateway.py`, the experimental `evidence/snapshots.py` structural parser, and experimental `forecasting/baselines.py` offline evaluation). Domain-specific adapters (starting with retail) and UI/workers should be introduced when there are tested implementations, rather than empty speculative directories. See [STRUCTURE.md](STRUCTURE.md).
+
+## Retail-specific transaction projection is not platform-wide ingestion
+
+A new `domains/retail/uci_transactions.py`
+experimental offline projection handles only
+**already supplied, UCI-shaped fictional
+transaction mappings**. It is deliberately
+separate from the generic evidence snapshot
+module and forecast evaluator. The
+[source-method contract](engineering/UCI_RETAIL_PROJECTION.md)
+reports positive invoice-line counts, exclusion
+reasons and source rights/publication-time uncertainty.
+No UCI workbook reader, licensed source ingestion,
+historical publisher release evidence, data warehouse,
+live forecast, agent or WorldKernel dependency
+has been introduced.

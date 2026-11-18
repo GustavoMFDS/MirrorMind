@@ -146,3 +146,18 @@ and [synthetic model card](docs/engineering/model_cards/STAGED_WEEKLY_BASELINES.
 provide a reproducible learning example, not
 permission to process third-party data or
 empirical evidence of predictive accuracy.
+
+## Experimental offline UCI-shaped retail projection
+
+[`domains/retail/uci_transactions.py`](src/mirrormind/domains/retail/uci_transactions.py)
+can transform a **bounded, fictional UCI-shaped
+row stream** into a sorted positive invoice-line
+count per product and event date, excluding
+cancellations and nonpositive quantities.
+It deliberately does not copy customer,
+invoice, description or price values,
+or invent first-availability dates.
+Read the [source-method review](docs/engineering/UCI_RETAIL_PROJECTION.md).
+There is **no real UCI workbook reader, authorized
+source ingestion, empirical forecast validation,
+decision engine or WorldKernel runtime coupling**.

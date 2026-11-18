@@ -199,3 +199,20 @@ additional engineering readiness for a
 verification of publisher rights, snapshots,
 actual opening schedules, returns, lost
 sales or real historical availability.
+
+## UCI-shaped retail product/day projection — M1b remains open
+
+A bounded, reusable [retail-domain projection](UCI_RETAIL_PROJECTION.md)
+now validates invented UCI-shaped transaction
+rows, counts cancellation/negative/zero
+entries separately and emits sorted
+product-day positive invoice-line units,
+**without** copying customer or invoice IDs.
+It never invents `available_on` from
+`InvoiceDate`, and does not open the
+original XLSX or establish source approval.
+A [fictional fixture card](datasets/SYNTHETIC_UCI_ROWS_CARD.md)
+records test-only semantics. Licensed real-data
+ingestion, privacy signoff, attribution and
+publisher availability remain independent,
+unfulfilled acceptance gates.
