@@ -207,3 +207,18 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   real-data adapter or independently evaluated
   forecast. M1b authorization/provenance
   and M1c empirical holdout remain open.
+
+- **MM-M1b optional XLSX edge (experimental only):**
+  a bounded [local UCI-shaped workbook reader](engineering/UCI_WORKBOOK_READER.md)
+  uses optional `openpyxl` in read-only mode
+  with compressed-byte, ZIP metadata, exact
+  schema, row and group caps. Fictional
+  [workbook tests](../tests/unit/test_uci_workbook.py)
+  cover path-independent byte reads, SHA-256
+  matching, malicious ZIP metadata, unsupported
+  sheets and immutable product/day projections.
+  **Not delivered:** authorized source acquisition,
+  full 541,909-row UCI processing, customer
+  privacy clearance, deduplicated sales/returns,
+  verified historical availability or actual
+  empirical forecast scores.
