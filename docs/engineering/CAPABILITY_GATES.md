@@ -137,3 +137,15 @@ The capability is `experimental` only. Do not promote
 `evidence_and_rag` or any real ingestion capability
 without independently verified access grants and
 source availability/revision evidence.
+
+## Rolling evaluation needs origin-specific publication history
+
+The synthetic [as-of rolling evaluation](M1_ASOF_ROLLING_EVALUATION.md)
+abstains when an origin's full seven-day input window
+was not yet published. It reports **4/7 coverage**,
+rather than hiding three unavailable-origin cases
+behind the MAE. Actual publication proof, realistic
+evaluation and source authorization remain future
+requirements. The script is `experimental` and
+does not change `forecasting` or
+`evidence_and_rag` to implemented.
