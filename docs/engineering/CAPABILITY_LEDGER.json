@@ -70,6 +70,13 @@
       "source": "examples/m1_observation_preflight.py",
       "test": "tests/unit/test_m1_observation_preflight.py::test_synthetic_batch_is_bounded_and_reports_gaps_without_imputation",
       "notes": "Standalone synthetic-only CLI fixture; no authenticated ingestion, verified provenance, forecasting or simulation."
+    },
+    {
+      "id": "synthetic_rolling_backtest",
+      "status": "experimental",
+      "source": "examples/m1_temporal_backtest.py",
+      "test": "tests/unit/test_m1_temporal_backtest.py::test_seasonal_naive_is_exact_on_weekly_fixture_and_mean_is_not",
+      "notes": "Standalone rolling one-step comparison on invented periodic counts only, with no authorized data, empirical forecast performance, intervals or deployed prediction API."
     }
   ]
 }
