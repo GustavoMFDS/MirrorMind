@@ -315,3 +315,15 @@ The public `/v1/capabilities` register declares
 `forecasting` stays **planned**. No external data,
 trained forecasting service or WorldKernel execution
 is provided by these primitives.
+
+## 15. Permission-sensitive candidate: M5 (no data acquired)
+
+| File | Review responsibility |
+| --- | --- |
+| [`docs/engineering/datasets/M5_ACCESS_REVIEW.md`](datasets/M5_ACCESS_REVIEW.md) | **Proposed/not approved** M5 source access; reconcile the official competition rules, mirror, permitted research/commercial usage and original data rights before any download |
+
+An accessible Kaggle or Zenodo page is not a
+license attestation. The staged CSV parser and
+offline baseline evaluator **do not** approve
+source rights and should not be used to bypass
+this no-go gate.
