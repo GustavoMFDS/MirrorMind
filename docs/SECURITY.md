@@ -18,3 +18,17 @@ availability. Do not use private or customer data as a
 shortcut demonstration, do not promote its source labels
 to verified evidence, and do not describe its numerical
 summary as a forecast or business outcome.
+
+## Local CSV staging is not source authorization
+
+The [source-level staging parser](engineering/M1_LOCAL_CSV_STAGING.md)
+accepts **bytes supplied by a trusted caller** and an expected
+digest. Matching SHA-256 checks bytes only; it does not
+authenticate the publisher, grant licenses, ensure tenant
+separation or validate the source's original reporting time.
+The parser has no I/O, logging or public API endpoint,
+but its returned `StagedSnapshot` includes raw internal
+rows; a future consumer must enforce access permissions,
+minimization and retention before forwarding those rows
+to an API, AI model or any external service. Avoid
+using customer data in examples or unit tests.

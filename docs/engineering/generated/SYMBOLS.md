@@ -83,6 +83,27 @@ Source: [`src/mirrormind/modules/__init__.py`](../../../src/mirrormind/modules/_
 
 No top-level classes or functions.
 
+## `mirrormind.modules.evidence.__init__`
+
+Source: [`src/mirrormind/modules/evidence/__init__.py`](../../../src/mirrormind/modules/evidence/__init__.py)
+
+No top-level classes or functions.
+
+## `mirrormind.modules.evidence.snapshots`
+
+Source: [`src/mirrormind/modules/evidence/snapshots.py`](../../../src/mirrormind/modules/evidence/snapshots.py)
+
+Static imports (including inside functions): `__future__`, `csv`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `io`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `Observation` | class | `class Observation` | One structurally checked row; its publisher and meaning remain unverified. | [L24](../../../src/mirrormind/modules/evidence/snapshots.py#L24) |
+| `StagedSnapshot` | class | `class StagedSnapshot` | In-memory immutable receipt with observations, NOT an authorized dataset. | [L34](../../../src/mirrormind/modules/evidence/snapshots.py#L34) |
+| `StagedSnapshot.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Report structure and digest only, without returning raw observations. | [L40](../../../src/mirrormind/modules/evidence/snapshots.py#L40) |
+| `_day` | function | `def _day(text: str) -> date` | Accept only canonical ISO calendar dates, never ambiguous local timestamps. | [L50](../../../src/mirrormind/modules/evidence/snapshots.py#L50) |
+| `stage_csv_snapshot` | function | `def stage_csv_snapshot(data: bytes, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Verify declared bytes, then reject malformed/ambiguous daily CSV rows. | [L63](../../../src/mirrormind/modules/evidence/snapshots.py#L63) |
+| `available_as_of` | function | `def available_as_of(snapshot: StagedSnapshot, *, series_id: str, origin_on: str) -> tuple[Observation, ...]` | Select only dates and values published by this *historical* origin. | [L127](../../../src/mirrormind/modules/evidence/snapshots.py#L127) |
+
 ## `mirrormind.modules.simulation.__init__`
 
 Source: [`src/mirrormind/modules/simulation/__init__.py`](../../../src/mirrormind/modules/simulation/__init__.py)

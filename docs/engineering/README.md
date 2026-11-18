@@ -14,6 +14,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [M1 synthetic rolling backtest](M1_TEMPORAL_BACKTEST.md) — two fixed one-step baselines, true rolling-prefix tests, an independent exercise and honest synthetic [data](datasets/SYNTHETIC_WEEKLY_CARD.md)/[model](model_cards/SYNTHETIC_WEEKLY_BASELINES.md) cards.
 - [M1 synthetic as-of availability](M1_AVAILABILITY_PRECHECK.md) — independently test observation date versus declared publication date, with a [toy dataset card](datasets/SYNTHETIC_AVAILABILITY_CARD.md).
 - [M1 availability-aware rolling evaluation](M1_ASOF_ROLLING_EVALUATION.md) — join both synthetic exercises, abstain when historical lag data was unpublished, and report coverage alongside metrics.
+- [M1 local CSV snapshot staging](M1_LOCAL_CSV_STAGING.md) — reusable source-module parser with content integrity, immutable observations and as-of selection; **not** source authorization. Includes a [synthetic fixture card](datasets/LOCAL_CSV_STAGING_FIXTURE.md).
 - [M1 delivery plan](M1_EXECUTION_PLAN.md) — evidence-before-model dependency order and independent gates.
 - [Dataset card](DATASET_CARD_TEMPLATE.md), [forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md), [decision trace](DECISION_TRACE_TEMPLATE.md) — mandatory future provenance, evaluation and human-review templates.
 - [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — explicit version mapping and fail-closed input compatibility before a real adapter exists.

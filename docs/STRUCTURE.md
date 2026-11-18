@@ -28,6 +28,9 @@ MirrorMind/
 │   ├── core/
 │   │   └── contracts.py       # Versioned shared Pydantic contracts
 │   └── modules/
+│       ├── evidence/
+│       │   ├── __init__.py
+│       │   └── snapshots.py    # Local in-memory CSV structure/as-of only
 │       └── simulation/
 │           └── gateway.py     # Engine-neutral simulation interface
 ├── tests/
@@ -59,11 +62,12 @@ WorldKernel adapter. It is tested and surfaced as
 `experimental` in the reviewed capability ledger,
 not as an implemented API evidence module.
 
-The first actual evidence/forecast module should only
-be added to `src/mirrormind/modules/` after its
-data-rights, availability/cutoff, quality, evaluation
-and security acceptance criteria are implemented
-and independently tested. See
+The local structural evidence preflight has now been added to
+`src/mirrormind/modules/evidence/snapshots.py` with
+isolated tests. It **does not** implement permissions.
+The first actual **authorized connector** or deployed forecast
+must still await validated data rights, availability history,
+quality, evaluation and security acceptance criteria. See
 [M1 preflight](engineering/M1_DATA_PREFLIGHT.md)
 and [the capability gates](engineering/CAPABILITY_GATES.md).
 
@@ -96,3 +100,15 @@ and baseline methods. The
 [dataset card](engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md)
 and [model card](engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md)
 document their deliberately narrow experimental scope.
+
+## Reusable staged CSV primitive (non-authorized)
+
+[`src/mirrormind/modules/evidence/snapshots.py`](../src/mirrormind/modules/evidence/snapshots.py)
+checks bytes, source-declared calendar fields and integrity
+against a supplied digest, without any external source,
+API, persistence or grant validation. Read the
+[method guide](engineering/M1_LOCAL_CSV_STAGING.md).
+Its example [CSV](../examples/staged-daily-observations.csv)
+is invented, and its tests [unit](../tests/unit/test_evidence_snapshots.py)
+and [integration](../tests/integration/test_local_snapshot_flow.py)
+do not certify any dataset rights.

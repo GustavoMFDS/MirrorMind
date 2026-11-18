@@ -101,3 +101,18 @@ for preventing a simple form of temporal leakage, but
 the M1b acceptance gate remains unchanged: real
 dataset rights, provenance, availability proof,
 revision history, privacy and retention checks.
+
+## New experimental local staging primitive — M1b remains open
+
+The reusable [local CSV staging module](M1_LOCAL_CSV_STAGING.md)
+now validates strict daily CSV bytes, a declared content digest,
+duplicate per-series dates, chronological publication order and
+two-timestamp as-of queries. It does not download or persist
+data and always describes its receipt as **not authorized**.
+
+This closes a narrow **structural** preflight dependency,
+not the M1b authorized-ingestion milestone. A real-data
+release still requires documented legal source rights,
+independent trusted snapshot hash/provenance, publisher
+availability and revision history, privacy/retention controls,
+source-specific bounded I/O and approval before modeling.

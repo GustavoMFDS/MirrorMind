@@ -131,5 +131,33 @@
     "test": "tests/unit/test_m1_asof_rolling_backtest.py",
     "function": "test_all_origins_can_abstain_without_fake_scores",
     "limitation": "Explicit null metrics on missing history do not provide independently evaluated forecast accuracy or decision readiness."
+  },
+  {
+    "id": "MM-SNAP-001",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_snapshot_content_hash_and_receipt_are_immutable_and_unverified",
+    "limitation": "Field immutability and digest matching do not prove source authenticity, authorization, tenant access or confidential processing."
+  },
+  {
+    "id": "MM-SNAP-002",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_asof_excludes_late_publication_but_keeps_real_zero",
+    "limitation": "Filters declared publication timestamps only; actual availability and licensed source ownership must be verified separately."
+  },
+  {
+    "id": "MM-SNAP-003",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_digest_mismatch_fails_before_interpreting_unverified_bytes",
+    "limitation": "The expected SHA-256 is caller supplied and is not an independently authenticated publisher signature or legal rights evidence."
+  },
+  {
+    "id": "MM-SNAP-004",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/integration/test_local_snapshot_flow.py",
+    "function": "test_local_example_receipt_and_historical_view_remain_unverified",
+    "limitation": "Integration on an invented CSV fixture does not exercise genuine data permissions, source revisions, privacy or retention."
   }
 ]

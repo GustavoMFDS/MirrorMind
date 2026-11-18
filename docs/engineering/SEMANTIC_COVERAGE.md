@@ -2,7 +2,7 @@
 
 This matrix separates **implemented methods** from **interface-only**
 and **planned** work. It is a qualitative learning map, not a percentage
-of source, assertion, or business correctness coverage. All 11 current
+of source, assertion, or business correctness coverage. All 13 current
 Python source files appear in the generated
 [source catalog](generated/SYMBOLS.md) and the
 [linked repository atlas](REPOSITORY_ATLAS.md).
@@ -27,6 +27,8 @@ Python source files appear in the generated
 | [`src/mirrormind/core/__init__.py`](../../src/mirrormind/core/__init__.py) | I | Core package marker |
 | [`src/mirrormind/core/contracts.py`](../../src/mirrormind/core/contracts.py) | G | Versioned Pydantic fields and two cross-field rules; [contracts walkthrough](CONTRACT_WALKTHROUGH.md) |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
+| [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
+| [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | G | Strict local staging/as-of semantics in [M1 snapshot guide](M1_LOCAL_CSV_STAGING.md); no approved ingestion |
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
 | [`src/mirrormind/modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py) | R | `SimulationGateway` Protocol and `SimulationSummary` model, **no live adapter**; [API guide](API_WALKTHROUGH.md) |
 
@@ -116,3 +118,16 @@ teaching example, not an authorized data ingestion service.
 
 Neither the `forecasting` nor the `evidence_and_rag`
 capability is implemented by these teaching scripts.
+
+## Local CSV staging at source level
+
+[`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py)
+is a **guided** reusable primitive, not a new
+source-authorized Evidence Engine. Read the
+[staging guide](M1_LOCAL_CSV_STAGING.md) and
+[adverse tests](../../tests/unit/test_evidence_snapshots.py)
+to identify byte/row limits, strict headers,
+two-date as-of behavior and the receipt's
+`not_authorized` status. The API registers
+`local_csv_snapshot_preflight` as experimental;
+`evidence_and_rag` remains planned.

@@ -264,3 +264,28 @@ as an **experimental** local program. The real
 `forecasting` and `evidence_and_rag` capabilities
 remain planned; verified publication timestamps
 and empirically valid forecasts still do not exist.
+
+## 13. Source-backed local CSV snapshot staging (not authorization)
+
+A reusable **in-memory** `evidence/` library module now
+exists independently of the synthetic command-line demos.
+It validates a strict byte/schema contract and
+historical publication-date selection but is **not**
+an ingestion service, a rights checker, a deployed Evidence
+Engine or a source-provenance validator.
+
+| Tracked artifact | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | Evidence package marker; no automatic source connections |
+| [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | Strict bounded local byte parser, declared hash comparison, immutable rows, two-timestamp as-of query |
+| [`tests/unit/test_evidence_snapshots.py`](../../tests/unit/test_evidence_snapshots.py) | Negative cases for digest, header, duplicate rows, date and count validation; source rights explicitly unverified |
+| [`tests/integration/test_local_snapshot_flow.py`](../../tests/integration/test_local_snapshot_flow.py) | Installable package stage/receipt/as-of flow on invented fixture bytes |
+| [`examples/staged-daily-observations.csv`](../../examples/staged-daily-observations.csv) | Four invented rows; one late-declared publication and one measured zero |
+| [`docs/engineering/M1_LOCAL_CSV_STAGING.md`](M1_LOCAL_CSV_STAGING.md) | Method-by-method walkthrough, SHA-256 trust limits, reproduction and independent exercise |
+| [`docs/engineering/datasets/LOCAL_CSV_STAGING_FIXTURE.md`](datasets/LOCAL_CSV_STAGING_FIXTURE.md) | Synthetic-only data card, no publisher or permission claims |
+| [`docs/engineering/changes/MM-M1B-local-csv-staging.md`](changes/MM-M1B-local-csv-staging.md) | Bounded acceptance, impact, tests and unresolved authorization concerns |
+
+The API capability register labels `local_csv_snapshot_preflight`
+**experimental**. The full `evidence_and_rag` remains
+**planned**. This new code has no network, persistence,
+forecasting, simulation or authorization feature.
