@@ -24,6 +24,7 @@ def capabilities() -> dict[str, object]:
             "local_uci_transaction_projection",
             "local_uci_xlsx_reader",
             "local_retail_coverage_diagnostics",
+            "local_declared_calendar_coverage",
         ],
         "planned": [
             "evidence_and_rag",

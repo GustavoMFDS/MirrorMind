@@ -348,5 +348,12 @@
     "test": "tests/unit/test_retail_coverage.py",
     "function": "test_internal_gaps_are_not_zero_or_imputed_and_receipt_has_no_identifiers",
     "limitation": "Invented positive-invoice records do not prove shop opening calendars, authentic publication timing, true demand or source authorization."
+  },
+  {
+    "id": "MM-DCAL-001",
+    "guide": "docs/engineering/DECLARED_CALENDAR_COVERAGE.md",
+    "test": "tests/unit/test_declared_calendar_coverage.py",
+    "function": "test_closed_day_not_counted_as_missing_declared_observation",
+    "limitation": "The schedule is an invented caller assertion; internal gaps do not prove business opening, publication time, authorized real data or demand."
   }
 ]

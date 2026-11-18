@@ -89,6 +89,18 @@ Source: [`src/mirrormind/domains/retail/__init__.py`](../../../src/mirrormind/do
 
 No top-level classes or functions.
 
+## `mirrormind.domains.retail.calendar_coverage`
+
+Source: [`src/mirrormind/domains/retail/calendar_coverage.py`](../../../src/mirrormind/domains/retail/calendar_coverage.py)
+
+Static imports (including inside functions): `__future__`, `bisect`, `dataclasses`, `datetime`, `mirrormind.domains.retail.coverage`, `mirrormind.domains.retail.uci_transactions`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `DeclaredCalendarCoverage` | class | `class DeclaredCalendarCoverage` | Aggregate scheduled internal gaps without product identifiers. | [L19](../../../src/mirrormind/domains/retail/calendar_coverage.py#L19) |
+| `DeclaredCalendarCoverage.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Keep the unverified calendar and unknown publisher availability explicit. | [L29](../../../src/mirrormind/domains/retail/calendar_coverage.py#L29) |
+| `summarize_declared_calendar_coverage` | function | `def summarize_declared_calendar_coverage(projection: UciRetailProjection, declared_days: tuple[date, ...]) -> DeclaredCalendarCoverage` | Count only absent *declared* dates between observed positive product-days. | [L44](../../../src/mirrormind/domains/retail/calendar_coverage.py#L44) |
+
 ## `mirrormind.domains.retail.coverage`
 
 Source: [`src/mirrormind/domains/retail/coverage.py`](../../../src/mirrormind/domains/retail/coverage.py)
