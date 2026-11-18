@@ -143,7 +143,7 @@ def read_uci_workbook(
         book = load_workbook(
             BytesIO(raw), read_only=True, data_only=False, keep_links=False
         )
-    except Exception:
+    except Exception:  # noqa: BLE001 - sanitize third-party parser errors that may include input
         raise ValueError("invalid or unsupported XLSX structure") from None
     try:
         if book.sheetnames != ["Online Retail"]:
@@ -169,7 +169,7 @@ def read_uci_workbook(
         )
     except (ValueError, TypeError):
         raise
-    except Exception:
+    except Exception:  # noqa: BLE001 - do not expose workbook cell contents in errors
         raise ValueError("invalid workbook row structure") from None
     finally:
         book.close()
