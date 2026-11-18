@@ -98,6 +98,13 @@
       "source": "src/mirrormind/modules/evidence/snapshots.py",
       "test": "tests/unit/test_evidence_snapshots.py::test_asof_excludes_late_publication_but_keeps_real_zero",
       "notes": "Strict in-memory CSV structure and as-of selection, not authorized source acquisition, verified publisher provenance, audited data retention or real evidence/RAG ingestion."
+    },
+    {
+      "id": "local_staged_rolling_baselines",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/forecasting/baselines.py",
+      "test": "tests/unit/test_staged_rolling_baselines.py::test_staged_rolling_baselines_score_four_of_seven_after_late_publication",
+      "notes": "Offline fixed daily baselines on structurally staged and source-unverified rows; no authorized data, training, empirical predictive evidence, uncertainty calibration or deployed inference API."
     }
   ]
 }
