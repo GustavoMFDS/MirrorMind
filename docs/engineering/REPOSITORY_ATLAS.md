@@ -484,3 +484,14 @@ dependency. The `local_uci_xlsx_reader` capability
 is **experimental**; this supports neither the
 complete original UCI dataset nor production
 evidence ingestion or historical forecast claims.
+
+## 23. Aggregate internal retail event-day coverage (experimental)
+
+| New path | Purpose and limitation |
+| --- | --- |
+| [`src/mirrormind/domains/retail/coverage.py`](../../src/mirrormind/domains/retail/coverage.py) | Bounded immutable aggregate of internal missing positive-invoice product-days without inventing demand or availability |
+| [`tests/unit/test_retail_coverage.py`](../../tests/unit/test_retail_coverage.py) | Synthetic regression coverage for gaps, cancellation-only days, privacy, invalid ordering and empty results |
+| [`docs/engineering/RETAIL_COVERAGE.md`](RETAIL_COVERAGE.md) | Source walkthrough, reproduction and independent review exercise |
+
+This is **not authorized ingestion**, a proof of zero demand, a
+publisher-availability timeline or an operational forecast input.
