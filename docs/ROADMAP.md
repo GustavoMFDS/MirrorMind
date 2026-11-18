@@ -178,3 +178,16 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   publication availability remain explicit
   approval blockers. No UCI data have been
   ingested or used to report model performance.
+
+- **MM-M1b local quality preflight (experimental):**
+  `snapshot_quality_summary` adds a deterministic,
+  non-imputing aggregate over structurally
+  staged records: row/series counts,
+  per-series internal date gaps, recorded
+  zero-unit observations and declared
+  publication delays. [Method notes](engineering/M1_LOCAL_CSV_STAGING.md)
+  and negative regressions distinguish
+  absent records from measured zeros.
+  It **does not** verify source authenticity,
+  dataset rights, actual customer demand
+  or readiness of a real Evidence Engine.
