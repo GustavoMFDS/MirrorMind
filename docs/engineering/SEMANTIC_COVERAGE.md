@@ -2,7 +2,7 @@
 
 This matrix separates **implemented methods** from **interface-only**
 and **planned** work. It is a qualitative learning map, not a percentage
-of source, assertion, or business correctness coverage. All 15 current
+of source, assertion, or business correctness coverage. All 18 current
 Python source files appear in the generated
 [source catalog](generated/SYMBOLS.md) and the
 [linked repository atlas](REPOSITORY_ATLAS.md).
@@ -26,6 +26,9 @@ Python source files appear in the generated
 | [`src/mirrormind/api/routes/scenarios.py`](../../src/mirrormind/api/routes/scenarios.py) | G | Data validation only; [API walkthrough](API_WALKTHROUGH.md) |
 | [`src/mirrormind/core/__init__.py`](../../src/mirrormind/core/__init__.py) | I | Core package marker |
 | [`src/mirrormind/core/contracts.py`](../../src/mirrormind/core/contracts.py) | G | Versioned Pydantic fields and two cross-field rules; [contracts walkthrough](CONTRACT_WALKTHROUGH.md) |
+| [`src/mirrormind/domains/__init__.py`](../../src/mirrormind/domains/__init__.py) | I | Domain package only; no automatic sector adapter |
+| [`src/mirrormind/domains/retail/__init__.py`](../../src/mirrormind/domains/retail/__init__.py) | I | Retail namespace without source acquisition |
+| [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | G | Bounded transaction-to-day positive-unit projection on fictional mappings; [source walkthrough](UCI_RETAIL_PROJECTION.md) |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
 | [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | G | Strict local staging/as-of semantics in [M1 snapshot guide](M1_LOCAL_CSV_STAGING.md); no approved ingestion |
@@ -146,3 +149,17 @@ This is only `local_staged_rolling_baselines`
 capability ledger stays **planned** until independent
 data/provenance/model validation and a safe deployment
 are established.
+
+## Sector-specific schema projection does not authenticate data
+
+The [retail projection source](../../src/mirrormind/domains/retail/uci_transactions.py)
+accepts UCI-shaped **already supplied** row mappings, not
+`Online Retail.xlsx`. Its [method guide](UCI_RETAIL_PROJECTION.md)
+and [unit tests](../../tests/unit/test_uci_retail_projection.py)
+explain cancelled/nonpositive lines, bounded
+grouping, customer-field minimization and
+the deliberately missing publication timestamp.
+The capability is `local_uci_transaction_projection`
+**experimental** only. Actual authorized ingestion,
+historically proven release vintages, deployed
+forecasting and simulation remain **planned**.
