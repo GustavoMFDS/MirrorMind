@@ -223,3 +223,20 @@ This **local teaching evaluation is not a real forecasting service**.
 `synthetic_rolling_backtest` experimental; `forecasting`
 remains planned. No licensed dataset, deployed prediction endpoint
 or WorldKernel integration has been established.
+
+## 11. Experimental retrospective availability filter (synthetic only)
+
+| Tracked artifact | Role and review boundary |
+| --- | --- |
+| [`examples/m1_availability_preflight.py`](../../examples/m1_availability_preflight.py) | Safe local as-of preflight, separating event date from declared publication date |
+| [`examples/synthetic-asof-sales.json`](../../examples/synthetic-asof-sales.json) | Invented events and publication dates, one deliberately delayed |
+| [`tests/unit/test_m1_availability_preflight.py`](../../tests/unit/test_m1_availability_preflight.py) | Adverse cases for late publication, future events, duplicate data and impossible dates |
+| [`tests/integration/test_m1_availability_preflight_cli.py`](../../tests/integration/test_m1_availability_preflight_cli.py) | Local CLI evidence of bounded safe summaries and redacted failures |
+| [`docs/engineering/M1_AVAILABILITY_PRECHECK.md`](M1_AVAILABILITY_PRECHECK.md) | Reviewed date-pair semantics, toy walkthrough and reproducibility |
+| [`docs/engineering/datasets/SYNTHETIC_AVAILABILITY_CARD.md`](datasets/SYNTHETIC_AVAILABILITY_CARD.md) | Source/snapshot labels are claims; no real rights or reporting timestamps verified |
+| [`docs/engineering/changes/MM-M1B-synthetic-availability.md`](changes/MM-M1B-synthetic-availability.md) | Bounded request, safe acceptance and future ingestion dependencies |
+
+`synthetic_asof_availability` is **experimental**, not
+a production evidence connector. The `evidence_and_rag`
+capability stays planned; this example intentionally
+does not attest source availability or permissions.
