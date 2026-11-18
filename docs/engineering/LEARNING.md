@@ -193,3 +193,16 @@ Then remove the final target row or shift its declared
 publication past the cutoff. Explain how the
 two outcomes differ and why even this precise
 diagnostic cannot authenticate a real data source.
+
+## Guided exercise 17 — age of data is not amount of history
+
+Read [the updated staged baseline guide](M1_STAGED_ROLLING_BASELINES.md).
+Construct an invented series with one ancient
+date and seven recent pre-holdout dates. Predict
+why `min_history_days=14` now rejects it even
+though the first date is more than two weeks
+before holdout. Inspect
+`tests/unit/test_staged_rolling_baselines.py::
+test_min_history_counts_observations_not_one_ancient_row`.
+Lower the threshold to seven and explain why
+publication-time abstention is still necessary.
