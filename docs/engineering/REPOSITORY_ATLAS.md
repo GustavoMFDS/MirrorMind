@@ -495,3 +495,14 @@ evidence ingestion or historical forecast claims.
 
 This is **not authorized ingestion**, a proof of zero demand, a
 publisher-availability timeline or an operational forecast input.
+
+## 24. Optional declared calendar comparison (experimental)
+
+| Tracked file | Role and limitation |
+| --- | --- |
+| [`src/mirrormind/domains/retail/calendar_coverage.py`](../../src/mirrormind/domains/retail/calendar_coverage.py) | Strict hypothetical date schedule: compare scheduled internal missing product-days without making data availability claims |
+| [`tests/unit/test_declared_calendar_coverage.py`](../../tests/unit/test_declared_calendar_coverage.py) | Fictional closed-day assumptions, contrary positive observations, privacy and budget regressions |
+| [`docs/engineering/DECLARED_CALENDAR_COVERAGE.md`](DECLARED_CALENDAR_COVERAGE.md) | Method and risk review, exercise and operational-calendar verification gate |
+
+A declared schedule is **not authenticated** as an opening, collection
+or publisher calendar. Missing positive sales are never replaced by zeros.
