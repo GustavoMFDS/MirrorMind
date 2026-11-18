@@ -125,3 +125,15 @@ held-out empirical proof. Do not promote `forecasting`
 before authorized source ingestion, availability-time
 checks, independently locked holdouts, measured
 generalization and safe deployment have been validated.
+
+## Declared as-of timestamps are not source permissions
+
+The [synthetic availability preflight](M1_AVAILABILITY_PRECHECK.md)
+demonstrates why an old `observed_on` date does not prove
+the value was knowable: `available_on` can be later.
+The guard's dates are entirely **caller declared**, with
+no verification of publisher records or retention rights.
+The capability is `experimental` only. Do not promote
+`evidence_and_rag` or any real ingestion capability
+without independently verified access grants and
+source availability/revision evidence.
