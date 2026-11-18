@@ -289,3 +289,29 @@ The API capability register labels `local_csv_snapshot_preflight`
 **experimental**. The full `evidence_and_rag` remains
 **planned**. This new code has no network, persistence,
 forecasting, simulation or authorization feature.
+
+## 14. Source-level offline rolling baselines (still experimental)
+
+The first reusable `forecasting/` module composes the
+strict local evidence-staging primitive with two fixed
+one-day estimators. It **does not** ingest an authorized
+dataset, fit a model, serve forecasts or simulate
+WorldKernel. Its scores come from an invented fixture.
+
+| Tracked path | Source/test responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/forecasting/__init__.py`](../../src/mirrormind/modules/forecasting/__init__.py) | Package marker; no automatic model loading or service |
+| [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | Bounded historic as-of lag-7 and trailing-average evaluation with aligned scores and abstentions |
+| [`tests/unit/test_staged_rolling_baselines.py`](../../tests/unit/test_staged_rolling_baselines.py) | Honest scoring on four of seven generated origins; negative controls for unavailable history and undefined metrics |
+| [`tests/integration/test_staged_rolling_flow.py`](../../tests/integration/test_staged_rolling_flow.py) | Compose installed library snapshot stage and evaluation on invented data without runtime file/network I/O |
+| [`examples/staged-weekly-availability.csv`](../../examples/staged-weekly-availability.csv) | 35 generated rows, one late-declared publication and a repeating artificial weekly pattern |
+| [`docs/engineering/M1_STAGED_ROLLING_BASELINES.md`](M1_STAGED_ROLLING_BASELINES.md) | Reviewed methods, risk limits, numerical example and independent exercise |
+| [`docs/engineering/datasets/STAGED_WEEKLY_AVAILABILITY_CARD.md`](datasets/STAGED_WEEKLY_AVAILABILITY_CARD.md) | Invented source/snapshot card, no real rights or original release verification |
+| [`docs/engineering/model_cards/STAGED_WEEKLY_BASELINES.md`](model_cards/STAGED_WEEKLY_BASELINES.md) | Model evaluation card with scored-origin denominator and explicit 4/7 coverage |
+| [`docs/engineering/changes/MM-M1C-staged-offline-backtest.md`](changes/MM-M1C-staged-offline-backtest.md) | Accepted scope, compatibility, test evidence and unresolved scientific/permission gates |
+
+The public `/v1/capabilities` register declares
+`local_staged_rolling_baselines` **experimental** while
+`forecasting` stays **planned**. No external data,
+trained forecasting service or WorldKernel execution
+is provided by these primitives.
