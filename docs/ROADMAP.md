@@ -91,3 +91,17 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   limits. This does **not** complete real M1b ingestion,
   independent M1c model evaluation, production forecasting,
   decision support or WorldKernel integration.
+
+- **MM-M1b-local — source-backed structural staging (experimental, not
+  licensed data ingestion):** a real, reusable
+  [in-memory CSV parser](engineering/M1_LOCAL_CSV_STAGING.md)
+  now enforces 1 MiB/10k-row limits, exact header and
+  integer/date validation, per-series uniqueness, a
+  declared SHA-256 digest comparison and historical
+  two-timestamp as-of selection. Unit and fixture
+  integration regressions accompany its
+  [reviewed data card](engineering/datasets/LOCAL_CSV_STAGING_FIXTURE.md).
+  Its result explicitly states `not_authorized`:
+  no provenance attestation, source license, real connector,
+  retention policy, forecast model or WorldKernel execution
+  has been delivered. **M1b remains open.**
