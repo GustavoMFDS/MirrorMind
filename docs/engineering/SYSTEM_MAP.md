@@ -15,6 +15,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
+| Project offline UCI-shaped retail rows | [`domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py), [source guide](UCI_RETAIL_PROJECTION.md) | [unit](../../tests/unit/test_uci_retail_projection.py) and [integration](../../tests/integration/test_uci_retail_projection_flow.py) tests on invented rows only; **no as-of availability assertion** |
 | Introduce real evidence connectors/RAG | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md), [data card](DATASET_CARD_TEMPLATE.md) | Separate source-specific permission/provenance tests required |
 | Evaluate local staged rolling baselines | [`modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py), [method guide](M1_STAGED_ROLLING_BASELINES.md) | [unit](../../tests/unit/test_staged_rolling_baselines.py) and [integration](../../tests/integration/test_staged_rolling_flow.py) tests on invented data only |
 | Introduce real forecasting service | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | Approved snapshot, locked independent holdout, calibrated risk and serving/permission tests |
@@ -51,3 +52,22 @@ retrospective cutoff -> per-origin `available_as_of`
 origins and explicit abstentions. This is **not**
 a general forecasting endpoint, configured data
 connector or real-world decision engine.
+
+## Experimental retail transaction projection (not an HTTP route)
+
+Trusted caller's **already supplied** UCI-shaped
+row mappings -> `domains/retail/uci_transactions.py`
+-> strict InvoiceNo/StockCode/Quantity/InvoiceDate
+validation -> nonpositive and cancellation accounting
+-> immutable daily positive-line units **without**
+CustomerID, InvoiceNo, Description, price or
+publication time. The input's extra fields must
+not become output fields. Missing day is **not**
+zero demand.
+
+The output cannot go directly into the
+generic as-of staging/forecasting pipeline:
+UCI `InvoiceDate` is **event time**, not
+verified first availability. A separate licensed,
+reviewed source-adapter and publication policy
+are required. See [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
