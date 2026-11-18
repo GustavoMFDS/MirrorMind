@@ -93,3 +93,17 @@ unsupported intervention, unverified ForecastRef and
 world-version mismatch should fail. Distinguish a
 conditional simulation outcome from observed sales,
 a valid forecast and a human-approved action.
+
+## Guided exercise 10 — rolling-origin forecasts without lookahead (35 minutes)
+
+Read [M1 synthetic temporal backtest](M1_TEMPORAL_BACKTEST.md)
+and inspect `examples/m1_temporal_backtest.py:_predict`.
+Compute the seven synthetic test-day forecasts and MAEs by hand,
+then inspect
+`tests/unit/test_m1_temporal_backtest.py::
+test_each_one_step_prediction_receives_only_prior_observations`.
+Explain why `values[:i]` excludes the target `values[i]`,
+and why a rolling one-step assessment must not be advertised
+as a fixed-origin seven-day forecast. Finally, contrast a
+missing day with a measured zero; the first must trigger
+abstention in this demonstration.
