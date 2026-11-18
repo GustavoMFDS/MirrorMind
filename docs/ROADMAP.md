@@ -7,3 +7,10 @@
 - **MM-M4 — Planned generalization:** at least one *different* domain adapter, versioned contracts and validated WorldKernel integration.
 
 Acceptance gates: working runnable example, tests, clear metrics, provenance, resource limits and a truthful status statement. No production claims until validated.
+
+- **MM-DOC-A1 — In progress (structural learning baseline):** enforce a committed
+  AST index, human-reviewed linked repository atlas, real tracked-file inventory
+  and local Markdown link integrity in documentation CI. This is strictly
+  structural; it does not certify semantic understanding, data lineage,
+  privacy, quality of forecasts or security. Next gates: source-reviewed
+  method lessons, curated test evidence and stricter claim/decision traceability.
