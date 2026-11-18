@@ -2,7 +2,7 @@
 
 This matrix separates **implemented methods** from **interface-only**
 and **planned** work. It is a qualitative learning map, not a percentage
-of source, assertion, or business correctness coverage. All 18 current
+of source, assertion, or business correctness coverage. All 19 current
 Python source files appear in the generated
 [source catalog](generated/SYMBOLS.md) and the
 [linked repository atlas](REPOSITORY_ATLAS.md).
@@ -29,6 +29,7 @@ Python source files appear in the generated
 | [`src/mirrormind/domains/__init__.py`](../../src/mirrormind/domains/__init__.py) | I | Domain package only; no automatic sector adapter |
 | [`src/mirrormind/domains/retail/__init__.py`](../../src/mirrormind/domains/retail/__init__.py) | I | Retail namespace without source acquisition |
 | [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | G | Bounded transaction-to-day positive-unit projection on fictional mappings; [source walkthrough](UCI_RETAIL_PROJECTION.md) |
+| [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
 | [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | G | Strict local staging/as-of semantics in [M1 snapshot guide](M1_LOCAL_CSV_STAGING.md); no approved ingestion |
@@ -163,3 +164,20 @@ The capability is `local_uci_transaction_projection`
 **experimental** only. Actual authorized ingestion,
 historically proven release vintages, deployed
 forecasting and simulation remain **planned**.
+
+## Experimental optional XLSX parser is not the entire UCI source pipeline
+
+[`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py)
+provides a **bounded local** XLSX stream reader
+that passes only needed transaction fields
+into the preexisting projection.
+Read [method guide](UCI_WORKBOOK_READER.md),
+[fictional data card](datasets/SYNTHETIC_UCI_XLSX_CARD.md)
+and [unit security cases](../../tests/unit/test_uci_workbook.py).
+The full official file has many more rows
+than this reader's cap, and privacy,
+attribution and original source identity are
+not approved. This feature remains
+`local_uci_xlsx_reader` **experimental**;
+authorized ingestion and genuine forecasting
+stay planned.
