@@ -232,3 +232,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   It is not an authorized observation calendar, true demand history,
   source-provenanced as-of evidence, evaluated forecast or WorldKernel
   execution. Real M1b and M1c acceptance gates remain open.
+
+- **MM-M1b hypothetical calendar comparison (experimental):**
+  [declared operational calendar guide](engineering/DECLARED_CALENDAR_COVERAGE.md)
+  and [fictional regressions](../tests/unit/test_declared_calendar_coverage.py)
+  distinguish internal positive-line calendar gaps from days a caller
+  explicitly declared as possible observation dates. Contradictory
+  observed sales are rejected. No inferred shop opening days, real
+  publisher vintage, true demand or operational readiness is asserted.
