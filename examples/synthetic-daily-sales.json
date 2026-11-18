@@ -1,0 +1,26 @@
+{
+  "schema_version": "mirrormind.synthetic_observations.v1",
+  "series_id": "retail.synthetic.store-01.item-01",
+  "source_id": "synthetic-fixture-generator",
+  "snapshot_id": "synthetic-demo-v1",
+  "usage_note": "Generated teaching data; not a real retailer dataset or verified permission.",
+  "cutoff_date": "2025-01-08",
+  "records": [
+    {
+      "date": "2025-01-01",
+      "units": 7
+    },
+    {
+      "date": "2025-01-02",
+      "units": 4
+    },
+    {
+      "date": "2025-01-04",
+      "units": 2
+    },
+    {
+      "date": "2025-01-08",
+      "units": 0
+    }
+  ]
+}
