@@ -66,3 +66,13 @@ and security acceptance criteria are implemented
 and independently tested. See
 [M1 preflight](engineering/M1_DATA_PREFLIGHT.md)
 and [the capability gates](engineering/CAPABILITY_GATES.md).
+
+## Experimental one-step backtest
+
+[`examples/m1_temporal_backtest.py`](../examples/m1_temporal_backtest.py)
+and [`examples/synthetic-weekly-sales.json`](../examples/synthetic-weekly-sales.json)
+are intentionally outside the production forecasting package.
+The [M1 evaluation guide](engineering/M1_TEMPORAL_BACKTEST.md)
+and [synthetic model card](engineering/model_cards/SYNTHETIC_WEEKLY_BASELINES.md)
+describe a fixed one-step toy comparison, not a new API endpoint,
+model-serving layer or WorldKernel integration.
