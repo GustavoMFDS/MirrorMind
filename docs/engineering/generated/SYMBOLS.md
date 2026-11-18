@@ -77,6 +77,33 @@ Static imports (including inside functions): `pydantic`, `typing`
 | `ScenarioSpec` | class | `class ScenarioSpec` | — | [L32](../../../src/mirrormind/core/contracts.py#L32) |
 | `ScenarioSpec.check_budget` | method | `def check_budget(self) -> 'ScenarioSpec'` | — | [L47](../../../src/mirrormind/core/contracts.py#L47) |
 
+## `mirrormind.domains.__init__`
+
+Source: [`src/mirrormind/domains/__init__.py`](../../../src/mirrormind/domains/__init__.py)
+
+No top-level classes or functions.
+
+## `mirrormind.domains.retail.__init__`
+
+Source: [`src/mirrormind/domains/retail/__init__.py`](../../../src/mirrormind/domains/retail/__init__.py)
+
+No top-level classes or functions.
+
+## `mirrormind.domains.retail.uci_transactions`
+
+Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L22](../../../src/mirrormind/domains/retail/uci_transactions.py#L22) |
+| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L31](../../../src/mirrormind/domains/retail/uci_transactions.py#L31) |
+| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L41](../../../src/mirrormind/domains/retail/uci_transactions.py#L41) |
+| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L55](../../../src/mirrormind/domains/retail/uci_transactions.py#L55) |
+| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L64](../../../src/mirrormind/domains/retail/uci_transactions.py#L64) |
+| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L71](../../../src/mirrormind/domains/retail/uci_transactions.py#L71) |
+
 ## `mirrormind.modules.__init__`
 
 Source: [`src/mirrormind/modules/__init__.py`](../../../src/mirrormind/modules/__init__.py)
