@@ -104,6 +104,7 @@ Static imports (including inside functions): `__future__`, `csv`, `dataclasses`,
 | `stage_csv_snapshot` | function | `def stage_csv_snapshot(data: bytes, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Verify declared bytes, then reject malformed/ambiguous daily CSV rows. | [L64](../../../src/mirrormind/modules/evidence/snapshots.py#L64) |
 | `available_as_of` | function | `def available_as_of(snapshot: StagedSnapshot, *, series_id: str, origin_on: str) -> tuple[Observation, ...]` | Select only dates and values published by this *historical* origin. | [L128](../../../src/mirrormind/modules/evidence/snapshots.py#L128) |
 | `read_staged_csv` | function | `def read_staged_csv(stream: BinaryIO, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Read a cooperative local binary stream with a strict byte ceiling. | [L153](../../../src/mirrormind/modules/evidence/snapshots.py#L153) |
+| `snapshot_quality_summary` | function | `def snapshot_quality_summary(snapshot: StagedSnapshot) -> dict[str, str \| int]` | Summarize observed calendar gaps and delays without imputing or authorizing. | [L188](../../../src/mirrormind/modules/evidence/snapshots.py#L188) |
 
 ## `mirrormind.modules.forecasting.__init__`
 
