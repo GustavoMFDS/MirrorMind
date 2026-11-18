@@ -96,3 +96,17 @@ access to any real dataset. The
 [guide](docs/engineering/M1_AVAILABILITY_PRECHECK.md)
 and [data card](docs/engineering/datasets/SYNTHETIC_AVAILABILITY_CARD.md)
 describe the limits. The Evidence Engine remains planned.
+
+## Synthetic availability-aware rolling evaluation
+
+```bash
+python -m examples.m1_asof_rolling_backtest examples/synthetic-asof-weekly-sales.json
+```
+
+This local toy exercise only scores a one-day baseline when
+all seven previous synthetic observations were **declared
+available by that origin**. In the invented example,
+three origins abstain and four are scored. See the
+[source-reviewed guide](docs/engineering/M1_ASOF_ROLLING_EVALUATION.md).
+This neither authenticates publication timestamps nor
+constitutes a deployed forecast service.
