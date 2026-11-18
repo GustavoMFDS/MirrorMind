@@ -162,7 +162,7 @@ def test_every_requested_origin_has_one_reproducible_nonvalue_audit_record():
 
 def test_missing_target_is_not_conflated_with_unpublished_target():
     raw = (ROOT / "examples/staged-weekly-availability.csv").read_bytes()
-    line = b"item-A,2025-02-04,2025-02-04,14\\n"
+    line = b"item-A,2025-02-04,2025-02-04,14\n"
     assert line in raw
     missing = raw.replace(line, b"")
     staged_missing = stage_csv_snapshot(
@@ -176,7 +176,7 @@ def test_missing_target_is_not_conflated_with_unpublished_target():
     assert report["origin_audit"][-1]["status"] == "target_missing"
     assert report["scored_origins"] == 3
 
-    delayed = raw.replace(line, b"item-A,2025-02-04,2025-02-05,14\\n")
+    delayed = raw.replace(line, b"item-A,2025-02-04,2025-02-05,14\n")
     staged_late = stage_csv_snapshot(
         delayed, expected_sha256=sha256(delayed).hexdigest()
     )
