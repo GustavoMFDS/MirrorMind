@@ -166,3 +166,17 @@ and predict the first and final seven-value input
 tuples. Then explain why a zero MAE on repeated
 synthetic seasonality is not evidence of licensed
 real-world forecasting quality.
+
+## Guided exercise 15 — the right to read is not the right to use (25 minutes)
+
+Read [M5 source due diligence](datasets/M5_ACCESS_REVIEW.md),
+then compare the official competition rules and
+a third-party archive description. Identify what
+would establish authorized **research** use,
+what additional terms might control **commercial**
+use, and which evidence is missing. Explain why
+a SHA-256 match, a publicly downloadable zip or a
+Creative Commons license on a *paper* cannot
+automatically authorize the underlying data.
+Do not download any competition data as part
+of this exercise without approved permissions.
