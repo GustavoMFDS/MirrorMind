@@ -49,7 +49,7 @@ history remain pending per
   malformed source, wrong digest,
   oversized streams, row limits and
   illegal ZIP payload metadata.
-- [x] Update generated symbols, curated
+- [ ] Update generated symbols, curated
   claims, capability API/ledger, atlas,
   guides, privacy and roadmap; merge
   only after Python + docs CI green.
