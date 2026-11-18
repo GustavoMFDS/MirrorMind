@@ -106,3 +106,16 @@ time vintages for leakage-free rolling validation.
 Do not download or commit M5 observations until
 a rights holder's applicable grant and source
 approval have been reviewed.
+
+## Alternative with a published source license: UCI Online Retail
+
+The original [UCI Online Retail candidate](engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+publishes CC BY 4.0 on its official dataset page.
+It may provide historical **transaction sales**
+for a limited research baseline once attribution,
+privacy and source handling are approved.
+It does **not** provide stock on hand, lead
+time, lost sales, verified day-by-day publication
+availability or a ready-made M5-like demand
+forecast. Do not substitute it for M5 without
+recording a new dataset snapshot and objective.
