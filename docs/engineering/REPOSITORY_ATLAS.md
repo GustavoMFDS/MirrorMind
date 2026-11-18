@@ -389,3 +389,17 @@ and [claim-to-test map](EVIDENCE_MAP.json)
 cover partial reads, byte limits, generic errors
 and complete digest matching. **No real-data
 access permission is established here.**
+
+## 19. Officially licensed retail-source candidate (review still pending)
+
+| Tracked review | What it establishes — and what it does not |
+| --- | --- |
+| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md`](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) | Official UCI dataset 352 page states CC BY 4.0, with DOI, attribution and privacy checks; **not** approved data acquisition, verified row availability, model skill or a production connector |
+
+This source is distinct from the blocked
+[M5 review](datasets/M5_ACCESS_REVIEW.md).
+An explicitly published Creative Commons
+license is stronger evidence of reuse rights,
+but customer identifiers, downstream processing
+and historical publication dates still require
+a separate human-reviewed acceptance.
