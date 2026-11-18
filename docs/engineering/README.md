@@ -4,6 +4,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 
 ## Start here
 - [System map](SYSTEM_MAP.md) — what runs, key modules, entrypoints, boundaries and cross-project relationships.
+- [Repository atlas](REPOSITORY_ATLAS.md) — human-reviewed links to **every tracked code, test, config and document file**; a CI guard fails on missing files/links.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.
@@ -27,11 +28,12 @@ This is the entry point for **understanding, changing, testing and maintaining**
 ```bash
 python scripts/docs/catalog.py --write
 python scripts/docs/catalog.py --check
+python scripts/docs/coverage.py --check
 python -m pytest -q
 python -m ruff check src tests
 ```
 
-Documentation CI builds and verifies a fresh symbol catalog as an artifact. The generated catalog can be committed with the source change to make it navigable directly on GitHub. The workflow currently validates generated output, not semantic accuracy of explanatory prose; reviews remain necessary.
+Documentation CI requires the **committed** symbol catalog to be current, regenerates it for inspection, and verifies every tracked file has a resolving link in the reviewed atlas and local Markdown links exist. This structural check is intentionally stricter than a filename mention. It does not validate prose semantics, statistical models, privacy or execution safety; these require source review and tests.
 
 ## Scope and independence
 These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but the repositories remain independent. Shared documentation layout does not create shared runtime dependencies. Changes to the *contracts* between projects require separate, coordinated reviews.

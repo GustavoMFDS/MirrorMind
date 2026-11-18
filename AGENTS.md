@@ -8,8 +8,8 @@ Read [the engineering knowledge hub](docs/engineering/README.md) before editing 
 3. Locate the implementation, upstream callers, downstream consumers, tests and existing architecture decision records. Record confirmed links versus hypotheses.
 4. Implement the smallest appropriate change, add or update tests, and do not silently broaden the scope.
 5. Update human-written documentation in the same PR: [system map](docs/engineering/SYSTEM_MAP.md), relevant docs under docs/, [debugging](docs/engineering/DEBUGGING.md), [learning](docs/engineering/LEARNING.md), and a decision log entry only when a decision is actually approved.
-6. Regenerate the source symbol catalog using `python scripts/docs/catalog.py --write` when source changes. Verify with `python scripts/docs/catalog.py --check`. Never hand-edit the generated file.
-7. Run relevant tests and lint; report what was actually executed, outcomes, limitations and any deferred work. No claims of CI success until verified.
+6. Regenerate the source symbol catalog using `python scripts/docs/catalog.py --write` when source changes. Verify with `python scripts/docs/catalog.py --check`. Never hand-edit the generated file. **In the same PR**, add a real Markdown link in [the reviewed repository atlas](docs/engineering/REPOSITORY_ATLAS.md) for every new tracked code, config, test or document path; run `python scripts/docs/coverage.py --check`. Plain filenames do not satisfy the guard.
+7. Run relevant tests and lint; report what was actually executed, outcomes, limitations and any deferred work. Do not use a passing AST/atlas guard as proof of semantic completeness or correctness. No claims of CI success until verified.
 8. Keep project boundaries intact. Cross-project compatibility is handled by explicit, versioned contracts and separate PRs; never quietly edit another repository or introduce a hard dependency.
 
 ## Integrity and safety
