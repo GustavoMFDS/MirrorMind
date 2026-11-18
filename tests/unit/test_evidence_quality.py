@@ -71,3 +71,13 @@ def test_quality_does_not_echo_series_names_or_raw_count_values():
     assert "total_observed_units" not in report
     assert "source_status" not in report  # Status is explicit in the report instead.
     assert report["status"].endswith("not_authorized")
+
+
+def test_quality_rejects_directly_constructed_duplicate_staged_rows():
+    snapshot = _staged()
+    forged = StagedSnapshot(
+        snapshot.sha256_hex,
+        snapshot.observations + (snapshot.observations[0],),
+    )
+    with pytest.raises(ValueError, match="duplicate series/observation"):
+        snapshot_quality_summary(forged)
