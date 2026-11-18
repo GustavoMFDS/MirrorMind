@@ -186,3 +186,16 @@ and the absence of verified original
 publication-time vintages all require review.
 There are no real source bytes in the repository
 and no empirical model scores from this dataset.
+
+## Staged-quality review is not an ingestion approval
+
+The [local evidence staging guide](M1_LOCAL_CSV_STAGING.md)
+now includes a source-level aggregate quality
+report of observed calendar gaps, declared
+publication delays and recorded zeros, with
+strict tests and no imputation. This is
+additional engineering readiness for a
+**future approved-source** adapter, not
+verification of publisher rights, snapshots,
+actual opening schedules, returns, lost
+sales or real historical availability.
