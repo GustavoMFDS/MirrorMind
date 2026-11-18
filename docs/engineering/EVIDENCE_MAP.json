@@ -61,5 +61,33 @@
     "test": "tests/integration/test_m1_observation_preflight_cli.py",
     "function": "test_synthetic_preflight_cli_fails_without_echoing_sensitive_input",
     "limitation": "Generic subprocess error does not prove user permissions, secure production logs or confidential data governance."
+  },
+  {
+    "id": "MM-FCST-001",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_seasonal_naive_is_exact_on_weekly_fixture_and_mean_is_not",
+    "limitation": "Seasonal naive exactness is constructed by the synthetic weekly pattern, not evidence of empirical predictive performance."
+  },
+  {
+    "id": "MM-FCST-002",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_each_one_step_prediction_receives_only_prior_observations",
+    "limitation": "Proves explicit algorithm prefixes, not source publication time, hidden future-derived features or untuned holdouts."
+  },
+  {
+    "id": "MM-FCST-003",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_missing_day_abstains_instead_of_zero_imputation",
+    "limitation": "A contiguous synthetic series is not evidence of genuine data completeness or latent demand."
+  },
+  {
+    "id": "MM-FCST-004",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_zero_denominator_wape_is_null_not_zero_percent",
+    "limitation": "Zero-safe WAPE arithmetic does not establish model reliability, predictive uncertainty or calibration."
   }
 ]

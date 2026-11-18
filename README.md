@@ -66,3 +66,18 @@ It is **not** authorized ingestion, forecasting, a
 WorldKernel execution path or production data governance.
 See [the source-backed M1 guide](docs/engineering/M1_DATA_PREFLIGHT.md)
 and [capability status ledger](docs/engineering/CAPABILITY_LEDGER.json).
+
+## M1 experimental one-step rolling backtest
+
+```bash
+python -m examples.m1_temporal_backtest examples/synthetic-weekly-sales.json
+```
+
+This local teaching fixture compares a seasonal-naive lag-7
+estimate with a seven-day mean using **only preceding
+observations** at each of seven one-day origins. Metrics
+and assumptions are [documented](docs/engineering/M1_TEMPORAL_BACKTEST.md).
+No real-world forecasting, source authorization, model
+calibration, RAG or simulation endpoint is implemented.
+The API still reports `forecasting` as planned and this
+specific script as `experimental`.

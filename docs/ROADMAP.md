@@ -53,3 +53,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   See the [M1 delivery plan](engineering/M1_EXECUTION_PLAN.md).
   These documents are design and future-review gates, **not**
   implemented evidence, forecasting, integration or agents.
+
+- **MM-M1c-exp — Synthetic one-step baseline experiment (not full MM-M1c):**
+  reviewed [rolling-origin benchmark](engineering/M1_TEMPORAL_BACKTEST.md)
+  with predeclared lag-7 seasonal naive and trailing-mean
+  heuristics, a 35-day invented weekly fixture, deterministic
+  MAE/RMSE/bias/WAPE, no-lookahead prefix regressions and
+  zero-denominator abstention. Synthetic [dataset](engineering/datasets/SYNTHETIC_WEEKLY_CARD.md)
+  and [model](engineering/model_cards/SYNTHETIC_WEEKLY_BASELINES.md)
+  cards record evaluation boundaries. **Real authorized data,
+  availability-time controls, untouched empirical holdout,
+  validated forecast accuracy and deployable inference remain planned.**

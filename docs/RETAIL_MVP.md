@@ -49,3 +49,13 @@ uncertainty. Future policy comparisons require the
 and a [decision trace](engineering/DECISION_TRACE_TEMPLATE.md).
 These reviews precede implementation claims; they do
 not imply the proposed M1 flow already runs.
+
+## Educational rolling-origin baseline comparison
+
+The [M1 synthetic rolling backtest](engineering/M1_TEMPORAL_BACKTEST.md)
+compares two simple one-day-ahead heuristics on a generated
+35-day weekly pattern and reports transparent MAE/RMSE/bias/WAPE
+scores. It has **no real demand, source permissions, stock/lead
+time measurements or predictive validity**, and does not satisfy
+the retail MVP criteria for a permitted M5 snapshot, independent
+holdout, uncertainty or WorldKernel scenario evaluation.

@@ -204,3 +204,22 @@ They must be filled with reviewed facts and real test outcomes
 when the corresponding modules are introduced. The atlas and
 capability/evidence CI checks cannot independently certify
 scientific rigor, authorization or model fairness.
+
+## 10. M1 experimental rolling-origin evaluation (synthetic only)
+
+| Tracked artifact | Scope and next reading |
+| --- | --- |
+| [`examples/m1_temporal_backtest.py`](../../examples/m1_temporal_backtest.py) | Fixed seasonal-naive and trailing-mean one-step forecasts; data and results remain synthetic |
+| [`examples/synthetic-weekly-sales.json`](../../examples/synthetic-weekly-sales.json) | Invented 35-day seven-day repeating teaching fixture, no real source |
+| [`tests/unit/test_m1_temporal_backtest.py`](../../tests/unit/test_m1_temporal_backtest.py) | Prefix-only predictions, exact metric arithmetic, gaps, cutoffs, zero denominator |
+| [`tests/integration/test_m1_temporal_backtest_cli.py`](../../tests/integration/test_m1_temporal_backtest_cli.py) | Local CLI replay, bounded bytes and generic failure responses |
+| [`docs/engineering/M1_TEMPORAL_BACKTEST.md`](M1_TEMPORAL_BACKTEST.md) | Source-reviewed methods, worked scores, caveats and independent exercise |
+| [`docs/engineering/datasets/SYNTHETIC_WEEKLY_CARD.md`](datasets/SYNTHETIC_WEEKLY_CARD.md) | Synthetic-only data card; no permission, provenance or real data claims |
+| [`docs/engineering/model_cards/SYNTHETIC_WEEKLY_BASELINES.md`](model_cards/SYNTHETIC_WEEKLY_BASELINES.md) | Transparent evaluation protocol and metric table for invented periodic data |
+| [`docs/engineering/changes/MM-M1C-synthetic-rolling-backtest.md`](changes/MM-M1C-synthetic-rolling-backtest.md) | Bounded change request, tests and unfulfilled production requirements |
+
+This **local teaching evaluation is not a real forecasting service**.
+`GET /v1/capabilities` and the capability ledger mark
+`synthetic_rolling_backtest` experimental; `forecasting`
+remains planned. No licensed dataset, deployed prediction endpoint
+or WorldKernel integration has been established.
