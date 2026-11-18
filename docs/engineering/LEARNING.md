@@ -47,3 +47,13 @@ guide, source and actual test. Predict the assertion before running
 `python -m pytest -q`. Explain how a test could pass while the
 accompanying broader prose remains unproved. Document the environment,
 limit and next regression you would add.
+
+## Guided exercise 8 — make capability claims falsifiable (30 minutes)
+
+Read [capability promotion gates](CAPABILITY_GATES.md) and
+[the reviewed ledger](CAPABILITY_LEDGER.json). Run the focused
+`tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
+regression. Explain why `SimulationGateway` is an interface and why
+a declared budget and a passing scenario validation do not qualify as
+implemented forecasting or world simulation. Identify the precise
+provenance and negative tests required for your first M1 feature.
