@@ -1,0 +1,44 @@
+[
+  {
+    "id": "MM-CON-001",
+    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
+    "test": "tests/unit/test_contracts.py",
+    "function": "test_exceeding_budget_rejected",
+    "limitation": "Checks declared run bounds at model construction; does not meter actual execution."
+  },
+  {
+    "id": "MM-CON-002",
+    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
+    "test": "tests/unit/test_contracts.py",
+    "function": "test_forecast_coverage_rejected",
+    "limitation": "Checks reference horizon only; does not verify existence, backtesting or data cutoffs."
+  },
+  {
+    "id": "MM-CON-003",
+    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
+    "test": "tests/unit/test_contracts.py",
+    "function": "test_valid_scenario",
+    "limitation": "A passing Pydantic constructor does not execute a simulation or authenticate evidence."
+  },
+  {
+    "id": "MM-API-001",
+    "guide": "docs/engineering/API_WALKTHROUGH.md",
+    "test": "tests/integration/test_api.py",
+    "function": "test_scenario_validation_only",
+    "limitation": "Validating the schema does not run agents, models, predictions or simulations."
+  },
+  {
+    "id": "MM-API-002",
+    "guide": "docs/engineering/API_WALKTHROUGH.md",
+    "test": "tests/integration/test_api.py",
+    "function": "test_capabilities_do_not_overstate_implementation",
+    "limitation": "One test covers the declared scaffold status; it does not certify future capabilities."
+  },
+  {
+    "id": "MM-API-003",
+    "guide": "docs/engineering/API_WALKTHROUGH.md",
+    "test": "tests/integration/test_api.py",
+    "function": "test_runs_cannot_exceed_budget",
+    "limitation": "422 for excess declared runs is not server-side compute quota enforcement."
+  }
+]
