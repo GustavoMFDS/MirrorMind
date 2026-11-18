@@ -12,13 +12,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Verify checked-in symbol catalog when present
-        run: |
-          if test -f docs/engineering/generated/SYMBOLS.md; then
-            python scripts/docs/catalog.py --check
-          else
-            echo "First-run bootstrap: symbol catalog will be generated as a CI artifact."
-          fi
+      - name: Verify committed source catalog
+        run: python scripts/docs/catalog.py --check
+      - name: Verify linked repository atlas and Markdown links
+        run: python scripts/docs/coverage.py --check
       - name: Build source symbol catalog
         run: |
           python scripts/docs/catalog.py --write
