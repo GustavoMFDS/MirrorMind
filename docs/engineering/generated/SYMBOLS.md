@@ -89,6 +89,18 @@ Source: [`src/mirrormind/domains/retail/__init__.py`](../../../src/mirrormind/do
 
 No top-level classes or functions.
 
+## `mirrormind.domains.retail.coverage`
+
+Source: [`src/mirrormind/domains/retail/coverage.py`](../../../src/mirrormind/domains/retail/coverage.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `mirrormind.domains.retail.uci_transactions`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `RetailCoverageSummary` | class | `class RetailCoverageSummary` | Bounded, identifier-free coverage metadata for observed positive lines. | [L19](../../../src/mirrormind/domains/retail/coverage.py#L19) |
+| `RetailCoverageSummary.receipt` | method | `def receipt(self) -> dict[str, str \| int \| None]` | Return aggregate values only, with an explicit source-trust caveat. | [L29](../../../src/mirrormind/domains/retail/coverage.py#L29) |
+| `summarize_retail_coverage` | function | `def summarize_retail_coverage(projection: UciRetailProjection) -> RetailCoverageSummary` | Count gaps *between* observed positive product-days, without imputation. | [L47](../../../src/mirrormind/domains/retail/coverage.py#L47) |
+
 ## `mirrormind.domains.retail.uci_transactions`
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)

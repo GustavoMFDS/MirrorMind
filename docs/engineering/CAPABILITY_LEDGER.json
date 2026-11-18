@@ -119,6 +119,13 @@
       "source": "src/mirrormind/domains/retail/uci_workbook.py",
       "test": "tests/unit/test_uci_workbook.py::test_xlsx_stage_projects_positive_units_and_never_copies_sensitive_values",
       "notes": "Bounded optional read-only local XLSX parser on invented UCI-shaped workbooks only; not authorized original source ingestion, full official dataset processing, hostile workbook isolation or verified publication history."
+    },
+    {
+      "id": "local_retail_coverage_diagnostics",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/coverage.py",
+      "test": "tests/unit/test_retail_coverage.py::test_internal_gaps_are_not_zero_or_imputed_and_receipt_has_no_identifiers",
+      "notes": "Offline aggregate internal product-day gap counts on fictional UCI-shaped positive-line projections only. No product identifiers in receipt, no zero imputation, no source permissions or verified availability dates; not a true-demand or live evidence signal."
     }
   ]
 }
