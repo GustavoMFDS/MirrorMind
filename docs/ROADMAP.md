@@ -222,3 +222,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   privacy clearance, deduplicated sales/returns,
   verified historical availability or actual
   empirical forecast scores.
+
+- **MM-M1b positive-line event-day coverage (experimental):**
+  [retail coverage review](engineering/RETAIL_COVERAGE.md) and
+  synthetic [regressions](../tests/unit/test_retail_coverage.py)
+  aggregate missing **internal** product-days between recorded positive
+  transaction days without filling zeros, exposing customer/product
+  identifiers in summary receipts, or inventing a publisher release date.
+  It is not an authorized observation calendar, true demand history,
+  source-provenanced as-of evidence, evaluated forecast or WorldKernel
+  execution. Real M1b and M1c acceptance gates remain open.
