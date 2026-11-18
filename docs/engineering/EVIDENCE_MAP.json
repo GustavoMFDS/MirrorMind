@@ -40,5 +40,26 @@
     "test": "tests/integration/test_api.py",
     "function": "test_runs_cannot_exceed_budget",
     "limitation": "422 for excess declared runs is not server-side compute quota enforcement."
+  },
+  {
+    "id": "MM-DATA-001",
+    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
+    "test": "tests/unit/test_m1_observation_preflight.py",
+    "function": "test_synthetic_batch_is_bounded_and_reports_gaps_without_imputation",
+    "limitation": "Only checks deterministic synthetic counts and missing-date arithmetic; no real data source completeness."
+  },
+  {
+    "id": "MM-DATA-002",
+    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
+    "test": "tests/unit/test_m1_observation_preflight.py",
+    "function": "test_cutoff_rejects_future_dated_observation",
+    "limitation": "Declared calendar cutoff alone cannot prevent future-derived features or verify publication timestamps."
+  },
+  {
+    "id": "MM-DATA-003",
+    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
+    "test": "tests/integration/test_m1_observation_preflight_cli.py",
+    "function": "test_synthetic_preflight_cli_fails_without_echoing_sensitive_input",
+    "limitation": "Generic subprocess error does not prove user permissions, secure production logs or confidential data governance."
   }
 ]
