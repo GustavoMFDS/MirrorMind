@@ -135,3 +135,19 @@ be claimed superior to a model scored on all seven
 without a carefully aligned comparison. State how
 real publication-time evidence would differ
 from dates typed into a JSON fixture.
+
+## Guided exercise 13 — immutable does not mean authentic (35 minutes)
+
+Read [the local CSV staging guide](M1_LOCAL_CSV_STAGING.md)
+and follow `stage_csv_snapshot` to
+`available_as_of`. With the invented fixture,
+explain why the Jan 2 value is missing from a Jan 3
+as-of view but the Jan 3 recorded **zero** remains.
+Then modify one byte while reusing the previous
+digest: predict the failure and identify which
+source rights and publication dates the check
+still cannot establish. Inspect
+`tests/unit/test_evidence_snapshots.py::
+test_digest_mismatch_fails_before_interpreting_unverified_bytes`
+and explain why computing a new digest from an
+untrusted file is not proof of publisher identity.
