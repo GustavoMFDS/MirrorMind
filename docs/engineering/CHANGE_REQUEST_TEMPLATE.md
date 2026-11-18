@@ -34,12 +34,15 @@ Assumptions, data formats, versioning, performance, concurrency, security, priva
 2. Identify and review tradeoffs; seek approval if a new architectural decision is required.
 3. Implement with a focused diff and add tests.
 4. Regenerate symbol reference; revise system map, runbooks, learning notes and existing docs as needed.
-5. Run checks and document their **actual** results.
+5. Run checks and document their **actual** results. For substantive behavior claims, update the reviewed [evidence map](EVIDENCE_MAP.json) only with real test paths, top-level function selectors, explicit limitations and a human-reviewed claim ID; run `python scripts/docs/evidence.py --check`.
 
 ## 6. Evidence after implementation
 - Commit / PR:
 - Modified symbols and files:
 - Tests executed, result, environment:
+- Claim IDs and cited test path/function (or reason not applicable):
+- Evidence/provenance/cutoff and uncertainty, where relevant:
+- Scope of human review and approval:
 - New or changed contracts:
 - Docs updated:
 - Known limitations / follow-up:
