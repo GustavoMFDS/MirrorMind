@@ -110,3 +110,22 @@ three origins abstain and four are scored. See the
 [source-reviewed guide](docs/engineering/M1_ASOF_ROLLING_EVALUATION.md).
 This neither authenticates publication timestamps nor
 constitutes a deployed forecast service.
+
+
+## M1 local CSV staging library (experimental, in memory only)
+
+The [evidence staging module](docs/engineering/M1_LOCAL_CSV_STAGING.md)
+validates bounded local CSV **bytes**, compares them with a
+caller-provided SHA-256 expectation, and exposes an
+event-time-plus-publication-time historical as-of view.
+The resulting receipt explicitly says
+`local_structure_checked_not_authorized`.
+
+This does **not** download licensed datasets, authenticate a
+publisher or source permission, or implement live forecasting,
+RAG, secure multi-tenant ingestion, persistence or a
+WorldKernel adapter. The
+[example CSV](examples/staged-daily-observations.csv) contains
+only invented values. A real-data feature still requires
+independent permission, provenance, retention and source
+availability review.
