@@ -8,9 +8,17 @@
 
 Acceptance gates: working runnable example, tests, clear metrics, provenance, resource limits and a truthful status statement. No production claims until validated.
 
-- **MM-DOC-A1 — In progress (structural learning baseline):** enforce a committed
+- **MM-DOC-A1 — Completed (documentation and Python CI validated):** enforce a committed
   AST index, human-reviewed linked repository atlas, real tracked-file inventory
   and local Markdown link integrity in documentation CI. This is strictly
   structural; it does not certify semantic understanding, data lineage,
   privacy, quality of forecasts or security. Next gates: source-reviewed
   method lessons, curated test evidence and stricter claim/decision traceability.
+
+- **MM-DOC-A2 — In progress (semantic and evidence teaching):** source-reviewed
+  [ScenarioSpec walkthrough](engineering/CONTRACT_WALKTHROUGH.md),
+  [API walkthrough](engineering/API_WALKTHROUGH.md) and 11-module
+  [semantic map](engineering/SEMANTIC_COVERAGE.md). A curated
+  [claim-to-test index](engineering/EVIDENCE_MAP.json) records precise
+  pytest function references and limitations; CI checks structural
+  integrity only, not reasoning validity or product readiness.
