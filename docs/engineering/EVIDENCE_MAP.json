@@ -89,5 +89,26 @@
     "test": "tests/unit/test_m1_temporal_backtest.py",
     "function": "test_zero_denominator_wape_is_null_not_zero_percent",
     "limitation": "Zero-safe WAPE arithmetic does not establish model reliability, predictive uncertainty or calibration."
+  },
+  {
+    "id": "MM-AVAIL-001",
+    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
+    "test": "tests/unit/test_m1_availability_preflight.py",
+    "function": "test_late_publication_is_excluded_even_when_event_date_precedes_cutoff",
+    "limitation": "As-of filtering on declared synthetic timestamps does not authenticate when a real source actually made data available."
+  },
+  {
+    "id": "MM-AVAIL-002",
+    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
+    "test": "tests/unit/test_m1_availability_preflight.py",
+    "function": "test_unavailable_value_change_cannot_change_eligible_aggregate",
+    "limitation": "Only synthetic value exclusion is established; other future-derived features and revised data may still leak in a real pipeline."
+  },
+  {
+    "id": "MM-AVAIL-003",
+    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
+    "test": "tests/unit/test_m1_availability_preflight.py",
+    "function": "test_published_before_observation_rejected",
+    "limitation": "Date order is a local input constraint rather than verified publication provenance or permission for data use."
   }
 ]
