@@ -121,3 +121,17 @@ Change its count and explain why the January 6
 aggregate remains unaffected. Then identify the
 provenance evidence necessary to verify actual
 publication timing for a real-world dataset.
+
+## Guided exercise 12 — do not hide forecast abstentions (35 minutes)
+
+Read [the as-of rolling guide](M1_ASOF_ROLLING_EVALUATION.md).
+Predict the three unavailable January origins and
+compute the baseline scores on the remaining four
+February dates. Read
+`tests/unit/test_m1_asof_rolling_backtest.py::
+test_all_origins_can_abstain_without_fake_scores`
+and explain why a model with 4/7 coverage cannot
+be claimed superior to a model scored on all seven
+without a carefully aligned comparison. State how
+real publication-time evidence would differ
+from dates typed into a JSON fixture.
