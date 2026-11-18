@@ -104,6 +104,20 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 | `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L64](../../../src/mirrormind/domains/retail/uci_transactions.py#L64) |
 | `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L71](../../../src/mirrormind/domains/retail/uci_transactions.py#L71) |
 
+## `mirrormind.domains.retail.uci_workbook`
+
+Source: [`src/mirrormind/domains/retail/uci_workbook.py`](../../../src/mirrormind/domains/retail/uci_workbook.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `hashlib`, `hmac`, `io`, `mirrormind.domains.retail.uci_transactions`, `openpyxl`, `re`, `typing`, `zipfile`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `UciWorkbookReadResult` | class | `class UciWorkbookReadResult` | Local digest-coupled product-day projection without source approval. | [L41](../../../src/mirrormind/domains/retail/uci_workbook.py#L41) |
+| `UciWorkbookReadResult.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Summarize input identity and exclusions, not raw customer or invoice data. | [L47](../../../src/mirrormind/domains/retail/uci_workbook.py#L47) |
+| `_bounded_read` | function | `def _bounded_read(stream: BinaryIO) -> bytes` | Consume at most one sentinel byte over the compressed workbook limit. | [L56](../../../src/mirrormind/domains/retail/uci_workbook.py#L56) |
+| `_check_zip_members` | function | `def _check_zip_members(raw: bytes) -> None` | Reject excessive/active archive entries before workbook XML processing. | [L81](../../../src/mirrormind/domains/retail/uci_workbook.py#L81) |
+| `read_uci_workbook` | function | `def read_uci_workbook(stream: BinaryIO, *, expected_sha256: str, sheet_name: str='Online Retail', max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciWorkbookReadResult` | Project a small, already-authorized local workbook through strict UCI schema. | [L112](../../../src/mirrormind/domains/retail/uci_workbook.py#L112) |
+
 ## `mirrormind.modules.__init__`
 
 Source: [`src/mirrormind/modules/__init__.py`](../../../src/mirrormind/modules/__init__.py)
