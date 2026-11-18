@@ -52,3 +52,27 @@ def test_forecast_must_cover_scenario_horizon():
         }
     }
     assert client.post("/v1/scenarios/validate", json=spec).status_code == 422
+
+
+def test_live_api_claims_equal_reviewed_capability_ledger():
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    ledger = json.loads(
+        (root / "docs/engineering/CAPABILITY_LEDGER.json").read_text(encoding="utf-8")
+    )
+    capabilities = ledger["capabilities"]
+    response = client.get("/v1/capabilities")
+    assert response.status_code == 200
+    public = response.json()
+    assert public["status"] == "scaffold"
+    assert set(public["implemented"]) == {
+        item["id"] for item in capabilities if item["status"] == "implemented"
+    }
+    assert set(public["planned"]) == {
+        item["id"] for item in capabilities if item["status"] == "planned"
+    }
+    assert not set(public["implemented"]) & set(public["planned"])
+    assert all(item["status"] != "implemented" for item in capabilities
+               if item["id"] == "simulation_gateway_protocol")
