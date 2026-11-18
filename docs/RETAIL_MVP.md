@@ -34,3 +34,18 @@ actual demand forecast. Its `usage_note`, source ID and
 snapshot ID are caller text; a real source's permission,
 publication latency, revisions and temporal availability
 require additional validation and independent evidence.
+
+## Delivery sequence and research acceptance
+
+Follow the reviewed [M1 execution plan](engineering/M1_EXECUTION_PLAN.md).
+Any permitted real source must have a completed
+[dataset card](engineering/DATASET_CARD_TEMPLATE.md)
+and permission evidence, including first-available timestamp.
+Both baseline and candidate forecasts require a
+[model card](engineering/FORECAST_MODEL_CARD_TEMPLATE.md)
+with locked temporal holdout and honestly reported
+uncertainty. Future policy comparisons require the
+[WorldKernel gateway gate](engineering/WORLDKERNEL_GATEWAY_GATE.md)
+and a [decision trace](engineering/DECISION_TRACE_TEMPLATE.md).
+These reviews precede implementation claims; they do
+not imply the proposed M1 flow already runs.
