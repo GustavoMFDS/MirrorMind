@@ -161,3 +161,19 @@ Read the [source-method review](docs/engineering/UCI_RETAIL_PROJECTION.md).
 There is **no real UCI workbook reader, authorized
 source ingestion, empirical forecast validation,
 decision engine or WorldKernel runtime coupling**.
+
+## Optional bounded UCI-shaped XLSX reader
+
+Install the additional source-parsing dependency
+only when needed: `pip install -e ".[uci]"`.
+The [offline reader](docs/engineering/UCI_WORKBOOK_READER.md)
+consumes a **caller-opened, source-approved**
+small UCI-shaped Excel stream after strict
+SHA-256/ZIP/schema/resource preflight
+and passes only selected transaction fields
+to the existing retail projection.
+All tests use [invented workbooks](docs/engineering/datasets/SYNTHETIC_UCI_XLSX_CARD.md).
+It is **not** licensed real-data ingestion,
+a hostile-file sandbox, full original UCI
+workbook processing or a real historical
+forecast/source-availability validator.
