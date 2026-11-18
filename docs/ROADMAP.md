@@ -105,3 +105,18 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   no provenance attestation, source license, real connector,
   retention policy, forecast model or WorldKernel execution
   has been delivered. **M1b remains open.**
+
+- **MM-M1c-local — staged offline baselines (experimental, real
+  forecasting still planned):** reusable source-level
+  [one-step rolling evaluator](engineering/M1_STAGED_ROLLING_BASELINES.md)
+  now consumes strict in-memory source-unverified CSV
+  observations, applies per-origin publication cutoffs,
+  abstains on incomplete seven-day history and compares
+  fixed seasonal-naive versus trailing-mean baselines
+  on **identical** eligible targets. A deliberately
+  [invented data card](engineering/datasets/STAGED_WEEKLY_AVAILABILITY_CARD.md)
+  and [model card](engineering/model_cards/STAGED_WEEKLY_BASELINES.md)
+  record 4/7 origins scored and clear provenance limits.
+  No authorized M5 ingestion, untouched empirical model
+  benchmark, calibrated uncertainty, production serving
+  or WorldKernel integration has been delivered.

@@ -31,6 +31,9 @@ MirrorMind/
 │       ├── evidence/
 │       │   ├── __init__.py
 │       │   └── snapshots.py    # Local in-memory CSV structure/as-of only
+│       ├── forecasting/
+│       │   ├── __init__.py
+│       │   └── baselines.py    # Offline staged as-of one-step evaluation
 │       └── simulation/
 │           └── gateway.py     # Engine-neutral simulation interface
 ├── tests/
@@ -112,3 +115,16 @@ Its example [CSV](../examples/staged-daily-observations.csv)
 is invented, and its tests [unit](../tests/unit/test_evidence_snapshots.py)
 and [integration](../tests/integration/test_local_snapshot_flow.py)
 do not certify any dataset rights.
+
+## Offline staged forecast evaluation (experimental only)
+
+[`src/mirrormind/modules/forecasting/baselines.py`](../src/mirrormind/modules/forecasting/baselines.py)
+evaluates two fixed historical one-step heuristics
+against the non-authorized local CSV stage output.
+It is tested on [invented weekly rows](../examples/staged-weekly-availability.csv)
+with [unit](../tests/unit/test_staged_rolling_baselines.py)
+and [integration](../tests/integration/test_staged_rolling_flow.py)
+tests. The [source guide](engineering/M1_STAGED_ROLLING_BASELINES.md)
+and [model card](engineering/model_cards/STAGED_WEEKLY_BASELINES.md)
+document **4/7 availability coverage**, not real
+predictive performance or public inference serving.

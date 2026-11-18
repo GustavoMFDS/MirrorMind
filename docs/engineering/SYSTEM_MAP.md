@@ -16,7 +16,8 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
 | Introduce real evidence connectors/RAG | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md), [data card](DATASET_CARD_TEMPLATE.md) | Separate source-specific permission/provenance tests required |
-| Introduce forecasting | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | New evaluation/leakage tests **only after implementation** |
+| Evaluate local staged rolling baselines | [`modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py), [method guide](M1_STAGED_ROLLING_BASELINES.md) | [unit](../../tests/unit/test_staged_rolling_baselines.py) and [integration](../../tests/integration/test_staged_rolling_flow.py) tests on invented data only |
+| Introduce real forecasting service | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | Approved snapshot, locked independent holdout, calibrated risk and serving/permission tests |
 | Add agents/orchestration | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md) | Tool permissions, cost budgets and audit tests when created |
 
 ## Non-negotiable boundaries
@@ -39,3 +40,14 @@ be returned through an unauthenticated public endpoint.
 
 This code neither obtains source permission nor calls
 WorldKernel, an LLM, a data connector or persistent storage.
+
+## Current offline one-step baseline path
+
+Trusted caller -> local `stage_csv_snapshot`
+-> `StagedSnapshot` (explicitly *not authorized*)
+-> `backtest_staged_snapshot` for one series and
+retrospective cutoff -> per-origin `available_as_of`
+-> two fixed one-step estimates -> only matched scored
+origins and explicit abstentions. This is **not**
+a general forecasting endpoint, configured data
+connector or real-world decision engine.

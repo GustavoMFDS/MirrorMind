@@ -81,3 +81,15 @@ empirical forecasting result. Real evaluation must
 preserve both temporal availability and scored-origin
 coverage across models, source revisions, permission
 constraints and genuinely held-out periods.
+
+## Reusable offline one-day baselines (not retail forecasts)
+
+The experimental [staged rolling baseline evaluator](engineering/M1_STAGED_ROLLING_BASELINES.md)
+now uses a reusable source module rather than
+only standalone demonstration scripts. It applies
+as-of publication cutoffs, reports abstention
+coverage and calculates matched MAE/RMSE/bias/WAPE
+on invented weekly observations. It does **not**
+establish allowed M5 access, true sales or demand,
+stockout costs, lead times or real forecasting
+skill. These remain separate retail MVP gates.

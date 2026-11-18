@@ -149,3 +149,17 @@ evaluation and source authorization remain future
 requirements. The script is `experimental` and
 does not change `forecasting` or
 `evidence_and_rag` to implemented.
+
+## Offline staged baselines are not deployable forecasting
+
+[`local_staged_rolling_baselines`](M1_STAGED_ROLLING_BASELINES.md)
+now implements fixed source-level one-step comparisons over
+strict staged local CSV observations and returns coverage,
+metrics or explicit null when too few origins remain.
+That **experimental** library cannot authenticate
+publisher release times or acquire licensed data,
+has no fitted model or calibrated intervals,
+and exposes no production inference endpoint.
+Do not promote the broader `forecasting` capability
+without independently verified provenance,
+empirical holdout review and authorization.

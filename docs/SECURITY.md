@@ -32,3 +32,15 @@ rows; a future consumer must enforce access permissions,
 minimization and retention before forwarding those rows
 to an API, AI model or any external service. Avoid
 using customer data in examples or unit tests.
+
+## Offline baseline evaluator inherits staging trust limits
+
+The [staged rolling evaluator](engineering/M1_STAGED_ROLLING_BASELINES.md)
+uses immutable but **source-unverified** observations.
+It does not enforce legal rights, producer identity,
+tenant isolation, model-call/compute budgets, private
+data deletion or a secure inference API. Even when
+its generated fixture produces zero MAE, its
+result is **not** a verified business recommendation.
+A future deployed consumer must authorize each
+source and control recipients of raw staged rows.
