@@ -1,0 +1,5 @@
+series_id,observed_on,available_on,units
+item-A,2025-01-01,2025-01-01,2
+item-A,2025-01-02,2025-01-05,4
+item-A,2025-01-03,2025-01-03,0
+item-B,2025-01-02,2025-01-02,9
