@@ -155,3 +155,63 @@ locked temporal holdouts, a second measured baseline,
 uncertainty evaluation, versioned inference output,
 access controls, model-card review and actual replay.
 **The existing `forecasting` capability remains planned.**
+
+
+## 6. Auditable origin disposition (M1c local improvement)
+
+A single MAE can conceal **which days were excluded** from
+evaluation. `backtest_staged_snapshot` therefore includes
+`origin_audit`, a deterministic, one-row-per-requested-origin
+list of day-level **nonvalue** metadata:
+
+| Field | Meaning |
+| --- | --- |
+| `target_on` | The calendar day for which one-step comparison was requested |
+| `origin_on` | The immediately preceding prediction origin |
+| `status` | One of `scored`, `required_history_unavailable`, `target_missing`, or `target_not_published_by_cutoff` |
+
+The fixture produces three
+`required_history_unavailable` days (Jan 29–31) and
+four `scored` days (Feb 1–4). `scored_origins`,
+`abstained_missing_history` and
+`abstained_target_unavailable` remain intact for
+compatibility. The new counters
+`abstained_target_missing` and
+`abstained_target_not_published` partition the
+existing target-unavailable counter. Thus:
+
+```text
+requested_origins =
+    scored_origins +
+    abstained_missing_history +
+    abstained_target_unavailable
+
+abstained_target_unavailable =
+    abstained_target_missing +
+    abstained_target_not_published
+```
+
+The list deliberately contains no original units,
+raw data payload, individual forecast values or model
+prompts. It **is not safe to expose indiscriminately**:
+calendar dates, series IDs and a snapshot hash can still
+be sensitive metadata for real sources. This is an
+internal review artifact, not an authenticated audit
+event store, tamper-proof signature or authorization
+token. The original snapshot remains unverified.
+
+### Additional claim IDs and independent regressions
+
+| Claim | Direct test | Limitation |
+| --- | --- | --- |
+| **MM-AUD-001** | `tests/unit/test_staged_rolling_baselines.py::test_every_requested_origin_has_one_reproducible_nonvalue_audit_record` | Deterministic status per synthetic date does not certify actual publisher timing or legal data rights |
+| **MM-AUD-002** | `tests/unit/test_staged_rolling_baselines.py::test_missing_target_is_not_conflated_with_unpublished_target` | Distinguishing two missingness reasons does not recover missing records or establish model quality |
+| **MM-AUD-003** | `tests/unit/test_staged_rolling_baselines.py::test_all_abstained_audit_has_no_fabricated_scores` | A complete abstention record is not a forecast, decision or calibrated uncertainty estimate |
+
+**Exercise:** remove the Feb 4 row from the invented
+CSV and recalculate its digest, then restore the row
+but declare first publication on Feb 5. Predict the
+two distinct statuses and counters. Explain why a
+reviewer should consider the excluded dates before
+claiming one model is superior, and why merely
+printing an audit list does not make it authentic.

@@ -180,3 +180,16 @@ Creative Commons license on a *paper* cannot
 automatically authorize the underlying data.
 Do not download any competition data as part
 of this exercise without approved permissions.
+
+## Guided exercise 16 — explain every excluded model-evaluation day
+
+Read [the origin audit section](M1_STAGED_ROLLING_BASELINES.md)
+and `src/mirrormind/modules/forecasting/baselines.py`.
+For January 29–February 4, predict the seven
+nonvalue statuses before reading
+`tests/unit/test_staged_rolling_baselines.py::
+test_every_requested_origin_has_one_reproducible_nonvalue_audit_record`.
+Then remove the final target row or shift its declared
+publication past the cutoff. Explain how the
+two outcomes differ and why even this precise
+diagnostic cannot authenticate a real data source.

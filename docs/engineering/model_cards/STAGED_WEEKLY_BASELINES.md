@@ -63,3 +63,26 @@ dates, not rights, publisher provenance, generalization,
 independent holdouts, causal benefit or production
 reliability. See the [full evaluation template](../FORECAST_MODEL_CARD_TEMPLATE.md)
 for the requirements of a real forecast release.
+
+## Origin-level accountability in the local evaluator
+
+A further regression now verifies exactly seven
+nonvalue audit records for the seven requested
+one-step origins, three `required_history_unavailable`
+and four `scored`. This supplements the 4/7
+aggregate coverage rather than silently reporting
+only the selected scored subset. Separate
+`target_missing` and
+`target_not_published_by_cutoff` statuses help
+distinguish absent events from withheld labels;
+neither may be imputed. Tests:
+`tests/unit/test_staged_rolling_baselines.py::
+test_every_requested_origin_has_one_reproducible_nonvalue_audit_record`
+and
+`tests/unit/test_staged_rolling_baselines.py::
+test_missing_target_is_not_conflated_with_unpublished_target`.
+
+This is **not a tamper-proof audit system**, and the
+status-only report does not certify source
+authenticity, consent, model generalization or
+business decision validity.

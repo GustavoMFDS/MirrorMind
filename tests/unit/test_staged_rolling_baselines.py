@@ -126,3 +126,81 @@ def test_score_refuses_misalignment_and_prediction_refuses_missing_history():
         _score((1.0,), (1, 2))
     with pytest.raises(ValueError, match="seven exact"):
         _predict((2, 4, 6))
+
+
+def test_every_requested_origin_has_one_reproducible_nonvalue_audit_record():
+    result = backtest_staged_snapshot(
+        staged(), series_id="item-A", evaluation_on="2025-02-04"
+    )
+    rows = result["origin_audit"]
+    assert rows == [
+        {
+            "target_on": f"2025-01-{day:02d}",
+            "origin_on": f"2025-01-{day - 1:02d}",
+            "status": "required_history_unavailable",
+        }
+        for day in (29, 30, 31)
+    ] + [
+        {
+            "target_on": f"2025-02-{day:02d}",
+            "origin_on": (
+                "2025-01-31" if day == 1 else f"2025-02-{day - 1:02d}"
+            ),
+            "status": "scored",
+        }
+        for day in (1, 2, 3, 4)
+    ]
+    assert len(rows) == result["requested_origins"]
+    assert result["scored_origins"] == sum(x["status"] == "scored" for x in rows)
+    assert result["abstained_target_missing"] == 0
+    assert result["abstained_target_not_published"] == 0
+    assert all(set(x) == {"target_on", "origin_on", "status"} for x in rows)
+    assert result == backtest_staged_snapshot(
+        staged(), series_id="item-A", evaluation_on="2025-02-04"
+    )
+
+
+def test_missing_target_is_not_conflated_with_unpublished_target():
+    raw = (ROOT / "examples/staged-weekly-availability.csv").read_bytes()
+    line = b"item-A,2025-02-04,2025-02-04,14\n"
+    assert line in raw
+    missing = raw.replace(line, b"")
+    staged_missing = stage_csv_snapshot(
+        missing, expected_sha256=sha256(missing).hexdigest()
+    )
+    report = backtest_staged_snapshot(
+        staged_missing, series_id="item-A", evaluation_on="2025-02-04"
+    )
+    assert report["abstained_target_missing"] == 1
+    assert report["abstained_target_not_published"] == 0
+    assert report["origin_audit"][-1]["status"] == "target_missing"
+    assert report["scored_origins"] == 3
+
+    delayed = raw.replace(line, b"item-A,2025-02-04,2025-02-05,14\n")
+    staged_late = stage_csv_snapshot(
+        delayed, expected_sha256=sha256(delayed).hexdigest()
+    )
+    report = backtest_staged_snapshot(
+        staged_late, series_id="item-A", evaluation_on="2025-02-04"
+    )
+    assert report["abstained_target_missing"] == 0
+    assert report["abstained_target_not_published"] == 1
+    assert report["origin_audit"][-1]["status"] == "target_not_published_by_cutoff"
+    assert report["scored_origins"] == 3
+
+
+def test_all_abstained_audit_has_no_fabricated_scores():
+    raw = (ROOT / "examples/staged-weekly-availability.csv").read_bytes()
+    altered = raw.replace(b"2025-01-27,2025-01-31,12", b"2025-01-27,2025-03-01,12")
+    altered = altered.replace(b"2025-01-28,2025-01-28,14", b"2025-01-28,2025-03-01,14")
+    snap = stage_csv_snapshot(altered, expected_sha256=sha256(altered).hexdigest())
+    report = backtest_staged_snapshot(
+        snap, series_id="item-A", evaluation_on="2025-02-04"
+    )
+    assert len(report["origin_audit"]) == 7
+    assert {row["status"] for row in report["origin_audit"]} == {
+        "required_history_unavailable"
+    }
+    assert report["scored_origins"] == 0
+    assert report["metrics"] is None
+    assert report["lower_mae_on_scored_origins_only"] is None

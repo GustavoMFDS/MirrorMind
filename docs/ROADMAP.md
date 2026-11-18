@@ -133,3 +133,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   (or selection of a clearly licensed alternate source).
   Local structural validation and synthetic evaluation
   may continue without real source access.
+
+- **MM-M1c audit improvement — origin-level diagnostics (experimental):**
+  the [offline staged baseline evaluator](engineering/M1_STAGED_ROLLING_BASELINES.md)
+  now records one deterministic status per requested
+  target date, preserving the previous aggregate counters
+  and distinguishing missing targets from late-published
+  ones. [Focused regressions](../tests/unit/test_staged_rolling_baselines.py)
+  verify a seven-origin accounting and null metrics
+  on complete abstention. This is local review metadata,
+  not durable audit storage or authenticated evidence;
+  real data rights and model validity remain open.

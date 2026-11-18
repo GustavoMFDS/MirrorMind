@@ -187,5 +187,26 @@
     "test": "tests/integration/test_staged_rolling_flow.py",
     "function": "test_staged_csv_to_matched_rolling_backtest_without_runtime_io",
     "limitation": "End-to-end local fixture flow lacks rights validation, encrypted persistence, tenant isolation and external forecast serving."
+  },
+  {
+    "id": "MM-AUD-001",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_every_requested_origin_has_one_reproducible_nonvalue_audit_record",
+    "limitation": "Per-date audit statuses on invented data do not prove source rights, publisher timestamps or tamper-evident storage."
+  },
+  {
+    "id": "MM-AUD-002",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_missing_target_is_not_conflated_with_unpublished_target",
+    "limitation": "Separating missing targets from unpublished targets does not correct source missingness or validate empirical predictions."
+  },
+  {
+    "id": "MM-AUD-003",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_all_abstained_audit_has_no_fabricated_scores",
+    "limitation": "Reporting all abstentions with null scores is not a guarantee of reliable forecasting or authorized access."
   }
 ]
