@@ -129,3 +129,20 @@ WorldKernel adapter. The
 only invented values. A real-data feature still requires
 independent permission, provenance, retention and source
 availability review.
+
+## M1 offline staged baseline comparison
+
+The [source-level experimental evaluator](docs/engineering/M1_STAGED_ROLLING_BASELINES.md)
+compares fixed one-day seasonal-naive lag 7 and
+trailing-mean lag 7 using only rows that the
+structural staging layer says were available
+at each **historical** origin. It reports
+missing-history/target abstentions and compares
+models on the same scored subset.
+
+This is not trained or production forecasting.
+The invented [CSV fixture](examples/staged-weekly-availability.csv)
+and [synthetic model card](docs/engineering/model_cards/STAGED_WEEKLY_BASELINES.md)
+provide a reproducible learning example, not
+permission to process third-party data or
+empirical evidence of predictive accuracy.
