@@ -44,7 +44,8 @@ python scripts/docs/evidence.py --check
 python scripts/docs/capabilities.py --check
 ```
 
-The focused test
+Claim **MM-RCOV-001** is grounded in
+`tests/unit/test_retail_coverage.py` and the focused test
 `tests/unit/test_retail_coverage.py::test_internal_gaps_are_not_zero_or_imputed_and_receipt_has_no_identifiers`
 constructs two products. Product A has positive records on January 1 and 4;
 January 2 has a cancellation and January 3 a negative return. The result
