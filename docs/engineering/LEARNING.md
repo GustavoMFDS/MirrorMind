@@ -206,3 +206,18 @@ before holdout. Inspect
 test_min_history_counts_observations_not_one_ancient_row`.
 Lower the threshold to seven and explain why
 publication-time abstention is still necessary.
+
+## Guided exercise 18 — bound the read, not only the parser
+
+Read the [bounded stream section](M1_LOCAL_CSV_STAGING.md)
+and source `read_staged_csv`. Explain why
+`Path.read_bytes()` on a large untrusted file
+would allocate bytes **before** the existing
+`stage_csv_snapshot` byte cap could reject it.
+Read `tests/unit/test_evidence_snapshots.py::
+test_partial_stream_reads_continue_until_eof_and_do_not_accept_prefix_hash`.
+Change a mocked reader to return one byte at
+a time, and verify the final digest still
+covers the full input. Explain why this is
+not permission to acquire an unauthorized
+dataset or send it to an AI model.
