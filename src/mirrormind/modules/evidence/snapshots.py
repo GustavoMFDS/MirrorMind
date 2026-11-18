@@ -86,6 +86,8 @@ def stage_csv_snapshot(
         raise ValueError("snapshot must be UTF-8") from exc
     if "\x00" in text:
         raise ValueError("snapshot contains forbidden NUL byte")
+    if any(not line.strip() for line in text.splitlines()):
+        raise ValueError("blank CSV rows are not allowed")
     stream = csv.reader(StringIO(text, newline=""), strict=True)
     try:
         header = next(stream)
