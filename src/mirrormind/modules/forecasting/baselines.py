@@ -80,26 +80,39 @@ def backtest_staged_snapshot(
     actual_values: list[int] = []
     history_abstained = 0
     target_abstained = 0
+    missing_targets = 0
+    unpublished_targets = 0
+    origin_audit: list[dict[str, str]] = []
     for offset in range(holdout_days):
         target_day = first_holdout + timedelta(days=offset)
         target = by_day.get(target_day)
-        # Even an event in the file cannot be scored if its result was
-        # not yet published by the evaluation's final information cutoff.
-        if target is None or target.available_on > cutoff:
-            target_abstained += 1
-            continue
         origin = target_day - timedelta(days=1)
+        audit = {"target_on": target_day.isoformat(), "origin_on": origin.isoformat()}
+        # Missing and late-published targets must not be combined in the audit.
+        # Neither reason exposes the underlying target value.
+        if target is None:
+            target_abstained += 1
+            missing_targets += 1
+            origin_audit.append({**audit, "status": "target_missing"})
+            continue
+        if target.available_on > cutoff:
+            target_abstained += 1
+            unpublished_targets += 1
+            origin_audit.append({**audit, "status": "target_not_published_by_cutoff"})
+            continue
         past = available_as_of(snapshot, series_id=series_id, origin_on=origin.isoformat())
         eligible_by_day = {row.observed_on: row.units for row in past}
         required = tuple(origin - timedelta(days=delta) for delta in range(6, -1, -1))
         if any(day not in eligible_by_day for day in required):
             history_abstained += 1
+            origin_audit.append({**audit, "status": "required_history_unavailable"})
             continue
         values = tuple(eligible_by_day[day] for day in required)
         predictions = _predict(values)
         for name in BASELINES:
             forecast_values[name].append(predictions[name])
         actual_values.append(target.units)
+        origin_audit.append({**audit, "status": "scored"})
     count = len(actual_values)
     metrics = None
     winner = None
@@ -122,6 +135,9 @@ def backtest_staged_snapshot(
         "scored_origins": count,
         "abstained_missing_history": history_abstained,
         "abstained_target_unavailable": target_abstained,
+        "abstained_target_missing": missing_targets,
+        "abstained_target_not_published": unpublished_targets,
+        "origin_audit": origin_audit,
         "metrics": metrics,
         "lower_mae_on_scored_origins_only": winner,
     }
