@@ -183,3 +183,46 @@ def read_staged_csv(
     return stage_csv_snapshot(
         b"".join(chunks), expected_sha256=expected_sha256, max_rows=max_rows
     )
+
+
+def snapshot_quality_summary(snapshot: StagedSnapshot) -> dict[str, str | int]:
+    """Summarize observed calendar gaps and delays without imputing or authorizing.
+
+    Counts refer to structurally staged rows, not true demand, stockouts,
+    source release authenticity or an actual permission/quality certificate.
+    """
+    if type(snapshot) is not StagedSnapshot:
+        raise ValueError("expected structurally staged snapshot")
+    if not 1 <= len(snapshot.observations) <= MAX_ROWS:
+        raise ValueError("snapshot must have a bounded nonempty row count")
+    days_by_series: dict[str, set[date]] = {}
+    delayed = 0
+    zeros = 0
+    all_days: list[date] = []
+    for row in snapshot.observations:
+        if type(row) is not Observation:
+            raise ValueError("invalid staged observation")
+        days = days_by_series.setdefault(row.series_id, set())
+        if row.observed_on in days:
+            raise ValueError("duplicate series/observation date")
+        days.add(row.observed_on)
+        all_days.append(row.observed_on)
+        if row.available_on > row.observed_on:
+            delayed += 1
+        if row.units == 0:
+            zeros += 1
+    calendar_gap_days = sum(
+        (max(days) - min(days)).days + 1 - len(days)
+        for days in days_by_series.values()
+    )
+    return {
+        "status": "local_quality_summary_not_authorized",
+        "snapshot_sha256": snapshot.sha256_hex,
+        "record_count": len(snapshot.observations),
+        "series_count": len(days_by_series),
+        "calendar_gap_days": calendar_gap_days,
+        "late_published_rows": delayed,
+        "explicit_zero_unit_rows": zeros,
+        "first_observed_on": min(all_days).isoformat(),
+        "last_observed_on": max(all_days).isoformat(),
+    }

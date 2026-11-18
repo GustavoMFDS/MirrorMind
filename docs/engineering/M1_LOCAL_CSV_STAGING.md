@@ -211,3 +211,94 @@ predict the mismatch. Finally, explain why these
 checks would be insufficient to authorize reading
 a customer's file or a Kaggle dataset whose
 terms have not been reviewed.
+
+
+## 7. Aggregate quality summary: holes are not zero sales
+
+The source-level function
+[`snapshot_quality_summary`](../../src/mirrormind/modules/evidence/snapshots.py)
+accepts a **previously staged** in-memory snapshot
+and reports only aggregate diagnostics:
+
+| Field | Exactly what is counted |
+| --- | --- |
+| `record_count`, `series_count` | Structurally staged observations and distinct series |
+| `calendar_gap_days` | For each series, calendar days between its first and last recorded date **without a row**, summed across series |
+| `late_published_rows` | Rows whose **declared** `available_on` is after `observed_on` |
+| `explicit_zero_unit_rows` | Rows with a real **recorded** `units == 0`, not missing days |
+| `first_observed_on`, `last_observed_on` | Overall minimum and maximum calendar observation date |
+| `snapshot_sha256` | Same caller-supplied content identity returned by staging, **not an authenticated signature** |
+
+The status is always
+`local_quality_summary_not_authorized`.
+No product/series names, customer IDs, raw rows or
+total demand estimates are returned. Even so,
+dates and hashes are metadata requiring careful
+access control when real data are involved.
+The counts are not a certificate of accuracy,
+privacy compliance, publisher availability
+or legal permission.
+
+### Worked, invented example
+
+[`examples/staged-daily-observations.csv`](../../examples/staged-daily-observations.csv)
+contains three `item-A` dates (Jan 1, Jan 2 and Jan 3)
+and a single `item-B` observation (Jan 2).
+The snapshot has **4 rows, 2 series, 0 internal calendar
+gaps, 1 delayed publication and 1 explicitly recorded
+zero**. If the `item-A` Jan 2 row is removed, the
+`calendar_gap_days` rises to **1**, but the Jan 3
+recorded zero remains. Neither case establishes
+whether customers wanted to buy anything on
+the absent date or whether the business was open.
+
+A missing day between recorded dates might mean
+no transaction, no report, delayed ingestion,
+closed operations, filtered returns or
+another business convention. **Never automatically
+impute it as zero demand**. And this summary
+does not detect missing days **before the first**
+or **after the last** observed day, because no
+expected external coverage calendar is supplied.
+
+### Reproduction and curated evidence
+
+```python
+from hashlib import sha256
+from pathlib import Path
+from mirrormind.modules.evidence.snapshots import (
+    read_staged_csv, snapshot_quality_summary,
+)
+
+example = Path("examples/staged-daily-observations.csv")
+# Demonstration only: this local fixture's digest is not external attestation.
+expected = sha256(example.read_bytes()).hexdigest()
+with example.open("rb") as binary:
+    staged = read_staged_csv(binary, expected_sha256=expected)
+quality = snapshot_quality_summary(staged)
+assert quality["calendar_gap_days"] == 0
+assert quality["explicit_zero_unit_rows"] == 1
+assert quality["status"] == "local_quality_summary_not_authorized"
+```
+
+| Claim | Test path and exact function | Limit |
+| --- | --- | --- |
+| **MM-QUAL-001** | `tests/unit/test_evidence_quality.py::test_quality_report_distinguishes_explicit_zero_from_absent_day` | Calendar holes among observed dates do not establish hidden sales, stockouts or true demand |
+| **MM-QUAL-002** | `tests/unit/test_evidence_quality.py::test_quality_publication_lag_is_declared_not_source_authenticated` | A declared publication date is not independently authenticated |
+| **MM-QUAL-003** | `tests/unit/test_evidence_quality.py::test_quality_does_not_echo_series_names_or_raw_count_values` | Aggregate output cannot establish customer privacy or tenant access policy |
+| **MM-QUAL-004** | `tests/integration/test_local_snapshot_flow.py::test_quality_summary_from_bounded_file_reader_remains_non_authorizing` | An invented fixture is not a licensed real source or real-data model validation |
+
+```bash
+python -m pytest -q tests/unit/test_evidence_quality.py
+python -m pytest -q tests/integration/test_local_snapshot_flow.py
+```
+
+**Independent exercise:** remove a middle row and
+compare `calendar_gap_days` to
+`explicit_zero_unit_rows`. Then change the
+declared publication date but not the observation
+date, and explain why only the release-lag count
+and raw-byte hash change. State what trusted
+store schedule, source license, provenance and
+published availability evidence would be needed
+before using this output with real customers.

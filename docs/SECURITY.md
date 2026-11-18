@@ -86,3 +86,17 @@ not turn transaction event dates into
 verified historical data-release timestamps.
 No data are approved or ingested by
 this documentation-only review.
+
+## Aggregate quality diagnostics do not declassify source data
+
+The [snapshot quality report](engineering/M1_LOCAL_CSV_STAGING.md)
+does not return raw rows or series IDs,
+but still exposes date boundaries,
+row counts and a snapshot hash.
+For genuine customer datasets, those
+can be sensitive business metadata.
+A future caller must enforce access
+rights and retention even for aggregate
+reports; internal checks do not authenticate
+source provenance, legal permissions or
+publication-time history.

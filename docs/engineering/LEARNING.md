@@ -237,3 +237,19 @@ benchmark. Finally, identify why the
 invoice transaction timestamp is not
 a cryptographically verified historical
 publication timestamp for as-of evaluation.
+
+## Guided exercise 20 — a recorded zero is not an absent observation
+
+Read the [staged quality method](M1_LOCAL_CSV_STAGING.md).
+For the invented four-row CSV, predict
+`calendar_gap_days`, `explicit_zero_unit_rows`
+and `late_published_rows`. Then remove the
+Jan 2 `item-A` row and explain why
+the gap count changes while the explicit
+Jan 3 zero remains. Inspect
+`tests/unit/test_evidence_quality.py::
+test_quality_report_distinguishes_explicit_zero_from_absent_day`.
+Explain why missing internal dates cannot
+prove lost customer demand, and why
+a complete series needs independent
+evidence of expected business operating days.

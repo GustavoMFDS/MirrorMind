@@ -403,3 +403,27 @@ license is stronger evidence of reuse rights,
 but customer identifiers, downstream processing
 and historical publication dates still require
 a separate human-reviewed acceptance.
+
+## 20. Non-imputing quality metrics for structurally staged records
+
+[`snapshot_quality_summary`](../../src/mirrormind/modules/evidence/snapshots.py)
+now provides a **read-only, in-memory** aggregate
+of per-series observed calendar gaps, explicitly
+recorded zeros, declared late publications,
+row counts and overall observation date boundaries.
+It never invents missing sales or authenticates
+source rights.
+
+| Newly tracked file | Purpose |
+| --- | --- |
+| [`tests/unit/test_evidence_quality.py`](../../tests/unit/test_evidence_quality.py) | Distinguishes zero from missing, declared availability delays, invalid staging and minimized output |
+| [`docs/engineering/changes/MM-M1B-staged-quality-summary.md`](changes/MM-M1B-staged-quality-summary.md) | Review gates and acceptance for source-unverified aggregate diagnostics |
+
+See the [revised staging walkthrough](M1_LOCAL_CSV_STAGING.md),
+[bounded reader integration](../../tests/integration/test_local_snapshot_flow.py)
+and [evidence map](EVIDENCE_MAP.json).
+An internal calendar gap is not proof of
+lost sales, source outage or a real
+business demand gap. No API source connector,
+real data ingestion or production model
+has been added.

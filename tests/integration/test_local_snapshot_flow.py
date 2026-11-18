@@ -38,3 +38,22 @@ def test_bounded_file_stream_stages_exactly_same_invented_fixture():
     assert [row.units for row in available_as_of(
         snap, series_id="item-A", origin_on="2025-01-03"
     )] == [2, 0]
+
+
+def test_quality_summary_from_bounded_file_reader_remains_non_authorizing():
+    from mirrormind.modules.evidence.snapshots import (
+        read_staged_csv,
+        snapshot_quality_summary,
+    )
+
+    path = ROOT / "examples/staged-daily-observations.csv"
+    expected = sha256(path.read_bytes()).hexdigest()
+    with path.open("rb") as file:
+        snapshot = read_staged_csv(file, expected_sha256=expected)
+    summary = snapshot_quality_summary(snapshot)
+    assert summary["status"] == "local_quality_summary_not_authorized"
+    assert summary["record_count"] == 4
+    assert summary["calendar_gap_days"] == 0
+    assert summary["late_published_rows"] == 1
+    assert summary["explicit_zero_unit_rows"] == 1
+    assert "observations" not in summary
