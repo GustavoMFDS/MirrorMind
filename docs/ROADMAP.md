@@ -22,3 +22,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   [claim-to-test index](engineering/EVIDENCE_MAP.json) records precise
   pytest function references and limitations; CI checks structural
   integrity only, not reasoning validity or product readiness.
+
+- **MM-DOC-A3 — Capability truth guard (CI validation required):**
+  maintain a reviewed [capability ledger](engineering/CAPABILITY_LEDGER.json)
+  with strict implemented/experimental/interface-only/planned statuses,
+  source/test evidence and explicit caveats. A structural checker and
+  live API regression must catch claims that diverge from the actual
+  `GET /v1/capabilities` response. This protects against overclaiming,
+  but does not certify the implementation, scientific validity or security.

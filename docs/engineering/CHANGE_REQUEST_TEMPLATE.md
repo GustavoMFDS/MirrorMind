@@ -11,6 +11,12 @@
 
 **Out of scope:** What must not change.
 
+## Capability status change (required for user-visible features)
+- Previous and proposed status from [CAPABILITY_LEDGER](CAPABILITY_LEDGER.json):
+- Production behavior versus interface/experiment-only:
+- Test selectors proving the *narrow* claim and their known limitations:
+- Update to `GET /v1/capabilities` (or reason no externally visible change):
+
 ## 2. Acceptance criteria
 - [ ] Given <state>, when <action>, then <observable result>.
 - [ ] Backwards compatibility, determinism, security and error cases are addressed as applicable.
@@ -34,7 +40,7 @@ Assumptions, data formats, versioning, performance, concurrency, security, priva
 2. Identify and review tradeoffs; seek approval if a new architectural decision is required.
 3. Implement with a focused diff and add tests.
 4. Regenerate symbol reference; revise system map, runbooks, learning notes and existing docs as needed.
-5. Run checks and document their **actual** results. For substantive behavior claims, update the reviewed [evidence map](EVIDENCE_MAP.json) only with real test paths, top-level function selectors, explicit limitations and a human-reviewed claim ID; run `python scripts/docs/evidence.py --check`.
+5. Run checks and document their **actual** results. Update the reviewed capability ledger and its live API regression for all feature promotions; run `python scripts/docs/capabilities.py --check`. For substantive behavior claims, update the reviewed [evidence map](EVIDENCE_MAP.json) only with real test paths, top-level function selectors, explicit limitations and a human-reviewed claim ID; run `python scripts/docs/evidence.py --check`.
 
 ## 6. Evidence after implementation
 - Commit / PR:

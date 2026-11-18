@@ -6,7 +6,7 @@ Updated from the initial scaffold on 2026-11-17. **Only** the foundational API/c
 
 HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. The `modules/simulation/gateway.py` interface defines an engine-neutral boundary; it does **not** execute WorldKernel simulations yet.
 
-Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/scenarios/validate`. See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
+Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/scenarios/validate`. The externally declared capabilities must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
 
 ## Change-location guide
 | User request | Inspect first | Evidence |
