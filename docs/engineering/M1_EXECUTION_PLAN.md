@@ -116,3 +116,17 @@ release still requires documented legal source rights,
 independent trusted snapshot hash/provenance, publisher
 availability and revision history, privacy/retention controls,
 source-specific bounded I/O and approval before modeling.
+
+## Reusable offline baseline experiment (MM-M1c still open)
+
+The [staged rolling evaluator](M1_STAGED_ROLLING_BASELINES.md)
+now composes the experimental local CSV
+stage with two fixed one-step baselines, per-origin
+publication-date filtering, abstention and
+aligned MAE/RMSE/bias/WAPE. Its 35-day repeating
+sample is [invented](datasets/STAGED_WEEKLY_AVAILABILITY_CARD.md)
+and its [model card](model_cards/STAGED_WEEKLY_BASELINES.md)
+records 4/7 coverage. This validates an offline
+algorithmic slice, **not** the full M1c requirement
+for independently approved data, locked empirical
+holdout and real predictive quality.
