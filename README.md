@@ -81,3 +81,18 @@ No real-world forecasting, source authorization, model
 calibration, RAG or simulation endpoint is implemented.
 The API still reports `forecasting` as planned and this
 specific script as `experimental`.
+
+## M1 synthetic availability-time preflight
+
+```bash
+python -m examples.m1_availability_preflight examples/synthetic-asof-sales.json
+```
+
+The local exercise separates **when an invented event
+occurred** from **when its value was supposedly available**
+and excludes late or future values from an as-of summary.
+It neither confirms actual publication dates nor gives
+access to any real dataset. The
+[guide](docs/engineering/M1_AVAILABILITY_PRECHECK.md)
+and [data card](docs/engineering/datasets/SYNTHETIC_AVAILABILITY_CARD.md)
+describe the limits. The Evidence Engine remains planned.
