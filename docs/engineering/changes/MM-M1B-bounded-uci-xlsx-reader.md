@@ -21,35 +21,35 @@ history remain pending per
 
 ## Accepted requirements
 
-- [ ] `openpyxl` is an optional runtime dependency,
+- [x] `openpyxl` is an optional runtime dependency,
   enabled in CI/dev to test invented XLSX fixtures.
-- [ ] Bounded compressed-byte reads, including
+- [x] Bounded compressed-byte reads, including
   short-read handling and a one-byte oversize
   sentinel, before parsing any workbook.
-- [ ] Compare the complete bytes to a strict
+- [x] Compare the complete bytes to a strict
   caller-provided lowercase SHA-256; do not
   treat this as independent provenance.
-- [ ] Inspect ZIP entry count, entry sizes,
+- [x] Inspect ZIP entry count, entry sizes,
   total uncompressed metadata size and
   encrypted/external-link/macro payload markers
   before passing to openpyxl. No ZIP extraction.
-- [ ] `read_only=True` / `keep_links=False`,
+- [x] `read_only=True` / `keep_links=False`,
   fixed expected sheet/header, bounded rows.
   Only forward four needed transaction
   fields to the preexisting retail projection.
-- [ ] Reject malformed/unsafe/corrupted
+- [x] Reject malformed/unsafe/corrupted
   workbooks without echoing customer values
   or filesystem paths into direct errors.
-- [ ] Return digest-coupled immutable
+- [x] Return digest-coupled immutable
   projection with `not_authorized` and
   **unknown publication time** statuses.
-- [ ] Unit/integration tests create
+- [x] Unit/integration tests create
   synthetic XLSX entirely in memory;
   reject forbidden schema/extra sheets,
   malformed source, wrong digest,
   oversized streams, row limits and
   illegal ZIP payload metadata.
-- [ ] Update generated symbols, curated
+- [x] Update generated symbols, curated
   claims, capability API/ledger, atlas,
   guides, privacy and roadmap; merge
   only after Python + docs CI green.
