@@ -86,3 +86,14 @@ all live evidence/RAG and forecasting capabilities remain
 `planned`. The generated catalog still indexes the
 11 production source modules; example scripts are navigated
 through the full repository atlas.
+
+## M1c local evaluation, not source-model deployment
+
+| Experiment | Reviewed behavior and limitation |
+| --- | --- |
+| [`examples/m1_temporal_backtest.py`](../../examples/m1_temporal_backtest.py) | **Experimental** source-reviewed one-step rolling evaluation; [guide](M1_TEMPORAL_BACKTEST.md), [synthetic model card](model_cards/SYNTHETIC_WEEKLY_BASELINES.md) and [unit regressions](../../tests/unit/test_m1_temporal_backtest.py). No real-data forecasting module has been added under `src/`. |
+
+The `forecasting` capability remains **planned**; the
+new `synthetic_rolling_backtest` is **experimental** and
+evaluates exactly two predeclared heuristics on invented data.
+Its outcome does not generalize to actual retail demand.
