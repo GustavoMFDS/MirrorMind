@@ -177,3 +177,20 @@ publication dates. Output explicitly records
 and has no `available_on` property.
 Never promote `evidence_and_rag` or
 `forecasting` from this output alone.
+
+## Bounded XLSX parsing is not an approved source connector
+
+`local_uci_xlsx_reader` is an **experimental,
+opt-in, offline** reader tested with invented
+UCI-shaped XLSX files. Compressed byte, ZIP
+metadata and row/group caps are supported,
+but the full official UCI workbook is not
+accepted by its current 10k-row limit.
+Neither an operator-supplied checksum nor
+a published dataset license automatically
+provides customer privacy signoff,
+trusted source identity, safe hostile-file
+isolation or historical publication vintages.
+Do not promote `evidence_and_rag` or
+`forecasting` to implemented from
+a successful small workbook parse.
