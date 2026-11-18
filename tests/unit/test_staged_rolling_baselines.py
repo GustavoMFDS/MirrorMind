@@ -230,8 +230,8 @@ def test_min_history_counts_observations_not_one_ancient_row():
 
 def test_earliest_supported_calendar_cutoff_fails_cleanly_not_overflow():
     raw = (
-        b"series_id,observed_on,available_on,units\\n"
-        b"item-A,0001-01-01,0001-01-01,1\\n"
+        b"series_id,observed_on,available_on,units\n"
+        b"item-A,0001-01-01,0001-01-01,1\n"
     )
     snapshot = stage_csv_snapshot(raw, expected_sha256=sha256(raw).hexdigest())
     with pytest.raises(ValueError, match="evaluation window predates"):
