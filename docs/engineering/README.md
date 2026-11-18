@@ -5,6 +5,10 @@ This is the entry point for **understanding, changing, testing and maintaining**
 ## Start here
 - [System map](SYSTEM_MAP.md) — what runs, key modules, entrypoints, boundaries and cross-project relationships.
 - [Repository atlas](REPOSITORY_ATLAS.md) — human-reviewed links to **every tracked code, test, config and document file**; a CI guard fails on missing files/links.
+- [Semantic learning map](SEMANTIC_COVERAGE.md) — current implemented, interface-only and planned capability boundaries, source by source.
+- [Contracts walkthrough](CONTRACT_WALKTHROUGH.md) — stepwise Pydantic validation and its limits: input shape is not authorized evidence or simulation.
+- [API walkthrough](API_WALKTHROUGH.md) — each implemented HTTP route and the interface-only simulation gateway.
+- [Curated evidence map](EVIDENCE_MAP.json) — human-reviewed claim IDs mapped to cited pytest functions and explicit limitations.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.
@@ -29,11 +33,12 @@ This is the entry point for **understanding, changing, testing and maintaining**
 python scripts/docs/catalog.py --write
 python scripts/docs/catalog.py --check
 python scripts/docs/coverage.py --check
+python scripts/docs/evidence.py --check
 python -m pytest -q
 python -m ruff check src tests
 ```
 
-Documentation CI requires the **committed** symbol catalog to be current, regenerates it for inspection, and verifies every tracked file has a resolving link in the reviewed atlas and local Markdown links exist. This structural check is intentionally stricter than a filename mention. It does not validate prose semantics, statistical models, privacy or execution safety; these require source review and tests.
+Documentation CI requires the **committed** symbol catalog to be current, regenerates it for inspection, and verifies every tracked file has a resolving link in the reviewed atlas and local Markdown links exist. This structural check is intentionally stricter than a filename mention. A separate curated claim-to-test checker requires matching guide claim IDs, cited test paths/functions and explicit limitations. Neither guard executes tests or validates prose semantics, statistical models, privacy or execution safety; these require independent review and actual tests.
 
 ## Scope and independence
 These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but the repositories remain independent. Shared documentation layout does not create shared runtime dependencies. Changes to the *contracts* between projects require separate, coordinated reviews.
