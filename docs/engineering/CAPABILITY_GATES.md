@@ -114,3 +114,14 @@ retrieval. Draft an acceptance case for one small
 provenance/cutoff fields, and what would remain unproved.
 Do not claim live connectivity, private data access or
 model accuracy from a passing schema test.
+
+## Local synthetic temporal baseline is not production forecasting
+
+The separate `synthetic_rolling_backtest` is now
+`experimental` only; its [guide](M1_TEMPORAL_BACKTEST.md)
+and [model card](model_cards/SYNTHETIC_WEEKLY_BASELINES.md)
+explain why a perfect repeated-week result is not
+held-out empirical proof. Do not promote `forecasting`
+before authorized source ingestion, availability-time
+checks, independently locked holdouts, measured
+generalization and safe deployment have been validated.
