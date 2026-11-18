@@ -65,3 +65,21 @@ def test_external_and_section_links_are_not_local_files(tmp_path):
 
 def test_live_repository_passes_linked_inventory():
     assert coverage.audit(ROOT) == []
+
+
+def test_atlas_counts_code_formatted_link_labels(tmp_path):
+    _src, atlas = _fixture(tmp_path)
+    atlas.write_text("[`feature.py`](../../src/mirrormind/feature.py)\n", encoding="utf-8")
+    assert coverage.missing_atlas_entries(
+        tmp_path, atlas.read_text(), {"src/mirrormind/feature.py"}
+    ) == []
+
+
+def test_inline_code_link_text_does_not_count_as_actual_link(tmp_path):
+    _src, atlas = _fixture(tmp_path)
+    atlas.write_text(
+        "`[feature](../../src/mirrormind/feature.py)`\n", encoding="utf-8"
+    )
+    assert coverage.missing_atlas_entries(
+        tmp_path, atlas.read_text(), {"src/mirrormind/feature.py"}
+    ) == ["src/mirrormind/feature.py"]
