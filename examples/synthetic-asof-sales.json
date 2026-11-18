@@ -1,0 +1,45 @@
+{
+  "schema_version": "mirrormind.synthetic_availability.v1",
+  "series_id": "retail.synthetic.asof-01",
+  "source_id": "synthetic-fixture-generator",
+  "snapshot_id": "synthetic-delayed-publication-v1",
+  "usage_note": "Generated teaching data; all dates are invented and unverified.",
+  "as_of_date": "2025-01-06",
+  "records": [
+    {
+      "observed_on": "2025-01-01",
+      "available_on": "2025-01-01",
+      "units": 2
+    },
+    {
+      "observed_on": "2025-01-02",
+      "available_on": "2025-01-02",
+      "units": 4
+    },
+    {
+      "observed_on": "2025-01-03",
+      "available_on": "2025-01-08",
+      "units": 6
+    },
+    {
+      "observed_on": "2025-01-04",
+      "available_on": "2025-01-04",
+      "units": 8
+    },
+    {
+      "observed_on": "2025-01-05",
+      "available_on": "2025-01-06",
+      "units": 10
+    },
+    {
+      "observed_on": "2025-01-06",
+      "available_on": "2025-01-06",
+      "units": 12
+    },
+    {
+      "observed_on": "2025-01-07",
+      "available_on": "2025-01-07",
+      "units": 14
+    }
+  ]
+}
