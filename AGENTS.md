@@ -15,9 +15,9 @@ Read [the engineering knowledge hub](docs/engineering/README.md) before editing 
 ## Integrity and safety
 - Never invent implemented features, test results, function behavior or system guarantees. Every new evidence/forecast/simulation/agent capability must distinguish `implemented`, `interface-only`, `experimental` and `planned`, and update `/v1/capabilities` truthfully when externally visible.
 - Avoid untrusted arbitrary execution, exposing tokens, personal data, or copying customer payloads into logs/docs.
-- Follow existing licensing, threat-model and research-quality restrictions.
+- Follow existing licensing, threat-model and research-quality restrictions. For any real data ingestion, a reviewed [dataset card](docs/engineering/DATASET_CARD_TEMPLATE.md) must document rights, snapshot, availability-time and retention. For any numeric forecast claim, a [model card](docs/engineering/FORECAST_MODEL_CARD_TEMPLATE.md) must document temporal holdouts, baselines and uncertainty evidence. For recommendations, maintain a [decision trace](docs/engineering/DECISION_TRACE_TEMPLATE.md) separating observed facts, forecasts, modeled outcomes and human approval. These are **requirements for future features**, not evidence those features already exist.
 - Explain the likely cause of an incident as a hypothesis until reproduced or supported by evidence.
-- Preserve backwards compatibility unless the change request explicitly approves breaking behavior and migration.
+- Preserve backwards compatibility unless the change request explicitly approves breaking behavior and migration. Before implementing a WorldKernel adapter, follow the [versioned gateway acceptance gate](docs/engineering/WORLDKERNEL_GATEWAY_GATE.md): reject unrepresentable fields rather than guessing or silently discarding them.
 - Avoid edits to generated artifacts other than by the generator; prefer documentation tied to symbols, tests and behavior.
 - For requests written in Portuguese, respond in Portuguese but keep repository source docs in English for consistency.
 

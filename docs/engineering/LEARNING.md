@@ -69,3 +69,27 @@ Then append one future-dated row and verify its rejection.
 Explain why the test only proves **date labels** are bounded
 and not historical source availability, license consent,
 forecast reliability or simulation safety.
+
+## Guided exercise 10 — what makes a forecast defensible? (45 minutes)
+
+Read the [M1 execution plan](M1_EXECUTION_PLAN.md), the
+[dataset card](DATASET_CARD_TEMPLATE.md) and
+[forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md).
+Explain why the observation date and its first available
+date can differ, and design a counterexample demonstrating
+temporal leakage despite an apparently valid cutoff.
+Before writing a more complex model, specify a
+seasonal-naive baseline and **predeclared** holdout.
+Explain why no current MirrorMind endpoint can claim
+forecast quality from passing ScenarioSpec validation.
+
+## Guided exercise 11 — simulation is not a business decision (30 minutes)
+
+Read the [WorldKernel compatibility gate](WORLDKERNEL_GATEWAY_GATE.md)
+and [decision trace template](DECISION_TRACE_TEMPLATE.md).
+List which MirrorMind 0.1 scenario fields cannot be sent
+unchanged to WorldKernel exchange v1. Predict how an
+unsupported intervention, unverified ForecastRef and
+world-version mismatch should fail. Distinguish a
+conditional simulation outcome from observed sales,
+a valid forecast and a human-approved action.

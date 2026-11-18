@@ -188,3 +188,19 @@ not as implemented external ingestion. No recorded values
 are asserted to belong to any real retailer or authorized
 dataset. A future production ingestion module must be
 separately reviewed, authorized and tested.
+
+## 10. AI research, model evaluation and human decision review templates
+
+| Source | Mandatory review purpose before a future capability claim |
+| --- | --- |
+| [`docs/engineering/DATASET_CARD_TEMPLATE.md`](DATASET_CARD_TEMPLATE.md) | Rights, immutable snapshot, **event-time versus availability-time** lineage, leakage and retention |
+| [`docs/engineering/FORECAST_MODEL_CARD_TEMPLATE.md`](FORECAST_MODEL_CARD_TEMPLATE.md) | Predeclared seasonal baseline, rolling temporal holdout, error metrics and uncertainty calibration |
+| [`docs/engineering/DECISION_TRACE_TEMPLATE.md`](DECISION_TRACE_TEMPLATE.md) | Explicitly separate authorized observations, evaluated forecasts, conditional simulations and human approval |
+| [`docs/engineering/WORLDKERNEL_GATEWAY_GATE.md`](WORLDKERNEL_GATEWAY_GATE.md) | Versioned contract mismatch, rejected unsupported interventions/references, optional adapter acceptance and boundaries |
+| [`docs/engineering/M1_EXECUTION_PLAN.md`](M1_EXECUTION_PLAN.md) | Dependency-ordered M1a–M1f acceptance gates with actual versus planned status |
+
+**All five documents are templates/plans, not executable implementations.**
+They must be filled with reviewed facts and real test outcomes
+when the corresponding modules are introduced. The atlas and
+capability/evidence CI checks cannot independently certify
+scientific rigor, authorization or model fairness.

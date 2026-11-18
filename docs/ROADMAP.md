@@ -40,3 +40,16 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   integration. `GET /v1/capabilities` labels the example
   **experimental**; all real evidence/forecast functionality stays
   planned until independently validated.
+
+- **MM-DOC-A4 — Research-quality review protocol (documentation-only):**
+  checked-in [dataset cards](engineering/DATASET_CARD_TEMPLATE.md)
+  for rights, snapshots and availability-time cutoffs; a
+  [forecast model evaluation template](engineering/FORECAST_MODEL_CARD_TEMPLATE.md)
+  with rolling temporal holdouts, baselines and calibration;
+  a [decision trace](engineering/DECISION_TRACE_TEMPLATE.md)
+  separating sources, model estimates, conditional simulations
+  and human review; plus a
+  [WorldKernel gateway acceptance gate](engineering/WORLDKERNEL_GATEWAY_GATE.md).
+  See the [M1 delivery plan](engineering/M1_EXECUTION_PLAN.md).
+  These documents are design and future-review gates, **not**
+  implemented evidence, forecasting, integration or agents.
