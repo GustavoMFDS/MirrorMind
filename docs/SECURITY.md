@@ -44,3 +44,16 @@ its generated fixture produces zero MAE, its
 result is **not** a verified business recommendation.
 A future deployed consumer must authorize each
 source and control recipients of raw staged rows.
+
+## Source discovery is not a permission grant
+
+The candidate [M5 source-rights review](engineering/datasets/M5_ACCESS_REVIEW.md)
+is explicitly **proposed, not approved**.
+Do not use public Kaggle/Zenodo accessibility
+as permission for the future commercial product,
+nor assume the licensing of a published paper
+covers the underlying competition dataset.
+The next real-data milestone must include an
+independently reviewed source grant, approved
+retention/distribution scope and actual
+publication-time provenance before acquisition.

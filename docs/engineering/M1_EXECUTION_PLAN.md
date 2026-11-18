@@ -130,3 +130,17 @@ records 4/7 coverage. This validates an offline
 algorithmic slice, **not** the full M1c requirement
 for independently approved data, locked empirical
 holdout and real predictive quality.
+
+## M5 source review — permission decision still pending
+
+A preliminary [source due-diligence record](datasets/M5_ACCESS_REVIEW.md)
+links the original Kaggle competition data/rules
+and the Zenodo copy. This review **did not establish**
+a verifiable grant allowing the future MirrorMind
+use case, so no real M5 data were ingested, copied
+into Git or used for benchmark scores. M1b remains
+blocked on independently reviewed source rights,
+distribution scope, snapshot lineage and data
+availability assumptions. A mirror's availability
+is not a rights approval; consider another source
+if M5 terms cannot be confirmed.

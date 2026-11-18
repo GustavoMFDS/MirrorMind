@@ -93,3 +93,16 @@ on invented weekly observations. It does **not**
 establish allowed M5 access, true sales or demand,
 stockout costs, lead times or real forecasting
 skill. These remain separate retail MVP gates.
+
+## Original M5 permissions must be independently confirmed
+
+The [M5 due-diligence card](engineering/datasets/M5_ACCESS_REVIEW.md)
+remains `proposed / permission-unverified`.
+The fact that historical retail data are offered
+through a competition or third-party archive
+does not itself license MirrorMind's intended use,
+permit redistribution or establish publication
+time vintages for leakage-free rolling validation.
+Do not download or commit M5 observations until
+a rights holder's applicable grant and source
+approval have been reviewed.

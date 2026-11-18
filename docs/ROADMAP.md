@@ -120,3 +120,16 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   No authorized M5 ingestion, untouched empirical model
   benchmark, calibrated uncertainty, production serving
   or WorldKernel integration has been delivered.
+
+- **MM-M1b source-rights decision — blocked on permission evidence:**
+  a [preliminary M5 access review](engineering/datasets/M5_ACCESS_REVIEW.md)
+  records candidate official Kaggle competition
+  pages and the Zenodo mirror but **does not establish
+  an approved grant** for a future research/commercial
+  MirrorMind data pipeline. No real files downloaded,
+  bundled or used for claimed empirical forecasts.
+  Next gate is independent human confirmation of
+  source rights and original data publication metadata
+  (or selection of a clearly licensed alternate source).
+  Local structural validation and synthetic evaluation
+  may continue without real source access.
