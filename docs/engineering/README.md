@@ -18,6 +18,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [M1 offline staged rolling baselines](M1_STAGED_ROLLING_BASELINES.md) — reusable source module with as-of lag-7/mean comparisons, abstention and matched metrics; review [synthetic data](datasets/STAGED_WEEKLY_AVAILABILITY_CARD.md)/[model](model_cards/STAGED_WEEKLY_BASELINES.md) cards.
 - [M1 delivery plan](M1_EXECUTION_PLAN.md) — evidence-before-model dependency order and independent gates.
 - [Dataset card](DATASET_CARD_TEMPLATE.md), [forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md), [decision trace](DECISION_TRACE_TEMPLATE.md) — mandatory future provenance, evaluation and human-review templates.
+- [M5 source permission review](datasets/M5_ACCESS_REVIEW.md) — **not approved** for actual ingestion; requires verification of original competition rights and intended research/commercial use.
 - [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — explicit version mapping and fail-closed input compatibility before a real adapter exists.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
