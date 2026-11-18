@@ -427,3 +427,31 @@ lost sales, source outage or a real
 business demand gap. No API source connector,
 real data ingestion or production model
 has been added.
+
+## 21. Retail-only UCI-shaped transaction projection (offline, experimental)
+
+This **retail-domain** module has no automatic external
+data acquisition, workbook parser, model call or source
+permission checks. It accepts only bounded UCI-shaped
+row mappings supplied by a trusted caller, separates
+positive invoice lines from cancellations and nonpositive
+lines, and returns aggregate product-day counts **without**
+original invoice or customer IDs. It never supplies a
+made-up first-availability date.
+
+| Tracked file | Role / next source for review |
+| --- | --- |
+| [`src/mirrormind/domains/__init__.py`](../../src/mirrormind/domains/__init__.py) | Sector-specific package boundary; no automatic ingestion |
+| [`src/mirrormind/domains/retail/__init__.py`](../../src/mirrormind/domains/retail/__init__.py) | Retail transformation namespace only |
+| [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | Source-backed immutable product-day aggregation, cancellation/negative/zero counters, resource caps and unknown release-time status |
+| [`tests/unit/test_uci_retail_projection.py`](../../tests/unit/test_uci_retail_projection.py) | Generated rows: privacy minimization, cancellation/duplicate semantics, date/type validation and bounded iteration |
+| [`tests/integration/test_uci_retail_projection_flow.py`](../../tests/integration/test_uci_retail_projection_flow.py) | In-memory integration; rejects direct use as time-authorized staged evidence |
+| [`docs/engineering/UCI_RETAIL_PROJECTION.md`](UCI_RETAIL_PROJECTION.md) | Function-by-function behavior, privacy/time gates, independent exercise |
+| [`docs/engineering/datasets/SYNTHETIC_UCI_ROWS_CARD.md`](datasets/SYNTHETIC_UCI_ROWS_CARD.md) | Invented UCI-shaped fixtures; no real data or publication evidence |
+| [`docs/engineering/changes/MM-M1B-uci-shaped-transaction-projection.md`](changes/MM-M1B-uci-shaped-transaction-projection.md) | Bounded change request, acceptance and explicit non-goals |
+
+Capability `local_uci_transaction_projection` is
+**experimental**. The official [UCI candidate](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+has not been imported or approved for this code path.
+The platform's `evidence_and_rag` and
+`forecasting` remain **planned**.
