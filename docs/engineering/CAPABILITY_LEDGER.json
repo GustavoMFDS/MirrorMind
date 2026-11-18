@@ -112,6 +112,13 @@
       "source": "src/mirrormind/domains/retail/uci_transactions.py",
       "test": "tests/unit/test_uci_retail_projection.py::test_positive_rows_aggregate_by_product_calendar_day_without_raw_ids",
       "notes": "Local bounded UCI-shaped fictional transaction row projection only. No real workbook reader, permission approval, historical publisher availability, privacy clearance, validated sales/returns reconciliation or operational ingestion."
+    },
+    {
+      "id": "local_uci_xlsx_reader",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/uci_workbook.py",
+      "test": "tests/unit/test_uci_workbook.py::test_xlsx_stage_projects_positive_units_and_never_copies_sensitive_values",
+      "notes": "Bounded optional read-only local XLSX parser on invented UCI-shaped workbooks only; not authorized original source ingestion, full official dataset processing, hostile workbook isolation or verified publication history."
     }
   ]
 }
