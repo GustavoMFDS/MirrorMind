@@ -221,3 +221,19 @@ a time, and verify the final digest still
 covers the full input. Explain why this is
 not permission to acquire an unauthorized
 dataset or send it to an AI model.
+
+## Guided exercise 19 — a CC license is necessary evidence, not a pipeline
+
+Read [the UCI Online Retail source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+and compare its original license link with
+[the M5 candidate](datasets/M5_ACCESS_REVIEW.md).
+Explain why CC BY 4.0 makes the source more
+promising for reuse, yet does not waive
+attribution, privacy or source-snapshot
+integrity. From the UCI feature table, name
+which transaction-level fields you would
+exclude for a **product-day sales-only**
+benchmark. Finally, identify why the
+invoice transaction timestamp is not
+a cryptographically verified historical
+publication timestamp for as-of evaluation.

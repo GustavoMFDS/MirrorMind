@@ -166,3 +166,15 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   approved-source adapters but does **not**
   add one, authenticate publishers, license
   M5 or make the Evidence Engine operational.
+
+- **MM-M1b alternative source investigation (review pending):**
+  the [official UCI Online Retail 352 dataset](engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+  publicly lists CC BY 4.0, enabling a stronger
+  preliminary license assessment than the
+  unresolved M5 competition conditions.
+  Attribution, customer-ID minimization, workbook
+  conversion, source hash/retention, cancellations
+  and the gap between transaction time and real
+  publication availability remain explicit
+  approval blockers. No UCI data have been
+  ingested or used to report model performance.

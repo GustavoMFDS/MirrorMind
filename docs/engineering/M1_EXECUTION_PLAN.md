@@ -170,3 +170,19 @@ of reading an entire oversized file first.
 It still does not open, authenticate, approve,
 retain or govern real datasets. M1b permission
 and availability verification remain open.
+
+## An officially licensed alternate candidate — no data collected yet
+
+The [UCI Online Retail source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+identifies an official 541,909-transaction UK retail
+dataset with a CC BY 4.0 license statement at
+the original UCI source (ID 352). This is
+more actionable than M5's currently unresolved
+competition-specific grant, but it is **not
+a source-adapter acceptance**: attribution,
+customer-identifying fields, retention, signed
+capture, cancellation/quantity conventions
+and the absence of verified original
+publication-time vintages all require review.
+There are no real source bytes in the repository
+and no empirical model scores from this dataset.

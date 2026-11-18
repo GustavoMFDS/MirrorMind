@@ -19,6 +19,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [M1 delivery plan](M1_EXECUTION_PLAN.md) — evidence-before-model dependency order and independent gates.
 - [Dataset card](DATASET_CARD_TEMPLATE.md), [forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md), [decision trace](DECISION_TRACE_TEMPLATE.md) — mandatory future provenance, evaluation and human-review templates.
 - [M5 source permission review](datasets/M5_ACCESS_REVIEW.md) — **not approved** for actual ingestion; requires verification of original competition rights and intended research/commercial use.
+- [UCI Online Retail source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) — official dataset license states **CC BY 4.0**, but attribution, privacy, source versioning and historical information availability still require approval.
 - [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — explicit version mapping and fail-closed input compatibility before a real adapter exists.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
