@@ -57,7 +57,7 @@ complete seven-day available history.
 
 ## 3. Hand-worked result
 
-| Target in seven-day holdout | Historical lag-7 value | Decision |
+| Target in seven-day holdout | Availability of required lag-7 window | Decision |
 | --- | --- | --- |
 | Jan 29 | Jan 27 not yet published | Abstain |
 | Jan 30 | Jan 27 not yet published | Abstain |
