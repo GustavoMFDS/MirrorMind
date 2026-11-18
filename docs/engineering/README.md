@@ -11,6 +11,9 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Curated evidence map](EVIDENCE_MAP.json) — human-reviewed claim IDs mapped to cited pytest functions and explicit limitations.
 - [Capability truth ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md) — distinguish implemented/experimental/interface-only/planned capabilities; CI and API regressions detect drift.
 - [M1 synthetic observation preflight](M1_DATA_PREFLIGHT.md) — source-reviewed local demo of bounded date/cutoff validation, **not** authorized ingestion or forecasting.
+- [M1 delivery plan](M1_EXECUTION_PLAN.md) — evidence-before-model dependency order and independent gates.
+- [Dataset card](DATASET_CARD_TEMPLATE.md), [forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md), [decision trace](DECISION_TRACE_TEMPLATE.md) — mandatory future provenance, evaluation and human-review templates.
+- [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — explicit version mapping and fail-closed input compatibility before a real adapter exists.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.
