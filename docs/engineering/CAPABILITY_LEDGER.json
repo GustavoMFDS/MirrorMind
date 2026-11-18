@@ -126,6 +126,13 @@
       "source": "src/mirrormind/domains/retail/coverage.py",
       "test": "tests/unit/test_retail_coverage.py::test_internal_gaps_are_not_zero_or_imputed_and_receipt_has_no_identifiers",
       "notes": "Offline aggregate internal product-day gap counts on fictional UCI-shaped positive-line projections only. No product identifiers in receipt, no zero imputation, no source permissions or verified availability dates; not a true-demand or live evidence signal."
+    },
+    {
+      "id": "local_declared_calendar_coverage",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/calendar_coverage.py",
+      "test": "tests/unit/test_declared_calendar_coverage.py::test_closed_day_not_counted_as_missing_declared_observation",
+      "notes": "Caller-declared, unverified schedule compared with fictional positive-line product-days. No business-opening evidence, authenticated publication dates, zero imputation, source approval or forecast readiness."
     }
   ]
 }
