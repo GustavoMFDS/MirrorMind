@@ -151,3 +151,18 @@ still cannot establish. Inspect
 test_digest_mismatch_fails_before_interpreting_unverified_bytes`
 and explain why computing a new digest from an
 untrusted file is not proof of publisher identity.
+
+## Guided exercise 14 — staged and evaluated are still not authorized (40 minutes)
+
+Read the [source-method guide](M1_STAGED_ROLLING_BASELINES.md)
+and trace `backtest_staged_snapshot` through
+`available_as_of`. With the invented weekly fixture,
+explain why three of the seven requested one-day
+origins abstain and why both baselines score the
+**same four targets**. Inspect
+`tests/unit/test_staged_rolling_baselines.py::
+test_all_forecast_inputs_precede_origin_and_have_available_seven_day_window`
+and predict the first and final seven-value input
+tuples. Then explain why a zero MAE on repeated
+synthetic seasonality is not evidence of licensed
+real-world forecasting quality.
