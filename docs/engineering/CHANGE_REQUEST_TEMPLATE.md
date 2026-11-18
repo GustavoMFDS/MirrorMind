@@ -32,6 +32,13 @@
 | Downstream consumers | TBD | TBD | TBD |
 | External project/contracts | None unless demonstrated | TBD | TBD |
 
+## Data, modeling and decision review (required when applicable)
+- Reviewed [dataset card](DATASET_CARD_TEMPLATE.md) (rights, provenance, event/availability cutoffs):
+- Reviewed [forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md) (holdout, baseline, uncertainty):
+- [Decision trace](DECISION_TRACE_TEMPLATE.md) and human approval for sensitive actions:
+- [WorldKernel compatibility gate](WORLDKERNEL_GATEWAY_GATE.md) (unsupported fields and revisions):
+- Evidence for absence of temporal leakage and fabricated measurements:
+
 ## 4. Constraints and risks
 Assumptions, data formats, versioning, performance, concurrency, security, privacy, reproducibility, migration and rollback plan.
 
