@@ -22,3 +22,15 @@ Start with a **bounded** subset of the historical M5 Forecasting dataset (produc
 - API/integration tests, resource budgets and clear demo limitations.
 
 These criteria are targets, not current capabilities.
+
+## Synthetic-only preflight while M1 remains incomplete
+
+A small, local example can validate date labels and count gaps
+before any licensed dataset is obtained:
+[M1_DATA_PREFLIGHT](engineering/M1_DATA_PREFLIGHT.md).
+It runs only on explicitly invented fixture data, does
+**not** download M5 or customer data, and supplies no
+actual demand forecast. Its `usage_note`, source ID and
+snapshot ID are caller text; a real source's permission,
+publication latency, revisions and temporal availability
+require additional validation and independent evidence.

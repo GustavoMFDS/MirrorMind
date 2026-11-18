@@ -10,6 +10,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [API walkthrough](API_WALKTHROUGH.md) — each implemented HTTP route and the interface-only simulation gateway.
 - [Curated evidence map](EVIDENCE_MAP.json) — human-reviewed claim IDs mapped to cited pytest functions and explicit limitations.
 - [Capability truth ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md) — distinguish implemented/experimental/interface-only/planned capabilities; CI and API regressions detect drift.
+- [M1 synthetic observation preflight](M1_DATA_PREFLIGHT.md) — source-reviewed local demo of bounded date/cutoff validation, **not** authorized ingestion or forecasting.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.

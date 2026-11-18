@@ -63,6 +63,13 @@
       "source": null,
       "test": null,
       "notes": "ExecutionBudget validates input declarations only; actual model/compute quotas are not enforced."
+    },
+    {
+      "id": "synthetic_observation_preflight",
+      "status": "experimental",
+      "source": "examples/m1_observation_preflight.py",
+      "test": "tests/unit/test_m1_observation_preflight.py::test_synthetic_batch_is_bounded_and_reports_gaps_without_imputation",
+      "notes": "Standalone synthetic-only CLI fixture; no authenticated ingestion, verified provenance, forecasting or simulation."
     }
   ]
 }

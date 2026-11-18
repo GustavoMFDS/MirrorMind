@@ -73,6 +73,9 @@ def test_live_api_claims_equal_reviewed_capability_ledger():
     assert set(public["planned"]) == {
         item["id"] for item in capabilities if item["status"] == "planned"
     }
+    assert set(public["experimental"]) == {
+        item["id"] for item in capabilities if item["status"] == "experimental"
+    }
     assert not set(public["implemented"]) & set(public["planned"])
     assert all(item["status"] != "implemented" for item in capabilities
                if item["id"] == "simulation_gateway_protocol")

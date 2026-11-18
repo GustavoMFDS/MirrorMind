@@ -68,7 +68,8 @@ def audit(root: Path, manifest: Path) -> list[str]:
             errors.append(f"Row {index}: interface {name} needs source")
         if source is not None:
             try:
-                path = _local(root, source, "src/", ".py")
+                source_prefix = "examples/" if source.startswith("examples/") else "src/"
+                path = _local(root, source, source_prefix, ".py")
                 if not path.is_file():
                     errors.append(f"Row {index}: missing source {source}")
             except ValueError as exc:

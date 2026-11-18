@@ -169,3 +169,22 @@ test_live_api_claims_equal_reviewed_capability_ledger`.
 Adding a feature without updating the implementation, tests,
 API claim list, atlas and ledger is now a review failure.
 Structural checks are **not** authorization or research validation.
+
+## 9. M1 experimental synthetic daily data preflight
+
+**Synthetic-only teaching slice; not a real evidence/forecast/agent capability.**
+
+| File | Purpose |
+| --- | --- |
+| [`examples/m1_observation_preflight.py`](../../examples/m1_observation_preflight.py) | Standalone bounded preflight and redacted CLI; never contacts a real source |
+| [`examples/synthetic-daily-sales.json`](../../examples/synthetic-daily-sales.json) | Invented daily counts with explicit gaps/cutoff |
+| [`tests/unit/test_m1_observation_preflight.py`](../../tests/unit/test_m1_observation_preflight.py) | Exact integer, canonical date, future cutoff, duplication and bounded array regressions |
+| [`tests/integration/test_m1_observation_preflight_cli.py`](../../tests/integration/test_m1_observation_preflight_cli.py) | Successful subprocess summary, byte cap and non-echoed error input |
+| [`docs/engineering/M1_DATA_PREFLIGHT.md`](M1_DATA_PREFLIGHT.md) | Reviewed source-method walkthrough and synthetic-data limitations |
+| [`docs/engineering/changes/MM-M1A-synthetic-preflight.md`](changes/MM-M1A-synthetic-preflight.md) | Impact map, accepted bounded task, independent reproduction and trust gaps |
+
+The `/v1/capabilities` route exposes this as `experimental`,
+not as implemented external ingestion. No recorded values
+are asserted to belong to any real retailer or authorized
+dataset. A future production ingestion module must be
+separately reviewed, authorized and tested.

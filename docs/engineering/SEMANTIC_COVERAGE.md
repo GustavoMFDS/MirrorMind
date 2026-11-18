@@ -73,3 +73,16 @@ For tracked test references see
 [EVIDENCE_MAP.json](EVIDENCE_MAP.json). That map verifies
 claim identifiers and test names, **not the semantic truth
 of a claimed effect**.
+
+## Initial M1 demonstration outside the production Python package
+
+| Experiment | Status and evidence |
+| --- | --- |
+| [`examples/m1_observation_preflight.py`](../../examples/m1_observation_preflight.py) | **Experimental** standalone CLI; see [M1_DATA_PREFLIGHT](M1_DATA_PREFLIGHT.md) and [unit tests](../../tests/unit/test_m1_observation_preflight.py). This is **not** a new production `src/mirrormind/modules/evidence` implementation. |
+
+The reviewed capability ledger declares
+`synthetic_observation_preflight` `experimental`;
+all live evidence/RAG and forecasting capabilities remain
+`planned`. The generated catalog still indexes the
+11 production source modules; example scripts are navigated
+through the full repository atlas.

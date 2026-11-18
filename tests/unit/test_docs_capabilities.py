@@ -79,3 +79,18 @@ def test_planned_capability_can_exist_without_code_but_needs_caveat(tmp_path):
         json.dumps({"schema_version": "1", "capabilities": [row]}), encoding="utf-8"
     )
     assert "meaningful caveat" in "\n".join(guard.audit(tmp_path, manifest))
+
+
+def test_experimental_example_path_requires_real_implementation(tmp_path):
+    row, manifest, _test = _fixture(tmp_path)
+    example = tmp_path / "examples/m1_observation_preflight.py"
+    example.parent.mkdir(parents=True)
+    example.write_text("def validate_batch(data):\n    return data\n", encoding="utf-8")
+    row.update({
+        "status": "experimental",
+        "source": "examples/m1_observation_preflight.py",
+    })
+    manifest.write_text(
+        json.dumps({"schema_version": "1", "capabilities": [row]}), encoding="utf-8"
+    )
+    assert guard.audit(tmp_path, manifest) == []

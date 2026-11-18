@@ -32,7 +32,11 @@ At the initial baseline the status is `scaffold`.
 The only publicly implemented claims are `health` and
 `scenario_contract_validation`; the
 `simulation_gateway_protocol` is `interface_only`
-and must not appear in the implemented set.
+and must not appear in the implemented set. The new
+`synthetic_observation_preflight` is a standalone
+**experimental local fixture**, exposed under a separate
+`experimental` list; it is not authorized ingestion,
+forecasting or a production endpoint.
 
 ## 2. Change gate for any future externally visible capability
 
