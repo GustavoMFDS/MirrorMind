@@ -327,3 +327,25 @@ license attestation. The staged CSV parser and
 offline baseline evaluator **do not** approve
 source rights and should not be used to bypass
 this no-go gate.
+
+## 16. Per-origin diagnostics for existing offline evaluation
+
+No additional source module is introduced. The
+[`backtest_staged_snapshot`](../../src/mirrormind/modules/forecasting/baselines.py)
+return value now includes a **bounded, deterministic**
+`origin_audit` with nonvalue status records for
+each requested evaluation day, distinguishing
+missing targets, delayed publication and unavailable
+history from scored origins.
+
+| New tracked artifact | Purpose |
+| --- | --- |
+| [`docs/engineering/changes/MM-M1C-origin-audit-ledger.md`](changes/MM-M1C-origin-audit-ledger.md) | Accepted scope and adverse regression criteria for the local diagnostic |
+
+See the [source-method guide](M1_STAGED_ROLLING_BASELINES.md),
+[updated unit tests](../../tests/unit/test_staged_rolling_baselines.py)
+and [claim references](EVIDENCE_MAP.json).
+The list is internal diagnostic metadata, **not**
+an authenticated, immutable external audit log or
+permission grant. Source rights and production inference
+remain unimplemented.
