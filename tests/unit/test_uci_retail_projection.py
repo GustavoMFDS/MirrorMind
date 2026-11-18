@@ -1,6 +1,6 @@
 """Bounded UCI-shaped transaction projections use only invented row mappings."""
 from dataclasses import FrozenInstanceError
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -150,7 +150,7 @@ def test_invalid_stock_code_rejected_without_echoing_content(stock):
 
 
 @pytest.mark.parametrize("when", ["2011-01-05", None,
-                                 datetime(2011, 1, 5, tzinfo=timezone.utc),
+                                 datetime(2011, 1, 5, tzinfo=UTC),
                                  True])
 def test_event_datetime_is_not_an_authenticated_available_on_timestamp(when):
     with pytest.raises(ValueError, match="naive datetime"):
