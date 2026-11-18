@@ -23,7 +23,7 @@ A generative model must not fabricate measurements, forecasts or business perfor
 MirrorMind → `SimulationGateway` protocol → optional **independent** WorldKernel adapter. WorldKernel must not import MirrorMind. MirrorMind should boot without WorldKernel and its advanced simulation endpoint must report unavailable until configured.
 
 ## Initial status
-Only the HTTP application, typed scenario contract, budget **input validation**, and a gateway Protocol are implemented. Budgets are **not enforced at execution** yet. No agents, RAG, forecasting, workers, multi-tenant auth or simulation endpoints exist.
+Only the HTTP application, typed scenario contract, budget **input validation**, and a gateway Protocol are implemented in `src/`. A standalone synthetic daily-observation preflight under `examples/` is experimental, not live source ingestion or forecasting. Budgets are **not enforced at execution** yet. No agents, RAG, forecasting, workers, multi-tenant auth or simulation endpoints exist.
 
 ## Delivery philosophy
 Start as a modular monolith with replaceable workers and strong interface boundaries. Add Redis, Postgres, pgvector, DuckDB, LangGraph, OpenTelemetry, Docker workers and infrastructure only as needed by working features and tests.
