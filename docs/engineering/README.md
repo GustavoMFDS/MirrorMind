@@ -12,6 +12,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Capability truth ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md) — distinguish implemented/experimental/interface-only/planned capabilities; CI and API regressions detect drift.
 - [M1 synthetic observation preflight](M1_DATA_PREFLIGHT.md) — source-reviewed local demo of bounded date/cutoff validation, **not** authorized ingestion or forecasting.
 - [M1 synthetic rolling backtest](M1_TEMPORAL_BACKTEST.md) — two fixed one-step baselines, true rolling-prefix tests, an independent exercise and honest synthetic [data](datasets/SYNTHETIC_WEEKLY_CARD.md)/[model](model_cards/SYNTHETIC_WEEKLY_BASELINES.md) cards.
+- [M1 synthetic as-of availability](M1_AVAILABILITY_PRECHECK.md) — independently test observation date versus declared publication date, with a [toy dataset card](datasets/SYNTHETIC_AVAILABILITY_CARD.md).
 - [M1 delivery plan](M1_EXECUTION_PLAN.md) — evidence-before-model dependency order and independent gates.
 - [Dataset card](DATASET_CARD_TEMPLATE.md), [forecast model card](FORECAST_MODEL_CARD_TEMPLATE.md), [decision trace](DECISION_TRACE_TEMPLATE.md) — mandatory future provenance, evaluation and human-review templates.
 - [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — explicit version mapping and fail-closed input compatibility before a real adapter exists.
