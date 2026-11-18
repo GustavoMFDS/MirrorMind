@@ -215,3 +215,47 @@ two distinct statuses and counters. Explain why a
 reviewer should consider the excluded dates before
 claiming one model is superior, and why merely
 printing an audit list does not make it authentic.
+
+
+## 7. Minimum history counts rows, not calendar age
+
+Earlier code tested the **oldest** staged observation
+against `min_history_days`. One ancient row could
+therefore satisfy an apparent 14-day history requirement
+even when fewer than 14 observations existed before
+the first target. The accepted rule is now:
+
+```text
+observed_rows_with_event_date_before_first_holdout
+    >= min_history_days
+```
+
+This is a **count of unique staged observation dates for
+the selected series**, not elapsed calendar time or a claim
+that all these dates were independently published. The
+snapshot parser already rejects duplicate series/date
+records. Actual seven-day rolling history still requires
+a **contiguous, published** window for each target; when
+one is missing, the corresponding origin abstains.
+The minimum-history preflight does **not** fill holes,
+train a model or bypass that per-origin availability check.
+
+The evaluator now also rejects a holdout whose start
+would precede the earliest supported ISO calendar day
+with a deliberate `ValueError`, rather than leaking
+a `datetime.OverflowError`.
+
+| Claim | Negative or boundary test | Limitation |
+| --- | --- | --- |
+| **MM-HIST-001** | `tests/unit/test_staged_rolling_baselines.py::test_min_history_counts_observations_not_one_ancient_row` | Actual row counts do not establish real publisher provenance or statistical representativeness |
+| **MM-HIST-002** | `tests/unit/test_staged_rolling_baselines.py::test_earliest_supported_calendar_cutoff_fails_cleanly_not_overflow` | Clean calendar failure does not prove safe real-data ingestion or permission checking |
+| **MM-HIST-003** | `tests/unit/test_staged_rolling_baselines.py::test_custom_history_minimum_is_an_observation_count` | The threshold checks record count only; missing/late series remain subject to other gates |
+
+**Independent exercise:** keep January 1 and only
+January 22–February 4 of the synthetic fixture.
+Predict why a 14-observation prehistory fails even
+though the oldest event is four weeks before the
+holdout. Lower the count threshold to seven and
+explain why the three late-publication abstentions
+still apply. Do not infer source permission or
+generalized forecasting accuracy from either result.
