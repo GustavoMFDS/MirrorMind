@@ -100,3 +100,23 @@ rights and retention even for aggregate
 reports; internal checks do not authenticate
 source provenance, legal permissions or
 publication-time history.
+
+## UCI-shaped retail projection does not authorize upstream files
+
+The [retail-domain projection](engineering/UCI_RETAIL_PROJECTION.md)
+is a bounded **in-memory** transformation, not
+a dataset acquisition or permissions service.
+It does not access `CustomerID`,
+`Description`, `UnitPrice` or `Country`
+values supplied in extra mapping columns.
+However, a caller may already have processed
+sensitive rows. Its outputs still contain
+product codes, event dates and aggregate
+counts, which can be business-sensitive.
+Enforce access control and retention before
+processing approved customer data, and keep
+raw workbook files and identifiers out of
+Git, logs and model prompts.
+The original UCI source review still requires
+attribution/privacy approval; event timestamps
+do **not** authenticate publication times.
