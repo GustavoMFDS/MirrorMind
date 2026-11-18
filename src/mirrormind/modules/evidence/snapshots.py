@@ -13,6 +13,7 @@ from datetime import date
 from hashlib import sha256
 from hmac import compare_digest
 from io import StringIO
+from typing import BinaryIO
 
 MAX_BYTES = 1_048_576
 MAX_ROWS = 10_000
@@ -146,4 +147,39 @@ def available_as_of(
         if row.series_id == series_id
         and row.observed_on <= origin
         and row.available_on <= origin
+    )
+
+
+def read_staged_csv(
+    stream: BinaryIO, *, expected_sha256: str, max_rows: int = MAX_ROWS
+) -> StagedSnapshot:
+    """Read a cooperative local binary stream with a strict byte ceiling.
+
+    A trusted caller is responsible for opening and authorizing the
+    source. This function never opens paths, fetches remote content,
+    stores records or verifies legal permission or producer identity.
+    Short reads are not EOF; continue until the stream returns b"".
+    """
+    if not callable(getattr(stream, "read", None)):
+        raise TypeError("expected readable binary snapshot stream")
+    chunks: list[bytes] = []
+    total = 0
+    while total <= MAX_BYTES:
+        requested = min(65_536, MAX_BYTES + 1 - total)
+        try:
+            chunk = stream.read(requested)
+        except OSError:
+            raise ValueError("failed to read binary snapshot stream") from None
+        if type(chunk) is not bytes:
+            raise ValueError("snapshot stream must yield exact bytes")
+        if len(chunk) > requested:
+            raise ValueError("binary stream returned more than requested")
+        if not chunk:
+            break
+        chunks.append(chunk)
+        total += len(chunk)
+    if total > MAX_BYTES:
+        raise ValueError("snapshot exceeds byte limit")
+    return stage_csv_snapshot(
+        b"".join(chunks), expected_sha256=expected_sha256, max_rows=max_rows
     )

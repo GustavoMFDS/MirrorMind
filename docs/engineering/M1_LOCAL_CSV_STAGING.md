@@ -139,3 +139,75 @@ the old digest: why does the integrity comparison reject?
 What if you also replace the expected digest? Explain why
 that is still not proof of a real producer's permission or
 the observation's accuracy.
+
+
+## 6. Bounded stream reader (MM-M1b local extension)
+
+A future source-specific adapter should not call
+`Path.read_bytes()` on an unbounded file and rely
+solely on `stage_csv_snapshot` to reject it
+*after the full file has already been loaded*.
+The new
+[`read_staged_csv`](../../src/mirrormind/modules/evidence/snapshots.py)
+accepts a **caller-opened binary stream**, reads at most
+`MAX_BYTES + 1` bytes in chunks of at most 65,536 bytes,
+then hands the **complete** bytes to the existing parser.
+
+```python
+from hashlib import sha256
+from pathlib import Path
+from mirrormind.modules.evidence.snapshots import read_staged_csv
+
+example = Path("examples/staged-daily-observations.csv")
+# Demo only: the hash comes from the same invented fixture.
+expected = sha256(example.read_bytes()).hexdigest()
+with example.open("rb") as stream:
+    staged = read_staged_csv(stream, expected_sha256=expected)
+assert staged.receipt()["status"] == "local_structure_checked_not_authorized"
+```
+
+The `read_bytes()` call above is **only for the
+small, checked-in synthetic fixture used in this
+example**. For actual sources, obtain the expected
+digest from a separately trusted, reviewed manifest;
+never compute it from untrusted bytes and treat
+the match as provenance or permission evidence.
+
+### Reader behavior and boundaries
+
+| Input | Result |
+| --- | --- |
+| A normal short local binary fixture | Same digest and `StagedSnapshot` as the bytes-only parser |
+| A cooperative stream returning partial chunks | Continue until genuine EOF; do not mistake a short read for the complete file |
+| More than 1 MiB available | Stop after observing the `MAX_BYTES+1` sentinel and refuse before loading the remainder |
+| Stream yielding text, non-bytes, or more than the requested chunk | Reject without interpreting content |
+| Stream raising `OSError` | Raise a generic `ValueError` without including sensitive path/credential text |
+| Valid stream but wrong digest, bad CSV rows or `max_rows` too low | Preserve existing fail-closed parser behavior |
+
+This is **not a file opener**, secure network connector,
+sandbox, rate limiter, customer-data authorization system,
+or guarantee against arbitrary/malicious Python objects
+that violate the stream contract. The caller owns
+source selection, file permissions, transport and
+lifecycle. The function does not log, persist or
+send data to an LLM, WorldKernel or third party.
+It is a bounded structural reader, **not a new
+implemented Evidence Engine**.
+
+### Additional curated claims
+
+| Claim | Exact test | Limit of evidence |
+| --- | --- | --- |
+| **MM-STRM-001** | `tests/unit/test_evidence_snapshots.py::test_partial_stream_reads_continue_until_eof_and_do_not_accept_prefix_hash` | Prevents accepting partial bytes as complete from a cooperative stream, but does not authenticate the source |
+| **MM-STRM-002** | `tests/unit/test_evidence_snapshots.py::test_bounded_reader_rejects_oversized_stream_before_full_read` | Enforces a local byte ceiling; a custom reader could still allocate outside this function |
+| **MM-STRM-003** | `tests/unit/test_evidence_snapshots.py::test_bounded_reader_sanitizes_read_failures` | A generic exception message does not establish an application-wide logging/redaction guarantee |
+| **MM-STRM-004** | `tests/integration/test_local_snapshot_flow.py::test_bounded_file_stream_stages_exactly_same_invented_fixture` | Local fixture ingestion has no approved real-data grant, real publication proof or deployed connector |
+
+**Independent exercise:** make a mock stream return
+two bytes at a time and confirm the final SHA-256
+covers the whole fixture. Then append untrusted
+bytes while reusing the original digest, and
+predict the mismatch. Finally, explain why these
+checks would be insufficient to authorize reading
+a customer's file or a Kaggle dataset whose
+terms have not been reviewed.

@@ -229,5 +229,33 @@
     "test": "tests/unit/test_staged_rolling_baselines.py",
     "function": "test_custom_history_minimum_is_an_observation_count",
     "limitation": "The parameter checks unique staged events before the holdout, not consecutive publication-complete days or genuine forecast performance."
+  },
+  {
+    "id": "MM-STRM-001",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_partial_stream_reads_continue_until_eof_and_do_not_accept_prefix_hash",
+    "limitation": "Full byte reads and mismatched prefix digest handling do not prove publisher authenticity or authorized use."
+  },
+  {
+    "id": "MM-STRM-002",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_bounded_reader_rejects_oversized_stream_before_full_read",
+    "limitation": "A byte ceiling bounds this function's cooperative stream consumption, not arbitrary upstream sources, transports or memory allocations."
+  },
+  {
+    "id": "MM-STRM-003",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_bounded_reader_sanitizes_read_failures",
+    "limitation": "Generic read-failure messages do not guarantee future application logs or customer privacy policies are safe."
+  },
+  {
+    "id": "MM-STRM-004",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/integration/test_local_snapshot_flow.py",
+    "function": "test_bounded_file_stream_stages_exactly_same_invented_fixture",
+    "limitation": "A checked-in synthetic fixture is not evidence of licensed real-data ingestion, source approval or publisher release timestamps."
   }
 ]

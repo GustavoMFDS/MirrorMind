@@ -57,3 +57,17 @@ The next real-data milestone must include an
 independently reviewed source grant, approved
 retention/distribution scope and actual
 publication-time provenance before acquisition.
+
+## Bounded reading does not authorize data access
+
+The [local bounded stream staging function](engineering/M1_LOCAL_CSV_STAGING.md)
+is a limited resource-control primitive.
+A trusted caller supplies an open binary
+stream; the function does not choose a path,
+authenticate source rights, verify a publisher
+or authorize users. Its generic `OSError`
+translation avoids copying paths into the
+direct exception text but is not a system-wide
+logging/redaction policy. Preserve independent
+access-control, privacy, licensing and
+retention reviews before any real-data use.

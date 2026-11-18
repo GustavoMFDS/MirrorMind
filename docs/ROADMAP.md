@@ -154,3 +154,15 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   cover fail-closed behavior. Historical
   source permissions and genuine predictive
   validation remain outstanding.
+
+- **MM-M1b bounded reader — experimental local primitive:**
+  `read_staged_csv` adds chunked reads and
+  fail-closed 1 MiB input enforcement
+  before the [existing snapshot parser](engineering/M1_LOCAL_CSV_STAGING.md),
+  with tests for partial data, oversize
+  streams, incorrect read types, generic
+  errors and digest integrity. This avoids
+  using an unbounded file read in later
+  approved-source adapters but does **not**
+  add one, authenticate publishers, license
+  M5 or make the Evidence Engine operational.

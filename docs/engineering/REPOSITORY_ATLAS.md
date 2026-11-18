@@ -367,3 +367,25 @@ abstentions are unchanged.
 Neither a row count nor a passing date check
 authenticates real source records, data rights,
 or forecasting validity.
+
+## 18. Bounded local stream stage — limit bytes before CSV parsing
+
+The existing [evidence staging module](../../src/mirrormind/modules/evidence/snapshots.py)
+now exposes `read_staged_csv(stream, expected_sha256)`
+for a **caller-opened** binary stream. It reads
+in 64 KiB-or-smaller chunks with a 1 MiB+1 sentinel,
+then invokes the unchanged strict in-memory
+CSV/row/date/digest parser. It is not a source
+opener, license gate or authenticated ingester.
+
+| New tracked file | Review role |
+| --- | --- |
+| [`docs/engineering/changes/MM-M1B-bounded-stream.md`](changes/MM-M1B-bounded-stream.md) | Byte-cap and failure-mode acceptance; source permission must be independently approved |
+
+The [method guide](M1_LOCAL_CSV_STAGING.md),
+[unit tests](../../tests/unit/test_evidence_snapshots.py),
+[integration test](../../tests/integration/test_local_snapshot_flow.py)
+and [claim-to-test map](EVIDENCE_MAP.json)
+cover partial reads, byte limits, generic errors
+and complete digest matching. **No real-data
+access permission is established here.**
