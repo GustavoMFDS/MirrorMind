@@ -72,9 +72,14 @@ def backtest_staged_snapshot(
     series = tuple(row for row in snapshot.observations if row.series_id == series_id)
     if not series:
         raise ValueError("unknown or empty staged series")
+    if cutoff.toordinal() < holdout_days:
+        raise ValueError("evaluation window predates supported calendar range")
     first_holdout = cutoff - timedelta(days=holdout_days - 1)
-    if series[0].observed_on > first_holdout - timedelta(days=min_history_days):
-        raise ValueError("insufficient event-day history before holdout")
+    # A distant old row does not prove the requested number of observations.
+    # Count actual distinct staged dates, not elapsed calendar time.
+    prior_count = sum(row.observed_on < first_holdout for row in series)
+    if prior_count < min_history_days:
+        raise ValueError("insufficient observed event-day history before holdout")
     by_day = {row.observed_on: row for row in series}
     forecast_values: dict[str, list[float]] = {name: [] for name in BASELINES}
     actual_values: list[int] = []
