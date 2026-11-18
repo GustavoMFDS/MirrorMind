@@ -97,3 +97,13 @@ The `forecasting` capability remains **planned**; the
 new `synthetic_rolling_backtest` is **experimental** and
 evaluates exactly two predeclared heuristics on invented data.
 Its outcome does not generalize to actual retail demand.
+
+## M1b local as-of availability learning
+
+| Experiment | Scope |
+| --- | --- |
+| [`examples/m1_availability_preflight.py`](../../examples/m1_availability_preflight.py) | **Experimental** source-backed publication-time gate for generated records; see [guide](M1_AVAILABILITY_PRECHECK.md) and [unit tests](../../tests/unit/test_m1_availability_preflight.py). No verified real source or executable evidence module. |
+
+The `evidence_and_rag` capability remains **planned**;
+`synthetic_asof_availability` is a self-contained local
+teaching example, not an authorized data ingestion service.
