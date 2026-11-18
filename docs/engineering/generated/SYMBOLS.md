@@ -93,16 +93,17 @@ No top-level classes or functions.
 
 Source: [`src/mirrormind/modules/evidence/snapshots.py`](../../../src/mirrormind/modules/evidence/snapshots.py)
 
-Static imports (including inside functions): `__future__`, `csv`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `io`, `re`
+Static imports (including inside functions): `__future__`, `csv`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `io`, `re`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `Observation` | class | `class Observation` | One structurally checked row; its publisher and meaning remain unverified. | [L24](../../../src/mirrormind/modules/evidence/snapshots.py#L24) |
-| `StagedSnapshot` | class | `class StagedSnapshot` | In-memory immutable receipt with observations, NOT an authorized dataset. | [L34](../../../src/mirrormind/modules/evidence/snapshots.py#L34) |
-| `StagedSnapshot.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Report structure and digest only, without returning raw observations. | [L40](../../../src/mirrormind/modules/evidence/snapshots.py#L40) |
-| `_day` | function | `def _day(text: str) -> date` | Accept only canonical ISO calendar dates, never ambiguous local timestamps. | [L50](../../../src/mirrormind/modules/evidence/snapshots.py#L50) |
-| `stage_csv_snapshot` | function | `def stage_csv_snapshot(data: bytes, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Verify declared bytes, then reject malformed/ambiguous daily CSV rows. | [L63](../../../src/mirrormind/modules/evidence/snapshots.py#L63) |
-| `available_as_of` | function | `def available_as_of(snapshot: StagedSnapshot, *, series_id: str, origin_on: str) -> tuple[Observation, ...]` | Select only dates and values published by this *historical* origin. | [L127](../../../src/mirrormind/modules/evidence/snapshots.py#L127) |
+| `Observation` | class | `class Observation` | One structurally checked row; its publisher and meaning remain unverified. | [L25](../../../src/mirrormind/modules/evidence/snapshots.py#L25) |
+| `StagedSnapshot` | class | `class StagedSnapshot` | In-memory immutable receipt with observations, NOT an authorized dataset. | [L35](../../../src/mirrormind/modules/evidence/snapshots.py#L35) |
+| `StagedSnapshot.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Report structure and digest only, without returning raw observations. | [L41](../../../src/mirrormind/modules/evidence/snapshots.py#L41) |
+| `_day` | function | `def _day(text: str) -> date` | Accept only canonical ISO calendar dates, never ambiguous local timestamps. | [L51](../../../src/mirrormind/modules/evidence/snapshots.py#L51) |
+| `stage_csv_snapshot` | function | `def stage_csv_snapshot(data: bytes, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Verify declared bytes, then reject malformed/ambiguous daily CSV rows. | [L64](../../../src/mirrormind/modules/evidence/snapshots.py#L64) |
+| `available_as_of` | function | `def available_as_of(snapshot: StagedSnapshot, *, series_id: str, origin_on: str) -> tuple[Observation, ...]` | Select only dates and values published by this *historical* origin. | [L128](../../../src/mirrormind/modules/evidence/snapshots.py#L128) |
+| `read_staged_csv` | function | `def read_staged_csv(stream: BinaryIO, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Read a cooperative local binary stream with a strict byte ceiling. | [L153](../../../src/mirrormind/modules/evidence/snapshots.py#L153) |
 
 ## `mirrormind.modules.forecasting.__init__`
 
