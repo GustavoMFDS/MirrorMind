@@ -10,7 +10,6 @@ from mirrormind.modules.evidence.snapshots import (
     stage_csv_snapshot,
 )
 
-
 HEADER = b"series_id,observed_on,available_on,units\n"
 ROWS = (
     b"item-A,2025-01-01,2025-01-01,2\n"
