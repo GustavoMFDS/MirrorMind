@@ -57,3 +57,15 @@ regression. Explain why `SimulationGateway` is an interface and why
 a declared budget and a passing scenario validation do not qualify as
 implemented forecasting or world simulation. Identify the precise
 provenance and negative tests required for your first M1 feature.
+
+## Guided exercise 9 — synthetic observation gaps are not zero demand (30 minutes)
+
+Read [M1 preflight](M1_DATA_PREFLIGHT.md) and run the standalone
+synthetic fixture. Predict the missing day count before comparing
+the result with
+`tests/unit/test_m1_observation_preflight.py::
+test_synthetic_batch_is_bounded_and_reports_gaps_without_imputation`.
+Then append one future-dated row and verify its rejection.
+Explain why the test only proves **date labels** are bounded
+and not historical source availability, license consent,
+forecast reliability or simulation safety.
