@@ -1,0 +1,68 @@
+{
+  "schema_version": "1",
+  "capabilities": [
+    {
+      "id": "health",
+      "status": "implemented",
+      "source": "src/mirrormind/api/routes/system.py",
+      "test": "tests/integration/test_api.py::test_health",
+      "notes": "Process liveness only: no database, worker or dependent service readiness checks."
+    },
+    {
+      "id": "scenario_contract_validation",
+      "status": "implemented",
+      "source": "src/mirrormind/api/routes/scenarios.py",
+      "test": "tests/integration/test_api.py::test_scenario_validation_only",
+      "notes": "Pydantic shape and limited cross-field validation only; not evidence authorization or scenario execution."
+    },
+    {
+      "id": "simulation_gateway_protocol",
+      "status": "interface_only",
+      "source": "src/mirrormind/modules/simulation/gateway.py",
+      "test": null,
+      "notes": "Only a typed Protocol and SimulationSummary exist; no concrete adapter or enabled execution."
+    },
+    {
+      "id": "evidence_and_rag",
+      "status": "planned",
+      "source": null,
+      "test": null,
+      "notes": "No authorized ingestion, retrieval, permissions, provenance verification or RAG execution."
+    },
+    {
+      "id": "forecasting",
+      "status": "planned",
+      "source": null,
+      "test": null,
+      "notes": "No fitted forecasting models, temporal backtesting or uncertainty calibration."
+    },
+    {
+      "id": "agentic_orchestration",
+      "status": "planned",
+      "source": null,
+      "test": null,
+      "notes": "No tool-using AI agents, action approval or governed execution workflows."
+    },
+    {
+      "id": "worldkernel_adapter",
+      "status": "planned",
+      "source": null,
+      "test": null,
+      "notes": "WorldKernel is independent; no versioned adapter translating and executing scenarios."
+    },
+    {
+      "id": "decision_evaluation",
+      "status": "planned",
+      "source": null,
+      "test": null,
+      "notes": "No reproducible decision ranking, objective comparison, or approved intervention execution."
+    },
+    {
+      "id": "cost_governance_enforcement",
+      "status": "planned",
+      "source": null,
+      "test": null,
+      "notes": "ExecutionBudget validates input declarations only; actual model/compute quotas are not enforced."
+    }
+  ]
+}
