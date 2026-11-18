@@ -16,6 +16,8 @@ jobs:
         run: python scripts/docs/catalog.py --check
       - name: Verify linked repository atlas and Markdown links
         run: python scripts/docs/coverage.py --check
+      - name: Verify curated reviewed claim and pytest references
+        run: python scripts/docs/evidence.py --check
       - name: Build source symbol catalog
         run: |
           python scripts/docs/catalog.py --write

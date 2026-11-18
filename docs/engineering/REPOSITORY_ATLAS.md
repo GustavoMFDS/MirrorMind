@@ -127,3 +127,28 @@ python -m ruff check src tests
 
 The atlas guard verifies existence and navigability, not runtime
 tests or semantic completeness. The Python API CI runs tests separately.
+
+
+## 7. Reviewed semantic lessons and curated evidence integrity
+
+The initial learning guides are **source-reviewed explanations of what
+exists today**, not descriptions of hypothetical deployed AI systems:
+
+| File | Purpose and limits |
+| --- | --- |
+| [`docs/engineering/CONTRACT_WALKTHROUGH.md`](CONTRACT_WALKTHROUGH.md) | Pydantic version 0.1 field and cross-field rules, unverified evidence/forecast references, independent exercises |
+| [`docs/engineering/API_WALKTHROUGH.md`](API_WALKTHROUGH.md) | Real FastAPI route handlers, expected statuses, declared capabilities and interface-only simulation gateway |
+| [`docs/engineering/SEMANTIC_COVERAGE.md`](SEMANTIC_COVERAGE.md) | Qualitative current-module guide versus interface/index-only status, explicit planned feature gaps |
+| [`docs/engineering/EVIDENCE_MAP.json`](EVIDENCE_MAP.json) | Curated claim identifiers linking guides and real test function declarations with **limitations**, not semantic proof |
+| [`scripts/docs/evidence.py`](../../scripts/docs/evidence.py) | Verify claim IDs, guide/test path existence, cited paths and actual top-level pytest declarations |
+| [`tests/unit/test_docs_evidence.py`](../../tests/unit/test_docs_evidence.py) | Regression tests for missing/broken evidence and deliberate negative cases |
+
+```bash
+python scripts/docs/evidence.py --check
+```
+
+A passing guard means references **exist**. It does not
+run tests, inspect assertions, validate scientific reasoning,
+prove consent/retention or certify AI decisions. Each
+functional PR still requires an independently reviewed,
+actually executed regression and truthful status.

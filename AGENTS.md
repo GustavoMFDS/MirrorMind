@@ -9,11 +9,11 @@ Read [the engineering knowledge hub](docs/engineering/README.md) before editing 
 4. Implement the smallest appropriate change, add or update tests, and do not silently broaden the scope.
 5. Update human-written documentation in the same PR: [system map](docs/engineering/SYSTEM_MAP.md), relevant docs under docs/, [debugging](docs/engineering/DEBUGGING.md), [learning](docs/engineering/LEARNING.md), and a decision log entry only when a decision is actually approved.
 6. Regenerate the source symbol catalog using `python scripts/docs/catalog.py --write` when source changes. Verify with `python scripts/docs/catalog.py --check`. Never hand-edit the generated file. **In the same PR**, add a real Markdown link in [the reviewed repository atlas](docs/engineering/REPOSITORY_ATLAS.md) for every new tracked code, config, test or document path; run `python scripts/docs/coverage.py --check`. Plain filenames do not satisfy the guard.
-7. Run relevant tests and lint; report what was actually executed, outcomes, limitations and any deferred work. Do not use a passing AST/atlas guard as proof of semantic completeness or correctness. No claims of CI success until verified.
+7. Run relevant tests and lint; report what was actually executed, outcomes, limitations and any deferred work. For reviewed claims in [the evidence map](docs/engineering/EVIDENCE_MAP.json), cite the actual test **file and top-level function**, add an explicit limitation, and run `python scripts/docs/evidence.py --check`. This checks references, not test execution or claim semantics. Do not use a passing AST/atlas guard as proof of semantic completeness or correctness. No claims of CI success until verified.
 8. Keep project boundaries intact. Cross-project compatibility is handled by explicit, versioned contracts and separate PRs; never quietly edit another repository or introduce a hard dependency.
 
 ## Integrity and safety
-- Never invent implemented features, test results, function behavior or system guarantees.
+- Never invent implemented features, test results, function behavior or system guarantees. Every new evidence/forecast/simulation/agent capability must distinguish `implemented`, `interface-only`, `experimental` and `planned`, and update `/v1/capabilities` truthfully when externally visible.
 - Avoid untrusted arbitrary execution, exposing tokens, personal data, or copying customer payloads into logs/docs.
 - Follow existing licensing, threat-model and research-quality restrictions.
 - Explain the likely cause of an incident as a hypothesis until reproduced or supported by evidence.
