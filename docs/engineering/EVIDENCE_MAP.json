@@ -285,5 +285,33 @@
     "test": "tests/integration/test_local_snapshot_flow.py",
     "function": "test_quality_summary_from_bounded_file_reader_remains_non_authorizing",
     "limitation": "Staging an invented local fixture and summarizing it does not establish real-data provenance, authorization or model accuracy."
+  },
+  {
+    "id": "MM-UCI-001",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_positive_rows_aggregate_by_product_calendar_day_without_raw_ids",
+    "limitation": "Aggregation and excluded-line counts on invented rows do not establish reconciled real sales, true demand, inventory or permissions."
+  },
+  {
+    "id": "MM-UCI-002",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_customer_columns_are_not_accessed_or_serialized",
+    "limitation": "Output minimization cannot guarantee secure handling by upstream XLSX readers, callers, logs or privacy-governance policies."
+  },
+  {
+    "id": "MM-UCI-003",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_row_limit_is_enforced_on_iterator_without_materialization",
+    "limitation": "Bounding in-memory row iteration does not cap unimplemented workbook decompression, overall input byte size or external source acquisition."
+  },
+  {
+    "id": "MM-UCI-004",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/integration/test_uci_retail_projection_flow.py",
+    "function": "test_retail_projection_preserves_unknown_release_time_and_cannot_be_staged_directly",
+    "limitation": "Refusing to invent historical publication timestamps is not independent evidence of true publisher release times or source data rights."
   }
 ]
