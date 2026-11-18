@@ -115,7 +115,7 @@ def test_bad_evaluation_calendar_and_unknown_series_fail_closed():
 
 
 def test_short_history_does_not_implicitly_train_on_holdout():
-    with pytest.raises(ValueError, match="insufficient event-day history"):
+    with pytest.raises(ValueError, match="insufficient observed event-day history"):
         backtest_staged_snapshot(
             staged(), series_id="item-A", evaluation_on="2025-01-15", holdout_days=7
         )
@@ -204,3 +204,52 @@ def test_all_abstained_audit_has_no_fabricated_scores():
     assert report["scored_origins"] == 0
     assert report["metrics"] is None
     assert report["lower_mae_on_scored_origins_only"] is None
+
+
+def test_min_history_counts_observations_not_one_ancient_row():
+    raw = (ROOT / "examples/staged-weekly-availability.csv").read_bytes()
+    lines = raw.splitlines(keepends=True)
+    # 1 ancient row + the last 14 event days: only 8 preceding Jan 29,
+    # despite the earliest date being almost a month before the holdout.
+    reduced = b"".join(lines[:2] + lines[-14:])
+    snapshot = stage_csv_snapshot(
+        reduced, expected_sha256=sha256(reduced).hexdigest()
+    )
+    with pytest.raises(ValueError, match="insufficient observed event-day history"):
+        backtest_staged_snapshot(
+            snapshot, series_id="item-A", evaluation_on="2025-02-04"
+        )
+    allowed = backtest_staged_snapshot(
+        snapshot, series_id="item-A", evaluation_on="2025-02-04",
+        min_history_days=7,
+    )
+    assert allowed["requested_origins"] == 7
+    assert allowed["scored_origins"] == 4
+    assert allowed["abstained_missing_history"] == 3
+
+
+def test_earliest_supported_calendar_cutoff_fails_cleanly_not_overflow():
+    raw = (
+        b"series_id,observed_on,available_on,units\n"
+        b"item-A,0001-01-01,0001-01-01,1\n"
+    )
+    snapshot = stage_csv_snapshot(raw, expected_sha256=sha256(raw).hexdigest())
+    with pytest.raises(ValueError, match="evaluation window predates"):
+        backtest_staged_snapshot(
+            snapshot, series_id="item-A", evaluation_on="0001-01-03",
+            holdout_days=7, min_history_days=7,
+        )
+
+
+def test_custom_history_minimum_is_an_observation_count():
+    snap = staged()
+    with pytest.raises(ValueError, match="insufficient observed event-day history"):
+        backtest_staged_snapshot(
+            snap, series_id="item-A", evaluation_on="2025-02-04",
+            min_history_days=29,
+        )
+    report = backtest_staged_snapshot(
+        snap, series_id="item-A", evaluation_on="2025-02-04",
+        min_history_days=28,
+    )
+    assert report["scored_origins"] == 4

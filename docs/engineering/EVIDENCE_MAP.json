@@ -208,5 +208,26 @@
     "test": "tests/unit/test_staged_rolling_baselines.py",
     "function": "test_all_abstained_audit_has_no_fabricated_scores",
     "limitation": "Reporting all abstentions with null scores is not a guarantee of reliable forecasting or authorized access."
+  },
+  {
+    "id": "MM-HIST-001",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_min_history_counts_observations_not_one_ancient_row",
+    "limitation": "The negative sparse-history fixture establishes an event-row threshold, not source rights or authenticated publisher timestamps."
+  },
+  {
+    "id": "MM-HIST-002",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_earliest_supported_calendar_cutoff_fails_cleanly_not_overflow",
+    "limitation": "Guarding calendar boundaries is a local error-handling property, not evidence of production ingestion or statistical reliability."
+  },
+  {
+    "id": "MM-HIST-003",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_custom_history_minimum_is_an_observation_count",
+    "limitation": "The parameter checks unique staged events before the holdout, not consecutive publication-complete days or genuine forecast performance."
   }
 ]

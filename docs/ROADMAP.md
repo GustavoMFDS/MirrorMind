@@ -144,3 +144,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   on complete abstention. This is local review metadata,
   not durable audit storage or authenticated evidence;
   real data rights and model validity remain open.
+
+- **MM-M1c negative precondition fix:** the
+  [offline baseline evaluator](engineering/M1_STAGED_ROLLING_BASELINES.md)
+  now requires the configured number of
+  **recorded pre-holdout observations**, rather
+  than relying on a single ancient event date.
+  Sparse-history and earliest-calendar regressions
+  cover fail-closed behavior. Historical
+  source permissions and genuine predictive
+  validation remain outstanding.

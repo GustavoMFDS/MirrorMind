@@ -349,3 +349,21 @@ The list is internal diagnostic metadata, **not**
 an authenticated, immutable external audit log or
 permission grant. Source rights and production inference
 remain unimplemented.
+
+## 17. Observed minimum-history contract correction
+
+The existing [staged rolling evaluator](../../src/mirrormind/modules/forecasting/baselines.py)
+now validates that `min_history_days` represents
+the **number of recorded pre-holdout dates**, not
+the age of the oldest row. The [method walkthrough](M1_STAGED_ROLLING_BASELINES.md)
+cites the sparse-history and early-calendar
+negative tests. Its per-origin release-date
+abstentions are unchanged.
+
+| Newly tracked file | Why it matters |
+| --- | --- |
+| [`docs/engineering/changes/MM-M1C-min-history-regression.md`](changes/MM-M1C-min-history-regression.md) | Reproduction, acceptance and trust boundaries for the corrected minimum-history precondition |
+
+Neither a row count nor a passing date check
+authenticates real source records, data rights,
+or forecasting validity.

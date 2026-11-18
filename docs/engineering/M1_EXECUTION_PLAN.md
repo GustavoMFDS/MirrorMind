@@ -144,3 +144,16 @@ distribution scope, snapshot lineage and data
 availability assumptions. A mirror's availability
 is not a rights approval; consider another source
 if M5 terms cannot be confirmed.
+
+## Minimum-history invariant, independent of model accuracy
+
+The offline staged evaluator now interprets
+`min_history_days` as a **minimum number of
+recorded pre-holdout event dates**, not as
+elapsed age from one old row. See
+[negative history regressions](M1_STAGED_ROLLING_BASELINES.md).
+Even a complete pre-holdout row count is not
+proof that a publisher had released those values
+at each forecast origin; the separate as-of
+seven-day checks still determine which
+individual predictions may be scored.
