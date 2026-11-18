@@ -107,3 +107,17 @@ and why a rolling one-step assessment must not be advertised
 as a fixed-origin seven-day forecast. Finally, contrast a
 missing day with a measured zero; the first must trigger
 abstention in this demonstration.
+
+## Guided exercise 11 — event time versus availability time (30 minutes)
+
+Read [synthetic as-of availability](M1_AVAILABILITY_PRECHECK.md)
+and run the standalone example. Before execution,
+predict why January 3 is absent from the January 6
+eligible total even though the event occurred before
+the cutoff. Trace
+`tests/unit/test_m1_availability_preflight.py::
+test_unavailable_value_change_cannot_change_eligible_aggregate`.
+Change its count and explain why the January 6
+aggregate remains unaffected. Then identify the
+provenance evidence necessary to verify actual
+publication timing for a real-world dataset.
