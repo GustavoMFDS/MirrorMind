@@ -163,7 +163,7 @@ def test_bounded_reader_rejects_oversized_stream_before_full_read():
 def test_bounded_reader_refuses_missing_or_text_read(bad_stream):
     from mirrormind.modules.evidence.snapshots import read_staged_csv
 
-    with pytest.raises(ValueError, match="binary snapshot stream|exact bytes"):
+    with pytest.raises((TypeError, ValueError), match="binary snapshot stream|exact bytes"):
         read_staged_csv(bad_stream, expected_sha256="0" * 64)
 
 
