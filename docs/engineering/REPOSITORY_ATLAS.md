@@ -152,3 +152,20 @@ run tests, inspect assertions, validate scientific reasoning,
 prove consent/retention or certify AI decisions. Each
 functional PR still requires an independently reviewed,
 actually executed regression and truthful status.
+
+## 8. Capability-claim integrity and the API-facing truth boundary
+
+| File | What it enforces |
+| --- | --- |
+| [`docs/engineering/CAPABILITY_LEDGER.json`](CAPABILITY_LEDGER.json) | Reviewed statuses `implemented`, `interface_only`, `planned`, `experimental`, `deferred` with source/test pointers and caveats |
+| [`docs/engineering/CAPABILITY_GATES.md`](CAPABILITY_GATES.md) | When a capability may legitimately be promoted, including provenance, trust, budgets and empirical evidence |
+| [`scripts/docs/capabilities.py`](../../scripts/docs/capabilities.py) | Schema/status, duplicate ID and source/pytest selector integrity checks; **not** behavior verification |
+| [`tests/unit/test_docs_capabilities.py`](../../tests/unit/test_docs_capabilities.py) | Negative regressions for missing evidence, unknown status and duplicate claims |
+
+The live `/v1/capabilities` endpoint is additionally compared against
+the reviewed implemented/planned sets in
+`tests/integration/test_api.py::
+test_live_api_claims_equal_reviewed_capability_ledger`.
+Adding a feature without updating the implementation, tests,
+API claim list, atlas and ledger is now a review failure.
+Structural checks are **not** authorization or research validation.
