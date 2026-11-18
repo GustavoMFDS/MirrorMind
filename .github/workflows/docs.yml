@@ -18,6 +18,8 @@ jobs:
         run: python scripts/docs/coverage.py --check
       - name: Verify curated reviewed claim and pytest references
         run: python scripts/docs/evidence.py --check
+      - name: Verify reviewed capability status and source/test evidence
+        run: python scripts/docs/capabilities.py --check
       - name: Build source symbol catalog
         run: |
           python scripts/docs/catalog.py --write
