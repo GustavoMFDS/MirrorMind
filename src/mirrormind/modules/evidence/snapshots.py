@@ -161,7 +161,7 @@ def read_staged_csv(
     Short reads are not EOF; continue until the stream returns b"".
     """
     if not callable(getattr(stream, "read", None)):
-        raise ValueError("expected readable binary snapshot stream")
+        raise TypeError("expected readable binary snapshot stream")
     chunks: list[bytes] = []
     total = 0
     while total <= MAX_BYTES:
