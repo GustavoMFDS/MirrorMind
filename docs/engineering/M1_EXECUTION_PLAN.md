@@ -91,3 +91,13 @@ be able to answer:
 Which assumptions and costs govern it? What test
 would disprove this conclusion? What does the
 system still not know?**
+
+## Synthetic as-of training slice (does not complete M1b)
+
+The [M1 availability preflight](M1_AVAILABILITY_PRECHECK.md)
+now tests claimed observation versus publication dates
+on a **generated** fixture. This is useful groundwork
+for preventing a simple form of temporal leakage, but
+the M1b acceptance gate remains unchanged: real
+dataset rights, provenance, availability proof,
+revision history, privacy and retention checks.

@@ -59,3 +59,14 @@ scores. It has **no real demand, source permissions, stock/lead
 time measurements or predictive validity**, and does not satisfy
 the retail MVP criteria for a permitted M5 snapshot, independent
 holdout, uncertainty or WorldKernel scenario evaluation.
+
+## Event time and publication time are separate
+
+The [synthetic as-of example](engineering/M1_AVAILABILITY_PRECHECK.md)
+now illustrates how data dated before a forecast cutoff
+could nevertheless be published later and must not enter
+past-origin features. Both times are invented and
+**not** verified from a real dataset. Genuine M5 or
+other authorized data will require a reviewed
+[dataset card](engineering/DATASET_CARD_TEMPLATE.md)
+and an independently enforced temporal availability rule.

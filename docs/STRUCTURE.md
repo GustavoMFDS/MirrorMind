@@ -76,3 +76,12 @@ The [M1 evaluation guide](engineering/M1_TEMPORAL_BACKTEST.md)
 and [synthetic model card](engineering/model_cards/SYNTHETIC_WEEKLY_BASELINES.md)
 describe a fixed one-step toy comparison, not a new API endpoint,
 model-serving layer or WorldKernel integration.
+
+## Synthetic-only publication-time experiment
+
+[`examples/m1_availability_preflight.py`](../examples/m1_availability_preflight.py)
+and [`examples/synthetic-asof-sales.json`](../examples/synthetic-asof-sales.json)
+are local teaching fixtures, not modules inside the
+production evidence engine or forecast service.
+Read [M1 availability](engineering/M1_AVAILABILITY_PRECHECK.md)
+and the corresponding [synthetic dataset card](engineering/datasets/SYNTHETIC_AVAILABILITY_CARD.md).
