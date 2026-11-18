@@ -9,6 +9,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Contracts walkthrough](CONTRACT_WALKTHROUGH.md) — stepwise Pydantic validation and its limits: input shape is not authorized evidence or simulation.
 - [API walkthrough](API_WALKTHROUGH.md) — each implemented HTTP route and the interface-only simulation gateway.
 - [Curated evidence map](EVIDENCE_MAP.json) — human-reviewed claim IDs mapped to cited pytest functions and explicit limitations.
+- [Capability truth ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md) — distinguish implemented/experimental/interface-only/planned capabilities; CI and API regressions detect drift.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.
@@ -34,6 +35,7 @@ python scripts/docs/catalog.py --write
 python scripts/docs/catalog.py --check
 python scripts/docs/coverage.py --check
 python scripts/docs/evidence.py --check
+python scripts/docs/capabilities.py --check
 python -m pytest -q
 python -m ruff check src tests
 ```
