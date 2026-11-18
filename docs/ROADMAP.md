@@ -191,3 +191,19 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   It **does not** verify source authenticity,
   dataset rights, actual customer demand
   or readiness of a real Evidence Engine.
+
+- **MM-M1b retail-domain UCI-shaped projection (experimental):**
+  [source-method guide](engineering/UCI_RETAIL_PROJECTION.md)
+  and negative regression tests accompany
+  `domains/retail/uci_transactions.py`, which
+  aggregates strictly positive fictional
+  invoice-line counts by stock code/event
+  calendar date, excluding cancelled and
+  nonpositive rows with separate counters.
+  Extra customer, invoice, description and
+  price values are not emitted. The output's
+  publication-time status remains **unknown**;
+  this is **not** an XLSX reader, licensed
+  real-data adapter or independently evaluated
+  forecast. M1b authorization/provenance
+  and M1c empirical holdout remain open.
