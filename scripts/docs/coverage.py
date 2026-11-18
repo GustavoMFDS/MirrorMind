@@ -40,11 +40,20 @@ def tracked_paths(root: Path) -> set[str]:
 
 
 def markdown_links(text: str) -> list[str]:
-    """Find ordinary inline Markdown links, ignoring fenced/inline code."""
-    no_blocks = re.sub(r"(?ms)^\x60\x60\x60.*?^\x60\x60\x60[ \t]*$", "", text)
-    no_code = re.sub(r"\x60[^\x60\n]*\x60", "", no_blocks)
-    return re.findall(r"(?<!!)\[[^\]\n]+\]\(([^)\s]+)\)", no_code)
+    """Find Markdown links even with code-formatted labels.
 
+    A link displayed *inside* inline code is not a navigable link.
+    A code-formatted label, e.g. [`module.py`](module.py), is valid.
+    """
+    no_blocks = re.sub(r"(?ms)^\x60\x60\x60.*?^\x60\x60\x60[ \t]*$", "", text)
+    code_spans = [
+        match.span() for match in re.finditer(r"\x60[^\x60\n]*\x60", no_blocks)
+    ]
+    found: list[str] = []
+    for match in re.finditer(r"(?<!!)\[[^\]\n]+\]\(([^)\s]+)\)", no_blocks):
+        if not any(start <= match.start() < end for start, end in code_spans):
+            found.append(match.group(1))
+    return found
 
 def local_target(root: Path, document: Path, href: str) -> Path | None:
     url = unquote(href.split("#", 1)[0])
