@@ -91,6 +91,13 @@
       "source": "examples/m1_asof_rolling_backtest.py",
       "test": "tests/unit/test_m1_asof_rolling_backtest.py::test_late_weekly_observation_causes_three_safe_abstentions",
       "notes": "Standalone toy rolling evaluation using declared publication dates with explicit skipped origins; no verified source, operational forecast or business decision."
+    },
+    {
+      "id": "local_csv_snapshot_preflight",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/snapshots.py",
+      "test": "tests/unit/test_evidence_snapshots.py::test_asof_excludes_late_publication_but_keeps_real_zero",
+      "notes": "Strict in-memory CSV structure and as-of selection, not authorized source acquisition, verified publisher provenance, audited data retention or real evidence/RAG ingestion."
     }
   ]
 }
