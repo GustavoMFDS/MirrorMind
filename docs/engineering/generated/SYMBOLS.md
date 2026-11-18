@@ -102,7 +102,7 @@ Static imports (including inside functions): `__future__`, `csv`, `dataclasses`,
 | `StagedSnapshot.receipt` | method | `def receipt(self) -> dict[str, str | int]` | Report structure and digest only, without returning raw observations. | [L40](../../../src/mirrormind/modules/evidence/snapshots.py#L40) |
 | `_day` | function | `def _day(text: str) -> date` | Accept only canonical ISO calendar dates, never ambiguous local timestamps. | [L50](../../../src/mirrormind/modules/evidence/snapshots.py#L50) |
 | `stage_csv_snapshot` | function | `def stage_csv_snapshot(data: bytes, *, expected_sha256: str, max_rows=MAX_ROWS) -> StagedSnapshot` | Verify declared bytes, then reject malformed/ambiguous daily CSV rows. | [L63](../../../src/mirrormind/modules/evidence/snapshots.py#L63) |
-| `available_as_of` | function | `def available_as_of(snapshot: StagedSnapshot, *, series_id: str, origin_on: str) -> tuple[Observation, ...]` | Select only dates and values published by this *historical* origin. | [L125](../../../src/mirrormind/modules/evidence/snapshots.py#L125) |
+| `available_as_of` | function | `def available_as_of(snapshot: StagedSnapshot, *, series_id: str, origin_on: str) -> tuple[Observation, ...]` | Select only dates and values published by this *historical* origin. | [L127](../../../src/mirrormind/modules/evidence/snapshots.py#L127) |
 
 ## `mirrormind.modules.simulation.__init__`
 
