@@ -29,3 +29,21 @@ The catalog captures syntax; use official Python docs, implementation and tests 
 5. Draft a future evidence/forecast/simulation flow that keeps observed data, predictions and simulated results distinct, without claiming that it exists.
 
 You should be able to add a contract field, test a route and explain compatibility before agent-led feature work.
+## Guided exercise 6 — input validation is not execution (30 minutes)
+
+Read [the contract walkthrough](CONTRACT_WALKTHROUGH.md) and follow
+`ScenarioSpec.check_budget` into
+`tests/unit/test_contracts.py::test_exceeding_budget_rejected`.
+For a nonempty `EvidenceRef.observed_until`, explain why the string
+is not an authenticated timestamp or a temporal leakage check.
+Trace the HTTP endpoint in [API walkthrough](API_WALKTHROUGH.md).
+Write which capabilities are implemented, interface-only or merely
+planned according to [the semantic map](SEMANTIC_COVERAGE.md).
+
+## Guided exercise 7 — can this claim be reproduced? (20 minutes)
+
+Choose an ID in [the evidence map](EVIDENCE_MAP.json), open its
+guide, source and actual test. Predict the assertion before running
+`python -m pytest -q`. Explain how a test could pass while the
+accompanying broader prose remains unproved. Document the environment,
+limit and next regression you would add.
