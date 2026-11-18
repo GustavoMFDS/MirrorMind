@@ -275,3 +275,21 @@ What additional source release history, authorization,
 deduplication policy and real-data signoff are required
 before such data could be used for a historical
 forecast or WorldKernel scenario?
+
+## Guided exercise 22 — inspect a workbook without claiming source approval
+
+Read the [UCI-shaped XLSX guide](UCI_WORKBOOK_READER.md)
+and locate `_bounded_read`, `_check_zip_members`
+and `read_uci_workbook`.
+Explain why ZIP compressed and uncompressed
+sizes require separate resource checks and
+why even these do not make an arbitrary
+malicious workbook safe.
+Read `tests/unit/test_uci_workbook.py::
+test_bounded_row_and_group_limits_do_not_truncate`.
+Construct a two-row **fictional** workbook,
+set `max_rows=1`, and explain why
+a truncating "success" would be scientifically
+misleading. What rights, source hash,
+privacy review and publication-time
+proof would a real source still need?

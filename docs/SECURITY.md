@@ -120,3 +120,23 @@ Git, logs and model prompts.
 The original UCI source review still requires
 attribution/privacy approval; event timestamps
 do **not** authenticate publication times.
+
+## A bounded XLSX reader is not hostile-file isolation
+
+The optional [UCI-shaped workbook reader](engineering/UCI_WORKBOOK_READER.md)
+checks compressed input length, caller-declared
+SHA-256, ZIP member sizes/ratios and forbidden
+active content markers before invoking a
+read-only `openpyxl` parser on an in-memory
+stream. These checks reduce some input risks
+but **do not** sandbox malicious XML, guarantee
+CPU/memory limits or confer legal source
+authorization. The caller must independently
+approve source rights and privacy, and
+no original UCI customer data belongs in
+source control, logs or test fixtures.
+Extra spreadsheet fields may be parsed
+internally by openpyxl; only the four
+reviewed transaction columns are forwarded
+to the application projection. Its output
+remains business-sensitive, not declassified.

@@ -31,7 +31,8 @@ MirrorMind/
 │   │   ├── __init__.py
 │   │   └── retail/
 │   │       ├── __init__.py
-│   │       └── uci_transactions.py  # Offline UCI-shaped invented row aggregation
+│   │       ├── uci_transactions.py  # Offline UCI-shaped invented row aggregation
+│   │       └── uci_workbook.py      # Optional bounded local XLSX edge
 │   └── modules/
 │       ├── evidence/
 │       │   ├── __init__.py
@@ -149,3 +150,20 @@ and [unit](../tests/unit/test_uci_retail_projection.py) /
 [integration](../tests/integration/test_uci_retail_projection_flow.py)
 regressions. This is not a live connector
 or WorldKernel simulation adapter.
+
+## Experimental local XLSX edge (not full UCI ingestion)
+
+[`src/mirrormind/domains/retail/uci_workbook.py`](../src/mirrormind/domains/retail/uci_workbook.py)
+adds an **optional, read-only** XLSX stream parser
+with compressed/uncompressed resource checks,
+a source-declared digest and a fixed eight-column
+sheet contract. It reuses
+[`uci_transactions.py`](../src/mirrormind/domains/retail/uci_transactions.py)
+for privacy-minimized, positive-line product/day
+aggregates, without inventing historical
+`available_on` timestamps.
+Read the [method guide](engineering/UCI_WORKBOOK_READER.md)
+and [fictional data card](engineering/datasets/SYNTHETIC_UCI_XLSX_CARD.md).
+Its present row cap intentionally refuses the
+original full UCI dataset; nothing is downloaded
+or licensed by the reader itself.

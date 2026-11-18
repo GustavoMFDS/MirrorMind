@@ -313,5 +313,33 @@
     "test": "tests/integration/test_uci_retail_projection_flow.py",
     "function": "test_retail_projection_preserves_unknown_release_time_and_cannot_be_staged_directly",
     "limitation": "Refusing to invent historical publication timestamps is not independent evidence of true publisher release times or source data rights."
+  },
+  {
+    "id": "MM-XLSX-001",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_xlsx_stage_projects_positive_units_and_never_copies_sensitive_values",
+    "limitation": "Fictional XLSX projection demonstrates selected output minimization, not authorized source rights, original publisher identity or customer privacy compliance."
+  },
+  {
+    "id": "MM-XLSX-002",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_zip_compression_ratio_bomb_header_rejected",
+    "limitation": "An archive compression ratio guard cannot guarantee isolation against malicious XML, ZIP parser vulnerabilities, CPU exhaustion or untrusted file processing."
+  },
+  {
+    "id": "MM-XLSX-003",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_bounded_row_and_group_limits_do_not_truncate",
+    "limitation": "Rejecting workbooks above a small row/group limit does not establish whole-dataset UCI source processing or historical data validity."
+  },
+  {
+    "id": "MM-XLSX-004",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/integration/test_uci_workbook_flow.py",
+    "function": "test_synthetic_local_xlsx_file_to_product_day_projection",
+    "limitation": "Fictional local XLSX test does not use real UCI records, independently proven first-availability dates, trained models or WorldKernel."
   }
 ]

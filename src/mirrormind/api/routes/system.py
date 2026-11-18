@@ -22,6 +22,7 @@ def capabilities() -> dict[str, object]:
             "local_csv_snapshot_preflight",
             "local_staged_rolling_baselines",
             "local_uci_transaction_projection",
+            "local_uci_xlsx_reader",
         ],
         "planned": [
             "evidence_and_rag",

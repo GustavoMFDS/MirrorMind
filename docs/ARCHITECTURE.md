@@ -46,3 +46,19 @@ No UCI workbook reader, licensed source ingestion,
 historical publisher release evidence, data warehouse,
 live forecast, agent or WorldKernel dependency
 has been introduced.
+
+## Optional bounded UCI-shaped workbook edge
+
+The retail domain now has an **experimental**
+[`uci_workbook.py`](../src/mirrormind/domains/retail/uci_workbook.py)
+reader for small caller-selected, locally opened
+XLSX streams, using an optional `openpyxl`
+dependency. It does not open URLs/paths itself,
+authenticate rights, provide a general malicious
+file sandbox, or accept the full original
+UCI dataset with its current row cap.
+It delegates the transaction semantics to
+[`uci_transactions.py`](../src/mirrormind/domains/retail/uci_transactions.py),
+and deliberately produces no verified
+first-availability times or deployable forecast.
+See the [source-method guide](engineering/UCI_WORKBOOK_READER.md).

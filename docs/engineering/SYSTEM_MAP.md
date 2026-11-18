@@ -16,6 +16,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
 | Project offline UCI-shaped retail rows | [`domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py), [source guide](UCI_RETAIL_PROJECTION.md) | [unit](../../tests/unit/test_uci_retail_projection.py) and [integration](../../tests/integration/test_uci_retail_projection_flow.py) tests on invented rows only; **no as-of availability assertion** |
+| Read a small trusted UCI-shaped XLSX file offline | [`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), [source guide](UCI_WORKBOOK_READER.md) | [unit](../../tests/unit/test_uci_workbook.py) and [integration](../../tests/integration/test_uci_workbook_flow.py) tests; no real-file access approval or full official dataset support |
 | Introduce real evidence connectors/RAG | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md), [data card](DATASET_CARD_TEMPLATE.md) | Separate source-specific permission/provenance tests required |
 | Evaluate local staged rolling baselines | [`modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py), [method guide](M1_STAGED_ROLLING_BASELINES.md) | [unit](../../tests/unit/test_staged_rolling_baselines.py) and [integration](../../tests/integration/test_staged_rolling_flow.py) tests on invented data only |
 | Introduce real forecasting service | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | Approved snapshot, locked independent holdout, calibrated risk and serving/permission tests |
@@ -71,3 +72,22 @@ UCI `InvoiceDate` is **event time**, not
 verified first availability. A separate licensed,
 reviewed source-adapter and publication policy
 are required. See [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
+
+## Optional UCI-shaped workbook edge (not an API endpoint)
+
+Trusted caller already opens a selected local XLSX
+-> `read_uci_workbook` reads bounded compressed
+bytes, checks digest/ZIP metadata/sheet/schema ->
+passes only `InvoiceNo`, `StockCode`,
+`Quantity`, `InvoiceDate` through the
+existing bounded retail projection ->
+returns a non-authorized digest-coupled
+positive-line product/day receipt.
+
+The original UCI source is **not** downloaded
+or automatically trusted. Customer and invoice
+fields may be parsed inside the workbook library
+but are not forwarded to the retail projection.
+Event date is still not proven publication
+date, so no direct historical forecast
+or WorldKernel scenario input is authorized.

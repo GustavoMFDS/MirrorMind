@@ -455,3 +455,32 @@ Capability `local_uci_transaction_projection` is
 has not been imported or approved for this code path.
 The platform's `evidence_and_rag` and
 `forecasting` remain **planned**.
+
+## 22. Optional bounded local XLSX reader (synthetic and unapproved)
+
+The new [UCI-shaped workbook reader](../../src/mirrormind/domains/retail/uci_workbook.py)
+uses `openpyxl` as an **optional** dependency
+and accepts only a trusted caller's already-opened
+binary stream. It checks compressed bytes,
+the caller-provided digest, ZIP metadata,
+a fixed worksheet/header and row/group caps
+before returning the existing privacy-minimized
+retail projection. **No original UCI dataset
+was downloaded or made available.**
+
+| Tracked path | Review responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | Bounded XLSX byte/ZIP read and fixed UCI-shaped sheet validation; no external file or URL opening |
+| [`tests/unit/test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py) | Synthetic Excel, short/oversized reads, ZIP metadata, wrong sheet/header, digest, formula and customer-field guards |
+| [`tests/integration/test_uci_workbook_flow.py`](../../tests/integration/test_uci_workbook_flow.py) | Small temporary fictional XLSX to product/day records with publication-time unknown |
+| [`docs/engineering/UCI_WORKBOOK_READER.md`](UCI_WORKBOOK_READER.md) | Source-reviewed contracts, exact budgets, caveats and independent learning exercise |
+| [`docs/engineering/datasets/SYNTHETIC_UCI_XLSX_CARD.md`](datasets/SYNTHETIC_UCI_XLSX_CARD.md) | Test-generated fictional workbook card, no real customer source or rights claim |
+| [`docs/engineering/changes/MM-M1B-bounded-uci-xlsx-reader.md`](changes/MM-M1B-bounded-uci-xlsx-reader.md) | Accepted narrow scope and outstanding authorization/security blockers |
+
+The optional `uci` extra is declared in
+[`pyproject.toml`](../../pyproject.toml);
+the regular Python package has no mandatory XLSX
+dependency. The `local_uci_xlsx_reader` capability
+is **experimental**; this supports neither the
+complete original UCI dataset nor production
+evidence ingestion or historical forecast claims.

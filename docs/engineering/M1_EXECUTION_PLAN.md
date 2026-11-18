@@ -216,3 +216,20 @@ records test-only semantics. Licensed real-data
 ingestion, privacy signoff, attribution and
 publisher availability remain independent,
 unfulfilled acceptance gates.
+
+## Optional local XLSX edge — rights/availability gates remain open
+
+The [bounded UCI-shaped XLSX reader](UCI_WORKBOOK_READER.md)
+now accepts a caller-opened, locally selected
+stream using an optional `openpyxl` extra,
+strict ZIP and SHA-256 checks and an exact
+synthetic workbook sheet/header before
+using the existing product/day projection.
+Its [invented-fixture card](datasets/SYNTHETIC_UCI_XLSX_CARD.md)
+records tests without real source files.
+The original 541,909-row dataset exceeds
+the present 10k-row acceptance budget.
+This does **not** complete the M1b real
+data-source gate, solve cancellations,
+grant source rights, certify customer privacy
+or establish historical publication times.
