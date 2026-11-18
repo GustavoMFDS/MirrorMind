@@ -157,3 +157,16 @@ proof that a publisher had released those values
 at each forecast origin; the separate as-of
 seven-day checks still determine which
 individual predictions may be scored.
+
+## Bounded stream entrypoint for a future approved local source
+
+The [local CSV staging module](M1_LOCAL_CSV_STAGING.md)
+now accepts a caller-opened binary stream
+via `read_staged_csv` and reads no more than
+1 MiB+1 bytes before strict parsing. This is
+a useful resource boundary for a **future**
+source-specific adapter and reduces the risk
+of reading an entire oversized file first.
+It still does not open, authenticate, approve,
+retain or govern real datasets. M1b permission
+and availability verification remain open.
