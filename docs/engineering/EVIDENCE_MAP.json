@@ -257,5 +257,33 @@
     "test": "tests/integration/test_local_snapshot_flow.py",
     "function": "test_bounded_file_stream_stages_exactly_same_invented_fixture",
     "limitation": "A checked-in synthetic fixture is not evidence of licensed real-data ingestion, source approval or publisher release timestamps."
+  },
+  {
+    "id": "MM-QUAL-001",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_quality.py",
+    "function": "test_quality_report_distinguishes_explicit_zero_from_absent_day",
+    "limitation": "A per-series gap count between recorded days is not proof of genuine missing sales or customer demand."
+  },
+  {
+    "id": "MM-QUAL-002",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_quality.py",
+    "function": "test_quality_publication_lag_is_declared_not_source_authenticated",
+    "limitation": "The apparent release delay comes from caller-supplied dates, not verified external publisher records."
+  },
+  {
+    "id": "MM-QUAL-003",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_quality.py",
+    "function": "test_quality_does_not_echo_series_names_or_raw_count_values",
+    "limitation": "An aggregate synthetic summary alone cannot prove tenant isolation, privacy compliance or rights to customer records."
+  },
+  {
+    "id": "MM-QUAL-004",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/integration/test_local_snapshot_flow.py",
+    "function": "test_quality_summary_from_bounded_file_reader_remains_non_authorizing",
+    "limitation": "Staging an invented local fixture and summarizing it does not establish real-data provenance, authorization or model accuracy."
   }
 ]
