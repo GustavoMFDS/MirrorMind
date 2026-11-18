@@ -107,3 +107,12 @@ Its outcome does not generalize to actual retail demand.
 The `evidence_and_rag` capability remains **planned**;
 `synthetic_asof_availability` is a self-contained local
 teaching example, not an authorized data ingestion service.
+
+## Per-origin availability-aware synthetic learning
+
+| Experiment | Review boundary |
+| --- | --- |
+| [`examples/m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py) | **Experimental** only. Combines the declared two-timestamp gate with one-step lag-7 forecasts, including explicit abstentions. See [source-method guide](M1_ASOF_ROLLING_EVALUATION.md) and [unit tests](../../tests/unit/test_m1_asof_rolling_backtest.py). No real source data or production inference. |
+
+Neither the `forecasting` nor the `evidence_and_rag`
+capability is implemented by these teaching scripts.

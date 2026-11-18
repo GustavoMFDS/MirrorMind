@@ -85,3 +85,14 @@ are local teaching fixtures, not modules inside the
 production evidence engine or forecast service.
 Read [M1 availability](engineering/M1_AVAILABILITY_PRECHECK.md)
 and the corresponding [synthetic dataset card](engineering/datasets/SYNTHETIC_AVAILABILITY_CARD.md).
+
+## As-of availability-aware backtest demonstration
+
+[`examples/m1_asof_rolling_backtest.py`](../examples/m1_asof_rolling_backtest.py)
+and [`examples/synthetic-asof-weekly-sales.json`](../examples/synthetic-asof-weekly-sales.json)
+reproduce the previously separate toy data-availability
+and baseline methods. The
+[guide](engineering/M1_ASOF_ROLLING_EVALUATION.md),
+[dataset card](engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md)
+and [model card](engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md)
+document their deliberately narrow experimental scope.

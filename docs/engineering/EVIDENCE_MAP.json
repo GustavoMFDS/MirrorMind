@@ -110,5 +110,26 @@
     "test": "tests/unit/test_m1_availability_preflight.py",
     "function": "test_published_before_observation_rejected",
     "limitation": "Date order is a local input constraint rather than verified publication provenance or permission for data use."
+  },
+  {
+    "id": "MM-ASOF-001",
+    "guide": "docs/engineering/M1_ASOF_ROLLING_EVALUATION.md",
+    "test": "tests/unit/test_m1_asof_rolling_backtest.py",
+    "function": "test_late_weekly_observation_causes_three_safe_abstentions",
+    "limitation": "The three withheld origins and four synthetic scores are based on invented publication dates, not actual source availability."
+  },
+  {
+    "id": "MM-ASOF-002",
+    "guide": "docs/engineering/M1_ASOF_ROLLING_EVALUATION.md",
+    "test": "tests/unit/test_m1_asof_rolling_backtest.py",
+    "function": "test_origin_inputs_use_only_full_last_seven_available_dates",
+    "limitation": "Checks explicit seven-day windows only, not late source revisions, hidden future features or data rights."
+  },
+  {
+    "id": "MM-ASOF-003",
+    "guide": "docs/engineering/M1_ASOF_ROLLING_EVALUATION.md",
+    "test": "tests/unit/test_m1_asof_rolling_backtest.py",
+    "function": "test_all_origins_can_abstain_without_fake_scores",
+    "limitation": "Explicit null metrics on missing history do not provide independently evaluated forecast accuracy or decision readiness."
   }
 ]

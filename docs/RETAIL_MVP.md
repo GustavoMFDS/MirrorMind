@@ -70,3 +70,14 @@ past-origin features. Both times are invented and
 other authorized data will require a reviewed
 [dataset card](engineering/DATASET_CARD_TEMPLATE.md)
 and an independently enforced temporal availability rule.
+
+## Synthetic rolling scores require complete as-of history
+
+The [as-of rolling example](engineering/M1_ASOF_ROLLING_EVALUATION.md)
+demonstrates how a deliberately late publication causes
+three of seven toy forecast origins to abstain, leaving
+four scored synthetic days. This is **not** an
+empirical forecasting result. Real evaluation must
+preserve both temporal availability and scored-origin
+coverage across models, source revisions, permission
+constraints and genuinely held-out periods.

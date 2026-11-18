@@ -84,6 +84,13 @@
       "source": "examples/m1_availability_preflight.py",
       "test": "tests/unit/test_m1_availability_preflight.py::test_late_publication_is_excluded_even_when_event_date_precedes_cutoff",
       "notes": "Local synthetic as-of filter using declared observation and availability dates only; no verified source metadata, authorized ingestion or real evidence engine."
+    },
+    {
+      "id": "synthetic_asof_rolling_backtest",
+      "status": "experimental",
+      "source": "examples/m1_asof_rolling_backtest.py",
+      "test": "tests/unit/test_m1_asof_rolling_backtest.py::test_late_weekly_observation_causes_three_safe_abstentions",
+      "notes": "Standalone toy rolling evaluation using declared publication dates with explicit skipped origins; no verified source, operational forecast or business decision."
     }
   ]
 }

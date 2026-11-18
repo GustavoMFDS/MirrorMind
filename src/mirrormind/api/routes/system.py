@@ -18,6 +18,7 @@ def capabilities() -> dict[str, object]:
             "synthetic_observation_preflight",
             "synthetic_rolling_backtest",
             "synthetic_asof_availability",
+            "synthetic_asof_rolling_backtest",
         ],
         "planned": [
             "evidence_and_rag",

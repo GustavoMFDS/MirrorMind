@@ -76,3 +76,18 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   missing/duplicate records and bounded generic CLI
   errors. This **does not** implement real M5 ingestion,
   authenticate source timestamps or establish data rights.
+
+- **MM-M1b/M1c bridge — Synthetic as-of rolling assessment
+  (still experimental):** source-reviewed
+  [joint availability-aware evaluation](engineering/M1_ASOF_ROLLING_EVALUATION.md)
+  reuses two simple historical baselines but refuses
+  to score past origins that lacked a complete
+  **published** seven-day history. A generated delayed
+  publication causes three abstentions, leaving
+  four matched synthetic origins for MAE/RMSE/WAPE.
+  [Dataset](engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md)
+  and [model](engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md)
+  cards record the 4/7 coverage and statistical
+  limits. This does **not** complete real M1b ingestion,
+  independent M1c model evaluation, production forecasting,
+  decision support or WorldKernel integration.

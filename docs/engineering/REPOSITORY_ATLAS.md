@@ -240,3 +240,27 @@ or WorldKernel integration has been established.
 a production evidence connector. The `evidence_and_rag`
 capability stays planned; this example intentionally
 does not attest source availability or permissions.
+
+## 12. Joint as-of and rolling synthetic evaluation
+
+This local exercise is still **experimental**. It reuses the
+generated data availability guard and the two baseline
+calculations, abstaining instead of backfilling
+unavailable history.
+
+| Tracked artifact | Why it matters |
+| --- | --- |
+| [`examples/m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py) | Only score one-day origins when seven past records were published by each origin |
+| [`examples/synthetic-asof-weekly-sales.json`](../../examples/synthetic-asof-weekly-sales.json) | Invented weekly series with Jan 27 data released Jan 31 |
+| [`tests/unit/test_m1_asof_rolling_backtest.py`](../../tests/unit/test_m1_asof_rolling_backtest.py) | Covers 3/7 abstention, historical prefixes, null scores and invalid final targets |
+| [`tests/integration/test_m1_asof_rolling_backtest_cli.py`](../../tests/integration/test_m1_asof_rolling_backtest_cli.py) | Bounded/redacted CLI behavior and synthetic score output |
+| [`docs/engineering/M1_ASOF_ROLLING_EVALUATION.md`](M1_ASOF_ROLLING_EVALUATION.md) | Source-backed methods, coverage-dependent results, independent exercise |
+| [`docs/engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md`](datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md) | Dataset generated for testing known-as-of history; no real permission |
+| [`docs/engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md`](model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md) | Evaluation scores on only four synthetic origins, with abstention caveats |
+| [`docs/engineering/changes/MM-M1C-asof-rolling-abstention.md`](changes/MM-M1C-asof-rolling-abstention.md) | Scope, risk and regression acceptance for the experimental slice |
+
+`synthetic_asof_rolling_backtest` is reported only
+as an **experimental** local program. The real
+`forecasting` and `evidence_and_rag` capabilities
+remain planned; verified publication timestamps
+and empirically valid forecasts still do not exist.
