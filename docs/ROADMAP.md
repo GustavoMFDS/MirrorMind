@@ -276,3 +276,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   past origin. Missing history, target or calibration causes abstention.
   There is **no calibrated interval or nominal coverage guarantee**;
   release declarations remain unverified and empirical forecasting is open.
+
+- **MM-M1c eligibility drift audit across adjacent fictional windows:**
+  [method guide](engineering/RETAIL_ELIGIBILITY_DRIFT.md) and
+  [negative tests](../tests/unit/test_retail_eligibility_drift.py)
+  compare aggregate evaluated-origin denominators at each window's
+  **own** cutoff. No late-release hindsight, real target distribution
+  shift inference, selection bias correction, calibrated intervals or
+  authorized ingestion is asserted.
