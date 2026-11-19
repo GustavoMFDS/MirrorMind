@@ -267,3 +267,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   exact abstention causes and never invent confidence or prediction
   intervals. This is **not** statistical calibration or empirical
   performance validation, and declared release data remain unverified.
+
+- **MM-M1c prequential residual-envelope diagnostic (experimental):**
+  [method and limitations](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
+  with [fictional negative controls](../tests/unit/test_retail_residual_envelope.py)
+  compute retrospective coverage of maximum-absolute-error heuristic
+  envelopes using only calibration outcomes declared published at each
+  past origin. Missing history, target or calibration causes abstention.
+  There is **no calibrated interval or nominal coverage guarantee**;
+  release declarations remain unverified and empirical forecasting is open.

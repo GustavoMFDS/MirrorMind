@@ -154,6 +154,13 @@
       "source": "src/mirrormind/domains/retail/coverage_gate.py",
       "test": "tests/unit/test_retail_coverage_gate.py::test_incomplete_declared_releases_suppress_model_ranking_and_report_exact_coverage",
       "notes": "Purely fictional, unverified release-aware backtest coverage threshold and conservative ranking gate. No calibrated intervals, real source permission, empirically validated demand forecasting, operational inference or WorldKernel."
+    },
+    {
+      "id": "local_retail_prequential_residual_envelope",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/residual_envelope.py",
+      "test": "tests/unit/test_retail_residual_envelope.py::test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
+      "notes": "Fictional retrospective trailing maximum-absolute-residual heuristic restricted to releases available at each origin. Not calibrated, no nominal interval guarantee, no source permission or empirical forecasting."
     }
   ]
 }

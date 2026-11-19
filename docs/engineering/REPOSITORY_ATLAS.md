@@ -539,3 +539,14 @@ stockout diagnosis, calibrated uncertainty or an operational decision path.
 
 This **does not** calibrate uncertainty, approve sources, infer zero
 sales or validate forecasting skill on an empirical dataset.
+
+## 28. Prequential residual envelope diagnostic (experimental)
+
+| Tracked path | Behavior and review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Past-only eligible absolute residuals, conservative abstention, aggregate retrospective hits, no calibrated interval |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Fictional hidden-value invariance, residual insufficiency, missing targets, malformed dates |
+| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Causal time cutoffs, traceable claims and non-production limitations |
+
+No nominal uncertainty target, statistical calibration, source rights,
+true demand or WorldKernel inference is asserted here.
