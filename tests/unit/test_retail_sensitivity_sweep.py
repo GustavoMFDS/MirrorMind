@@ -1,7 +1,7 @@
 """No-hindsight, monotone scenario-sweep regressions on invented rows."""
 from dataclasses import FrozenInstanceError
-from itertools import pairwise
 from datetime import date, datetime, timedelta
+from itertools import pairwise
 
 import pytest
 
