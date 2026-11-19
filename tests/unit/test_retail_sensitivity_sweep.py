@@ -1,5 +1,6 @@
 """No-hindsight, monotone scenario-sweep regressions on invented rows."""
 from dataclasses import FrozenInstanceError
+from itertools import pairwise
 from datetime import date, datetime, timedelta
 
 import pytest
@@ -68,9 +69,9 @@ def test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases()
     assert all(c.earlier_eligible == cases[0].earlier_eligible for c in cases)
     assert all(c.later_eligible == cases[0].later_eligible for c in cases)
     assert all(a.difference_floor >= b.difference_floor
-               for a, b in zip(cases, cases[1:]))
+               for a, b in pairwise(cases))
     assert all(a.difference_ceiling <= b.difference_ceiling
-               for a, b in zip(cases, cases[1:]))
+               for a, b in pairwise(cases))
     assert cases[-1].difference_floor < 0 < cases[-1].difference_ceiling
     assert cases[-1].direction_status == "direction_not_robust_to_declared_counterfactual_bounds"
     assert result.receipt()["selection_bias_status"] == "not_identified"
