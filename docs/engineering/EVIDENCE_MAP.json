@@ -376,5 +376,12 @@
     "test": "tests/unit/test_retail_coverage_gate.py",
     "function": "test_incomplete_declared_releases_suppress_model_ranking_and_report_exact_coverage",
     "limitation": "Thresholded matches on fictional transaction proxies do not calibrate uncertainty or prove source rights, prediction quality or true demand."
+  },
+  {
+    "id": "MM-RENV-001",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
+    "limitation": "Synthetic publisher assertions and descriptive past-max-error envelopes do not constitute calibrated prediction intervals, authentic historical evidence or empirical future coverage."
   }
 ]
