@@ -140,6 +140,13 @@
       "source": "src/mirrormind/domains/retail/declared_releases.py",
       "test": "tests/unit/test_declared_retail_releases.py::test_declared_asof_excludes_late_and_future_product_days_without_identifiers",
       "notes": "Offline, fictional-only retail cutoff audit requiring exact caller-declared release dates, not verified source publication or legal authorization. No empirical forecasts, identifier-bearing results, operational evidence engine or automatic inference of availability."
+    },
+    {
+      "id": "local_retail_release_backtest",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/release_backtest.py",
+      "test": "tests/unit/test_retail_release_backtest.py::test_missing_late_and_unpublished_days_abstain_and_models_share_origins",
+      "notes": "Fixed one-day baseline comparison on fictional positive invoice-line records with caller-declared, unverified releases. No authenticated publisher data, complete demand calendar, empirical forecast skill, production inference or WorldKernel."
     }
   ]
 }
