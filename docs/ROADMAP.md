@@ -258,3 +258,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   never zero imputation or lookahead. Release dates and positive-line sales
   remain unverified proxies, not authorized real-demand evidence, empirical
   forecasts, calibrated intervals, API serving or WorldKernel execution.
+
+- **MM-M1c retail matched-origin coverage gate (experimental):**
+  [coverage threshold review](engineering/RETAIL_COVERAGE_GATE.md) and
+  [fictional regressions](../tests/unit/test_retail_coverage_gate.py)
+  suppress conditional model ranking under a caller-defined minimum
+  matched-origin fraction (80% default, two origins minimum), report
+  exact abstention causes and never invent confidence or prediction
+  intervals. This is **not** statistical calibration or empirical
+  performance validation, and declared release data remain unverified.
