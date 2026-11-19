@@ -63,6 +63,11 @@ change any earlier-window scenario bound. Widening the caller ceiling
 cannot narrow the hypothetical difference interval. Invalid ceilings,
 missing publication declarations and ambiguous dates fail closed.
 
+Input preflight rejects invalid calibration windows, residual minimums, exact
+non-boolean day counts and evaluation dates so early they cannot support
+two windows and calibration history. Unsupported dates fail with an explicit
+validation error rather than date arithmetic overflow.
+
 Evidence claim **MM-SEL-001** maps to
 `tests/unit/test_retail_selection_sensitivity.py::test_incomplete_windows_show_unknown_days_can_reverse_apparent_difference`.
 
