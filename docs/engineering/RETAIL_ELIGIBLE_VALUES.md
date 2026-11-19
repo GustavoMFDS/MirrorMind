@@ -67,8 +67,8 @@ python scripts/docs/capabilities.py --check
 
 ## Review exercise and future acceptance
 
-Compare the same delayed-release fixture under 80% and 20% eligibility
-thresholds. The latter can expose descriptive conditional values but
+Compare the same delayed-release fixture under 80% with the three-origin default and 20% with an explicitly
+lowered two-origin minimum. The latter can expose descriptive conditional values but
 cannot repair missing data, identify excluded targets or establish
 generalizable distribution change.
 
