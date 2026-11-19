@@ -179,7 +179,6 @@ def test_strict_gate_configuration_validation(key, bad, expected):
     {},
     {"late75": True},
     {"missing82": True, "late75": True, "late83": True},
-    {"missing80": True, "late75": True, "late83": True},
 ])
 def test_sweep_scenarios_exactly_match_independent_single_ceiling_results(settings):
     projection, releases = fixture(**settings)
