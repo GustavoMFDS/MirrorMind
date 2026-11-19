@@ -302,3 +302,10 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   ceiling. Neither unknown targets nor missing dates are imputed.
   Scenario bounds are **not data-driven bounds**, statistically validated
   demand, selection-bias corrections, or a real distribution-shift claim.
+
+- **MM-OPS-A1 — Temporary quality gate during GitHub Actions quota exhaustion:**
+  [local execution guide](engineering/LOCAL_QUALITY_GATE.md) and
+  [regressions](../tests/unit/test_local_quality_gate.py) bind a six-check
+  local run to an exact clean Git commit. A passing local receipt **does
+  not claim that GitHub Actions executed or passed**. Restore official
+  CI once the quota is renewed, and retain explicit reviewer judgment.
