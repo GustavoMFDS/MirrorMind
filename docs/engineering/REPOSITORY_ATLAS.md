@@ -506,3 +506,14 @@ publisher-availability timeline or an operational forecast input.
 
 A declared schedule is **not authenticated** as an opening, collection
 or publisher calendar. Missing positive sales are never replaced by zeros.
+
+## 25. Hypothetical as-of retail release audit (experimental)
+
+| New tracked path | Reviewed scope |
+| --- | --- |
+| [`src/mirrormind/domains/retail/declared_releases.py`](../../src/mirrormind/domains/retail/declared_releases.py) | Exact caller-declared release per positive product-day and source-unverified as-of counters |
+| [`tests/unit/test_declared_retail_releases.py`](../../tests/unit/test_declared_retail_releases.py) | Fictional cutoff, withheld/future, missing, duplicate, contradictory and privacy regressions |
+| [`docs/engineering/DECLARED_RETAIL_RELEASES.md`](DECLARED_RETAIL_RELEASES.md) | Method walkthrough and source/provenance/non-production gates |
+
+A supplied release date is **not authenticated publisher provenance**,
+permission to ingest UCI, or proof of point-in-time forecast readiness.

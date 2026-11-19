@@ -133,6 +133,13 @@
       "source": "src/mirrormind/domains/retail/calendar_coverage.py",
       "test": "tests/unit/test_declared_calendar_coverage.py::test_closed_day_not_counted_as_missing_declared_observation",
       "notes": "Caller-declared, unverified schedule compared with fictional positive-line product-days. No business-opening evidence, authenticated publication dates, zero imputation, source approval or forecast readiness."
+    },
+    {
+      "id": "local_declared_retail_asof_audit",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/declared_releases.py",
+      "test": "tests/unit/test_declared_retail_releases.py::test_declared_asof_excludes_late_and_future_product_days_without_identifiers",
+      "notes": "Offline, fictional-only retail cutoff audit requiring exact caller-declared release dates, not verified source publication or legal authorization. No empirical forecasts, identifier-bearing results, operational evidence engine or automatic inference of availability."
     }
   ]
 }

@@ -355,5 +355,12 @@
     "test": "tests/unit/test_declared_calendar_coverage.py",
     "function": "test_closed_day_not_counted_as_missing_declared_observation",
     "limitation": "The schedule is an invented caller assertion; internal gaps do not prove business opening, publication time, authorized real data or demand."
+  },
+  {
+    "id": "MM-REL-001",
+    "guide": "docs/engineering/DECLARED_RETAIL_RELEASES.md",
+    "test": "tests/unit/test_declared_retail_releases.py",
+    "function": "test_declared_asof_excludes_late_and_future_product_days_without_identifiers",
+    "limitation": "Fictional caller-asserted release dates do not attest to actual historical publisher availability, dataset rights, stock or true demand."
   }
 ]
