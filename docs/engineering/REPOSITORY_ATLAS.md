@@ -594,3 +594,13 @@ confidence interval, actual demand shift, or WorldKernel integration.
 
 Local validation is not equivalent to GitHub Actions: restore official CI
 as soon as the monthly quota becomes available.
+
+## 33. Counterfactual excluded-target scenario sweep (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/sensitivity_sweep.py`](../../src/mirrormind/domains/retail/sensitivity_sweep.py) | Bounded scenarios with no extra excluded-target observations |
+| [`tests/unit/test_retail_sensitivity_sweep.py`](../../tests/unit/test_retail_sensitivity_sweep.py) | Monotone range widening, hidden-value nonleakage and sparse-window abstention |
+| [`docs/engineering/RETAIL_SENSITIVITY_SWEEP.md`](RETAIL_SENSITIVITY_SWEEP.md) | Hypothetical assumptions, negative controls and source-rights caveats |
+
+These scenarios do not identify true demand distribution shifts.

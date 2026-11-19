@@ -309,3 +309,10 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   local run to an exact clean Git commit. A passing local receipt **does
   not claim that GitHub Actions executed or passed**. Restore official
   CI once the quota is renewed, and retain explicit reviewer judgment.
+
+- **MM-M1c bounded excluded-target scenario sweep (experimental):**
+  [method](engineering/RETAIL_SENSITIVITY_SWEEP.md) and
+  [synthetic regressions](../tests/unit/test_retail_sensitivity_sweep.py)
+  compare 2–8 strictly increasing hypothetical exclusion bounds using
+  the original as-of diagnostic. These are mathematical scenarios, not
+  authenticated demand bounds or a distribution-shift inference.

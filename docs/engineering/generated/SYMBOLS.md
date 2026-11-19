@@ -194,6 +194,18 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `ExcludedTargetSensitivity.receipt` | method | `def receipt(self) -> dict[str, str \| int \| float \| None]` | Report counterfactual bounds without any excluded target values. | [L33](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L33) |
 | `assess_excluded_target_sensitivity` | function | `def assess_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, excluded_value_ceiling: int, window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> ExcludedTargetSensitivity` | Vary hypothetical excluded day values, preserving each window cutoff. | [L58](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L58) |
 
+## `mirrormind.domains.retail.sensitivity_sweep`
+
+Source: [`src/mirrormind/domains/retail/sensitivity_sweep.py`](../../../src/mirrormind/domains/retail/sensitivity_sweep.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `itertools`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.selection_sensitivity`, `mirrormind.domains.retail.uci_transactions`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `RetailSensitivitySweep` | class | `class RetailSensitivitySweep` | An ordered, bounded list of hypothetical scenario results. | [L21](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L21) |
+| `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L26](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L26) |
+| `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L39](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L39) |
+
 ## `mirrormind.domains.retail.uci_transactions`
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
