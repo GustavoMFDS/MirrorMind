@@ -38,9 +38,10 @@ def fixture(*, gaps=False, delayed75=84):
 
 
 def evaluate(projection, releases, **kwargs):
+    settings = {"window_days": 7, **kwargs}
     return audit_retail_eligibility_drift(
         projection, releases, stock_code="PRIVATE-SKU",
-        evaluation_on=day(84), window_days=7, **kwargs,
+        evaluation_on=day(84), **settings,
     )
 
 
