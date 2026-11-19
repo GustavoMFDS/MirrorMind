@@ -6,6 +6,7 @@ from itertools import pairwise
 import pytest
 
 from mirrormind.domains.retail.declared_releases import DeclaredProductRelease
+from mirrormind.domains.retail.selection_sensitivity import assess_excluded_target_sensitivity
 from mirrormind.domains.retail.sensitivity_sweep import sweep_excluded_target_sensitivity
 from mirrormind.domains.retail.uci_transactions import project_uci_retail_rows
 
@@ -172,6 +173,61 @@ def test_strict_gate_configuration_validation(key, bad, expected):
     projection, releases = fixture()
     with pytest.raises(ValueError, match=expected):
         sweep(projection, releases, **{key: bad})
+
+
+@pytest.mark.parametrize("settings", [
+    {},
+    {"late75": True},
+    {"missing82": True, "late75": True, "late83": True},
+    {"missing80": True, "late75": True, "late83": True},
+])
+def test_sweep_scenarios_exactly_match_independent_single_ceiling_results(settings):
+    projection, releases = fixture(**settings)
+    ceilings = (0, 1, 7, 100, 1000, 1_000_000)
+    result = sweep(
+        projection, releases, ceilings=ceilings,
+        minimum_eligible_per_window=2, minimum_coverage_percent=1,
+    )
+    for scenario in result.scenarios:
+        independent = assess_excluded_target_sensitivity(
+            projection, releases, stock_code="PRIVATE-SKU",
+            evaluation_on=day(84), excluded_value_ceiling=scenario.excluded_value_ceiling,
+        )
+        assert scenario == independent
+
+
+def test_eight_scenarios_run_exactly_two_historical_audits(monkeypatch):
+    import mirrormind.domains.retail.selection_sensitivity as module
+
+    projection, releases = fixture(missing82=True, late75=True, late83=True)
+    original = module.evaluate_retail_residual_envelopes
+    cutoffs = []
+
+    def spy(*args, **kwargs):
+        cutoffs.append(kwargs["evaluation_on"])
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(module, "evaluate_retail_residual_envelopes", spy)
+    result = sweep(
+        projection, releases, ceilings=(0, 1, 2, 3, 4, 5, 6, 7),
+        minimum_eligible_per_window=2, minimum_coverage_percent=1,
+    )
+    assert len(result.scenarios) == 8
+    assert cutoffs == [day(77), day(84)]
+    assert all(case.earlier_eligible == result.scenarios[0].earlier_eligible
+               for case in result.scenarios)
+
+
+def test_sweep_validation_failure_does_not_evaluate_historical_windows(monkeypatch):
+    import mirrormind.domains.retail.selection_sensitivity as module
+
+    projection, releases = fixture()
+    def forbidden(*args, **kwargs):
+        raise AssertionError("validation must fail before historical evaluation")
+
+    monkeypatch.setattr(module, "evaluate_retail_residual_envelopes", forbidden)
+    with pytest.raises(ValueError, match="strictly increasing"):
+        sweep(projection, releases, ceilings=(10, 10))
 
 
 @pytest.mark.parametrize("bad", [
