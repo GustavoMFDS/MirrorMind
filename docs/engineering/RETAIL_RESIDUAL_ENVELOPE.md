@@ -85,3 +85,29 @@ per-store dependency adjustment, and statistical coverage guarantees.
 Do not compare this toy empirical coverage to an arbitrary claimed 80%
 confidence level; no such level exists in this method. No real inference
 endpoint, WorldKernel decision execution, or model deployment is enabled.
+
+## Local prequential forecast reuse (experimental)
+
+The residual evaluator now memoizes the seasonal-naive forecast for each
+**target date** within one invocation. A target-date prediction always uses
+its seven consecutive feature dates available no later than **that target's
+own forecast origin**. The release/availability check, calibration outcome
+release check at each *current* origin, missing-target refusal and maximum
+residual calculation are unchanged. No later value is introduced as an
+eligible earlier feature. The cache is **call-local**: a second evaluation,
+even with the same cutoff, computes its own forecasts against that call's
+projection and declared releases. No source values or identities are
+persisted or returned through the receipt.
+
+For the fully published invented seven-day holdout with 21 calibration days,
+the repeated loop can request up to `7 × (1 + 21) = 154` predictions.
+Call-local caching makes only **28 distinct target-date forecast calls**
+for this fixture (21 calibration targets plus 7 holdout dates). This is
+a **counted-work reduction** backed by an instrumented test, not a measured
+wall-clock speedup or benchmark. The callable still refuses calibration
+with insufficient as-of residuals and cannot claim interval calibration.
+
+Evidence **MM-RENV-002**:
+`tests/unit/test_retail_residual_envelope.py::test_each_distinct_prequential_target_prediction_runs_once`.
+A second regression proves that separately evaluated calls do not share
+cached forecasts, and parameterized tests cover missing or late source rows.

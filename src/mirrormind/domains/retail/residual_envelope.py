@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import re
 from datetime import date, timedelta
+from functools import cache
 
 from mirrormind.domains.retail.declared_releases import (
     DeclaredProductRelease,
@@ -60,6 +61,10 @@ def evaluate_retail_residual_envelopes(
     published = {(entry.stock_code, entry.observed_on): entry.available_on
                  for entry in releases}
 
+    # Cache only within this evaluation: a forecast for target is determined
+    # by the seven values published at its own preceding origin. Never reuse
+    # predictions across distinct calls or evaluation cutoffs.
+    @cache
     def _predict_on(target: date) -> float | None:
         origin = target - timedelta(days=1)
         history = tuple(origin - timedelta(days=offset) for offset in range(6, -1, -1))

@@ -604,3 +604,14 @@ as soon as the monthly quota becomes available.
 | [`docs/engineering/RETAIL_SENSITIVITY_SWEEP.md`](RETAIL_SENSITIVITY_SWEEP.md) | Hypothetical assumptions, negative controls and source-rights caveats |
 
 These scenarios do not identify true demand distribution shifts.
+
+## 34. Scoped historical forecast reuse (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Cache only within one evaluation; each target forecast remains governed by its own origin |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented 28-distinct-target count, repeated-call isolation, late/missing-data regressions |
+| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Describes the structural reduction and lack of calibrated intervals |
+
+No global forecast cache, authenticated vintages or operational forecasting
+are introduced by this optimization.
