@@ -113,6 +113,18 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `RetailCoverageSummary.receipt` | method | `def receipt(self) -> dict[str, str \| int \| None]` | Return aggregate values only, with an explicit source-trust caveat. | [L29](../../../src/mirrormind/domains/retail/coverage.py#L29) |
 | `summarize_retail_coverage` | function | `def summarize_retail_coverage(projection: UciRetailProjection) -> RetailCoverageSummary` | Count gaps *between* observed positive product-days, without imputation. | [L47](../../../src/mirrormind/domains/retail/coverage.py#L47) |
 
+## `mirrormind.domains.retail.coverage_gate`
+
+Source: [`src/mirrormind/domains/retail/coverage_gate.py`](../../../src/mirrormind/domains/retail/coverage_gate.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.release_backtest`, `mirrormind.domains.retail.uci_transactions`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `RetailBacktestCoverageGate` | class | `class RetailBacktestCoverageGate` | Identifier-free summary: eligibility is not accuracy or calibration. | [L17](../../../src/mirrormind/domains/retail/coverage_gate.py#L17) |
+| `RetailBacktestCoverageGate.receipt` | method | `def receipt(self) -> dict[str, str \| int \| None]` | Expose exact coverage fractions and never invent intervals. | [L29](../../../src/mirrormind/domains/retail/coverage_gate.py#L29) |
+| `assess_retail_backtest_coverage` | function | `def assess_retail_backtest_coverage(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, holdout_days: int=7, minimum_coverage_percent: int=80) -> RetailBacktestCoverageGate` | Gate conditional model ranking by eligible-origin count and fraction. | [L49](../../../src/mirrormind/domains/retail/coverage_gate.py#L49) |
+
 ## `mirrormind.domains.retail.declared_releases`
 
 Source: [`src/mirrormind/domains/retail/declared_releases.py`](../../../src/mirrormind/domains/retail/declared_releases.py)
