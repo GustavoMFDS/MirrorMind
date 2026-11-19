@@ -610,7 +610,7 @@ These scenarios do not identify true demand distribution shifts.
 | Tracked file | Review boundary |
 | --- | --- |
 | [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Cache only within one evaluation; each target forecast remains governed by its own origin |
-| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented 28-distinct-target count, repeated-call isolation, late/missing-data regressions |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented 154-uncached vs 28-cached calls, repeated-call isolation, 18 adversarial differential histories and late/missing-data regressions |
 | [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Describes the structural reduction and lack of calibrated intervals |
 
 No global forecast cache, authenticated vintages or operational forecasting
