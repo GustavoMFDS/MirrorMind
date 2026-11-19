@@ -397,5 +397,12 @@
     "test": "tests/unit/test_retail_eligible_values.py",
     "function": "test_sparse_observed_and_late_targets_refuse_conditional_difference",
     "limitation": "Descriptive means over fictional eligible positive lines do not identify true demand distribution drift, source legitimacy or bias among excluded targets."
+  },
+  {
+    "id": "MM-SEL-001",
+    "guide": "docs/engineering/RETAIL_SELECTION_SENSITIVITY.md",
+    "test": "tests/unit/test_retail_selection_sensitivity.py",
+    "function": "test_incomplete_windows_show_unknown_days_can_reverse_apparent_difference",
+    "limitation": "Caller-supplied hypothetical bounds on fictional excluded dates are not empirically established source values or identified selection effects."
   }
 ]
