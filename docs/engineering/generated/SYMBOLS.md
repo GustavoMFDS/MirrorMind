@@ -193,6 +193,8 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `ExcludedTargetSensitivity` | class | `class ExcludedTargetSensitivity` | Two-window counterfactual mean bounds with eligibility denominators. | [L17](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L17) |
 | `ExcludedTargetSensitivity.receipt` | method | `def receipt(self) -> dict[str, str \| int \| float \| None]` | Report counterfactual bounds without any excluded target values. | [L33](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L33) |
 | `assess_excluded_target_sensitivity` | function | `def assess_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, excluded_value_ceiling: int, window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> ExcludedTargetSensitivity` | Vary hypothetical excluded day values, preserving each window cutoff. | [L58](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L58) |
+| `_collect_eligible_window_totals` | function | `def _collect_eligible_window_totals(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, window_days: int, calibration_days: int, min_calibration_residuals: int) -> tuple[tuple[int, int, int], tuple[int, int, int]]` | Collect integer totals once at each declared as-of evaluation cutoff. | [L86](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L86) |
+| `_scenario_from_eligible_totals` | function | `def _scenario_from_eligible_totals(earlier: tuple[int, int, int], later: tuple[int, int, int], excluded_value_ceiling: int) -> ExcludedTargetSensitivity` | Apply a caller's assumption to validated eligible totals, without I/O. | [L146](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L146) |
 
 ## `mirrormind.domains.retail.sensitivity_sweep`
 
@@ -202,9 +204,9 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `RetailSensitivitySweep` | class | `class RetailSensitivitySweep` | An ordered, bounded list of hypothetical scenario results. | [L21](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L21) |
-| `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L29](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L29) |
-| `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L49](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L49) |
+| `RetailSensitivitySweep` | class | `class RetailSensitivitySweep` | An ordered, bounded list of hypothetical scenario results. | [L22](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L22) |
+| `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L30](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L30) |
+| `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L50](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L50) |
 
 ## `mirrormind.domains.retail.uci_transactions`
 

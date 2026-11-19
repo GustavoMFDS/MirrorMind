@@ -12,7 +12,8 @@ from itertools import pairwise
 from mirrormind.domains.retail.declared_releases import DeclaredProductRelease
 from mirrormind.domains.retail.selection_sensitivity import (
     ExcludedTargetSensitivity,
-    assess_excluded_target_sensitivity,
+    _collect_eligible_window_totals,
+    _scenario_from_eligible_totals,
 )
 from mirrormind.domains.retail.uci_transactions import UciRetailProjection
 
@@ -61,7 +62,7 @@ def sweep_excluded_target_sensitivity(
 ) -> RetailSensitivitySweep:
     """Compare two to eight strictly increasing, hypothetical ceilings.
 
-    Every scenario uses the same independently as-of-eligible dates.
+    All scenarios reuse the same two independently as-of-eligible windows.
     A sparse window forces abstention across all scenarios, even if the
     underlying single-ceiling diagnostic could compute a small-sample mean.
     """
@@ -79,23 +80,19 @@ def sweep_excluded_target_sensitivity(
         raise ValueError("each ceiling must be an exact integer in 0..1000000")
     if any(left >= right for left, right in pairwise(ceilings)):
         raise ValueError("ceilings must be strictly increasing without duplicates")
+    earlier, later = _collect_eligible_window_totals(
+        projection, releases, stock_code=stock_code,
+        evaluation_on=evaluation_on, window_days=window_days,
+        calibration_days=calibration_days,
+        min_calibration_residuals=min_calibration_residuals,
+    )
+    # Publication and history eligibility is audited twice total,
+    # irrespective of the bounded number of hypothetical ceilings.
     scenarios = tuple(
-        assess_excluded_target_sensitivity(
-            projection, releases, stock_code=stock_code,
-            evaluation_on=evaluation_on, excluded_value_ceiling=ceiling,
-            window_days=window_days, calibration_days=calibration_days,
-            min_calibration_residuals=min_calibration_residuals,
-        )
+        _scenario_from_eligible_totals(earlier, later, ceiling)
         for ceiling in ceilings
     )
     reference = scenarios[0]
-    assert all(
-        (item.earlier_requested, item.later_requested,
-         item.earlier_eligible, item.later_eligible)
-        == (reference.earlier_requested, reference.later_requested,
-            reference.earlier_eligible, reference.later_eligible)
-        for item in scenarios
-    )
     adequate = (
         reference.earlier_eligible >= minimum_eligible_per_window
         and reference.later_eligible >= minimum_eligible_per_window

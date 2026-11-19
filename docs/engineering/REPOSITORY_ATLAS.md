@@ -599,8 +599,8 @@ as soon as the monthly quota becomes available.
 
 | Tracked file | Review boundary |
 | --- | --- |
-| [`src/mirrormind/domains/retail/sensitivity_sweep.py`](../../src/mirrormind/domains/retail/sensitivity_sweep.py) | Bounded scenarios with a default two-window minimum and exact-coverage disclosure gate; no extra excluded-target observations |
-| [`tests/unit/test_retail_sensitivity_sweep.py`](../../tests/unit/test_retail_sensitivity_sweep.py) | Monotone range widening, hidden-value nonleakage, exact coverage thresholds and sparse-window abstention |
+| [`src/mirrormind/domains/retail/sensitivity_sweep.py`](../../src/mirrormind/domains/retail/sensitivity_sweep.py) | Two historical audits reused across 2–8 bounded ceilings, with a default two-window minimum and exact-coverage disclosure gate; no excluded-target observations |
+| [`tests/unit/test_retail_sensitivity_sweep.py`](../../tests/unit/test_retail_sensitivity_sweep.py) | Exact parity with independent scenarios, two-evaluation spy, monotone bounds, hidden-value nonleakage, exact coverage thresholds and sparse-window abstention |
 | [`docs/engineering/RETAIL_SENSITIVITY_SWEEP.md`](RETAIL_SENSITIVITY_SWEEP.md) | Hypothetical assumptions, negative controls and source-rights caveats |
 
 These scenarios do not identify true demand distribution shifts.

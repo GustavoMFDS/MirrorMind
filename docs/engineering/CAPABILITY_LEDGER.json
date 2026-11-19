@@ -188,7 +188,7 @@
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/sensitivity_sweep.py",
       "test": "tests/unit/test_retail_sensitivity_sweep.py::test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases",
-      "notes": "Bounded synthetic mathematical sweep of unverified caller-chosen excluded-target ceilings, with no actual target imputation, population shift identification, source authorization or production inference. Default disclosure now requires at least three eligible origins and 80% eligible dates in each window; any lower synthetic-research override is explicit and not a statistical guarantee."
+      "notes": "Bounded synthetic mathematical sweep of unverified caller-chosen excluded-target ceilings, with no actual target imputation, population shift identification, source authorization or production inference. Default disclosure now requires at least three eligible origins and 80% eligible dates in each window; any lower synthetic-research override is explicit and not a statistical guarantee. Two independently validated historical windows are now reused across every ceiling; pure scenario arithmetic preserves the legacy single-ceiling receipt and requires no extra source access."
     }
   ]
 }

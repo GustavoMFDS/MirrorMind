@@ -5,8 +5,13 @@ a limited set of **2–8 strictly increasing caller-selected hypotheses** about
 the possible units on dates that the [single-ceiling sensitivity
 diagnostic](RETAIL_SELECTION_SENSITIVITY.md) could not evaluate.
 
-Each hypothesis is an independent invocation of the existing as-of
-eligibility and hypothetical-mean arithmetic. Results carry the same
+The sweep now audits the two historical cutoff windows **once each**, then
+reuses immutable integer tuples of (requested, eligible, eligible positive-line
+unit sum) to evaluate every declared ceiling. The standalone single-ceiling
+API calls the same shared collection and arithmetic helpers. Thus two historical
+evaluations serve 2–8 scenarios, rather than running two evaluations per
+ceiling. **This is a structural reduction in calls, not a measured wall-clock
+speedup.** Results carry the same
 earlier/later denominators, eligible counts, difference floor and ceiling,
 and explicitly conditional direction. Widening a declared ceiling can
 only decrease the difference floor and increase the difference ceiling;
@@ -42,7 +47,13 @@ means unless explicitly overridden with a low research-only threshold.
 Threshold rejection, 4/7 coverage at 57% versus 58%, and withholding
 results when only one window misses the minimum are also tested.
 A strict cap/shape/type validation and incomplete release rejection are
-also tested.
+also tested. Regression tests compare each optimized result against the
+independent single-ceiling API (including withheld, incomplete and complete
+synthetic histories), and instrument the history evaluator to prove eight
+scenarios call it exactly twice at the correct cutoffs.
+
+Claim **MM-SWEEP-003** documents the two-audit invariant through
+`tests/unit/test_retail_sensitivity_sweep.py::test_eight_scenarios_run_exactly_two_historical_audits`.
 
 Claims **MM-SWEEP-002** (default gate) and **MM-SWEEP-001**
 (monotonicity under an explicit weak research gate) map to

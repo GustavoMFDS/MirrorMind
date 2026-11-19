@@ -418,5 +418,12 @@
     "test": "tests/unit/test_retail_sensitivity_sweep.py",
     "function": "test_default_coverage_gate_hides_all_scenario_means_but_preserves_denominators",
     "limitation": "An exact coverage gate suppresses conditional hypothetical means under sparse fictional eligibility; it cannot identify excluded true values or certify disclosure privacy."
+  },
+  {
+    "id": "MM-SWEEP-003",
+    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
+    "test": "tests/unit/test_retail_sensitivity_sweep.py",
+    "function": "test_eight_scenarios_run_exactly_two_historical_audits",
+    "limitation": "A mocked evaluator call count proves two invocations for synthetic history; it does not measure runtime speedups, certify publisher vintages, or establish demand drift."
   }
 ]
