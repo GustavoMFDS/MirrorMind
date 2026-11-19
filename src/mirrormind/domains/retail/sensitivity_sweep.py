@@ -6,8 +6,8 @@ distribution-shift detector or evidence of missing target values.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from itertools import pairwise
 from datetime import date
+from itertools import pairwise
 
 from mirrormind.domains.retail.declared_releases import DeclaredProductRelease
 from mirrormind.domains.retail.selection_sensitivity import (
