@@ -411,5 +411,12 @@
     "test": "tests/unit/test_retail_sensitivity_sweep.py",
     "function": "test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases",
     "limitation": "Mathematical counterfactual sweeps of fictional eligible date counts do not identify actual missing targets, selection bias or demand drift."
+  },
+  {
+    "id": "MM-SWEEP-002",
+    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
+    "test": "tests/unit/test_retail_sensitivity_sweep.py",
+    "function": "test_default_coverage_gate_hides_all_scenario_means_but_preserves_denominators",
+    "limitation": "An exact coverage gate suppresses conditional hypothetical means under sparse fictional eligibility; it cannot identify excluded true values or certify disclosure privacy."
   }
 ]
