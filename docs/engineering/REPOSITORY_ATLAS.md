@@ -572,3 +572,14 @@ rights, demand distribution shift, or operational forecast reliability.
 
 No selection-bias correction, source verification, calibrated interval or
 operational forecast capability is introduced.
+
+## 31. Excluded-target counterfactual sensitivity (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/selection_sensitivity.py`](../../src/mirrormind/domains/retail/selection_sensitivity.py) | Disjoint-window hypothetical mean/difference bounds without reading excluded values |
+| [`tests/unit/test_retail_selection_sensitivity.py`](../../tests/unit/test_retail_selection_sensitivity.py) | Fictitious hidden-value invariance, sign reversal, budget and validation cases |
+| [`docs/engineering/RETAIL_SELECTION_SENSITIVITY.md`](RETAIL_SELECTION_SENSITIVITY.md) | Explicit assumption, algebra, limitations and review exercise |
+
+No source authorization, selection-bias identification, statistical
+confidence interval, actual demand shift, or WorldKernel integration.
