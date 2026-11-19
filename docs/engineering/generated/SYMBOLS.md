@@ -138,6 +138,18 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `DeclaredRetailAsOfAudit.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | No identifiers or source data; prominently mark asserted release dates. | [L38](../../../src/mirrormind/domains/retail/declared_releases.py#L38) |
 | `audit_declared_releases_as_of` | function | `def audit_declared_releases_as_of(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, origin_on: date) -> DeclaredRetailAsOfAudit` | Account for every positive product-day without inferring availability. | [L52](../../../src/mirrormind/domains/retail/declared_releases.py#L52) |
 
+## `mirrormind.domains.retail.eligible_values`
+
+Source: [`src/mirrormind/domains/retail/eligible_values.py`](../../../src/mirrormind/domains/retail/eligible_values.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.residual_envelope`, `mirrormind.domains.retail.uci_transactions`, `statistics`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `EligibleRetailValueComparison` | class | `class EligibleRetailValueComparison` | Aggregate values conditional on separate retrospective eligibility. | [L19](../../../src/mirrormind/domains/retail/eligible_values.py#L19) |
+| `EligibleRetailValueComparison.receipt` | method | `def receipt(self) -> dict[str, str \| int \| float \| None]` | Expose exact eligibility fractions and only conditional statistics. | [L43](../../../src/mirrormind/domains/retail/eligible_values.py#L43) |
+| `compare_eligible_retail_values` | function | `def compare_eligible_retail_values(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> EligibleRetailValueComparison` | Compare two disjoint eligible subsets; refuse sparse comparisons. | [L74](../../../src/mirrormind/domains/retail/eligible_values.py#L74) |
+
 ## `mirrormind.domains.retail.eligibility_drift`
 
 Source: [`src/mirrormind/domains/retail/eligibility_drift.py`](../../../src/mirrormind/domains/retail/eligibility_drift.py)
