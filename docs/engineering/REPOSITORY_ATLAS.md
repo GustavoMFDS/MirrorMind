@@ -561,3 +561,14 @@ true demand or WorldKernel inference is asserted here.
 
 Eligibility changes do not establish selection-bias mechanisms, source
 rights, demand distribution shift, or operational forecast reliability.
+
+## 30. Conditional retail eligible-value comparison (experimental)
+
+| Tracked file | Purpose and limitation |
+| --- | --- |
+| [`src/mirrormind/domains/retail/eligible_values.py`](../../src/mirrormind/domains/retail/eligible_values.py) | Separately dated eligible-subset means and medians with conservative two-window abstention |
+| [`tests/unit/test_retail_eligible_values.py`](../../tests/unit/test_retail_eligible_values.py) | Fictional complete/partial exposures, withheld-value invariance and threshold refusal tests |
+| [`docs/engineering/RETAIL_ELIGIBLE_VALUES.md`](RETAIL_ELIGIBLE_VALUES.md) | Method, toy example and explicit nonidentifiability of distribution shift |
+
+No selection-bias correction, source verification, calibrated interval or
+operational forecast capability is introduced.

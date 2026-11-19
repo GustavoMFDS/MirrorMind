@@ -390,5 +390,12 @@
     "test": "tests/unit/test_retail_eligibility_drift.py",
     "function": "test_future_release_change_cannot_rewrite_earlier_eligibility",
     "limitation": "Unverified fictional release dates and eligible-origin counts cannot identify selection bias or changes in the true demand distribution."
+  },
+  {
+    "id": "MM-EVALUE-001",
+    "guide": "docs/engineering/RETAIL_ELIGIBLE_VALUES.md",
+    "test": "tests/unit/test_retail_eligible_values.py",
+    "function": "test_sparse_observed_and_late_targets_refuse_conditional_difference",
+    "limitation": "Descriptive means over fictional eligible positive lines do not identify true demand distribution drift, source legitimacy or bias among excluded targets."
   }
 ]

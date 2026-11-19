@@ -168,6 +168,13 @@
       "source": "src/mirrormind/domains/retail/eligibility_drift.py",
       "test": "tests/unit/test_retail_eligibility_drift.py::test_future_release_change_cannot_rewrite_earlier_eligibility",
       "notes": "Fictional adjacent-window eligibility and abstention counts at separate caller-declared, unverified publication cutoffs. No identification of selection bias, distribution shift of true demand, statistical significance, calibrated intervals or authorized source use."
+    },
+    {
+      "id": "local_retail_eligible_value_comparison",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/eligible_values.py",
+      "test": "tests/unit/test_retail_eligible_values.py::test_sparse_observed_and_late_targets_refuse_conditional_difference",
+      "notes": "Fictional conditional mean/median comparison over separately eligible retail positive-line subsets. Thresholded abstention, unauthenticated publication, no selection-bias correction or valid inference of actual distribution shift."
     }
   ]
 }
