@@ -176,11 +176,11 @@ Static imports (including inside functions): `__future__`, `datetime`, `mirrormi
 
 Source: [`src/mirrormind/domains/retail/residual_envelope.py`](../../../src/mirrormind/domains/retail/residual_envelope.py)
 
-Static imports (including inside functions): `__future__`, `datetime`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.modules.forecasting.baselines`, `re`
+Static imports (including inside functions): `__future__`, `datetime`, `functools`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.modules.forecasting.baselines`, `re`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `evaluate_retail_residual_envelopes` | function | `def evaluate_retail_residual_envelopes(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, holdout_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> dict[str, object]` | Audit one-day seasonal-naive envelopes using only past published errors. | [L19](../../../src/mirrormind/domains/retail/residual_envelope.py#L19) |
+| `evaluate_retail_residual_envelopes` | function | `def evaluate_retail_residual_envelopes(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, holdout_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> dict[str, object]` | Audit one-day seasonal-naive envelopes using only past published errors. | [L20](../../../src/mirrormind/domains/retail/residual_envelope.py#L20) |
 
 ## `mirrormind.domains.retail.selection_sensitivity`
 
