@@ -432,5 +432,12 @@
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_each_distinct_prequential_target_prediction_runs_once",
     "limitation": "Instrumented forecast call counts on synthetic data demonstrate in-call work reuse, not elapsed-time speedup, authentic source availability or calibration of error envelopes."
+  },
+  {
+    "id": "MM-RENV-003",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_cached_and_uncached_history_agree_under_adversarial_publication_schedules",
+    "limitation": "Differential tests verify caching preserves fictional retrospective reports across release/missingness combinations; they do not independently validate the forecasting method, source rights, true demand, latency gains or calibrated coverage."
   }
 ]
