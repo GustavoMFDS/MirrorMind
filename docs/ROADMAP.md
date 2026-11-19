@@ -324,3 +324,9 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   unbiased population inference or statistical disclosure control.
   [Guide](engineering/RETAIL_SENSITIVITY_SWEEP.md) and
   [gate regressions](../tests/unit/test_retail_sensitivity_sweep.py).
+
+- **MM-M1c sweep efficiency (experimental):** the [bounded sensitivity
+  sweep](engineering/RETAIL_SENSITIVITY_SWEEP.md) reuses two as-of eligible
+  window summaries for all 2–8 hypothetical ceilings. Equality against
+  individual scenarios and the two-audit call invariant are tested without
+  claiming measured runtime acceleration, actual demand rights or drift.
