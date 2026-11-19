@@ -147,6 +147,13 @@
       "source": "src/mirrormind/domains/retail/release_backtest.py",
       "test": "tests/unit/test_retail_release_backtest.py::test_missing_late_and_unpublished_days_abstain_and_models_share_origins",
       "notes": "Fixed one-day baseline comparison on fictional positive invoice-line records with caller-declared, unverified releases. No authenticated publisher data, complete demand calendar, empirical forecast skill, production inference or WorldKernel."
+    },
+    {
+      "id": "local_retail_backtest_coverage_gate",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/coverage_gate.py",
+      "test": "tests/unit/test_retail_coverage_gate.py::test_incomplete_declared_releases_suppress_model_ranking_and_report_exact_coverage",
+      "notes": "Purely fictional, unverified release-aware backtest coverage threshold and conservative ranking gate. No calibrated intervals, real source permission, empirically validated demand forecasting, operational inference or WorldKernel."
     }
   ]
 }
