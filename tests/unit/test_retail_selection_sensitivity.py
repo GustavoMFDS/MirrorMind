@@ -103,7 +103,7 @@ def test_single_eligible_day_abstains_instead_of_leaking_a_record_value():
 
 
 def test_no_eligible_later_days_also_abstains():
-    projection, releases = fixture(late75=True)
+    projection, releases = fixture(late75=True, missing80=True)
     releases = tuple(
         DeclaredProductRelease(entry.stock_code, entry.observed_on, day(85))
         if entry.observed_on == day(75) else entry for entry in releases
