@@ -70,7 +70,7 @@ def assess_excluded_target_sensitivity(
 
     Excluded values are never accessed, even if present in the supplied
     projection but not yet published by that window's evaluation cutoff.
-    A fully excluded window abstains; it does not invent a measured mean.
+    A window with fewer than two eligible values abstains, preventing\n    disclosure of single observed values through reconstructed totals.
     """
     if type(evaluation_on) is not date:
         raise ValueError("evaluation_on must be an exact date")
@@ -111,7 +111,7 @@ def assess_excluded_target_sensitivity(
 
     a_n, a_ok, a_total = selected(earlier)
     b_n, b_ok, b_total = selected(later)
-    ready = a_ok > 0 and b_ok > 0
+    ready = a_ok >= 2 and b_ok >= 2
     a_low = a_total / a_n if ready else None
     b_low = b_total / b_n if ready else None
     a_high = (a_total + (a_n - a_ok) * excluded_value_ceiling) / a_n if ready else None
@@ -119,7 +119,7 @@ def assess_excluded_target_sensitivity(
     diff_low = b_low - a_high if ready else None
     diff_high = b_high - a_low if ready else None
     if not ready:
-        direction = "abstained_no_eligible_reference_in_both_windows"
+        direction = "abstained_insufficient_eligible_reference"
     elif diff_low > 0:
         direction = "positive_under_declared_counterfactual_bounds_only"
     elif diff_high < 0:
