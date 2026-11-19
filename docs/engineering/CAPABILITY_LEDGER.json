@@ -182,6 +182,13 @@
       "source": "src/mirrormind/domains/retail/selection_sensitivity.py",
       "test": "tests/unit/test_retail_selection_sensitivity.py::test_incomplete_windows_show_unknown_days_can_reverse_apparent_difference",
       "notes": "Fictional counterfactual bounds on two-window proxy mean differences with an explicit caller-chosen excluded-value ceiling, never a verified real bound, target imputation, selection-bias correction or production inference."
+    },
+    {
+      "id": "local_retail_excluded_target_sensitivity_sweep",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/sensitivity_sweep.py",
+      "test": "tests/unit/test_retail_sensitivity_sweep.py::test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases",
+      "notes": "Bounded synthetic mathematical sweep of unverified caller-chosen excluded-target ceilings, with no actual target imputation, population shift identification, source authorization or production inference."
     }
   ]
 }
