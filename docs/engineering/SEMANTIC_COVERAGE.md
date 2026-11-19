@@ -2,10 +2,10 @@
 
 This matrix separates **implemented methods** from **interface-only**
 and **planned** work. It is a qualitative learning map, not a percentage
-of source, assertion, or business correctness coverage. All 19 current
-Python source files appear in the generated
+of source, assertion, or business correctness coverage. The generated
 [source catalog](generated/SYMBOLS.md) and the
-[linked repository atlas](REPOSITORY_ATLAS.md).
+[linked repository atlas](REPOSITORY_ATLAS.md) index the current Python
+sources without relying on a manually maintained file-count assertion.
 
 ## Labels
 
