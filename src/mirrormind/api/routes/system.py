@@ -29,6 +29,7 @@ def capabilities() -> dict[str, object]:
             "local_retail_release_backtest",
             "local_retail_backtest_coverage_gate",
             "local_retail_prequential_residual_envelope",
+            "local_retail_eligibility_drift_audit",
         ],
         "planned": [
             "evidence_and_rag",

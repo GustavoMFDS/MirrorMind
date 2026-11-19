@@ -161,6 +161,13 @@
       "source": "src/mirrormind/domains/retail/residual_envelope.py",
       "test": "tests/unit/test_retail_residual_envelope.py::test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
       "notes": "Fictional retrospective trailing maximum-absolute-residual heuristic restricted to releases available at each origin. Not calibrated, no nominal interval guarantee, no source permission or empirical forecasting."
+    },
+    {
+      "id": "local_retail_eligibility_drift_audit",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/eligibility_drift.py",
+      "test": "tests/unit/test_retail_eligibility_drift.py::test_future_release_change_cannot_rewrite_earlier_eligibility",
+      "notes": "Fictional adjacent-window eligibility and abstention counts at separate caller-declared, unverified publication cutoffs. No identification of selection bias, distribution shift of true demand, statistical significance, calibrated intervals or authorized source use."
     }
   ]
 }

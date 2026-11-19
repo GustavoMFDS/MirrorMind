@@ -383,5 +383,12 @@
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
     "limitation": "Synthetic publisher assertions and descriptive past-max-error envelopes do not constitute calibrated prediction intervals, authentic historical evidence or empirical future coverage."
+  },
+  {
+    "id": "MM-EDRIFT-001",
+    "guide": "docs/engineering/RETAIL_ELIGIBILITY_DRIFT.md",
+    "test": "tests/unit/test_retail_eligibility_drift.py",
+    "function": "test_future_release_change_cannot_rewrite_earlier_eligibility",
+    "limitation": "Unverified fictional release dates and eligible-origin counts cannot identify selection bias or changes in the true demand distribution."
   }
 ]

@@ -550,3 +550,14 @@ sales or validate forecasting skill on an empirical dataset.
 
 No nominal uncertainty target, statistical calibration, source rights,
 true demand or WorldKernel inference is asserted here.
+
+## 29. Consecutive-window retail eligibility drift audit (experimental)
+
+| Tracked path | Scope and limitation |
+| --- | --- |
+| [`src/mirrormind/domains/retail/eligibility_drift.py`](../../src/mirrormind/domains/retail/eligibility_drift.py) | Adjacent window coverage denominators at each authentic-to-the-code but unverified caller-declared cutoff |
+| [`tests/unit/test_retail_eligibility_drift.py`](../../tests/unit/test_retail_eligibility_drift.py) | Fictional complete/incomplete windows and nonretrospective publisher-release invariant |
+| [`docs/engineering/RETAIL_ELIGIBILITY_DRIFT.md`](RETAIL_ELIGIBILITY_DRIFT.md) | Method, source-provenance caveats, synthetic exercise and empirical prerequisites |
+
+Eligibility changes do not establish selection-bias mechanisms, source
+rights, demand distribution shift, or operational forecast reliability.
