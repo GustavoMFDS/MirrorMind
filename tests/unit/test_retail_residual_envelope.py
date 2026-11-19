@@ -121,3 +121,73 @@ def test_datetime_is_not_accepted_as_calendar_date():
             projection, releases, stock_code="PRIVATE-SKU",
             evaluation_on=datetime(2011, 3, 11),
         )
+
+
+def test_each_distinct_prequential_target_prediction_runs_once(monkeypatch):
+    """Seven origins with 21 calibration days need 28, not 154 predictions."""
+    import mirrormind.domains.retail.residual_envelope as module
+
+    projection, releases = fixture()
+    expected = evaluate(projection, releases)
+    original = module._predict
+    calls = []
+
+    def counting_predict(history):
+        calls.append(history)
+        return original(history)
+
+    monkeypatch.setattr(module, "_predict", counting_predict)
+    actual = evaluate(projection, releases)
+    assert actual == expected
+    assert len(calls) == 28
+    assert actual["evaluated_origins"] == 7
+
+
+def test_prediction_cache_is_never_shared_between_evaluation_calls(monkeypatch):
+    """Call-local caching must not reuse forecasts at a subsequent cutoff."""
+    import mirrormind.domains.retail.residual_envelope as module
+
+    projection, releases = fixture()
+    original = module._predict
+    call_count = 0
+
+    def counting_predict(history):
+        nonlocal call_count
+        call_count += 1
+        return original(history)
+
+    monkeypatch.setattr(module, "_predict", counting_predict)
+    earlier = evaluate(projection, releases)
+    assert call_count == 28
+    later = evaluate(projection, releases)
+    assert call_count == 56
+    assert earlier == later
+
+
+@pytest.mark.parametrize("variants", [
+    {},
+    {"late60": True, "withheld70": True},
+    {"missing68": True},
+    {"late60": True, "value60": 999_999},
+])
+def test_cached_residuals_remain_deterministic_with_missing_and_late_data(
+    monkeypatch, variants
+):
+    import mirrormind.domains.retail.residual_envelope as module
+
+    projection, releases = fixture(**variants)
+    expected = evaluate(projection, releases)
+    original = module._predict
+    called = []
+
+    def counting_predict(history):
+        called.append(history)
+        return original(history)
+
+    monkeypatch.setattr(module, "_predict", counting_predict)
+    result = evaluate(projection, releases)
+    assert result == expected
+    assert 0 <= len(called) <= 28
+    assert result["requested_origins"] == len(result["origin_audit"]) == 7
+    assert result["nominal_coverage"] is None
+    assert result["calibrated_prediction_interval"] is None
