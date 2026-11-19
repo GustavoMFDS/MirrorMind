@@ -50,8 +50,8 @@ use 84 invented positive-line days. With no missing data, both windows
 have 7/7 eligible dates, exact proxy means 74 and 81 and the
 hypothetical difference interval collapses to +7.
 
-An adversarial version removes day 80, declares day 75 released only at
-day 84 and leaves day 83 unpublished by the evaluation cutoff. With a
+An adversarial version removes day 80, declares day 75 released only on
+day 78 and leaves day 83 unpublished by the evaluation cutoff. With a
 hypothetical excluded-value ceiling of 1,000, the difference interval
 spans negative and positive values, so the direction is **not robust**.
 
