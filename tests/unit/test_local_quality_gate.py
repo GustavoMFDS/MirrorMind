@@ -1,7 +1,7 @@
 """Unit regressions for fail-closed local QA, with no real child checks spawned."""
+import runpy
 from pathlib import Path
 from subprocess import CompletedProcess, TimeoutExpired
-import runpy
 
 import pytest
 
