@@ -113,6 +113,19 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `RetailCoverageSummary.receipt` | method | `def receipt(self) -> dict[str, str \| int \| None]` | Return aggregate values only, with an explicit source-trust caveat. | [L29](../../../src/mirrormind/domains/retail/coverage.py#L29) |
 | `summarize_retail_coverage` | function | `def summarize_retail_coverage(projection: UciRetailProjection) -> RetailCoverageSummary` | Count gaps *between* observed positive product-days, without imputation. | [L47](../../../src/mirrormind/domains/retail/coverage.py#L47) |
 
+## `mirrormind.domains.retail.declared_releases`
+
+Source: [`src/mirrormind/domains/retail/declared_releases.py`](../../../src/mirrormind/domains/retail/declared_releases.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `mirrormind.domains.retail.coverage`, `mirrormind.domains.retail.uci_transactions`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `DeclaredProductRelease` | class | `class DeclaredProductRelease` | An explicitly asserted release day for one positive product/event day. | [L19](../../../src/mirrormind/domains/retail/declared_releases.py#L19) |
+| `DeclaredRetailAsOfAudit` | class | `class DeclaredRetailAsOfAudit` | Identifier-free counts, not an authenticated historical evidence view. | [L28](../../../src/mirrormind/domains/retail/declared_releases.py#L28) |
+| `DeclaredRetailAsOfAudit.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | No identifiers or source data; prominently mark asserted release dates. | [L38](../../../src/mirrormind/domains/retail/declared_releases.py#L38) |
+| `audit_declared_releases_as_of` | function | `def audit_declared_releases_as_of(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, origin_on: date) -> DeclaredRetailAsOfAudit` | Account for every positive product-day without inferring availability. | [L52](../../../src/mirrormind/domains/retail/declared_releases.py#L52) |
+
 ## `mirrormind.domains.retail.uci_transactions`
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
