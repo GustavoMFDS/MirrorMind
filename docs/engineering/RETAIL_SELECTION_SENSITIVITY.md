@@ -55,7 +55,10 @@ day 78 and leaves day 83 unpublished by the evaluation cutoff. With a
 hypothetical excluded-value ceiling of 1,000, the difference interval
 spans negative and positive values, so the direction is **not robust**.
 
-A further privacy regression refuses mean bounds with only one eligible\nrecord in either window, preventing reconstruction of an individual\npositive-line total from the aggregate receipt. Zero eligible days\nalso force abstention. Changing the hidden earlier day-75 value from 75 to 999,999 cannot
+A further privacy regression refuses mean bounds with only one eligible
+record in either window, preventing reconstruction of an individual
+positive-line total from the aggregate receipt. Zero eligible days
+also force abstention. Changing the hidden earlier day-75 value from 75 to 999,999 cannot
 change any earlier-window scenario bound. Widening the caller ceiling
 cannot narrow the hypothetical difference interval. Invalid ceilings,
 missing publication declarations and ambiguous dates fail closed.
