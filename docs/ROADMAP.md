@@ -240,3 +240,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   explicitly declared as possible observation dates. Contradictory
   observed sales are rejected. No inferred shop opening days, real
   publisher vintage, true demand or operational readiness is asserted.
+
+- **MM-M1b declared product-day release cutoffs (experimental):**
+  [retail release audit](engineering/DECLARED_RETAIL_RELEASES.md) and
+  [negative regressions](../tests/unit/test_declared_retail_releases.py)
+  require a separate caller-asserted release day for every fictional
+  positive product/day record. The as-of audit excludes future or
+  declared-unpublished events without inventing publication timestamps.
+  The release declarations are **not authenticated**; no authorized
+  source, empirical model score or operational evidence integration exists.
