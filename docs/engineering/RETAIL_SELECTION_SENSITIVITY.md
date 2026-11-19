@@ -31,9 +31,9 @@ dates and E the number eligible. For each window, the scenario computes:
 This is interval arithmetic under an expressly stated scenario
 `0 <= unknown excluded value <= ceiling`, **not an imputation or
 assertion that the excluded dates actually have those values**.
-For both windows with at least one eligible value, the scenario reports
+For both windows with at least two eligible values, the scenario reports
 the sign only if both extremes agree; otherwise direction is marked
-nonrobust. If either window has no eligible reference, all numeric
+nonrobust. If either window has fewer than two eligible references, all numeric
 bounds are omitted and the function abstains.
 
 The receipt reports counts, assumptions and the status flags
@@ -50,12 +50,12 @@ use 84 invented positive-line days. With no missing data, both windows
 have 7/7 eligible dates, exact proxy means 74 and 81 and the
 hypothetical difference interval collapses to +7.
 
-An adversarial version removes day 80, declares day 75 released only on
+An adversarial version removes day 82, declares day 75 released only on
 day 78 and leaves day 83 unpublished by the evaluation cutoff. With a
 hypothetical excluded-value ceiling of 1,000, the difference interval
 spans negative and positive values, so the direction is **not robust**.
 
-Changing the hidden earlier day-75 value from 75 to 999,999 cannot
+A further privacy regression refuses mean bounds with only one eligible\nrecord in either window, preventing reconstruction of an individual\npositive-line total from the aggregate receipt. Zero eligible days\nalso force abstention. Changing the hidden earlier day-75 value from 75 to 999,999 cannot
 change any earlier-window scenario bound. Widening the caller ceiling
 cannot narrow the hypothetical difference interval. Invalid ceilings,
 missing publication declarations and ambiguous dates fail closed.
