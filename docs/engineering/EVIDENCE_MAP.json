@@ -425,5 +425,12 @@
     "test": "tests/unit/test_retail_sensitivity_sweep.py",
     "function": "test_eight_scenarios_run_exactly_two_historical_audits",
     "limitation": "A mocked evaluator call count proves two invocations for synthetic history; it does not measure runtime speedups, certify publisher vintages, or establish demand drift."
+  },
+  {
+    "id": "MM-RENV-002",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_each_distinct_prequential_target_prediction_runs_once",
+    "limitation": "Instrumented forecast call counts on synthetic data demonstrate in-call work reuse, not elapsed-time speedup, authentic source availability or calibration of error envelopes."
   }
 ]
