@@ -330,3 +330,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   window summaries for all 2–8 hypothetical ceilings. Equality against
   individual scenarios and the two-audit call invariant are tested without
   claiming measured runtime acceleration, actual demand rights or drift.
+
+- **MM-M1c residual-evaluator work deduplication (experimental):**
+  [prequential envelope method](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
+  now caches each target-date seasonal-naive prediction only within
+  that historical evaluation. An invented 7-day holdout and 21-day
+  calibration exercise verifies 28 prediction calculations rather than
+  154 repeated forecast calls, without claiming wall-clock benchmarking,
+  forecast calibration, source rights, or actual demand inference.
