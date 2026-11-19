@@ -17,10 +17,10 @@ def day(index):
     return START + timedelta(days=index - 1)
 
 
-def fixture(*, missing80=False, late75=False, value75=75, late83=False):
+def fixture(*, missing82=False, missing80=False, late75=False, value75=75, late83=False):
     rows, releases = [], []
     for index in range(1, 85):
-        if missing80 and index == 80:
+        if (missing80 and index == 80) or (missing82 and index == 82):
             continue
         event = day(index)
         rows.append({
@@ -63,7 +63,7 @@ def test_complete_fictional_windows_have_exact_observed_mean_difference():
 
 
 def test_incomplete_windows_show_unknown_days_can_reverse_apparent_difference():
-    projection, releases = fixture(missing80=True, late75=True, late83=True)
+    projection, releases = fixture(missing82=True, late75=True, late83=True)
     report = evaluate(projection, releases, ceiling=1000)
     assert report.earlier_eligible < 7 and report.later_eligible < 7
     assert report.difference_floor < 0 < report.difference_ceiling
@@ -83,13 +83,35 @@ def test_unpublished_value_change_does_not_rewrite_earlier_counterfactual_bounds
 
 
 def test_counterfactual_ceiling_changes_assumption_not_observed_eligibility():
-    projection, releases = fixture(missing80=True, late75=True, late83=True)
+    projection, releases = fixture(missing82=True, late75=True, late83=True)
     lower = evaluate(projection, releases, ceiling=100)
     higher = evaluate(projection, releases, ceiling=200)
     assert lower.earlier_eligible == higher.earlier_eligible
     assert lower.later_eligible == higher.later_eligible
     assert higher.difference_floor <= lower.difference_floor
     assert higher.difference_ceiling >= lower.difference_ceiling
+
+
+def test_single_eligible_day_abstains_instead_of_leaking_a_record_value():
+    projection, releases = fixture(missing80=True, late75=True, late83=True)
+    report = evaluate(projection, releases, ceiling=1000)
+    assert report.later_eligible == 1
+    assert report.direction_status == "abstained_insufficient_eligible_reference"
+    assert report.earlier_mean_floor is None
+    assert report.later_mean_floor is None
+    assert report.difference_floor is None
+
+
+def test_no_eligible_later_days_also_abstains():
+    projection, releases = fixture(late75=True)
+    releases = tuple(
+        DeclaredProductRelease(entry.stock_code, entry.observed_on, day(85))
+        if entry.observed_on == day(75) else entry for entry in releases
+    )
+    report = evaluate(projection, releases)
+    assert report.later_eligible == 0
+    assert report.direction_status == "abstained_insufficient_eligible_reference"
+    assert report.difference_ceiling is None
 
 
 @pytest.mark.parametrize("bad", [True, -1, 1_000_001, 1.0, "100", None])
