@@ -79,6 +79,13 @@ def assess_excluded_target_sensitivity(
         raise ValueError("excluded_value_ceiling must be an exact integer in 0..1000000")
     if type(window_days) is not int or not 2 <= window_days <= 30:
         raise ValueError("window_days must be an exact integer in 2..30")
+    if type(calibration_days) is not int or not 5 <= calibration_days <= 60:
+        raise ValueError("calibration_days must be an exact integer in 5..60")
+    if (type(min_calibration_residuals) is not int
+            or not 3 <= min_calibration_residuals <= calibration_days):
+        raise ValueError("min_calibration_residuals must be in 3..calibration_days")
+    if evaluation_on.toordinal() <= 2 * window_days + calibration_days + 7:
+        raise ValueError("evaluation calendar precedes supported two-window history")
     earlier_cutoff = evaluation_on - timedelta(days=window_days)
     kwargs = {
         "stock_code": stock_code,
