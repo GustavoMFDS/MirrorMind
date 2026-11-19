@@ -70,7 +70,8 @@ def assess_excluded_target_sensitivity(
 
     Excluded values are never accessed, even if present in the supplied
     projection but not yet published by that window's evaluation cutoff.
-    A window with fewer than two eligible values abstains, preventing\n    disclosure of single observed values through reconstructed totals.
+    A window with fewer than two eligible values abstains, preventing
+    disclosure of single observed values through reconstructed totals.
     """
     if type(evaluation_on) is not date:
         raise ValueError("evaluation_on must be an exact date")
