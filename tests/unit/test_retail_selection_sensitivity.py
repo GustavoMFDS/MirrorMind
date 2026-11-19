@@ -114,6 +114,56 @@ def test_no_eligible_later_days_also_abstains():
     assert report.difference_ceiling is None
 
 
+@pytest.mark.parametrize("ceiling", [0, 1, 100, 1000, 1_000_000])
+def test_counterfactual_envelope_arithmetic_and_sign_are_consistent(ceiling):
+    projection, releases = fixture(missing82=True, late75=True, late83=True)
+    report = evaluate(projection, releases, ceiling=ceiling)
+    assert report.earlier_eligible >= 2
+    assert report.later_eligible >= 2
+    a_missing = report.earlier_requested - report.earlier_eligible
+    b_missing = report.later_requested - report.later_eligible
+    assert report.earlier_mean_ceiling - report.earlier_mean_floor == pytest.approx(
+        a_missing * ceiling / report.earlier_requested
+    )
+    assert report.later_mean_ceiling - report.later_mean_floor == pytest.approx(
+        b_missing * ceiling / report.later_requested
+    )
+    assert report.difference_floor == pytest.approx(
+        report.later_mean_floor - report.earlier_mean_ceiling
+    )
+    assert report.difference_ceiling == pytest.approx(
+        report.later_mean_ceiling - report.earlier_mean_floor
+    )
+    assert report.difference_floor <= report.difference_ceiling
+    if report.direction_status == "positive_under_declared_counterfactual_bounds_only":
+        assert report.difference_floor > 0
+    elif report.direction_status == "negative_under_declared_counterfactual_bounds_only":
+        assert report.difference_ceiling < 0
+    else:
+        assert report.difference_floor <= 0 <= report.difference_ceiling
+
+
+def test_excluded_target_never_enters_earlier_sensitivity_even_if_present_in_projection():
+    early, releases = fixture(late75=True, value75=75)
+    changed, unchanged_releases = fixture(late75=True, value75=1_000_000)
+    assert releases == unchanged_releases
+    a = evaluate(early, releases, ceiling=500)
+    b = evaluate(changed, unchanged_releases, ceiling=500)
+    for field in (
+        "earlier_eligible", "earlier_mean_floor", "earlier_mean_ceiling",
+    ):
+        assert getattr(a, field) == getattr(b, field)
+
+
+def test_unknown_explicit_product_is_rejected_without_exposing_identifiers():
+    projection, releases = fixture()
+    with pytest.raises(ValueError, match="unknown product selector"):
+        assess_excluded_target_sensitivity(
+            projection, releases, stock_code="OTHER-SKU",
+            evaluation_on=day(84), excluded_value_ceiling=100,
+        )
+
+
 @pytest.mark.parametrize("bad", [True, -1, 1_000_001, 1.0, "100", None])
 def test_assumptions_are_exact_and_bounded(bad):
     projection, releases = fixture()
