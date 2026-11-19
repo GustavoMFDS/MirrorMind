@@ -528,3 +528,14 @@ permission to ingest UCI, or proof of point-in-time forecast readiness.
 
 This **does not** create authentic point-in-time records, a real forecast,
 stockout diagnosis, calibrated uncertainty or an operational decision path.
+
+## 27. Retail model comparison coverage gate (experimental)
+
+| Tracked path | Reviewed scope |
+| --- | --- |
+| [`src/mirrormind/domains/retail/coverage_gate.py`](../../src/mirrormind/domains/retail/coverage_gate.py) | Exact matched-origin coverage threshold that can withhold conditional ranking |
+| [`tests/unit/test_retail_coverage_gate.py`](../../tests/unit/test_retail_coverage_gate.py) | Invented incomplete/full histories, exact percentage boundary, false interval refusal and negative gates |
+| [`docs/engineering/RETAIL_COVERAGE_GATE.md`](RETAIL_COVERAGE_GATE.md) | Reviewed method, toy example, limitations and independent exercise |
+
+This **does not** calibrate uncertainty, approve sources, infer zero
+sales or validate forecasting skill on an empirical dataset.
