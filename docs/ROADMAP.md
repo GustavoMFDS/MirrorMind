@@ -293,3 +293,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   gates. Missing or unpublished targets remain excluded, without zero
   imputation. Changes in selected proxies **do not identify a genuine
   demand distribution shift or correct selection bias**.
+
+- **MM-M1c excluded-target counterfactual sensitivity (experimental):**
+  [scenario method](engineering/RETAIL_SELECTION_SENSITIVITY.md)
+  and [fictional regressions](../tests/unit/test_retail_selection_sensitivity.py)
+  show how two-window proxy means and their difference may vary if
+  excluded targets hypothetically lie between zero and a caller-supplied
+  ceiling. Neither unknown targets nor missing dates are imputed.
+  Scenario bounds are **not data-driven bounds**, statistically validated
+  demand, selection-bias corrections, or a real distribution-shift claim.

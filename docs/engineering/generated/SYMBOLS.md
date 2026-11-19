@@ -182,6 +182,18 @@ Static imports (including inside functions): `__future__`, `datetime`, `mirrormi
 | --- | --- | --- | --- | --- |
 | `evaluate_retail_residual_envelopes` | function | `def evaluate_retail_residual_envelopes(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, holdout_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> dict[str, object]` | Audit one-day seasonal-naive envelopes using only past published errors. | [L19](../../../src/mirrormind/domains/retail/residual_envelope.py#L19) |
 
+## `mirrormind.domains.retail.selection_sensitivity`
+
+Source: [`src/mirrormind/domains/retail/selection_sensitivity.py`](../../../src/mirrormind/domains/retail/selection_sensitivity.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.residual_envelope`, `mirrormind.domains.retail.uci_transactions`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `ExcludedTargetSensitivity` | class | `class ExcludedTargetSensitivity` | Two-window counterfactual mean bounds with eligibility denominators. | [L17](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L17) |
+| `ExcludedTargetSensitivity.receipt` | method | `def receipt(self) -> dict[str, str \| int \| float \| None]` | Report counterfactual bounds without any excluded target values. | [L33](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L33) |
+| `assess_excluded_target_sensitivity` | function | `def assess_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, excluded_value_ceiling: int, window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> ExcludedTargetSensitivity` | Vary hypothetical excluded day values, preserving each window cutoff. | [L58](../../../src/mirrormind/domains/retail/selection_sensitivity.py#L58) |
+
 ## `mirrormind.domains.retail.uci_transactions`
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
