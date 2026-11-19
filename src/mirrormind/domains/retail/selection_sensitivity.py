@@ -73,10 +73,33 @@ def assess_excluded_target_sensitivity(
     A window with fewer than two eligible values abstains, preventing
     disclosure of single observed values through reconstructed totals.
     """
-    if type(evaluation_on) is not date:
-        raise ValueError("evaluation_on must be an exact date")
     if type(excluded_value_ceiling) is not int or not 0 <= excluded_value_ceiling <= 1_000_000:
         raise ValueError("excluded_value_ceiling must be an exact integer in 0..1000000")
+    earlier, later = _collect_eligible_window_totals(
+        projection, releases, stock_code=stock_code, evaluation_on=evaluation_on,
+        window_days=window_days, calibration_days=calibration_days,
+        min_calibration_residuals=min_calibration_residuals,
+    )
+    return _scenario_from_eligible_totals(earlier, later, excluded_value_ceiling)
+
+
+def _collect_eligible_window_totals(
+    projection: UciRetailProjection,
+    releases: tuple[DeclaredProductRelease, ...],
+    *,
+    stock_code: str,
+    evaluation_on: date,
+    window_days: int,
+    calibration_days: int,
+    min_calibration_residuals: int,
+) -> tuple[tuple[int, int, int], tuple[int, int, int]]:
+    """Collect integer totals once at each declared as-of evaluation cutoff.
+
+    The third integer is a sum only over eligible, released positive-line
+    observations. No per-origin values or unpublished targets are returned.
+    """
+    if type(evaluation_on) is not date:
+        raise ValueError("evaluation_on must be an exact date")
     if type(window_days) is not int or not 2 <= window_days <= 30:
         raise ValueError("window_days must be an exact integer in 2..30")
     if type(calibration_days) is not int or not 5 <= calibration_days <= 60:
@@ -117,8 +140,17 @@ def assess_excluded_target_sensitivity(
         assert len(days) == eligible and eligible <= requested
         return requested, eligible, sum(observed[day] for day in days)
 
-    a_n, a_ok, a_total = selected(earlier)
-    b_n, b_ok, b_total = selected(later)
+    return selected(earlier), selected(later)
+
+
+def _scenario_from_eligible_totals(
+    earlier: tuple[int, int, int],
+    later: tuple[int, int, int],
+    excluded_value_ceiling: int,
+) -> ExcludedTargetSensitivity:
+    """Apply a caller's assumption to validated eligible totals, without I/O."""
+    a_n, a_ok, a_total = earlier
+    b_n, b_ok, b_total = later
     ready = a_ok >= 2 and b_ok >= 2
     a_low = a_total / a_n if ready else None
     b_low = b_total / b_n if ready else None
