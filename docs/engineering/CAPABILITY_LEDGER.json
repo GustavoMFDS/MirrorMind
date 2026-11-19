@@ -160,7 +160,7 @@
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/residual_envelope.py",
       "test": "tests/unit/test_retail_residual_envelope.py::test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
-      "notes": "Fictional retrospective trailing maximum-absolute-residual heuristic restricted to releases available at each origin. Not calibrated, no nominal interval guarantee, no source permission or empirical forecasting."
+      "notes": "Fictional retrospective trailing maximum-absolute-residual heuristic restricted to releases available at each origin. Not calibrated, no nominal interval guarantee, no source permission or empirical forecasting. Historical seasonal-naive forecasts are cached by target date within one evaluation only; separate cutoffs never reuse a cache. A fictional 7x21 exercise checks 28 forecast calls rather than repeated 154, without a wall-clock speedup claim."
     },
     {
       "id": "local_retail_eligibility_drift_audit",
