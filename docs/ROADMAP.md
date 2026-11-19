@@ -284,3 +284,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   **own** cutoff. No late-release hindsight, real target distribution
   shift inference, selection bias correction, calibrated intervals or
   authorized ingestion is asserted.
+
+- **MM-M1c eligible-value comparison (experimental):**
+  [conditional value review](engineering/RETAIL_ELIGIBLE_VALUES.md)
+  and [fictional regressions](../tests/unit/test_retail_eligible_values.py)
+  compare positive-line mean/median on two separately cutoff-eligible
+  adjacent windows only if both pass independently declared coverage
+  gates. Missing or unpublished targets remain excluded, without zero
+  imputation. Changes in selected proxies **do not identify a genuine
+  demand distribution shift or correct selection bias**.
