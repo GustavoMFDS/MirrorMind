@@ -517,3 +517,14 @@ or publisher calendar. Missing positive sales are never replaced by zeros.
 
 A supplied release date is **not authenticated publisher provenance**,
 permission to ingest UCI, or proof of point-in-time forecast readiness.
+
+## 26. Source-unverified retail rolling release evaluation (experimental)
+
+| Tracked path | Behavior and review scope |
+| --- | --- |
+| [`src/mirrormind/domains/retail/release_backtest.py`](../../src/mirrormind/domains/retail/release_backtest.py) | Bounded one-step daily comparison, no missing=zero or publication-time invention |
+| [`tests/unit/test_retail_release_backtest.py`](../../tests/unit/test_retail_release_backtest.py) | Fictional origins, withheld values, no-history abstentions, validation failures |
+| [`docs/engineering/RETAIL_RELEASE_BACKTEST.md`](RETAIL_RELEASE_BACKTEST.md) | Method limitations, matched-model scores, example and independent exercise |
+
+This **does not** create authentic point-in-time records, a real forecast,
+stockout diagnosis, calibrated uncertainty or an operational decision path.

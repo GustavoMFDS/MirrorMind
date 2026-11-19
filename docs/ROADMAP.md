@@ -249,3 +249,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   declared-unpublished events without inventing publication timestamps.
   The release declarations are **not authenticated**; no authorized
   source, empirical model score or operational evidence integration exists.
+
+- **MM-M1c retail declared-release baseline evaluation (experimental):**
+  [release-aware offline guide](engineering/RETAIL_RELEASE_BACKTEST.md)
+  and [fictional unit regressions](../tests/unit/test_retail_release_backtest.py)
+  compare two fixed daily baselines on matched eligible one-day origins;
+  absent positive-line dates and unpublished history cause abstention,
+  never zero imputation or lookahead. Release dates and positive-line sales
+  remain unverified proxies, not authorized real-demand evidence, empirical
+  forecasts, calibrated intervals, API serving or WorldKernel execution.
