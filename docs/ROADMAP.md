@@ -316,3 +316,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   compare 2–8 strictly increasing hypothetical exclusion bounds using
   the original as-of diagnostic. These are mathematical scenarios, not
   authenticated demand bounds or a distribution-shift inference.
+
+- **MM-M1c sweep disclosure gate:** by default, scenario means are suppressed
+  unless both independently cutoff-evaluated windows have at least three
+  eligible dates and exact eligible-date coverage of 80% or more. A lower
+  threshold requires an explicit synthetic-research override; it is **not**
+  unbiased population inference or statistical disclosure control.
+  [Guide](engineering/RETAIL_SENSITIVITY_SWEEP.md) and
+  [gate regressions](../tests/unit/test_retail_sensitivity_sweep.py).
