@@ -369,5 +369,12 @@
     "test": "tests/unit/test_retail_release_backtest.py",
     "function": "test_missing_late_and_unpublished_days_abstain_and_models_share_origins",
     "limitation": "Fixed baselines on invented positive-line transactions and unauthenticated release assertions do not prove empirical model performance or true demand."
+  },
+  {
+    "id": "MM-RGATE-001",
+    "guide": "docs/engineering/RETAIL_COVERAGE_GATE.md",
+    "test": "tests/unit/test_retail_coverage_gate.py",
+    "function": "test_incomplete_declared_releases_suppress_model_ranking_and_report_exact_coverage",
+    "limitation": "Thresholded matches on fictional transaction proxies do not calibrate uncertainty or prove source rights, prediction quality or true demand."
   }
 ]
