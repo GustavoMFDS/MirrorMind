@@ -90,3 +90,14 @@ snapshot verification, exposure calendars, valid estimands for demand,
 external holdouts, bias mechanisms, model calibration and WorldKernel
 execution all remain outstanding. No production inference capability
 is introduced.
+
+## Reused internal audit for bounded sweeps
+
+The [multi-ceiling sweep](RETAIL_SENSITIVITY_SWEEP.md) now calls the same
+private historical-summary helper as the standalone single-ceiling API.
+The helper validates as-of publication, counts eligible dates and accumulates
+only eligible positive-line units separately for the earlier and later cutoff.
+A second pure helper applies each hypothetical ceiling. These private
+summaries are not public source-rights attestations and do not reveal
+excluded values; the original caller-facing scenario receipt and sparse-window
+abstention semantics remain unchanged.
