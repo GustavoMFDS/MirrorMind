@@ -1,4 +1,5 @@
 """Synthetic prequential envelope tests: no hindsight or calibrated claims."""
+import random
 from datetime import date, datetime, timedelta
 
 import pytest
@@ -191,3 +192,120 @@ def test_cached_residuals_remain_deterministic_with_missing_and_late_data(
     assert result["requested_origins"] == len(result["origin_audit"]) == 7
     assert result["nominal_coverage"] is None
     assert result["calibrated_prediction_interval"] is None
+
+
+def adversarial_fixture(seed):
+    """Invented two-product histories with reproducible holes and publication delays."""
+    rng = random.Random(seed)
+    rows, releases = [], []
+    for index in range(1, 85):
+        event = day(index)
+        for product, prefix in (("PRIVATE-SKU", 500000), ("SECONDARY-SKU", 800000)):
+            if product == "PRIVATE-SKU" and seed % 6 and rng.randrange(13) == 0:
+                continue
+            if product == "PRIVATE-SKU":
+                units = (index * 17 + seed * 23) % 41 + 1
+                if index == 60 and seed % 3 == 2:
+                    units = 999_999
+                delay = 0 if seed == 0 else rng.randrange(seed % 6 + 1)
+            else:
+                units = 12
+                delay = rng.randrange(5)
+            rows.append({
+                "InvoiceNo": str(prefix + index),
+                "StockCode": product,
+                "InvoiceDate": datetime(event.year, event.month, event.day, 9),
+                "Quantity": units,
+                "CustomerID": "MUST-NOT-ESCAPE",
+            })
+            releases.append(DeclaredProductRelease(product, event, event + timedelta(days=delay)))
+    return project_uci_retail_rows(rows), tuple(releases)
+
+
+@pytest.mark.parametrize("seed", range(6))
+@pytest.mark.parametrize("evaluation_index,holdout,calibration,minimum", [
+    (70, 7, 21, 5),
+    (65, 10, 15, 4),
+    (78, 14, 30, 8),
+])
+def test_cached_and_uncached_history_agree_under_adversarial_publication_schedules(
+    monkeypatch, seed, evaluation_index, holdout, calibration, minimum,
+):
+    """An explicit uncached oracle guards reports, not just repeated cached calls."""
+    import mirrormind.domains.retail.residual_envelope as module
+
+    projection, releases = adversarial_fixture(seed)
+    kwargs = {
+        "stock_code": "PRIVATE-SKU",
+        "evaluation_on": day(evaluation_index),
+        "holdout_days": holdout,
+        "calibration_days": calibration,
+        "min_calibration_residuals": minimum,
+    }
+    with monkeypatch.context() as patch:
+        patch.setattr(module, "cache", lambda function: function)
+        uncached = module.evaluate_retail_residual_envelopes(projection, releases, **kwargs)
+    cached = module.evaluate_retail_residual_envelopes(projection, releases, **kwargs)
+    assert cached == uncached
+    assert len(cached["origin_audit"]) == holdout
+    assert cached["retrospective_coverage_denominator"] == cached["evaluated_origins"]
+    assert cached["nominal_coverage"] is None
+    assert cached["calibrated_prediction_interval"] is None
+    for private in ("PRIVATE-SKU", "SECONDARY-SKU", "MUST-NOT-ESCAPE", "500001"):
+        assert private not in str(cached)
+
+
+def test_uncached_and_cached_full_history_predict_calls_match_exact_legacy_count(monkeypatch):
+    """Compare 154 real uncached calls with 28 cached calls, not an estimate."""
+    import mirrormind.domains.retail.residual_envelope as module
+
+    projection, releases = fixture()
+    original = module._predict
+    calls = {"uncached": 0, "cached": 0}
+
+    def uncached_predict(history):
+        calls["uncached"] += 1
+        return original(history)
+
+    def cached_predict(history):
+        calls["cached"] += 1
+        return original(history)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(module, "cache", lambda function: function)
+        patch.setattr(module, "_predict", uncached_predict)
+        baseline = evaluate(projection, releases)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(module, "_predict", cached_predict)
+        optimized = evaluate(projection, releases)
+
+    assert baseline == optimized
+    assert calls == {"uncached": 154, "cached": 28}
+
+
+def test_different_release_schedules_cannot_share_earlier_cached_predictions(monkeypatch):
+    """Changed publisher assertions must be reflected in a new evaluation."""
+    import mirrormind.domains.retail.residual_envelope as module
+
+    projection, releases_early = fixture()
+    other_projection, releases_late = fixture(late60=True, withheld70=True)
+    assert projection == other_projection
+    kwargs = {
+        "stock_code": "PRIVATE-SKU",
+        "evaluation_on": day(70),
+    }
+    normal = module.evaluate_retail_residual_envelopes(projection, releases_early, **kwargs)
+    delayed = module.evaluate_retail_residual_envelopes(projection, releases_late, **kwargs)
+    assert normal != delayed
+    with monkeypatch.context() as patch:
+        patch.setattr(module, "cache", lambda function: function)
+        expected_normal = module.evaluate_retail_residual_envelopes(
+            projection, releases_early, **kwargs
+        )
+        expected_delayed = module.evaluate_retail_residual_envelopes(
+            projection, releases_late, **kwargs
+        )
+    assert normal == expected_normal
+    assert delayed == expected_delayed
+    assert delayed["abstained_unpublished_target"] == 1
