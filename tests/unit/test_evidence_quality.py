@@ -33,7 +33,10 @@ def test_quality_report_distinguishes_explicit_zero_from_absent_day():
         "first_observed_on": "2025-01-01",
         "last_observed_on": "2025-01-03",
     }
-    missing = raw.replace(b"item-A,2025-01-02,2025-01-05,4\n", b"")
+    missing = b"".join(
+        line for line in raw.splitlines(keepends=True)
+        if not line.startswith(b"item-A,2025-01-02,2025-01-05,4")
+    )
     assert missing != raw
     changed = snapshot_quality_summary(_staged(missing))
     assert changed["calendar_gap_days"] == 1
