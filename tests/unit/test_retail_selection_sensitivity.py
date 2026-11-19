@@ -31,7 +31,7 @@ def fixture(*, missing80=False, late75=False, value75=75, late83=False):
             "CustomerID": "NEVER-COPY",
         })
         released = (
-            day(84) if late75 and index == 75
+            day(78) if late75 and index == 75
             else day(85) if late83 and index == 83
             else event
         )
