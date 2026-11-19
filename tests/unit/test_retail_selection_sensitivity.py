@@ -177,6 +177,36 @@ def test_missing_release_declaration_fails_before_scenario_analysis():
         evaluate(projection, releases[:-1])
 
 
+@pytest.mark.parametrize("invalid", [True, 4, 61, 5.0, None])
+def test_invalid_calibration_window_fails_before_date_arithmetic(invalid):
+    projection, releases = fixture()
+    with pytest.raises(ValueError, match="calibration_days"):
+        evaluate(projection, releases, calibration_days=invalid)
+
+
+@pytest.mark.parametrize("invalid", [True, 2, 61, 6.0, None])
+def test_invalid_minimum_calibration_residuals_fail_before_date_arithmetic(invalid):
+    projection, releases = fixture()
+    with pytest.raises(ValueError, match="min_calibration_residuals"):
+        evaluate(projection, releases, min_calibration_residuals=invalid)
+
+
+@pytest.mark.parametrize("invalid", [True, 1, 31, 7.0, None])
+def test_invalid_window_days_fail_before_date_arithmetic(invalid):
+    projection, releases = fixture()
+    with pytest.raises(ValueError, match="window_days"):
+        evaluate(projection, releases, window_days=invalid)
+
+
+def test_earliest_calendar_never_overflows_and_fails_cleanly():
+    projection, releases = fixture()
+    with pytest.raises(ValueError, match="two-window history"):
+        assess_excluded_target_sensitivity(
+            projection, releases, stock_code="PRIVATE-SKU",
+            evaluation_on=date.min, excluded_value_ceiling=100,
+        )
+
+
 def test_invalid_calendar_cutoff_rejected():
     projection, releases = fixture()
     with pytest.raises(ValueError, match="exact date"):
