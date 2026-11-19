@@ -6,6 +6,7 @@ distribution-shift detector or evidence of missing target values.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from itertools import pairwise
 from datetime import date
 
 from mirrormind.domains.retail.declared_releases import DeclaredProductRelease
@@ -55,7 +56,7 @@ def sweep_excluded_target_sensitivity(
         raise ValueError("ceilings must be a tuple containing 2..8 exact integers")
     if any(type(value) is not int or not 0 <= value <= 1_000_000 for value in ceilings):
         raise ValueError("each ceiling must be an exact integer in 0..1000000")
-    if any(left >= right for left, right in zip(ceilings, ceilings[1:])):
+    if any(left >= right for left, right in pairwise(ceilings)):
         raise ValueError("ceilings must be strictly increasing without duplicates")
     scenarios = tuple(
         assess_excluded_target_sensitivity(
