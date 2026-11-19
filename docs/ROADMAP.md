@@ -338,3 +338,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   calibration exercise verifies 28 prediction calculations rather than
   154 repeated forecast calls, without claiming wall-clock benchmarking,
   forecast calibration, source rights, or actual demand inference.
+
+- **MM-M1c adversarial cache parity (synthetic):**
+  [retail residual method](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
+  now compares cached and explicitly uncached execution in 18 deterministic
+  histories with changing release delays, missing observations and distinct
+  cutoff/calibration settings. The exact no-cache vs cached example confirms
+  154 vs 28 baseline prediction calls and identical receipts. This is a
+  structural/regression claim, not a measured latency or statistical claim.
