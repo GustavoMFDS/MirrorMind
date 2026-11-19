@@ -583,3 +583,14 @@ operational forecast capability is introduced.
 
 No source authorization, selection-bias identification, statistical
 confidence interval, actual demand shift, or WorldKernel integration.
+
+## 32. Temporary local QA gate (Actions quota exhaustion)
+
+| Tracked file | Purpose and limitation |
+| --- | --- |
+| [`scripts/local_quality_gate.py`](../../scripts/local_quality_gate.py) | Fail-closed clean checkout verification at a full commit SHA; run pytest, Ruff and four documentation checks, no official CI claim |
+| [`tests/unit/test_local_quality_gate.py`](../../tests/unit/test_local_quality_gate.py) | Mocked process/checkout controls and honest receipt tests |
+| [`docs/engineering/LOCAL_QUALITY_GATE.md`](LOCAL_QUALITY_GATE.md) | Temporary owner-authorized local QA policy, invocation and limitations |
+
+Local validation is not equivalent to GitHub Actions: restore official CI
+as soon as the monthly quota becomes available.
