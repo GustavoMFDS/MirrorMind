@@ -203,8 +203,8 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
 | `RetailSensitivitySweep` | class | `class RetailSensitivitySweep` | An ordered, bounded list of hypothetical scenario results. | [L21](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L21) |
-| `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L26](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L26) |
-| `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L39](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L39) |
+| `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L29](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L29) |
+| `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L49](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L49) |
 
 ## `mirrormind.domains.retail.uci_transactions`
 
