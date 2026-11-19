@@ -111,3 +111,26 @@ Evidence **MM-RENV-002**:
 `tests/unit/test_retail_residual_envelope.py::test_each_distinct_prequential_target_prediction_runs_once`.
 A second regression proves that separately evaluated calls do not share
 cached forecasts, and parameterized tests cover missing or late source rows.
+
+## Differential validation against uncached execution
+
+The cache is now compared against the **same historical evaluator with its
+memoization decorator disabled** for 18 deterministic combinations of
+fictional release delays, missing positive-line days, two products, large
+valid quantities, evaluation cutoffs and calibration windows. These tests
+compare the entire returned report—including each origin's dated status,
+eligibility, coverage counts and explicit uncalibrated flags—not just
+aggregates. They assert that customer, product and invoice identifiers
+remain absent from reports.
+
+An instrumented **uncached** full-history run performs 154 actual baseline
+prediction calls, versus 28 calls with call-local caching, while returning
+the same report. A separate regression changes the *declared publication
+schedule* between evaluations and confirms the later invocation does not
+reuse a stale earlier forecast.
+
+Evidence **MM-RENV-003**:
+`tests/unit/test_retail_residual_envelope.py::test_cached_and_uncached_history_agree_under_adversarial_publication_schedules`.
+A differential execution path is a **regression oracle for the caching
+transformation**, not independent scientific confirmation of the baseline
+method, publisher authenticity, true demand or uncertainty calibration.
