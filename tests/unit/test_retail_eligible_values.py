@@ -98,7 +98,8 @@ def test_minimum_coverage_threshold_blocks_conditional_statistics():
     blocked = evaluate(projection, releases, minimum_coverage_percent=80)
     assert blocked.earlier_mean is None
     assert blocked.status.endswith("abstained")
-    allowed = evaluate(projection, releases, minimum_coverage_percent=20)
+    allowed = evaluate(projection, releases, minimum_coverage_percent=20,
+                       minimum_eligible_per_window=2)
     assert allowed.earlier_eligible >= 2
     assert allowed.status == "eligible_subset_descriptive_comparison_only"
     assert allowed.earlier_mean is not None
