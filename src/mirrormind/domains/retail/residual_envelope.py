@@ -6,9 +6,9 @@ calibrated predictive interval or a guarantee of any coverage level.
 from __future__ import annotations
 
 import re
-from heapq import heappop, heappush
 from datetime import date, timedelta
 from functools import cache
+from heapq import heappop, heappush
 
 from mirrormind.domains.retail.declared_releases import (
     DeclaredProductRelease,
