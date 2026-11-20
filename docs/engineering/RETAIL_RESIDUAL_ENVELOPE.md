@@ -168,5 +168,9 @@ Test claim **MM-RENV-004**:
 `tests/unit/test_retail_residual_envelope.py::test_incremental_calibration_exactly_matches_naive_reference`.
 The test-only quadratic reference checks full origin statuses and aggregate
 retrospective coverage under deterministic release schedules and missing
-positive-line days. This software equivalence does **not** establish
+positive-line days.
+An exact cutoff regression asserts that an outcome from day 49 released
+on the day-70 forecast's origin (day 69) may enter its 21-day calibration
+window, whereas release on day 70 is too late and causes calibration
+abstention when 21 residuals are required. This software equivalence does **not** establish
 publisher authenticity, statistical validity or predictive accuracy.
