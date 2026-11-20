@@ -439,5 +439,12 @@
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_cached_and_uncached_history_agree_under_adversarial_publication_schedules",
     "limitation": "Differential tests verify caching preserves fictional retrospective reports across release/missingness combinations; they do not independently validate the forecasting method, source rights, true demand, latency gains or calibrated coverage."
+  },
+  {
+    "id": "MM-RENV-004",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_incremental_calibration_exactly_matches_naive_reference",
+    "limitation": "A deterministic, test-only quadratic oracle can detect code-level calendar eligibility differences; it cannot validate historical publisher rights, the true demand process, calibration guarantees or a runtime speedup."
   }
 ]

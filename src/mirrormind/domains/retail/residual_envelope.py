@@ -8,6 +8,7 @@ from __future__ import annotations
 import re
 from datetime import date, timedelta
 from functools import cache
+from heapq import heappop, heappush
 
 from mirrormind.domains.retail.declared_releases import (
     DeclaredProductRelease,
@@ -76,11 +77,52 @@ def evaluate_retail_residual_envelopes(
         return _predict(tuple(observed[day] for day in history))["seasonal_naive_lag7"]
 
     first = evaluation_on - timedelta(days=holdout_days - 1)
+    # Only calendar candidates that can enter a holdout calibration window.
+    # Scheduling uses declared dates, but a candidate's units are not read
+    # until its release is available at the CURRENT holdout origin.
+    earliest_candidate = first - timedelta(days=calibration_days)
+    final_origin = evaluation_on - timedelta(days=1)
+    release_events = sorted(
+        (published[(stock_code, past)], past)
+        for past in observed
+        if earliest_candidate <= past <= final_origin
+        and published[(stock_code, past)] <= final_origin
+    )
+    event_index = 0
+    active_count = 0
+    # A candidate expires based on its target date even if published late.
+    expirations: list[tuple[date, float]] = []
+    maximums: list[tuple[float, date]] = []
+
     statuses: list[dict[str, str]] = []
     covered = 0
     for index in range(holdout_days):
         target = first + timedelta(days=index)
         origin = target - timedelta(days=1)
+        oldest = target - timedelta(days=calibration_days)
+
+        # Advance publication time even when the present target abstains;
+        # this retains eligible history for later origins. No future
+        # outcome is read to compute a residual before publication.
+        while event_index < len(release_events) and release_events[event_index][0] <= origin:
+            _, past = release_events[event_index]
+            event_index += 1
+            if past < oldest:
+                continue
+            past_point = _predict_on(past)
+            if past_point is None:
+                continue
+            residual = abs(observed[past] - past_point)
+            heappush(expirations, (past, residual))
+            heappush(maximums, (-residual, past))
+            active_count += 1
+
+        while expirations and expirations[0][0] < oldest:
+            heappop(expirations)
+            active_count -= 1
+        while maximums and maximums[0][1] < oldest:
+            heappop(maximums)
+
         prefix = {"target_on": target.isoformat(), "origin_on": origin.isoformat()}
         if target not in observed:
             statuses.append({**prefix, "status": "target_missing_not_zero"})
@@ -92,26 +134,11 @@ def evaluate_retail_residual_envelopes(
         if point is None:
             statuses.append({**prefix, "status": "forecast_history_unavailable"})
             continue
-
-        # A candidate outcome must be published at the CURRENT origin and
-        # its own baseline forecast must have been valid at its OWN origin.
-        # The current target is excluded by requiring candidate <= origin.
-        residuals: list[float] = []
-        for lag in range(calibration_days, 0, -1):
-            previous_target = target - timedelta(days=lag)
-            if (
-                previous_target not in observed
-                or published[(stock_code, previous_target)] > origin
-            ):
-                continue
-            previous_point = _predict_on(previous_target)
-            if previous_point is not None:
-                residuals.append(abs(observed[previous_target] - previous_point))
-        if len(residuals) < min_calibration_residuals:
+        if active_count < min_calibration_residuals:
             statuses.append({**prefix, "status": "insufficient_published_residuals"})
             continue
-        # The maximum of observed residuals is a descriptive envelope only.
-        radius = max(residuals)
+        # The maximum remains a descriptive heuristic, not a calibrated interval.
+        radius = -maximums[0][0]
         low = max(0.0, point - radius)
         high = point + radius
         if low <= observed[target] <= high:

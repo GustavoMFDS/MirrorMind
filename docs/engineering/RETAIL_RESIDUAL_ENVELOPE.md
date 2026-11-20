@@ -134,3 +134,43 @@ Evidence **MM-RENV-003**:
 A differential execution path is a **regression oracle for the caching
 transformation**, not independent scientific confirmation of the baseline
 method, publisher authenticity, true demand or uncertainty calibration.
+
+## Incremental release-aware calibration window (experimental)
+
+A bounded, call-local calendar sweep replaces the repeated nested scan of
+all 5–60 calibration candidates for each of 2–30 holdout origins. Candidate
+publication declarations schedule *when* an observed target may become
+eligible; the candidate's positive-line units and own-origin seasonal-naive
+forecast are consulted only after its declared release is no later than the
+**current** holdout forecast origin. Candidates already outside the trailing
+calendar window are discarded, including when their release arrives too late.
+A heap tracks the maximum absolute eligible residual and a separate
+chronological expiration heap tracks the exact number of active candidates.
+Neither missing days nor late release dates are imputed as zeros.
+
+For every holdout origin, only the dates inside the original trailing window
+are eligible, regardless of how long a publication was delayed. Each
+candidate's own seven history days must still have been available **at that
+candidate's own forecast origin**. Date-filtered maxima and eligibility
+counts feed the same abstention and heuristic-radius logic. This reduces
+repeated candidate selection work; no wall-clock benchmark or new calibrated
+uncertainty property is claimed.
+
+The original evaluator made up to 154 calibration candidate checks on the
+seven-origin / 21-day fictional fixture. The previous call-local forecast
+memoization reduced distinct predictions to 28; the incremental scan now
+also avoids repeated full calibration traversal. The corresponding no-cache
+comparison in the regression suite must measure this **new** algorithm,
+not assert the former 154 prediction invocations as current behavior.
+The 154-vs-28 comparison remains historically documented in PR #34.
+
+Test claim **MM-RENV-004**:
+`tests/unit/test_retail_residual_envelope.py::test_incremental_calibration_exactly_matches_naive_reference`.
+The test-only quadratic reference checks full origin statuses and aggregate
+retrospective coverage under deterministic release schedules and missing
+positive-line days.
+An exact cutoff regression asserts that an outcome from day 49 released
+on the day-70 forecast's origin (day 69) may enter its 21-day calibration
+window, whereas release on day 70 is too late and causes calibration
+abstention when 21 residuals are required. This software equivalence does **not** establish
+publisher authenticity, statistical validity or predictive accuracy.

@@ -346,3 +346,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   cutoff/calibration settings. The exact no-cache vs cached example confirms
   154 vs 28 baseline prediction calls and identical receipts. This is a
   structural/regression claim, not a measured latency or statistical claim.
+
+- **MM-M1c release-aware rolling residuals (experimental):**
+  [prequential calibration guide](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
+  now describes a bounded incremental activation/expiration algorithm for
+  retrospective residual candidates. Synthetic differential tests compare
+  this implementation with a separate quadratic oracle, including late
+  publication and moving-window expiry. No independent source authority,
+  forecast validity or wall-clock speedup is inferred.
