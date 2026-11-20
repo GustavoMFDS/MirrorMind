@@ -609,8 +609,8 @@ These scenarios do not identify true demand distribution shifts.
 
 | Tracked file | Review boundary |
 | --- | --- |
-| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Cache only within one evaluation; each target forecast remains governed by its own origin |
-| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented 154-uncached vs 28-cached calls, repeated-call isolation, 18 adversarial differential histories and late/missing-data regressions |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Call-local forecast caching and release-aware incremental residual selection; each target forecast remains governed by its own origin |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented prior 154-vs-28 comparison, rolling-window independent naive oracle over 40 schedules, repeated-call isolation and late/missing-data regressions |
 | [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Describes the structural reduction and lack of calibrated intervals |
 
 No global forecast cache, authenticated vintages or operational forecasting
