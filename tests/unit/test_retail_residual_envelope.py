@@ -451,7 +451,10 @@ def test_candidate_released_on_last_eligible_origin_is_counted_at_boundary():
     kwargs = {
         "stock_code": "PRIVATE-SKU", "evaluation_on": day(70),
         "holdout_days": 7, "calibration_days": 21,
-        "min_calibration_residuals": 21,
+        # Late release of day 49 also invalidates days 50..56 forecasts at
+        # their OWN origins. At day 70 there are 13 other eligible residuals:
+        # day 49 is the 14th only when available by day 69.
+        "min_calibration_residuals": 14,
     }
     at_origin = evaluate_retail_residual_envelopes(
         projection, published_on(day(69)), **kwargs
