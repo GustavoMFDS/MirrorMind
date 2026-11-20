@@ -422,8 +422,8 @@ def test_calibration_release_activates_at_exact_origin_not_one_day_earlier():
         if r.observed_on == day(49) else r
         for r in releases
     )
-    # The altered row's publication date is after its eligible window;
-    # exact matching to the independent reference guards expiry semantics.
+    # Day 49 becomes available at origin 69, the final origin at which
+    # it is still inside the 21-day trailing calibration window.
     for end in (day(67), day(68), day(69), day(70)):
         report = evaluate_retail_residual_envelopes(
             projection, delayed, stock_code="PRIVATE-SKU",
@@ -436,3 +436,29 @@ def test_calibration_release_activates_at_exact_origin_not_one_day_earlier():
         )
         assert report["origin_audit"] == audit
         assert report["retrospective_covered_origins"] == covered
+
+
+def test_candidate_released_on_last_eligible_origin_is_counted_at_boundary():
+    """Day 49 released at origin 69 counts for day 70, but released on 70 does not."""
+    projection, releases = fixture()
+    def published_on(chosen):
+        return tuple(
+            DeclaredProductRelease(r.stock_code, r.observed_on, chosen)
+            if r.observed_on == day(49) else r
+            for r in releases
+        )
+
+    kwargs = {
+        "stock_code": "PRIVATE-SKU", "evaluation_on": day(70),
+        "holdout_days": 7, "calibration_days": 21,
+        "min_calibration_residuals": 21,
+    }
+    at_origin = evaluate_retail_residual_envelopes(
+        projection, published_on(day(69)), **kwargs
+    )
+    after_origin = evaluate_retail_residual_envelopes(
+        projection, published_on(day(70)), **kwargs
+    )
+    assert at_origin["origin_audit"][-1]["status"] == "retrospective_envelope_evaluated"
+    assert after_origin["origin_audit"][-1]["status"] == "insufficient_published_residuals"
+    assert at_origin["evaluated_origins"] == after_origin["evaluated_origins"] + 1
