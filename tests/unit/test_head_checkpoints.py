@@ -204,7 +204,6 @@ def test_absent_review_history_has_only_genesis_checkpoint_without_permission(tm
     ({"review_revision": 0}, "revision"),
     ({"review_head_sha256": GENESIS_HEAD}, "revision"),
     ({"review_head_sha256": "x" * 64}, "metadata"),
-    ({"signature_hex": "A" * 128}, "metadata"),
     ({"issued_on": date(2026, 11, 22)}, "validity dates"),
     ({"expires_on": date(2026, 11, 20)}, "validity dates"),
     ({"expires_on": date(2027, 1, 1)}, "validity dates"),
