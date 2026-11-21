@@ -12,7 +12,6 @@ from mirrormind.modules.evidence.head_checkpoints import (
     SignedReviewHeadCheckpoint,
     _canonical_checkpoint_message,
     compare_sqlite_to_signed_checkpoint,
-    verify_signed_head_checkpoint,
 )
 from mirrormind.modules.evidence.intake_review import (
     SourceReviewDeclaration,
@@ -68,19 +67,19 @@ def signed_review(packet, signer, *, sequence=1, prior=GENESIS_HEAD, decision="a
 
 
 def checkpoint_for(packet, signer, *, revision, head, sequence=1, **changes):
-    fields = dict(
-        anchor_key_id="ANCHOR_KEY_001",
-        packet_sha256=packet.declaration_sha256,
-        snapshot_sha256=packet.snapshot_sha256,
-        source_kind=packet.source_kind,
-        intended_use=packet.intended_use,
-        review_revision=revision,
-        review_head_sha256=head,
-        anchor_sequence=sequence,
-        issued_on=date(2026, 11, 20),
-        expires_on=date(2026, 11, 25),
-        signature_hex="0" * 128,
-    )
+    fields = {
+        "anchor_key_id": "ANCHOR_KEY_001",
+        "packet_sha256": packet.declaration_sha256,
+        "snapshot_sha256": packet.snapshot_sha256,
+        "source_kind": packet.source_kind,
+        "intended_use": packet.intended_use,
+        "review_revision": revision,
+        "review_head_sha256": head,
+        "anchor_sequence": sequence,
+        "issued_on": date(2026, 11, 20),
+        "expires_on": date(2026, 11, 25),
+        "signature_hex": "0" * 128,
+    }
     fields.update(changes)
     draft = SignedReviewHeadCheckpoint(**fields)
     return replace(
