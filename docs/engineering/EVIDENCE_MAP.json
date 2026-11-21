@@ -453,5 +453,19 @@
     "test": "tests/unit/test_source_intake_review.py",
     "function": "test_staged_csv_packet_is_digest_bound_but_never_permission_approval",
     "limitation": "Synthetic packet tests verify exact digest binding, identifier minimization and truthful nonauthorization only; they do not authenticate source rights, publisher identities, data usage terms or historical publication timestamps."
+  },
+  {
+    "id": "MM-REVIEW-001",
+    "guide": "docs/engineering/SIGNED_SOURCE_REVIEW.md",
+    "test": "tests/unit/test_signed_source_review.py",
+    "function": "test_valid_signature_is_review_metadata_not_permission_to_ingest",
+    "limitation": "Synthetic Ed25519 verification only proves possession of supplied public-key's paired private key, not trustworthy key provisioning, reviewer authority, legal source rights, independently fresh registry state or permission to ingest."
+  },
+  {
+    "id": "MM-REVIEW-002",
+    "guide": "docs/engineering/SIGNED_SOURCE_REVIEW.md",
+    "test": "tests/unit/test_signed_source_review.py",
+    "function": "test_signed_revocation_is_terminal_for_same_manifest_even_after_reapproval",
+    "limitation": "Local same-packet revocation only blocks when the entire supplied log is anchored to an independently trusted up-to-date head. No append-only registry, key management, operational authorization or production revocation enforcement is implemented."
   }
 ]
