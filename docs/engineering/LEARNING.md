@@ -326,3 +326,14 @@ registry object with the same public key and explain why it has no
 memory of the previous revocation. Identify the missing transactional
 store, authenticated reviewer identity and independently published
 fresh head required before anyone relies on it for real permissions.
+
+## Guided exercise — SQLite transactions and restored-history rollback (40 minutes)
+
+Read the [transactional registry](../../src/mirrormind/modules/evidence/sqlite_review_registry.py),
+[method guide](SQLITE_REVIEW_REGISTRY.md), and
+[synthetic tests](../../tests/unit/test_sqlite_review_registry.py).
+Follow the injected-abort test and explain why the event and updated
+head must both disappear after rollback. Then restore a signed older
+copy of the database and compare reads with and without the independently
+retained later head. Explain why valid older signatures cannot themselves
+prove freshness, reviewer rights, source permission or real ingestion.
