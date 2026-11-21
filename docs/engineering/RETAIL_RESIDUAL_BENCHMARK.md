@@ -63,3 +63,31 @@ and intentionally separate from deterministic correctness tests.
 The existing local quality gate still independently runs pytest, Ruff,
 catalog, atlas, evidence and capability checks. It does not execute
 this benchmark and does not claim official GitHub Actions passed.
+
+## One observed Windows run — 2026-11-21
+
+The following readings were obtained with **Python 3.12.10** on an
+authorized Windows computer, using the same virtual environment and
+the same unmodified `71450cee32b08d02726d7367bf373081d66f4ceb` and
+`8642f5f77a6b2a3fa3040ff182e961dd640ddcad` checkouts. Each variant
+used three untimed warmups and 21 timed calls; allocations were measured
+in a separate invocation using `tracemalloc`.
+
+| Fictional profile | Median before (ms) | Median after (ms) | Observed reduction | Peak traced Python KiB before → after |
+| --- | ---: | ---: | ---: | ---: |
+| Dense published history (200 days, 30 origins scored) | 4.2998 | 2.1371 | 50.30% | 35.879 → 37.262 |
+| Missing/delayed declarations (192 days, 13 origins scored) | 2.3704 | 1.3894 | 41.39% | 35.262 → 34.613 |
+
+The **full report SHA-256 matched for each profile** across the two
+implementations:
+
+- Dense: `51db583fcc06b2633fdbf6e85abc821aae47ca546686e0b25bb0af4e73b16827`
+- Missing/delayed: `bcb7fdc8f8047596cdf85f63d44518e67a91f0eb3699191bf89eb7943763a934`
+
+For the dense case, Python's *traced allocation peak increased* by 3.85%
+with the incremental implementation. For the missing/delayed case it
+decreased by 1.84%. Neither is a process-RSS measurement, and neither
+establishes an overall memory improvement. The timing reductions are
+**observations from one local benchmarking session**, not guaranteed
+speedups across machines, profiles, longer histories or production loads.
+These measurements do not override the synthetic-only source restrictions.
