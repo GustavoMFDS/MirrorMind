@@ -210,6 +210,13 @@
       "source": "src/mirrormind/modules/evidence/local_review_registry.py",
       "test": "tests/unit/test_local_review_registry.py::test_revocation_is_terminal_and_old_head_cannot_rewrite_current_state",
       "notes": "Process-memory-only bounded synchronized review log using atomic expected-version/head checks for independently signed source packet decisions, with terminal same-packet revocation, signature verification and explicit nonauthorization. No durable storage, independent log freshness, external reviewer key trust, signing service, identity/roles, cross-worker CAS, source rights or actual ingestion. A new instance loses its old head and cannot detect pre-restart rollback. Every receipt has ingestion_authorized=false and forecast_eligible=false."
+    },
+    {
+      "id": "local_sqlite_review_registry",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/sqlite_review_registry.py",
+      "test": "tests/unit/test_sqlite_review_registry.py::test_database_restart_preserves_signed_history_and_revocation",
+      "notes": "Local SQLite schema v1 with bounded signed reviewer event histories, exact packet identity, transactional version/head CAS across independent interpreter connections, recovery after restart and fail-closed signed history checks. Review receipts always prohibit ingestion and forecasting. This is NOT tamper-proof, independently freshness-anchored, a protected reviewer identity/signing/key service, legally authorized dataset use, original data acquisition, a trusted clock or any production permission gate."
     }
   ]
 }
