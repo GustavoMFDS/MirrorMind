@@ -481,5 +481,26 @@
     "test": "tests/unit/test_local_review_registry.py",
     "function": "test_second_same_revision_writer_loses_atomic_compare_and_swap",
     "limitation": "A two-thread CAS regression proves one local winner under a process lock; it does not prove cross-process coordination, crash recovery, persistent transactionality or production-safe authorization."
+  },
+  {
+    "id": "MM-DBREG-001",
+    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_sqlite_review_registry.py",
+    "function": "test_database_restart_preserves_signed_history_and_revocation",
+    "limitation": "SQLite restart/revocation preservation uses fictional signed records and a local database; it does not establish independently trusted head freshness, protected key custody, lawful source rights, privacy permission, or production ingestion."
+  },
+  {
+    "id": "MM-DBREG-002",
+    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_sqlite_review_registry.py",
+    "function": "test_separate_interpreters_contend_on_same_database_transaction",
+    "limitation": "A same-database two-interpreter transaction test demonstrates one winning writer under local SQLite locking, not crash-proof hardware durability, cross-machine transactions, active reviewer authorization or independently authenticated log heads."
+  },
+  {
+    "id": "MM-DBREG-003",
+    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_sqlite_review_registry.py",
+    "function": "test_transaction_rolls_back_packet_and_event_on_failed_final_update",
+    "limitation": "An injected SQLite statement abort demonstrates rollback of one local transaction; not evidence of physical power-loss durability, backup policy, tamper resistance, legal source permissions or real data use."
   }
 ]
