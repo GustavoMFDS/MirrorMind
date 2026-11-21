@@ -36,6 +36,8 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 
 - For missing or mismatched review packets: inspect [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [the review guide](SOURCE_INTAKE_REVIEW.md) and [synthetic tests](../../tests/unit/test_source_intake_review.py). Share only sanitized refs/digests, never proof documents or raw rows in issues; references alone do not authorize use.
 
+- For mismatched signed review chains: inspect [`review_decisions.py`](../../src/mirrormind/modules/evidence/review_decisions.py), [review security boundary](SIGNED_SOURCE_REVIEW.md) and [adversarial regressions](../../tests/unit/test_signed_source_review.py). Check key IDs, dates and independently anchored log heads without printing private keys, source IDs or reviewer evidence. A valid signature does not grant ingestion.
+
 Useful local checks:
 ```bash
 python -m pytest -q
