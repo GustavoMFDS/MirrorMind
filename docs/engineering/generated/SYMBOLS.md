@@ -262,6 +262,22 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `SourceReviewPacket.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a non-authorizing summary, never input rows or references. | [L54](../../../src/mirrormind/modules/evidence/intake_review.py#L54) |
 | `prepare_source_review_packet` | function | `def prepare_source_review_packet(staged: StagedSnapshot \| UciWorkbookReadResult, declaration: SourceReviewDeclaration, *, inspected_on: date) -> SourceReviewPacket` | Bind a staged digest to unverified review declarations without approval. | [L77](../../../src/mirrormind/modules/evidence/intake_review.py#L77) |
 
+## `mirrormind.modules.evidence.local_review_registry`
+
+Source: [`src/mirrormind/modules/evidence/local_review_registry.py`](../../../src/mirrormind/modules/evidence/local_review_registry.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.review_decisions`, `re`, `threading`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `LocalReviewRevision` | class | `class LocalReviewRevision` | Identifier-minimized snapshot; not a source authorization token. | [L31](../../../src/mirrormind/modules/evidence/local_review_registry.py#L31) |
+| `LocalReviewRevision.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Return only local revision metadata and explicitly blocked permissions. | [L39](../../../src/mirrormind/modules/evidence/local_review_registry.py#L39) |
+| `LocalReviewRegistry` | class | `class LocalReviewRegistry` | Atomic in-process append on a signed chain with expected revision and head. | [L55](../../../src/mirrormind/modules/evidence/local_review_registry.py#L55) |
+| `LocalReviewRegistry.__init__` | method | `def __init__(self, trusted_reviewer_keys: Mapping[str, bytes]) -> None` | — | [L63](../../../src/mirrormind/modules/evidence/local_review_registry.py#L63) |
+| `LocalReviewRegistry._current` | method | `def _current(self, packet: SourceReviewPacket) -> tuple[tuple[SignedReviewDecision, ...], str]` | — | [L81](../../../src/mirrormind/modules/evidence/local_review_registry.py#L81) |
+| `LocalReviewRegistry.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date) -> LocalReviewRevision` | Inspect current in-process history; a snapshot is not a trusted fresh head. | [L98](../../../src/mirrormind/modules/evidence/local_review_registry.py#L98) |
+| `LocalReviewRegistry.append` | method | `def append(self, packet: SourceReviewPacket, event: SignedReviewDecision, *, expected_revision: int, expected_head_sha256: str, checked_on: date) -> LocalReviewRevision` | Atomically append one signed event, rejecting stale or revoked writers. | [L114](../../../src/mirrormind/modules/evidence/local_review_registry.py#L114) |
+
 ## `mirrormind.modules.evidence.review_decisions`
 
 Source: [`src/mirrormind/modules/evidence/review_decisions.py`](../../../src/mirrormind/modules/evidence/review_decisions.py)
