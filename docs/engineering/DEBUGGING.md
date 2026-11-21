@@ -38,6 +38,8 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 
 - For mismatched signed review chains: inspect [`review_decisions.py`](../../src/mirrormind/modules/evidence/review_decisions.py), [review security boundary](SIGNED_SOURCE_REVIEW.md) and [adversarial regressions](../../tests/unit/test_signed_source_review.py). Check key IDs, dates and independently anchored log heads without printing private keys, source IDs or reviewer evidence. A valid signature does not grant ingestion.
 
+- For stale review writers in one process: inspect [`local_review_registry.py`](../../src/mirrormind/modules/evidence/local_review_registry.py), [the CAS limits](LOCAL_REVIEW_REGISTRY.md) and [concurrency tests](../../tests/unit/test_local_review_registry.py). Never assume a restart preserves the latest head, or infer permission from a local revision.
+
 Useful local checks:
 ```bash
 python -m pytest -q
