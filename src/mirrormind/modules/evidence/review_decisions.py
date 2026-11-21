@@ -58,7 +58,10 @@ class ReviewHistoryAssessment:
             "log_head_sha256": self.log_head_sha256,
             "reviewed_events": self.reviewed_events,
             "checked_on": self.checked_on.isoformat(),
-            "signature_status": "validated_against_supplied_public_keys_not_identity_proof",
+            "signature_status": (
+                "validated_against_supplied_public_keys_not_identity_proof"
+                if self.reviewed_events else "no_signatures_present"
+            ),
             "log_freshness_status": "supplied_head_not_independently_attested",
             "permission_status": "independent_legal_permission_not_verified",
             "historical_availability_status": "not_verified",
@@ -104,7 +107,10 @@ def verify_review_history(
         raise ValueError("expected an exact source review packet")
     if type(events) is not tuple or len(events) > 64:
         raise ValueError("review history must be a tuple with at most 64 events")
-    if type(checked_on) is not date or checked_on < packet.inspected_on:
+    if (type(checked_on) is not date
+            or type(packet.inspected_on) is not date
+            or type(packet.captured_on) is not date
+            or checked_on < packet.inspected_on):
         raise ValueError("invalid review verification date")
     if type(expected_head_sha256) is not str or not SHA256_RE.fullmatch(expected_head_sha256):
         raise ValueError("invalid externally expected log head")
