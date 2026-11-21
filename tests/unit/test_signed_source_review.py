@@ -3,9 +3,9 @@ from dataclasses import FrozenInstanceError, replace
 from datetime import date, datetime, timedelta
 from hashlib import sha256
 
+import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
-import pytest
 
 from mirrormind.modules.evidence.intake_review import (
     SourceReviewDeclaration,
