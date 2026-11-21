@@ -502,5 +502,19 @@
     "test": "tests/unit/test_sqlite_review_registry.py",
     "function": "test_transaction_rolls_back_packet_and_event_on_failed_final_update",
     "limitation": "An injected SQLite statement abort demonstrates rollback of one local transaction; not evidence of physical power-loss durability, backup policy, tamper resistance, legal source permissions or real data use."
+  },
+  {
+    "id": "MM-ANCHOR-001",
+    "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
+    "test": "tests/unit/test_head_checkpoints.py",
+    "function": "test_restored_older_sqlite_is_rejected_against_newer_independent_signed_head",
+    "limitation": "An explicitly supplied newer signed head and sequence can reveal a restored SQLite file in synthetic tests; no externally authenticated current-head authority, monotonic sequence publication, trusted time, privacy/legal permission or actual source ingestion is provided."
+  },
+  {
+    "id": "MM-ANCHOR-002",
+    "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
+    "test": "tests/unit/test_head_checkpoints.py",
+    "function": "test_older_valid_checkpoint_replay_is_not_prevented_if_high_water_is_stale",
+    "limitation": "A valid older signed checkpoint and matching old SQLite database remain acceptable when the caller's minimum sequence is stale. Signatures alone do NOT establish log freshness, independent authority, anti-equivocation or current source permissions."
   }
 ]

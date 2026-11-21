@@ -249,6 +249,21 @@ Source: [`src/mirrormind/modules/evidence/__init__.py`](../../../src/mirrormind/
 
 No top-level classes or functions.
 
+## `mirrormind.modules.evidence.head_checkpoints`
+
+Source: [`src/mirrormind/modules/evidence/head_checkpoints.py`](../../../src/mirrormind/modules/evidence/head_checkpoints.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hmac`, `json`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.review_decisions`, `mirrormind.modules.evidence.sqlite_review_registry`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedReviewHeadCheckpoint` | class | `class SignedReviewHeadCheckpoint` | External signer's attestation of one exact packet's review log head. | [L30](../../../src/mirrormind/modules/evidence/head_checkpoints.py#L30) |
+| `CheckpointComparison` | class | `class CheckpointComparison` | Identifier-minimized verification result; never an access-control token. | [L47](../../../src/mirrormind/modules/evidence/head_checkpoints.py#L47) |
+| `CheckpointComparison.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Avoid leaking private record/key identifiers or implying authorization. | [L56](../../../src/mirrormind/modules/evidence/head_checkpoints.py#L56) |
+| `_canonical_checkpoint_message` | function | `def _canonical_checkpoint_message(checkpoint: SignedReviewHeadCheckpoint) -> bytes` | Domain-separated, versioned bytes to be signed by the EXTERNAL authority. | [L72](../../../src/mirrormind/modules/evidence/head_checkpoints.py#L72) |
+| `verify_signed_head_checkpoint` | function | `def verify_signed_head_checkpoint(packet: SourceReviewPacket, checkpoint: SignedReviewHeadCheckpoint, *, trusted_anchor_keys: Mapping[str, bytes], minimum_anchor_sequence: int, checked_on: date) -> None` | Verify metadata and signature against caller-supplied trust + high-water. | [L90](../../../src/mirrormind/modules/evidence/head_checkpoints.py#L90) |
+| `compare_sqlite_to_signed_checkpoint` | function | `def compare_sqlite_to_signed_checkpoint(registry: SQLiteReviewRegistry, packet: SourceReviewPacket, checkpoint: SignedReviewHeadCheckpoint, *, trusted_anchor_keys: Mapping[str, bytes], minimum_anchor_sequence: int, checked_on: date) -> CheckpointComparison` | Check a verified signed head against the SAME atomic SQLite snapshot. | [L175](../../../src/mirrormind/modules/evidence/head_checkpoints.py#L175) |
+
 ## `mirrormind.modules.evidence.intake_review`
 
 Source: [`src/mirrormind/modules/evidence/intake_review.py`](../../../src/mirrormind/modules/evidence/intake_review.py)

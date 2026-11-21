@@ -402,3 +402,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   current log head. This is neither a permission service nor lawful
   real-data ingestion; key/role authority, trusted fresh head,
   privacy/licensing review and ingestion controls remain blocked.
+
+- **MM-M1b signed review-head witness format (experimental only):**
+  [head-checkpoint verification](engineering/SIGNED_HEAD_CHECKPOINTS.md)
+  binds a domain-separated signer attestation, bounded expiry and caller-
+  supplied monotonic sequence minimum to one validated SQLite review head.
+  An older signed checkpoint and matching old database remain acceptable
+  if the externally supplied minimum is stale; no independent signer,
+  monotonic authority, trusted clock, publisher rights, human legal review
+  or operational M5/UCI ingestion has been implemented.

@@ -217,6 +217,13 @@
       "source": "src/mirrormind/modules/evidence/sqlite_review_registry.py",
       "test": "tests/unit/test_sqlite_review_registry.py::test_database_restart_preserves_signed_history_and_revocation",
       "notes": "Local SQLite schema v1 with bounded signed reviewer event histories, exact packet identity, transactional version/head CAS across independent interpreter connections, recovery after restart and fail-closed signed history checks. Review receipts always prohibit ingestion and forecasting. This is NOT tamper-proof, independently freshness-anchored, a protected reviewer identity/signing/key service, legally authorized dataset use, original data acquisition, a trusted clock or any production permission gate."
+    },
+    {
+      "id": "local_signed_head_checkpoint_verifier",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/head_checkpoints.py",
+      "test": "tests/unit/test_head_checkpoints.py::test_restored_older_sqlite_is_rejected_against_newer_independent_signed_head",
+      "notes": "Offline Ed25519 domain-separated source-packet/review-head checkpoint verification with bounded expiry and caller-supplied minimum anchor sequence. Compares signed head and revision to one verified SQLite snapshot. Does NOT independently acquire current sequence, trusted signers, keys, legal rights or freshness; valid old signed checkpoint and old SQLite can replay if supplied minimum is stale. All receipts forbid ingestion and forecasting."
     }
   ]
 }

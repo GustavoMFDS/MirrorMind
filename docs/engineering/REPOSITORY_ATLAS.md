@@ -674,3 +674,15 @@ identity, an append-only external head, source permissions, or ingestion.
 
 SQLite local persistence is **not** a tamper-proof or independently
 attested registry and does not enable M5/UCI source ingestion.
+
+## 40. Signed review-head checkpoint verification (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/head_checkpoints.py`](../../src/mirrormind/modules/evidence/head_checkpoints.py) | Offline domain-separated signer record, limited dates and sequence floor, SQLite review head equality; never authorizes |
+| [`tests/unit/test_head_checkpoints.py`](../../tests/unit/test_head_checkpoints.py) | Signed revocation, restored older SQLite, replay with stale floor, key/scope/date tampering and identifier minimization |
+| [`docs/engineering/SIGNED_HEAD_CHECKPOINTS.md`](SIGNED_HEAD_CHECKPOINTS.md) | Precise trust requirements, missing external high-water service and replay counterexample |
+| [`docs/engineering/changes/M1B_SIGNED_HEAD_CHECKPOINTS.md`](changes/M1B_SIGNED_HEAD_CHECKPOINTS.md) | Scoped change, source/test mapping, acceptance and rollback |
+
+A signed checkpoint proves a signature under supplied public keys, not
+independent currentness, original source rights or data use permission.

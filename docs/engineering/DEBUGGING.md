@@ -42,6 +42,8 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 
 - For persistent review history failures: inspect [`sqlite_review_registry.py`](../../src/mirrormind/modules/evidence/sqlite_review_registry.py), [SQLite safety boundaries](SQLITE_REVIEW_REGISTRY.md) and [transaction regressions](../../tests/unit/test_sqlite_review_registry.py). Never expose raw SQLite databases containing review IDs; compare only sanitized revisions and independently provisioned heads. A correct local head is not an independent authority.
 
+- If signed checkpoint verification refuses a restored SQLite database: inspect [`head_checkpoints.py`](../../src/mirrormind/modules/evidence/head_checkpoints.py), [checkpoint trust guide](SIGNED_HEAD_CHECKPOINTS.md) and [fictional replay tests](../../tests/unit/test_head_checkpoints.py). Do not use a checkpoint uploaded by the requester as a trusted freshness anchor, and never print private signing keys or source documents.
+
 Useful local checks:
 ```bash
 python -m pytest -q

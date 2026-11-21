@@ -337,3 +337,14 @@ head must both disappear after rollback. Then restore a signed older
 copy of the database and compare reads with and without the independently
 retained later head. Explain why valid older signatures cannot themselves
 prove freshness, reviewer rights, source permission or real ingestion.
+
+## Guided exercise — signed history is not the latest history (35 minutes)
+
+Review [the signed checkpoint verifier](../../src/mirrormind/modules/evidence/head_checkpoints.py),
+[its trust guide](SIGNED_HEAD_CHECKPOINTS.md), and
+[synthetic tests](../../tests/unit/test_head_checkpoints.py).
+Restore a valid older SQLite review history with its older valid signed
+checkpoint. Confirm a caller-provided stale sequence floor still accepts it,
+then supply a newer trusted minimum and observe rejection. Explain what
+independently governed signer keys, monotonic sequence, key rotation and
+head publication the real system is missing before permissions can be used.

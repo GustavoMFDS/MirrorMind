@@ -113,3 +113,13 @@ Evidence claim `MM-DBREG-001` is bound to
 These are *synthetic local tests* only. None proves third-party rights,
 independent monotonic log custody, hardware durability, real-world
 process security or production readiness.
+
+## Optional signed checkpoint comparison (experimental)
+
+The [offline signed-head verifier](SIGNED_HEAD_CHECKPOINTS.md) checks a
+separately signed packet/review-head checkpoint and a caller-supplied
+minimum anchor sequence against the current SQLite snapshot. Its keys,
+sequence and clock must come from an **independent** authority that this
+project does not implement. An old valid signed checkpoint can still be
+replayed with an old database if the provided minimum is stale. Neither
+path grants real source usage.

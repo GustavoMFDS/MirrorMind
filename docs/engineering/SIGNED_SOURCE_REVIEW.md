@@ -124,3 +124,11 @@ event histories across restarts and uses database transaction locks for
 per-file writers. This is still an **offline local metadata mechanism**,
 not an independently authenticated, append-only current-head service,
 reviewer identity system or approval of dataset usage.
+
+## Signed review-head witness protocol (experimental)
+
+[Signed head checkpoints](SIGNED_HEAD_CHECKPOINTS.md) attest to a precise
+SQLite review revision and packet with a domain-separated Ed25519 record.
+Verification needs independently controlled signer keys and a **current**
+monotonic sequence supplied externally. No such service exists in the
+project and even a valid signature never grants ingestion or forecasting.
