@@ -354,3 +354,11 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   this implementation with a separate quadratic oracle, including late
   publication and moving-window expiry. No independent source authority,
   forecast validity or wall-clock speedup is inferred.
+
+- **MM-M1c performance characterization (measurement only):**
+  [two-revision synthetic benchmark](engineering/RETAIL_RESIDUAL_BENCHMARK.md)
+  compares the same fictional residual workload before and after incremental
+  calibration. It checks entire report hashes, measures median local elapsed
+  time and peak traced Python allocations, and reports full-run limitations.
+  Measurements are **not** CI quality gates, actual demand/forecast evidence,
+  whole-process memory measurements or guaranteed speedups.
