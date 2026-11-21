@@ -196,6 +196,13 @@
       "source": "src/mirrormind/modules/evidence/intake_review.py",
       "test": "tests/unit/test_source_intake_review.py::test_staged_csv_packet_is_digest_bound_but_never_permission_approval",
       "notes": "In-memory metadata-only review packet that binds an existing staged CSV or UCI-shaped XLSX digest to bounded caller-supplied source, license, permission, privacy and requested-use references. Does NOT authenticate evidence, grant ingestion, permit source acquisition, verify historical publication or establish operational forecasting."
+    },
+    {
+      "id": "local_signed_source_review_history",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/review_decisions.py",
+      "test": "tests/unit/test_signed_source_review.py::test_signed_revocation_is_terminal_for_same_manifest_even_after_reapproval",
+      "notes": "Offline verification of independently supplied Ed25519 reviewer public-key records, a versioned hash-chain head and denial/revocation/expiry for fictional source-review packets. Does not authenticate key provisioning, independent fresh log-head custody, reviewers' legal authority, publisher vintages, source permissions or data privacy clearance. Always ingestion_authorized=false and forecast_eligible=false; no signer, registry, real dataset ingestion, authorization endpoint or model enabled."
     }
   ]
 }
