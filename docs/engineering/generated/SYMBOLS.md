@@ -309,6 +309,28 @@ Static imports (including inside functions): `__future__`, `csv`, `dataclasses`,
 | `read_staged_csv` | function | `def read_staged_csv(stream: BinaryIO, *, expected_sha256: str, max_rows: int=MAX_ROWS) -> StagedSnapshot` | Read a cooperative local binary stream with a strict byte ceiling. | [L153](../../../src/mirrormind/modules/evidence/snapshots.py#L153) |
 | `snapshot_quality_summary` | function | `def snapshot_quality_summary(snapshot: StagedSnapshot) -> dict[str, str \| int]` | Summarize observed calendar gaps and delays without imputing or authorizing. | [L188](../../../src/mirrormind/modules/evidence/snapshots.py#L188) |
 
+## `mirrormind.modules.evidence.sqlite_review_registry`
+
+Source: [`src/mirrormind/modules/evidence/sqlite_review_registry.py`](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.review_decisions`, `pathlib`, `re`, `sqlite3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_json` | function | `def _json(data: dict[str, object]) -> str` | — | [L35](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L35) |
+| `_packet_json` | function | `def _packet_json(packet: SourceReviewPacket) -> str` | — | [L39](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L39) |
+| `_event_json` | function | `def _event_json(event: SignedReviewDecision) -> str` | — | [L57](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L57) |
+| `_parse_event` | function | `def _parse_event(serialized: str) -> SignedReviewDecision` | Fail closed on unexpected or rewritten persisted event encodings. | [L72](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L72) |
+| `SQLiteReviewRevision` | class | `class SQLiteReviewRevision` | Non-authorizing local snapshot of the stored signed history. | [L90](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L90) |
+| `SQLiteReviewRevision.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Report integrity status without exposing any source or reviewer IDs. | [L98](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L98) |
+| `SQLiteReviewRegistry` | class | `class SQLiteReviewRegistry` | Per-packet signed event log using SQLite BEGIN IMMEDIATE transactions. | [L114](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L114) |
+| `SQLiteReviewRegistry.__init__` | method | `def __init__(self, db_path: Path, trusted_reviewer_keys: Mapping[str, bytes], *, create: bool=False) -> None` | — | [L122](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L122) |
+| `SQLiteReviewRegistry._connection` | method | `def _connection(self) -> sqlite3.Connection` | — | [L187](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L187) |
+| `SQLiteReviewRegistry._validate_schema` | method | `def _validate_schema(connection: sqlite3.Connection) -> None` | — | [L200](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L200) |
+| `SQLiteReviewRegistry._load` | method | `def _load(connection: sqlite3.Connection, packet: SourceReviewPacket) -> tuple[tuple[SignedReviewDecision, ...], str]` | — | [L212](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L212) |
+| `SQLiteReviewRegistry.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> SQLiteReviewRevision` | Verify stored signatures, with optional *independent* rollback anchor. | [L243](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L243) |
+| `SQLiteReviewRegistry.append` | method | `def append(self, packet: SourceReviewPacket, event: SignedReviewDecision, *, expected_revision: int, expected_head_sha256: str, checked_on: date) -> SQLiteReviewRevision` | Atomically compare the current stored head and append a signed event. | [L275](../../../src/mirrormind/modules/evidence/sqlite_review_registry.py#L275) |
+
 ## `mirrormind.modules.forecasting.__init__`
 
 Source: [`src/mirrormind/modules/forecasting/__init__.py`](../../../src/mirrormind/modules/forecasting/__init__.py)

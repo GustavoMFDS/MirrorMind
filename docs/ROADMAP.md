@@ -392,3 +392,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   durability, restart/cross-worker anti-rollback, human permission review
   and ingestion enforcement. A local signed approval never permits
   dataset use or forecasting.
+
+- **MM-M1b local SQLite signed decision storage (experimental):**
+  [transactional review registry](engineering/SQLITE_REVIEW_REGISTRY.md)
+  persists verified synthetic review records through restarts with
+  SQLite `BEGIN IMMEDIATE` compare-and-swap, rollback tests and two
+  independent interpreter writers. A coherent older database can
+  **still be restored undetected** without an independently trusted
+  current log head. This is neither a permission service nor lawful
+  real-data ingestion; key/role authority, trusted fresh head,
+  privacy/licensing review and ingestion controls remain blocked.

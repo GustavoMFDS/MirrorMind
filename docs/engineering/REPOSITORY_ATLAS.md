@@ -662,3 +662,15 @@ source rights and authorization to ingest are **not** implemented.
 
 The registry is process-only and does **not** supply trusted reviewer
 identity, an append-only external head, source permissions, or ingestion.
+
+## 39. SQLite signed-review transaction and restart recovery (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/sqlite_review_registry.py`](../../src/mirrormind/modules/evidence/sqlite_review_registry.py) | Local SQLite schema v1, signed event replay verification, transactional revision/head CAS and restart persistence |
+| [`tests/unit/test_sqlite_review_registry.py`](../../tests/unit/test_sqlite_review_registry.py) | Recovery, cross-interpreter CAS, injected rollback, tampering, expiry, budgets and restored old database checks |
+| [`docs/engineering/SQLITE_REVIEW_REGISTRY.md`](SQLITE_REVIEW_REGISTRY.md) | Exact local persistence contract, external fresh-head dependency and nonauthorizing receipts |
+| [`docs/engineering/changes/M1B_SQLITE_REVIEW_REGISTRY.md`](changes/M1B_SQLITE_REVIEW_REGISTRY.md) | Scope, acceptance, trust boundary and rollback plan |
+
+SQLite local persistence is **not** a tamper-proof or independently
+attested registry and does not enable M5/UCI source ingestion.

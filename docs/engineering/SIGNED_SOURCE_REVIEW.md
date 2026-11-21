@@ -116,3 +116,11 @@ a second writer from overwriting a newer **in-process** review decision.
 It does not create the independent trusted append-only log or stable
 reviewer public-key authority described above. It loses freshness state
 on process restart and never changes source-ingestion authorization.
+
+## Transactional local persistence (experimental)
+
+The [SQLite registry experiment](SQLITE_REVIEW_REGISTRY.md) retains signed
+event histories across restarts and uses database transaction locks for
+per-file writers. This is still an **offline local metadata mechanism**,
+not an independently authenticated, append-only current-head service,
+reviewer identity system or approval of dataset usage.
