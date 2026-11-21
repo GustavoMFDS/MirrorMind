@@ -249,6 +249,19 @@ Source: [`src/mirrormind/modules/evidence/__init__.py`](../../../src/mirrormind/
 
 No top-level classes or functions.
 
+## `mirrormind.modules.evidence.intake_review`
+
+Source: [`src/mirrormind/modules/evidence/intake_review.py`](../../../src/mirrormind/modules/evidence/intake_review.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.evidence.snapshots`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SourceReviewDeclaration` | class | `class SourceReviewDeclaration` | Human-supplied review references; not authenticated permissions. | [L25](../../../src/mirrormind/modules/evidence/intake_review.py#L25) |
+| `SourceReviewPacket` | class | `class SourceReviewPacket` | Identifier-minimized metadata for an external human reviewer. | [L41](../../../src/mirrormind/modules/evidence/intake_review.py#L41) |
+| `SourceReviewPacket.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a non-authorizing summary, never input rows or references. | [L54](../../../src/mirrormind/modules/evidence/intake_review.py#L54) |
+| `prepare_source_review_packet` | function | `def prepare_source_review_packet(staged: StagedSnapshot \| UciWorkbookReadResult, declaration: SourceReviewDeclaration, *, inspected_on: date) -> SourceReviewPacket` | Bind a staged digest to unverified review declarations without approval. | [L77](../../../src/mirrormind/modules/evidence/intake_review.py#L77) |
+
 ## `mirrormind.modules.evidence.snapshots`
 
 Source: [`src/mirrormind/modules/evidence/snapshots.py`](../../../src/mirrormind/modules/evidence/snapshots.py)

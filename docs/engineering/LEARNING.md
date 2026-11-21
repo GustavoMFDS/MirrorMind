@@ -293,3 +293,14 @@ a truncating "success" would be scientifically
 misleading. What rights, source hash,
 privacy review and publication-time
 proof would a real source still need?
+
+## Guided exercise — a checksum is not a data use grant (25 minutes)
+
+Read [the source review packet guide](SOURCE_INTAKE_REVIEW.md),
+[the metadata-only module](../../src/mirrormind/modules/evidence/intake_review.py)
+and [its tests](../../tests/unit/test_source_intake_review.py).
+Change one invented permission reference, keeping the same staged CSV
+and snapshot SHA-256. Confirm the *manifest* fingerprint changes but
+`ingestion_authorized` remains `false`. Explain why neither digest
+is a license, why publication time must be established independently,
+and which human source-card checks are still needed.

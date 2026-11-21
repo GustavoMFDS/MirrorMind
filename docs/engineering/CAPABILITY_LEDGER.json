@@ -189,6 +189,13 @@
       "source": "src/mirrormind/domains/retail/sensitivity_sweep.py",
       "test": "tests/unit/test_retail_sensitivity_sweep.py::test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases",
       "notes": "Bounded synthetic mathematical sweep of unverified caller-chosen excluded-target ceilings, with no actual target imputation, population shift identification, source authorization or production inference. Default disclosure now requires at least three eligible origins and 80% eligible dates in each window; any lower synthetic-research override is explicit and not a statistical guarantee. Two independently validated historical windows are now reused across every ceiling; pure scenario arithmetic preserves the legacy single-ceiling receipt and requires no extra source access."
+    },
+    {
+      "id": "local_source_intake_review_packet",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/intake_review.py",
+      "test": "tests/unit/test_source_intake_review.py::test_staged_csv_packet_is_digest_bound_but_never_permission_approval",
+      "notes": "In-memory metadata-only review packet that binds an existing staged CSV or UCI-shaped XLSX digest to bounded caller-supplied source, license, permission, privacy and requested-use references. Does NOT authenticate evidence, grant ingestion, permit source acquisition, verify historical publication or establish operational forecasting."
     }
   ]
 }

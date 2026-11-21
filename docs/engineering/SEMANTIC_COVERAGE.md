@@ -42,6 +42,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
+| [`src/mirrormind/modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py) | G | Bind staged CSV/XLSX digests to caller-declared review refs, never authorize; [guide](SOURCE_INTAKE_REVIEW.md) |
 | [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | G | Strict local staging/as-of semantics in [M1 snapshot guide](M1_LOCAL_CSV_STAGING.md); no approved ingestion |
 | [`src/mirrormind/modules/forecasting/__init__.py`](../../src/mirrormind/modules/forecasting/__init__.py) | I | Offline forecast module marker, no model registry |
 | [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step staged rolling origin baselines and abstentions; [method guide](M1_STAGED_ROLLING_BASELINES.md) |
