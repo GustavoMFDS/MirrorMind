@@ -133,7 +133,8 @@ def test_signature_valid_denial_and_expired_approval_block():
     deny, head = signed_event(source_packet, signing, decision="deny")
     assert verify(source_packet, (deny,), public, head).review_status == "review_denied"
     approval, head = signed_event(
-        source_packet, signing, expires_on=date(2026, 11, 20),
+        source_packet, signing, decided_on=date(2026, 11, 19),
+        expires_on=date(2026, 11, 20),
     )
     assert verify(source_packet, (approval,), public, head).review_status == "signed_approval_expired"
 
