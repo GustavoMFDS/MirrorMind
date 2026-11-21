@@ -467,5 +467,19 @@
     "test": "tests/unit/test_signed_source_review.py",
     "function": "test_signed_revocation_is_terminal_for_same_manifest_even_after_reapproval",
     "limitation": "Local same-packet revocation only blocks when the entire supplied log is anchored to an independently trusted up-to-date head. No append-only registry, key management, operational authorization or production revocation enforcement is implemented."
+  },
+  {
+    "id": "MM-REGISTRY-001",
+    "guide": "docs/engineering/LOCAL_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_local_review_registry.py",
+    "function": "test_revocation_is_terminal_and_old_head_cannot_rewrite_current_state",
+    "limitation": "An in-memory revision/head comparison and same-packet revocation can block replay only within a live local instance; no durable append-only record, trusted fresh external head, authenticated reviewer authority, legal rights or real ingestion is provided."
+  },
+  {
+    "id": "MM-REGISTRY-002",
+    "guide": "docs/engineering/LOCAL_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_local_review_registry.py",
+    "function": "test_second_same_revision_writer_loses_atomic_compare_and_swap",
+    "limitation": "A two-thread CAS regression proves one local winner under a process lock; it does not prove cross-process coordination, crash recovery, persistent transactionality or production-safe authorization."
   }
 ]
