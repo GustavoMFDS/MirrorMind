@@ -104,8 +104,12 @@ python -m pytest -q tests/unit/test_sqlite_review_registry.py
 python scripts/local_quality_gate.py --expected-head $(git rev-parse HEAD)
 ```
 
-Evidence claims `MM-DBREG-001` (restart/revocation),
-`MM-DBREG-002` (independent-interpreter CAS), and `MM-DBREG-003`
-(transaction rollback) refer to named tests above. None proves
-third-party rights, independent monotonic log custody, hardware
-durability, real-world process security or production readiness.
+Evidence claim `MM-DBREG-001` is bound to
+`tests/unit/test_sqlite_review_registry.py::test_database_restart_preserves_signed_history_and_revocation`.
+`MM-DBREG-002` references
+`tests/unit/test_sqlite_review_registry.py::test_separate_interpreters_contend_on_same_database_transaction`.
+`MM-DBREG-003` references
+`tests/unit/test_sqlite_review_registry.py::test_transaction_rolls_back_packet_and_event_on_failed_final_update`.
+These are *synthetic local tests* only. None proves third-party rights,
+independent monotonic log custody, hardware durability, real-world
+process security or production readiness.
