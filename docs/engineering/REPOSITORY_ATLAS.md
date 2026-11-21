@@ -626,3 +626,15 @@ are introduced by this optimization.
 
 The optional measurement is not a test of real demand, calibrated intervals,
 whole-process memory or production latency, and is not an Actions substitute.
+
+## 36. Review-only source metadata binding (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py) | Binds staged checksum to declared intended use and opaque permission/privacy refs; explicitly does **not** authorize |
+| [`tests/unit/test_source_intake_review.py`](../../tests/unit/test_source_intake_review.py) | Synthetic CSV/XLSX paths, reference validation, mismatched hashes and privacy/authorization refusal |
+| [`docs/engineering/SOURCE_INTAKE_REVIEW.md`](SOURCE_INTAKE_REVIEW.md) | Method, human go/no-go, unsupported actual data and historical availability |
+| [`docs/engineering/changes/M1B_SOURCE_REVIEW_PACKET.md`](changes/M1B_SOURCE_REVIEW_PACKET.md) | Scoped behavior change request, acceptance, trust map and rollback |
+
+A packet is **not** a verified license, source credential, permission
+service, actual ingestion, publisher vintage or working Evidence Engine.
