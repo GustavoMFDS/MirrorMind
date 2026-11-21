@@ -615,3 +615,14 @@ These scenarios do not identify true demand distribution shifts.
 
 No global forecast cache, authenticated vintages or operational forecasting
 are introduced by this optimization.
+
+## 35. Reproducible synthetic residual-evaluator performance experiment
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`scripts/benchmarks/retail_residual.py`](../../scripts/benchmarks/retail_residual.py) | Exact-revision full evaluator timing, separate traced Python allocation peak, SHA-256 report equivalence |
+| [`tests/unit/test_retail_residual_benchmark.py`](../../tests/unit/test_retail_residual_benchmark.py) | Invented fixture bounds, stable digest and Git revision preflight refusal |
+| [`docs/engineering/RETAIL_RESIDUAL_BENCHMARK.md`](RETAIL_RESIDUAL_BENCHMARK.md) | Reproduction protocol, baseline/optimized SHAs and limits on interpretation |
+
+The optional measurement is not a test of real demand, calibrated intervals,
+whole-process memory or production latency, and is not an Actions substitute.
