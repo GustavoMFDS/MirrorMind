@@ -178,8 +178,11 @@ class SQLiteReviewRegistry:
                 connection.close()
         if not db_path.is_file():
             raise ValueError("review registry database does not exist")
-        with self._connection() as connection:
+        connection = self._connection()
+        try:
             self._validate_schema(connection)
+        finally:
+            connection.close()
 
     def _connection(self) -> sqlite3.Connection:
         if not self._path.is_file() or self._path.is_symlink():
