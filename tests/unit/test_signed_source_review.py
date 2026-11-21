@@ -1,6 +1,6 @@
 """Synthetic Ed25519 review-chain tests; never production permission evidence."""
 from dataclasses import FrozenInstanceError, replace
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from hashlib import sha256
 
 import pytest
