@@ -446,5 +446,12 @@
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_incremental_calibration_exactly_matches_naive_reference",
     "limitation": "A deterministic, test-only quadratic oracle can detect code-level calendar eligibility differences; it cannot validate historical publisher rights, the true demand process, calibration guarantees or a runtime speedup."
+  },
+  {
+    "id": "MM-INTAKE-001",
+    "guide": "docs/engineering/SOURCE_INTAKE_REVIEW.md",
+    "test": "tests/unit/test_source_intake_review.py",
+    "function": "test_staged_csv_packet_is_digest_bound_but_never_permission_approval",
+    "limitation": "Synthetic packet tests verify exact digest binding, identifier minimization and truthful nonauthorization only; they do not authenticate source rights, publisher identities, data usage terms or historical publication timestamps."
   }
 ]
