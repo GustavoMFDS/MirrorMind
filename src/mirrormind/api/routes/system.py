@@ -20,6 +20,7 @@ def capabilities() -> dict[str, object]:
             "synthetic_asof_availability",
             "synthetic_asof_rolling_backtest",
             "local_csv_snapshot_preflight",
+            "local_source_intake_review_packet",
             "local_staged_rolling_baselines",
             "local_uci_transaction_projection",
             "local_uci_xlsx_reader",
