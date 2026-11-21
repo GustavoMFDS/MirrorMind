@@ -362,3 +362,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   time and peak traced Python allocations, and reports full-run limitations.
   Measurements are **not** CI quality gates, actual demand/forecast evidence,
   whole-process memory measurements or guaranteed speedups.
+
+- **MM-M1b review packet (experimental, still not licensed ingestion):**
+  [source-intake metadata binder](engineering/SOURCE_INTAKE_REVIEW.md)
+  joins an existing staged CSV/UCI-shaped XLSX digest to declared
+  source/license/rights/privacy references, requested use, captured date
+  and retention. Mismatches fail; receipts are identifier-minimized and
+  **always refuse ingestion and forecasting**, regardless of claimed evidence.
+  Human review of original rights, verified vintages and privacy policy
+  remains mandatory before a separate real-source adapter is proposed.
