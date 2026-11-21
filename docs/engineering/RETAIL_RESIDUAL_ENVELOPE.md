@@ -174,3 +174,12 @@ on the day-70 forecast's origin (day 69) may enter its 21-day calibration
 window, whereas release on day 70 is too late and causes calibration
 abstention when 21 residuals are required. This software equivalence does **not** establish
 publisher authenticity, statistical validity or predictive accuracy.
+
+## Reproducible synthetic timing experiment
+
+For a two-revision comparison using the same full retrospective evaluator
+and input data, see the [measurement protocol](RETAIL_RESIDUAL_BENCHMARK.md).
+It separates repeated timing samples from a distinct Python-allocation
+measurement and requires identical full report hashes. This is only a
+synthetic engineering observation, not a claim about demand forecasting,
+source rights, calibrated uncertainty or production memory/latency.
