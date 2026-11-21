@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import platform
 import re
 import statistics
 import subprocess
@@ -122,6 +123,8 @@ def measure(root: Path, head: str, profile: str, repetitions: int, warmups: int)
     return {
         "status": "synthetic_local_benchmark_not_official_ci",
         "source_head_sha": head,
+        "python_version": platform.python_version(),
+        "operating_system": platform.system(),
         "profile": profile,
         "synthetic_product_days": len(projection.days),
         "requested_origins": 30,
