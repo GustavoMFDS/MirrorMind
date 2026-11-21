@@ -97,3 +97,13 @@ The narrow reviewed claim `MM-INTAKE-001` is tied to
 `tests/unit/test_source_intake_review.py::test_staged_csv_packet_is_digest_bound_but_never_permission_approval`.
 That test verifies metadata binding and refusal **only**, not external
 rights, source accuracy or effective security against malicious callers.
+
+## Independent reviewer records are a separate layer
+
+The [signed review history experiment](SIGNED_SOURCE_REVIEW.md) verifies
+reviewer signature *metadata* independently of the intake request, and
+rejects revocations/expiry. It does **not** transform this packet into an
+authorized dataset: its verifier also always reports ingestion and
+forecast eligibility as false. The signing keys and trusted current log
+head must come from an independently governed system, which MirrorMind
+does not currently implement.

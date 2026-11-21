@@ -304,3 +304,13 @@ and snapshot SHA-256. Confirm the *manifest* fingerprint changes but
 `ingestion_authorized` remains `false`. Explain why neither digest
 is a license, why publication time must be established independently,
 and which human source-card checks are still needed.
+
+## Guided exercise — signatures, revocations and stale log replay (35 minutes)
+
+Read [the signed-review guide](SIGNED_SOURCE_REVIEW.md) and
+[the test-only signed events](../../tests/unit/test_signed_source_review.py).
+Verify a fictional signed approval; then append a revocation and attempt
+to resubmit the earlier, valid approval with the **new trusted head**.
+Explain why the truncated chain must fail, why a self-supplied head and
+public key would defeat that check, why the packet remains unauthorised,
+and why signing is not evidence of publisher rights or retrospective vintages.

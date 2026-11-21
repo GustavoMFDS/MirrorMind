@@ -262,6 +262,20 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `SourceReviewPacket.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a non-authorizing summary, never input rows or references. | [L54](../../../src/mirrormind/modules/evidence/intake_review.py#L54) |
 | `prepare_source_review_packet` | function | `def prepare_source_review_packet(staged: StagedSnapshot \| UciWorkbookReadResult, declaration: SourceReviewDeclaration, *, inspected_on: date) -> SourceReviewPacket` | Bind a staged digest to unverified review declarations without approval. | [L77](../../../src/mirrormind/modules/evidence/intake_review.py#L77) |
 
+## `mirrormind.modules.evidence.review_decisions`
+
+Source: [`src/mirrormind/modules/evidence/review_decisions.py`](../../../src/mirrormind/modules/evidence/review_decisions.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.intake_review`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedReviewDecision` | class | `class SignedReviewDecision` | Externally signed metadata; must not originate from the intake requester. | [L27](../../../src/mirrormind/modules/evidence/review_decisions.py#L27) |
+| `ReviewHistoryAssessment` | class | `class ReviewHistoryAssessment` | Non-authorizing, identifier-minimized result of signature/log verification. | [L45](../../../src/mirrormind/modules/evidence/review_decisions.py#L45) |
+| `ReviewHistoryAssessment.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a signed-review status, never source or reviewer references. | [L53](../../../src/mirrormind/modules/evidence/review_decisions.py#L53) |
+| `_canonical_review_message` | function | `def _canonical_review_message(event: SignedReviewDecision) -> bytes` | Encode the exact v1 review record for external Ed25519 signature verification. | [L73](../../../src/mirrormind/modules/evidence/review_decisions.py#L73) |
+| `verify_review_history` | function | `def verify_review_history(packet: SourceReviewPacket, events: tuple[SignedReviewDecision, ...], *, trusted_reviewer_keys: Mapping[str, bytes], expected_head_sha256: str, checked_on: date) -> ReviewHistoryAssessment` | Verify offline Ed25519 review events and fail closed on revoked/expired records. | [L92](../../../src/mirrormind/modules/evidence/review_decisions.py#L92) |
+
 ## `mirrormind.modules.evidence.snapshots`
 
 Source: [`src/mirrormind/modules/evidence/snapshots.py`](../../../src/mirrormind/modules/evidence/snapshots.py)

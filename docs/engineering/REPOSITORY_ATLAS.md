@@ -638,3 +638,15 @@ whole-process memory or production latency, and is not an Actions substitute.
 
 A packet is **not** a verified license, source credential, permission
 service, actual ingestion, publisher vintage or working Evidence Engine.
+
+## 37. Signed source reviewer history and revocation (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/review_decisions.py`](../../src/mirrormind/modules/evidence/review_decisions.py) | Verify bounded Ed25519 event history, chained head, expiry and permanent same-packet revocation; no grant |
+| [`tests/unit/test_signed_source_review.py`](../../tests/unit/test_signed_source_review.py) | Fictional signed approvals, revocation, reordered/truncated logs, scope and key mismatches, explicit denial and privacy regressions |
+| [`docs/engineering/SIGNED_SOURCE_REVIEW.md`](SIGNED_SOURCE_REVIEW.md) | Human review vs signature and external key/head/freshness requirements |
+| [`docs/engineering/changes/M1B_SIGNED_REVIEW_REVOCATION.md`](changes/M1B_SIGNED_REVIEW_REVOCATION.md) | Acceptance gates, impact map, known spoofed-root risks and rollback |
+
+Trusted signer/private keys, current independently anchored review history,
+source rights and authorization to ingest are **not** implemented.

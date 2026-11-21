@@ -371,3 +371,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   **always refuse ingestion and forecasting**, regardless of claimed evidence.
   Human review of original rights, verified vintages and privacy policy
   remains mandatory before a separate real-source adapter is proposed.
+
+- **MM-M1b signed review history (experimental, not an approval service):**
+  [offline Ed25519 review verification](engineering/SIGNED_SOURCE_REVIEW.md)
+  binds reviewer attestations to a specific declared manifest, usage scope,
+  expiring approval, denial and permanent same-packet revocation; checks
+  a chained log against an externally supplied expected head. Validating
+  a signature never sets ingestion/forecast eligibility to true. Trusted
+  reviewer keys, independently fresh append-only registry, human rights
+  review, privacy, retention enforcement and lawful source acquisition
+  remain **unimplemented**; real M1b ingestion stays blocked.
