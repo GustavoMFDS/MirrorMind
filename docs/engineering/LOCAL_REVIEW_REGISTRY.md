@@ -95,3 +95,12 @@ Evidence **MM-REGISTRY-002**:
 `tests/unit/test_local_review_registry.py::test_second_same_revision_writer_loses_atomic_compare_and_swap`.
 Neither test establishes a durable review authority, an actual legal
 permission grant or historical data availability.
+
+## Experimental local SQLite alternative
+
+The separately introduced [SQLite review history store](SQLITE_REVIEW_REGISTRY.md)
+provides local transaction-based persistence after interpreter restart and
+cross-process optimistic version/head checks. It **does not** upgrade the
+in-process RLock implementation, produce an independently authenticated
+fresh head or authorize data rights. A restored old coherent database
+still needs an independently held newer head to reveal rollback.
