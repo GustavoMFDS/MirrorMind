@@ -3,7 +3,6 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import FrozenInstanceError, asdict, replace
 from datetime import date
 from hashlib import sha256
-from pathlib import Path
 import json
 import shutil
 import sqlite3
