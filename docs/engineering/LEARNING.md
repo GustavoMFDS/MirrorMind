@@ -314,3 +314,15 @@ to resubmit the earlier, valid approval with the **new trusted head**.
 Explain why the truncated chain must fail, why a self-supplied head and
 public key would defeat that check, why the packet remains unauthorised,
 and why signing is not evidence of publisher rights or retrospective vintages.
+
+## Guided exercise — local CAS is not a durable approval registry (35 minutes)
+
+Read the [review registry source](../../src/mirrormind/modules/evidence/local_review_registry.py),
+[the trust boundary](LOCAL_REVIEW_REGISTRY.md) and
+[its concurrency tests](../../tests/unit/test_local_review_registry.py).
+Take two snapshots with the same version and head; attempt two
+concurrent signed appends and observe one winning. Then start a new
+registry object with the same public key and explain why it has no
+memory of the previous revocation. Identify the missing transactional
+store, authenticated reviewer identity and independently published
+fresh head required before anyone relies on it for real permissions.

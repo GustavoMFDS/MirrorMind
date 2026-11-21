@@ -650,3 +650,15 @@ service, actual ingestion, publisher vintage or working Evidence Engine.
 
 Trusted signer/private keys, current independently anchored review history,
 source rights and authorization to ingest are **not** implemented.
+
+## 38. Local signed-review revision coordination (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/local_review_registry.py`](../../src/mirrormind/modules/evidence/local_review_registry.py) | Compare-and-swap with per-process lock, signed-chain checks and permanent same-packet revocation |
+| [`tests/unit/test_local_review_registry.py`](../../tests/unit/test_local_review_registry.py) | Concurrent stale writes, old head refusal, signature tampering, restart loss, bounds and key-copy tests |
+| [`docs/engineering/LOCAL_REVIEW_REGISTRY.md`](LOCAL_REVIEW_REGISTRY.md) | Source-bound revision format, limits, missing durable trust and nonauthorizing receipts |
+| [`docs/engineering/changes/M1B_LOCAL_REVIEW_REGISTRY.md`](changes/M1B_LOCAL_REVIEW_REGISTRY.md) | Change request, acceptance and rollback constraints |
+
+The registry is process-only and does **not** supply trusted reviewer
+identity, an append-only external head, source permissions, or ingestion.

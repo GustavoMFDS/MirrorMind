@@ -381,3 +381,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   reviewer keys, independently fresh append-only registry, human rights
   review, privacy, retention enforcement and lawful source acquisition
   remain **unimplemented**; real M1b ingestion stays blocked.
+
+- **MM-M1b in-process review revision coordination (experimental only):**
+  [local signed-review registry](engineering/LOCAL_REVIEW_REGISTRY.md)
+  implements a bounded per-packet sequence and head with locked
+  compare-and-swap updates, signed-event validation, immutable sanitized
+  snapshots and terminal revocation for the **current process**. The
+  [change request](engineering/changes/M1B_LOCAL_REVIEW_REGISTRY.md)
+  identifies unimplemented independent trusted key/head provisioning,
+  durability, restart/cross-worker anti-rollback, human permission review
+  and ingestion enforcement. A local signed approval never permits
+  dataset use or forecasting.

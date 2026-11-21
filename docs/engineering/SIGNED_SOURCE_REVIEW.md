@@ -107,3 +107,12 @@ controlled signing/revocation/freshness service, review rights and human
 signoff. Only then can a source-specific adapter be evaluated for
 permission promotion in a separate PR, with actual evidence and a
 reviewed dataset card. Until then M1b real ingestion remains **NO-GO**.
+
+## Volatile local writer coordination
+
+The [experimental process-local review registry](LOCAL_REVIEW_REGISTRY.md)
+adds a bounded optimistic version/head check around appends and prevents
+a second writer from overwriting a newer **in-process** review decision.
+It does not create the independent trusted append-only log or stable
+reviewer public-key authority described above. It loses freshness state
+on process restart and never changes source-ingestion authorization.
