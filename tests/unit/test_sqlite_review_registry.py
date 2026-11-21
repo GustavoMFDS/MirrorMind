@@ -1,13 +1,13 @@
 """SQLite signed-review durability and transaction regressions on invented data."""
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import FrozenInstanceError, asdict, replace
-from datetime import date
-from hashlib import sha256
 import json
 import shutil
 import sqlite3
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import FrozenInstanceError, asdict, replace
+from datetime import date
+from hashlib import sha256
 
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
