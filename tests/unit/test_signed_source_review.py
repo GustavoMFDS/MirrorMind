@@ -144,6 +144,7 @@ def test_absent_review_record_is_not_an_implicit_grant():
     result = verify(source_packet, (), public, GENESIS_HEAD)
     assert result.review_status == "missing_review_record"
     assert result.receipt()["ingestion_authorized"] is False
+    assert result.receipt()["signature_status"] == "no_signatures_present"
 
 
 @pytest.mark.parametrize("mutation,match", [
