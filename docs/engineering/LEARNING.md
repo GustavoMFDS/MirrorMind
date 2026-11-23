@@ -360,3 +360,14 @@ change without both old and new signatures. Finally replay a complete
 valid transcript using outdated start/end fences: explain why it can
 still pass unless an independent authority publishes current fences
 and exposes hidden conflicting forks.
+
+## Guided exercise — a signed local operator is not an external authority (40 minutes)
+
+Read the [local publisher source](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py),
+[its trust guide](LOCAL_CHECKPOINT_PUBLISHER.md) and
+[synthetic security tests](../../tests/unit/test_local_checkpoint_publisher.py).
+Attempt publication with an unsigned operator command, reuse the same
+signed proposal after a successful commit, then rotate the witness key
+without old and new signatures. Restore a valid older SQLite backup
+and explain why independently trusted new heads, authenticated roles,
+key custody and witness consistency proofs are still necessary.
