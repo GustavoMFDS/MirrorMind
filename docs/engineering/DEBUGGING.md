@@ -46,6 +46,8 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 
 - For missing witness publications, rotation failures or stale head fences: inspect [`authority_transcript.py`](../../src/mirrormind/modules/evidence/authority_transcript.py), [witness protocol and limitations](AUTHORITY_TRANSCRIPT.md) and [fictional recovery tests](../../tests/unit/test_authority_transcript.py). Never assume a caller-supplied chain is current, or emit private key material/source IDs in issues.
 
+- For publication CAS conflicts, missing operator role or local rollback: inspect [`local_checkpoint_publisher.py`](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py), [the local publisher trust guide](LOCAL_CHECKPOINT_PUBLISHER.md) and [synthetic transactional tests](../../tests/unit/test_local_checkpoint_publisher.py). Never log private signing keys or copy a publisher SQLite database with metadata into issues. The journal cannot attest to its own globally current head.
+
 Useful local checks:
 ```bash
 python -m pytest -q
