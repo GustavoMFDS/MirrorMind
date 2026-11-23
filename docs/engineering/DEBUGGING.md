@@ -50,6 +50,8 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 
 - For operator policy enrollment or revocation incidents: inspect [`operator_governance.py`](../../src/mirrormind/modules/evidence/operator_governance.py), [its trust and TOCTOU limits](OPERATOR_GOVERNANCE.md) and [synthetic regressions](../../tests/unit/test_operator_governance.py). Do not mistake an active policy record for effective publisher authorization or log private key material; the databases are not atomically coupled.
 
+- For the **integrated** publisher refusing an operator after a revocation or reporting stale policy heads: inspect [`atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py), [same-file transaction contract](ATOMIC_GOVERNED_PUBLISHER.md) and [concurrent revocation tests](../../tests/unit/test_atomic_governed_publisher.py). The legacy publisher intentionally refuses integrated files. Keep original source IDs and signed keys out of debug logs; local transactions do not prove external freshness.
+
 Useful local checks:
 ```bash
 python -m pytest -q

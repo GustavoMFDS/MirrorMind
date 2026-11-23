@@ -131,3 +131,14 @@ that policy. A policy check followed by a separate publisher transaction
 would introduce a time-of-check/time-of-use race. No effective
 publication admission or revocation protection is claimed; a future
 single-transaction and independently governed design is required.
+
+## Optional integrated single-database gate (experimental)
+
+The [atomic policy-gated publication experiment](ATOMIC_GOVERNED_PUBLISHER.md)
+uses a **new combined SQLite file** to place current dual-admin operator
+policy validation and the signed publication write under one transaction.
+This standalone publisher intentionally **rejects the combined marker**:
+its static-key path cannot be used to bypass governed admission in
+that database. Old separate publisher databases remain compatible and
+are not automatically governed. This is still local-only, not external
+operator identity, fresh witness currentness or licensed-source access.

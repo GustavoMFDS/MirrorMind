@@ -383,3 +383,15 @@ saved database from before the revocation and explain why the old
 state is internally consistent. Identify the cross-database policy
 admission race and independent current-head proof needed before
 connecting this registry to the publisher.
+
+## Guided exercise — atomic policy admission vs independent authority (40 minutes)
+
+Read the [integrated gate](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py),
+[the contract](ATOMIC_GOVERNED_PUBLISHER.md) and
+[the race regressions](../../tests/unit/test_atomic_governed_publisher.py).
+Enroll a fictional key, publish one checkpoint, sign a second one and
+race revocation against publication. Explain why a publication committed
+*before* revocation remains legitimate under SQLite's total local order,
+while a later attempt fails. Restore a coherent pre-revocation combined
+database and explain why external head custody, real identity and
+legal source approvals remain necessary despite same-file atomicity.

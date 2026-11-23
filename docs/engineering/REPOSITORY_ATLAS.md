@@ -722,3 +722,15 @@ current head, licensed-source ingestion or operator identity service.
 
 No identity authority, real operator entitlement, publisher integration,
 globally current policy or source-ingestion permission exists.
+
+## 44. Atomic local operator-policy gated checkpoint publication (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py) | Opt-in new combined SQLite schema, same-transaction dual-signed policy admission, publication and external-head comparisons |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Fictional post-revocation refusal, concurrent revocation/publish serialization, legacy bypass rejection, injected rollback and old backup tests |
+| [`docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md`](ATOMIC_GOVERNED_PUBLISHER.md) | Local atomic admission semantics, compatibility, external trust and source rights limitations |
+| [`docs/engineering/changes/M1B_ATOMIC_GOVERNED_PUBLISHER.md`](changes/M1B_ATOMIC_GOVERNED_PUBLISHER.md) | Change request, safety acceptance, impact and rollback conditions |
+
+The integrated local path **does not** provide operator identities,
+externally attested currentness or actual source-ingestion permission.
