@@ -249,6 +249,32 @@ Source: [`src/mirrormind/modules/evidence/__init__.py`](../../../src/mirrormind/
 
 No top-level classes or functions.
 
+## `mirrormind.modules.evidence.atomic_governed_publisher`
+
+Source: [`src/mirrormind/modules/evidence/atomic_governed_publisher.py`](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.local_checkpoint_publisher`, `mirrormind.modules.evidence.operator_governance`, `pathlib`, `re`, `sqlite3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `AtomicGovernedRevision` | class | `class AtomicGovernedRevision` | One local snapshot; does not represent source or production authorization. | [L45](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L45) |
+| `AtomicGovernedRevision.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Only safe local consistency fields; never an access-control token. | [L55](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L55) |
+| `_HistoricalSignatureVerifier` | class | `class _HistoricalSignatureVerifier` | Reuse tested signature/history helpers without enabling direct publishing. | [L74](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L74) |
+| `_HistoricalSignatureVerifier.__init__` | method | `def __init__(self, checkpoint_keys: Mapping[str, bytes], witness_keys: Mapping[str, bytes], operator_keys: Mapping[str, bytes], bootstrap: str) -> None` | — | [L77](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L77) |
+| `_HistoricalSignatureVerifier.publish` | method | `def publish(self, *args: object, **kwargs: object) -> None` | — | [L90](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L90) |
+| `AtomicGovernedPublisher` | class | `class AtomicGovernedPublisher` | Opt-in local shared schema with serial policy updates and publication. | [L94](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L94) |
+| `AtomicGovernedPublisher.__init__` | method | `def __init__(self, path: Path, *, administrator_public_keys: Mapping[str, bytes], checkpoint_keys: Mapping[str, bytes], witness_keys: Mapping[str, bytes], initial_witness_key_id: str, create: bool=False) -> None` | — | [L102](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L102) |
+| `AtomicGovernedPublisher._connect` | method | `def _connect(self) -> sqlite3.Connection` | — | [L238](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L238) |
+| `AtomicGovernedPublisher._schema` | method | `def _schema(self, db: sqlite3.Connection) -> None` | — | [L250](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L250) |
+| `AtomicGovernedPublisher._read_policy` | method | `def _read_policy(self, db: sqlite3.Connection, checked_on: date) -> tuple[int, str, dict[str, tuple[str, date, bool]]]` | — | [L266](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L266) |
+| `AtomicGovernedPublisher._check_policy_role_separation` | method | `def _check_policy_role_separation(self, records: Mapping[str, tuple[str, date, bool]]) -> None` | — | [L277](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L277) |
+| `AtomicGovernedPublisher._verifier` | method | `def _verifier(self, records: Mapping[str, tuple[str, date, bool]]) -> _HistoricalSignatureVerifier` | — | [L290](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L290) |
+| `AtomicGovernedPublisher._expected` | method | `def _expected(expected: int, head: str, current: int, current_head: str) -> None` | — | [L302](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L302) |
+| `AtomicGovernedPublisher.append_policy` | method | `def append_policy(self, event: SignedOperatorPolicyEvent, *, expected_policy_revision: int, expected_policy_head_sha256: str, checked_on: date) -> OperatorPolicyRevision` | Atomically advance the same-file policy read by future publications. | [L310](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L310) |
+| `AtomicGovernedPublisher.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date, externally_expected_policy_head_sha256: str \| None=None, externally_expected_publication_head_sha256: str \| None=None) -> AtomicGovernedRevision` | Reverify *both* local signed histories in the same read snapshot. | [L362](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L362) |
+| `AtomicGovernedPublisher.publish` | method | `def publish(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, expected_policy_revision: int, expected_policy_head_sha256: str, expected_publication_sequence: int, expected_publication_head_sha256: str, checked_on: date) -> AtomicGovernedRevision` | Reject revoked/expired keys and append under ONE SQLite write lock. | [L401](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L401) |
+| `_last_governance_date` | function | `def _last_governance_date(db: sqlite3.Connection, revision: int) -> date` | Read only the exact preceding canonical signed event's calendar date. | [L489](../../../src/mirrormind/modules/evidence/atomic_governed_publisher.py#L489) |
+
 ## `mirrormind.modules.evidence.authority_transcript`
 
 Source: [`src/mirrormind/modules/evidence/authority_transcript.py`](../../../src/mirrormind/modules/evidence/authority_transcript.py)
@@ -315,10 +341,10 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 | `LocalCheckpointPublisher.__init__` | method | `def __init__(self, path: Path, *, checkpoint_keys: Mapping[str, bytes], witness_keys: Mapping[str, bytes], operator_keys: Mapping[str, bytes], initial_witness_key_id: str, create: bool=False) -> None` | — | [L191](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L191) |
 | `LocalCheckpointPublisher._connect` | method | `def _connect(self) -> sqlite3.Connection` | — | [L273](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L273) |
 | `LocalCheckpointPublisher._schema` | method | `def _schema(self, db: sqlite3.Connection) -> None` | — | [L285](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L285) |
-| `LocalCheckpointPublisher._verify_event` | method | `def _verify_event(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, sequence: int, previous_hash: str, previous_witness: str, previous_epoch: int, previous_revision: int, previous_review_head: str \| None, previous_issue: date) -> tuple[str, str, int, int, str, date]` | — | [L297](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L297) |
-| `LocalCheckpointPublisher._load` | method | `def _load(self, db: sqlite3.Connection, packet: SourceReviewPacket) -> tuple[int, str, str, int, int, str \| None, date, date \| None]` | — | [L394](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L394) |
-| `LocalCheckpointPublisher.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> LocalPublicationRevision` | Recheck full local signed history; external head may detect rollback. | [L451](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L451) |
-| `LocalCheckpointPublisher.publish` | method | `def publish(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, expected_sequence: int, expected_receipt_sha256: str, checked_on: date) -> LocalPublicationRevision` | Verify exact operator-signed proposal, then atomically commit. | [L482](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L482) |
+| `LocalCheckpointPublisher._verify_event` | method | `def _verify_event(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, sequence: int, previous_hash: str, previous_witness: str, previous_epoch: int, previous_revision: int, previous_review_head: str \| None, previous_issue: date) -> tuple[str, str, int, int, str, date]` | — | [L306](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L306) |
+| `LocalCheckpointPublisher._load` | method | `def _load(self, db: sqlite3.Connection, packet: SourceReviewPacket) -> tuple[int, str, str, int, int, str \| None, date, date \| None]` | — | [L403](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L403) |
+| `LocalCheckpointPublisher.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> LocalPublicationRevision` | Recheck full local signed history; external head may detect rollback. | [L460](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L460) |
+| `LocalCheckpointPublisher.publish` | method | `def publish(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, expected_sequence: int, expected_receipt_sha256: str, checked_on: date) -> LocalPublicationRevision` | Verify exact operator-signed proposal, then atomically commit. | [L491](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L491) |
 
 ## `mirrormind.modules.evidence.local_review_registry`
 
