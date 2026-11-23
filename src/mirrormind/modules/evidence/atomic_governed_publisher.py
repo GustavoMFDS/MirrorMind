@@ -18,22 +18,30 @@ from pathlib import Path
 
 from mirrormind.modules.evidence.intake_review import SourceReviewPacket
 from mirrormind.modules.evidence.local_checkpoint_publisher import (
+    _MAX_EVENTS as MAX_PUBLICATIONS,
+)
+from mirrormind.modules.evidence.local_checkpoint_publisher import (
+    _MAX_PACKETS as MAX_PUBLICATION_PACKETS,
+)
+from mirrormind.modules.evidence.local_checkpoint_publisher import (
     GENESIS_PUBLICATION_HEAD,
     LocalCheckpointPublisher,
     SignedPublicationCommand,
-    _MAX_EVENTS as MAX_PUBLICATIONS,
-    _MAX_PACKETS as MAX_PUBLICATION_PACKETS,
     _packet_json,
     _serialize,
 )
 from mirrormind.modules.evidence.operator_governance import (
+    _MAX_ADMINS,
+    _NAME,
     GENESIS_POLICY_HEAD,
     LocalOperatorGovernance,
     OperatorPolicyRevision,
     SignedOperatorPolicyEvent,
-    _MAX_ADMINS,
+)
+from mirrormind.modules.evidence.operator_governance import (
     _MAX_EVENTS as MAX_POLICY_EVENTS,
-    _NAME,
+)
+from mirrormind.modules.evidence.operator_governance import (
     _serialize as serialize_policy,
 )
 
