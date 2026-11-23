@@ -452,6 +452,8 @@ class AtomicGovernedPublisher:
             )
             if new_issue > checked_on:
                 raise ValueError("future checkpoint cannot be published")
+            if checked_on > command.receipt.checkpoint.expires_on:
+                raise ValueError("expired checkpoint cannot be published")
             if pub_seq == 0:
                 if db.execute(
                     "SELECT COUNT(*) FROM publication_heads"
