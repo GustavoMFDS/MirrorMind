@@ -411,3 +411,12 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   if the externally supplied minimum is stale; no independent signer,
   monotonic authority, trusted clock, publisher rights, human legal review
   or operational M5/UCI ingestion has been implemented.
+
+- **MM-M1b witnessed authority transcript contract (experimental only):**
+  [offline checkpoint succession verifier](engineering/AUTHORITY_TRANSCRIPT.md)
+  checks contiguous signed witness receipts and dual-signed key handoffs,
+  missing history after outages, final SQLite head match and exact
+  caller-provided start/end fences. It cannot independently obtain
+  current fences or discover a concealed conflicting fork; no live
+  authority, protected key custody, real reviewer identity, lawful
+  source rights or M5/UCI ingestion has been added.

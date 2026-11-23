@@ -249,6 +249,24 @@ Source: [`src/mirrormind/modules/evidence/__init__.py`](../../../src/mirrormind/
 
 No top-level classes or functions.
 
+## `mirrormind.modules.evidence.authority_transcript`
+
+Source: [`src/mirrormind/modules/evidence/authority_transcript.py`](../../../src/mirrormind/modules/evidence/authority_transcript.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.head_checkpoints`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.sqlite_review_registry`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedAuthorityReceipt` | class | `class SignedAuthorityReceipt` | Witness attestation of one independently signed review checkpoint. | [L36](../../../src/mirrormind/modules/evidence/authority_transcript.py#L36) |
+| `WitnessKeyHandoff` | class | `class WitnessKeyHandoff` | Both old and new witness sign a specific forward key transition. | [L47](../../../src/mirrormind/modules/evidence/authority_transcript.py#L47) |
+| `AuthorityTranscriptAssessment` | class | `class AuthorityTranscriptAssessment` | Non-authorizing result of a locally supplied and matched transcript. | [L61](../../../src/mirrormind/modules/evidence/authority_transcript.py#L61) |
+| `AuthorityTranscriptAssessment.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Output only non-sensitive receipt metadata and blocked permissions. | [L70](../../../src/mirrormind/modules/evidence/authority_transcript.py#L70) |
+| `_canonical_authority_receipt_message` | function | `def _canonical_authority_receipt_message(receipt: SignedAuthorityReceipt) -> bytes` | Separate signature domain from both review decisions and checkpoints. | [L86](../../../src/mirrormind/modules/evidence/authority_transcript.py#L86) |
+| `_canonical_handoff_message` | function | `def _canonical_handoff_message(handoff: WitnessKeyHandoff) -> bytes` | Bind old/new witness keys to the exact predecessor and next sequence. | [L101](../../../src/mirrormind/modules/evidence/authority_transcript.py#L101) |
+| `_verify_signature` | function | `def _verify_signature(public_key: bytes, signature: str, message: bytes) -> None` | Check one signature without leaking keys or caller-supplied text. | [L115](../../../src/mirrormind/modules/evidence/authority_transcript.py#L115) |
+| `_keys_valid` | function | `def _keys_valid(keys: Mapping[str, bytes]) -> bool` | — | [L130](../../../src/mirrormind/modules/evidence/authority_transcript.py#L130) |
+| `verify_authority_transcript` | function | `def verify_authority_transcript(registry: SQLiteReviewRegistry, packet: SourceReviewPacket, receipts: tuple[SignedAuthorityReceipt, ...], handoffs: tuple[WitnessKeyHandoff, ...], *, trusted_checkpoint_keys: Mapping[str, bytes], trusted_witness_keys: Mapping[str, bytes], previous_sequence: int, previous_receipt_sha256: str, previous_witness_key_id: str, previous_key_epoch: int, expected_current_sequence: int, expected_current_receipt_sha256: str, checked_on: date) -> AuthorityTranscriptAssessment` | Reject non-contiguous or conflicting witnessed history and unsafe rotation. | [L142](../../../src/mirrormind/modules/evidence/authority_transcript.py#L142) |
+
 ## `mirrormind.modules.evidence.head_checkpoints`
 
 Source: [`src/mirrormind/modules/evidence/head_checkpoints.py`](../../../src/mirrormind/modules/evidence/head_checkpoints.py)

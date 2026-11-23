@@ -123,3 +123,11 @@ sequence and clock must come from an **independent** authority that this
 project does not implement. An old valid signed checkpoint can still be
 replayed with an old database if the provided minimum is stale. Neither
 path grants real source usage.
+
+## Witnessed publication succession (experimental)
+
+The [witness transcript verifier](AUTHORITY_TRANSCRIPT.md) can compare
+the final independently signed checkpoint in a supplied contiguous
+receipt sequence to one validated SQLite snapshot. It neither changes
+the SQLite schema nor establishes an independently fresh current head;
+compromised or stale caller fences still permit replay of old evidence.

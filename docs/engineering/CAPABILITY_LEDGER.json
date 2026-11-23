@@ -224,6 +224,13 @@
       "source": "src/mirrormind/modules/evidence/head_checkpoints.py",
       "test": "tests/unit/test_head_checkpoints.py::test_restored_older_sqlite_is_rejected_against_newer_independent_signed_head",
       "notes": "Offline Ed25519 domain-separated source-packet/review-head checkpoint verification with bounded expiry and caller-supplied minimum anchor sequence. Compares signed head and revision to one verified SQLite snapshot. Does NOT independently acquire current sequence, trusted signers, keys, legal rights or freshness; valid old signed checkpoint and old SQLite can replay if supplied minimum is stale. All receipts forbid ingestion and forecasting."
+    },
+    {
+      "id": "local_witness_transcript_verifier",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/authority_transcript.py",
+      "test": "tests/unit/test_authority_transcript.py::test_contiguous_signed_authority_transcript_and_rotation_are_nonauthorizing",
+      "notes": "Offline verification of caller-supplied, bounded, linked Ed25519 witness receipts across review-head checkpoints, exact start/end fences and explicit dual-signed witness key rotation. Checks final signed checkpoint against SQLite; requires trust maps and current fences externally provisioned by a genuinely independent source, which MirrorMind does not implement. Cannot observe hidden forks, establish freshness, operate a signer, key custody, independent identity/legal review, authorized data ingestion or forecasting; receipt always sets permissions false."
     }
   ]
 }

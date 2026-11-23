@@ -686,3 +686,15 @@ attested registry and does not enable M5/UCI source ingestion.
 
 A signed checkpoint proves a signature under supplied public keys, not
 independent currentness, original source rights or data use permission.
+
+## 41. Offline witnessed checkpoint succession (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/authority_transcript.py`](../../src/mirrormind/modules/evidence/authority_transcript.py) | Bounded signed witness chain, explicit dual-signed rotation, exact endpoint fences, fail-closed missing history and final SQLite comparison |
+| [`tests/unit/test_authority_transcript.py`](../../tests/unit/test_authority_transcript.py) | Fictional witness handoff, signed replay, missing/duplicate sequence, stale endpoint and privacy checks |
+| [`docs/engineering/AUTHORITY_TRANSCRIPT.md`](AUTHORITY_TRANSCRIPT.md) | Protocol domain separation, independently supplied fences, unseen fork and outage limits |
+| [`docs/engineering/changes/M1B_AUTHORITY_TRANSCRIPT.md`](changes/M1B_AUTHORITY_TRANSCRIPT.md) | Scope, acceptance, impact and rollback |
+
+No external checkpoint publisher, independently current witness history,
+key management, legal rights approval or actual data ingestion exists.

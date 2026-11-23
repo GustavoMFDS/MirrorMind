@@ -516,5 +516,26 @@
     "test": "tests/unit/test_head_checkpoints.py",
     "function": "test_older_valid_checkpoint_replay_is_not_prevented_if_high_water_is_stale",
     "limitation": "A valid older signed checkpoint and matching old SQLite database remain acceptable when the caller's minimum sequence is stale. Signatures alone do NOT establish log freshness, independent authority, anti-equivocation or current source permissions."
+  },
+  {
+    "id": "MM-AUTH-001",
+    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
+    "test": "tests/unit/test_authority_transcript.py",
+    "function": "test_contiguous_signed_authority_transcript_and_rotation_are_nonauthorizing",
+    "limitation": "Fictional linked receipt chain and dual signed key-handoff verification only, relying on externally supplied witness and checkpoint public keys and expected fences. Neither the independent authority nor actual key governance, external history freshness, global non-equivocation or legal use rights exist."
+  },
+  {
+    "id": "MM-AUTH-002",
+    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
+    "test": "tests/unit/test_authority_transcript.py",
+    "function": "test_outage_empty_or_incomplete_recovery_transcript_fails_closed",
+    "limitation": "A local missing-chain or gap refusal is not evidence of an operational network retry, durable replay log, live authority availability or disaster recovery across machines."
+  },
+  {
+    "id": "MM-AUTH-003",
+    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
+    "test": "tests/unit/test_authority_transcript.py",
+    "function": "test_valid_stale_transcript_with_caller_stale_fences_cannot_prove_freshness",
+    "limitation": "Old but internally consistent signed transcript and caller-furnished head fences remain acceptable within validity; this explicitly disproves standalone freshness or freedom from hidden forks. All permissions remain false."
   }
 ]

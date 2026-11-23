@@ -104,3 +104,12 @@ tested or implied.
 python -m pytest -q tests/unit/test_head_checkpoints.py
 python scripts/local_quality_gate.py --expected-head $(git rev-parse HEAD)
 ```
+
+## Optional witnessed succession (experimental)
+
+The [offline authority transcript](AUTHORITY_TRANSCRIPT.md) checks
+multiple signed checkpoints carried in a hash-linked witness chain,
+with explicit old/new witness-key signatures on rotations. This
+validates only a *supplied* chain between caller-provided fences; it
+does not supply trusted currentness, an independent publisher, protection
+against unseen forks or data-use permissions.
