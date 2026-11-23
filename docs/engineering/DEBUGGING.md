@@ -58,3 +58,13 @@ python -m pytest -q
 python -m ruff check src tests
 ```
 Do not assert connectors, agents, forecasts or simulations are operational without implementation and tests.
+## Supplied signed integrated-fence mismatch or rollback suspicion
+
+Inspect [the fence contract](INTEGRATED_HEAD_FENCE.md), the
+[verifier source](../../src/mirrormind/modules/evidence/integrated_head_fence.py)
+and the [fictional rollback test](../../tests/unit/test_atomic_governed_publisher.py).
+Record whether the separately pinned expected current sequence/digest
+came from a genuinely independent trusted process. An old coherent
+database may pass if those external values are stale. Never log
+private signing keys, source-row payloads or customer identifiers.
+A passing fence comparison cannot authorize a later publish.

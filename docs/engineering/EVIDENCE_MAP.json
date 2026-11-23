@@ -642,5 +642,40 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_policy_binding_tampering_in_stored_v2_history_invalidates_signature",
     "limitation": "Tampering with the signed policy-head value breaks local Ed25519 verification; restoring an internally valid older combined database remains undetectable without an external trusted current head."
+  },
+  {
+    "id": "MM-FENCE-001",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_integrated_fence_matches_verified_heads_without_authorizing",
+    "limitation": "Generated-key offline signed proof matches a synthetic local snapshot and reports no permissions. It does not validate real identity, key custody or independently current external authority."
+  },
+  {
+    "id": "MM-FENCE-002",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_detects_coherent_old_database_only_given_new_current_fence",
+    "limitation": "An old coherent SQLite backup disagrees with a newer supplied signed state; it still matches the old signed state and old caller-provided expected pins. No unconditional anti-rollback is established."
+  },
+  {
+    "id": "MM-FENCE-003",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_checks_publication_head_even_without_policy_change",
+    "limitation": "A publication-only state update invalidates the old supplied fence, provided the verifier is given the newer state. It is not a live publication admission lock."
+  },
+  {
+    "id": "MM-FENCE-004",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_wrong_scope_signer_tampering_and_equivocation_fail",
+    "limitation": "Synthetic signer forgery, changed source scope, altered signed head and inconsistent pinned digest fail. A malicious or stale independently supplied current-fence authority is not prevented."
+  },
+  {
+    "id": "MM-FENCE-005",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_bounds_expiry_bad_keys_and_type_confusion_fail",
+    "limitation": "Malformed key roster, stale and future dates, wrong signer and type confusion fail closed with a caller-supplied date. Clock trust and genuine signer independence are not attested."
   }
 ]

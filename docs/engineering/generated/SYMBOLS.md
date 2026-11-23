@@ -321,6 +321,21 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `SourceReviewPacket.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a non-authorizing summary, never input rows or references. | [L54](../../../src/mirrormind/modules/evidence/intake_review.py#L54) |
 | `prepare_source_review_packet` | function | `def prepare_source_review_packet(staged: StagedSnapshot \| UciWorkbookReadResult, declaration: SourceReviewDeclaration, *, inspected_on: date) -> SourceReviewPacket` | Bind a staged digest to unverified review declarations without approval. | [L77](../../../src/mirrormind/modules/evidence/intake_review.py#L77) |
 
+## `mirrormind.modules.evidence.integrated_head_fence`
+
+Source: [`src/mirrormind/modules/evidence/integrated_head_fence.py`](../../../src/mirrormind/modules/evidence/integrated_head_fence.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.atomic_governed_publisher`, `mirrormind.modules.evidence.intake_review`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedIntegratedHeadFence` | class | `class SignedIntegratedHeadFence` | Signer-supplied exact local policy and per-packet publication state. | [L30](../../../src/mirrormind/modules/evidence/integrated_head_fence.py#L30) |
+| `IntegratedHeadFenceAssessment` | class | `class IntegratedHeadFenceAssessment` | Read-only local equality result; NEVER an authorization token. | [L47](../../../src/mirrormind/modules/evidence/integrated_head_fence.py#L47) |
+| `IntegratedHeadFenceAssessment.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Return only identifier-minimized consistency and permission fields. | [L56](../../../src/mirrormind/modules/evidence/integrated_head_fence.py#L56) |
+| `_canonical_fence_message` | function | `def _canonical_fence_message(fence: SignedIntegratedHeadFence) -> bytes` | Canonical message in a domain distinct from review and publish roles. | [L72](../../../src/mirrormind/modules/evidence/integrated_head_fence.py#L72) |
+| `_fence_sha256` | function | `def _fence_sha256(fence: SignedIntegratedHeadFence) -> str` | Hash the canonical payload AND actual Ed25519 signature bytes. | [L114](../../../src/mirrormind/modules/evidence/integrated_head_fence.py#L114) |
+| `verify_integrated_head_fence` | function | `def verify_integrated_head_fence(gate: AtomicGovernedPublisher, packet: SourceReviewPacket, fence: SignedIntegratedHeadFence, *, trusted_fence_keys: Mapping[str, bytes], expected_current_authority_sequence: int, expected_current_fence_sha256: str, checked_on: date) -> IntegratedHeadFenceAssessment` | Check supplied signed heads against one consistent local SQLite snapshot. | [L122](../../../src/mirrormind/modules/evidence/integrated_head_fence.py#L122) |
+
 ## `mirrormind.modules.evidence.local_checkpoint_publisher`
 
 Source: [`src/mirrormind/modules/evidence/local_checkpoint_publisher.py`](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py)
