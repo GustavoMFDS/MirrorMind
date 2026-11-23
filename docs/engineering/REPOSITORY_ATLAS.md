@@ -698,3 +698,15 @@ independent currentness, original source rights or data use permission.
 
 No external checkpoint publisher, independently current witness history,
 key management, legal rights approval or actual data ingestion exists.
+
+## 42. Local signer-gated checkpoint publication ledger (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/local_checkpoint_publisher.py`](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py) | Local SQLite transactional publication journal, separate operator signatures, witness rotation, chain replay and sanitized receipts |
+| [`tests/unit/test_local_checkpoint_publisher.py`](../../tests/unit/test_local_checkpoint_publisher.py) | Fictional signer and role checks, two writer CAS, crash rollback, handoff, restart and coherent old backup tests |
+| [`docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md`](LOCAL_CHECKPOINT_PUBLISHER.md) | Local publication contract, operator identity gap and untrusted restored backup counterexample |
+| [`docs/engineering/changes/M1B_LOCAL_CHECKPOINT_PUBLISHER.md`](changes/M1B_LOCAL_CHECKPOINT_PUBLISHER.md) | Change scope, acceptance, risk and rollback |
+
+Local publication is **not** an independently managed witness, globally
+current head, licensed-source ingestion or operator identity service.
