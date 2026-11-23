@@ -238,6 +238,13 @@
       "source": "src/mirrormind/modules/evidence/local_checkpoint_publisher.py",
       "test": "tests/unit/test_local_checkpoint_publisher.py::test_publisher_reopens_verified_signed_head_and_never_grants_ingestion",
       "notes": "Separate local SQLite schema for bounded source-packet signed publication history with externally pre-signed operator commands, witness and checkpoint role signature checks, explicit rotation, compare-and-swap and restart revalidation. Keys, operator identity/role provisioning, file access, clock and latest current head remain caller-configured, NOT independently attested. This is not a live independent witness, globally monotonic authority, key management service, real rights review or source ingestion. Every receipt has ingestion_authorized=false and forecast_eligible=false."
+    },
+    {
+      "id": "local_dual_admin_operator_governance",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/operator_governance.py",
+      "test": "tests/unit/test_operator_governance.py::test_dual_admin_enrollment_survives_restart_but_never_authorizes",
+      "notes": "A separate local SQLite-backed signed operator-key enrollment/revocation ledger requires two independently configured administrator public keys for each change, checks exact IDs, permanent revoked-key tombstones, expiry, optimistic transaction CAS, stored signature replay, restart persistence. It does NOT authenticate administrators, operate protected private keys, independently attest the current head, integrate with checkpoint publication, guarantee atomic cross-database revocation, or grant real source rights. Every receipt reports publication_authorized=false, ingestion_authorized=false, forecast_eligible=false."
     }
   ]
 }

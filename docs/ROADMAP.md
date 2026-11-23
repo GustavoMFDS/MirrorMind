@@ -430,3 +430,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   independent newer head. No live external authority, authenticated
   operator enrollment/role administration, key custody, cross-host
   non-equivocation, legal source approval or real ingestion is delivered.
+
+- **MM-M1b dual-admin operator-key policy (experimental only):**
+  [local operator governance registry](engineering/OPERATOR_GOVERNANCE.md)
+  stores signed enrollment, expiration, revocation and fresh-key replacement
+  under two configured admin public keys, with SQLite CAS and restart
+  verification. It remains deliberately **unconnected** to the existing
+  checkpoint publisher: cross-file policy reads/publication writes are
+  not atomic. Identity and custody of admin private keys, independent
+  current head, real key compromise recovery, source rights/retention
+  and live publisher enforcement remain unimplemented.

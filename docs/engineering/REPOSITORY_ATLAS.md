@@ -710,3 +710,15 @@ key management, legal rights approval or actual data ingestion exists.
 
 Local publication is **not** an independently managed witness, globally
 current head, licensed-source ingestion or operator identity service.
+
+## 43. Local dual-admin operator-key governance (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/operator_governance.py`](../../src/mirrormind/modules/evidence/operator_governance.py) | SQLite dual-admin signed operator enrollment/expiry/revocation, immutable tombstones, CAS and local chain replay |
+| [`tests/unit/test_operator_governance.py`](../../tests/unit/test_operator_governance.py) | Fictional admin signatures, fresh-key replacement, concurrent writers, SQL rollback and restored-old-policy regressions |
+| [`docs/engineering/OPERATOR_GOVERNANCE.md`](OPERATOR_GOVERNANCE.md) | Key management prototype and explicit absence of publisher admission and trusted external head |
+| [`docs/engineering/changes/M1B_OPERATOR_GOVERNANCE.md`](changes/M1B_OPERATOR_GOVERNANCE.md) | Change impact, acceptance, trust boundary and rollback |
+
+No identity authority, real operator entitlement, publisher integration,
+globally current policy or source-ingestion permission exists.

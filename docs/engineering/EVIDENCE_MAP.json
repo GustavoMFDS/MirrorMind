@@ -558,5 +558,26 @@
     "test": "tests/unit/test_local_checkpoint_publisher.py",
     "function": "test_old_coherent_publisher_db_is_not_independently_fresh",
     "limitation": "Restored old but internally signed publisher SQLite remains valid without a genuinely independent newer head, showing this experimental local journal is NOT a globally monotonic authority or replay-proof permission gate."
+  },
+  {
+    "id": "MM-GOV-001",
+    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
+    "test": "tests/unit/test_operator_governance.py",
+    "function": "test_dual_admin_enrollment_survives_restart_but_never_authorizes",
+    "limitation": "Synthetic temporary-key verification and local SQLite restart demonstrate only signed metadata retention. No administrator identity, independent administrative authority, enforced publisher policy, legal dataset rights or production access is proven."
+  },
+  {
+    "id": "MM-GOV-002",
+    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
+    "test": "tests/unit/test_operator_governance.py",
+    "function": "test_revocation_is_terminal_and_replacement_needs_fresh_key_and_id",
+    "limitation": "Permanent same-database tombstones and fictional fresh operator key replacement do not revoke keys in the existing publisher, provide cross-database atomicity, genuine key-compromise recovery or global anti-rollback."
+  },
+  {
+    "id": "MM-GOV-003",
+    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
+    "test": "tests/unit/test_operator_governance.py",
+    "function": "test_coherent_old_backup_needs_independent_head_to_detect_revocation_rollback",
+    "limitation": "Restoring an old signed policy ledger leaves locally valid active keys until an independently newer head is supplied; this is an explicit counterexample to standalone revocation enforcement and source authorization."
   }
 ]

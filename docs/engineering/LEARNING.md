@@ -371,3 +371,15 @@ signed proposal after a successful commit, then rotate the witness key
 without old and new signatures. Restore a valid older SQLite backup
 and explain why independently trusted new heads, authenticated roles,
 key custody and witness consistency proofs are still necessary.
+
+## Guided exercise — dual-admin signatures are not effective key revocation (40 minutes)
+
+Read the [operator governance source](../../src/mirrormind/modules/evidence/operator_governance.py),
+[governance guide](OPERATOR_GOVERNANCE.md), and
+[synthetic tests](../../tests/unit/test_operator_governance.py).
+Enroll and revoke a fictional operator with two admin signatures, then
+attempt reenrollment with an old ID or reused public key. Reopen a
+saved database from before the revocation and explain why the old
+state is internally consistent. Identify the cross-database policy
+admission race and independent current-head proof needed before
+connecting this registry to the publisher.
