@@ -28,8 +28,8 @@ def generate():
 def fixtures(tmp_path):
     admin_left, left_pub = generate()
     admin_right, right_pub = generate()
-    one, one_pub = generate()
-    two, two_pub = generate()
+    _, one_pub = generate()
+    _, two_pub = generate()
     admins = {"POLICY_ADMIN_LEFT": left_pub, "POLICY_ADMIN_RIGHT": right_pub}
     path = tmp_path / "governance.db"
     registry = LocalOperatorGovernance(
