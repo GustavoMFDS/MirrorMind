@@ -23,7 +23,7 @@ from mirrormind.modules.evidence.local_checkpoint_publisher import (
     SignedPublicationCommand,
     _MAX_EVENTS as MAX_PUBLICATIONS,
     _MAX_PACKETS as MAX_PUBLICATION_PACKETS,
-    _SHA,
+    _packet_json,
     _serialize,
 )
 from mirrormind.modules.evidence.operator_governance import (
@@ -333,10 +333,7 @@ class AtomicGovernedPublisher:
             new_head, _ = self._policy._evaluate(
                 event, expected_sequence=revision + 1,
                 previous_head=head, previous_date=(
-                    None if revision == 0 else db.execute(
-                        "SELECT event_json FROM governance_events "
-                        "WHERE sequence=?", (revision,),
-                    ).fetchone() and _last_governance_date(db, revision)
+                    None if revision == 0 else _last_governance_date(db, revision)
                 ),
                 history=copy,
                 used_material={record[0] for record in records.values()},
@@ -460,9 +457,6 @@ class AtomicGovernedPublisher:
                     "SELECT COUNT(*) FROM publication_heads"
                 ).fetchone()[0] >= MAX_PUBLICATION_PACKETS:
                     raise ValueError("publication packet budget exceeded")
-                from mirrormind.modules.evidence.local_checkpoint_publisher import (
-                    _packet_json,
-                )
                 db.execute(
                     "INSERT INTO publication_heads VALUES(?,?,?,?)",
                     (packet.declaration_sha256, _packet_json(packet),
