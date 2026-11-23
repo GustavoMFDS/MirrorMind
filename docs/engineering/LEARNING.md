@@ -348,3 +348,15 @@ checkpoint. Confirm a caller-provided stale sequence floor still accepts it,
 then supply a newer trusted minimum and observe rejection. Explain what
 independently governed signer keys, monotonic sequence, key rotation and
 head publication the real system is missing before permissions can be used.
+
+## Guided exercise — a witnessed chain is not a live authority (40 minutes)
+
+Read [the witness transcript source](../../src/mirrormind/modules/evidence/authority_transcript.py),
+[its trust model](AUTHORITY_TRANSCRIPT.md) and
+[the synthetic key-handoff tests](../../tests/unit/test_authority_transcript.py).
+Omit a witnessed checkpoint after a fictional outage, then supply only
+the later receipt; observe a predecessor/sequence refusal. Try a key
+change without both old and new signatures. Finally replay a complete
+valid transcript using outdated start/end fences: explain why it can
+still pass unless an independent authority publishes current fences
+and exposes hidden conflicting forks.
