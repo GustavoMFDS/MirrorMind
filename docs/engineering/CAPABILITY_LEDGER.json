@@ -231,6 +231,13 @@
       "source": "src/mirrormind/modules/evidence/authority_transcript.py",
       "test": "tests/unit/test_authority_transcript.py::test_contiguous_signed_authority_transcript_and_rotation_are_nonauthorizing",
       "notes": "Offline verification of caller-supplied, bounded, linked Ed25519 witness receipts across review-head checkpoints, exact start/end fences and explicit dual-signed witness key rotation. Checks final signed checkpoint against SQLite; requires trust maps and current fences externally provisioned by a genuinely independent source, which MirrorMind does not implement. Cannot observe hidden forks, establish freshness, operate a signer, key custody, independent identity/legal review, authorized data ingestion or forecasting; receipt always sets permissions false."
+    },
+    {
+      "id": "local_operator_signed_checkpoint_publisher",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/local_checkpoint_publisher.py",
+      "test": "tests/unit/test_local_checkpoint_publisher.py::test_publisher_reopens_verified_signed_head_and_never_grants_ingestion",
+      "notes": "Separate local SQLite schema for bounded source-packet signed publication history with externally pre-signed operator commands, witness and checkpoint role signature checks, explicit rotation, compare-and-swap and restart revalidation. Keys, operator identity/role provisioning, file access, clock and latest current head remain caller-configured, NOT independently attested. This is not a live independent witness, globally monotonic authority, key management service, real rights review or source ingestion. Every receipt has ingestion_authorized=false and forecast_eligible=false."
     }
   ]
 }

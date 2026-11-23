@@ -420,3 +420,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   current fences or discover a concealed conflicting fork; no live
   authority, protected key custody, real reviewer identity, lawful
   source rights or M5/UCI ingestion has been added.
+
+- **MM-M1b local operator-signed checkpoint publisher (experimental only):**
+  [SQLite publication journal](engineering/LOCAL_CHECKPOINT_PUBLISHER.md)
+  validates separately configured checkpoint, witness and operator
+  public keys, retains signed metadata across restarts, and uses
+  a per-database transactional compare-and-swap. A deliberately
+  demonstrated old signed backup remains locally valid without an
+  independent newer head. No live external authority, authenticated
+  operator enrollment/role administration, key custody, cross-host
+  non-equivocation, legal source approval or real ingestion is delivered.

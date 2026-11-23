@@ -295,6 +295,31 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `SourceReviewPacket.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a non-authorizing summary, never input rows or references. | [L54](../../../src/mirrormind/modules/evidence/intake_review.py#L54) |
 | `prepare_source_review_packet` | function | `def prepare_source_review_packet(staged: StagedSnapshot \| UciWorkbookReadResult, declaration: SourceReviewDeclaration, *, inspected_on: date) -> SourceReviewPacket` | Bind a staged digest to unverified review declarations without approval. | [L77](../../../src/mirrormind/modules/evidence/intake_review.py#L77) |
 
+## `mirrormind.modules.evidence.local_checkpoint_publisher`
+
+Source: [`src/mirrormind/modules/evidence/local_checkpoint_publisher.py`](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.authority_transcript`, `mirrormind.modules.evidence.head_checkpoints`, `mirrormind.modules.evidence.intake_review`, `pathlib`, `re`, `sqlite3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedPublicationCommand` | class | `class SignedPublicationCommand` | Operator authorization of a single exact proposed witness receipt. | [L44](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L44) |
+| `LocalPublicationRevision` | class | `class LocalPublicationRevision` | Sanitized local state, NOT an externally witnessed current head. | [L56](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L56) |
+| `LocalPublicationRevision.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | — | [L65](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L65) |
+| `_receipt_digest` | function | `def _receipt_digest(receipt: SignedAuthorityReceipt) -> str` | Exactly the existing witness-transcript receipt hashing convention. | [L80](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L80) |
+| `_canonical_publication_message` | function | `def _canonical_publication_message(command: SignedPublicationCommand) -> bytes` | Distinct operator signing domain, binding witness and handoff signatures. | [L88](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L88) |
+| `_serialize` | function | `def _serialize(command: SignedPublicationCommand) -> str` | — | [L108](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L108) |
+| `_decode` | function | `def _decode(data: str) -> SignedPublicationCommand` | Decode only exact canonical records; never execute or deserialize objects. | [L141](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L141) |
+| `_packet_json` | function | `def _packet_json(packet: SourceReviewPacket) -> str` | — | [L166](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L166) |
+| `LocalCheckpointPublisher` | class | `class LocalCheckpointPublisher` | Local DB with configured operator-key admission and atomic per-packet CAS. | [L184](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L184) |
+| `LocalCheckpointPublisher.__init__` | method | `def __init__(self, path: Path, *, checkpoint_keys: Mapping[str, bytes], witness_keys: Mapping[str, bytes], operator_keys: Mapping[str, bytes], initial_witness_key_id: str, create: bool=False) -> None` | — | [L191](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L191) |
+| `LocalCheckpointPublisher._connect` | method | `def _connect(self) -> sqlite3.Connection` | — | [L273](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L273) |
+| `LocalCheckpointPublisher._schema` | method | `def _schema(self, db: sqlite3.Connection) -> None` | — | [L285](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L285) |
+| `LocalCheckpointPublisher._verify_event` | method | `def _verify_event(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, sequence: int, previous_hash: str, previous_witness: str, previous_epoch: int, previous_revision: int, previous_review_head: str \| None, previous_issue: date) -> tuple[str, str, int, int, str, date]` | — | [L297](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L297) |
+| `LocalCheckpointPublisher._load` | method | `def _load(self, db: sqlite3.Connection, packet: SourceReviewPacket) -> tuple[int, str, str, int, int, str \| None, date, date \| None]` | — | [L394](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L394) |
+| `LocalCheckpointPublisher.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> LocalPublicationRevision` | Recheck full local signed history; external head may detect rollback. | [L451](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L451) |
+| `LocalCheckpointPublisher.publish` | method | `def publish(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, expected_sequence: int, expected_receipt_sha256: str, checked_on: date) -> LocalPublicationRevision` | Verify exact operator-signed proposal, then atomically commit. | [L482](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L482) |
+
 ## `mirrormind.modules.evidence.local_review_registry`
 
 Source: [`src/mirrormind/modules/evidence/local_review_registry.py`](../../../src/mirrormind/modules/evidence/local_review_registry.py)

@@ -26,6 +26,7 @@ def capabilities() -> dict[str, object]:
             "local_sqlite_review_registry",
             "local_signed_head_checkpoint_verifier",
             "local_witness_transcript_verifier",
+            "local_operator_signed_checkpoint_publisher",
             "local_staged_rolling_baselines",
             "local_uci_transaction_projection",
             "local_uci_xlsx_reader",

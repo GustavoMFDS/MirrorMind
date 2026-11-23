@@ -123,3 +123,14 @@ and gossip/consistency proofs; maintain a trusted clock and durable,
 audited current state; and fail closed on outages. Build, model and
 review those responsibilities in separate PRs before connecting any
 real data source. A signed transcript is not a license.
+
+## Experimental local publication journal
+
+A separate [local checkpoint publisher](LOCAL_CHECKPOINT_PUBLISHER.md)
+can retain externally pre-signed witness receipts and operator-signed
+publication commands in a dedicated SQLite journal, with local
+transactional CAS. That file is **not** an independent authority, live
+witness or externally attested current head. The supplied operator
+public keys are not real identity authentication and old coherent
+publisher databases can still be restored without an independent
+newer head.
