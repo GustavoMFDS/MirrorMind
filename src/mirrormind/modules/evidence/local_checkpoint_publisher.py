@@ -284,6 +284,15 @@ class LocalCheckpointPublisher:
 
     def _schema(self, db: sqlite3.Connection) -> None:
         try:
+            # A shared policy+publication database must never be opened via
+            # this standalone class's static operator-key admission path.
+            if db.execute(
+                "SELECT 1 FROM sqlite_master "
+                "WHERE type='table' AND name='atomic_governed_schema'"
+            ).fetchone():
+                raise ValueError(
+                    "integrated publisher requires atomic governed admission"
+                )
             metadata = db.execute(
                 "SELECT version,initial_witness_key_id FROM publication_schema"
             ).fetchall()
