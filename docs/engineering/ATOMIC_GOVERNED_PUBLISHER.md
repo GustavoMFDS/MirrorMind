@@ -192,3 +192,13 @@ grant publication, ingestion or forecasting permission. A restored
 old coherent DB fails only when compared against a genuinely newer
 independently trusted fence. Do not treat caller-supplied stale pins as
 an independent rollback defense.
+
+## Witnessed chain beyond one offline current-state comparison
+
+The [dual-witness integrated fence transcript](INTEGRATED_FENCE_TRANSCRIPT.md)
+adds optional **read-only** verification of separately signed, linked
+combined-state checkpoints and can classify *supplied* competing
+successors. It is not used during `publish` and does not provide an
+external current-head service, global anti-rollback, legal authority
+or live publication permission. The local SQLite schema and one-file
+writer transaction remain unchanged.

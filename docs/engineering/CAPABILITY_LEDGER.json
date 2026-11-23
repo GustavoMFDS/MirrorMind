@@ -259,6 +259,13 @@
       "source": "src/mirrormind/modules/evidence/integrated_head_fence.py",
       "test": "tests/unit/test_atomic_governed_publisher.py::test_signed_integrated_fence_matches_verified_heads_without_authorizing",
       "notes": "Offline generated-key Ed25519 verifier of a caller-supplied per-source-packet combined policy+publication head against one signed local SQLite snapshot and separately caller-pinned exact current fence sequence/digest. A coherent old backup mismatches a genuinely newer supplied fence, but stale trusted keys, old signed fence and matching old expected pins still pass. Does NOT operate a signer or independent latest-head authority, protect keys, establish identities or source rights, gate publication, authorize ingestion or serve forecasts. Every receipt leaves publication_authorized=false, ingestion_authorized=false and forecast_eligible=false."
+    },
+    {
+      "id": "local_dual_witness_integrated_fence_transcript",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/integrated_fence_transcript.py",
+      "test": "tests/unit/test_atomic_governed_publisher.py::test_dual_witness_fence_chain_verified_against_integrated_local_snapshot",
+      "notes": "Offline bounded 1-32 chained, per-source combined policy/publication Ed25519 fences with one authority and two distinct separately configured witness signatures per transition, exact caller-supplied anchor/current pins and final transactional local SQLite equality. A separately supplied fork classifier reports two authentic same-predecessor signed successors without selecting a winner. Hidden forks, stale pins, fraudulent witness clocks, real signer custody/identity, independent current-head service, production authorization, licensed ingestion and forecasts remain outside the experiment. Never grants publication, ingestion or forecast eligibility."
     }
   ]
 }

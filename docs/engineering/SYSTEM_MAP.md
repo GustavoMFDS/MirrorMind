@@ -112,3 +112,15 @@ expected current sequence/digest and trusted signer public key.
 Nothing is fetched, appended or used for publication admission:
 the combined SQLite state remains a local evidence object, not a
 globally trusted current state or legal ingestion entitlement.
+
+## Optional dual-witness chain of combined heads (MM-M1b)
+
+The [experimental transcript verifier](INTEGRATED_FENCE_TRANSCRIPT.md)
+takes caller-pinned anchors and latest hashes, validates a bounded
+sequence of authority-signed integrated-state fences with two separately
+configured Ed25519 witness signatures per transition, and calls the
+existing combined-state SQLite verifier only for the final head.
+The [fork classifier](INTEGRATED_FENCE_TRANSCRIPT.md) can report two
+supplied valid competing successors. No external witness node or
+current-head discovery service is deployed; neither verifier is a
+publisher, forecast engine or permission authority.

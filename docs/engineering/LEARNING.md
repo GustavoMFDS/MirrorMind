@@ -407,3 +407,16 @@ newer supplied signed fence. Then provide the old fence and its old
 expected digest, and explain why it can still match without genuine
 independent latest-fence custody. Identify the TOCTOU risk of making
 this read-only verifier a separate publication-admission precheck.
+
+## Guided exercise — two witnesses do not prove global freshness (40 minutes)
+
+Read the [dual-witness code](../../src/mirrormind/modules/evidence/integrated_fence_transcript.py)
+and [threat-model guide](INTEGRATED_FENCE_TRANSCRIPT.md).
+Using the synthetic fixtures in
+[the combined publisher test suite](../../tests/unit/test_atomic_governed_publisher.py),
+sign a two-link chain before and after a policy revocation. Demonstrate
+that replacing one witness signature fails, both real competing
+successors are **reported** as a supplied fork, and an old database plus
+matching old trusted pins can still pass. Explain why a durable,
+independently controlled and freshly queried current-head authority
+is a different feature from multi-signature verification.
