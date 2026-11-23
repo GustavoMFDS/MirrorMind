@@ -199,7 +199,7 @@ class LocalCheckpointPublisher:
         create: bool = False,
     ) -> None:
         if (
-            type(path) is not Path
+            not isinstance(path, Path)
             or not path.is_absolute()
             or not path.parent.is_dir()
             or path.is_symlink()
@@ -208,12 +208,19 @@ class LocalCheckpointPublisher:
         if not (_keys_valid(checkpoint_keys) and _keys_valid(witness_keys)
                 and _keys_valid(operator_keys)):
             raise ValueError("configured checkpoint, witness and operator keys required")
+        all_ids = set(checkpoint_keys) | set(witness_keys) | set(operator_keys)
+        all_material = (
+            list(checkpoint_keys.values())
+            + list(witness_keys.values())
+            + list(operator_keys.values())
+        )
         if (
-            set(checkpoint_keys) & set(witness_keys)
-            or set(checkpoint_keys) & set(operator_keys)
-            or set(witness_keys) & set(operator_keys)
+            len(all_ids) != (
+                len(checkpoint_keys) + len(witness_keys) + len(operator_keys)
+            )
+            or len(set(all_material)) != len(all_material)
         ):
-            raise ValueError("publication signing roles must have distinct key IDs")
+            raise ValueError("publication signing roles must have distinct keys")
         if (
             type(initial_witness_key_id) is not str
             or initial_witness_key_id not in witness_keys
