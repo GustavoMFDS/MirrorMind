@@ -183,7 +183,7 @@ def test_expiration_recomputed_and_invalid_future_policy_rejected(tmp_path):
     bad = signed(case, issued_on=date(2026, 12, 1),
                  expires_on=date(2027, 1, 1))
     with pytest.raises(ValueError, match="future-issued"):
-        append(fixtures(tmp_path / "new") if False else case, bad)
+        append(case, bad)
 
 
 @pytest.mark.parametrize("expiry", [
