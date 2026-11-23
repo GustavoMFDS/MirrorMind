@@ -760,3 +760,16 @@ permission to ingest datasets or run empirical forecasts.
 
 No trusted externally fetched latest head, independent signer custody,
 live policy admission, source rights or authorized ingestion is proven.
+
+## 47. Signed dual-witness integrated-fence continuity (experimental)
+
+| Tracked file | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/integrated_fence_transcript.py`](../../src/mirrormind/modules/evidence/integrated_fence_transcript.py) | Bounded offline forward chain, dual independent configured witnesses, terminal transactional local equality, supplied-fork classifier |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key linked states, old backup/current pin, forgery, role/key replay, supplied-fork, counter/date/bounds tests |
+| [`docs/engineering/INTEGRATED_FENCE_TRANSCRIPT.md`](INTEGRATED_FENCE_TRANSCRIPT.md) | Witness signing contract, externally pinned anchors, detectable supplied forks and limits |
+| [`docs/engineering/changes/M1B_DUAL_WITNESS_FENCE_CONTINUITY.md`](changes/M1B_DUAL_WITNESS_FENCE_CONTINUITY.md) | Scope, acceptance, impact map and non-goals |
+
+The existing [single-fence verifier](INTEGRATED_HEAD_FENCE.md)
+is unchanged; no independent service or trustworthy latest-state
+delivery is provided, and none of these results grants permission.

@@ -96,3 +96,14 @@ Run the fictional generated-key checks locally:
 python -m pytest -q tests/unit/test_atomic_governed_publisher.py
 python scripts/local_quality_gate.py --expected-head $(git rev-parse HEAD)
 ```
+
+## Optional forward continuity proof
+
+The [dual-witness integrated-fence transcript](INTEGRATED_FENCE_TRANSCRIPT.md)
+is a *separate, opt-in* offline verifier: it checks up to 32 signed
+forward transitions against caller-supplied anchor/current pins, requires
+two distinct configured witness signatures per transition, and checks
+its terminal fence against the same local SQLite snapshot contract.
+It can classify two supplied conflicting successors but cannot find
+hidden forks or independently establish the latest sequence. Existing
+single-fence callers remain unchanged.

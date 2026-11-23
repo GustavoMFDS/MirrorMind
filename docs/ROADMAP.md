@@ -472,3 +472,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   No independently operated authority, trusted current-fence retrieval,
   key custody, cross-host consensus, licensed data use, admission
   tokens, real ingestion or empirical forecasts were delivered.
+
+- **MM-M1b supplied dual-witness integrated-fence continuity (experimental):**
+  The [offline signed transition verifier](engineering/INTEGRATED_FENCE_TRANSCRIPT.md)
+  checks exact successor hashes/sequences and two independently configured
+  witness signatures per combined policy+publication fence, and can
+  classify *two supplied* signed conflicting successors without selecting
+  a trusted branch. This extends but does not replace the
+  [single-fence equality check](engineering/INTEGRATED_HEAD_FENCE.md).
+  Neither trusted external latest-head retrieval nor actual key custody,
+  fork discovery, independent timestamp authority, real source permission,
+  live publication admission or forecasting is implemented.

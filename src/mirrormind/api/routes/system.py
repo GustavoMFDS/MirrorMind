@@ -30,6 +30,7 @@ def capabilities() -> dict[str, object]:
             "local_dual_admin_operator_governance",
             "local_atomic_governed_checkpoint_publisher",
             "local_supplied_signed_integrated_head_fence",
+            "local_dual_witness_integrated_fence_transcript",
             "local_staged_rolling_baselines",
             "local_uci_transaction_projection",
             "local_uci_xlsx_reader",

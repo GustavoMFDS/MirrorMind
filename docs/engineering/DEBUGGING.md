@@ -68,3 +68,17 @@ came from a genuinely independent trusted process. An old coherent
 database may pass if those external values are stale. Never log
 private signing keys, source-row payloads or customer identifiers.
 A passing fence comparison cannot authorize a later publish.
+
+## Dual-witness combined-fence continuity or conflict error
+
+Follow the [transcript guide](INTEGRATED_FENCE_TRANSCRIPT.md)
+and [generated-key fixture regressions](../../tests/unit/test_atomic_governed_publisher.py).
+Check that anchor digest/sequence and exact expected latest digest
+were obtained **separately** from the local publisher, that each link
+signs the previous digest, and that both witness key IDs/public keys
+are distinct from the authority key and each other. If two fully
+signed same-predecessor successors conflict, preserve both original
+records as evidence; do not silently choose a branch. Failure to
+receive a competing record is **not** evidence that none exists.
+Do not treat a successful offline chain check as live publication
+admission or ingest permission.

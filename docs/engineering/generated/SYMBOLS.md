@@ -321,6 +321,25 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `SourceReviewPacket.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | Expose a non-authorizing summary, never input rows or references. | [L54](../../../src/mirrormind/modules/evidence/intake_review.py#L54) |
 | `prepare_source_review_packet` | function | `def prepare_source_review_packet(staged: StagedSnapshot \| UciWorkbookReadResult, declaration: SourceReviewDeclaration, *, inspected_on: date) -> SourceReviewPacket` | Bind a staged digest to unverified review declarations without approval. | [L77](../../../src/mirrormind/modules/evidence/intake_review.py#L77) |
 
+## `mirrormind.modules.evidence.integrated_fence_transcript`
+
+Source: [`src/mirrormind/modules/evidence/integrated_fence_transcript.py`](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hmac`, `json`, `mirrormind.modules.evidence.atomic_governed_publisher`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.integrated_head_fence`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedIntegratedFenceTransition` | class | `class SignedIntegratedFenceTransition` | Two witnesses endorse the exact successor of an authority-signed fence. | [L35](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L35) |
+| `IntegratedFenceTranscriptAssessment` | class | `class IntegratedFenceTranscriptAssessment` | Caller-pinned chain agrees with local heads; NOT an authorization token. | [L47](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L47) |
+| `IntegratedFenceTranscriptAssessment.receipt` | method | `def receipt(self) -> dict[str, int \| str \| bool]` | — | [L56](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L56) |
+| `SuppliedFenceForkEvidence` | class | `class SuppliedFenceForkEvidence` | Two verified signed successors conflict; neither is selected as current. | [L73](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L73) |
+| `SuppliedFenceForkEvidence.receipt` | method | `def receipt(self) -> dict[str, int \| str \| bool]` | — | [L83](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L83) |
+| `_canonical_fence_transition_message` | function | `def _canonical_fence_transition_message(link: SignedIntegratedFenceTransition) -> bytes` | Both witness signatures cover the same immutable canonical message. | [L98](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L98) |
+| `_validate_rosters` | function | `def _validate_rosters(trusted_fence_keys: Mapping[str, bytes], trusted_witness_keys: Mapping[str, bytes]) -> None` | — | [L138](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L138) |
+| `_verify_one_transition` | function | `def _verify_one_transition(link: SignedIntegratedFenceTransition, packet: SourceReviewPacket, *, trusted_fence_keys: Mapping[str, bytes], trusted_witness_keys: Mapping[str, bytes], checked_on: date) -> str` | — | [L163](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L163) |
+| `verify_integrated_fence_transcript` | function | `def verify_integrated_fence_transcript(gate: AtomicGovernedPublisher, packet: SourceReviewPacket, transitions: tuple[SignedIntegratedFenceTransition, ...], *, trusted_fence_keys: Mapping[str, bytes], trusted_witness_keys: Mapping[str, bytes], anchor_authority_sequence: int, anchor_fence_sha256: str, expected_current_authority_sequence: int, expected_current_fence_sha256: str, checked_on: date) -> IntegratedFenceTranscriptAssessment` | Verify caller-pinned consecutive two-witness links and terminal SQLite heads. | [L203](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L203) |
+| `classify_supplied_fence_fork` | function | `def classify_supplied_fence_fork(packet: SourceReviewPacket, first: SignedIntegratedFenceTransition, second: SignedIntegratedFenceTransition, *, trusted_fence_keys: Mapping[str, bytes], trusted_witness_keys: Mapping[str, bytes], checked_on: date) -> SuppliedFenceForkEvidence` | Classify only two supplied valid incompatible successors; do not select a head. | [L293](../../../src/mirrormind/modules/evidence/integrated_fence_transcript.py#L293) |
+
 ## `mirrormind.modules.evidence.integrated_head_fence`
 
 Source: [`src/mirrormind/modules/evidence/integrated_head_fence.py`](../../../src/mirrormind/modules/evidence/integrated_head_fence.py)

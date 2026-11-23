@@ -74,3 +74,13 @@ These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but 
   SQLite snapshot using caller-pinned exact current sequence/digest;
   [scoped change request](changes/M1B_INTEGRATED_HEAD_FENCE.md).
   No independent current-head service, live admission or source rights.
+
+## Experimental dual-witness integrated-head continuation
+
+- [Dual-witness integrated-fence transcript](INTEGRATED_FENCE_TRANSCRIPT.md) —
+  bounded read-only forward chain of authority-signed combined heads
+  with two witness signatures, conditional offline equality and
+  classification of *supplied* competing successors.
+  [Change request](changes/M1B_DUAL_WITNESS_FENCE_CONTINUITY.md).
+  No trusted independent latest state, key custody, real-source rights,
+  live publication admission or source ingestion.

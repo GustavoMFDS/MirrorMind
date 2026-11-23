@@ -27,6 +27,12 @@ from mirrormind.modules.evidence.intake_review import (
     SourceReviewDeclaration,
     prepare_source_review_packet,
 )
+from mirrormind.modules.evidence.integrated_fence_transcript import (
+    SignedIntegratedFenceTransition,
+    _canonical_fence_transition_message,
+    classify_supplied_fence_fork,
+    verify_integrated_fence_transcript,
+)
 from mirrormind.modules.evidence.integrated_head_fence import (
     SignedIntegratedHeadFence,
     _canonical_fence_message,
@@ -914,3 +920,300 @@ def test_signed_fence_bounds_expiry_bad_keys_and_type_confusion_fail(tmp_path):
             case, fence, public,
             trusted={"ANOTHER_FENCE_001": public},
         )
+
+
+def dual_fence_keys():
+    authority, authority_public = keypair()
+    first_witness, first_public = keypair()
+    second_witness, second_public = keypair()
+    return (
+        authority,
+        {"INDEPENDENT_FENCE_001": authority_public},
+        first_witness, second_witness,
+        {"FENCE_WITNESS_001": first_public, "FENCE_WITNESS_002": second_public},
+    )
+
+
+def dual_fence_link(fence, prior_sequence, prior_digest, first, second,
+                    *, witnessed_on=NOW):
+    draft = SignedIntegratedFenceTransition(
+        fence=fence,
+        previous_authority_sequence=prior_sequence,
+        previous_fence_sha256=prior_digest,
+        witnessed_on=witnessed_on,
+        witness_key_ids=("FENCE_WITNESS_001", "FENCE_WITNESS_002"),
+        witness_signatures_hex=("0" * 128, "0" * 128),
+    )
+    message = _canonical_fence_transition_message(draft)
+    return replace(
+        draft, witness_signatures_hex=(
+            first.sign(message).hex(), second.sign(message).hex()
+        ),
+    )
+
+
+def check_dual_fence_transcript(case, links, authority_roster, witness_roster,
+                                *, gate=None, anchor_sequence=0,
+                                anchor_digest="0" * 64, current_sequence=None,
+                                current_digest=None, checked_on=NOW):
+    return verify_integrated_fence_transcript(
+        case["gate"] if gate is None else gate,
+        case["packet"], links,
+        trusted_fence_keys=authority_roster,
+        trusted_witness_keys=witness_roster,
+        anchor_authority_sequence=anchor_sequence,
+        anchor_fence_sha256=anchor_digest,
+        expected_current_authority_sequence=(
+            (links[-1].fence.authority_sequence if links else 0)
+            if current_sequence is None else current_sequence
+        ),
+        expected_current_fence_sha256=(
+            (_fence_sha256(links[-1].fence) if links else "0" * 64)
+            if current_digest is None else current_digest
+        ),
+        checked_on=checked_on,
+    )
+
+
+def test_dual_witness_fence_chain_verified_against_integrated_local_snapshot(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    auth, roster, witness1, witness2, witnesses = dual_fence_keys()
+    first_fence = signed_integrated_fence(case, auth, authority_sequence=1)
+    first_link = dual_fence_link(first_fence, 0, "0" * 64, witness1, witness2)
+    revoke(case, enrolled)
+    second_fence = signed_integrated_fence(case, auth, authority_sequence=2)
+    second_link = dual_fence_link(
+        second_fence, 1, _fence_sha256(first_fence), witness1, witness2,
+    )
+    before = case["gate"].snapshot(case["packet"], checked_on=NOW)
+    result = check_dual_fence_transcript(
+        case, (first_link, second_link), roster, witnesses,
+    )
+    assert case["gate"].snapshot(case["packet"], checked_on=NOW) == before
+    assert result.validated_transitions == 2
+    assert result.current_authority_sequence == 2
+    assert result.current_fence_sha256 == _fence_sha256(second_fence)
+    assert result.receipt()["publication_authorized"] is False
+    assert result.receipt()["ingestion_authorized"] is False
+    assert result.receipt()["forecast_eligible"] is False
+    assert result.receipt()["freshness_status"] == "caller_pinned_not_independently_fetched"
+    for token in ("OPERATOR_001", "PRIVATE-SERIES", "INDEPENDENT_FENCE_001"):
+        assert token not in str(result.receipt())
+
+
+def test_dual_fence_transcript_rejects_missing_hops_and_old_database_with_new_pin(
+    tmp_path,
+):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    auth, roster, witness1, witness2, witnesses = dual_fence_keys()
+    initial_fence = signed_integrated_fence(case, auth, authority_sequence=1)
+    initial_link = dual_fence_link(
+        initial_fence, 0, "0" * 64, witness1, witness2
+    )
+    old_database = tmp_path / "dual-fence-old-backup.db"
+    shutil.copyfile(case["path"], old_database)
+    revoke(case, enrolled)
+    new_fence = signed_integrated_fence(case, auth, authority_sequence=2)
+    successor = dual_fence_link(
+        new_fence, 1, _fence_sha256(initial_fence), witness1, witness2
+    )
+    old = reopen(case, old_database)
+    with pytest.raises(ValueError, match="SQLite heads differ"):
+        check_dual_fence_transcript(
+            case, (initial_link, successor), roster, witnesses, gate=old
+        )
+    # Old pins can still be replayed with the matching old local backup.
+    old_result = check_dual_fence_transcript(
+        case, (initial_link,), roster, witnesses, gate=old
+    )
+    assert old_result.current_authority_sequence == 1
+    with pytest.raises(ValueError, match="terminal differs"):
+        check_dual_fence_transcript(
+            case, (initial_link,), roster, witnesses, gate=old,
+            current_sequence=2, current_digest=_fence_sha256(new_fence),
+        )
+    for broken in (
+        (successor,),
+        (successor, initial_link),
+        (initial_link, initial_link),
+    ):
+        with pytest.raises(ValueError, match="missing, forked or reversed"):
+            check_dual_fence_transcript(case, broken, roster, witnesses)
+    with pytest.raises(ValueError, match="missing, forked or reversed"):
+        check_dual_fence_transcript(
+            case, (initial_link, successor), roster, witnesses,
+            anchor_digest="f" * 64,
+        )
+    assert check_dual_fence_transcript(
+        case, (initial_link, successor), roster, witnesses,
+    ).validated_transitions == 2
+
+
+def test_dual_fence_transcript_rejects_forged_signatures_and_role_reuse(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    auth, roster, witness1, witness2, witnesses = dual_fence_keys()
+    fence = signed_integrated_fence(case, auth, authority_sequence=1)
+    link = dual_fence_link(fence, 0, "0" * 64, witness1, witness2)
+    _, outsider_public = keypair()
+    forged_authority_fence = replace(fence, policy_head_sha256="f" * 64)
+    forged_authority_link = dual_fence_link(
+        forged_authority_fence, 0, "0" * 64, witness1, witness2
+    )
+    with pytest.raises(ValueError, match="authority or dual-witness signature"):
+        check_dual_fence_transcript(
+            case, (forged_authority_link,), roster, witnesses
+        )
+    wrong_witness = replace(
+        link, witness_signatures_hex=(
+            link.witness_signatures_hex[0], "f" * 128
+        ),
+    )
+    with pytest.raises(ValueError, match="authority or dual-witness signature"):
+        check_dual_fence_transcript(case, (wrong_witness,), roster, witnesses)
+    with pytest.raises(ValueError, match="authority or dual-witness signature"):
+        check_dual_fence_transcript(
+            case, (link,), roster,
+            {"FENCE_WITNESS_001": witnesses["FENCE_WITNESS_001"],
+             "FENCE_WITNESS_002": outsider_public},
+        )
+    with pytest.raises(ValueError, match="signing roles must be distinct"):
+        check_dual_fence_transcript(
+            case, (link,), roster,
+            {"FENCE_WITNESS_001": roster["INDEPENDENT_FENCE_001"],
+             "FENCE_WITNESS_002": witnesses["FENCE_WITNESS_002"]},
+        )
+    with pytest.raises(ValueError, match="key roster"):
+        check_dual_fence_transcript(
+            case, (link,), roster,
+            {"FENCE_WITNESS_001": witnesses["FENCE_WITNESS_001"],
+             "FENCE_WITNESS_002": witnesses["FENCE_WITNESS_001"]},
+        )
+    with pytest.raises(ValueError, match="malformed integrated fence transition"):
+        _canonical_fence_transition_message(
+            replace(link, witness_key_ids=(
+                "FENCE_WITNESS_002", "FENCE_WITNESS_001"
+            ))
+        )
+
+
+def test_two_valid_dual_witness_fence_successors_expose_unresolved_conflict(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    auth, roster, witness1, witness2, witnesses = dual_fence_keys()
+    fence = signed_integrated_fence(case, auth, authority_sequence=1)
+    first = dual_fence_link(fence, 0, "0" * 64, witness1, witness2)
+    alternate_draft = replace(
+        fence, expires_on=fence.expires_on - timedelta(days=1),
+        signature_hex="0" * 128,
+    )
+    alternate_fence = replace(
+        alternate_draft,
+        signature_hex=auth.sign(_canonical_fence_message(alternate_draft)).hex(),
+    )
+    alternate = dual_fence_link(
+        alternate_fence, 0, "0" * 64, witness1, witness2
+    )
+    conflict = classify_supplied_fence_fork(
+        case["packet"], first, alternate,
+        trusted_fence_keys=roster, trusted_witness_keys=witnesses,
+        checked_on=NOW,
+    )
+    assert conflict.first_fence_sha256 != conflict.second_fence_sha256
+    assert conflict.successor_authority_sequence == 1
+    assert conflict.receipt()["status"] == (
+        "observed_supplied_signed_fence_conflict_no_resolution"
+    )
+    assert conflict.receipt()["ingestion_authorized"] is False
+    with pytest.raises(ValueError, match="no competing authenticated"):
+        classify_supplied_fence_fork(
+            case["packet"], first, first,
+            trusted_fence_keys=roster, trusted_witness_keys=witnesses,
+            checked_on=NOW,
+        )
+    forged = replace(
+        alternate, witness_signatures_hex=("f" * 128, alternate.witness_signatures_hex[1])
+    )
+    with pytest.raises(ValueError, match="authority or dual-witness signature"):
+        classify_supplied_fence_fork(
+            case["packet"], first, forged,
+            trusted_fence_keys=roster, trusted_witness_keys=witnesses,
+            checked_on=NOW,
+        )
+
+
+def test_dual_fence_transcript_rejects_regressing_counters_and_unchanged_revision_fork(
+    tmp_path,
+):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    auth, roster, witness1, witness2, witnesses = dual_fence_keys()
+    first_fence = signed_integrated_fence(case, auth, authority_sequence=1)
+    first_link = dual_fence_link(first_fence, 0, "0" * 64, witness1, witness2)
+    revoke(case, enrolled)
+    second_fence = signed_integrated_fence(case, auth, authority_sequence=2)
+    bad_draft = replace(
+        second_fence, policy_revision=0, signature_hex="0" * 128
+    )
+    bad_fence = replace(
+        bad_draft, signature_hex=auth.sign(_canonical_fence_message(bad_draft)).hex()
+    )
+    regressed = dual_fence_link(
+        bad_fence, 1, _fence_sha256(first_fence), witness1, witness2
+    )
+    with pytest.raises(ValueError, match="state counters regressed or forked"):
+        check_dual_fence_transcript(
+            case, (first_link, regressed), roster, witnesses,
+        )
+    fork_draft = replace(
+        second_fence, policy_revision=1, signature_hex="0" * 128
+    )
+    same_revision_new_head = replace(
+        fork_draft, signature_hex=auth.sign(_canonical_fence_message(fork_draft)).hex()
+    )
+    forged_head = dual_fence_link(
+        same_revision_new_head, 1, _fence_sha256(first_fence),
+        witness1, witness2,
+    )
+    with pytest.raises(ValueError, match="state counters regressed or forked"):
+        check_dual_fence_transcript(
+            case, (first_link, forged_head), roster, witnesses,
+        )
+
+
+def test_dual_fence_transcript_bounded_dates_types_and_local_expiry(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    auth, roster, witness1, witness2, witnesses = dual_fence_keys()
+    fence = signed_integrated_fence(case, auth, authority_sequence=1)
+    link = dual_fence_link(fence, 0, "0" * 64, witness1, witness2)
+    with pytest.raises(ValueError, match="bounds or anchor"):
+        check_dual_fence_transcript(case, (), roster, witnesses)
+    with pytest.raises(ValueError, match="bounds or anchor"):
+        check_dual_fence_transcript(
+            case, (link,) * 33, roster, witnesses
+        )
+    with pytest.raises(ValueError, match="bounds or anchor"):
+        check_dual_fence_transcript(
+            case, (link,), roster, witnesses, anchor_sequence=True
+        )
+    with pytest.raises(ValueError, match="malformed integrated fence transition"):
+        _canonical_fence_transition_message(
+            replace(link, witnessed_on=NOW + timedelta(days=8))
+        )
+    with pytest.raises(ValueError, match="untrusted transition signer"):
+        check_dual_fence_transcript(
+            case, (link,), roster, witnesses, checked_on=NOW - timedelta(days=1),
+        )
+    with pytest.raises(ValueError, match="expired"):
+        check_dual_fence_transcript(
+            case, (link,), roster, witnesses, checked_on=NOW + timedelta(days=8),
+        )
+    future = dual_fence_link(
+        fence, 0, "0" * 64, witness1, witness2,
+        witnessed_on=NOW + timedelta(days=1),
+    )
+    with pytest.raises(ValueError, match="untrusted transition signer"):
+        check_dual_fence_transcript(case, (future,), roster, witnesses)
