@@ -180,10 +180,14 @@ def test_expiration_recomputed_and_invalid_future_policy_rejected(tmp_path):
     assert assess(case, when=date(2027, 1, 2)).receipt()[
         "publication_authorized"
     ] is False
-    bad = signed(case, issued_on=date(2026, 12, 1),
-                 expires_on=date(2027, 1, 1))
+    first = case["registry"].snapshot(checked_on=CHECKED)
+    bad = signed(
+        case, operator_id="OPERATOR_SECOND", operator_public=case["two"],
+        sequence=2, previous=first.head_sha256,
+        issued_on=date(2026, 12, 1), expires_on=date(2027, 1, 1),
+    )
     with pytest.raises(ValueError, match="future-issued"):
-        append(case, bad)
+        append(case, bad, revision=1, head=first.head_sha256)
 
 
 @pytest.mark.parametrize("expiry", [
