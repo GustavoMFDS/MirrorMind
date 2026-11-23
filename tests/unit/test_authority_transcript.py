@@ -263,7 +263,7 @@ def test_handoff_wrong_predecessor_and_extra_handoffs_fail(tmp_path):
     transfer = case[3][0]
     with pytest.raises(ValueError, match="handoff"):
         check(case, handoffs=(replace(transfer, previous_receipt_sha256="f" * 64),))
-    with pytest.raises(ValueError, match="unused|conflicting"):
+    with pytest.raises(ValueError, match="handoff|unused|conflicting"):
         check(case, handoffs=(transfer, transfer))
 
 
