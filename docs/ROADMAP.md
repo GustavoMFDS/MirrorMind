@@ -440,3 +440,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   not atomic. Identity and custody of admin private keys, independent
   current head, real key compromise recovery, source rights/retention
   and live publisher enforcement remain unimplemented.
+
+- **MM-M1b atomic local policy-gated checkpoint publication (experimental):**
+  [single-DB policy+publisher gate](engineering/ATOMIC_GOVERNED_PUBLISHER.md)
+  composes signed dual-admin policy and signed checkpoint publication in
+  one new SQLite file, using `BEGIN IMMEDIATE` to order revocation
+  versus publication and reject stale or revoked operators. The former
+  standalone static-key publisher refuses that marked file; previous
+  standalone databases are not migrated. This does **not** fix
+  coherent combined-DB rollback, global latest-head trust, real operator
+  identity/credentials, licensed data access or ingestion permissions.
