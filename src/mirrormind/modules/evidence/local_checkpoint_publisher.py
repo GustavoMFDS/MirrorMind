@@ -38,6 +38,7 @@ _SCHEMA = 1
 _SHA = re.compile(r"[0-9a-f]{64}")
 _SIG = re.compile(r"[0-9a-f]{128}")
 _PUBLISH_DOMAIN = "mirrormind.local-checkpoint-publication.v1"
+_GOVERNED_PUBLISH_DOMAIN = "mirrormind.atomic-governed-publication.v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -50,6 +51,9 @@ class SignedPublicationCommand:
     expected_sequence: int
     expected_receipt_sha256: str
     operator_signature_hex: str
+    # Optional for historical standalone records. Mandatory for new governed writes.
+    expected_policy_revision: int | None = None
+    expected_policy_head_sha256: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,14 +98,18 @@ def _canonical_publication_message(command: SignedPublicationCommand) -> bytes:
             + bytes.fromhex(command.handoff.old_signature_hex)
             + bytes.fromhex(command.handoff.new_signature_hex)
         ).hexdigest()
+    governed = command.expected_policy_revision is not None
     record = {
-        "domain": _PUBLISH_DOMAIN,
+        "domain": _GOVERNED_PUBLISH_DOMAIN if governed else _PUBLISH_DOMAIN,
         "receipt_sha256": _receipt_digest(command.receipt),
         "handoff_sha256": handoff_digest,
         "operator_key_id": command.operator_key_id,
         "expected_sequence": command.expected_sequence,
         "expected_receipt_sha256": command.expected_receipt_sha256,
     }
+    if governed:
+        record["expected_policy_revision"] = command.expected_policy_revision
+        record["expected_policy_head_sha256"] = command.expected_policy_head_sha256
     return json.dumps(record, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
@@ -132,7 +140,22 @@ def _serialize(command: SignedPublicationCommand) -> str:
         or _SIG.fullmatch(command.handoff.new_signature_hex) is None
     ):
         raise ValueError("invalid witness rotation signature encoding")
+    has_revision = command.expected_policy_revision is not None
+    has_head = command.expected_policy_head_sha256 is not None
+    if has_revision != has_head:
+        raise ValueError("publication policy binding must be complete")
+    if has_revision and (
+        type(command.expected_policy_revision) is not int
+        or not 0 <= command.expected_policy_revision <= _MAX_SEQUENCE
+        or type(command.expected_policy_head_sha256) is not str
+        or _SHA.fullmatch(command.expected_policy_head_sha256) is None
+    ):
+        raise ValueError("invalid publication policy binding")
     data = asdict(command)
+    if not has_revision:
+        # Retain byte-for-byte canonical encoding of existing v1 records.
+        data.pop("expected_policy_revision")
+        data.pop("expected_policy_head_sha256")
     data["receipt"]["checkpoint"]["issued_on"] = checkpoint.issued_on.isoformat()
     data["receipt"]["checkpoint"]["expires_on"] = checkpoint.expires_on.isoformat()
     return json.dumps(data, sort_keys=True, separators=(",", ":"))
@@ -496,6 +519,13 @@ class LocalCheckpointPublisher:
         """Verify exact operator-signed proposal, then atomically commit."""
         if type(checked_on) is not date or checked_on < packet.inspected_on:
             raise ValueError("invalid publisher write date")
+        # The standalone static-roster publisher cannot authenticate or enforce
+        # policy-bound signatures. It must not accept a governed v2 proposal.
+        if type(command) is SignedPublicationCommand and (
+            command.expected_policy_revision is not None
+            or command.expected_policy_head_sha256 is not None
+        ):
+            raise ValueError("policy-bound publication requires atomic governed publisher")
         db = self._connect()
         try:
             db.execute("BEGIN IMMEDIATE")

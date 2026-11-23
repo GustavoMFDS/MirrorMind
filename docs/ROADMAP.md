@@ -450,3 +450,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   standalone databases are not migrated. This does **not** fix
   coherent combined-DB rollback, global latest-head trust, real operator
   identity/credentials, licensed data access or ingestion permissions.
+
+- **MM-M1b policy-bound operator publication signatures (experimental):**
+  [local signing protocol v2](engineering/ATOMIC_GOVERNED_PUBLISHER.md)
+  now binds the operator's Ed25519 signature to the exact dual-admin
+  policy revision and hash, in addition to the existing publication
+  predecessor and witnessed receipt. Stale signatures are rejected
+  after any policy change, while preexisting v1 history can still be
+  reverified and standalone v1 publication remains independent.
+  [Scope and negative tests](engineering/changes/M1B_POLICY_BOUND_PUBLICATION.md)
+  do not establish trusted external freshness, real key ownership,
+  cross-host authority, legal source rights or live ingestion.

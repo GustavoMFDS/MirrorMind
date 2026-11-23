@@ -142,3 +142,13 @@ its static-key path cannot be used to bypass governed admission in
 that database. Old separate publisher databases remain compatible and
 are not automatically governed. This is still local-only, not external
 operator identity, fresh witness currentness or licensed-source access.
+
+## Signed v2 command separation
+
+The opt-in [integrated publisher](ATOMIC_GOVERNED_PUBLISHER.md)
+now requires the operator signature to cover the exact current policy
+revision/head under a distinct v2 signing domain. This **standalone**
+static-key publisher accepts only its original v1 commands and refuses
+v2 commands, because it has no jointly atomic operator-policy state.
+Existing v1 SQLite records and signatures remain compatible; opening
+a standalone database does not grant governance or ingestion rights.

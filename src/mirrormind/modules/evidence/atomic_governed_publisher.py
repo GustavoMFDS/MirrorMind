@@ -438,6 +438,16 @@ class AtomicGovernedPublisher:
                 raise ValueError("publishing operator has been revoked")
             if checked_on > operator[1]:
                 raise ValueError("publishing operator registration has expired")
+            # The expected policy state is not merely a caller-supplied CAS:
+            # the operator must sign the exact policy epoch and head itself.
+            # Legacy v1 commands remain readable as history, never new writes.
+            if (
+                type(command.expected_policy_revision) is not int
+                or command.expected_policy_revision != policy_revision
+                or type(command.expected_policy_head_sha256) is not str
+                or not compare_digest(command.expected_policy_head_sha256, policy_head)
+            ):
+                raise ValueError("operator signature must bind current policy head")
             verifier = self._verifier(records)
             (
                 pub_seq, pub_head, witness, epoch, review_rev,
