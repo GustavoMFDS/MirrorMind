@@ -48,6 +48,8 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 
 - For publication CAS conflicts, missing operator role or local rollback: inspect [`local_checkpoint_publisher.py`](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py), [the local publisher trust guide](LOCAL_CHECKPOINT_PUBLISHER.md) and [synthetic transactional tests](../../tests/unit/test_local_checkpoint_publisher.py). Never log private signing keys or copy a publisher SQLite database with metadata into issues. The journal cannot attest to its own globally current head.
 
+- For operator policy enrollment or revocation incidents: inspect [`operator_governance.py`](../../src/mirrormind/modules/evidence/operator_governance.py), [its trust and TOCTOU limits](OPERATOR_GOVERNANCE.md) and [synthetic regressions](../../tests/unit/test_operator_governance.py). Do not mistake an active policy record for effective publisher authorization or log private key material; the databases are not atomically coupled.
+
 Useful local checks:
 ```bash
 python -m pytest -q
