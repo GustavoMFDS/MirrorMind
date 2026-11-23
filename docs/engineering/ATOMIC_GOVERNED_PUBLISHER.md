@@ -180,3 +180,15 @@ does not grant source or forecast rights.
 python -m pytest -q tests/unit/test_atomic_governed_publisher.py
 python scripts/local_quality_gate.py --expected-head $(git rev-parse HEAD)
 ```
+
+## Opt-in offline signed integrated-state fence
+
+An independent, [read-only signed-fence verifier](INTEGRATED_HEAD_FENCE.md)
+can compare both combined local heads/revisions to a supplied signed
+attestation with externally supplied **exact** current sequence and
+signed-fence digest. It intentionally does not participate in
+`publish`, does not provide live external currentness, and cannot
+grant publication, ingestion or forecasting permission. A restored
+old coherent DB fails only when compared against a genuinely newer
+independently trusted fence. Do not treat caller-supplied stale pins as
+an independent rollback defense.

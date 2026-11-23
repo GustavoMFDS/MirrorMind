@@ -4,7 +4,7 @@ import shutil
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import FrozenInstanceError, replace
-from datetime import date
+from datetime import date, timedelta
 from hashlib import sha256
 from threading import Barrier
 
@@ -26,6 +26,12 @@ from mirrormind.modules.evidence.head_checkpoints import (
 from mirrormind.modules.evidence.intake_review import (
     SourceReviewDeclaration,
     prepare_source_review_packet,
+)
+from mirrormind.modules.evidence.integrated_head_fence import (
+    SignedIntegratedHeadFence,
+    _canonical_fence_message,
+    _fence_sha256,
+    verify_integrated_head_fence,
 )
 from mirrormind.modules.evidence.local_checkpoint_publisher import (
     GENESIS_PUBLICATION_HEAD,
@@ -723,3 +729,188 @@ def test_policy_binding_tampering_in_stored_v2_history_invalidates_signature(tmp
         )
     with pytest.raises(ValueError, match="signature invalid"):
         reopen(case).snapshot(case["packet"], checked_on=NOW)
+
+
+def signed_integrated_fence(case, signer, *, authority_sequence=1):
+    state = case["gate"].snapshot(case["packet"], checked_on=NOW)
+    draft = SignedIntegratedHeadFence(
+        authority_key_id="INDEPENDENT_FENCE_001",
+        authority_sequence=authority_sequence,
+        packet_sha256=case["packet"].declaration_sha256,
+        snapshot_sha256=case["packet"].snapshot_sha256,
+        policy_revision=state.policy_revision,
+        policy_head_sha256=state.policy_head_sha256,
+        publication_sequence=state.publication_sequence,
+        publication_head_sha256=state.publication_head_sha256,
+        issued_on=NOW,
+        expires_on=NOW + timedelta(days=7),
+        signature_hex="0" * 128,
+    )
+    return replace(
+        draft, signature_hex=signer.sign(_canonical_fence_message(draft)).hex()
+    )
+
+
+def check_integrated_fence(case, fence, public, *, gate=None, packet=None,
+                           current_sequence=None, current_hash=None,
+                           checked_on=NOW, trusted=None):
+    return verify_integrated_head_fence(
+        case["gate"] if gate is None else gate,
+        case["packet"] if packet is None else packet,
+        fence,
+        trusted_fence_keys=(
+            {"INDEPENDENT_FENCE_001": public} if trusted is None else trusted
+        ),
+        expected_current_authority_sequence=(
+            fence.authority_sequence if current_sequence is None else current_sequence
+        ),
+        expected_current_fence_sha256=(
+            _fence_sha256(fence) if current_hash is None else current_hash
+        ),
+        checked_on=checked_on,
+    )
+
+
+def test_signed_integrated_fence_matches_verified_heads_without_authorizing(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    publish(
+        case, signed_publication(
+            case, review_revision=1, review_head=case["review_head"],
+            sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+        ), policy=enrolled,
+    )
+    signing_key, public = keypair()
+    fence = signed_integrated_fence(case, signing_key)
+    before = case["gate"].snapshot(case["packet"], checked_on=NOW)
+    result = check_integrated_fence(case, fence, public)
+    after = case["gate"].snapshot(case["packet"], checked_on=NOW)
+    assert before == after
+    assert result.policy_revision == 1
+    assert result.publication_sequence == 1
+    assert result.supplied_fence_sha256 == _fence_sha256(fence)
+    assert result.receipt()["publication_authorized"] is False
+    assert result.receipt()["ingestion_authorized"] is False
+    assert result.receipt()["forecast_eligible"] is False
+    for sensitive in ("OPERATOR_001", "PRIVATE-SERIES", "INDEPENDENT_FENCE_001"):
+        assert sensitive not in str(result.receipt())
+    assert reopen(case).snapshot(case["packet"], checked_on=NOW) == after
+
+
+def test_signed_fence_detects_coherent_old_database_only_given_new_current_fence(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    first = publish(
+        case, signed_publication(
+            case, review_revision=1, review_head=case["review_head"],
+            sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+        ), policy=enrolled,
+    )
+    signing_key, public = keypair()
+    previous_fence = signed_integrated_fence(case, signing_key, authority_sequence=1)
+    old_path = tmp_path / "signed-fence-old-coherent-backup.db"
+    shutil.copyfile(case["path"], old_path)
+    current = revoke(case, enrolled)
+    assert current.revision == 2
+    latest_fence = signed_integrated_fence(case, signing_key, authority_sequence=2)
+    old = reopen(case, old_path)
+    with pytest.raises(ValueError, match="heads differ"):
+        check_integrated_fence(case, latest_fence, public, gate=old)
+    # Counterexample: stale but self-consistent external pins do NOT give freshness.
+    assert check_integrated_fence(
+        case, previous_fence, public, gate=old,
+    ).policy_revision == 1
+    with pytest.raises(ValueError, match="expected external current"):
+        check_integrated_fence(
+            case, previous_fence, public, gate=old,
+            current_sequence=latest_fence.authority_sequence,
+            current_hash=_fence_sha256(latest_fence),
+        )
+    assert first.publication_sequence == 1
+    assert check_integrated_fence(case, latest_fence, public).policy_revision == 2
+
+
+def test_signed_fence_checks_publication_head_even_without_policy_change(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    signing_key, public = keypair()
+    empty_fence = signed_integrated_fence(case, signing_key, authority_sequence=1)
+    publish(
+        case, signed_publication(
+            case, review_revision=1, review_head=case["review_head"],
+            sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+        ), policy=enrolled,
+    )
+    with pytest.raises(ValueError, match="heads differ"):
+        check_integrated_fence(case, empty_fence, public)
+    full_fence = signed_integrated_fence(case, signing_key, authority_sequence=2)
+    assert check_integrated_fence(case, full_fence, public).publication_sequence == 1
+
+
+def test_signed_fence_wrong_scope_signer_tampering_and_equivocation_fail(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    signer, public = keypair()
+    _, outsider_public = keypair()
+    fence = signed_integrated_fence(case, signer)
+    with pytest.raises(ValueError, match="signature invalid"):
+        check_integrated_fence(case, fence, outsider_public)
+    with pytest.raises(ValueError, match="signer or source packet"):
+        check_integrated_fence(
+            case, fence, public,
+            packet=replace(case["packet"], snapshot_sha256="a" * 64),
+        )
+    with pytest.raises(ValueError, match="expected external current"):
+        check_integrated_fence(case, fence, public, current_hash="0" * 64)
+    with pytest.raises(ValueError, match="expected external current"):
+        check_integrated_fence(case, fence, public, current_sequence=2)
+    altered = replace(fence, publication_head_sha256="a" * 64)
+    with pytest.raises(ValueError, match="signature invalid"):
+        check_integrated_fence(case, altered, public)
+    different = replace(
+        fence, expires_on=fence.expires_on - timedelta(days=1),
+        signature_hex="0" * 128,
+    )
+    different = replace(
+        different, signature_hex=signer.sign(_canonical_fence_message(different)).hex()
+    )
+    with pytest.raises(ValueError, match="expected external current"):
+        check_integrated_fence(
+            case, different, public, current_hash=_fence_sha256(fence)
+        )
+    assert _fence_sha256(different) != _fence_sha256(fence)
+
+
+def test_signed_fence_bounds_expiry_bad_keys_and_type_confusion_fail(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    signer, public = keypair()
+    fence = signed_integrated_fence(case, signer)
+    with pytest.raises(ValueError, match="not yet valid"):
+        check_integrated_fence(
+            case, fence, public, checked_on=NOW - timedelta(days=1)
+        )
+    with pytest.raises(ValueError, match="expired"):
+        check_integrated_fence(
+            case, fence, public, checked_on=NOW + timedelta(days=8)
+        )
+    with pytest.raises(ValueError, match="invalid fields"):
+        _canonical_fence_message(replace(fence, authority_sequence=True))
+    with pytest.raises(ValueError, match="invalid fields"):
+        _canonical_fence_message(
+            replace(fence, expires_on=NOW + timedelta(days=31))
+        )
+    with pytest.raises(ValueError, match="malformed"):
+        _fence_sha256(replace(fence, signature_hex="ff"))
+    with pytest.raises(ValueError, match="invalid trusted"):
+        check_integrated_fence(
+            case, fence, public,
+            trusted={"INDEPENDENT_FENCE_001": public, "DUPLICATE_FENCE_001": public},
+        )
+    with pytest.raises(ValueError, match="expected external current"):
+        check_integrated_fence(case, fence, public, current_sequence=True)
+    with pytest.raises(ValueError, match="signer or source packet"):
+        check_integrated_fence(
+            case, fence, public,
+            trusted={"ANOTHER_FENCE_001": public},
+        )

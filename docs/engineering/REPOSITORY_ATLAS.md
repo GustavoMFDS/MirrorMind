@@ -748,3 +748,15 @@ externally attested currentness or actual source-ingestion permission.
 The signed policy epoch is a **local verification invariant**, not a
 trusted current-head attestation, authenticated real-world operator or
 permission to ingest datasets or run empirical forecasts.
+
+## 46. Supplied signed integrated-state fence (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/integrated_head_fence.py`](../../src/mirrormind/modules/evidence/integrated_head_fence.py) | Read-only exact policy/publication signed-fence verification against one transactional local snapshot and externally pinned digest/sequence |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Synthetic signer tampering, stale pinned fence, old coherent backup, publication-head drift, bounds and refusal tests |
+| [`docs/engineering/INTEGRATED_HEAD_FENCE.md`](INTEGRATED_HEAD_FENCE.md) | Signed fields, conditional rollback detection, signer/currentness trust assumptions |
+| [`docs/engineering/changes/M1B_INTEGRATED_HEAD_FENCE.md`](changes/M1B_INTEGRATED_HEAD_FENCE.md) | Scoped acceptance, impact map and intentionally deferred external service |
+
+No trusted externally fetched latest head, independent signer custody,
+live policy admission, source rights or authorized ingestion is proven.

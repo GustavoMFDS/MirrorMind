@@ -461,3 +461,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   [Scope and negative tests](engineering/changes/M1B_POLICY_BOUND_PUBLICATION.md)
   do not establish trusted external freshness, real key ownership,
   cross-host authority, legal source rights or live ingestion.
+
+- **MM-M1b offline signed integrated-head fence (experimental only):**
+  [signed-state verifier](engineering/INTEGRATED_HEAD_FENCE.md) can
+  compare a supplied Ed25519-signed **combined** operator-policy and
+  publication head against one consistent local SQLite read, with
+  caller-pinned exact authority sequence and signed digest. An older
+  coherent backup fails against a genuinely newer externally supplied
+  fence; the same backup plus stale external pins still passes.
+  No independently operated authority, trusted current-fence retrieval,
+  key custody, cross-host consensus, licensed data use, admission
+  tokens, real ingestion or empirical forecasts were delivered.

@@ -252,6 +252,13 @@
       "source": "src/mirrormind/modules/evidence/atomic_governed_publisher.py",
       "test": "tests/unit/test_atomic_governed_publisher.py::test_revocation_before_publication_is_terminal_and_history_still_verifies",
       "notes": "Opt-in new single-file SQLite gate for dual-admin operator policy and signed checkpoint publication. Local BEGIN IMMEDIATE validates current policy and full publication history atomically, refusing revoked/expired/unknown operators and stale heads. New integrated writes require an Ed25519 v2 operator signature over the exact policy revision/head (distinct from legacy v1 publication domain); v1 signed histories remain readable and standalone v1 rejects v2 submissions. Concurrency is serializable only for this local file; coherent old DB rollback, malicious file access, key custody, independently current authority, real operator identity, legal source rights and actual ingestion are NOT solved. Never returns publication_authorized, ingestion_authorized, or forecast_eligible true."
+    },
+    {
+      "id": "local_supplied_signed_integrated_head_fence",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/integrated_head_fence.py",
+      "test": "tests/unit/test_atomic_governed_publisher.py::test_signed_integrated_fence_matches_verified_heads_without_authorizing",
+      "notes": "Offline generated-key Ed25519 verifier of a caller-supplied per-source-packet combined policy+publication head against one signed local SQLite snapshot and separately caller-pinned exact current fence sequence/digest. A coherent old backup mismatches a genuinely newer supplied fence, but stale trusted keys, old signed fence and matching old expected pins still pass. Does NOT operate a signer or independent latest-head authority, protect keys, establish identities or source rights, gate publication, authorize ingestion or serve forecasts. Every receipt leaves publication_authorized=false, ingestion_authorized=false and forecast_eligible=false."
     }
   ]
 }

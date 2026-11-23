@@ -100,3 +100,15 @@ but are not forwarded to the retail projection.
 Event date is still not proven publication
 date, so no direct historical forecast
 or WorldKernel scenario input is authorized.
+
+## Offline combined-head fence — experimental, no authority service
+
+The [integrated head-fence verifier](INTEGRATED_HEAD_FENCE.md) reads
+the existing [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md)
+through its transactional `snapshot` API. A caller supplies an
+Ed25519-signed record covering the source packet, policy revision/head,
+publication sequence/head and expiry, plus **separately** pinned
+expected current sequence/digest and trusted signer public key.
+Nothing is fetched, appended or used for publication admission:
+the combined SQLite state remains a local evidence object, not a
+globally trusted current state or legal ingestion entitlement.

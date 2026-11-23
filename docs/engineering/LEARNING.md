@@ -395,3 +395,15 @@ race revocation against publication. Explain why a publication committed
 while a later attempt fails. Restore a coherent pre-revocation combined
 database and explain why external head custody, real identity and
 legal source approvals remain necessary despite same-file atomicity.
+
+## Guided exercise — current-state signatures versus actual freshness (35 minutes)
+
+Read the [integrated head-fence verifier](../../src/mirrormind/modules/evidence/integrated_head_fence.py),
+[trust guide](INTEGRATED_HEAD_FENCE.md) and
+[generated-key regression cases](../../tests/unit/test_atomic_governed_publisher.py).
+Copy a fictional combined DB before revocation; sign a fence on both
+sides of the revocation. Verify that the old copy disagrees with the
+newer supplied signed fence. Then provide the old fence and its old
+expected digest, and explain why it can still match without genuine
+independent latest-fence custody. Identify the TOCTOU risk of making
+this read-only verifier a separate publication-admission precheck.

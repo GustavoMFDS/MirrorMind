@@ -66,3 +66,11 @@ Documentation CI requires the **committed** symbol catalog to be current, regene
 
 ## Scope and independence
 These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but the repositories remain independent. Shared documentation layout does not create shared runtime dependencies. Changes to the *contracts* between projects require separate, coordinated reviews.
+
+## Experimental signed-fence verification
+
+- [Supplied signed integrated-head fence](INTEGRATED_HEAD_FENCE.md) —
+  read-only comparison of a signed policy+publication state to one local
+  SQLite snapshot using caller-pinned exact current sequence/digest;
+  [scoped change request](changes/M1B_INTEGRATED_HEAD_FENCE.md).
+  No independent current-head service, live admission or source rights.
