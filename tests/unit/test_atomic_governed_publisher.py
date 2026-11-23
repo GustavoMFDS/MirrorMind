@@ -34,6 +34,7 @@ from mirrormind.modules.evidence.local_checkpoint_publisher import (
 )
 from mirrormind.modules.evidence.operator_governance import (
     GENESIS_POLICY_HEAD,
+    OperatorPolicyRevision,
     SignedOperatorPolicyEvent,
     _canonical_event_message,
 )
@@ -386,23 +387,17 @@ def test_unenrolled_expired_and_mismatched_operator_fail_closed(tmp_path):
     )
     empty = case["gate"].snapshot(case["packet"], checked_on=NOW)
     with pytest.raises(ValueError, match="not enrolled"):
-        publish(case, command, policy=replace(
-            enroll(case), revision=0, head_sha256=GENESIS_POLICY_HEAD,
-        ))
-    enrolled = case["gate"].snapshot(case["packet"], checked_on=NOW)
-    policy = replace(
-        case["gate"].append_policy(
-            policy_event(
-                case, "revoke", sequence=2, previous=enrolled.policy_head_sha256,
-                issued_on=NOW,
+        publish(
+            case, command,
+            policy=OperatorPolicyRevision(
+                revision=0, head_sha256=GENESIS_POLICY_HEAD,
+                registered_count=0, checked_on=NOW,
             ),
-            expected_policy_revision=1,
-            expected_policy_head_sha256=enrolled.policy_head_sha256,
-            checked_on=NOW,
-        ), checked_on=NOW,
-    )
+        )
+    enrolled = enroll(case)
+    revoked = revoke(case, enrolled)
     with pytest.raises(ValueError, match="revoked"):
-        publish(case, command, policy=policy)
+        publish(case, command, policy=revoked)
     assert empty.publication_sequence == 0
 
 
