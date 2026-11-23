@@ -120,3 +120,14 @@ head custody or legally authorized dataset use.
 python -m pytest -q tests/unit/test_local_checkpoint_publisher.py
 python scripts/local_quality_gate.py --expected-head $(git rev-parse HEAD)
 ```
+
+## Separate experimental operator-key governance — not enforced here
+
+The [dual-admin key-policy registry](OPERATOR_GOVERNANCE.md) can store
+fictional signed operator enrollment, expiry, revocation and new-key
+replacement in a **different** SQLite database. The publisher's
+preexisting static `operator_keys` map has **not** been connected to
+that policy. A policy check followed by a separate publisher transaction
+would introduce a time-of-check/time-of-use race. No effective
+publication admission or revocation protection is claimed; a future
+single-transaction and independently governed design is required.
