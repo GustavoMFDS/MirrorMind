@@ -734,3 +734,17 @@ globally current policy or source-ingestion permission exists.
 
 The integrated local path **does not** provide operator identities,
 externally attested currentness or actual source-ingestion permission.
+
+## 45. Policy-bound signed integrated publications (experimental)
+
+| Tracked file | Review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/local_checkpoint_publisher.py`](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py) | Canonical legacy v1 history plus separate governed v2 signing domain and standalone-v2 rejection |
+| [`src/mirrormind/modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py) | Same-transaction validation of exact operator-signed policy revision/head and current policy |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Domain swap refusal, wrong or stale policy binding, old v1 historical replay, standalone refusal and tamper detection |
+| [`docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md`](ATOMIC_GOVERNED_PUBLISHER.md) | v1/v2 compatibility, signature coverage and remaining external trust boundary |
+| [`docs/engineering/changes/M1B_POLICY_BOUND_PUBLICATION.md`](changes/M1B_POLICY_BOUND_PUBLICATION.md) | Scope, acceptance, backward compatibility and rollback hazards |
+
+The signed policy epoch is a **local verification invariant**, not a
+trusted current-head attestation, authenticated real-world operator or
+permission to ingest datasets or run empirical forecasts.

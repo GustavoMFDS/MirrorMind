@@ -1,4 +1,5 @@
 """Fictional atomic policy-gated publication: revocation and commit share one DB."""
+import json
 import shutil
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
@@ -31,6 +32,10 @@ from mirrormind.modules.evidence.local_checkpoint_publisher import (
     LocalCheckpointPublisher,
     SignedPublicationCommand,
     _canonical_publication_message,
+    _decode,
+    _packet_json,
+    _receipt_digest,
+    _serialize,
 )
 from mirrormind.modules.evidence.operator_governance import (
     GENESIS_POLICY_HEAD,
@@ -117,8 +122,10 @@ def policy_event(case, action, *, sequence=1, previous=GENESIS_POLICY_HEAD,
 
 
 def signed_publication(case, *, review_revision, review_head,
-                       sequence, previous_pub_head):
+                       sequence, previous_pub_head, policy=None):
     source = case["packet"]
+    if policy is None:
+        policy = case["gate"].snapshot(source, checked_on=NOW)
     checkpoint = SignedReviewHeadCheckpoint(
         anchor_key_id="CHECKPOINT_KEY_001",
         packet_sha256=source.declaration_sha256,
@@ -154,6 +161,8 @@ def signed_publication(case, *, review_revision, review_head,
         expected_sequence=sequence - 1,
         expected_receipt_sha256=previous_pub_head,
         operator_signature_hex="0" * 128,
+        expected_policy_revision=policy.policy_revision,
+        expected_policy_head_sha256=policy.policy_head_sha256,
     )
     return replace(
         command, operator_signature_hex=case["operator_private"].sign(
@@ -557,3 +566,160 @@ def test_two_publishers_same_head_only_one_winner(tmp_path):
         results = list(pool.map(compete, (first, second)))
     assert sorted(results) == ["stale", "won"]
     assert reopen(case).snapshot(case["packet"], checked_on=NOW).publication_sequence == 1
+
+
+def test_governed_signatures_are_domain_separated_from_legacy_and_fail_closed(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    bound = signed_publication(
+        case, review_revision=1, review_head=case["review_head"],
+        sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+    )
+    assert bound.expected_policy_revision == 1
+    assert bound.expected_policy_head_sha256 == enrolled.head_sha256
+    legacy_proposal = replace(
+        bound, expected_policy_revision=None, expected_policy_head_sha256=None,
+        operator_signature_hex="0" * 128,
+    )
+    legacy = replace(
+        legacy_proposal,
+        operator_signature_hex=case["operator_private"].sign(
+            _canonical_publication_message(legacy_proposal)
+        ).hex(),
+    )
+    old_json = _serialize(legacy)
+    assert "expected_policy_revision" not in old_json
+    assert "expected_policy_head_sha256" not in old_json
+    assert _decode(old_json) == legacy
+    assert _canonical_publication_message(legacy) != _canonical_publication_message(bound)
+
+    with pytest.raises(ValueError, match="bind current policy"):
+        publish(case, legacy, policy=enrolled)
+    with pytest.raises(ValueError, match="signature invalid"):
+        publish(
+            case, replace(bound, operator_signature_hex=legacy.operator_signature_hex),
+            policy=enrolled,
+        )
+    with pytest.raises(ValueError, match="binding must be complete"):
+        _serialize(replace(bound, expected_policy_head_sha256=None))
+    with pytest.raises(ValueError, match="invalid publication policy binding"):
+        _serialize(replace(bound, expected_policy_revision=True))
+    assert case["gate"].snapshot(case["packet"], checked_on=NOW).publication_sequence == 0
+    assert publish(case, bound, policy=enrolled).publication_sequence == 1
+
+
+def test_unrevoked_operator_must_resign_after_independent_policy_change(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    originally_signed = signed_publication(
+        case, review_revision=1, review_head=case["review_head"],
+        sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+    )
+    _, another_public = keypair()
+    event = policy_event(
+        case, "enroll", sequence=2, previous=enrolled.head_sha256,
+        operator_id="OPERATOR_002", operator_public=another_public,
+        issued_on=NOW,
+    )
+    advanced = case["gate"].append_policy(
+        event, expected_policy_revision=1,
+        expected_policy_head_sha256=enrolled.head_sha256, checked_on=NOW,
+    )
+    assert advanced.revision == 2
+    with pytest.raises(ValueError, match="bind current policy"):
+        publish(case, originally_signed, policy=advanced)
+    assert case["gate"].snapshot(case["packet"], checked_on=NOW).publication_sequence == 0
+
+    newly_signed = signed_publication(
+        case, review_revision=1, review_head=case["review_head"],
+        sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+    )
+    assert newly_signed.expected_policy_revision == 2
+    result = publish(case, newly_signed, policy=advanced)
+    assert reopen(case).snapshot(case["packet"], checked_on=NOW) == result
+
+
+def test_existing_valid_v1_integrated_history_replays_before_new_v2_publication(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    bound = signed_publication(
+        case, review_revision=1, review_head=case["review_head"],
+        sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+    )
+    old_proposal = replace(
+        bound, expected_policy_revision=None, expected_policy_head_sha256=None,
+        operator_signature_hex="0" * 128,
+    )
+    old_signed = replace(
+        old_proposal, operator_signature_hex=case["operator_private"].sign(
+            _canonical_publication_message(old_proposal)
+        ).hex(),
+    )
+    # Simulate a pre-upgrade, correctly signed v1 event in an existing v1 DB.
+    # The new public API must never admit such an unbound command again.
+    old_head = _receipt_digest(old_signed.receipt)
+    with sqlite3.connect(case["path"]) as db:
+        db.execute(
+            "INSERT INTO publication_heads VALUES(?,?,?,?)",
+            (case["packet"].declaration_sha256, _packet_json(case["packet"]),
+             1, old_head),
+        )
+        db.execute(
+            "INSERT INTO publication_events VALUES(?,?,?)",
+            (case["packet"].declaration_sha256, 1, _serialize(old_signed)),
+        )
+    historical = reopen(case).snapshot(case["packet"], checked_on=NOW)
+    assert historical.publication_sequence == 1
+    assert historical.publication_head_sha256 == old_head
+
+    second = prepare_second(case, old_head)
+    assert second.expected_policy_head_sha256 == enrolled.head_sha256
+    current = publish(
+        case, second, policy=enrolled, prior_pub_sequence=1,
+        prior_pub_head=old_head,
+    )
+    assert current.publication_sequence == 2
+    assert reopen(case).snapshot(case["packet"], checked_on=NOW) == current
+
+
+def test_standalone_publisher_cannot_accept_policy_bound_v2_command(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    command = signed_publication(
+        case, review_revision=1, review_head=case["review_head"],
+        sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+    )
+    standalone = LocalCheckpointPublisher(
+        tmp_path / "old-style-publisher.db",
+        checkpoint_keys=case["checkpoint_keys"],
+        witness_keys=case["witness_keys"],
+        operator_keys={"OPERATOR_001": case["operator_public"]},
+        initial_witness_key_id="WITNESS_KEY_001", create=True,
+    )
+    with pytest.raises(ValueError, match="requires atomic governed publisher"):
+        standalone.publish(
+            case["packet"], command, expected_sequence=0,
+            expected_receipt_sha256=GENESIS_PUBLICATION_HEAD, checked_on=NOW,
+        )
+    assert standalone.snapshot(case["packet"], checked_on=NOW).sequence == 0
+
+
+def test_policy_binding_tampering_in_stored_v2_history_invalidates_signature(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    publish(
+        case, signed_publication(
+            case, review_revision=1, review_head=case["review_head"],
+            sequence=1, previous_pub_head=GENESIS_PUBLICATION_HEAD,
+        ), policy=enrolled,
+    )
+    with sqlite3.connect(case["path"]) as db:
+        row = db.execute("SELECT command_json FROM publication_events").fetchone()
+        encoded = json.loads(row[0])
+        encoded["expected_policy_head_sha256"] = GENESIS_POLICY_HEAD
+        db.execute(
+            "UPDATE publication_events SET command_json=?",
+            (json.dumps(encoded, separators=(",", ":"), sort_keys=True),),
+        )
+    with pytest.raises(ValueError, match="signature invalid"):
+        reopen(case).snapshot(case["packet"], checked_on=NOW)

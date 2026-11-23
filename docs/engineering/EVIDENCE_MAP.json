@@ -607,5 +607,40 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_restored_valid_old_integrated_db_needs_independent_head_for_rollback",
     "limitation": "An older coherent combined SQLite copy may restore locally enrolled keys unless an independently newer head is supplied, so local signatures and SQL locking cannot independently establish anti-rollback or production authorization."
+  },
+  {
+    "id": "MM-PBOUND-001",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_governed_signatures_are_domain_separated_from_legacy_and_fail_closed",
+    "limitation": "Bound v2 signature domain rejects a legacy v1 signature and incomplete policy binding in synthetic local metadata; does not authenticate a human operator or establish external policy freshness."
+  },
+  {
+    "id": "MM-PBOUND-002",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_unrevoked_operator_must_resign_after_independent_policy_change",
+    "limitation": "A second fictional key enrollment invalidates the previously signed policy epoch even without revocation; independently trusted current-head custody and cross-host governance remain absent."
+  },
+  {
+    "id": "MM-PBOUND-003",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_existing_valid_v1_integrated_history_replays_before_new_v2_publication",
+    "limitation": "Synthetic pre-upgrade v1 SQLite event replay preserves historical signature verification; newly written integrated v2 records do not automatically upgrade trust in old unbound records."
+  },
+  {
+    "id": "MM-PBOUND-004",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_standalone_publisher_cannot_accept_policy_bound_v2_command",
+    "limitation": "The static-roster standalone publisher refuses a v2 command rather than falsely claiming policy enforcement; other standalone databases remain independently writable with v1 keys."
+  },
+  {
+    "id": "MM-PBOUND-005",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_policy_binding_tampering_in_stored_v2_history_invalidates_signature",
+    "limitation": "Tampering with the signed policy-head value breaks local Ed25519 verification; restoring an internally valid older combined database remains undetectable without an external trusted current head."
   }
 ]

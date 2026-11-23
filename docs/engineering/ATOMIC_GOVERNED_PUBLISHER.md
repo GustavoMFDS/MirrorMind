@@ -90,13 +90,38 @@ current-state freshness. The code does not supply an authenticated
 current monotonic head, real administrator identity, secure private
 key custody, admin rotation or cross-host witness consensus.
 
-The operator-signed existing command is bound to the publication
-sequence and predecessor receipt hash. The integrated **call**
-supplies the expected policy revision and head, which are checked
-atomically but **not separately part of that signature**; the policy
-revocation itself is enforced from the current stored policy state.
-A more complete production authority may require a separately
-policy-bound command and reviewed identity/role governance.
+## Policy-bound operator signatures (v2; new integrated writes)
+
+A new integrated `publish` now **requires** the operator-signed
+`SignedPublicationCommand` to contain `expected_policy_revision` and
+`expected_policy_head_sha256`. Both values are cryptographically
+covered by the operator's Ed25519 signature under the separate domain
+`mirrormind.atomic-governed-publication.v2`. The exact signed
+revision/head must match the same local policy snapshot that is
+validated inside the publication's `BEGIN IMMEDIATE` transaction.
+The API's caller-supplied policy CAS is still checked independently.
+A policy change by another administrator invalidates an old signed
+proposal **even if the operator key is still enrolled**. A forged
+v1 signature with v2 fields fails signature verification.
+
+The legacy standalone signature domain
+`mirrormind.local-checkpoint-publication.v1` is unchanged. Old
+historical v1 records remain canonically decodable and verifiable on
+reopening an integrated schema-v1 database, but unbound v1 commands
+cannot create new integrated publications. The standalone static-roster
+`LocalCheckpointPublisher.publish` also refuses policy-bound v2
+commands rather than implying it enforces the operator policy.
+There is no automatic migration, database rewrite or private key
+custody change. A signer must obtain and review the current local
+policy head, construct a new command with both binding fields and
+sign its v2 canonical message. Tests use only generated fictional keys.
+
+**Boundary:** a command binding proves signature possession under a
+locally supplied policy snapshot; it does not authenticate operator
+identity, stop an authorized malicious signer, fetch an independent
+current policy head or prevent a coherent old combined DB from being
+restored. Other static-key standalone databases remain independently
+usable. Source permissions, real ingestion and forecasts stay blocked.
 
 Most importantly: no actual M5 or UCI source access, data-rights
 review, source vintage, privacy approval, product forecasting or
@@ -134,6 +159,16 @@ newer policy head.
   `tests/unit/test_atomic_governed_publisher.py::test_standalone_static_roster_publisher_cannot_open_guarded_schema`
 - `MM-ATOMIC-004`:
   `tests/unit/test_atomic_governed_publisher.py::test_restored_valid_old_integrated_db_needs_independent_head_for_rollback`
+- `MM-PBOUND-001`:
+  `tests/unit/test_atomic_governed_publisher.py::test_governed_signatures_are_domain_separated_from_legacy_and_fail_closed`
+- `MM-PBOUND-002`:
+  `tests/unit/test_atomic_governed_publisher.py::test_unrevoked_operator_must_resign_after_independent_policy_change`
+- `MM-PBOUND-003`:
+  `tests/unit/test_atomic_governed_publisher.py::test_existing_valid_v1_integrated_history_replays_before_new_v2_publication`
+- `MM-PBOUND-004`:
+  `tests/unit/test_atomic_governed_publisher.py::test_standalone_publisher_cannot_accept_policy_bound_v2_command`
+- `MM-PBOUND-005`:
+  `tests/unit/test_atomic_governed_publisher.py::test_policy_binding_tampering_in_stored_v2_history_invalidates_signature`
 
 No test proves production authentication, independent currentness,
 legal source permissions, tamper-resistant storage or real-world
