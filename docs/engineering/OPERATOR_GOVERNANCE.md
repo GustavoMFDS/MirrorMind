@@ -121,3 +121,14 @@ operationally enforced publication policy.
 python -m pytest -q tests/unit/test_operator_governance.py
 python scripts/local_quality_gate.py --expected-head $(git rev-parse HEAD)
 ```
+
+## Opt-in same-file transaction integration (experimental)
+
+The [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md) creates a
+**new combined schema**, using the existing signed governance event
+format and publication signature verifier. It can serialize policy
+revocation and publication within one SQLite transaction. The original
+separate governance database and original publisher remain unchanged;
+**they do not retroactively acquire atomic revocation enforcement**.
+No independently trusted authority, key custody or legal source grant
+is created by the local integration.
