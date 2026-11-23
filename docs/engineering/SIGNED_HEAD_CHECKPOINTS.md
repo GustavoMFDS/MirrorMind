@@ -113,3 +113,11 @@ with explicit old/new witness-key signatures on rotations. This
 validates only a *supplied* chain between caller-provided fences; it
 does not supply trusted currentness, an independent publisher, protection
 against unseen forks or data-use permissions.
+
+## Local signer-gated publication experiment
+
+The [publisher journal](LOCAL_CHECKPOINT_PUBLISHER.md) accepts an
+externally signed checkpoint inside an operator-signed witness receipt
+and retains it with SQLite CAS, without acquiring signing private keys
+or granting source permissions. It still requires independent fresh
+heads, authentic operator identity and legal review outside MirrorMind.
