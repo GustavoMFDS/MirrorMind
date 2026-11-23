@@ -336,6 +336,35 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 | `LocalReviewRegistry.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date) -> LocalReviewRevision` | Inspect current in-process history; a snapshot is not a trusted fresh head. | [L98](../../../src/mirrormind/modules/evidence/local_review_registry.py#L98) |
 | `LocalReviewRegistry.append` | method | `def append(self, packet: SourceReviewPacket, event: SignedReviewDecision, *, expected_revision: int, expected_head_sha256: str, checked_on: date) -> LocalReviewRevision` | Atomically append one signed event, rejecting stale or revoked writers. | [L114](../../../src/mirrormind/modules/evidence/local_review_registry.py#L114) |
 
+## `mirrormind.modules.evidence.operator_governance`
+
+Source: [`src/mirrormind/modules/evidence/operator_governance.py`](../../../src/mirrormind/modules/evidence/operator_governance.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `pathlib`, `re`, `sqlite3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedOperatorPolicyEvent` | class | `class SignedOperatorPolicyEvent` | Enrollment/revocation attested by two separate configured admins. | [L31](../../../src/mirrormind/modules/evidence/operator_governance.py#L31) |
+| `OperatorPolicyRevision` | class | `class OperatorPolicyRevision` | Local policy head; cannot be used to authorize publication. | [L47](../../../src/mirrormind/modules/evidence/operator_governance.py#L47) |
+| `OperatorPolicyRevision.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | — | [L55](../../../src/mirrormind/modules/evidence/operator_governance.py#L55) |
+| `OperatorPolicyAssessment` | class | `class OperatorPolicyAssessment` | A record status, NOT a valid permission to publish or ingest. | [L71](../../../src/mirrormind/modules/evidence/operator_governance.py#L71) |
+| `OperatorPolicyAssessment.receipt` | method | `def receipt(self) -> dict[str, str \| int \| bool]` | — | [L79](../../../src/mirrormind/modules/evidence/operator_governance.py#L79) |
+| `_canonical_event_message` | function | `def _canonical_event_message(event: SignedOperatorPolicyEvent) -> bytes` | Domain-separated signable fields; signatures not included. | [L93](../../../src/mirrormind/modules/evidence/operator_governance.py#L93) |
+| `_validate_event` | function | `def _validate_event(event: SignedOperatorPolicyEvent) -> None` | — | [L109](../../../src/mirrormind/modules/evidence/operator_governance.py#L109) |
+| `_serialize` | function | `def _serialize(event: SignedOperatorPolicyEvent) -> str` | — | [L144](../../../src/mirrormind/modules/evidence/operator_governance.py#L144) |
+| `_decode` | function | `def _decode(raw: str) -> SignedOperatorPolicyEvent` | No dynamic deserialization; reject noncanonical and huge records. | [L152](../../../src/mirrormind/modules/evidence/operator_governance.py#L152) |
+| `_verify_admin_signature` | function | `def _verify_admin_signature(public: bytes, signature: str, message: bytes) -> None` | — | [L170](../../../src/mirrormind/modules/evidence/operator_governance.py#L170) |
+| `LocalOperatorGovernance` | class | `class LocalOperatorGovernance` | Single-local-database CAS of dual-admin signed key policy events. | [L184](../../../src/mirrormind/modules/evidence/operator_governance.py#L184) |
+| `LocalOperatorGovernance.__init__` | method | `def __init__(self, path: Path, *, administrator_public_keys: Mapping[str, bytes], create: bool=False) -> None` | — | [L192](../../../src/mirrormind/modules/evidence/operator_governance.py#L192) |
+| `LocalOperatorGovernance._connect` | method | `def _connect(self) -> sqlite3.Connection` | — | [L266](../../../src/mirrormind/modules/evidence/operator_governance.py#L266) |
+| `LocalOperatorGovernance._check_schema` | method | `def _check_schema(self, connection: sqlite3.Connection) -> None` | — | [L279](../../../src/mirrormind/modules/evidence/operator_governance.py#L279) |
+| `LocalOperatorGovernance._read` | method | `def _read(self, connection: sqlite3.Connection) -> tuple[int, str, dict[str, tuple[str, date, bool]], date \| None]` | — | [L295](../../../src/mirrormind/modules/evidence/operator_governance.py#L295) |
+| `LocalOperatorGovernance._evaluate` | method | `def _evaluate(self, event: SignedOperatorPolicyEvent, *, expected_sequence: int, previous_head: str, previous_date: date \| None, history: dict[str, tuple[str, date, bool]], used_material: set[str]) -> tuple[str, date]` | — | [L328](../../../src/mirrormind/modules/evidence/operator_governance.py#L328) |
+| `LocalOperatorGovernance._check_external_head` | method | `def _check_external_head(head: str, expected: str \| None) -> None` | — | [L387](../../../src/mirrormind/modules/evidence/operator_governance.py#L387) |
+| `LocalOperatorGovernance.snapshot` | method | `def snapshot(self, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> OperatorPolicyRevision` | — | [L395](../../../src/mirrormind/modules/evidence/operator_governance.py#L395) |
+| `LocalOperatorGovernance.assess_operator` | method | `def assess_operator(self, operator_key_id: str, operator_public_key: bytes, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> OperatorPolicyAssessment` | — | [L421](../../../src/mirrormind/modules/evidence/operator_governance.py#L421) |
+| `LocalOperatorGovernance.append` | method | `def append(self, event: SignedOperatorPolicyEvent, *, expected_revision: int, expected_head_sha256: str, checked_on: date) -> OperatorPolicyRevision` | — | [L464](../../../src/mirrormind/modules/evidence/operator_governance.py#L464) |
+
 ## `mirrormind.modules.evidence.review_decisions`
 
 Source: [`src/mirrormind/modules/evidence/review_decisions.py`](../../../src/mirrormind/modules/evidence/review_decisions.py)
