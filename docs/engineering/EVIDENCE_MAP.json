@@ -579,5 +579,33 @@
     "test": "tests/unit/test_operator_governance.py",
     "function": "test_coherent_old_backup_needs_independent_head_to_detect_revocation_rollback",
     "limitation": "Restoring an old signed policy ledger leaves locally valid active keys until an independently newer head is supplied; this is an explicit counterexample to standalone revocation enforcement and source authorization."
+  },
+  {
+    "id": "MM-ATOMIC-001",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_revocation_before_publication_is_terminal_and_history_still_verifies",
+    "limitation": "Single-file SQLite signed local governance/publishing denies later publications after local revocation; does NOT establish identity, protect the file against rollback, revoke standalone other DBs or authorize real data ingestion."
+  },
+  {
+    "id": "MM-ATOMIC-002",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_publication_and_revocation_race_only_admits_if_publication_commits_first",
+    "limitation": "A two-thread SQLite transaction race validates ordering on one local DB only; the publication may validly commit before revocation. Not evidence of cross-host ordering, multi-DB source permission or independent current-head custody."
+  },
+  {
+    "id": "MM-ATOMIC-003",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_standalone_static_roster_publisher_cannot_open_guarded_schema",
+    "limitation": "Legacy static-key publisher refuses the integrated local marker, but the standalone publisher remains intentionally usable with existing separate DBs; this does not provide OS sandboxing or external enforcement."
+  },
+  {
+    "id": "MM-ATOMIC-004",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_restored_valid_old_integrated_db_needs_independent_head_for_rollback",
+    "limitation": "An older coherent combined SQLite copy may restore locally enrolled keys unless an independently newer head is supplied, so local signatures and SQL locking cannot independently establish anti-rollback or production authorization."
   }
 ]
