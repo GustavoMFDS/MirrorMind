@@ -537,5 +537,26 @@
     "test": "tests/unit/test_authority_transcript.py",
     "function": "test_valid_stale_transcript_with_caller_stale_fences_cannot_prove_freshness",
     "limitation": "Old but internally consistent signed transcript and caller-furnished head fences remain acceptable within validity; this explicitly disproves standalone freshness or freedom from hidden forks. All permissions remain false."
+  },
+  {
+    "id": "MM-PUBLISH-001",
+    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
+    "test": "tests/unit/test_local_checkpoint_publisher.py",
+    "function": "test_publisher_reopens_verified_signed_head_and_never_grants_ingestion",
+    "limitation": "Local SQLite reopen and three-layer synthetic signatures demonstrate only verified fictional record continuity, NOT real operator identity, independently published currentness, trusted key custody, original data-use rights or any ingest grant."
+  },
+  {
+    "id": "MM-PUBLISH-002",
+    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
+    "test": "tests/unit/test_local_checkpoint_publisher.py",
+    "function": "test_competing_independent_connections_yield_only_one_winner",
+    "limitation": "SQLite BEGIN IMMEDIATE gives one winner on one local database, not across distributed hosts or under malicious filesystem restoration. No globally independent witness or production permission control."
+  },
+  {
+    "id": "MM-PUBLISH-003",
+    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
+    "test": "tests/unit/test_local_checkpoint_publisher.py",
+    "function": "test_old_coherent_publisher_db_is_not_independently_fresh",
+    "limitation": "Restored old but internally signed publisher SQLite remains valid without a genuinely independent newer head, showing this experimental local journal is NOT a globally monotonic authority or replay-proof permission gate."
   }
 ]
