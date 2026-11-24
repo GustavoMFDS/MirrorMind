@@ -544,9 +544,10 @@ sales or validate forecasting skill on an empirical dataset.
 
 | Tracked path | Behavior and review boundary |
 | --- | --- |
-| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Past-only eligible absolute residuals, conservative abstention, aggregate retrospective hits, no calibrated interval |
-| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Fictional hidden-value invariance, residual insufficiency, missing targets, malformed dates |
-| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Causal time cutoffs, traceable claims and non-production limitations |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Fixed pre-holdout calibration target interval, disjoint holdout labels, origin-specific release eligibility, conservative abstention and aggregate retrospective hits; no calibrated interval |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Fictional hidden-value invariance, fixed-split non-overlap, late release, independent oracle, exact denominator and malformed-input checks |
+| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Temporal rules, split metadata, test evidence, superseded cache history and non-production limitations |
+| [`docs/engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md`](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md) | Scoped acceptance criteria, impact map, trust review and compatibility notes |
 
 No nominal uncertainty target, statistical calibration, source rights,
 true demand or WorldKernel inference is asserted here.
@@ -605,16 +606,18 @@ as soon as the monthly quota becomes available.
 
 These scenarios do not identify true demand distribution shifts.
 
-## 34. Scoped historical forecast reuse (experimental)
+## 34. Historical forecast reuse and rolling window (superseded)
 
 | Tracked file | Review boundary |
 | --- | --- |
-| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Call-local forecast caching and release-aware incremental residual selection; each target forecast remains governed by its own origin |
-| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented prior 154-vs-28 comparison, rolling-window independent naive oracle over 40 schedules, repeated-call isolation and late/missing-data regressions |
-| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Describes the structural reduction and lack of calibrated intervals |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Current code supersedes the historical call-local cache and rolling target-label window with a fixed disjoint calibration/holdout split; see section 28 |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Current tests cover the fixed split; prior PR #34/#35 cache and rolling-window assertions have been removed |
+| [`docs/engineering/RETAIL_RESIDUAL_BENCHMARK.md`](RETAIL_RESIDUAL_BENCHMARK.md) | Preserves a historical two-revision benchmark whose results do not describe the current algorithm |
 
-No global forecast cache, authenticated vintages or operational forecasting
-are introduced by this optimization.
+The old 154-to-28 call-count and timing comparison remain historical evidence
+for those exact revisions only. They do not establish an optimization in the
+current implementation, authenticated vintages, calibrated intervals or
+operational forecasting.
 
 ## 35. Reproducible synthetic residual-evaluator performance experiment
 

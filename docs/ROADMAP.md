@@ -349,37 +349,49 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   individual scenarios and the two-audit call invariant are tested without
   claiming measured runtime acceleration, actual demand rights or drift.
 
-- **MM-M1c residual-evaluator work deduplication (experimental):**
+- **Historical MM-M1c residual-evaluator work deduplication (superseded):**
   [prequential envelope method](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
-  now caches each target-date seasonal-naive prediction only within
-  that historical evaluation. An invented 7-day holdout and 21-day
+  recorded call-local caching of each target-date seasonal-naive prediction
+  in that historical implementation. An invented 7-day holdout and 21-day
   calibration exercise verifies 28 prediction calculations rather than
   154 repeated forecast calls, without claiming wall-clock benchmarking,
   forecast calibration, source rights, or actual demand inference.
 
-- **MM-M1c adversarial cache parity (synthetic):**
+- **Historical MM-M1c adversarial cache parity (superseded):**
   [retail residual method](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
-  now compares cached and explicitly uncached execution in 18 deterministic
+  recorded cached and explicitly uncached execution in 18 deterministic
   histories with changing release delays, missing observations and distinct
   cutoff/calibration settings. The exact no-cache vs cached example confirms
-  154 vs 28 baseline prediction calls and identical receipts. This is a
-  structural/regression claim, not a measured latency or statistical claim.
+  154 vs 28 baseline prediction calls and identical receipts. These receipts
+  concern superseded code; they are a structural regression claim, not a
+  measured latency or statistical claim for the current fixed split.
 
-- **MM-M1c release-aware rolling residuals (experimental):**
+- **Historical MM-M1c release-aware rolling residuals (superseded):**
   [prequential calibration guide](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
-  now describes a bounded incremental activation/expiration algorithm for
-  retrospective residual candidates. Synthetic differential tests compare
-  this implementation with a separate quadratic oracle, including late
-  publication and moving-window expiry. No independent source authority,
-  forecast validity or wall-clock speedup is inferred.
+  described a bounded incremental activation/expiration algorithm for
+  retrospective residual candidates. M1D-01 supersedes the rolling
+  target-label policy with a fixed pre-holdout calibration interval. The
+  historical tests do not establish source authority, forecast validity,
+  calibrated coverage or wall-clock speedup.
 
-- **MM-M1c performance characterization (measurement only):**
+- **MM-M1d disjoint uncertainty holdout (experimental, branch-local):**
+  [uncertainty walkthrough](engineering/RETAIL_RESIDUAL_ENVELOPE.md) and
+  [scoped M1D-01 change request](engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md)
+  define a fixed pre-holdout calibration target interval, origin-specific
+  publication eligibility and holdout-label disjointness. Synthetic tests
+  compare the report with a separate quadratic oracle and verify late-data
+  abstention. No publisher authenticity, empirical calibration, nominal
+  coverage or future-performance guarantee is claimed.
+
+- **Historical MM-M1c performance characterization (measurement only):**
   [two-revision synthetic benchmark](engineering/RETAIL_RESIDUAL_BENCHMARK.md)
-  compares the same fictional residual workload before and after incremental
-  calibration. It checks entire report hashes, measures median local elapsed
-  time and peak traced Python allocations, and reports full-run limitations.
-  Measurements are **not** CI quality gates, actual demand/forecast evidence,
-  whole-process memory measurements or guaranteed speedups.
+  records the same fictional residual workload before and after incremental
+  calibration for the exact PR #34/#35 revisions. It checked entire report
+  hashes, measured median local elapsed time and peak traced Python
+  allocations, and reported full-run limitations. These observations are
+  **not** current-algorithm measurements, CI quality gates, actual
+  demand/forecast evidence, whole-process memory measurements or guaranteed
+  speedups.
 
 - **MM-M1b review packet (experimental, still not licensed ingestion):**
   [source-intake metadata binder](engineering/SOURCE_INTAKE_REVIEW.md)

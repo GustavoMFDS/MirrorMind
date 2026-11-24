@@ -430,22 +430,29 @@
     "id": "MM-RENV-002",
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_each_distinct_prequential_target_prediction_runs_once",
-    "limitation": "Instrumented forecast call counts on synthetic data demonstrate in-call work reuse, not elapsed-time speedup, authentic source availability or calibration of error envelopes."
+    "function": "test_fixed_split_predicts_each_distinct_target_once",
+    "limitation": "An instrumented count on a fictional disjoint 21-day calibration and seven-day holdout demonstrates one forecast per distinct date in that split; it does not measure optimization speed, authenticate source availability or calibrate uncertainty."
   },
   {
     "id": "MM-RENV-003",
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_cached_and_uncached_history_agree_under_adversarial_publication_schedules",
-    "limitation": "Differential tests verify caching preserves fictional retrospective reports across release/missingness combinations; they do not independently validate the forecasting method, source rights, true demand, latency gains or calibrated coverage."
+    "function": "test_fixed_split_matches_independent_oracle_under_adversarial_publication_schedules",
+    "limitation": "Fictional adversarial reports match a separately written test-only quadratic eligibility oracle; this does not independently validate forecast quality, publisher provenance, source rights, true demand or calibrated coverage."
   },
   {
     "id": "MM-RENV-004",
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_incremental_calibration_exactly_matches_naive_reference",
-    "limitation": "A deterministic, test-only quadratic oracle can detect code-level calendar eligibility differences; it cannot validate historical publisher rights, the true demand process, calibration guarantees or a runtime speedup."
+    "function": "test_disjoint_calibration_exactly_matches_naive_reference",
+    "limitation": "A deterministic, test-only quadratic oracle detects code-level fixed-window eligibility differences on generated histories; it cannot validate publisher rights, the true demand process, calibration guarantees or runtime speed."
+  },
+  {
+    "id": "MM-RENV-005",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_holdout_targets_never_enter_later_calibration_windows",
+    "limitation": "The generated fixture proves date-label disjointness and caller-declared release eligibility only; it does not prove unit/source provenance, calibrated uncertainty or empirical coverage."
   },
   {
     "id": "MM-INTAKE-001",

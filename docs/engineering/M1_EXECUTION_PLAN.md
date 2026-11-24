@@ -35,6 +35,30 @@ Both remain experimental. Full local and official CI evidence is limited by
 M1b's real-source rights and availability gate, M1c empirical holdout or
 calibrated uncertainty requirements.
 
+The synthetic evaluator already compares fixed lag-seven seasonal-naive and
+trailing-mean baselines on the same eligible origins; this pair and its model
+card/tests entered main in [PR #23](https://github.com/GustavoMFDS/MirrorMind/pull/23).
+M1C-02 therefore does not need another candidate unless future evidence
+justifies one. M1C-03 remains blocked by B-01/B-02 because no approved
+empirical holdout is available.
+
+Separate draft branches on PR #53 add the M1F-01 interface-only decision
+trace contract ([PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54))
+and the pure M1E-01 request mapper
+([PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55)). The former does
+not execute decisions; the latter constructs requests but does not execute
+WorldKernel. B-04 blocks M1E-02 until a compatible pinned runtime and real
+registered-world execution are available.
+
+M1D-01 is being completed as a separate branch based on M1C-01. It fixes the
+residual calibration target interval strictly before the rolling one-day
+holdout, makes target-label disjointness explicit in the result, and retains
+origin-specific publication and feature-availability checks. The maximum
+absolute-residual envelope remains an experimental retrospective heuristic;
+M1D-02 still requires approved empirical observations and an untouched
+holdout blocked by B-02. See the [uncertainty walkthrough](RETAIL_RESIDUAL_ENVELOPE.md)
+and [scoped change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not
 proof of current stock, stockouts or true latent demand.

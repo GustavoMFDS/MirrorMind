@@ -73,6 +73,35 @@ and `symbol-catalog` run [45322594817](https://github.com/GustavoMFDS/MirrorMind
 failed before job execution with the account payment/spending-limit
 annotation (B-08). Neither local nor remote full-gate success is claimed.
 
+M1F-01 has a versioned interface-only decision-trace contract in draft
+[PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), based on PR #53.
+Its code head `27f1f1c9dec3886299077793a2d42a647313d7ae` passed 12 focused
+tests, 706 tests excluding the known API module, Ruff and local documentation
+guards. The docs head is `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029`.
+Both heads' official checks failed before job execution under B-08. This is a
+typed result contract and CLI demonstration; decision evaluation is not
+implemented.
+
+M1E-01 has a pure strict request mapper in draft [PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55),
+stacked on PR #54. Source commit is
+`87692412606e65b5e1500164b2c8708bb98cf120`; latest docs head is
+`2330dc50a49bb80abc601b0635e5e7d4916ee283`. Twenty-five focused tests and
+731 tests excluding the API module passed with Ruff and local documentation
+guards. Official checks on both heads failed before job execution under
+B-08. The mapper does not execute WorldKernel; B-04 remains for a pinned SDK
+and actual registered-world run.
+
+The current working branch is `codex/m1d-01-disjoint-residual-calibration`,
+based directly on the M1C-01 head so it does not depend on M1E-02. M1D-01
+replaces the rolling residual-label window with fixed pre-holdout calibration
+dates and explicit disjoint-window metadata. The synthetic regression covers
+a calibration release arriving after an earlier holdout target. Focused and
+dependent tests, the feasible local suite, Ruff and all documentation guards
+have passed; PR and exact commit evidence will be appended after publication.
+This remains experimental and does not clear B-02 or establish empirical
+calibration. See the active claim in [TASK_BACKLOG](TASK_BACKLOG.md) and the
+[M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+
 ## Architecture and actual execution boundaries
 
 | Area | Verified implementation / status | Missing product gate |
