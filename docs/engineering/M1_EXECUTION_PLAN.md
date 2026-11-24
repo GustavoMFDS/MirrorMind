@@ -30,18 +30,22 @@ as-of selection. Its implementation is proposed in draft PR #52. The M1C-01
 [retail evidence-to-evaluation flow](M1_RETAIL_SYNTHETIC_EVALUATION.md) now
 composes the UCI-shaped evidence flow with the existing fixed baselines and
 per-origin release abstentions; its generated CLI uses only fictional bytes.
-Both remain experimental. Full local and official CI evidence is limited by
-[B-07 and B-08](BLOCKERS.md). This synthetic progress does not satisfy
+Both remain experimental. The later stacked M1E-01 docs head passed the
+canonical full local gate with 737 tests, including the API module; official
+CI remains blocked by [B-08](BLOCKERS.md). The historical exact PR #52 SHA
+has not been rerun. This synthetic progress does not satisfy
 M1b's real-source rights and availability gate, M1c empirical holdout or
 calibrated uncertainty requirements.
 
 M1F-01 adds a versioned local decision-result contract on the current
 stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,
 gaps, costs and human review separate, with local reference/cutoff checks and
-an exact-result digest. It is interface-only: no producer, ranking, API,
-storage, actual engine output or action permission exists. M1F-02 remains the
-first runnable end-to-end decision comparison and still depends on an actual
-compatible simulation path and the named M1 predecessors.
+an exact-result digest. Its docs head passed the canonical local gate with
+712 tests, including API; official checks remain blocked by B-08. It is
+interface-only: no producer, ranking, API, storage, actual engine output or
+action permission exists. M1F-02 remains the first runnable end-to-end
+decision comparison and still depends on an actual compatible simulation
+path and the named M1 predecessors.
 
 M1E-01 now has a pure, fail-closed request mapping for the inspected
 `retail.inventory` `0.1` to WorldKernel `retail.inventory.demo` `demo-1`
@@ -49,7 +53,8 @@ contract. It requires explicit item/day/order units and operator-configured
 limits, and rejects unresolved evidence/forecast refs, interventions and
 unknown state or parameters. It constructs JSON only. M1E-02 remains blocked
 on B-04 for a pinned compatible engine and actual SDK execution; no simulation
-capability is promoted.
+capability is promoted. The current docs head passed the canonical local gate
+with 737 tests, including API; official checks remain blocked by B-08.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not

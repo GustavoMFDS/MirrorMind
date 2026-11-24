@@ -78,11 +78,14 @@ The active continuation branch `codex/m1f-01-decision-trace-contract`
 implements M1F-01 on top of the M1C-01 stack. The local result contract
 separates observations, estimates, conditional outcomes, assumptions, missing
 evidence, cost measurement states and human review. Twelve focused tests and
-the deterministic fictional CLI pass; 706 tests pass when
-`tests/integration/test_api.py` is excluded. Ruff, symbol catalog, atlas,
-evidence and capability guards pass locally, as does a direct registered
-capability-handler/ledger comparison. HTTP runtime was not tested and no new
-route was added. The result digest is content binding, not a signature; all
+the deterministic fictional CLI pass; the canonical gate on docs head
+`83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed 712 tests, including
+`tests/integration/test_api.py`. Ruff, symbol catalog, atlas, evidence and
+capability guards also passed; pytest emitted one existing Starlette/httpx
+deprecation warning. The gate ran outside the restricted sandbox. A direct
+registered capability-handler/ledger comparison also passed. HTTP runtime
+was not tested and no new route was added. The result digest is content
+binding, not a signature; all
 source/model/engine references remain caller assertions. The task remains
 interface-only and has no trace producer, storage, decision ranking,
 execution permission or real engine evidence. The source and reference
@@ -99,7 +102,9 @@ job start on `test` run
 [45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041)
 and `symbol-catalog` run
 [45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150).
-Exact-head full local gate remains unverified under B-07; PR remains draft.
+B-07 is resolved for this PR #54 stack; the historical PR #52 exact SHA was
+not rerun. The docs-head official runs above confirm B-08; no remote job steps
+ran. PR #54 remains draft.
 
 The active continuation `codex/m1e-01-worldkernel-mapping` advances M1E-01.
 It inspects the separate WorldKernel exchange and adds a pure mapping for
@@ -108,16 +113,24 @@ unit assertions, strict input allowlists and operator-configured request
 ceilings. It does not import or execute WorldKernel, so the capability remains
 planned and M1E-02 remains gated by B-04. The change is proposed in draft
 [PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55), code commit
-`87692412606e65b5e1500164b2c8708bb98cf120`, stacked on PR #54. Twenty-five focused tests passed;
-the local suite passed 731 tests with `tests/integration/test_api.py` excluded
-for B-07. Ruff, catalog, atlas, evidence and capability guards passed, as did
-direct capability-handler/ledger parity and a deterministic example replay.
-On this code head, official `test` run
+`87692412606e65b5e1500164b2c8708bb98cf120`, stacked on PR #54. Twenty-five
+focused tests passed; the canonical gate on docs head
+`2330dc50a49bb80abc601b0635e5e7d4916ee283` passed 737 tests, including
+`tests/integration/test_api.py`. Ruff, catalog, atlas, evidence and capability
+guards passed, as did direct capability-handler/ledger parity and a
+deterministic example replay. Pytest emitted one existing Starlette/httpx
+deprecation warning. The gate ran outside the restricted sandbox; B-07 is
+resolved for this stack, while the historical PR #52 SHA remains unrerun.
+On the code head, official `test` run
 [45329990098](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990098)
 and `symbol-catalog` run
 [45329990164](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990164)
 failed before job start with the B-08 account billing/spending-limit
-annotation; no CI job ran.
+annotation; no CI job ran. Official checks on the docs head, `test` run
+[45330280291](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45330280291)
+and `symbol-catalog` run
+[45330280468](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45330280468),
+also failed before any job step under B-08.
 See [M1E-01 change request](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md)
 and [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md).
 

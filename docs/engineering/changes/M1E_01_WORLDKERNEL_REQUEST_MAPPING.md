@@ -108,10 +108,13 @@ it makes no runtime, forecast, business-validity or security guarantee.
   `WorldKernelOperatorLimits`, `InventoryWorldUnitContext` and
   `build_worldkernel_exchange_request` in
   `src/mirrormind/modules/simulation/worldkernel_mapping.py`.
-- Tests: `tests/unit/test_worldkernel_mapping.py` passed **25 tests**;
-  `python -m pytest -q --ignore=tests/integration/test_api.py` passed **731
-  tests**. The API import guard loads FastAPI while rejecting every
-  `worldkernel` package import.
+- Tests: `tests/unit/test_worldkernel_mapping.py` passed **25 tests**. The
+  canonical local gate on docs head
+  `2330dc50a49bb80abc601b0635e5e7d4916ee283` passed **737 tests**, including
+  `tests/integration/test_api.py`; Ruff, symbol catalog, atlas, evidence and
+  capability checks also passed. Pytest reported one existing
+  Starlette/httpx deprecation warning. The API import guard loads FastAPI
+  while rejecting every `worldkernel` package import.
 - Example: `python examples/m1e_01_worldkernel_mapping.py` ran twice with
   identical output. It prints a request; it does not execute one.
 - Quality: Ruff passed for `src`, `tests` and the new example. Symbol catalog,
@@ -119,16 +122,15 @@ it makes no runtime, forecast, business-validity or security guarantee.
   ledger parity, and `git diff --check` passed.
 - Evidence claim: `MM-WKMAP-001` cites
   `tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
-- Local versus official: on PR #55 code head `87692412606e65b5e1500164b2c8708bb98cf120`,
-  official `test` run [45329990098](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990098)
+- Local versus official: the exact PR #55 docs head passed the complete
+  local gate outside the restricted sandbox, resolving B-07 for this stack.
+  The exact PR #52 SHA remains historical and was not rerun. On PR #55 docs
+  head `2330dc50a49bb80abc601b0635e5e7d4916ee283`, official `test` run
+  [45330280291](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45330280291)
   and `symbol-catalog` run
-  [45329990164](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990164)
-  failed before job start with the B-08 billing/spending-limit annotation.
-  No job ran. The canonical suite excluded
-  `tests/integration/test_api.py` because B-07 blocks its local socket-pair
-  startup. Official CI has not run on this branch yet; B-08 already records
-  account billing/spending-limit failures on PRs #52–#54. No CI success is
-  claimed.
+  [45330280468](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45330280468)
+  failed before job start with the verified B-08 billing/spending-limit
+  annotation; no repository job ran. No CI success is claimed.
 - Capability and compatibility: no API or capability ledger changes;
   `worldkernel_adapter` remains planned. `ScenarioSpec` schema is unchanged.
 - Data and provenance: fictional values; explicit unit context is an

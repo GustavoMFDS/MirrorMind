@@ -123,14 +123,14 @@ digest dependency.
   in `src/mirrormind/core/decision_trace.py`; reproducible fixture CLI in
   `examples/m1_decision_trace_contract.py`; 12 pure unit tests.
 - Tests executed, result, environment: focused unit suite passed 12 tests in
-  0.29 seconds. The broader suite passed 706 tests in 19.57 seconds with
-  `tests/integration/test_api.py` excluded. Ruff passed for `src`, `tests`
-  and the new example. Catalog, atlas/link coverage, evidence and capability
-  guards and `git diff --check` passed after the final documentation changes.
-  A direct registered capability-handler/ledger comparison passed; it is not
-  an HTTP runtime check. The canonical full local gate was not run because
-  B-07 reproduces a host-side socket-pair hang in the API health test before
-  application code.
+  0.29 seconds. The canonical local gate on docs head
+  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed 712 tests, including
+  `tests/integration/test_api.py`; Ruff, catalog, atlas, evidence and
+  capability checks all exited successfully. Pytest reported one existing
+  Starlette/httpx deprecation warning. The gate ran outside the restricted
+  sandbox. B-07 is resolved for this stack, but the historical PR #52 SHA was
+  not rerun. A direct registered capability-handler/ledger comparison also
+  passed; it is not an HTTP runtime check.
 - Claim IDs and cited test path/function: `MM-DTRACE-001` cites
   `tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate`.
 - Evidence/provenance/cutoff and uncertainty: generated fictional values only;
@@ -152,7 +152,8 @@ digest dependency.
   head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` also failed before job
   start on [test run 45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041)
   and [symbol-catalog run 45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150)
-  with the same account billing annotation.
+  with the same account billing annotation. This confirms B-08; no repository
+  job steps ran.
 - Known limitations / follow-up: M1F-02 must produce and replay an actual
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
   remain separate. B-07/B-08 still block the exact full gate/official CI
