@@ -22,8 +22,10 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Repository atlas](REPOSITORY_ATLAS.md) — human-reviewed links to **every tracked code, test, config and document file**; a CI guard fails on missing files/links.
 - [Semantic learning map](SEMANTIC_COVERAGE.md) — current implemented, interface-only and planned capability boundaries, source by source.
 - [Contracts walkthrough](CONTRACT_WALKTHROUGH.md) — stepwise Pydantic validation and its limits: input shape is not authorized evidence or simulation.
-- [Decision trace result contract](DECISION_TRACE_RESULT.md) — versioned, interface-only envelope for observations, forecasts, conditional outcomes, gaps, costs and human review; no decision execution.
-- [API walkthrough](API_WALKTHROUGH.md) — each implemented HTTP route and the interface-only simulation gateway.
+- [Decision trace result contract](DECISION_TRACE_RESULT.md) — versioned result envelope; M1F-02 produces a trace only for the generated synthetic comparison, with no real-source or action authority.
+- [M1 synthetic retail decision workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) — joins release-aware evidence, historical baseline/uncertainty diagnostics, a fixed 28-day profile, the existing policy test double and a referenced trace through the same CLI/service/API path.
+- [Synthetic forecast model card](model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md) — fixed seasonal-naive profile, split dates, baselines, uncertainty limits and upgrade gates.
+- [API walkthrough](API_WALKTHROUGH.md) — health, capability, validation and synthetic decision routes plus the interface-only simulation gateway.
 - [Curated evidence map](EVIDENCE_MAP.json) — human-reviewed claim IDs mapped to cited pytest functions and explicit limitations.
 - [Capability truth ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md) — distinguish implemented/experimental/interface-only/planned capabilities; CI and API regressions detect drift.
 - [M1 synthetic observation preflight](M1_DATA_PREFLIGHT.md) — source-reviewed local demo of bounded date/cutoff validation, **not** authorized ingestion or forecasting.

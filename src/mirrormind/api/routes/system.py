@@ -39,6 +39,7 @@ def capabilities() -> dict[str, object]:
             "local_retail_synthetic_evidence_flow",
             "local_retail_evidence_evaluation",
             "local_retail_policy_test_double",
+            "synthetic_retail_decision_workflow",
             "local_retail_coverage_diagnostics",
             "local_declared_calendar_coverage",
             "local_declared_retail_asof_audit",

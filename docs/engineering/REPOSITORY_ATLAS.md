@@ -870,6 +870,26 @@ code, or expose a runtime capability. `worldkernel_adapter` remains planned.
 `local_retail_policy_test_double` is experimental. It does not satisfy the
 M1E-02 actual WorldKernel engine gate or produce an operational decision.
 
+## 55. Synthetic retail decision workflow (experimental, no action authority)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/api/routes/decisions.py`](../../src/mirrormind/api/routes/decisions.py) | Exposes one bounded synthetic workflow request and the same service result; no authentication, upload, persistence or business write |
+| [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../src/mirrormind/domains/retail/synthetic_fixtures.py) | Builds deterministic fictional workbook bytes and declared releases while preserving M1C-01 fixture defaults |
+| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | Applies strict request bounds and release checks, composes existing evaluation/diagnostics, fixed seasonal profile, policy test double and M1F-01 trace |
+| [`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py) | Runs the same service locally with bounded date, seed and replication options; output is fictional and reproducible |
+| [`tests/unit/test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py) | Proves trace references/gaps, post-cutoff noninfluence, missing/late abstention before simulation and strict request bounds |
+| [`tests/integration/test_retail_synthetic_decision_workflow_cli.py`](../../tests/integration/test_retail_synthetic_decision_workflow_cli.py) | Replays CLI output byte-for-byte and checks the no-action result contract |
+| [`docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md`](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | Source walkthrough, sequence diagram, contracts, cutoffs, examples, tests, limits, diagnostics and exercises |
+| [`docs/engineering/model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md`](model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md) | Records the synthetic baseline and evaluation scope; explicitly does not establish predictive performance or calibrated uncertainty |
+| [`docs/engineering/changes/M1F_02_SYNTHETIC_DECISION_WORKFLOW.md`](changes/M1F_02_SYNTHETIC_DECISION_WORKFLOW.md) | Change request, acceptance criteria, impact map, compatibility and implementation evidence |
+
+`synthetic_retail_decision_workflow` is experimental. The generated fixture
+is not authorized data; the seasonal profile is not an empirical forecast;
+the residual diagnostic is uncalibrated; and the policy test double is not
+WorldKernel. The trace supports inspection and replay only, not approval,
+ranking, persistence or operational action.
+
 ## Continuous engineering handoff and execution register
 
 | Tracked document | Reviewed responsibility |

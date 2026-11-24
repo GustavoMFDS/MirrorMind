@@ -10,6 +10,7 @@ from mirrormind.modules.forecasting.baselines import (
     _predict,
     _score,
     backtest_staged_snapshot,
+    project_seasonal_naive_lag7,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -126,6 +127,30 @@ def test_score_refuses_misalignment_and_prediction_refuses_missing_history():
         _score((1.0,), (1, 2))
     with pytest.raises(ValueError, match="seven exact"):
         _predict((2, 4, 6))
+
+
+def test_seasonal_naive_profile_repeats_exact_last_week_for_28_steps():
+    history = (7, 1, 2, 3, 4, 5, 6)
+    profile = project_seasonal_naive_lag7(history, horizon_days=28)
+
+    assert len(profile) == 28
+    assert profile == history * 4
+    assert all(type(value) is int for value in profile)
+
+
+@pytest.mark.parametrize(
+    ("history", "horizon"),
+    [
+        ((1, 2, 3), 28),
+        ((1, 2, 3, 4, 5, 6, True), 28),
+        ((1, 2, 3, 4, 5, 6, -1), 28),
+        ((1, 2, 3, 4, 5, 6, 7), True),
+        ((1, 2, 3, 4, 5, 6, 7), 0),
+    ],
+)
+def test_seasonal_naive_profile_rejects_invalid_history_or_horizon(history, horizon):
+    with pytest.raises(ValueError):
+        project_seasonal_naive_lag7(history, horizon_days=horizon)
 
 
 def test_every_requested_origin_has_one_reproducible_nonvalue_audit_record():

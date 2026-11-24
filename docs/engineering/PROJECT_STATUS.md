@@ -56,7 +56,7 @@ PRs #52–#58 remain open and draft. No merge, deployment or empirical result is
 | M1E-02 | Blocked | No compatible SDK/runtime was found in this checkout; actual engine and result evidence require B-04. |
 | M1E-03 | Partial | Draft PR #58 adds three 28-day policies, paired synthetic streams, explicit item/day/cost assumptions and lead-time sensitivity. Exact code commit `09d047b...` passed the 747-test canonical local gate; review and actual-engine integration remain. Test double is partial by definition. |
 | M1F-01 | Partial | PR #54 provides interface-only decision trace contract; no producer or end-to-end workflow. |
-| M1F-02 | Planned next vertical slice | Compose synthetic evidence, evaluation, test-double simulation and trace with transparent gaps; actual engine and earlier real-data gates remain separate. |
+| M1F-02 | Partial | Current continuation composes fictional evidence, a fixed lag-7 profile, residual diagnostics, the policy test double and a `DecisionTrace`; API/CLI are experimental. Actual engine and earlier real-data gates remain separate. |
 | M1F-03 | Blocked | Requires approved observations, empirical forecast/uncertainty and actual simulation. |
 
 The current checkout is branch `codex/m1e-03-synthetic-policy-simulation`, based on PR #55 head `fcd478130c26c653d0d1d9f4d2f905bf24eaf3a9`, with draft PR #58. Code commit `09d047b431cc4c50fb6d1abdb88a494a4c7f6f7f` is pushed and passed the canonical local gate. The separate `D:\MirrorMind-handoff-docs` worktree remained untouched; its worktree status was not readable in this inspection, so no clean/dirty claim is made.

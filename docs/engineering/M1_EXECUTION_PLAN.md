@@ -40,15 +40,17 @@ proposal; it does not satisfy M1E-02 or the actual-engine gate. These
 synthetic slices do not satisfy M1b's real-source rights and availability
 gate, M1c's empirical holdout or M1d's calibrated uncertainty requirements.
 
-M1F-01 adds a versioned local decision-result contract on the current
-stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,
-gaps, costs and human review separate, with local reference/cutoff checks and
-an exact-result digest. Its docs head passed the canonical local gate with
-712 tests, including API; official checks remain blocked by B-08. It is
-interface-only: no producer, ranking, API, storage, actual engine output or
-action permission exists. M1F-02 can compose a clearly labeled local test
-double for an end-to-end synthetic demonstration, but remains partial until
-actual engine integration and its other named M1 predecessors pass.
+M1F-01 adds a versioned local decision-result contract on its stacked
+branch. It keeps facts, estimates, modeled outcomes, assumptions, gaps, costs
+and human review separate, with local reference/cutoff checks and an
+exact-result digest. PR #54 keeps the contract interface-only on its own
+branch; the current M1F-02 continuation adds one experimental synthetic
+producer and a bounded API/CLI path. Its walkthrough records the fixture,
+cutoff, trace, abstention and test boundaries. The result remains partial:
+there is no authorized-source workflow, empirical forecast, calibrated
+uncertainty, WorldKernel execution, reviewer identity, persistence, ranking
+or action permission. Actual engine integration and named M1 predecessors
+remain separate gates.
 
 M1E-01 now has a pure, fail-closed request mapping for the inspected
 `retail.inventory` `0.1` to WorldKernel `retail.inventory.demo` `demo-1`
@@ -102,7 +104,7 @@ Use the review templates:
 [decision trace](DECISION_TRACE_TEMPLATE.md) and
 [capability promotion](CAPABILITY_GATES.md).
 
-## 3. Minimum demonstrable first user story (not yet built)
+## 3. Minimum demonstrable first user story (partially built)
 
 A user asks, *"Among three inventory replenishment
 policies, what is the tradeoff between lost-sales proxy,
@@ -118,11 +120,13 @@ A conforming eventual response must show:
 5. The conditional comparison, costs and unknowns.
 6. Why a human should review before any operational action.
 
-No current API route delivers that story. In particular,
-`POST /v1/scenarios/validate` remains `validated_not_executed`.
-The local policy test double addresses only the conditional policy-arithmetic
-portion. It does not join authorized evidence, forecast evaluation, actual
-engine output or the decision-result contract into an end-to-end user story.
+`POST /v1/decision-workflows/retail/synthetic` now demonstrates one bounded,
+fictional path through evidence checks, a fixed seasonal-naive profile, the
+local policy test double and a decision trace. It is experimental and does
+not deliver the authorized retail user story above: it has no permitted data,
+empirical forecast, calibrated uncertainty or WorldKernel result. The older
+`POST /v1/scenarios/validate` remains `validated_not_executed`; neither route
+approves a human or writes business state.
 
 ## 4. Developer and learner acceptance
 

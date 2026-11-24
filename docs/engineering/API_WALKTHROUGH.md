@@ -4,23 +4,25 @@ This guide traces the implemented methods in
 [`api/app.py`](../../src/mirrormind/api/app.py),
 [`api/routes/system.py`](../../src/mirrormind/api/routes/system.py),
 [`api/routes/scenarios.py`](../../src/mirrormind/api/routes/scenarios.py)
-and the [shared contracts](CONTRACT_WALKTHROUGH.md).
+and [`api/routes/decisions.py`](../../src/mirrormind/api/routes/decisions.py),
+plus the [shared contracts](CONTRACT_WALKTHROUGH.md).
 
 ## 1. Application composition and route handlers
 
 | Symbol | HTTP behavior | What it does NOT imply |
 | --- | --- | --- |
-| `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system and scenario routers | Running a worker, starting an agent, retrieving documents or creating a database |
+| `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system, scenario and decision routers | Running a worker, starting an agent, retrieving documents or creating a database |
 | `system.health()` | `GET /health`, HTTP 200 and `{"status":"ok","service":"mirrormind-api"}` | Readiness of a future datastore/forecast/WorldKernel engine |
 | `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including evidence, evaluation and policy test-double slices) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
 | `scenarios.validate_scenario(spec)` | `POST /v1/scenarios/validate`; Pydantic validates v0.1 `ScenarioSpec`, returns a summary with `validated_not_executed` | Forecast, RAG, simulation, approval, audit or budget enforcement |
+| `decisions.compare_synthetic_retail_decisions(request)` | `POST /v1/decision-workflows/retail/synthetic`; invokes one bounded in-memory fictional evidence-to-comparison service and returns an experimental trace or explicit abstention | Real data, source authorization, empirical forecast, calibrated interval, WorldKernel call, policy ranking, persistence, human approval or operational writes |
 
 `mirrormind.api:app` is the stable import expected by uvicorn.
 The API layer contains no statistical model or domain-specific
 inventory rules. There is **no authentication** in this M0
 scaffold, so it must not be exposed as a production API.
 
-## 2. Three requests; three different claims
+## 2. Four requests; four different claims
 
 ```bash
 python -m uvicorn mirrormind.api:app --host 127.0.0.1 --port 8000
@@ -30,11 +32,15 @@ curl http://127.0.0.1:8000/v1/capabilities
 curl -X POST http://127.0.0.1:8000/v1/scenarios/validate \
   -H "Content-Type: application/json" \
   --data @examples/retail-scenario.json
+curl -X POST http://127.0.0.1:8000/v1/decision-workflows/retail/synthetic \
+  -H "Content-Type: application/json" \
+  --data '{"as_of":"2011-01-26","replications":12,"seed":317}'
 ```
 
-The last route returns the word `validated_not_executed`
-deliberately. It is a truthful anti-overclaiming signal,
-not a task status to poll.
+The scenario route returns `validated_not_executed` deliberately. The
+synthetic decision route is different: it executes the local Python test double
+on generated fixture bytes, emits a typed trace and remains explicitly
+experimental. It never invokes WorldKernel or writes business state.
 
 FastAPI generates HTTP 422 for invalid Pydantic body
 validation. The scaffold does not currently add a durable
@@ -48,12 +54,17 @@ a domain-specific source-validation layer.
 | **MM-API-001** | `tests/integration/test_api.py::test_scenario_validation_only` confirms a valid JSON request returns `validated_not_executed` | It does not prove execution or successful decision support |
 | **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies the scaffold lists the WorldKernel adapter under `planned` | This test alone does not verify all future capability claims |
 | **MM-API-003** | `tests/integration/test_api.py::test_runs_cannot_exceed_budget` returns HTTP 422 for excess declared run count | A rejected request is not evidence of enforced runtime quotas |
+| **MM-API-004** | `tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result` matches the HTTP response to the local service result | Only the generated fixture and local policy test double execute; it is not a real decision or an authorized forecast |
 
 The `local_retail_synthetic_evidence_flow`,
 `local_retail_evidence_evaluation` and `local_retail_policy_test_double`
-labels describe Python library experiments and local example CLIs only. No
-evidence payload, evaluation execution or simulation execution is exposed by
-an HTTP route. The parity regression
+labels describe local library experiments. The new
+`synthetic_retail_decision_workflow` route composes them only over a generated
+fixture and reports `worldkernel_not_invoked`, no ranking, no writes and
+`human_review=not_requested`. Its strict body accepts only an ISO date, a
+bounded replication count (1..198) and an integer seed. Unknown fields and
+invalid values return 422. It cannot ingest an uploaded source or execute
+caller-supplied code. The parity regression
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
 checks that the API's implemented/experimental/planned lists match the
 reviewed ledger; matching labels do not establish the semantic truth of a
@@ -92,7 +103,17 @@ WorldKernel result. A later pinned SDK adapter must preserve the one-way
 dependency MirrorMind -> WorldKernel and test actual registered-world
 execution, result validation and runtime failure behavior.
 
-## 5. Independent exercise
+## 5. Synthetic route data flow and boundary
+
+The handler validates `SyntheticDecisionWorkflowRequest` before entering
+`run_synthetic_decision_workflow`. The service keeps historical evaluation at
+`as_of - 7 days`, checks the current last-seven release window, and returns an
+abstention before policy simulation if a date is missing or late. On success,
+the exact same service builds the result trace used by the CLI. Read the
+[M1F-02 workflow walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) for
+the date split, trace-reference algorithm and failure paths.
+
+## 6. Independent exercise
 
 Draw the actual HTTP request graph. For each route
 distinguish 200 **liveness**, 200 **validated data**

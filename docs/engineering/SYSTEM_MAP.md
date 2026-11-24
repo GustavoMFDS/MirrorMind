@@ -1,24 +1,25 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`), stacked PRs #52–#57 and the M1E-03 local test-double work. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, retail evidence evaluation and the three-policy synthetic comparison are experimental. The decision trace result schema is interface-only. The WorldKernel request mapper is a pure, fail-closed translation only; no actual engine call, authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`), dependency PRs #52–#58 and the M1F-02 local implementation. Bounded CSV/XLSX staging, review-only source metadata, retail evidence evaluation, the policy test double and the composed synthetic decision workflow are experimental. The M1F-01 decision trace schema now has one synthetic producer; it does not authenticate records or approve action. The WorldKernel request mapper is a pure, fail-closed translation only; no actual engine call, authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
-HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. Separately, a trusted local caller can pass `ScenarioSpec`, explicit units and operator limits to `modules/simulation/worldkernel_mapping.py` to construct a WorldKernel v1 request. The `modules/simulation/gateway.py` interface still has no executor and the mapper does **not** execute WorldKernel simulations.
+HTTP request → `src/mirrormind/api/app.py` → `system.py`, `scenarios.py` or `decisions.py`. The new decision route validates a strict bounded request and calls `domains/retail/synthetic_decision_workflow.py`; that service returns the same result used by the CLI. Its evidence is generated in memory, historical diagnostics end before the forecast feature window, and missing/late last-seven history abstains before simulation. No result is persisted.
 
-The local retail test double is a separate offline path: a caller supplies a
-strict 28-day profile and inventory/cost assumptions to
-`domains/retail/policy_simulation.py`; the module generates paired demand
-streams, compares three rules and reports an explicit lead-time sensitivity
-sweep. The JSON report is experimental and has no HTTP execution route.
+The local retail test double still takes a strict 28-day profile and explicit
+inventory/cost assumptions in `domains/retail/policy_simulation.py`; it creates
+paired demand streams, compares three rules and reports lead-time sensitivity.
+M1F-02 supplies its profile from seven declared published fixture days and
+records the conditional outputs in `DecisionTrace` v1. The trace's creation
+time is a fixture logical timestamp, not a runtime audit record.
 
-Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/scenarios/validate`. The externally declared capabilities must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
+Current supported routes: `GET /health`, `GET /v1/capabilities`, `POST /v1/scenarios/validate`, and experimental `POST /v1/decision-workflows/retail/synthetic`. The externally declared capabilities must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
 
 ## Change-location guide
 | User request | Inspect first | Evidence |
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
-| Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py); no producer, API or action execution |
+| Produce a reviewable synthetic decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [trace producer tests](../../tests/unit/test_synthetic_decision_workflow.py); API/CLI reuse the same service; no real source, engine or action execution |
 | Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py); no engine import or execution |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |

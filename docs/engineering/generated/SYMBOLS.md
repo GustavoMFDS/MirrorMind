@@ -35,6 +35,16 @@ Source: [`src/mirrormind/api/routes/__init__.py`](../../../src/mirrormind/api/ro
 
 No top-level classes or functions.
 
+## `mirrormind.api.routes.decisions`
+
+Source: [`src/mirrormind/api/routes/decisions.py`](../../../src/mirrormind/api/routes/decisions.py)
+
+Static imports (including inside functions): `...domains.retail.synthetic_decision_workflow`, `fastapi`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `compare_synthetic_retail_decisions` | function | `def compare_synthetic_retail_decisions(request: SyntheticDecisionWorkflowRequest) -> dict[str, object]` | Return a deterministic fictional comparison without writes or engine I/O. | [L13](../../../src/mirrormind/api/routes/decisions.py#L13) |
+
 ## `mirrormind.api.routes.scenarios`
 
 Source: [`src/mirrormind/api/routes/scenarios.py`](../../../src/mirrormind/api/routes/scenarios.py)
@@ -278,6 +288,39 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `RetailSensitivitySweep` | class | `class RetailSensitivitySweep` | An ordered, bounded list of hypothetical scenario results. | [L22](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L22) |
 | `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L30](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L30) |
 | `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L50](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L50) |
+
+## `mirrormind.domains.retail.synthetic_decision_workflow`
+
+Source: [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py)
+
+Static imports (including inside functions): `__future__`, `datetime`, `mirrormind.core.decision_trace`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.policy_simulation`, `mirrormind.domains.retail.residual_envelope`, `mirrormind.domains.retail.synthetic_fixtures`, `mirrormind.modules.forecasting.baselines`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SyntheticDecisionWorkflowRequest` | class | `class SyntheticDecisionWorkflowRequest` | Strict bounded options for the generated local decision example. | [L60](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L60) |
+| `SyntheticDecisionWorkflowRequest.validate_as_of` | method | `def validate_as_of(cls, value: date) -> date` | — | [L73](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L73) |
+| `_default_policy_assumptions` | function | `def _default_policy_assumptions() -> RetailPolicyAssumptions` | Return the same explicit fictional controls used by the M1E-03 demo. | [L83](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L83) |
+| `_cutoff_timestamp` | function | `def _cutoff_timestamp(value: date) -> datetime` | — | [L99](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L99) |
+| `_flow_snapshot_digest` | function | `def _flow_snapshot_digest(flow: Any) -> str` | — | [L103](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L103) |
+| `_eligible_observation_rows` | function | `def _eligible_observation_rows(flow: Any, *, as_of: date) -> tuple[tuple[date, int, date], ...]` | — | [L111](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L111) |
+| `_requested_history_window` | function | `def _requested_history_window(as_of: date) -> tuple[date, ...]` | — | [L135](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L135) |
+| `_policy_outcomes` | function | `def _policy_outcomes(comparison: dict[str, object], *, forecast_refs: tuple[str, ...], assumption_refs: tuple[str, ...]) -> tuple[ConditionalOutcome, ...]` | — | [L139](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L139) |
+| `_build_trace` | function | `def _build_trace(*, as_of: date, snapshot_sha256: str, observations: tuple[tuple[date, int, date], ...], history: tuple[tuple[date, int, date], ...], forecast_profile: tuple[int, ...], comparison: dict[str, object]) -> DecisionTrace` | — | [L210](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L210) |
+| `run_synthetic_decision_workflow` | function | `def run_synthetic_decision_workflow(request: SyntheticDecisionWorkflowRequest, *, future_units: int=9, all_unpublished: bool=False) -> dict[str, object]` | Run one deterministic, non-persisting synthetic decision comparison. | [L398](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L398) |
+
+## `mirrormind.domains.retail.synthetic_fixtures`
+
+Source: [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../../src/mirrormind/domains/retail/synthetic_fixtures.py)
+
+Static imports (including inside functions): `__future__`, `datetime`, `hashlib`, `io`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.evidence_flow`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.evidence.intake_review`, `openpyxl`, `re`, `zipfile`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `fixture_day` | function | `def fixture_day(index: int) -> date` | Return a one-based calendar day in the generated fixture. | [L34](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L34) |
+| `_canonical_xlsx` | function | `def _canonical_xlsx(data: bytes) -> bytes` | Normalize ZIP order, timestamps and compression for a stable digest. | [L41](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L41) |
+| `_synthetic_workbook` | function | `def _synthetic_workbook(*, future_units: int) -> bytes` | — | [L71](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L71) |
+| `build_synthetic_evidence_flow` | function | `def build_synthetic_evidence_flow(*, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> RetailUciEvidenceFlow` | Build a bounded fictional workbook with explicit fixture release dates. | [L101](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L101) |
+| `run_synthetic_evaluation` | function | `def run_synthetic_evaluation(*, holdout_days: int=7, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> dict[str, object]` | Build the fixture and run the existing local evidence evaluation. | [L162](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L162) |
 
 ## `mirrormind.domains.retail.uci_transactions`
 
@@ -610,8 +653,9 @@ Static imports (including inside functions): `__future__`, `datetime`, `math`, `
 | --- | --- | --- | --- | --- |
 | `_day` | function | `def _day(value: str) -> date` | Require exact, unambiguous ISO calendar days for evaluation cutoffs. | [L17](../../../src/mirrormind/modules/forecasting/baselines.py#L17) |
 | `_predict` | function | `def _predict(seven: tuple[int, ...]) -> dict[str, float]` | Return fixed one-day estimates from exactly seven prior daily values. | [L30](../../../src/mirrormind/modules/forecasting/baselines.py#L30) |
-| `_score` | function | `def _score(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None]` | Return matched MAE/RMSE/signed bias and undefined-zero WAPE as None. | [L40](../../../src/mirrormind/modules/forecasting/baselines.py#L40) |
-| `backtest_staged_snapshot` | function | `def backtest_staged_snapshot(snapshot: StagedSnapshot, *, series_id: str, evaluation_on: str, holdout_days: int=7, min_history_days: int=14) -> dict[str, object]` | Evaluate fixed daily origins only with data published before each origin. | [L55](../../../src/mirrormind/modules/forecasting/baselines.py#L55) |
+| `project_seasonal_naive_lag7` | function | `def project_seasonal_naive_lag7(last_seven: tuple[int, ...], *, horizon_days: int) -> tuple[int, ...]` | Project the fixed lag-seven baseline over a bounded integer horizon. | [L40](../../../src/mirrormind/modules/forecasting/baselines.py#L40) |
+| `_score` | function | `def _score(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None]` | Return matched MAE/RMSE/signed bias and undefined-zero WAPE as None. | [L65](../../../src/mirrormind/modules/forecasting/baselines.py#L65) |
+| `backtest_staged_snapshot` | function | `def backtest_staged_snapshot(snapshot: StagedSnapshot, *, series_id: str, evaluation_on: str, holdout_days: int=7, min_history_days: int=14) -> dict[str, object]` | Evaluate fixed daily origins only with data published before each origin. | [L80](../../../src/mirrormind/modules/forecasting/baselines.py#L80) |
 
 ## `mirrormind.modules.simulation.__init__`
 

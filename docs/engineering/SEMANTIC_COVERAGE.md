@@ -24,9 +24,10 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/api/routes/__init__.py`](../../src/mirrormind/api/routes/__init__.py) | I | Package boundary |
 | [`src/mirrormind/api/routes/system.py`](../../src/mirrormind/api/routes/system.py) | G | Health and truthful capabilities; [API walkthrough](API_WALKTHROUGH.md) |
 | [`src/mirrormind/api/routes/scenarios.py`](../../src/mirrormind/api/routes/scenarios.py) | G | Data validation only; [API walkthrough](API_WALKTHROUGH.md) |
+| [`src/mirrormind/api/routes/decisions.py`](../../src/mirrormind/api/routes/decisions.py) | G | Strict experimental route for the generated retail decision workflow; no real ingestion, engine or write path; [API walkthrough](API_WALKTHROUGH.md) |
 | [`src/mirrormind/core/__init__.py`](../../src/mirrormind/core/__init__.py) | I | Core package marker |
 | [`src/mirrormind/core/contracts.py`](../../src/mirrormind/core/contracts.py) | G | Versioned Pydantic fields and two cross-field rules; [contracts walkthrough](CONTRACT_WALKTHROUGH.md) |
-| [`src/mirrormind/core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py) | R | Immutable v1 decision-result contract with local reference, time and review-digest validation; [walkthrough](DECISION_TRACE_RESULT.md); no result producer or execution |
+| [`src/mirrormind/core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py) | G | Immutable v1 decision-result contract with local reference, time and review-digest validation; used by one synthetic producer; [walkthrough](DECISION_TRACE_RESULT.md) |
 | [`src/mirrormind/domains/__init__.py`](../../src/mirrormind/domains/__init__.py) | I | Domain package only; no automatic sector adapter |
 | [`src/mirrormind/domains/retail/__init__.py`](../../src/mirrormind/domains/retail/__init__.py) | I | Retail namespace without source acquisition |
 | [`src/mirrormind/domains/retail/calendar_coverage.py`](../../src/mirrormind/domains/retail/calendar_coverage.py) | G | Strict caller-declared date schedule compared with positive-line observations; [guide](DECLARED_CALENDAR_COVERAGE.md), no verified operating calendar |
@@ -44,6 +45,8 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | G | Bounded transaction-to-day positive-unit projection on fictional mappings; [source walkthrough](UCI_RETAIL_PROJECTION.md) |
 | [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
 | [`src/mirrormind/domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py) | G | Experimental composition of bounded CSV/XLSX readers, review-only packets, declared calendar/release checks and CSV as-of selection; [M1 flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), no authorization or forecast eligibility |
+| [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../src/mirrormind/domains/retail/synthetic_fixtures.py) | G | Canonical in-memory fictional workbook and release dates reused by examples/API; no external data or publisher proof |
+| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | G | Compose historical evaluation/uncertainty diagnostics, release-gated 28-day baseline profile, policy test double and DecisionTrace; [M1F-02 guide](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), no real forecast or engine result |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
 | [`src/mirrormind/modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py) | G | Experimental new shared SQLite file, atomic current policy admission and signed publication CAS; [guide](ATOMIC_GOVERNED_PUBLISHER.md); no external authority or source grant |
@@ -57,7 +60,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py) | G | Bind staged CSV/XLSX digests to caller-declared review refs, never authorize; [guide](SOURCE_INTAKE_REVIEW.md) |
 | [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | G | Strict local staging/as-of semantics in [M1 snapshot guide](M1_LOCAL_CSV_STAGING.md); no approved ingestion |
 | [`src/mirrormind/modules/forecasting/__init__.py`](../../src/mirrormind/modules/forecasting/__init__.py) | I | Offline forecast module marker, no model registry |
-| [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step staged rolling origin baselines and abstentions; [method guide](M1_STAGED_ROLLING_BASELINES.md) |
+| [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step baselines and a bounded repeated lag-seven profile using the same one-step rule; [method guide](M1_STAGED_ROLLING_BASELINES.md) and [M1F-02 workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) |
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
 | [`src/mirrormind/modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py) | R | `SimulationGateway` Protocol and `SimulationSummary` model, **no live adapter**; [API guide](API_WALKTHROUGH.md) |
 | [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | G | Pure allowlisted `ScenarioSpec` to WorldKernel v1 request construction with explicit units and operator limits; no execution; [walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) |
@@ -69,6 +72,7 @@ sources without relying on a manually maintained file-count assertion.
 | Health endpoint | Implemented in scaffold | Actual endpoint regression; not a dependency readiness probe |
 | Scenario contract shape and two cross-field rules | Implemented validation only | Pydantic unit and API tests; still no authorization or execution |
 | Local retail synthetic evidence flow | Experimental composition only | Generated fixture tests; no real-source rights, publisher provenance, authorized ingestion or API execution |
+| Synthetic retail decision workflow | Experimental local CLI/API composition | Trace/reference, cutoff, abstention, leakage, paired-stream and API parity tests; real-data, empirical uncertainty and WorldKernel gates remain open |
 | SimulationGateway Protocol | Interface only | A concrete executor and validated engine result; pure request translation now has separate unit evidence |
 | WorldKernel request mapping | Pure local translation only | A pinned optional SDK adapter, registered-world execution, result validation and runtime failure evidence |
 | WorldKernel execution | Planned | Optional pinned adapter, trusted world registry, budgets, actual results |

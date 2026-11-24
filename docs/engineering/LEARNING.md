@@ -541,3 +541,24 @@ scientific calibration claim. Reproduce with:
 ```bash
 python -m pytest -q tests/unit/test_retail_residual_envelope.py
 ```
+
+## Guided exercise 18 — follow one synthetic decision trace (45 minutes)
+
+Read the [M1F-02 workflow guide](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md),
+[`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py),
+and [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py).
+Before running the default CLI, draw the diagnostic cutoff, historical
+holdout and last-seven forecast window. Predict how the 2011-01-27 request
+abstains when day 27 is late, then trace `_eligible_observation_rows` to the
+existing release audit. For a successful run, follow one `ForecastEstimate`
+from its seven facts to all nine conditional policy outcomes. Change the seed
+and verify that forecasts stay fixed while paired stream digests change.
+Finally explain why `trace_sha256` is content binding only, why the heuristic
+residual envelope is not an interval, and which real-data/engine gates remain.
+
+Reproduce with:
+
+```bash
+python -m examples.m1_retail_decision_workflow --as-of 2011-01-26 --replications 12 --seed 317
+python -m pytest -q tests/unit/test_synthetic_decision_workflow.py tests/integration/test_retail_synthetic_decision_workflow_cli.py
+```

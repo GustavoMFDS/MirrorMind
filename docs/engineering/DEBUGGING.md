@@ -204,3 +204,19 @@ reusing holdout labels. Verify the exact `evaluated_origins` denominator and
 keep `nominal_coverage` and `calibrated_prediction_interval` unset. The
 synthetic diagnostic does not authenticate releases or establish empirical
 coverage.
+
+## Synthetic decision workflow abstains or trace references fail
+
+Reproduce with
+[`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py)
+and follow the [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
+Compare `as_of` with the historical `evaluation_cutoff` and the seven dates in
+`forecast.history_start/history_end`. Inspect
+`forecast_evidence_receipt.release_audit` and keep absent dates separate from
+declared releases after the cutoff. An abstention must have no forecast, no
+trace and no policy invocation; do not loosen the seven-day rule or infer
+zeros. On a successful result, validate `trace_sha256` against the serialized
+M1F-01 `DecisionTrace`, then follow each forecast's seven `fact_refs` and each
+outcome's forecast/assumption references. A digest is not a signature. The
+output is generated fixture data plus a local test double; it cannot prove
+rights, forecast skill, calibrated uncertainty, engine execution or authority.
