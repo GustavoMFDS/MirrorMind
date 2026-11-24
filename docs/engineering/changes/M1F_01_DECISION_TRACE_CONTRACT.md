@@ -112,9 +112,11 @@ digest dependency.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: implementation is on `codex/m1f-01-decision-trace-contract`,
-  stacked on M1C-01 draft PR #53; source commit SHA and M1F PR link will be
-  added after publishing the reviewable branch.
+- Commit / PR: source is at
+  `27f1f1c9dec3886299077793a2d42a647313d7ae` on
+  `codex/m1f-01-decision-trace-contract`, proposed as draft
+  [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), stacked on
+  draft PR #53.
 - Modified symbols and files: `DecisionTrace`, `EvidenceReference`,
   `ObservedFact`, `ForecastEstimate`, `ModelingAssumption`,
   `ConditionalOutcome`, `MissingEvidence`, `CostMeasurement` and `HumanReview`
@@ -142,10 +144,11 @@ digest dependency.
   gates and ledger, evidence map, repository atlas, input-contract guide,
   decision trace template, M1 plan, backlog, project status, debugging,
   learning guide and generated symbol catalog.
-- Official CI: pending for this M1F branch; M1C PR #53's latest check runs
-  failed before job start due the B-08 account billing/spending-limit
-  annotation. No remote result for M1F is claimed until its PR checks are
-  observed.
+- Official CI: M1F head `27f1f1c9dec3886299077793a2d42a647313d7ae` checks
+  failed before job start: [test run 45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
+  and [symbol-catalog run 45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
+  carry the B-08 account payment/spending-limit annotation. This is not an
+  observed test failure; no remote test result is inferred.
 - Known limitations / follow-up: M1F-02 must produce and replay an actual
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
   remain separate. B-07/B-08 still block the exact full gate/official CI

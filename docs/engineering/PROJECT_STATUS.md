@@ -86,8 +86,15 @@ route was added. The result digest is content binding, not a signature; all
 source/model/engine references remain caller assertions. The task remains
 interface-only and has no trace producer, storage, decision ranking,
 execution permission or real engine evidence. The source and reference
-walkthrough are in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md);
-implementation PR and exact-head gate evidence are pending.
+walkthrough are in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). The
+implementation commit is `27f1f1c9dec3886299077793a2d42a647313d7ae` on
+`codex/m1f-01-decision-trace-contract`, proposed as draft [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54)
+stacked on PR #53. Its official `test` run
+[45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
+and `symbol-catalog` run
+[45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
+failed before job start due the same B-08 account billing annotation.
+Exact-head full local gate remains unverified under B-07; PR remains draft.
 
 ## Architecture and actual execution boundaries
 
