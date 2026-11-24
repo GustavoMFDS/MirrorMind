@@ -91,15 +91,22 @@ guards. Official checks on both heads failed before job execution under
 B-08. The mapper does not execute WorldKernel; B-04 remains for a pinned SDK
 and actual registered-world run.
 
-The current working branch is `codex/m1d-01-disjoint-residual-calibration`,
-based directly on the M1C-01 head so it does not depend on M1E-02. M1D-01
-replaces the rolling residual-label window with fixed pre-holdout calibration
-dates and explicit disjoint-window metadata. The synthetic regression covers
-a calibration release arriving after an earlier holdout target. Focused and
-dependent tests, the feasible local suite, Ruff and all documentation guards
-have passed; PR and exact commit evidence will be appended after publication.
-This remains experimental and does not clear B-02 or establish empirical
-calibration. See the active claim in [TASK_BACKLOG](TASK_BACKLOG.md) and the
+M1D-01 is implemented in `10fe58fc3aca45c27288dcc6055ac5d84ab035af` on
+`codex/m1d-01-disjoint-residual-calibration` and proposed in draft
+[PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56), based on M1C-01
+PR #53. It replaces rolling residual labels with fixed pre-holdout calibration
+dates and explicit disjoint-window metadata. The late-release regression
+proves that a published earlier holdout target cannot refill calibration.
+Local evidence: 81 focused residual tests, 94 dependent consumer tests and
+694 tests excluding `tests/integration/test_api.py` passed; Ruff, catalog,
+atlas, evidence and capability guards plus direct handler/ledger parity
+passed. Official `test` run [45334623041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45334623041)
+and `symbol-catalog` run [45334623086](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45334623086)
+failed with zero job steps. The current connector response exposed no reason
+annotation; earlier draft heads carry B-08's billing/spending-limit
+annotation. No canonical full-gate or CI pass is claimed. This remains
+experimental and does not clear B-02 or establish empirical calibration. See
+the active claim in [TASK_BACKLOG](TASK_BACKLOG.md) and the
 [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
 
 ## Architecture and actual execution boundaries

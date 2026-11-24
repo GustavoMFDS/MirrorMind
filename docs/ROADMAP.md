@@ -374,7 +374,7 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   historical tests do not establish source authority, forecast validity,
   calibrated coverage or wall-clock speedup.
 
-- **MM-M1d disjoint uncertainty holdout (experimental, branch-local):**
+- **MM-M1d disjoint uncertainty holdout (experimental, draft PR #56):**
   [uncertainty walkthrough](engineering/RETAIL_RESIDUAL_ENVELOPE.md) and
   [scoped M1D-01 change request](engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md)
   define a fixed pre-holdout calibration target interval, origin-specific

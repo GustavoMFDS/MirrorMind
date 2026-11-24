@@ -50,7 +50,8 @@ not execute decisions; the latter constructs requests but does not execute
 WorldKernel. B-04 blocks M1E-02 until a compatible pinned runtime and real
 registered-world execution are available.
 
-M1D-01 is being completed as a separate branch based on M1C-01. It fixes the
+M1D-01 is implemented in draft [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56)
+on a separate branch based on M1C-01. It fixes the
 residual calibration target interval strictly before the rolling one-day
 holdout, makes target-label disjointness explicit in the result, and retains
 origin-specific publication and feature-availability checks. The maximum
