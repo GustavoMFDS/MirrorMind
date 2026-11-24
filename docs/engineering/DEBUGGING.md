@@ -42,6 +42,13 @@ cutoff/availability fields, cost status and review digest. The references and
 timestamps are caller assertions; do not log private payloads or infer source
 rights, model execution, engine execution, reviewer identity or authorization
 from a passing validation.
+
+For review chronology, compare the parsed `decided_at` and `created_at`
+instants; a different UTC offset can represent the same valid instant. For a
+digest that changes only under a different Decimal precision, inspect
+`_canonical_decimal` and run `test_result_digest_is_lossless_and_independent_of_decimal_context`.
+Oversized traces fail at field bounds or the aggregate 1,000-record check;
+these contract limits do not replace an HTTP request-size or concurrency cap.
 - For planned evidence/agents, design permission-bound provenance, error handling and budget limits before implementing.
 - For fictional UCI-shaped retail projection failures: trace [`domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py), [reviewed method guide](UCI_RETAIL_PROJECTION.md) and [unit regressions](../../tests/unit/test_uci_retail_projection.py). Do not copy customer IDs or invoice descriptions into bug reports.
 - For bounded local XLSX input failures: inspect [`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), [the workbook guide](UCI_WORKBOOK_READER.md) and [ZIP/schema tests](../../tests/unit/test_uci_workbook.py). Never paste original workbook bytes or customer fields in an issue.
@@ -165,10 +172,16 @@ Read the [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
 [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py).
 Run `python -m pytest -q tests/unit/test_worldkernel_mapping.py`. Check the
 exact `world_type`/`world_version` allowlist, explicit `item`/`day`/`order`
-unit context, required starting stock and daily demand, and the separately
-configured operator ceilings. Interventions and evidence/forecast references
+unit context, required starting stock and daily demand, the scenario budget,
+and the separately configured operator ceilings. The mapper revalidates the
+current mutable scenario and caps request `max_runs` at the lower scenario or
+operator limit; inspect `test_mapping_revalidates_mutated_scenario_before_budget_mapping`
+and `test_mapping_preserves_lower_scenario_or_operator_run_ceiling` when a
+budget-related failure appears. Interventions and evidence/forecast references
 are intentionally unsupported. The existing `examples/retail-scenario.json`
 fails mapping because it has an intervention and omits daily demand; do not
 add hidden defaults to make it pass. This module only constructs a request.
 It does not verify remote package identity, run the simulation, enforce
-wall-clock or memory limits, or validate result payloads.
+`timeout_seconds`, model-call/output-token limits, worker quotas, wall-clock
+or memory limits, or validate result payloads. A future adapter must enforce
+budgets absent from exchange v1 or reject before execution.

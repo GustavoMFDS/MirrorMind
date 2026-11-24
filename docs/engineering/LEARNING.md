@@ -481,7 +481,7 @@ the fixture's zero seasonal-naive MAE is not evidence of real predictive
 skill, and list the publisher, calendar, holdout and uncertainty evidence
 needed before an empirical claim.
 
-## Guided exercise 14 — bind review to an exact result
+## Guided exercise — bind review to an exact result
 
 Read the [decision trace result walkthrough](DECISION_TRACE_RESULT.md) and
 [`DecisionTrace`](../../src/mirrormind/core/decision_trace.py). Run
@@ -492,15 +492,34 @@ cost cannot be encoded as zero. Compute `result_sha256`, create an approved
 predict the rejection. Explain why this proves local content binding but
 does not authenticate a reviewer, data source or simulation.
 
-## Guided exercise 15 — inspect a strict external mapping (35 minutes)
+## Guided exercise — inspect a strict external mapping (35 minutes)
 
 Read the [WorldKernel mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md),
 then trace `build_worldkernel_exchange_request` through
 `tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
 Predict the error for an unlisted world version, `lead_time_days`, a forecast
-reference and an operator transition cap below `horizon_days * runs`. Explain
-why the explicit unit object is still an assertion rather than provenance,
-why the generated v1 limits are not an independently enforced server quota,
-and why a deterministic request is not a simulation result. Finally, propose
-which pinned package and result checks M1E-02 must add without importing
-WorldKernel into MirrorMind's core.
+reference and an operator transition cap below `horizon_days * runs`. Then run
+`test_mapping_revalidates_mutated_scenario_before_budget_mapping` and
+`test_mapping_preserves_lower_scenario_or_operator_run_ceiling`: trace how a
+mutable Pydantic object is revalidated and how the lower run ceiling is chosen.
+Explain why the explicit unit object is still an assertion rather than
+provenance, why the generated v1 limits are not an independently enforced
+server quota, and why a deterministic request is not a simulation result.
+Finally, identify where M1E-02 must enforce timeout/model-call/output-token
+budgets missing from exchange v1 and propose package/result checks without
+importing WorldKernel into MirrorMind's core.
+
+## Guided exercise — trace chronology, canonical cost digests and resource bounds
+
+Read [the result contract walkthrough](DECISION_TRACE_RESULT.md) and follow
+`DecisionTrace.check_trace_references_and_cutoff` into the evidence-ID map and
+review-time comparison. Run `tests/unit/test_decision_trace.py`, then inspect
+`test_terminal_review_cannot_precede_trace_creation`,
+`test_terminal_review_accepts_creation_boundary_and_equivalent_timezone`,
+`test_result_digest_is_lossless_and_independent_of_decimal_context`, and the
+collection-bound tests. Explain why a reviewer timestamp is compared as an
+instant, why `Decimal.normalize()` can round under the active context, and why
+the bounds on records/references do not enforce a transport request-size or
+rate limit. Reproduce a same-length, valid-looking payload that stays below
+every bound and identify which independent data-provenance checks are still
+missing.

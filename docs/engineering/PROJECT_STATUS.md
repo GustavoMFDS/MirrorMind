@@ -77,34 +77,23 @@ annotation (B-08). Neither local nor remote full-gate success is claimed.
 The active continuation branch `codex/m1f-01-decision-trace-contract`
 implements M1F-01 on top of the M1C-01 stack. The local result contract
 separates observations, estimates, conditional outcomes, assumptions, missing
-evidence, cost measurement states and human review. Twelve focused tests and
-the deterministic fictional CLI pass; the canonical gate on docs head
-`83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed 712 tests, including
-`tests/integration/test_api.py`. Ruff, symbol catalog, atlas, evidence and
-capability guards also passed; pytest emitted one existing Starlette/httpx
-deprecation warning. The gate ran outside the restricted sandbox. A direct
-registered capability-handler/ledger comparison also passed. HTTP runtime
-was not tested and no new route was added. The result digest is content
-binding, not a signature; all
-source/model/engine references remain caller assertions. The task remains
-interface-only and has no trace producer, storage, decision ranking,
-execution permission or real engine evidence. The source and reference
-walkthrough are in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). The
-implementation commit is `27f1f1c9dec3886299077793a2d42a647313d7ae` on
-`codex/m1f-01-decision-trace-contract`, proposed as draft [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54)
-stacked on PR #53. Its official `test` run
-[45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
-and `symbol-catalog` run
-[45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
-failed before job start due the same B-08 account billing annotation. The
-later docs head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` also failed before
-job start on `test` run
-[45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041)
-and `symbol-catalog` run
-[45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150).
-B-07 is resolved for this PR #54 stack; the historical PR #52 exact SHA was
-not rerun. The docs-head official runs above confirm B-08; no remote job steps
-ran. PR #54 remains draft.
+evidence, cost measurement states and human review. Review correction commit
+`f02459d977fd263b03ddf60264b9069ae08b189b` adds terminal-review chronology,
+context-independent lossless Decimal hashing, and field/aggregate/reference
+bounds; evidence links name each regression function. The decision-trace unit
+suite passed 28 tests, Ruff and all documentation guards passed on the
+correction branch. For the atlas check, only existing untracked Graphify
+outputs were excluded through a temporary local Git excludes file; no
+repository ignore rule or guard changed. The integrated gate is pending. The
+result remains interface-only: no authenticated producer, storage, decision
+ranking, execution permission or real engine evidence. HTTP runtime was not
+tested and no route was added. Its result digest is recomputable content
+binding, not a signature; source/model/engine references remain caller
+assertions. The correction and evidence follow-up are on
+`codex/m1f-01-decision-trace-contract` at `9113d86` and proposed in draft
+[PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), stacked on #53.
+The previous official head checks failed before job start under B-08; no
+official check has yet been inspected for these correction commits.
 
 The active continuation `codex/m1e-01-worldkernel-mapping` advances M1E-01.
 It inspects the separate WorldKernel exchange and adds a pure mapping for
@@ -133,6 +122,15 @@ and `symbol-catalog` run
 also failed before any job step under B-08.
 See [M1E-01 change request](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md)
 and [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md).
+
+Independent PR review found that the mutable `ScenarioSpec` could be changed
+after initial validation and that the request's `max_runs` could exceed its
+lower scenario budget. Both cases were reproduced; the active integration
+branch now revalidates the current scenario snapshot, applies the lower
+scenario/operator run ceiling, and documents that v1 cannot carry timeout,
+model-call or output-token budgets. Regressions cover both behaviors. The
+original #55 gate results above predate this correction and do not establish
+the corrected integrated state; its exact-head local gate remains pending.
 
 ## Architecture and actual execution boundaries
 

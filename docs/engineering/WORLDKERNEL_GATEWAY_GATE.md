@@ -22,7 +22,8 @@ executor, execution endpoint, forecast sampler or live engine result.
 | `world_version="0.1"` | Registered built-in `"demo-1"` | Exact local mapping; mismatch fails. Remote `demo-1` is registration metadata, not an immutable artifact |
 | `horizon_days` | `steps` | Mapped only with explicit `step_unit="day"`; the demo's step uses daily demand |
 | `runs`, `seed` | `runs`, `seed` | Deterministic construction; operator limits independently cap steps, runs and transitions |
-| `budget.max_simulation_runs` | v1 `limits.max_runs` and additional step/transition limits | The mapper uses separately supplied `WorldKernelOperatorLimits`; scenario budget cannot raise it |
+| `budget.max_simulation_runs` | v1 `limits.max_runs` and additional step/transition limits | Mapping revalidates the mutable scenario and sends `min(scenario budget, operator max_runs)`; neither declaration is an independently enforced worker quota |
+| `budget.timeout_seconds`, `max_model_calls`, `max_output_tokens` | No v1 request fields | Pure mapping does not execute or enforce these budgets; a future adapter must enforce them at execution or reject the request before execution |
 | `interventions` | Built-in inventory world parameters/state | All interventions currently fail closed; no transformation is reviewed |
 | `evidence`, `forecast` references | v1 exchange does not authenticate source or forecast | All such references fail closed until MirrorMind resolves them before mapping |
 | `initial_state`, `parameters` | Trusted world expects integer stock/counters and demand/reorder keys | `stock`, daily demand and reorder values are required; only known counters may be omitted |
@@ -41,7 +42,10 @@ gateway automatically operational.
    limits. No network and no engine import.
 2. **SDK integration (optional):** pinned compatible WorldKernel
    version on a trusted local runtime, real registered world,
-   strict world-version checking, server-authoritative budgets.
+   strict world-version checking, server-authoritative budgets. Revalidate
+   the current `ScenarioSpec` state at the boundary, cap runs by both scenario
+   and operator limits, and enforce every applicable budget that v1 cannot
+   represent (or reject before execution).
    It must return actual `worldkernel.result.v1` results.
 3. **Domain validity:** data/forecast availability, units,
    initial state and scenario assumptions must be reviewed.
