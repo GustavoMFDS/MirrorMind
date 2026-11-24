@@ -518,3 +518,26 @@ per-replication demand digest is present across policy and sensitivity rows.
 Change one cost coefficient and trace which total-cost components change.
 Then explain why neither the profile-aware rule nor a lower synthetic cost
 establishes a valid forecast, realistic cost model or winning business policy.
+## Guided exercise 17 — keep uncertainty calibration labels disjoint (40 minutes)
+
+Read [`evaluate_retail_residual_envelopes`](../../src/mirrormind/domains/retail/residual_envelope.py),
+the [uncertainty walkthrough](RETAIL_RESIDUAL_ENVELOPE.md), the scoped
+[M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md), and
+[`test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py).
+Start with `test_holdout_targets_never_enter_later_calibration_windows`:
+draw the two date sets for a two-day holdout, then mark day 59 unavailable
+until the second holdout origin. Predict whether the day-69 target may be
+used as a day-70 calibration residual. Run the focused test and explain why
+the answer is still no even though the earlier holdout result is now
+published. Trace `release_events`, `_predict_on`, the active residual count
+and the maximum-residual heap in the evaluator. Next inspect
+`_naive_calibration_oracle` and the adversarial parameterized tests; explain
+which implementation choices are independently recomputed and which remain
+shared assumptions. Finally identify the exact numerator and denominator,
+explain why their ratio is retrospective rather than nominal coverage, and
+name the provenance and untouched-holdout evidence still required for a
+scientific calibration claim. Reproduce with:
+
+```bash
+python -m pytest -q tests/unit/test_retail_residual_envelope.py
+```

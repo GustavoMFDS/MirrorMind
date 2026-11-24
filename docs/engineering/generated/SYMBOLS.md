@@ -247,7 +247,7 @@ Static imports (including inside functions): `__future__`, `datetime`, `mirrormi
 
 Source: [`src/mirrormind/domains/retail/residual_envelope.py`](../../../src/mirrormind/domains/retail/residual_envelope.py)
 
-Static imports (including inside functions): `__future__`, `datetime`, `functools`, `heapq`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.modules.forecasting.baselines`, `re`
+Static imports (including inside functions): `__future__`, `datetime`, `heapq`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.modules.forecasting.baselines`, `re`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |

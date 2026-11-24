@@ -187,3 +187,20 @@ holding cost is charged, and the policy places an order at day end. A mismatch
 is a local deterministic behavior change, not evidence about actual retail
 stock or costs. Never pass this result to the WorldKernel mapper as if it were
 an engine receipt.
+## Retail residual diagnostic abstains for insufficient calibration
+
+Inspect [`residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py),
+the [fixed split rules](RETAIL_RESIDUAL_ENVELOPE.md) and
+[`test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py).
+Read `calibration_target_window_start/end` first: calibration labels are a
+fixed interval immediately before `holdout_target_window_start`. At each
+origin, a target in that interval contributes only after its declared release
+is available and its own seven feature dates passed their own-origin checks.
+Late releases, missing positive-line dates or unavailable feature history can
+reduce the active residual count; a later holdout outcome cannot refill the
+calibration interval. The correct response is an explicit abstention or a
+reviewed change to the window/minimum settings, never zero imputation or
+reusing holdout labels. Verify the exact `evaluated_origins` denominator and
+keep `nominal_coverage` and `calibrated_prediction_interval` unset. The
+synthetic diagnostic does not authenticate releases or establish empirical
+coverage.
