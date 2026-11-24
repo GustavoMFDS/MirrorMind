@@ -93,8 +93,26 @@ stacked on PR #53. Its official `test` run
 [45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
 and `symbol-catalog` run
 [45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
-failed before job start due the same B-08 account billing annotation.
+failed before job start due the same B-08 account billing annotation. The
+later docs head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` also failed before
+job start on `test` run
+[45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041)
+and `symbol-catalog` run
+[45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150).
 Exact-head full local gate remains unverified under B-07; PR remains draft.
+
+The active continuation `codex/m1e-01-worldkernel-mapping` advances M1E-01.
+It inspects the separate WorldKernel exchange and adds a pure mapping for
+`retail.inventory` `0.1` to `retail.inventory.demo` `demo-1`, with explicit
+unit assertions, strict input allowlists and operator-configured request
+ceilings. It does not import or execute WorldKernel, so the capability remains
+planned and M1E-02 remains gated by B-04. Twenty-five focused tests passed;
+the local suite passed 731 tests with `tests/integration/test_api.py` excluded
+for B-07. Ruff, catalog, atlas, evidence and capability guards passed, as did
+direct capability-handler/ledger parity and a deterministic example replay.
+Official CI awaits PR creation and cannot be assumed available under B-08.
+See [M1E-01 change request](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md)
+and [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md).
 
 ## Architecture and actual execution boundaries
 
@@ -104,7 +122,7 @@ Exact-head full local gate remains unverified under B-07; PR remains draft.
 | Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), [composite retail preflight](../../src/mirrormind/domains/retail/evidence_flow.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
 | Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
 | Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
-| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol/summary | Actual compatible optional engine adapter, execution, result validation and budgets |
+| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) Protocol plus [pure WorldKernel mapping](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Pinned optional engine adapter, actual execution, result validation and enforced runtime budgets |
 | Decision, orchestration and UI | Design and review templates | Executable comparison, agent/RAG workflow, review interface |
 | Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |
 

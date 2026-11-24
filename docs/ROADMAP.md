@@ -63,6 +63,16 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   These documents are design and future-review gates, **not**
   implemented evidence, forecasting, integration or agents.
 
+- **MM-M1E-01 — Strict simulation request mapping (branch proposal,
+  execution still planned):** MirrorMind now maps one explicit
+  `retail.inventory` v0.1 scenario shape to WorldKernel's trusted
+  `retail.inventory.demo` `demo-1` exchange contract. It requires declared
+  units and separate operator ceilings, and rejects unsupported inputs. This
+  is request construction only; no engine was imported or run, so the
+  `worldkernel_adapter` capability remains planned. See the
+  [mapping walkthrough](engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
+  [M1 plan](engineering/M1_EXECUTION_PLAN.md).
+
 - **MM-M1c-exp — Synthetic one-step baseline experiment (not full MM-M1c):**
   reviewed [rolling-origin benchmark](engineering/M1_TEMPORAL_BACKTEST.md)
   with predeclared lag-7 seasonal naive and trailing-mean

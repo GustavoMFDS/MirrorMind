@@ -49,8 +49,9 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Signed source review and revocation](SIGNED_SOURCE_REVIEW.md) — experimental Ed25519 metadata check with permanent same-packet revocation and external trust-root dependency; [change request](changes/M1B_SIGNED_REVIEW_REVOCATION.md). No legal authorization or ingestion.
 - [Source intake review packet](SOURCE_INTAKE_REVIEW.md) — binds previously staged CSV/XLSX digests to sanitized caller-declared rights/privacy/retention metadata without granting ingestion or verifying historical availability; [change record](changes/M1B_SOURCE_REVIEW_PACKET.md).
 - [UCI-shaped local XLSX reader](UCI_WORKBOOK_READER.md) — optional, **bounded and offline**, tested only on [generated Excel fixtures](datasets/SYNTHETIC_UCI_XLSX_CARD.md). Refuses unreviewed schemas and does not establish rights or full official UCI source support.
-- [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — explicit version mapping and fail-closed input compatibility before a real adapter exists.
-- [Change request template](CHANGE_REQUEST_TEMPLATE.md) — describe a future feature or correction in plain language before coding; map it to modules, tests and docs.
+- [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — strict pure request mapping is implemented; pinned engine execution remains pending.
+- [WorldKernel mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) — strict pure translation, operator ceilings, unit assertions, failure cases, tests and current execution boundary.
+- [Change request template](CHANGE_REQUEST_TEMPLATE.md) — required scope, acceptance and impact-map structure for meaningful engineering changes.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.
 - [Generated symbol catalog](generated/SYMBOLS.md) — AST-based index of Python functions, classes, methods, signatures, locations and local imports. Run the generator if the file is not checked in.

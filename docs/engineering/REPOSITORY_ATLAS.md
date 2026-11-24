@@ -838,6 +838,20 @@ release dates and positive-line units remain unverified proxies.
 The capability remains `interface_only`; `decision_evaluation` remains
 `planned`. The schema neither creates traces nor validates external records.
 
+## 53. Strict WorldKernel request mapping (pure; no execution)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Exact retail world/revision allowlist, explicit unit context, strict state/parameter checks and separate operator ceilings; constructs JSON only |
+| [`examples/m1e_01_worldkernel_mapping.py`](../../examples/m1e_01_worldkernel_mapping.py) | Reproducible fictional request printer; does not import or execute WorldKernel |
+| [`tests/unit/test_worldkernel_mapping.py`](../../tests/unit/test_worldkernel_mapping.py) | Exact request, deterministic limits, version/unit/reference/intervention/value failures and import guard |
+| [`docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md`](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | Architecture, source contract, flow, exercises, diagnostics, test meaning and runtime limits |
+| [`docs/engineering/changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md`](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md) | M1E-01 scope, explicit acceptance, impact map and evidence |
+| [`docs/engineering/CHANGE_REQUEST_TEMPLATE.md`](CHANGE_REQUEST_TEMPLATE.md) | Reusable required-scope template referenced by the engineering workflow |
+
+The mapper does not execute the request, prove `demo-1` identifies immutable
+code, or expose a runtime capability. `worldkernel_adapter` remains planned.
+
 
 ## Continuous engineering handoff and execution register
 

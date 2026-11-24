@@ -69,17 +69,20 @@ python scripts/docs/evidence.py --check
 These are reproduction instructions, **not claims of local execution**
 for this docs-only change.
 
-## 4. Gateway is an interface, not an adapter
+## 4. Gateway interface and pure request mapping are not execution
 
 [`modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py)
 declares `SimulationSummary` and a `SimulationGateway` Protocol with
 `execute(ScenarioSpec) -> SimulationSummary`. It does not instantiate
-WorldKernel, map world revisions, enforce compute budgets or persist results.
-The optional future adapter must translate MirrorMind's
-`ScenarioSpec(world_type, horizon_days, interventions, evidence, forecast)`
-to WorldKernel's independent `worldkernel.simulation.v1` contract,
-reject unsupported or fabricated fields, and preserve the
-one-way dependency MirrorMind -> WorldKernel.
+WorldKernel or persist results. The independent
+[`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py)
+module constructs a strict request for one world/revision when explicit units,
+state, parameters and operator limits are supplied. It rejects unsupported
+interventions and unresolved evidence/forecast references. Its limits are
+request preflight values, not server-enforced quotas; it does not send a
+request or validate a response. A later pinned SDK adapter must preserve the
+one-way dependency MirrorMind -> WorldKernel and test actual registered-world
+execution, result validation and runtime failure behavior.
 
 ## 5. Independent exercise
 

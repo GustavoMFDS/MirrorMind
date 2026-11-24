@@ -491,3 +491,16 @@ cost cannot be encoded as zero. Compute `result_sha256`, create an approved
 `HumanReview`, then change one forecast value without changing the digest and
 predict the rejection. Explain why this proves local content binding but
 does not authenticate a reviewer, data source or simulation.
+
+## Guided exercise 15 — inspect a strict external mapping (35 minutes)
+
+Read the [WorldKernel mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md),
+then trace `build_worldkernel_exchange_request` through
+`tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
+Predict the error for an unlisted world version, `lead_time_days`, a forecast
+reference and an operator transition cap below `horizon_days * runs`. Explain
+why the explicit unit object is still an assertion rather than provenance,
+why the generated v1 limits are not an independently enforced server quota,
+and why a deterministic request is not a simulation result. Finally, propose
+which pinned package and result checks M1E-02 must add without importing
+WorldKernel into MirrorMind's core.

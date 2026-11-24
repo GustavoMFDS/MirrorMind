@@ -610,3 +610,20 @@ Static imports (including inside functions): `...core.contracts`, `pydantic`, `t
 | `SimulationSummary` | class | `class SimulationSummary` | — | [L9](../../../src/mirrormind/modules/simulation/gateway.py#L9) |
 | `SimulationGateway` | class | `class SimulationGateway` | — | [L17](../../../src/mirrormind/modules/simulation/gateway.py#L17) |
 | `SimulationGateway.execute` | method | `def execute(self, scenario: ScenarioSpec) -> SimulationSummary` | Run an approved scenario using a separately configured engine. | [L18](../../../src/mirrormind/modules/simulation/gateway.py#L18) |
+
+## `mirrormind.modules.simulation.worldkernel_mapping`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py)
+
+Static imports (including inside functions): `...core.contracts`, `collections.abc`, `dataclasses`, `types`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `WorldKernelMappingError` | class | `class WorldKernelMappingError` | The MirrorMind scenario cannot be represented by the allowlisted world. | [L22](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L22) |
+| `WorldKernelWorldMapping` | class | `class WorldKernelWorldMapping` | Exact source and target identifiers reviewed for request translation. | [L27](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L27) |
+| `WorldKernelOperatorLimits` | class | `class WorldKernelOperatorLimits` | Trusted composition-root ceilings, independent of scenario input. | [L51](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L51) |
+| `WorldKernelOperatorLimits.__post_init__` | method | `def __post_init__(self) -> None` | — | [L58](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L58) |
+| `InventoryWorldUnitContext` | class | `class InventoryWorldUnitContext` | Explicit units required by the integer-only inventory demo contract. | [L75](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L75) |
+| `_nonnegative_integer_object` | function | `def _nonnegative_integer_object(values: object, *, name: str, allowed_fields: frozenset[str], required_fields: frozenset[str]) -> dict[str, int]` | — | [L83](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L83) |
+| `_validate_units` | function | `def _validate_units(unit_context: InventoryWorldUnitContext) -> None` | — | [L113](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L113) |
+| `build_worldkernel_exchange_request` | function | `def build_worldkernel_exchange_request(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext) -> dict[str, object]` | Build a strict WorldKernel v1 request without executing it. | [L128](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L128) |

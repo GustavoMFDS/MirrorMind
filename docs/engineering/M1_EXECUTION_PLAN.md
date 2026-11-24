@@ -8,8 +8,8 @@ Current state: API scaffold and ScenarioSpec validation are
 implemented; bounded synthetic preflights, review-only staging,
 offline retail baselines and release-aware evaluation exist as
 **experimental local slices**. Authorized evidence ingestion,
-empirical forecasting, decision evaluation and WorldKernel adapter
-remain unimplemented.
+empirical forecasting, decision evaluation and WorldKernel SDK
+execution adapter remain unimplemented.
 
 ## 1. Dependency-ordered milestones
 
@@ -42,6 +42,14 @@ an exact-result digest. It is interface-only: no producer, ranking, API,
 storage, actual engine output or action permission exists. M1F-02 remains the
 first runnable end-to-end decision comparison and still depends on an actual
 compatible simulation path and the named M1 predecessors.
+
+M1E-01 now has a pure, fail-closed request mapping for the inspected
+`retail.inventory` `0.1` to WorldKernel `retail.inventory.demo` `demo-1`
+contract. It requires explicit item/day/order units and operator-configured
+limits, and rejects unresolved evidence/forecast refs, interventions and
+unknown state or parameters. It constructs JSON only. M1E-02 remains blocked
+on B-04 for a pinned compatible engine and actual SDK execution; no simulation
+capability is promoted.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not

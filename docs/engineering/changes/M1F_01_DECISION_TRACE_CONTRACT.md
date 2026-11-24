@@ -148,7 +148,11 @@ digest dependency.
   failed before job start: [test run 45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
   and [symbol-catalog run 45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
   carry the B-08 account payment/spending-limit annotation. This is not an
-  observed test failure; no remote test result is inferred.
+  observed test failure; no remote test result is inferred. The later docs
+  head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` also failed before job
+  start on [test run 45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041)
+  and [symbol-catalog run 45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150)
+  with the same account billing annotation.
 - Known limitations / follow-up: M1F-02 must produce and replay an actual
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
   remain separate. B-07/B-08 still block the exact full gate/official CI

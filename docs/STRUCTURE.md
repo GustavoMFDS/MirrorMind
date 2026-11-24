@@ -57,7 +57,7 @@ MirrorMind/
 - `core/` holds only cross-module contracts and shared primitives. Avoid a miscellaneous "utils" or global service locator.
 - `modules/` adds a new feature package **only when implementation and tests exist** (future evidence, forecasting, agents, decisions, governance).
 - Sector-specific logic will live in a separate `domains/` adapter package once the retail MVP is implemented. No retail dependency inside platform modules.
-- `modules/simulation/gateway.py` defines the interface to WorldKernel. No WorldKernel import in the platform's core; the optional adapter will be added later.
+- `modules/simulation/gateway.py` defines the execution interface, while `modules/simulation/worldkernel_mapping.py` builds one strict request without importing or running WorldKernel. No WorldKernel import belongs in MirrorMind core; a pinned optional SDK executor remains future work.
 - `tests/unit/` validates isolated contracts and algorithms; `tests/integration/` validates HTTP and adapters. Add an `e2e/` suite only when a real end-to-end flow exists.
 - Future React UI, background workers, and deployment manifests get dedicated `apps/` or `infra/` directories **only when needed**. Do not create empty directories or microservices prematurely.
 - Direct endpoint imports remain `uvicorn mirrormind.api:app` for compatibility.

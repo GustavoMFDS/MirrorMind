@@ -1,0 +1,140 @@
+# Change request — Strict WorldKernel request mapping
+
+## 1. Goal in plain language
+
+**Current behavior:** MirrorMind validates `ScenarioSpec` values, while
+`SimulationGateway` is only a protocol. WorldKernel independently exposes a
+local JSON exchange, but its request is not interchangeable with
+`ScenarioSpec`.
+
+**Desired behavior:** add a pure, deterministic mapper for the one reviewed
+built-in retail world. Require an exact MirrorMind world/version pair, an
+explicit compatible unit context, a supported state and parameter shape, and
+operator-configured step/run/transition limits. Reject references or
+interventions that the exchange cannot faithfully represent. The mapper must
+not import, install, start or call WorldKernel.
+
+**Why:** M1E-01 is a P0 dependency for an actual optional engine adapter. A
+tested translation boundary can be completed independently while the engine
+pin and runtime acceptance remain blocked by B-04.
+
+**Out of scope:** installing or vendoring WorldKernel, execution, result
+parsing, HTTP or process adapters, timeout/cancellation enforcement, model
+validity, forecasts, recommendations, persistence, public API changes and
+real retail data.
+
+### External contract inspected
+
+The connected `GustavoMFDS/WorldKernel` `main` contents were inspected on
+2026-11-24: `docs/EXCHANGE.md`, `docs/TRUSTED_WORLD_VERSIONS.md`,
+`docs/RESOURCE_LIMITS.md`, `src/worldkernel/adapters/exchange.py`,
+`src/worldkernel/examples/bootstrap.py` and
+`src/worldkernel/examples/inventory.py`. The v1 request has a strict root
+field set, and the built-in `retail.inventory.demo` world is registered as
+`demo-1`. Its step uses daily demand, stock, reorder point and reorder
+quantity; replenishment is immediate and does not model lead time. The
+registration revision is metadata, not a signed or immutable release. This
+review is not a runtime pin or compatibility certification.
+
+## 2. Acceptance criteria
+
+- [x] Map only `retail.inventory` version `0.1` to the exact trusted exchange
+  world `retail.inventory.demo` version `demo-1`.
+- [x] Require explicit `item`, `day` and `order` unit declarations; validate
+  required inventory state and parameters as non-negative integers.
+- [x] Reject unknown/missing state or parameters, every unsupported
+  intervention, evidence or forecast references, and unit/world revisions
+  outside the allowlist.
+- [x] Enforce operator-owned limits supplied separately from `ScenarioSpec`;
+  reject horizon, run count and total transitions over those limits and put
+  those same limits in the v1 request.
+- [x] Produce a deterministic JSON-compatible request without importing or
+  requiring the WorldKernel package; do not execute the request.
+- [x] Keep API responses and capability claims unchanged; the adapter remains
+  planned and actual engine execution remains unverified.
+- [x] Add positive and adverse unit tests, a runnable mapping example, a
+  source walkthrough, learning/debugging guidance, precise evidence limits,
+  and reviewed atlas/catalog coverage.
+
+## 3. Impact map
+
+| Layer | Relevant file/symbol | Change? | Evidence / tests |
+| --- | --- | --- | --- |
+| HTTP/API | `api/routes/scenarios.py`, `api/routes/system.py` | No route or capability change | Existing API contract remains authoritative; no engine import path added |
+| Core input | `core/contracts.py::ScenarioSpec` | No schema change | Existing contract tests; mapper rejects unrepresentable values |
+| Simulation mapping | `modules/simulation/worldkernel_mapping.py::build_worldkernel_exchange_request` | Add pure strict mapping and operator-limit/unit context types | New unit test module proves allowlist, deterministic construction and fail-closed cases |
+| Optional dependency | `pyproject.toml` | No WorldKernel dependency | Import guard in unit tests |
+| Documentation/evidence | engineering maps, guide, CR, atlas, evidence map | Update | Catalog, atlas, evidence and capability guards |
+| External project | WorldKernel | Read-only contract inspection | No cross-repository edit; B-04 remains for pinned runtime acceptance |
+
+## Data and trust review
+
+All test/example values are synthetic. The mapping does not verify source
+rights, unit provenance, world code identity or registered-world trust. The
+unit context is an explicit caller assertion. `demo-1` identifies the remote
+trusted registration manifest entry, not a cryptographic artifact. Caller
+data cannot raise the separately supplied operator caps, but the mapper alone
+does not authenticate who constructed those caps or enforce wall-clock,
+worker, memory or server budgets.
+
+## 4. Compatibility and risks
+
+No `ScenarioSpec` or HTTP schema changes. Existing inputs that include an
+unsupported intervention or omit a required model input continue to validate
+as scenarios but fail at the new mapping boundary. This is intentional
+fail-closed behavior: the current WorldKernel demo otherwise supplies its own
+default demand/reorder values. The mapper returns a plain request object only;
+it makes no runtime, forecast, business-validity or security guarantee.
+
+## 5. Implementation plan
+
+1. Confirm the MirrorMind scenario, gateway and M1 backlog plus the current
+   WorldKernel exchange/handler contract. Keep the cross-repository boundary
+   read-only.
+2. Write tests for an exact mapping, unit and version checks, unrepresentable
+   references/interventions, strict state/parameter shapes and operator caps.
+3. Implement one pure module with no WorldKernel import and run the example.
+4. Document the execution boundary, limitations, source trace, tests and
+   exercises; keep capability status planned.
+5. Regenerate and check the symbol catalog, reviewed atlas, evidence and
+   capability metadata; run focused and applicable local gates.
+
+## 6. Evidence after implementation
+
+- Branch: `codex/m1e-01-worldkernel-mapping`, stacked on the M1F-01 branch;
+  PR creation follows this local verification.
+- Modified symbols: `SUPPORTED_WORLD_MAPPINGS`,
+  `WorldKernelOperatorLimits`, `InventoryWorldUnitContext` and
+  `build_worldkernel_exchange_request` in
+  `src/mirrormind/modules/simulation/worldkernel_mapping.py`.
+- Tests: `tests/unit/test_worldkernel_mapping.py` passed **25 tests**;
+  `python -m pytest -q --ignore=tests/integration/test_api.py` passed **731
+  tests**. The API import guard loads FastAPI while rejecting every
+  `worldkernel` package import.
+- Example: `python examples/m1e_01_worldkernel_mapping.py` ran twice with
+  identical output. It prints a request; it does not execute one.
+- Quality: Ruff passed for `src`, `tests` and the new example. Symbol catalog,
+  atlas coverage, evidence and capability guards, direct capability-handler /
+  ledger parity, and `git diff --check` passed.
+- Evidence claim: `MM-WKMAP-001` cites
+  `tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
+- Local versus official: the canonical suite excluded
+  `tests/integration/test_api.py` because B-07 blocks its local socket-pair
+  startup. Official CI has not run on this branch yet; B-08 already records
+  account billing/spending-limit failures on PRs #52–#54. No CI success is
+  claimed.
+- Capability and compatibility: no API or capability ledger changes;
+  `worldkernel_adapter` remains planned. `ScenarioSpec` schema is unchanged.
+- Data and provenance: fictional values; explicit unit context is an
+  assertion, not source evidence. WorldKernel `demo-1` is registration
+  metadata, not immutable code identity.
+- Deferred work / blockers: B-04 still blocks a pinned compatible SDK,
+  registered-world execution and actual result validation. The mapper does
+  not enforce worker/server quotas, timeout, cancellation, memory or CPU.
+- Reproduction:
+  `python -m pytest -q tests/unit/test_worldkernel_mapping.py`;
+  `python examples/m1e_01_worldkernel_mapping.py`;
+  `python scripts/docs/catalog.py --check`;
+  `python scripts/docs/coverage.py --check`;
+  `python scripts/docs/evidence.py --check`;
+  `python scripts/docs/capabilities.py --check`.

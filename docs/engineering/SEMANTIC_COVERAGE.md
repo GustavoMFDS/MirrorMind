@@ -59,6 +59,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step staged rolling origin baselines and abstentions; [method guide](M1_STAGED_ROLLING_BASELINES.md) |
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
 | [`src/mirrormind/modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py) | R | `SimulationGateway` Protocol and `SimulationSummary` model, **no live adapter**; [API guide](API_WALKTHROUGH.md) |
+| [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | G | Pure allowlisted `ScenarioSpec` to WorldKernel v1 request construction with explicit units and operator limits; no execution; [walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) |
 
 ## Capability readiness — do not confuse existence with deployment
 
@@ -67,7 +68,8 @@ sources without relying on a manually maintained file-count assertion.
 | Health endpoint | Implemented in scaffold | Actual endpoint regression; not a dependency readiness probe |
 | Scenario contract shape and two cross-field rules | Implemented validation only | Pydantic unit and API tests; still no authorization or execution |
 | Local retail synthetic evidence flow | Experimental composition only | Generated fixture tests; no real-source rights, publisher provenance, authorized ingestion or API execution |
-| SimulationGateway Protocol | Interface only | A concrete adapter, translation/compatibility tests and engine execution |
+| SimulationGateway Protocol | Interface only | A concrete executor and validated engine result; pure request translation now has separate unit evidence |
+| WorldKernel request mapping | Pure local translation only | A pinned optional SDK adapter, registered-world execution, result validation and runtime failure evidence |
 | WorldKernel execution | Planned | Optional pinned adapter, trusted world registry, budgets, actual results |
 | Evidence ingestion/RAG | Planned | Permission checks, provenance, retention, source-specific tests |
 | Forecasting | Planned | Temporal holdout, leakage prevention, baselines, uncertainty evaluation |

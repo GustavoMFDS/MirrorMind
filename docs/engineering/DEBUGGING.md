@@ -158,3 +158,17 @@ helper and its unit tests for product-day validation and seven-day history
 rules. Do not log the typed projection or identifiers while debugging. A
 stable fixture digest and matching cutoff still do not verify publisher
 availability, source rights or demand completeness.
+
+## WorldKernel request mapping rejects a retail scenario
+
+Read the [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
+[`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py).
+Run `python -m pytest -q tests/unit/test_worldkernel_mapping.py`. Check the
+exact `world_type`/`world_version` allowlist, explicit `item`/`day`/`order`
+unit context, required starting stock and daily demand, and the separately
+configured operator ceilings. Interventions and evidence/forecast references
+are intentionally unsupported. The existing `examples/retail-scenario.json`
+fails mapping because it has an intervention and omits daily demand; do not
+add hidden defaults to make it pass. This module only constructs a request.
+It does not verify remote package identity, run the simulation, enforce
+wall-clock or memory limits, or validate result payloads.

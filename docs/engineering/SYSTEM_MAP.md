@@ -1,10 +1,10 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and current stacked M1B-02/M1C-01/M1F-01 branch work. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight and a fixed-split retail baseline evaluation are experimental. The new decision trace result schema is interface-only. No authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the stacked M1B-02/M1C-01/M1F-01/M1E-01 branch work. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight and a fixed-split retail baseline evaluation are experimental. The decision trace result schema is interface-only. The WorldKernel request mapper is a pure, fail-closed translation only; no engine call, authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
-HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. The `modules/simulation/gateway.py` interface defines an engine-neutral boundary; it does **not** execute WorldKernel simulations yet.
+HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. Separately, a trusted local caller can pass `ScenarioSpec`, explicit units and operator limits to `modules/simulation/worldkernel_mapping.py` to construct a WorldKernel v1 request. The `modules/simulation/gateway.py` interface still has no executor and the mapper does **not** execute WorldKernel simulations.
 
 Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/scenarios/validate`. The externally declared capabilities must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
 
@@ -13,6 +13,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py); no producer, API or action execution |
+| Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py); no engine import or execution |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
