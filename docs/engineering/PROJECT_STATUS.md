@@ -66,17 +66,20 @@ Exact local gate evidence for M1E-03 code commit `09d047b431cc4c50fb6d1abdb88a49
 
 ## Current continuation — 2026-11-24
 
-The checkout is now `codex/m1f-02-synthetic-decision-workflow` at
+The M1F-02 implementation commit is
 `6a1c960de684a1786809f61ab7bf919371bf9cd1`. Draft [PR #59](https://github.com/GustavoMFDS/MirrorMind/pull/59)
 targets the published dependency branch `codex/m1f-02-dependency-stack`
 (`c17d505ed29a4903f04cbb32760a34b3865bf6b5`), which contains the local
 conflict-resolved combination of open PRs #58 and #56. PR #59 is mergeable
-against that branch and remains draft; no dependency PR was merged.
+against that branch and remains draft; no dependency PR was merged. The
+documentation/evidence follow-up commit
+`0e18005d01ce481e7f3aba094649f347ec4b26dc` also passed the exact local gate.
 
-The exact commit passed `scripts/local_quality_gate.py` at 2026-11-24
-18:15:20 UTC: 766 tests and all six checks (pytest, Ruff, symbol catalog,
+The implementation commit passed `scripts/local_quality_gate.py` at
+2026-11-24 18:15:20 UTC; the docs follow-up passed it again at 18:26:08 UTC.
+Each run recorded 766 tests and all six checks (pytest, Ruff, symbol catalog,
 atlas, evidence and capability). One existing Starlette/httpx deprecation
-warning was reported. This is local-only evidence. GitHub Actions runs
+warning was reported in each. This is local-only evidence. GitHub Actions runs
 [45457848087](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457848087)
 and [45457847930](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457847930)
 for the PR #59 head both failed before repository steps; GitHub exposed zero
