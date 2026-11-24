@@ -158,3 +158,17 @@ helper and its unit tests for product-day validation and seven-day history
 rules. Do not log the typed projection or identifiers while debugging. A
 stable fixture digest and matching cutoff still do not verify publisher
 availability, source rights or demand completeness.
+
+## Fictional evidence retrieval misses or returns an unexpected citation
+
+Reproduce with [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py)
+and the [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md). For an empty
+result, check the query tokens and the fixed collection/principal scope before
+changing ranking. For a scope regression, run
+[`test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py)
+and confirm filtering still precedes tokenization and score construction.
+For a citation mismatch, compare the exact source slice at the reported
+Python code-point offsets, then recompute SHA-256 over that excerpt's UTF-8
+bytes. Do not put denied IDs, hidden content or raw queries in logs. BM25
+scores are ranking values, not relevance probabilities. The caller-supplied
+scope is not authentication, and every returned excerpt remains untrusted.

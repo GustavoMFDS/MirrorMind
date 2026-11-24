@@ -12,7 +12,7 @@ and the [shared contracts](CONTRACT_WALKTHROUGH.md).
 | --- | --- | --- |
 | `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system and scenario routers | Running a worker, starting an agent, retrieving documents or creating a database |
 | `system.health()` | `GET /health`, HTTP 200 and `{"status":"ok","service":"mirrormind-api"}` | Readiness of a future datastore/forecast/WorldKernel engine |
-| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including the synthetic retail evidence and evaluation flows) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
+| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including synthetic retail flows and `local_fictional_evidence_retrieval`) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
 | `scenarios.validate_scenario(spec)` | `POST /v1/scenarios/validate`; Pydantic validates v0.1 `ScenarioSpec`, returns a summary with `validated_not_executed` | Forecast, RAG, simulation, approval, audit or budget enforcement |
 
 `mirrormind.api:app` is the stable import expected by uvicorn.
@@ -59,6 +59,12 @@ reviewed ledger; matching labels do not establish the semantic truth of a
 capability claim. The Windows `TestClient` test currently cannot create its
 asyncio socket pair in this execution environment; a direct handler check
 does not substitute for HTTP runtime verification (see [B-07](BLOCKERS.md)).
+
+`local_fictional_evidence_retrieval` follows the same library-only boundary:
+its fixed demo example uses generated text and a caller-declared scope. There
+is no retrieval HTTP route, authentication or real-source authorization.
+The broader `evidence_and_rag` capability remains `planned`; see the
+[M2 walkthrough](M2_EVIDENCE_RETRIEVAL.md) and [capability ledger](CAPABILITY_LEDGER.json).
 
 ```bash
 python -m pytest -q tests/integration/test_api.py

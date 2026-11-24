@@ -838,6 +838,24 @@ release dates and positive-line units remain unverified proxies.
 The capability remains `interface_only`; `decision_evaluation` remains
 `planned`. The schema neither creates traces nor validates external records.
 
+## 53. Permission-filtered fictional evidence retrieval (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/retrieval/__init__.py`](../../src/mirrormind/modules/retrieval/__init__.py) | Namespace only; no import-time indexing or network activity |
+| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | Strict immutable bounded query, access-context, document, citation and result models |
+| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | Generated fictional corpus and fixed local demo principal/collection |
+| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | Scope-first in-memory BM25 ranking, stable tie ordering and exact source-offset/digest mapping |
+| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | Deterministic bounded local CLI; no public route, persistent storage, provider or arbitrary file access |
+| [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope filtering before tokenization, duplicate-ID rejection, citation integrity, deterministic ranking, limits and untrusted-text regressions |
+| [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | Deterministic CLI replay, citation presence, query omission and generic oversized-input failure |
+| [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Architecture, contracts, BM25, reproduction, security, test meaning, diagnostics and exercises |
+| [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance, impact map and implementation evidence |
+
+The capability is `experimental`; access context is a caller assertion, not
+authentication. `evidence_and_rag` remains `planned` and no retrieval route
+or real-source permission is provided.
+
 
 ## Continuous engineering handoff and execution register
 

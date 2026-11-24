@@ -11,7 +11,7 @@ historical development notes, not a second mutable task tracker.
 
 - **MM-M0 — Completed scaffold:** FastAPI, `/health`, `/v1/capabilities`, scenario contract validation, tests, Docker and CI, decision log.
 - **MM-M1 — Planned retail fundamentals:** ingest permitted M5 subset, validate cutoff, backtest two demand models, run first inventory simulation through gateway.
-- **MM-M2 — Planned AI application:** evidence/RAG, agent tool workflow, traceable scenario analysis, UI and human review.
+- **MM-M2 — In progress, not accepted:** M2-01 now has an experimental fictional, in-memory retrieval slice with scope filtering and citations. Authenticated evidence/RAG, retrieval evaluation, tool-using agents, traceable scenario workflow, UI and human review remain open acceptance work.
 - **MM-M3 — Planned engineering:** durable async jobs, token/call and compute budgets enforced, tracing, RBAC, tenant separation, failure recovery and load tests.
 - **MM-M4 — Planned generalization:** at least one *different* domain adapter, versioned contracts and validated WorldKernel integration.
 

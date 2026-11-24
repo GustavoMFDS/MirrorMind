@@ -491,3 +491,20 @@ cost cannot be encoded as zero. Compute `result_sha256`, create an approved
 `HumanReview`, then change one forecast value without changing the digest and
 predict the rejection. Explain why this proves local content binding but
 does not authenticate a reviewer, data source or simulation.
+
+## Guided exercise — verify scope-first evidence retrieval (35 minutes)
+
+Read the [M2 evidence retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md),
+[`contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py),
+[`index.py`](../../src/mirrormind/modules/retrieval/index.py) and
+[`fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py).
+Trace how `EvidenceAccessContext` filters documents before `_token_spans`
+builds the index. Run
+`python -m pytest -q tests/unit/test_evidence_retrieval.py` and explain what
+the denied-record test would observe if tokenization moved before filtering.
+For one emitted result, verify that the cited Python string slice equals the
+excerpt and recompute SHA-256 over UTF-8 bytes. Inspect the injection-like
+fixture and explain why retrieval marks it `untrusted_evidence` without
+creating an instruction or tool call. Finally, change the fixed demo scope in
+a practice branch and explain why that is a local test input, not an identity
+or authorization mechanism.

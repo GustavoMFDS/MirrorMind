@@ -866,5 +866,47 @@
     "test": "tests/unit/test_decision_trace.py",
     "function": "test_valid_trace_keeps_decision_evidence_categories_separate",
     "limitation": "Synthetic contract validation proves local type/reference/cutoff structure only. Caller references are unauthenticated; no evidence, forecast, simulation, reviewer identity, authorization or decision execution is verified."
+  },
+  {
+    "id": "MM-RETR-001",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_query_filters_documents_before_ranking_and_never_discloses_denied_records",
+    "limitation": "The local index excludes the fictional denied document before tokenization, scoring and output. The caller-declared context is not authenticated identity, production authorization or tenant isolation."
+  },
+  {
+    "id": "MM-RETR-002",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_retrieval_citation_span_matches_source_and_digest",
+    "limitation": "The excerpt matches a generated fixture substring at Python code-point offsets and its UTF-8 digest. This does not authenticate an external source, publisher, freshness or rights."
+  },
+  {
+    "id": "MM-RETR-003",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_retrieved_instruction_like_fixture_remains_untrusted_evidence",
+    "limitation": "An instruction-like fictional excerpt retains a fixed untrusted label and exposes no tool fields. No model or future executor consumes it, so downstream prompt-injection safety is not established."
+  },
+  {
+    "id": "MM-RETR-004",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/integration/test_m2_evidence_retrieval_cli.py",
+    "function": "test_evidence_retrieval_cli_replays_cited_results_and_rejects_oversized_query",
+    "limitation": "The fixed local CLI replays generated results and rejects oversized input without echoing the query. It proves no deployment, authenticated access, real data or external service behavior."
+  },
+  {
+    "id": "MM-RETR-005",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_duplicate_ids_are_rejected_before_permission_filtering",
+    "limitation": "Duplicate identifiers across visible and denied fictional records are rejected with a generic error. The check does not authenticate records or establish source identity."
+  },
+  {
+    "id": "MM-RETR-006",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_contracts_reject_extra_fields_coercion_oversized_text_invalid_refs_and_mutation",
+    "limitation": "The local strict Pydantic models reject malformed fixture requests and mutation. This does not secure an HTTP boundary, validate external source references or authenticate caller scope."
   }
 ]

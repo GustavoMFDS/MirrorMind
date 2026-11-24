@@ -1,0 +1,151 @@
+# Change request — M2-01 permission-filtered evidence retrieval
+
+> Scope: a bounded, deterministic in-memory retrieval slice over fictional
+> evidence. This request does not add real ingestion, authentication, an LLM,
+> a persistent index or an agent.
+
+## 1. Goal in plain language
+
+**Current behavior:** `src/mirrormind/modules/evidence/snapshots.py` stages
+caller-supplied bytes and `intake_review.py` prepares non-authorizing review
+metadata. Neither module searches documents or maps retrieval hits to source
+citations. The evidence package docstring explicitly limits it to staged
+primitives. `GET /v1/capabilities` still reports `evidence_and_rag` as planned.
+
+**Desired behavior:** provide strict typed document, access-context, query,
+hit, citation and result contracts; build an immutable in-memory index from a
+small fictional fixture; filter documents by the caller-provided principal
+and collection scope **before** tokenization or ranking; then return stable
+lexical hits with excerpt offsets and a content digest. Retrieved text is
+always labeled untrusted evidence. A local CLI demonstrates the flow using a
+fixed fictional principal and collection.
+
+**Why:** M2-01 is the first grounded-evidence product slice and a dependency of
+retrieval evaluation and later tool orchestration. A readable fictional
+example lets engineers verify access filtering and citation integrity before
+any external source, identity system or model provider is approved.
+
+**Out of scope:** public retrieval API, user authentication, real-source
+authorization, file/URL acquisition, persistence, vector embeddings, an LLM,
+tool execution, document instruction interpretation or production guarantees.
+The existing `evidence_and_rag` capability stays planned; a narrow
+`local_fictional_evidence_retrieval` capability may be exposed as experimental.
+
+## Capability status change
+
+- Previous: `evidence_and_rag` is `planned` in
+  [CAPABILITY_LEDGER](../CAPABILITY_LEDGER.json).
+- Proposed: keep that broad capability `planned`; add
+  `local_fictional_evidence_retrieval` as `experimental` after the local
+  example and tests exist.
+- Production behavior: no authenticated or externally served retrieval.
+- Test selectors: added after implementation; they must prove permission
+  filtering before ranking, exact citation spans, deterministic ranking,
+  bounded query/index inputs, and untrusted-content labeling.
+- `GET /v1/capabilities`: add only the experimental local-library declaration;
+  no retrieval route is proposed because the scaffold has no authentication.
+
+## 2. Acceptance criteria
+
+- [x] Strict immutable contracts reject unknown fields, coercion, blank or
+  oversized text, invalid references, duplicate document IDs, and out-of-range
+  `top_k` or corpus bounds.
+- [x] Index construction retains only documents visible to the supplied
+  principal and collection scope; filtering occurs before tokenization, query
+  scoring and top-k selection. Results reveal no denied document names,
+  counts, snippets or citations.
+- [x] The fixed lexical algorithm is deterministic and returns citation
+  offsets whose excerpt equals the exact source substring; a SHA-256 digest
+  binds the cited excerpt bytes.
+- [x] Every hit labels source text `untrusted_evidence`. Injection-like fixture
+  text remains quoted evidence and creates no instruction, role, tool call,
+  network access or write.
+- [x] The CLI accepts only bounded query and top-k options and uses only a
+  generated fictional fixture with a fixed local access context.
+- [ ] The capability ledger, live `/v1/capabilities` parity test, evidence map,
+  atlas, symbol catalog, system map, API capability docs, debugging notes,
+  learning exercise and source walkthrough describe the implemented boundary.
+- [ ] Full local quality gate passes on a committed SHA. No real dataset or
+  provider evidence is claimed.
+
+## 3. Impact map (confirmed before implementation)
+
+| Layer | Relevant file/symbol | Change? | Evidence / tests |
+| --- | --- | --- | --- |
+| Entrypoint | `examples/m2_evidence_retrieval.py` | New local demonstration; no HTTP route | New deterministic CLI integration test |
+| Core implementation | `src/mirrormind/modules/retrieval/contracts.py`, `index.py`, `fictional_fixture.py` | New strict contracts, in-memory permission-filtered index and fictional corpus | New unit tests for bounds, scope, ranking, citations and untrusted text |
+| State / persistence / API | `src/mirrormind/api/routes/system.py`; no database or retrieval route | Add one experimental capability string; no identity, storage or public retrieval | Existing API capability parity test plus capability checker |
+| Calling components | No current retrieval callers; CLI will call the local retrieval service | New CLI caller only | CLI replay and error tests |
+| Downstream consumers | Future M2-02 retrieval evaluation and M2-03 tool registry | No consumer changes in this slice | Contracts expose evidence/citation refs; no agent consumes them yet |
+| Existing evidence staging | `src/mirrormind/modules/evidence/snapshots.py`, `intake_review.py` | No change; these remain separate, non-authorizing input/review primitives | Existing staging and review tests remain applicable |
+| External projects/contracts | None | No change | No cross-repository dependency |
+
+Confirmed links come from the current source imports and Graphify traversal:
+the existing evidence modules stage/review local bytes; retail evaluation
+consumes domain-specific records; capability reporting is a separate route.
+No current source path calls a retriever. Future identity integration and
+consumer wiring are hypotheses for M2-03/M3, not part of this change.
+
+## Data, modeling and decision review
+
+- Dataset card: not applicable to generated fictional text; any real-source
+  adapter requires a reviewed dataset card and permission evidence first.
+- Forecast model card: not applicable; this slice makes no forecast.
+- Decision trace: no decision outcome or recommendation is produced.
+- WorldKernel: not used.
+- Temporal leakage: no time-based scoring or forecast is performed.
+
+## 4. Constraints and risks
+
+Access context is a trusted-caller input, not authenticated identity. The CLI
+uses a hard-coded fictional scope only. No API exposes arbitrary caller scopes,
+and this capability must not be treated as production access control. The
+lexical score supports reproducible lookup only; it is not relevance
+validation, calibrated confidence or retrieval quality evidence. Result text
+is untrusted input and must not receive instruction or tool authority in a
+future agent. Corpus, query, token and result sizes need explicit bounds.
+
+## 5. Implementation plan
+
+1. Inspect M1F-01 trace contracts, existing evidence staging and capability
+   reporting; preserve those contracts.
+2. Add strict contracts and an immutable in-memory index with pre-search scope
+   filtering, deterministic lexical ranking and exact citation spans.
+3. Add generated fixture and bounded local CLI; keep retrieval off the
+   unauthenticated HTTP surface.
+4. Add normal, denied-scope, adversarial-content, citation, bounds and replay
+   tests.
+5. Update walkthrough, system/semantic maps, atlas, catalog, evidence and
+   capability records; run all required guards and the exact local gate.
+
+## 6. Evidence after implementation
+
+- Commit / PR: local feature commit pending; draft PR will target the PR #54 branch.
+- Modified symbols and files: `EvidenceDocument`, `EvidenceAccessContext`,
+  `EvidenceQuery`, `EvidenceCitation`, `RetrievedEvidence`,
+  `EvidenceRetrievalResult`, `InMemoryEvidenceIndex.build/search`, the fixed
+  fictional corpus, local CLI and capability declaration.
+- Tests executed, result, environment: 8 focused retrieval unit/CLI tests
+  passed before the full documented suite run; 714 repository tests passed
+  with `tests/integration/test_api.py` excluded. Ruff, symbol catalog, atlas,
+  evidence-map and capability-ledger guards passed on Python 3.13.5. The live
+  API parity test produced no output for 60 seconds and was interrupted under
+  existing blocker B-07; the canonical full gate is not claimed as passing.
+- Claim IDs and cited test path/function: `MM-RETR-001` through `MM-RETR-006`
+  in `docs/engineering/EVIDENCE_MAP.json`, covering permission filtering,
+  citation spans, untrusted text, CLI replay, duplicate IDs and strict model
+  validation.
+- Evidence/provenance/cutoff and uncertainty: fictional fixture only; no
+  empirical source or forecast claim.
+- Scope of human review and approval: none requested or represented; a local
+  fixture access context does not represent identity or source approval.
+- New or changed contracts: strict frozen Pydantic models with bounded IDs,
+  content, ACL lists, query size/top-k, excerpt size, citation offsets and
+  SHA-256 digest; index size is bounded to 100 documents.
+- Docs updated: M2 walkthrough, system map, semantic coverage, API walkthrough,
+  security guide, debugging guide, learning exercise, capability ledger,
+  evidence map, atlas, backlog, roadmap, blocker register and generated symbol
+  catalog.
+- Known limitations / follow-up: real identity and source authorization,
+  durable index, retrieval evaluation and agent/tool consumers remain open.
+- Independent explanation: pending implementation.
