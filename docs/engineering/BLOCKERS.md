@@ -15,6 +15,7 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
+| B-08 | Official GitHub Actions verification: PR #60 head `6374f0bb9a981271cb9340a190dcdebec6263cc9` has completed failures in runs `45476173736` (`symbol-catalog`) and `45476173796` (`test`). The connected diagnostics returned no annotations or logs, so the cause of these current failures is not established. | Successful required workflows on the exact reviewed head, or inspectable diagnostics and a verified resolution; local gates are not a substitute | Project owner / repository or Actions administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PR draft and report Actions status as failed |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
@@ -34,6 +35,10 @@ the named real integration, not a prohibition on design and tests.
   configured signer's reply, not independent truth. A service can
   freshly sign stale state; separately protected storage/keys and
   operational review are distinct from local code acceptance.
+- [PR #60](https://github.com/GustavoMFDS/MirrorMind/pull/60) remains
+  draft. Its current exact-head Actions runs failed; connected diagnostics
+  exposed neither annotations nor logs. Do not infer an account/billing cause
+  from the available current-run evidence.
 - [Gateway gate](WORLDKERNEL_GATEWAY_GATE.md) rejects unrepresentable
   fields; a simulated result must actually come from the named engine.
 - [Security expectations](../SECURITY.md) and [decision log](../DECISIONS.md)

@@ -4,11 +4,15 @@
 decision workflow while keeping MirrorMind domain-neutral.
 An accepted architecture is not equivalent to implemented AI.
 
-Current state: API scaffold and ScenarioSpec validation are
-implemented; a bounded [synthetic daily preflight](M1_DATA_PREFLIGHT.md)
-is an **experimental local example**. Evidence ingestion,
-forecasting, decision evaluation and WorldKernel adapter
-remain planned.
+At the merged PR #51 baseline, the API scaffold, ScenarioSpec validation
+and a bounded [synthetic daily preflight](M1_DATA_PREFLIGHT.md) existed.
+As of 2026-11-24, draft PRs #52–#59 add experimental evidence composition,
+matched synthetic baseline evaluation, uncertainty, strict simulation
+mapping, policy test-double comparison, a trace contract and a runnable
+synthetic decision workflow. These branches remain unmerged. They do not
+provide approved real ingestion, empirical forecast acceptance or actual
+WorldKernel execution. See [PROJECT_STATUS](PROJECT_STATUS.md) for pinned
+heads and evidence. The acceptance gates below remain unchanged.
 
 ## 1. Dependency-ordered milestones
 

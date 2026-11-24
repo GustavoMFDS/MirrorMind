@@ -40,25 +40,25 @@ in-memory implementation.
 
 ## 2. Acceptance criteria
 
-- [ ] A shared protocol module owns the existing response type, canonical
+- [x] A shared protocol module owns the existing response type, canonical
   signing message and wire serialization; the client keeps its current import
   surface and behavior.
-- [ ] A typed store contract reads a current record for one packet digest; no
+- [x] A typed store contract reads a current record for one packet digest; no
   database or server implementation is added.
-- [ ] A pure responder accepts only the fixed method, path, media type and
+- [x] A pure responder accepts only the fixed method, path, media type and
   canonical two-field query; malformed/duplicate/extra/encoded fields fail
   closed without echoing request data.
-- [ ] Valid fictional records produce a canonical response within 4096 bytes,
+- [x] Valid fictional records produce a canonical response within 4096 bytes,
   signed with the existing domain and a distinct configured Ed25519 service
   key, with a caller-supplied clock and a 1–120 second lifetime.
-- [ ] Missing scope, store outage, corrupt/mismatched records, key reuse,
+- [x] Missing scope, store outage, corrupt/mismatched records, key reuse,
   invalid configuration, malformed request, wrong nonce and wrong packet or
   snapshot scope have regression coverage. Service failure bodies do not leak
   store exceptions or request contents.
-- [ ] The existing client verifies a response produced by the responder, and
+- [x] The existing client verifies a response produced by the responder, and
   its resulting receipt still grants no publication, ingestion or forecast
   permission.
-- [ ] Update the source walkthrough, system map, debugging, learning, atlas,
+- [x] Update the source walkthrough, system map, debugging, learning, atlas,
   symbol catalog, evidence map, hub and task/status record; preserve the
   capability ledger/API parity because the responder is not externally
   exposed.
@@ -69,9 +69,10 @@ in-memory implementation.
 
 | Layer | Relevant file/symbol | Change? | Evidence / tests |
 | --- | --- | --- | --- |
-| Entrypoint | New `RemoteFenceHeadResponder.respond` in the service module | Add an in-process call only | New service tests in `tests/unit/test_atomic_governed_publisher.py` |
-| Protocol | New shared protocol module; existing client exports | Extract canonical type/helpers without changing bytes | Existing `test_remote_*` client tests and service/client round-trip |
+| Entrypoint | New `RemoteFenceHeadResponder.respond` in the service module | Add an in-process call only | `test_remote_head_service_*` selectors in `tests/unit/test_atomic_governed_publisher.py` |
+| Protocol | [`remote_fence_head_protocol.py`](../../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py); existing client exports | Extract canonical type/helpers without changing bytes | Existing `test_remote_*` client tests and service/client round-trip |
 | Core implementation | New immutable head record, storage `Protocol`, request/response contracts | Add; no persistent store | Normal, malformed, outage and scope regressions |
+| Local generated-artifact hygiene | [`.gitignore`](../../../.gitignore) | Ignore local Graphify products so generated caches remain local and do not enter tracked-file coverage | Atlas/catalog/evidence/capability checks |
 | State / persistence / API | None | No change | Capability parity remains unchanged |
 | Calling components | Current outbound client | Preserve | Existing client tests and service-produced response verification |
 | Downstream consumers | None | No change | No route or authorization consumer exists |
@@ -118,16 +119,32 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
 
 ## 7. Evidence after implementation
 
-- Baseline: `6374f0bb9a981271cb9340a190dcdebec6263cc9` on the reconciled PR #60
-  branch; `origin/main` is an ancestor and no local work was dirty.
-- Commit / PR: pending implementation and validation.
-- Modified symbols/files: pending implementation.
-- Tests executed and exact result: pending; no result is claimed yet.
-- Evidence claim IDs and test selectors: pending implementation.
+- Baseline: merged main `e4f05a152aefcf68fa8ec22f3baa3b61adb8519d`; the
+  starting working branch was clean at PR #60 head, and that branch remains
+  preserved locally as `codex/g01-current-head-service-stacked`.
+- Commit / PR: implementation commit `23bc97337d3691c5ec930c11086b45e3e2b3a940`;
+  draft PR creation follows the exact-head gate.
+- Modified symbols: `SignedRemoteFenceHead`, `_canonical_remote_message`,
+  `_signed_wire`, `_parse_signed_response`, `RemoteFenceHeadStore`,
+  `CurrentRemoteFenceHead`, `RemoteFenceHeadRequest`,
+  `RemoteFenceHeadResponse`, `RemoteFenceHeadResponder.__init__` and
+  `RemoteFenceHeadResponder.respond`.
+- Tests executed: four service selectors and seven existing remote-head
+  regressions passed on the source commit before rebase (11 passed); after
+  rebase, `tests/integration/test_api.py::test_health` passed with the
+  elevated local runner. Final exact-head gate is still pending.
+- Evidence claim IDs: MM-RHEAD-008 through MM-RHEAD-011, backed by the four
+  `test_remote_head_service_*` selectors in
+  `tests/unit/test_atomic_governed_publisher.py`.
 - Contract change: new in-process responder and storage read protocol; existing
   client wire/signature contract preserved.
-- Docs: this change request; implementation guide, source/navigation/evidence
-  references pending implementation.
+- Docs: `REMOTE_FENCE_HEAD_SERVICE.md`, client guide cross-reference, system
+  map, debugging, learning exercise, semantic map, repository atlas, evidence
+  map, roadmap, backlog/status and generated symbol catalog.
 - Known limitations: no live server, persistence, authentication, independent
   custody, nonce ledger, external integration or operational acceptance.
-- Reproduction: pending final implementation commands and exact SHA.
+- Reproduction: `.venv\Scripts\python.exe -m pytest -q
+  tests/unit/test_atomic_governed_publisher.py -k
+  "remote_head_service_ or remote_challenged_head or remote_response or
+  remote_head_distinct or remote_signed_head or remote_https_"`; final exact
+  gate command and SHA will be recorded after execution.

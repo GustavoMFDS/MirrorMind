@@ -22,6 +22,33 @@ and 6 planned. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
+## Live reconciliation — 2026-11-24
+
+`git fetch origin main` confirmed merged main PR #51 at
+`e4f05a152aefcf68fa8ec22f3baa3b61adb8519d`. PR #50 is merged; PRs #52–#60
+remain open in draft and are not merged-main capabilities. This table reflects
+the live code/PR inventory and the evidence recorded on each branch; it does
+not turn a local result into CI or acceptance evidence.
+
+| PR / task | Latest head and local evidence | Delivered scope / open gate |
+| --- | --- | --- |
+| [#52 / M1B-02](https://github.com/GustavoMFDS/MirrorMind/pull/52) | Head `5c307e426c43aee4179e3257d7d367214e8c3a63`; code `c51ab30370db47e9f7105c97f870008e4fc442c5` passed 696 tests; latest docs-only head still needs exact-head checks. | Synthetic local evidence composition only. No real ingestion; B-01/B-02 remain. |
+| [#53 / M1C-01, M1C-02](https://github.com/GustavoMFDS/MirrorMind/pull/53) | Head `210f0f382938a67e518df688cc4e19c03d3d7af6` passed the exact local gate with 700 tests. | Synthetic evidence-to-evaluation CLI; seasonal-naive and trailing-mean already compare on matched eligible origins. No empirical performance claim. |
+| [#54 / M1F-01](https://github.com/GustavoMFDS/MirrorMind/pull/54) | Head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed the exact local gate with 712 tests. | Immutable decision-trace contract only; no producer or decision execution. |
+| [#55 / M1E-01](https://github.com/GustavoMFDS/MirrorMind/pull/55) | Head `fcd478130c26c653d0d1d9f4d2f905bf24eaf3a9`; code/docs head `2330dc50a49bb80abc601b0635e5e7d4916ee283` passed 737 tests; later docs-only checks are recorded in the PR. | Strict WorldKernel request mapping only. B-04 still gates a compatible runtime and actual results. |
+| [#56 / M1D-01](https://github.com/GustavoMFDS/MirrorMind/pull/56) | Head `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0`; tested head `0c2e789256e381c2790c49a14c2acc7802d11b9d` passed 700 tests. | Synthetic calibration/holdout separation only; no empirical calibration under B-02. |
+| [#57 / M1B-01](https://github.com/GustavoMFDS/MirrorMind/pull/57) | Head `646e4db6991b1769c922cf87a0b85630039915da`; documentation guards passed; no source/tests changed. | Candidate-source review only. No dataset approval, download or ingestion. |
+| [#58 / M1E-03](https://github.com/GustavoMFDS/MirrorMind/pull/58) | Head `465a2f2c46fb6484aa2f0abea7920953ca4f0d00`; code `09d047b431cc4c50fb6d1abdb88a494a4c7f6f7f` passed 747 tests. | Fictional paired-policy test double. No WorldKernel execution; B-04 remains. |
+| [#59 / M1F-02](https://github.com/GustavoMFDS/MirrorMind/pull/59) | Head `a5951e49a78796908ecd1975c65052b5a2548cd7` passed 766 tests and 46 focused workflow/API/CLI tests. | Runnable synthetic workflow with abstention, trace and no-write boundary; simulation is a test double. Actual engine and approved-data gates remain. |
+| [#60 / M2-01](https://github.com/GustavoMFDS/MirrorMind/pull/60) | Head `6374f0bb9a981271cb9340a190dcdebec6263cc9`; exact local gate passed 720 tests and all six stages. Official Actions runs `45476173736` and `45476173796` failed; diagnostics returned no annotations or logs. | Fictional in-memory scope-first retrieval only; PR remains draft. No official CI success is claimed. |
+| G-01 / local draft branch | `codex/g01-current-head-service`, commit `23bc97337d3691c5ec930c11086b45e3e2b3a940`; focused code tests passed on the pre-rebase commit and are being rerun after rebase. | In-process signed response plus typed read-only store contract. No HTTP server, persistence, authentication or deployment. Exact-head gate and PR are pending. |
+
+PR-local gates are distinct from official Actions, review and merge. The M1
+branches implement synthetic or interface slices; none closes the approved
+real-source, empirical holdout or actual WorldKernel requirements. See the
+[blocker register](BLOCKERS.md) and the per-task change requests for precise
+acceptance boundaries.
+
 ## Architecture and actual execution boundaries
 
 | Area | Verified implementation / status | Missing product gate |
@@ -29,7 +56,7 @@ not a production-ready AI platform.
 | API and contracts | [FastAPI app](../../src/mirrormind/api/app.py), [system routes](../../src/mirrormind/api/routes/system.py), [scenario validation](../../src/mirrormind/api/routes/scenarios.py), [typed contracts](../../src/mirrormind/core/contracts.py) | No execution pipeline or tenant authorization implied |
 | Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
 | Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
-| Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
+| Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md), [G-01 in-process responder](REMOTE_FENCE_HEAD_SERVICE.md) | Persistent server, authenticated access, operational independence/custody, real source authorization |
 | Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol/summary | Actual compatible optional engine adapter, execution, result validation and budgets |
 | Decision, orchestration and UI | Design and review templates | Executable comparison, agent/RAG workflow, review interface |
 | Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |

@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the current G-01 branch. The API/contracts and simulation gateway interface exist; bounded local evidence and synthetic retail flows are experimental. G-01 adds an in-process challenged-head responder but no deployed service. No authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the current G-01 branch. Main contains the API/contracts, simulation gateway interface and local CSV staging. Draft PRs #52–#59 add experimental synthetic evidence/evaluation/decision slices but are not merged. G-01 adds an in-process challenged-head responder but no deployed service. No authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 

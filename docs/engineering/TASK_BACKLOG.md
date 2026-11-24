@@ -8,6 +8,16 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
+## Live reconciliation — 2026-11-24
+
+| State | Items / evidence | Continuation |
+| --- | --- | --- |
+| M1 synthetic slices in review | PRs #52–#59 are open drafts. They cover the existing evidence composition, matched-baseline evaluation, trace contract, mapping, test-double policies and synthetic decision workflow. | Reuse the implementations; do not describe any as merged or as approved-data/real-engine acceptance. Exact heads and gates are in [PROJECT_STATUS](PROJECT_STATUS.md). |
+| M1C-02 covered by PR #53 | The existing seasonal-naive and trailing-mean baselines compare the same eligible origins with a fixed split and withheld-target regressions. | Keep the task tied to review of #53; do not add a redundant third model without a justified evaluation design. |
+| M2-01 in review | PR #60 is open draft at `6374f0bb9a981271cb9340a190dcdebec6263cc9`; its fictional in-memory retrieval implementation passed the exact local gate with 720 tests. Official Actions failed on both current workflows. | Keep retrieval experimental and wait for human review; no official CI success is claimed. |
+| G-01 in progress | Branch `codex/g01-current-head-service` contains the in-process response handler, shared wire protocol and typed store contract at `23bc97337d3691c5ec930c11086b45e3e2b3a940`. The focused tests passed on the source commit before it was reapplied to main; post-rebase validation is pending. | Run the exact-head gate and open a draft PR. Keep this to the G-01 read/response slice; reassess M1 priorities before G-02. |
+| M1 external gates remain open | Approved source rights/availability, empirical holdout evidence and an actual compatible WorldKernel runtime are not supplied by fictional test fixtures. | Follow B-01/B-02/B-04; continue only independent bounded work and preserve abstention. |
+
 ## Conventions
 
 - `ready`: dependencies for the proposed bounded slice are satisfied.
