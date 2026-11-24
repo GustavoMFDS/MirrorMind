@@ -118,3 +118,13 @@ publisher-only backup rollback if the registry has survived unchanged.
 It does **not** independently protect either store, retrieve remote
 trusted freshness, or turn local equality into authorization. Existing
 caller-supplied offline fence semantics remain unchanged.
+
+## Opt-in nonce-challenged network read
+
+The [HTTPS current-head reader](REMOTE_FENCE_HEAD_CLIENT.md) supports
+a separately signed and challenge-bound claim of the latest head
+using a configured external service key and fixed endpoint.
+The client compares that claimed head with a complete local signed
+registry replay; no actual independent authority is deployed or
+operationally proven. Its read-only result must not become a
+separate non-atomic publication admission check.

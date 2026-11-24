@@ -785,3 +785,15 @@ delivery is provided, and none of these results grants permission.
 
 No independently operated current-head service, source permission
 grant, production custody or cross-file atomicity is implied.
+
+## 49. Experimental nonce-challenged remote signed current-head read
+
+| Tracked file | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/remote_fence_head_client.py`](../../src/mirrormind/modules/evidence/remote_fence_head_client.py) | Fixed HTTPS read, OS-generated nonce, separately verified signed service reply, bounded canonical wire format and exact local signed-registry comparison |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery/clock/packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
+| [`docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md`](REMOTE_FENCE_HEAD_CLIENT.md) | Request-response contract, trust boundaries, replay resistance and no independently deployed service |
+| [`docs/engineering/changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md`](changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md) | Scope, acceptance, impact map and deferred service operation |
+
+The client does not grant source rights, publish, ingest data, manage
+real service keys, or claim globally current external authority.

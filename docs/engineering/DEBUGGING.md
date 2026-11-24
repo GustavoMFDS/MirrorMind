@@ -97,3 +97,20 @@ last valid event was removed, **do not claim** independent freshness.
 Never repair by silently inserting unsigned records or granting
 publish/ingestion permission. A publisher write may race a registry
 comparison because there is no two-file transaction.
+
+## Challenged HTTPS current-head read fails or remote signer disagrees
+
+Inspect the [protocol and threat model](REMOTE_FENCE_HEAD_CLIENT.md)
+and [generated-key/fake HTTPS regressions](../../tests/unit/test_atomic_governed_publisher.py).
+Require an explicit trusted HTTPS domain with its fixed path;
+validate outbound CA/hostname and firewall separately, without
+disabling TLS checks or enabling redirects. A signed response must
+echo **the current random request nonce**, the correct source-review
+hash, the exact endpoint/service key and a 1–120-second UTC
+validity interval. A remote/local sequence or digest mismatch is
+not automatically evidence of attack: the remote service can be
+ahead, behind, stale or falsely signing a head. Preserve minimal
+hash evidence and verify each side with independent operators.
+Never log signer private keys or source rows, retry with stale
+pins, bypass on outage or use read receipt to authorize publishing.
+No live authority is deployed in the project.

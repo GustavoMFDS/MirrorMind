@@ -447,6 +447,29 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `c
 | `LocalOperatorGovernance.assess_operator` | method | `def assess_operator(self, operator_key_id: str, operator_public_key: bytes, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> OperatorPolicyAssessment` | — | [L421](../../../src/mirrormind/modules/evidence/operator_governance.py#L421) |
 | `LocalOperatorGovernance.append` | method | `def append(self, event: SignedOperatorPolicyEvent, *, expected_revision: int, expected_head_sha256: str, checked_on: date) -> OperatorPolicyRevision` | — | [L464](../../../src/mirrormind/modules/evidence/operator_governance.py#L464) |
 
+## `mirrormind.modules.evidence.remote_fence_head_client`
+
+Source: [`src/mirrormind/modules/evidence/remote_fence_head_client.py`](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `cryptography.exceptions`, `cryptography.hazmat.primitives.asymmetric.ed25519`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `ipaddress`, `json`, `mirrormind.modules.evidence.local_integrated_fence_registry`, `re`, `secrets`, `ssl`, `urllib.error`, `urllib.parse`, `urllib.request`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SignedRemoteFenceHead` | class | `class SignedRemoteFenceHead` | Remote service signature over one challenge-bound claimed current head. | [L42](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L42) |
+| `RemoteHeadComparison` | class | `class RemoteHeadComparison` | Local equality to an authenticated fresh reply, not source authorization. | [L59](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L59) |
+| `RemoteHeadComparison.receipt` | method | `def receipt(self) -> dict[str, int \| str \| bool]` | — | [L67](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L67) |
+| `_utc` | function | `def _utc(raw: str) -> datetime` | — | [L82](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L82) |
+| `_valid_endpoint` | function | `def _valid_endpoint(endpoint: str) -> None` | Avoid arbitrary URLs: an explicit fixed path, canonical public DNS, TLS. | [L91](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L91) |
+| `_canonical_remote_message` | function | `def _canonical_remote_message(head: SignedRemoteFenceHead) -> bytes` | All signed fields in a protocol-specific domain excluding signature. | [L117](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L117) |
+| `_signed_wire` | function | `def _signed_wire(head: SignedRemoteFenceHead) -> bytes` | Canonical complete signed JSON response; no raw source data. | [L161](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L161) |
+| `_parse_signed_response` | function | `def _parse_signed_response(raw: bytes) -> SignedRemoteFenceHead` | — | [L166](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L166) |
+| `_validate_remote_keys` | function | `def _validate_remote_keys(registry: LocalIntegratedFenceRegistry, trusted_service_keys: Mapping[str, bytes]) -> None` | — | [L198](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L198) |
+| `verify_challenged_remote_head` | function | `def verify_challenged_remote_head(registry: LocalIntegratedFenceRegistry, raw_response: bytes, *, requested_nonce_hex: str, service_id: str, endpoint: str, trusted_service_keys: Mapping[str, bytes], checked_at: datetime) -> RemoteHeadComparison` | Verify a supplied online reply and compare against signed local heads. | [L222](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L222) |
+| `_NoRedirect` | class | `class _NoRedirect` | — | [L288](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L288) |
+| `_NoRedirect.redirect_request` | method | `def redirect_request(self, request: object, file: object, code: object, message: object, headers: object, new_url: object) -> None` | — | [L289](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L289) |
+| `_https_read` | function | `def _https_read(endpoint: str, nonce_hex: str, packet_sha256: str) -> bytes` | Strict HTTPS GET, system CA chain, no redirects/proxies, bounded body. | [L296](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L296) |
+| `fetch_and_compare_remote_head` | function | `def fetch_and_compare_remote_head(registry: LocalIntegratedFenceRegistry, *, endpoint: str, service_id: str, trusted_service_keys: Mapping[str, bytes]) -> RemoteHeadComparison` | Opt-in network query. A response signature does not prove true latest state. | [L323](../../../src/mirrormind/modules/evidence/remote_fence_head_client.py#L323) |
+
 ## `mirrormind.modules.evidence.review_decisions`
 
 Source: [`src/mirrormind/modules/evidence/review_decisions.py`](../../../src/mirrormind/modules/evidence/review_decisions.py)

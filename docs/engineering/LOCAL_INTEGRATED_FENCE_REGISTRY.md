@@ -117,3 +117,15 @@ python scripts/docs/capabilities.py --check
 
 [Change request](changes/M1B_SEPARATE_DURABLE_FENCE_REGISTRY.md)
 documents scope, acceptance, non-goals and rollback path.
+
+## Optional challenged external-head comparison (not a deployed authority)
+
+The [experimental HTTPS current-head reader](REMOTE_FENCE_HEAD_CLIENT.md)
+can request a nonce-bound signed remote **claim** of current sequence and
+digest, then compare it to this separately persisted local registry
+and the governed publisher's verified local heads. A truly outside
+honest signer that remains newer can reject rollback of **both** local
+files. This repository does not deploy or operate that signer/server;
+independent operation, key custody, remote durability and correct
+head reporting remain unverified. Network mismatch fails closed and
+does not authorize subsequent publishing or ingestion.

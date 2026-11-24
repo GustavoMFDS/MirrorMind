@@ -494,3 +494,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   **No** independently operated remote current-head authority, key
   custody, two-file atomic transaction, live admission, licensed real
   ingestion or production forecasting was introduced.
+
+- **MM-M1b challenged HTTPS current-head read (experimental):**
+  The [read-only remote-head client](engineering/REMOTE_FENCE_HEAD_CLIENT.md)
+  can request a current sequence/digest using a per-request random nonce,
+  verify a separate service Ed25519 signature with short UTC validity,
+  and compare to the [local separately signed registry](engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md).
+  A *genuinely independent honest signer* that reports a newer head could
+  detect compatible rollback of both local SQLite files. No real service,
+  independent custody, server endpoint, signer deployment, real-source
+  ingestion or forecasts were implemented or contacted. A malicious
+  remote signer can freshly attest an old head and still pass.

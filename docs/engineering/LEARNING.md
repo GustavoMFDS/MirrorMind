@@ -433,3 +433,17 @@ then restore **both** DBs and explain why a valid old prefix still
 passes. Explain why independent hardware, key administration, external
 latest pinning and a safe update protocol are distinct unimplemented
 requirements, and why this journal is never a publication gate.
+
+## Guided exercise — a fresh signature is not a true latest head (35 minutes)
+
+Read the [challenged HTTPS client](../../src/mirrormind/modules/evidence/remote_fence_head_client.py),
+[protocol/trust guide](REMOTE_FENCE_HEAD_CLIENT.md) and
+[generated-key fake-response tests](../../tests/unit/test_atomic_governed_publisher.py).
+Sign a reply containing a new random nonce and a 70-second UTC
+validity window. Reuse that response against a second nonce and
+observe refusal. Restore *both* local SQLite files after signing a
+newer remote head; verify that a correct newer outside claim
+disagrees with the old local registry. Then freshly sign the old
+head with the new nonce and explain why a malicious remote signer
+still passes. Identify what a genuinely independent deployed
+authority and trusted key-custody process must add.

@@ -213,3 +213,13 @@ database alone by comparing both heads. No publisher write is
 conditionally admitted through this offline registry; publishing and
 registry updates have **no cross-file atomicity**, and whole-host
 rollback or lost current-head pins are outside its guarantees.
+
+## Challenged external head: outbound reader only
+
+The [experimental HTTPS head reader](REMOTE_FENCE_HEAD_CLIENT.md)
+can compare a nonce-bound, separately Ed25519-signed remote head
+claim with the current local signed registry and this local
+publisher's combined verified snapshot. No external signing service
+or head publication protocol was deployed, and the remote reader
+is **not** used in `publish`: checking a remote head before a
+separate write cannot establish cross-host transactional safety.
