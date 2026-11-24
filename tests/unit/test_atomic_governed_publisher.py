@@ -49,6 +49,9 @@ from mirrormind.modules.evidence.local_checkpoint_publisher import (
     _receipt_digest,
     _serialize,
 )
+from mirrormind.modules.evidence.local_integrated_fence_registry import (
+    LocalIntegratedFenceRegistry,
+)
 from mirrormind.modules.evidence.operator_governance import (
     GENESIS_POLICY_HEAD,
     OperatorPolicyRevision,
@@ -1217,3 +1220,254 @@ def test_dual_fence_transcript_bounded_dates_types_and_local_expiry(tmp_path):
     )
     with pytest.raises(ValueError, match="untrusted transition signer"):
         check_dual_fence_transcript(case, (future,), roster, witnesses)
+
+
+def local_fence_registry(case, roster, witnesses, *, path=None, create=False,
+                         gate=None, packet=None):
+    return LocalIntegratedFenceRegistry(
+        case["path"].parent / "separate-fence-registry.db" if path is None else path,
+        case["gate"] if gate is None else gate,
+        case["packet"] if packet is None else packet,
+        trusted_fence_keys=roster,
+        trusted_witness_keys=witnesses,
+        create=create,
+    )
+
+
+def test_separate_signed_fence_registry_persists_verifiable_heads_after_reopen(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    empty = registry.head(checked_on=NOW)
+    assert empty.authority_sequence == 0
+    assert empty.fence_sha256 == "0" * 64
+    with pytest.raises(ValueError, match="no signed registry head"):
+        registry.compare_local(checked_on=NOW)
+    signed = signed_integrated_fence(case, authority, authority_sequence=1)
+    link = dual_fence_link(signed, 0, "0" * 64, first, second)
+    committed = registry.append(
+        link, expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64, checked_on=NOW,
+    )
+    assert committed.authority_sequence == 1
+    assert committed.fence_sha256 == _fence_sha256(signed)
+    reopened = local_fence_registry(case, roster, witnesses)
+    assert reopened.head(checked_on=NOW) == committed
+    assert reopened.compare_local(checked_on=NOW) == committed
+    assert reopened.head(checked_on=NOW).receipt()["publication_authorized"] is False
+    assert reopened.head(checked_on=NOW).receipt()["ingestion_authorized"] is False
+    assert reopened.head(checked_on=NOW).receipt()["forecast_eligible"] is False
+    with sqlite3.connect(registry._path) as db:
+        row = db.execute("SELECT signed_json FROM signed_transitions").fetchone()[0]
+    assert "witness_signatures_hex" in row
+    assert "authority_sequence" in row
+    assert signed.signature_hex in row
+    assert "PRIVATE-SERIES" not in row
+    assert "OPERATOR_001" not in str(committed.receipt())
+
+
+def test_separate_registry_detects_publisher_only_rollback_but_not_both(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    f1 = signed_integrated_fence(case, authority, authority_sequence=1)
+    registry.append(
+        dual_fence_link(f1, 0, "0" * 64, first, second),
+        expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64, checked_on=NOW,
+    )
+    old_governed = tmp_path / "publisher-old-signed-state.db"
+    old_registry = tmp_path / "registry-old-signed-state.db"
+    shutil.copyfile(case["path"], old_governed)
+    shutil.copyfile(registry._path, old_registry)
+    revoked = revoke(case, enrolled)
+    assert revoked.revision == 2
+    f2 = signed_integrated_fence(case, authority, authority_sequence=2)
+    registry.append(
+        dual_fence_link(f2, 1, _fence_sha256(f1), first, second),
+        expected_authority_sequence=1,
+        expected_fence_sha256=_fence_sha256(f1), checked_on=NOW,
+    )
+    assert registry.compare_local(checked_on=NOW).authority_sequence == 2
+    shutil.copyfile(old_governed, case["path"])
+    assert registry.head(checked_on=NOW).authority_sequence == 2
+    with pytest.raises(ValueError, match="SQLite heads differ"):
+        registry.compare_local(checked_on=NOW)
+    # The two files lack any external immutable latest pin; restore BOTH.
+    shutil.copyfile(old_registry, registry._path)
+    stale = local_fence_registry(case, roster, witnesses)
+    assert stale.head(checked_on=NOW).authority_sequence == 1
+    assert stale.compare_local(checked_on=NOW).authority_sequence == 1
+
+
+def test_registry_atomic_cas_refuses_replay_stale_and_bad_predecessor(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    f1 = signed_integrated_fence(case, authority, authority_sequence=1)
+    link = dual_fence_link(f1, 0, "0" * 64, first, second)
+    result = registry.append(
+        link, expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64, checked_on=NOW,
+    )
+    with pytest.raises(ValueError, match="stale signed registry"):
+        registry.append(
+            link, expected_authority_sequence=0,
+            expected_fence_sha256="0" * 64, checked_on=NOW,
+        )
+    f2 = signed_integrated_fence(case, authority, authority_sequence=2)
+    mismatched = dual_fence_link(f2, 1, "f" * 64, first, second)
+    with pytest.raises(ValueError, match="missing, forked or reversed"):
+        registry.append(
+            mismatched, expected_authority_sequence=1,
+            expected_fence_sha256=result.fence_sha256, checked_on=NOW,
+        )
+    forged = replace(
+        dual_fence_link(f2, 1, result.fence_sha256, first, second),
+        witness_signatures_hex=("f" * 128, "f" * 128),
+    )
+    with pytest.raises(ValueError, match="authority or dual-witness signature"):
+        registry.append(
+            forged, expected_authority_sequence=1,
+            expected_fence_sha256=result.fence_sha256, checked_on=NOW,
+        )
+    assert registry.head(checked_on=NOW) == result
+    with sqlite3.connect(registry._path) as db:
+        assert db.execute("SELECT COUNT(*) FROM signed_transitions").fetchone()[0] == 1
+
+
+def test_registry_concurrent_same_head_only_one_signed_successor_commits(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    f1 = signed_integrated_fence(case, authority, authority_sequence=1)
+    branch = replace(
+        f1, expires_on=f1.expires_on - timedelta(days=1),
+        signature_hex="0" * 128,
+    )
+    f2 = replace(
+        branch, signature_hex=authority.sign(_canonical_fence_message(branch)).hex()
+    )
+    candidates = (
+        dual_fence_link(f1, 0, "0" * 64, first, second),
+        dual_fence_link(f2, 0, "0" * 64, first, second),
+    )
+    barrier = Barrier(2)
+
+    def race_append(link):
+        independent = local_fence_registry(case, roster, witnesses)
+        barrier.wait()
+        try:
+            return ("committed", independent.append(
+                link, expected_authority_sequence=0,
+                expected_fence_sha256="0" * 64, checked_on=NOW,
+            ))
+        except ValueError as exc:
+            return ("refused", str(exc))
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(race_append, candidates))
+    assert sorted(r[0] for r in results) == ["committed", "refused"]
+    assert "stale signed registry" in next(
+        val for outcome, val in results if outcome == "refused"
+    )
+    assert registry.head(checked_on=NOW).authority_sequence == 1
+    assert registry.compare_local(checked_on=NOW).authority_sequence == 1
+    with sqlite3.connect(registry._path) as db:
+        assert db.execute("SELECT COUNT(*) FROM signed_transitions").fetchone()[0] == 1
+
+
+def test_separate_registry_replay_catches_corruption_missing_link_and_bad_roster(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    f1 = signed_integrated_fence(case, authority, authority_sequence=1)
+    registry.append(
+        dual_fence_link(f1, 0, "0" * 64, first, second),
+        expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64, checked_on=NOW,
+    )
+    revoke(case, enrolled)
+    f2 = signed_integrated_fence(case, authority, authority_sequence=2)
+    registry.append(
+        dual_fence_link(f2, 1, _fence_sha256(f1), first, second),
+        expected_authority_sequence=1,
+        expected_fence_sha256=_fence_sha256(f1), checked_on=NOW,
+    )
+    with pytest.raises(ValueError, match="roster changed"):
+        _, wrong_public = keypair()
+        local_fence_registry(
+            case, {"INDEPENDENT_FENCE_001": wrong_public}, witnesses,
+        )
+    with pytest.raises(ValueError, match="packet, schema or trusted roster changed"):
+        with sqlite3.connect(registry._path) as db:
+            db.execute("UPDATE registry_identity SET roster_sha=?", ("a" * 64,))
+        registry.head(checked_on=NOW)
+    with sqlite3.connect(registry._path) as db:
+        db.execute("UPDATE registry_identity SET roster_sha=?", (registry._roster_digest,))
+        db.execute("DELETE FROM signed_transitions WHERE seq=1")
+    with pytest.raises(ValueError, match="missing or diverging"):
+        registry.head(checked_on=NOW)
+    with sqlite3.connect(registry._path) as db:
+        db.execute("UPDATE signed_transitions SET seq=1 WHERE seq=2")
+        db.execute("UPDATE signed_transitions SET signed_json='{}' WHERE seq=1")
+    with pytest.raises(ValueError, match="malformed stored signed registry"):
+        registry.head(checked_on=NOW)
+
+
+def test_separate_registry_rejects_missing_recreate_alias_and_expiry(tmp_path):
+    case = fixture(tmp_path)
+    enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    missing = tmp_path / "missing-fence-registry.db"
+    with pytest.raises(ValueError, match="file absent"):
+        local_fence_registry(case, roster, witnesses, path=missing)
+    with pytest.raises(ValueError, match="separate safe"):
+        local_fence_registry(
+            case, roster, witnesses, path=case["path"], create=True
+        )
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    with pytest.raises(ValueError, match="recreate existing"):
+        local_fence_registry(case, roster, witnesses, create=True)
+    f1 = signed_integrated_fence(case, authority, authority_sequence=1)
+    registry.append(
+        dual_fence_link(f1, 0, "0" * 64, first, second),
+        expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64, checked_on=NOW,
+    )
+    with pytest.raises(ValueError, match="expired"):
+        registry.compare_local(checked_on=NOW + timedelta(days=8))
+    registry._path.unlink()
+    with pytest.raises(ValueError, match="file unavailable"):
+        registry.head(checked_on=NOW)
+    with pytest.raises(ValueError, match="file unavailable"):
+        registry.compare_local(checked_on=NOW)
+
+
+def test_separate_registry_rejects_missed_publisher_update_until_refenced(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    authority, roster, first, second, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    f1 = signed_integrated_fence(case, authority, authority_sequence=1)
+    registry.append(
+        dual_fence_link(f1, 0, "0" * 64, first, second),
+        expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64, checked_on=NOW,
+    )
+    revoke(case, enrolled)
+    assert registry.head(checked_on=NOW).authority_sequence == 1
+    with pytest.raises(ValueError, match="SQLite heads differ"):
+        registry.compare_local(checked_on=NOW)
+    f2 = signed_integrated_fence(case, authority, authority_sequence=2)
+    registry.append(
+        dual_fence_link(f2, 1, _fence_sha256(f1), first, second),
+        expected_authority_sequence=1,
+        expected_fence_sha256=_fence_sha256(f1), checked_on=NOW,
+    )
+    assert registry.compare_local(checked_on=NOW).authority_sequence == 2

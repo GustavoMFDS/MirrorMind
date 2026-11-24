@@ -420,3 +420,16 @@ successors are **reported** as a supplied fork, and an old database plus
 matching old trusted pins can still pass. Explain why a durable,
 independently controlled and freshly queried current-head authority
 is a different feature from multi-signature verification.
+
+## Guided exercise — second file versus true independent authority (45 minutes)
+
+Review the [registry code](../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py),
+[operational trust guide](LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+and [synthetic regressions](../../tests/unit/test_atomic_governed_publisher.py).
+Sign two successive dual-witness fences, reopen and replay a separate
+SQLite journal, and test two concurrent attempts to append from the
+same head. Restore only the publisher DB and observe head mismatch;
+then restore **both** DBs and explain why a valid old prefix still
+passes. Explain why independent hardware, key administration, external
+latest pinning and a safe update protocol are distinct unimplemented
+requirements, and why this journal is never a publication gate.

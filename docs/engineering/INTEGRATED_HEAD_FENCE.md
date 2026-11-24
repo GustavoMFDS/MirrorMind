@@ -107,3 +107,14 @@ its terminal fence against the same local SQLite snapshot contract.
 It can classify two supplied conflicting successors but cannot find
 hidden forks or independently establish the latest sequence. Existing
 single-fence callers remain unchanged.
+
+## Optional separately persisted local signed head
+
+The [experimental local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+persists a complete [dual-witness chain](INTEGRATED_FENCE_TRANSCRIPT.md)
+in an **additional SQLite file**, and can compare its verified terminal
+fence to the governed publisher's current heads. It can detect a
+publisher-only backup rollback if the registry has survived unchanged.
+It does **not** independently protect either store, retrieve remote
+trusted freshness, or turn local equality into authorization. Existing
+caller-supplied offline fence semantics remain unchanged.

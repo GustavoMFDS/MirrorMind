@@ -124,3 +124,16 @@ The [fork classifier](INTEGRATED_FENCE_TRANSCRIPT.md) can report two
 supplied valid competing successors. No external witness node or
 current-head discovery service is deployed; neither verifier is a
 publisher, forecast engine or permission authority.
+
+## Bounded separate local checkpoint registry
+
+The [local signed integrated-fence registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+is an opt-in **second local SQLite file** next to, not within, the
+existing [atomic publisher](ATOMIC_GOVERNED_PUBLISHER.md).
+It persists fully signed [dual-witness transition JSON](INTEGRATED_FENCE_TRANSCRIPT.md)
+and stores a packet/roster/schema marker; every read replays signatures
+and each append takes a registry-only `BEGIN IMMEDIATE` lock and
+verifies terminal publisher state. A publisher-only coherent backup
+restore becomes detectable if the registry is intact. No independent
+server, backup custodian, distributed transaction, signer identity
+or legally authorized source processing was created.

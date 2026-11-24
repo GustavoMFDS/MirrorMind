@@ -82,3 +82,18 @@ records as evidence; do not silently choose a branch. Failure to
 receive a competing record is **not** evidence that none exists.
 Do not treat a successful offline chain check as live publication
 admission or ingest permission.
+
+## Separate signed-fence registry mismatch / disaster recovery
+
+Use the [registry guide](LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+and [synthetic rollback tests](../../tests/unit/test_atomic_governed_publisher.py).
+Check the identity marker (one packet and configured Ed25519 signing
+rosters), signed event ordering, both witness signatures, CAS head and
+actual publisher snapshot. Preserve original signed transition JSON
+and both DB files for forensic comparison. If the governed DB alone
+was restored, the intact separate journal can detect its older
+policy/publication heads. If the registry was also restored or its
+last valid event was removed, **do not claim** independent freshness.
+Never repair by silently inserting unsigned records or granting
+publish/ingestion permission. A publisher write may race a registry
+comparison because there is no two-file transaction.

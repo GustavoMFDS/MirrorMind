@@ -719,5 +719,54 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_dual_fence_transcript_bounded_dates_types_and_local_expiry",
     "limitation": "Bounded tuple length, chronology and currently expired terminal fence are rejected using a caller-supplied day. Calendar and historical witness timestamps are not independently attested."
+  },
+  {
+    "id": "MM-FREG-001",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_separate_signed_fence_registry_persists_verifiable_heads_after_reopen",
+    "limitation": "Generated-key, dual-witness signed transitions survive restart and replay with an exact locally configured roster. The registry is not independently administered or externally attested."
+  },
+  {
+    "id": "MM-FREG-002",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_separate_registry_detects_publisher_only_rollback_but_not_both",
+    "limitation": "A restored publisher-only coherent backup mismatches an intact newer registry, but restoring both stores to compatible older signed heads still passes; no globally current authority."
+  },
+  {
+    "id": "MM-FREG-003",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_registry_atomic_cas_refuses_replay_stale_and_bad_predecessor",
+    "limitation": "Transaction-local CAS rejects stale heads, bad predecessor digest, signature tampering and duplicate publication of a signed link. The publisher and registry are not atomically committed together."
+  },
+  {
+    "id": "MM-FREG-004",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_registry_concurrent_same_head_only_one_signed_successor_commits",
+    "limitation": "Two concurrent registry-local writers racing from one signed head commit exactly one successor. This is not cross-host independent external authority or a multi-store lock."
+  },
+  {
+    "id": "MM-FREG-005",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_separate_registry_replay_catches_corruption_missing_link_and_bad_roster",
+    "limitation": "Corrupted event payload, interior missing link and changed trusted key roster are rejected. A valid signed truncated suffix without an external current digest may not be detected."
+  },
+  {
+    "id": "MM-FREG-006",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_separate_registry_rejects_missing_recreate_alias_and_expiry",
+    "limitation": "Absent registry, recreation, same file alias and expired terminal signed fence fail closed under the caller-provided clock. Protected disk, remote backup and trusted wall clock are not implemented."
+  },
+  {
+    "id": "MM-FREG-007",
+    "guide": "docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_separate_registry_rejects_missed_publisher_update_until_refenced",
+    "limitation": "Registry-vs-publisher drift after a local revocation mismatches until a next doubly signed state is appended. Publication/registry update race is not eliminated by two separate SQLite transactions."
   }
 ]

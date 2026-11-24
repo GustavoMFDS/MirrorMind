@@ -202,3 +202,14 @@ successors. It is not used during `publish` and does not provide an
 external current-head service, global anti-rollback, legal authority
 or live publication permission. The local SQLite schema and one-file
 writer transaction remain unchanged.
+
+## Optional separate local signed-head journal
+
+[Local integrated-fence registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+is an experimental independent **file** holding complete dual-witness
+signed combined-state transitions. After signed-fence registration,
+a separately intact journal can detect restoration of the publisher
+database alone by comparing both heads. No publisher write is
+conditionally admitted through this offline registry; publishing and
+registry updates have **no cross-file atomicity**, and whole-host
+rollback or lost current-head pins are outside its guarantees.

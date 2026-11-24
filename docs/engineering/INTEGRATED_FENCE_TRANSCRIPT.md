@@ -120,3 +120,14 @@ python scripts/docs/coverage.py --check
 python scripts/docs/evidence.py --check
 python scripts/docs/capabilities.py --check
 ```
+
+## Opt-in local durable continuation
+
+The [separate local signed-fence registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+stores and replays complete witnessed transitions and performs a
+registry-file `BEGIN IMMEDIATE` CAS before appending one next signed
+link. Its `compare_local` uses the registry's stored terminal head,
+instead of trusting a newly supplied external latest pin. This is an
+**additional local SQLite file**, not an externally independently
+operated authority. Two-file rollback and a valid truncated suffix
+remain undetectable without a separately protected latest digest.

@@ -773,3 +773,15 @@ live policy admission, source rights or authorized ingestion is proven.
 The existing [single-fence verifier](INTEGRATED_HEAD_FENCE.md)
 is unchanged; no independent service or trustworthy latest-state
 delivery is provided, and none of these results grants permission.
+
+## 48. Separate durable local signed integrated-fence registry
+
+| Tracked path | Reviewed intent |
+| --- | --- |
+| [`src/mirrormind/modules/evidence/local_integrated_fence_registry.py`](../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py) | Separate SQLite file, strict packet/key marker, complete signed chain replay, guarded CAS and local combined-head comparison |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key reopen, publisher-only vs paired rollback, tamper, replay, concurrency, missing/expired and drift tests |
+| [`docs/engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md`](LOCAL_INTEGRATED_FENCE_REGISTRY.md) | Local-file trust assumptions, signed-event storage, two-file consistency and recovery caveats |
+| [`docs/engineering/changes/M1B_SEPARATE_DURABLE_FENCE_REGISTRY.md`](changes/M1B_SEPARATE_DURABLE_FENCE_REGISTRY.md) | Scoped acceptance and explicit service/authorization non-goals |
+
+No independently operated current-head service, source permission
+grant, production custody or cross-file atomicity is implied.
