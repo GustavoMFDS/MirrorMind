@@ -25,6 +25,20 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
+## M1B-01 source review — 2026-11-24
+
+Due diligence was rechecked against the original UCI pages and Creative
+Commons deed; UCI Online Retail ID 352 remains the preferred candidate for a
+human permission decision because its source record states CC BY 4.0. That
+license statement does not complete attribution, privacy, retention or
+product-use review. The source exposes transaction event dates but no
+row-level first-availability vintages, and no workbook or snapshot hash was
+acquired. M5 remains no-go because its current competition terms and original
+redistribution permission were not verified in this review. M1B-01's review
+acceptance is complete; B-01/B-02 still block ingestion and empirical claims.
+See the [UCI review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md),
+[M5 review](datasets/M5_ACCESS_REVIEW.md) and [blocker register](BLOCKERS.md).
+
 ## Active branch evidence — 2026-11-24
 
 The composed synthetic evidence flow is implemented at

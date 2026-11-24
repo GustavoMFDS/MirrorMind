@@ -17,7 +17,7 @@ already underway.
 | Partially implemented M1 | M1B-02 now composes separate CSV/XLSX readers, intake metadata and declared temporal checks. M1C-01 already had offline baselines and release backtests; the current stacked branch adds the reproducible evidence-to-evaluation entrypoint. | Keep the two changes reviewable as separate PRs; preserve abstention and per-origin receipts. |
 | Ready at the PR #51 baseline | DOC-01 reconciliation; G-01 minimal testable server-side current-head response; M1E-01 simulation contract work; M1F-01 decision trace contract. DOC-01 is now in review below. | Keep M1 evidence-to-evaluation work ahead of further experimental governance unless a dependency requires G-01. |
 | Pending by dependency | Remaining M1C/M1D/M1E/M1F, M2, M3 and M4 rows marked `planned`. | Start only when named predecessors and acceptance inputs exist. |
-| Blocked by external evidence or approval | M1B-03 and M1C-03 require B-01/B-02 real-source rights, original availability and empirical holdout evidence. G-04 and deployment-related scopes also require B-03/B-06. | Advance synthetic slices independently; preserve blockers and do not claim they are solved by generated fixtures. |
+| Blocked by external evidence or approval | M1B-01 due diligence is now complete as a review-only task; M1B-03 and M1C-03 still require B-01/B-02 rights, original availability and empirical holdout evidence. G-04 and deployment-related scopes also require B-03/B-06. | Keep the UCI #352 review as a candidate, preserve M5's no-go and require owner approval before real-source use; advance synthetic slices independently. |
 
 ## Conventions
 

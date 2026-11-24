@@ -1,6 +1,6 @@
 # UCI Online Retail (352) — licensed-source candidate, not approved ingestion
 
-**Review date:** 2026-11-18.
+**Review date:** 2026-11-24.
 **Status:** `license-published / privacy-and-use-review-pending`.
 **Operational decision:** **NO-GO** for unattended source downloads,
 commit of transaction records, model training, customer-level
@@ -21,8 +21,8 @@ risk boundaries; it is not a legal opinion or access authorization.
 | Rows and period | UCI reports 541,909 transactions, dated 2010-12-01 through 2011-12-09, for a UK non-store retailer |
 | Source fields | `InvoiceNo`, `StockCode`, `Description`, `Quantity`, `InvoiceDate`, `UnitPrice`, `CustomerID`, `Country` |
 
-These facts were checked on the official UCI page and the
-official Creative Commons license summary on 2026-11-18.
+These facts were rechecked on the official UCI page and the
+official Creative Commons license summary on 2026-11-24.
 They **do not imply** that all records are complete, that
 customer-identifying fields are safe to redistribute,
 or that the dataset contains inventory, lead times,
@@ -31,6 +31,43 @@ history. The UCI page's dataset license statement
 is stronger evidence than a license claim on a mirror,
 but a reviewer must still confirm the intended
 product processing and attribution requirements.
+
+### Recheck evidence and limits
+
+The [official UCI record](https://archive.ics.uci.edu/dataset/352/online-retail)
+continues to list 541,909 transactions, event dates from 2010-12-01 through
+2011-12-09, the 22.6 MB workbook and a CC BY 4.0 license. It gives a catalog
+donation date of 2015-11-05; that date is not a row-level release timestamp or
+evidence of when a forecaster could first observe each value. The visible
+catalog metadata has no versioned publication vintages or source-byte digest.
+
+The official [CC BY 4.0 deed](https://creativecommons.org/licenses/by/4.0/)
+permits sharing and adaptation for any purpose, including commercially, when
+its terms are followed. Attribution must include appropriate credit, a link
+to the license and an indication of changes; the license forbids adding
+restrictions to the licensed material. The deed also states that it may not
+provide every permission needed for an intended use, including privacy or
+publicity rights. UCI's license statement is therefore a useful license
+source, but it does not complete customer-data, contractual or product-use
+review.
+
+The separate [Online Retail II record](https://archive.ics.uci.edu/dataset/502/online+retail)
+lists 1,067,371 transactions, a 43.5 MB workbook and missing values. Keep its
+license entry, snapshot and transformations separate from ID 352; it is not a
+drop-in substitute.
+
+No workbook was downloaded during this recheck. There is no acquired snapshot
+hash, local acquisition timestamp or original-byte verification to record.
+The visible UCI metadata describes transaction event time, not row-level
+first availability or historical release revisions. Do not synthesize those
+fields from `InvoiceDate`.
+
+**Interim candidate recommendation:** retain UCI Online Retail ID 352 as the
+preferred source for a future, narrowly scoped permission decision because
+its original UCI record states the license. This is a review recommendation,
+not permission to acquire, retain, transform or use the records. M5 remains
+NO-GO pending its original terms. M1B-01 due diligence is complete; B-01 and
+B-02 still gate any real-source adapter or empirical evaluation.
 
 An alternative, longer version is
 [UCI Online Retail II (ID 502)](https://archive.ics.uci.edu/dataset/502/online+retail)

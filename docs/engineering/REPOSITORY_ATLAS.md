@@ -316,17 +316,21 @@ The public `/v1/capabilities` register declares
 trained forecasting service or WorldKernel execution
 is provided by these primitives.
 
-## 15. Permission-sensitive candidate: M5 (no data acquired)
+## 15. Permission-sensitive candidates: M5 and UCI (no data acquired)
 
 | File | Review responsibility |
 | --- | --- |
 | [`docs/engineering/datasets/M5_ACCESS_REVIEW.md`](datasets/M5_ACCESS_REVIEW.md) | **Proposed/not approved** M5 source access; reconcile the official competition rules, mirror, permitted research/commercial usage and original data rights before any download |
+| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md`](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) | UCI Online Retail ID 352 has a published CC BY 4.0 statement, but no approved use, privacy review, source snapshot or historical first-availability evidence; do not infer authorization from the license alone |
 
 An accessible Kaggle or Zenodo page is not a
-license attestation. The staged CSV parser and
+license attestation for underlying M5 data. UCI's
+published license statement does not resolve
+privacy, attribution, source snapshot or first-
+availability evidence. The staged CSV parser and
 offline baseline evaluator **do not** approve
 source rights and should not be used to bypass
-this no-go gate.
+these gates.
 
 ## 16. Per-origin diagnostics for existing offline evaluation
 
