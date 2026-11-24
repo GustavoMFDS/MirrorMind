@@ -447,3 +447,18 @@ disagrees with the old local registry. Then freshly sign the old
 head with the new nonce and explain why a malicious remote signer
 still passes. Identify what a genuinely independent deployed
 authority and trusted key-custody process must add.
+
+## Guided exercise — sign a current-head challenge in process (35 minutes)
+
+Read the [G-01 service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md), the
+[shared wire protocol](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py),
+the [responder](../../src/mirrormind/modules/evidence/remote_fence_head_service.py)
+and
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+Run the four `test_remote_head_service_*` selectors. Trace the request nonce
+from the raw query into `SignedRemoteFenceHead`, the canonical signing
+message and the existing client verifier. Change one query field and predict
+whether the responder calls the store. Then reuse a protected public key as
+the service signer and explain why initialization fails. Finally, list the
+transport, durable storage and operational evidence that these tests do not
+provide.

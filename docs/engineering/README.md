@@ -116,5 +116,8 @@ These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but 
   optional outbound-only comparison of a signed, short-lived remote
   current-head *claim* against the local fully verified registry.
   [Scoped change request](changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md).
-  The service, separate key custody, remote currentness and real
-  ingestion permission are **not provided by this repository**.
+  The [G-01 in-process responder](REMOTE_FENCE_HEAD_SERVICE.md) can
+  produce the same signed response through a read-only store contract;
+  it has no HTTP server, persistence, authentication or separate custody.
+  No independently trusted currentness or real ingestion permission is
+  provided by this repository. See its [change request](changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md).

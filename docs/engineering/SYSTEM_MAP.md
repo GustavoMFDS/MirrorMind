@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated from the initial scaffold on 2026-11-18. The API/contracts and simulation gateway interface exist; a standalone **local CSV staging primitive** is also implemented in the evidence module. No authorized ingestion, agents or forecasts are deployed.
+Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the current G-01 branch. The API/contracts and simulation gateway interface exist; bounded local evidence and synthetic retail flows are experimental. G-01 adds an in-process challenged-head responder but no deployed service. No authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
@@ -13,6 +13,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
+| Respond to a challenged remote head request (G-01) | [`modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py), [service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md) | [generated-key round-trip and adverse tests](../../tests/unit/test_atomic_governed_publisher.py); in-process only, no HTTP route, persistent store or independent authority |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
 | Prepare a source review packet (not approval) | [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [guide](SOURCE_INTAKE_REVIEW.md) | [synthetic unit tests](../../tests/unit/test_source_intake_review.py); binds staged byte digest and opaque review references; never grants ingestion |
@@ -151,3 +152,10 @@ The code neither deploys an external service nor certifies its
 administrative independence, durable latest-state operation, key
 custody or honesty. This network read does not grant any access
 rights or alter publisher transactions.
+
+The [G-01 responder](REMOTE_FENCE_HEAD_SERVICE.md) provides an in-process
+implementation of the existing response contract through a read-only store
+`Protocol`. It shares canonicalization with the client, but no transport,
+persistence, authentication or independent administration is implemented.
+The client does not call this responder; the generated-key round trip is
+exercised in a local test.

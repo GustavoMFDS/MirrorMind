@@ -59,6 +59,13 @@ from mirrormind.modules.evidence.operator_governance import (
     SignedOperatorPolicyEvent,
     _canonical_event_message,
 )
+from mirrormind.modules.evidence.remote_fence_head_service import (
+    CurrentRemoteFenceHead,
+    RemoteFenceHeadRequest,
+    RemoteFenceHeadResponder,
+    RemoteFenceHeadResponse,
+    RemoteFenceHeadStoreError,
+)
 from mirrormind.modules.evidence.review_decisions import (
     GENESIS_HEAD,
     SignedReviewDecision,
@@ -1552,6 +1559,200 @@ def check_remote_head(bundle, signed, *, nonce=REMOTE_NONCE,
         ),
         checked_at=checked_at,
     )
+
+
+class _InMemoryRemoteHeadStore:
+    def __init__(self, record=None, *, failure=None):
+        self.record = record
+        self.failure = failure
+        self.requested_packets = []
+
+    def read_current(self, packet_sha256):
+        self.requested_packets.append(packet_sha256)
+        if self.failure is not None:
+            raise self.failure
+        return self.record
+
+
+def remote_head_record(bundle, **overrides):
+    current = bundle["registry"].compare_local(checked_on=NOW)
+    packet = bundle["case"]["packet"]
+    values = {
+        "packet_sha256": packet.declaration_sha256,
+        "snapshot_sha256": packet.snapshot_sha256,
+        "authority_sequence": current.authority_sequence,
+        "fence_sha256": current.fence_sha256,
+    }
+    values.update(overrides)
+    return CurrentRemoteFenceHead(**values)
+
+
+def remote_head_request(bundle, *, nonce=REMOTE_NONCE, packet_sha256=None, **overrides):
+    packet = bundle["case"]["packet"]
+    request = {
+        "method": "GET",
+        "path": "/v1/integrated-fence/head",
+        "query_string": (
+            f"nonce={nonce}&packet_sha256="
+            f"{packet.declaration_sha256 if packet_sha256 is None else packet_sha256}"
+        ),
+        "accept": "application/json",
+    }
+    request.update(overrides)
+    return RemoteFenceHeadRequest(**request)
+
+
+def remote_head_responder(bundle, store, **overrides):
+    non_service_keys = {
+        **bundle["registry"]._fence_keys,
+        **bundle["registry"]._witness_keys,
+    }
+    config = {
+        "service_id": REMOTE_FENCE_SERVICE,
+        "service_key_id": REMOTE_FENCE_KEY_ID,
+        "endpoint": REMOTE_FENCE_ENDPOINT,
+        "signing_key": bundle["service"],
+        "non_service_public_keys": non_service_keys,
+        "store": store,
+        "clock": lambda: REMOTE_TIME,
+        "ttl_seconds": 70,
+    }
+    config.update(overrides)
+    return RemoteFenceHeadResponder(**config)
+
+
+def test_remote_head_service_response_round_trips_through_existing_client(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    store = _InMemoryRemoteHeadStore(remote_head_record(bundle))
+    responder = remote_head_responder(bundle, store)
+
+    response = responder.respond(remote_head_request(bundle))
+
+    assert type(response) is RemoteFenceHeadResponse
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json"
+    assert response.headers["Cache-Control"] == "no-store"
+    assert 0 < len(response.body) <= 4096
+    assert store.requested_packets == [bundle["case"]["packet"].declaration_sha256]
+    result = remote_client.verify_challenged_remote_head(
+        bundle["registry"], response.body,
+        requested_nonce_hex=REMOTE_NONCE,
+        service_id=REMOTE_FENCE_SERVICE,
+        endpoint=REMOTE_FENCE_ENDPOINT,
+        trusted_service_keys=bundle["service_roster"],
+        checked_at=REMOTE_TIME,
+    )
+    assert result.authority_sequence == 1
+    assert result.receipt()["publication_authorized"] is False
+    assert result.receipt()["ingestion_authorized"] is False
+    assert result.receipt()["forecast_eligible"] is False
+
+
+def test_remote_head_service_rejects_bad_wire_scope_and_store_failure(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    store = _InMemoryRemoteHeadStore(remote_head_record(bundle))
+    responder = remote_head_responder(bundle, store)
+    valid = remote_head_request(bundle)
+    malformed = (
+        replace(valid, method="POST"),
+        replace(valid, path="/other"),
+        replace(valid, accept="text/plain"),
+        replace(valid, query_string=valid.query_string + "&nonce=" + REMOTE_NONCE),
+        replace(valid, query_string=valid.query_string + "&extra=1"),
+        replace(valid, query_string=valid.query_string.replace("nonce=", "nonce=%")),
+        replace(valid, query_string="&".join(reversed(valid.query_string.split("&")))),
+        replace(valid, query_string=valid.query_string + "&packet_sha256=" + "f" * 64),
+    )
+    for request in malformed:
+        response = responder.respond(request)
+        assert response.status_code in {400, 404, 405, 406}
+        assert response.body == b""
+        assert REMOTE_NONCE.encode() not in response.body
+        if request.method == "POST":
+            assert response.headers["Allow"] == "GET"
+    assert store.requested_packets == []
+
+    wrong_scope_store = _InMemoryRemoteHeadStore(remote_head_record(bundle))
+    wrong_scope = remote_head_responder(bundle, wrong_scope_store).respond(
+        remote_head_request(bundle, packet_sha256="f" * 64)
+    )
+    assert wrong_scope.status_code == 404
+    assert wrong_scope.body == b""
+
+    missing = remote_head_responder(
+        bundle, _InMemoryRemoteHeadStore()
+    ).respond(valid)
+    assert missing.status_code == 404
+    invalid_record = _InMemoryRemoteHeadStore(
+        remote_head_record(bundle, authority_sequence=True)
+    )
+    corrupt = remote_head_responder(bundle, invalid_record).respond(valid)
+    assert corrupt.status_code == 503
+    assert corrupt.body == b""
+
+    failed_store = _InMemoryRemoteHeadStore(
+        failure=RemoteFenceHeadStoreError("private store detail")
+    )
+    unavailable = remote_head_responder(bundle, failed_store).respond(valid)
+    assert unavailable.status_code == 503
+    assert unavailable.body == b""
+    assert b"private store detail" not in unavailable.body
+
+
+def test_remote_head_service_binds_nonce_and_snapshot_scope(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    store = _InMemoryRemoteHeadStore(remote_head_record(bundle))
+    responder = remote_head_responder(bundle, store)
+    challenged = responder.respond(remote_head_request(bundle, nonce="c" * 64))
+    assert challenged.status_code == 200
+    with pytest.raises(ValueError, match="wrong service, signer, challenge or packet"):
+        remote_client.verify_challenged_remote_head(
+            bundle["registry"], challenged.body,
+            requested_nonce_hex=REMOTE_NONCE,
+            service_id=REMOTE_FENCE_SERVICE,
+            endpoint=REMOTE_FENCE_ENDPOINT,
+            trusted_service_keys=bundle["service_roster"],
+            checked_at=REMOTE_TIME,
+        )
+
+    wrong_snapshot_store = _InMemoryRemoteHeadStore(
+        remote_head_record(bundle, snapshot_sha256="f" * 64)
+    )
+    wrong_snapshot = remote_head_responder(bundle, wrong_snapshot_store).respond(
+        remote_head_request(bundle)
+    )
+    assert wrong_snapshot.status_code == 200
+    with pytest.raises(ValueError, match="wrong service, signer, challenge or packet"):
+        remote_client.verify_challenged_remote_head(
+            bundle["registry"], wrong_snapshot.body,
+            requested_nonce_hex=REMOTE_NONCE,
+            service_id=REMOTE_FENCE_SERVICE,
+            endpoint=REMOTE_FENCE_ENDPOINT,
+            trusted_service_keys=bundle["service_roster"],
+            checked_at=REMOTE_TIME,
+        )
+
+
+def test_remote_head_service_enforces_distinct_keys_and_bounded_clock(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    store = _InMemoryRemoteHeadStore(remote_head_record(bundle))
+    authority_id, authority_key = next(iter(bundle["registry"]._fence_keys.items()))
+    with pytest.raises(ValueError, match="must be distinct"):
+        remote_head_responder(
+            bundle, store,
+            signing_key=bundle["authority"],
+            service_key_id=authority_id,
+        )
+    with pytest.raises(ValueError, match="must be distinct"):
+        remote_head_responder(bundle, store, service_key_id=authority_id)
+    with pytest.raises(ValueError, match="validity interval"):
+        remote_head_responder(bundle, store, ttl_seconds=121)
+    with pytest.raises(ValueError, match="validity interval"):
+        remote_head_responder(bundle, store, ttl_seconds=True)
+
+    bad_clock = remote_head_responder(bundle, store, clock=lambda: datetime.now())
+    assert bad_clock.respond(remote_head_request(bundle)).status_code == 503
+    assert authority_key != bundle["service_roster"][REMOTE_FENCE_KEY_ID]
 
 
 def test_remote_challenged_head_matches_signed_local_heads_without_permissions(tmp_path):

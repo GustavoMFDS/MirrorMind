@@ -817,5 +817,33 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_remote_https_transport_enforces_timeout_mime_bytes_and_no_redirects",
     "limitation": "Fake HTTPS opener checks fixed request query, timeout, disabled proxy/redirect handlers, HTTP status, content type, maximum bytes and outage refusal. No real TLS interoperability or DNS failure recovery was tested."
+  },
+  {
+    "id": "MM-RHEAD-008",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_response_round_trips_through_existing_client",
+    "limitation": "A generated-key in-memory response is accepted by the existing local verifier and retains false permission flags. No HTTP transport, persistent store, separate operators or live authority is exercised."
+  },
+  {
+    "id": "MM-RHEAD-009",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_rejects_bad_wire_scope_and_store_failure",
+    "limitation": "The pure responder rejects malformed fictional requests and store records with empty errors. No web framework parsing or production storage adapter is exercised."
+  },
+  {
+    "id": "MM-RHEAD-010",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_binds_nonce_and_snapshot_scope",
+    "limitation": "The existing verifier rejects generated responses with a wrong nonce or snapshot digest. A fresh signer may still provide a stale claim; independent currentness is not proven."
+  },
+  {
+    "id": "MM-RHEAD-011",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_enforces_distinct_keys_and_bounded_clock",
+    "limitation": "Construction checks the supplied non-service key roster and lifetime, and a naive test clock fails closed. Roster completeness, custody and real clock trust are not established."
   }
 ]

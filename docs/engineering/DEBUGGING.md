@@ -114,3 +114,22 @@ hash evidence and verify each side with independent operators.
 Never log signer private keys or source rows, retry with stale
 pins, bypass on outage or use read receipt to authorize publishing.
 No live authority is deployed in the project.
+
+## In-process challenged-head responder returns an error
+
+The experimental [G-01 responder walkthrough](REMOTE_FENCE_HEAD_SERVICE.md)
+describes `RemoteFenceHeadResponder.respond`; it is not an HTTP route. For
+400/405/406, inspect the method, fixed path, exact `Accept` value and raw
+`nonce=...&packet_sha256=...` ordering in the generated request test. A 404
+means no current record was found for the packet scope or the store returned
+a different packet digest. A bodyless 503 means a typed store error, invalid
+record or invalid clock was observed. Store adapters must raise
+`RemoteFenceHeadStoreError` for expected unsafe/unavailable reads; inspect
+sanitized adapter diagnostics locally, never expose exception text or source
+rows in a response. Unexpected programming exceptions propagate to the
+in-process caller. The responder does not advance or repair state; use the
+generated-key round-trip and adverse cases in
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+If the client rejects a 200 response, verify the configured service key,
+request nonce, packet/snapshot digest and UTC validity against its existing
+verifier. Do not infer an attack or independent freshness from a mismatch.
