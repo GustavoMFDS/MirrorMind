@@ -102,7 +102,8 @@ it makes no runtime, forecast, business-validity or security guarantee.
 ## 6. Evidence after implementation
 
 - Branch: `codex/m1e-01-worldkernel-mapping`, stacked on the M1F-01 branch;
-  PR creation follows this local verification.
+  draft [PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55), source
+  commit `87692412606e65b5e1500164b2c8708bb98cf120`.
 - Modified symbols: `SUPPORTED_WORLD_MAPPINGS`,
   `WorldKernelOperatorLimits`, `InventoryWorldUnitContext` and
   `build_worldkernel_exchange_request` in
@@ -118,7 +119,12 @@ it makes no runtime, forecast, business-validity or security guarantee.
   ledger parity, and `git diff --check` passed.
 - Evidence claim: `MM-WKMAP-001` cites
   `tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
-- Local versus official: the canonical suite excluded
+- Local versus official: on PR #55 code head `87692412606e65b5e1500164b2c8708bb98cf120`,
+  official `test` run [45329990098](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990098)
+  and `symbol-catalog` run
+  [45329990164](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990164)
+  failed before job start with the B-08 billing/spending-limit annotation.
+  No job ran. The canonical suite excluded
   `tests/integration/test_api.py` because B-07 blocks its local socket-pair
   startup. Official CI has not run on this branch yet; B-08 already records
   account billing/spending-limit failures on PRs #52–#54. No CI success is

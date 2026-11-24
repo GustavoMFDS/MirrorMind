@@ -106,11 +106,18 @@ It inspects the separate WorldKernel exchange and adds a pure mapping for
 `retail.inventory` `0.1` to `retail.inventory.demo` `demo-1`, with explicit
 unit assertions, strict input allowlists and operator-configured request
 ceilings. It does not import or execute WorldKernel, so the capability remains
-planned and M1E-02 remains gated by B-04. Twenty-five focused tests passed;
+planned and M1E-02 remains gated by B-04. The change is proposed in draft
+[PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55), code commit
+`87692412606e65b5e1500164b2c8708bb98cf120`, stacked on PR #54. Twenty-five focused tests passed;
 the local suite passed 731 tests with `tests/integration/test_api.py` excluded
 for B-07. Ruff, catalog, atlas, evidence and capability guards passed, as did
 direct capability-handler/ledger parity and a deterministic example replay.
-Official CI awaits PR creation and cannot be assumed available under B-08.
+On this code head, official `test` run
+[45329990098](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990098)
+and `symbol-catalog` run
+[45329990164](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990164)
+failed before job start with the B-08 account billing/spending-limit
+annotation; no CI job ran.
 See [M1E-01 change request](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md)
 and [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md).
 
