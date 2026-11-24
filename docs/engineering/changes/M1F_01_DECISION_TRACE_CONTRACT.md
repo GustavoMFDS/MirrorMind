@@ -12,7 +12,10 @@ reviewable decision trace. Require evidence references for observations,
 model-card and observation references for forecasts, forecast and assumption
 references for simulated outcomes, explicit missing-evidence entries,
 measurement state for costs, and a human-review state tied to the exact result
-digest when a decision is recorded.
+digest when a decision is recorded. Terminal review time must not precede
+trace creation; the canonical cost digest must be independent of Decimal
+context; and collections must have explicit field, aggregate and reference
+bounds before this contract is consumed by another M1 component.
 
 **Why:** M1F-01 is a ready P0 prerequisite for the eventual end-to-end M1
 comparison. A stable result shape lets later forecasting, simulation and review
@@ -52,10 +55,19 @@ ranking, recommendations and external business writes.
   amounts cannot be represented as zero.
 - [x] Approved or rejected human reviews require reviewer reference, timestamp
   and the SHA-256 digest of the result excluding the review section. A changed
-  result cannot retain an approval for its old digest.
+  result cannot retain an approval for its old digest, and a terminal review
+  cannot predate trace creation.
+- [x] Decimal hashing uses lossless context-independent fixed-point text with
+  explicit zero/trailing-zero semantics while preserving the v1 digest for
+  ordinary cost values.
+- [x] Per-section, aggregate record and per-record reference/metric bounds are
+  enforced; fact-to-evidence validation uses a prebuilt evidence-ID map.
+- [x] The reviewed evidence map cites each new regression by file and
+  top-level test function, with explicit verification limits.
 - [x] A deterministic synthetic fixture validates. Adverse tests reject bad
   references, duplicate IDs, invalid temporal ordering, invalid cost states,
-  incomplete approvals and mismatched review digests.
+  incomplete approvals, mismatched digests, pre-creation review, Decimal
+  context collisions and oversized collections.
 - [x] Existing `ScenarioSpec` input behavior and public API responses remain
   unchanged. No recommendation, permission grant or external action is
   inferred from an approval state.
@@ -96,15 +108,17 @@ providers are not loaded. A result may contain business-sensitive scalar
 values or free text, so callers must minimize and protect payloads. The
 canonical result digest must use stable JSON serialization and exclude only
 the human-review object, otherwise review metadata would create a circular
-digest dependency.
+digest dependency. Contract collection bounds constrain one parsed object but
+do not replace HTTP body-size, rate or concurrency controls.
 
 ## 5. Implementation plan
 
 1. Confirm `ScenarioSpec`, API capability behavior, and current review/data
    templates; keep the result contract separate from scenario input.
-2. Write failing tests for one complete synthetic trace and for references,
-   temporal cutoffs, cost status and approval digest violations.
-3. Implement the smallest strict Pydantic v1 schema and canonical digest.
+2. Write failing tests for references, temporal cutoffs and review chronology,
+   cost status and digest violations, Decimal contexts and collection bounds.
+3. Implement the strict Pydantic v1 schema, bounded reference map and canonical
+   context-independent digest.
 4. Add the engineer walkthrough and learner exercises, then update all
    reviewed maps and capability/evidence records.
 5. Regenerate the Python catalog, run focused tests, relevant suite and docs

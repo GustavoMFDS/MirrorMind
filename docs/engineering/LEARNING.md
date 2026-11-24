@@ -491,3 +491,18 @@ cost cannot be encoded as zero. Compute `result_sha256`, create an approved
 `HumanReview`, then change one forecast value without changing the digest and
 predict the rejection. Explain why this proves local content binding but
 does not authenticate a reviewer, data source or simulation.
+
+## Guided exercise — trace chronology, canonical cost digests and resource bounds
+
+Read [the result contract walkthrough](DECISION_TRACE_RESULT.md) and follow
+`DecisionTrace.check_trace_references_and_cutoff` into the evidence-ID map and
+review-time comparison. Run `tests/unit/test_decision_trace.py`, then inspect
+`test_terminal_review_cannot_precede_trace_creation`,
+`test_terminal_review_accepts_creation_boundary_and_equivalent_timezone`,
+`test_result_digest_is_lossless_and_independent_of_decimal_context`, and the
+collection-bound tests. Explain why a reviewer timestamp is compared as an
+instant, why `Decimal.normalize()` can round under the active context, and why
+the bounds on records/references do not enforce a transport request-size or
+rate limit. Reproduce a same-length, valid-looking payload that stays below
+every bound and identify which independent data-provenance checks are still
+missing.

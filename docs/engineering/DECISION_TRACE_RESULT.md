@@ -49,7 +49,7 @@ references only.
 | `MissingEvidence` | Identifies a gap and the local fact, forecast or outcome it limits |
 | `CostMeasurement` | Distinguishes metered, declared and unavailable cost; unknown is `null`, never zero |
 | `HumanReview` | Records pending/not-requested/approved/rejected review and, for a decision, reviewer, time and result digest |
-| `DecisionTrace` | Validates version, time boundaries, unique IDs, typed references, review binding and immutable envelope |
+| `DecisionTrace` | Validates version, time boundaries, unique IDs, typed references, bounded collections, review chronology and digest binding |
 
 ## Contract and invariants
 
@@ -59,12 +59,19 @@ unknown fields. Top-level arrays are tuples in the validated object, and all
 nested models are frozen. The result is not a JSON Schema endpoint.
 
 - **Time:** cutoff, creation, evidence availability, observation and review
-  decision times require timezone offsets. Creation cannot precede cutoff.
+  decision times require timezone offsets. Creation cannot precede cutoff;
+  an approved/rejected review cannot predate trace creation. Datetime
+  comparison uses the represented instants, so equivalent offsets remain valid.
   Observations cannot occur after cutoff; evidence cannot become available
   after cutoff or before its referenced observation.
 - **References:** each ID is unique across the trace. Fact evidence references,
   forecast fact references, outcome forecast/assumption references and missing
-  evidence targets must resolve to records of the expected local type.
+  evidence targets must resolve to records of the expected local type. The
+  trace is limited to 1,000 records in total, each top-level section is capped
+  at 1,000 items before cross-reference validation, and each reference/metric
+  tuple is capped at 100 entries. The validator builds an evidence-ID map once,
+  then resolves each fact reference in constant expected time instead of
+  scanning the evidence tuple again.
 - **Separation:** forecast values are not observations. Outcome metrics are
   numeric conditional results and cannot be reclassified as observed facts by
   this schema.
@@ -75,9 +82,13 @@ nested models are frozen. The result is not a JSON Schema endpoint.
   Approved/rejected review requires reviewer reference, timezone-aware time and
   the digest of the exact result content. A digest mismatch rejects the trace.
 - **Digest:** `result_sha256` hashes sorted-key, compact UTF-8 JSON from the
-  result fields, excludes `human_review`, normalizes decimal values and uses
-  ISO timestamps. The review object can therefore refer to the digest without
-  hashing itself. This is integrity-by-recomputation only, not a signature.
+  result fields, excludes `human_review`, writes `Decimal` values as
+  context-independent fixed-point strings, canonicalizes zero to `0`, removes
+  insignificant fractional zeroes, and uses ISO timestamps. This preserves
+  the v1 digest for ordinary values while preventing ambient Decimal precision
+  from rounding distinct costs into the same digest. The review object can
+  therefore refer to the digest without hashing itself. This is
+  integrity-by-recomputation only, not a signature.
 
 Reference strings are opaque caller assertions. The validator does not open a
 dataset card, model card, source URI or engine contract. It cannot prove that
@@ -128,7 +139,8 @@ authorize any write.
 | Unknown or duplicate local ID | Pydantic `ValidationError` | That an external referenced record exists |
 | Missing evidence reference or future availability | Validation error | Source permission, truthful publisher timestamp or data completeness |
 | Forecast/outcome points to missing facts, forecasts or assumptions | Validation error | Forecast quality or actual engine execution |
-| Naive timestamp or observation after cutoff | Validation error | Correctness of caller-declared timestamps |
+| Naive timestamp, observation after cutoff or review before creation | Validation error | Correctness of caller-declared timestamps or reviewer identity |
+| More than 1,000 records total, more than 1,000 in one section, or more than 100 references/metrics in one record | Validation error | A transport-level request-body or concurrency limit |
 | `unavailable` cost has a numeric amount | Validation error | That metered/declared costs are accurate or enforce a budget |
 | Approved/rejected review is incomplete or digest is stale | Validation error | Identity, signature, authorization or non-repudiation |
 | Extra arbitrary field/object payload | Validation error or scalar type error | Sanitization of free-text references or privacy of scalar values |
@@ -158,11 +170,18 @@ providers or a simulator.
 | `test_metered_cost_requires_a_meter_reference` | A metered amount has a local meter reference | That the referenced meter is genuine |
 | `test_approved_review_requires_identity_time_and_result_digest` | A decision status requires a complete review record | Reviewer authentication or permission |
 | `test_review_digest_binds_approval_to_exact_result_content` | A changed result cannot reuse an earlier approval digest | Cryptographic signature or external audit retention |
+| `test_terminal_review_cannot_precede_trace_creation` and `test_terminal_review_accepts_creation_boundary_and_equivalent_timezone` | Both terminal states enforce chronological order while accepting an exact/equivalent instant | Reviewer authentication or trusted clocks |
+| `test_result_digest_is_lossless_and_independent_of_decimal_context` | Distinct costs remain distinct and the v1 digest is stable across active Decimal precision; zero/trailing-zero forms canonicalize | Cross-language serialization or independent provenance |
+| `test_trace_record_sections_have_a_maximum_size`, `test_total_trace_records_are_bounded_across_sections` and `test_trace_reference_lists_have_a_maximum_size` | Per-section, aggregate-record and per-record collection bounds reject oversized payloads | HTTP body-size, rate or concurrency enforcement |
 | `test_trace_models_are_immutable_after_validation` | Assignment to a validated top-level model fails | Deep immutability of arbitrary external objects |
 
-Claim `MM-DTRACE-001` in the evidence map cites the valid synthetic contract
-test and states the limit: references are unauthenticated and no decision,
-forecast or simulation execution is established.
+The evidence map links `MM-DTRACE-001`, `MM-DTRACE-002`, `MM-DTRACE-003`,
+  `MM-DTRACE-004`, `MM-DTRACE-005`, `MM-DTRACE-006` and `MM-DTRACE-007` to the synthetic
+contract, chronology, canonicalization and collection-bound regressions.
+Together these selectors cover the negative/equality chronology cases and
+aggregate, per-section and per-record bounds.
+Their limitations retain the caller-asserted-reference and no-execution
+boundary.
 
 ## Learning exercises
 
@@ -174,7 +193,15 @@ forecast or simulation execution is established.
    reviewer metadata and confirm the result digest remains stable.
 3. Change the unavailable token cost to measured zero with a meter reference.
    Explain why zero and unavailable are different claims.
-4. Identify which additional verifiers M1F-02 needs before producing a real
+4. Run the digest test under precision 3 and 50; explain why `Decimal.normalize()`
+   would round through the active context and why fixed-point formatting does
+   not. Compare the digests for `12.3400`, `12.34`, `0.000` and `0`.
+5. Set an approved/rejected decision one second before creation, then set it to
+   the same instant with another timezone offset. Explain how timestamp
+   comparison uses instants rather than the written offset.
+6. Exceed a section/reference bound and trace the Pydantic error to the model
+   field. Explain why these schema bounds do not replace an HTTP body limit.
+7. Identify which additional verifiers M1F-02 needs before producing a real
    trace: approved source evidence, evaluated forecast, actual simulation
    receipt, authenticated reviewer, cost metering and action-specific
    authorization.
@@ -184,11 +211,15 @@ forecast or simulation execution is established.
 For a `ValidationError`, inspect the failing test in
 [`test_decision_trace.py`](../../tests/unit/test_decision_trace.py), then trace
 the nested record class and `DecisionTrace.check_trace_references_and_cutoff`.
-Keep reference validation fail-closed; do not relax it to make incomplete
-producer data pass. Use a new schema version for incompatible changes, add a
-migration/translation contract explicitly and include the schema version in
-the digest. Add new sections only when their provenance, null semantics,
-temporal rules and review binding are defined. Never promote
+Check whether the failure is a field cardinality limit, aggregate record limit,
+cutoff violation, unknown reference, duplicate ID, review chronology or digest
+mismatch before inspecting payload values. The evidence map cites the exact
+regression function for each reviewed claim. Keep reference validation
+fail-closed; do not relax it to make incomplete producer data pass. Use a new
+schema version for incompatible changes, add a migration/translation contract
+explicitly and include the schema version in the digest. Add new sections only
+when their provenance, null semantics, temporal rules and review binding are
+defined. Never promote
 `decision_evaluation` from this schema alone.
 
 See the [M1F-01 change request](changes/M1F_01_DECISION_TRACE_CONTRACT.md),
