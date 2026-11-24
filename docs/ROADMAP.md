@@ -1,5 +1,14 @@
 # Milestones
 
+For the current dependency-ordered implementation queue, see the
+[master execution plan](engineering/MASTER_EXECUTION_PLAN.md),
+[task backlog](engineering/TASK_BACKLOG.md) and
+[milestone acceptance gates](engineering/DEFINITION_OF_DONE.md).
+The [dated status baseline](engineering/PROJECT_STATUS.md) distinguishes
+verified implementation from planned work; the [blocker register](engineering/BLOCKERS.md)
+records external decisions. This roadmap retains milestone scope and
+historical development notes, not a second mutable task tracker.
+
 - **MM-M0 — Completed scaffold:** FastAPI, `/health`, `/v1/capabilities`, scenario contract validation, tests, Docker and CI, decision log.
 - **MM-M1 — Planned retail fundamentals:** ingest permitted M5 subset, validate cutoff, backtest two demand models, run first inventory simulation through gateway.
 - **MM-M2 — Planned AI application:** evidence/RAG, agent tool workflow, traceable scenario analysis, UI and human review.

@@ -2,6 +2,21 @@
 
 This is the entry point for **understanding, changing, testing and maintaining** this repository. It is documentation for both engineers and AI coding agents, not a substitute for reading and validating the source.
 
+## Delegated execution and current priorities
+
+- [Agent handoff](CODEX_HANDOFF.md) — onboarding, safe parallel work,
+  source walkthrough and learning documentation standard.
+- [Master execution plan](MASTER_EXECUTION_PLAN.md) — target architecture,
+  dependency ordering and first runnable product slice.
+- [Project status](PROJECT_STATUS.md) — dated, commit-pinned baseline,
+  actual implemented/experimental boundaries and verification.
+- [Task backlog](TASK_BACKLOG.md) — stable task IDs, priority, dependencies
+  and concrete deliverables; reconcile concurrent work before claiming tasks.
+- [Definition of done](DEFINITION_OF_DONE.md) — work-item and milestone
+  acceptance, tests, truthful capability status and owner review.
+- [Blocker register](BLOCKERS.md) — explicit external approval gates,
+  safe independent work and evidence required to resolve blockers.
+
 ## Start here
 - [System map](SYSTEM_MAP.md) — what runs, key modules, entrypoints, boundaries and cross-project relationships.
 - [Repository atlas](REPOSITORY_ATLAS.md) — human-reviewed links to **every tracked code, test, config and document file**; a CI guard fails on missing files/links.
