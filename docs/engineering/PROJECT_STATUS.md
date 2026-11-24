@@ -1,24 +1,27 @@
 # Project status — reviewed baseline, not live status
 
 **Baseline:** 2026-11-23 (Brazil local date); main
-`036b8d62b70f32c313552bc20692dc287f121188` (PR #50).
-This is the last confirmed product baseline before the delegation-doc
-change. It is not a promise that another agent has not since advanced
-the branch. Re-read Git, open PRs, actual code and quality receipts
-before using this document as an execution report.
+`e4f05a152aefcf68fa8ec22f3baa3b61adb8519d` (PR #51 merge commit).
+This is the latest confirmed merged-main baseline after the handoff-doc
+update. PR #50 (`036b8d6`) is its parent. This is not the live status of a
+working branch; reconcile active task claims below with Git, open PRs, actual
+code and quality receipts before using this document as an execution report.
 
-**Verified baseline:** 691 pytest tests passed, one existing
+**Verified baseline on e4f05a1:** 691 pytest tests passed, one existing
 Starlette/httpx deprecation warning. Six local gate checks passed
 (pytest, Ruff, symbol catalog, atlas, evidence and capabilities) on
 that SHA, including after relocation to the permanent Windows
 checkout at `D:\MirrorMind`. The checkout was clean at migration
-verification. GitHub Actions was not asserted green for that run.
-No PRs were open at the preceding status check; this is historical,
-not a current open-PR inventory.
+verification. GitHub returned no workflow runs or check statuses for
+PR #51's merge commit in the preceding inspection; remote CI is therefore
+not represented as passing. No PRs were open at that preceding status
+check; this is historical, not a current open-PR inventory.
 
-At this baseline the [capability ledger](CAPABILITY_LEDGER.json)
+At this merged baseline the [capability ledger](CAPABILITY_LEDGER.json)
 contained 40 entries: 2 implemented, 31 experimental, 1 interface-only
-and 6 planned. Regenerate counts from the ledger rather than treating
+and 6 planned. The active M1B-02 branch adds one experimental composite
+evidence-flow declaration; that branch-local addition is not part of the
+merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
@@ -27,7 +30,7 @@ not a production-ready AI platform.
 | Area | Verified implementation / status | Missing product gate |
 | --- | --- | --- |
 | API and contracts | [FastAPI app](../../src/mirrormind/api/app.py), [system routes](../../src/mirrormind/api/routes/system.py), [scenario validation](../../src/mirrormind/api/routes/scenarios.py), [typed contracts](../../src/mirrormind/core/contracts.py) | No execution pipeline or tenant authorization implied |
-| Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
+| Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), [composite retail preflight](../../src/mirrormind/domains/retail/evidence_flow.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
 | Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
 | Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
 | Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol/summary | Actual compatible optional engine adapter, execution, result validation and budgets |

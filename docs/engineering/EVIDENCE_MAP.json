@@ -817,5 +817,40 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_remote_https_transport_enforces_timeout_mime_bytes_and_no_redirects",
     "limitation": "Fake HTTPS opener checks fixed request query, timeout, disabled proxy/redirect handlers, HTTP status, content type, maximum bytes and outage refusal. No real TLS interoperability or DNS failure recovery was tested."
+  },
+  {
+    "id": "MM-FLOW-001",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing",
+    "limitation": "A generated local fixture composes the CSV helpers, filters by caller-declared event/publication dates and omits identifiers/references from the receipt. It does not authenticate permissions, provenance or actual source availability."
+  },
+  {
+    "id": "MM-FLOW-002",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_csv_flow_abstains_when_no_declared_observation_is_available_at_origin",
+    "limitation": "An empty as-of slice remains empty on the synthetic CSV fixture. This does not prove a real source is complete or that its declared publication dates are genuine."
+  },
+  {
+    "id": "MM-FLOW-003",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers",
+    "limitation": "A generated workbook, caller calendar and caller release tuple compose into aggregate cutoff counts with no raw identifiers in the receipt. The calendar and release dates remain unverified and InvoiceDate is not publication evidence."
+  },
+  {
+    "id": "MM-FLOW-004",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_uci_flow_rejects_missing_calendar_dates_and_release_declarations",
+    "limitation": "The local workflow rejects an omitted projected date and incomplete release tuple. This is structural consistency only, not proof of a real business calendar or complete source history."
+  },
+  {
+    "id": "MM-FLOW-005",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_csv_flow_rejects_digest_and_review_declaration_mismatch",
+    "limitation": "Expected-byte and review-packet digest mismatches fail closed locally. A matching caller-provided digest is not a publisher signature, permission or provenance verification."
   }
 ]

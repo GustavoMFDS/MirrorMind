@@ -1,12 +1,23 @@
 # Task backlog — prioritized execution register
 
-**Baseline:** PR #50, see [PROJECT_STATUS](PROJECT_STATUS.md). This is
+**Baseline:** PR #51 merge commit `e4f05a152aefcf68fa8ec22f3baa3b61adb8519d`,
+see [PROJECT_STATUS](PROJECT_STATUS.md). This is
 the maintained task register, not a duplicate roadmap or a promise
 of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
+
+## Reconciled state at the PR #51 baseline
+
+| State | Items / evidence | Continuation |
+| --- | --- | --- |
+| Merged foundations, still experimental | PRs #47–#50 added local/offline signed-fence verification and a nonce-challenged HTTPS reader; PR #51 consolidated the engineering handoff. These do not deliver a deployed trust service or source authorization. | Preserve their existing scope and tests; do not rebuild the governance chain as a substitute for the product path. |
+| Partially implemented M1 | M1B-02 already had separate CSV/XLSX readers, intake metadata, calendar/release checks and as-of primitives, but no reusable composed flow. M1C-01 already had offline baselines and release backtests, but not the remaining reproducible end-to-end slice. | Continue M1B-02 first, then wire its synthetic result into M1C-01 while retaining abstention and per-origin receipts. |
+| Ready at the PR #51 baseline | DOC-01 reconciliation; G-01 minimal testable server-side current-head response; M1E-01 simulation contract work; M1F-01 decision trace contract. DOC-01 is now claimed in progress below. | Keep M1 evidence-to-evaluation work ahead of further experimental governance unless a dependency requires G-01. |
+| Pending by dependency | Remaining M1C/M1D/M1E/M1F, M2, M3 and M4 rows marked `planned`. | Start only when named predecessors and acceptance inputs exist. |
+| Blocked by external evidence or approval | M1B-03 and M1C-03 require B-01/B-02 real-source rights, original availability and empirical holdout evidence. G-04 and deployment-related scopes also require B-03/B-06. | Advance synthetic slices independently; preserve blockers and do not claim they are solved by generated fixtures. |
 
 ## Conventions
 
@@ -122,3 +133,10 @@ results satisfying the relevant [definition of done](DEFINITION_OF_DONE.md).
 If a gate fails, preserve the failure and choose the next safe
 independent slice. A blocker resolved for a synthetic fixture does
 not automatically resolve real-source, deployment or product gates.
+
+## Active claims
+
+| ID | Status | Owner / branch | Surfaces | PR / commit | Evidence and next action | Blockers |
+| --- | --- | --- | --- | --- | --- | --- |
+| DOC-01 | in_progress | Codex / `codex/m1b-02-synthetic-evidence-flow` | Baseline reconciliation, semantic map, source/learning/docs navigation | PR pending | PR #51/main baseline and e4f05a1 local quality receipt reconciled; verify new atlas/evidence/capability links and final gate | None for docs slice |
+| M1B-02 | in_progress | Codex / `codex/m1b-02-synthetic-evidence-flow` | CSV/XLSX local composition, review packet, calendar/release/as-of checks, tests and docs | PR pending | Focused integration tests: 5 passed; complete repo gates and update exact evidence before review | B-01/B-02 still block real-source use, not this synthetic slice |

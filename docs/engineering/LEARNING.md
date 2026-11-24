@@ -447,3 +447,19 @@ disagrees with the old local registry. Then freshly sign the old
 head with the new nonce and explain why a malicious remote signer
 still passes. Identify what a genuinely independent deployed
 authority and trusted key-custody process must add.
+
+## Guided exercise — compose local retail evidence without granting permission (35 minutes)
+
+Read [`evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py),
+the [M1 evidence-flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), and
+[`test_retail_evidence_flow.py`](../../tests/integration/test_retail_evidence_flow.py).
+Trace the CSV fixture through digest verification, the metadata-only review
+packet, quality summary and two-date as-of selection. Predict which rows are
+present at January 3 and January 5, then move the origin before the first row
+and verify the explicit abstention. Next inspect the generated XLSX test and
+explain why each positive product-day needs a separate release declaration.
+Remove one release and observe the fail-closed error. Finally compare the
+typed result with `receipt()`: identify the fields retained for a later local
+experiment, the fields omitted from receipts, and the still-false
+`ingestion_authorized` and `forecast_eligible` flags. The exercise uses only
+invented fixtures and does not establish a real source's rights or vintages.

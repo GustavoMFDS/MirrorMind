@@ -162,6 +162,21 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `EligibleRetailValueComparison.receipt` | method | `def receipt(self) -> dict[str, str \| int \| float \| None]` | Expose exact eligibility fractions and only conditional statistics. | [L43](../../../src/mirrormind/domains/retail/eligible_values.py#L43) |
 | `compare_eligible_retail_values` | function | `def compare_eligible_retail_values(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> EligibleRetailValueComparison` | Compare two disjoint eligible subsets; refuse sparse comparisons. | [L74](../../../src/mirrormind/domains/retail/eligible_values.py#L74) |
 
+## `mirrormind.domains.retail.evidence_flow`
+
+Source: [`src/mirrormind/domains/retail/evidence_flow.py`](../../../src/mirrormind/domains/retail/evidence_flow.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `mirrormind.domains.retail.calendar_coverage`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.snapshots`, `types`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `RetailCsvEvidenceFlow` | class | `class RetailCsvEvidenceFlow` | Staged CSV components and the rows matching one declared historical origin. | [L45](../../../src/mirrormind/domains/retail/evidence_flow.py#L45) |
+| `RetailCsvEvidenceFlow.receipt` | method | `def receipt(self) -> dict[str, object]` | Return status and aggregate counts without series identifiers or values. | [L54](../../../src/mirrormind/domains/retail/evidence_flow.py#L54) |
+| `RetailUciEvidenceFlow` | class | `class RetailUciEvidenceFlow` | Workbook projection, declared calendar and release audit for later offline use. | [L78](../../../src/mirrormind/domains/retail/evidence_flow.py#L78) |
+| `RetailUciEvidenceFlow.receipt` | method | `def receipt(self) -> dict[str, object]` | Return component summaries only; never product IDs or transaction values. | [L87](../../../src/mirrormind/domains/retail/evidence_flow.py#L87) |
+| `prepare_retail_csv_evidence_flow` | function | `def prepare_retail_csv_evidence_flow(stream: BinaryIO, *, expected_sha256: str, declaration: SourceReviewDeclaration, inspected_on: date, series_id: str, origin_on: str) -> RetailCsvEvidenceFlow` | Compose bounded CSV staging, review metadata, quality and declared as-of selection. | [L101](../../../src/mirrormind/domains/retail/evidence_flow.py#L101) |
+| `prepare_retail_uci_evidence_flow` | function | `def prepare_retail_uci_evidence_flow(stream: BinaryIO, *, expected_sha256: str, declaration: SourceReviewDeclaration, inspected_on: date, declared_calendar: tuple[date, ...], declared_releases: tuple[DeclaredProductRelease, ...], origin_on: date) -> RetailUciEvidenceFlow` | Compose bounded XLSX projection and explicit, unverified calendar/release checks. | [L134](../../../src/mirrormind/domains/retail/evidence_flow.py#L134) |
+
 ## `mirrormind.domains.retail.release_backtest`
 
 Source: [`src/mirrormind/domains/retail/release_backtest.py`](../../../src/mirrormind/domains/retail/release_backtest.py)

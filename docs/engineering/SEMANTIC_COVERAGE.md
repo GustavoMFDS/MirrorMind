@@ -40,6 +40,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/coverage.py`](../../src/mirrormind/domains/retail/coverage.py) | G | Internal positive-line product-day calendar gaps, aggregate-only and no imputation; [reviewed guide](RETAIL_COVERAGE.md) |
 | [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | G | Bounded transaction-to-day positive-unit projection on fictional mappings; [source walkthrough](UCI_RETAIL_PROJECTION.md) |
 | [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
+| [`src/mirrormind/domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py) | G | Experimental composition of bounded CSV/XLSX readers, review-only packets, declared calendar/release checks and CSV as-of selection; [M1 flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), no authorization or forecast eligibility |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
 | [`src/mirrormind/modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py) | G | Experimental new shared SQLite file, atomic current policy admission and signed publication CAS; [guide](ATOMIC_GOVERNED_PUBLISHER.md); no external authority or source grant |
@@ -63,6 +64,7 @@ sources without relying on a manually maintained file-count assertion.
 | --- | --- | --- |
 | Health endpoint | Implemented in scaffold | Actual endpoint regression; not a dependency readiness probe |
 | Scenario contract shape and two cross-field rules | Implemented validation only | Pydantic unit and API tests; still no authorization or execution |
+| Local retail synthetic evidence flow | Experimental composition only | Generated fixture tests; no real-source rights, publisher provenance, authorized ingestion or API execution |
 | SimulationGateway Protocol | Interface only | A concrete adapter, translation/compatibility tests and engine execution |
 | WorldKernel execution | Planned | Optional pinned adapter, trusted world registry, budgets, actual results |
 | Evidence ingestion/RAG | Planned | Permission checks, provenance, retention, source-specific tests |

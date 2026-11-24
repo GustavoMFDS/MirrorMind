@@ -121,6 +121,13 @@
       "notes": "Bounded optional read-only local XLSX parser on invented UCI-shaped workbooks only; not authorized original source ingestion, full official dataset processing, hostile workbook isolation or verified publication history."
     },
     {
+      "id": "local_retail_synthetic_evidence_flow",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/evidence_flow.py",
+      "test": "tests/integration/test_retail_evidence_flow.py::test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing",
+      "notes": "Composes bounded local CSV/XLSX staging, review-only metadata and caller-declared calendar/release/as-of checks on synthetic fixtures. No source authorization, authenticated publisher availability, persistence, API data path, forecasting or decision execution."
+    },
+    {
       "id": "local_retail_coverage_diagnostics",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/coverage.py",

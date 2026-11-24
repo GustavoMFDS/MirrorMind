@@ -798,6 +798,18 @@ grant, production custody or cross-file atomicity is implied.
 The client does not grant source rights, publish, ingest data, manage
 real service keys, or claim globally current external authority.
 
+## 50. Composed synthetic retail evidence preflight
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py) | Composes existing bounded local CSV/XLSX readers, review metadata, declared calendar/release checks and CSV as-of selection; no authorization or persistence |
+| [`tests/integration/test_retail_evidence_flow.py`](../../tests/integration/test_retail_evidence_flow.py) | Generated/synthetic fixture integration tests for normal flow, abstention, receipt minimization and fail-closed declarations |
+| [`docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md`](M1_SYNTHETIC_EVIDENCE_FLOW.md) | Architecture, contracts, reproducible CSV example, safety boundaries, test interpretation, exercises and diagnosis |
+| [`docs/engineering/changes/M1B_02_SYNTHETIC_EVIDENCE_FLOW.md`](changes/M1B_02_SYNTHETIC_EVIDENCE_FLOW.md) | Scoped M1B-02 change request, acceptance criteria, impact map and evidence record |
+
+The capability remains `experimental`; a syntactically valid review packet
+does not verify data rights, source identity or actual publisher availability.
+
 
 ## Continuous engineering handoff and execution register
 

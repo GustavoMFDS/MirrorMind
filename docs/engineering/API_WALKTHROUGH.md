@@ -12,7 +12,7 @@ and the [shared contracts](CONTRACT_WALKTHROUGH.md).
 | --- | --- | --- |
 | `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system and scenario routers | Running a worker, starting an agent, retrieving documents or creating a database |
 | `system.health()` | `GET /health`, HTTP 200 and `{"status":"ok","service":"mirrormind-api"}` | Readiness of a future datastore/forecast/WorldKernel engine |
-| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"` with two currently implemented functions and a list of planned capabilities | It does not certify that planned modules exist or execute |
+| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including the synthetic retail evidence flow) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
 | `scenarios.validate_scenario(spec)` | `POST /v1/scenarios/validate`; Pydantic validates v0.1 `ScenarioSpec`, returns a summary with `validated_not_executed` | Forecast, RAG, simulation, approval, audit or budget enforcement |
 
 `mirrormind.api:app` is the stable import expected by uvicorn.
@@ -48,6 +48,14 @@ a domain-specific source-validation layer.
 | **MM-API-001** | `tests/integration/test_api.py::test_scenario_validation_only` confirms a valid JSON request returns `validated_not_executed` | It does not prove execution or successful decision support |
 | **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies the scaffold lists the WorldKernel adapter under `planned` | This test alone does not verify all future capability claims |
 | **MM-API-003** | `tests/integration/test_api.py::test_runs_cannot_exceed_budget` returns HTTP 422 for excess declared run count | A rejected request is not evidence of enforced runtime quotas |
+
+The `local_retail_synthetic_evidence_flow` label describes a Python
+library experiment only. No evidence payload or flow execution is exposed
+by an HTTP route. The parity regression
+`tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
+checks that the API's implemented/experimental/planned lists match the
+reviewed ledger; matching labels do not establish the semantic truth of a
+capability claim.
 
 ```bash
 python -m pytest -q tests/integration/test_api.py

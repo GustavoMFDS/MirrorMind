@@ -114,3 +114,18 @@ hash evidence and verify each side with independent operators.
 Never log signer private keys or source rows, retry with stale
 pins, bypass on outage or use read receipt to authorize publishing.
 No live authority is deployed in the project.
+
+## Local retail evidence-flow failures
+
+For a failed M1 composite preflight, reproduce with
+[`tests/integration/test_retail_evidence_flow.py`](../../tests/integration/test_retail_evidence_flow.py)
+and read the [flow contract](M1_SYNTHETIC_EVIDENCE_FLOW.md). Confirm the
+caller-opened stream is binary and bounded, calculate its SHA-256 locally,
+and compare it to both the expected digest and `SourceReviewDeclaration`.
+Then isolate the format helper: CSV uses strict schema/two-date rules;
+XLSX uses the optional workbook parser, caller calendar and explicit release
+tuple. A missing CSV slice is a normal abstention. A workbook calendar gap or
+missing release is invalid input, not evidence of zero sales. Do not dump raw
+rows, references or workbook XML while diagnosing. Matching hashes and
+synthetic release declarations never prove rights or real publisher
+availability.
