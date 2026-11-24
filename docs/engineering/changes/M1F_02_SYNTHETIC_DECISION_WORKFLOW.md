@@ -141,10 +141,10 @@ independent blockers.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: pending implementation.
-- Modified symbols and files: pending implementation.
-- Tests executed, result, environment: pending implementation.
-- Claim IDs and cited test path/function: pending implementation.
+- Commit / PR: `6a1c960de684a1786809f61ab7bf919371bf9cd1`, draft [PR #59](https://github.com/GustavoMFDS/MirrorMind/pull/59), based on `codex/m1f-02-dependency-stack`.
+- Modified symbols and files: `run_synthetic_decision_workflow`, `_eligible_observation_rows`, `_build_trace`, `SyntheticDecisionWorkflowRequest`, `POST /v1/decision-workflows/retail/synthetic`, `project_seasonal_naive_lag7`, `build_synthetic_evidence_flow`, bounded CLI and shared M1C-01 example exports; see [walkthrough](../M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) and [atlas section 55](../REPOSITORY_ATLAS.md#55-synthetic-retail-decision-workflow-experimental-no-action-authority).
+- Tests executed, result, environment: exact-commit canonical local gate passed 766 pytest tests and all six checks at 2026-11-24 18:15:20 UTC. Focused service/API/CLI set passed 46 tests. Python 3.12 environment; one existing Starlette/httpx `TestClient` deprecation warning.
+- Claim IDs and cited test path/function: `MM-MF-001` — `tests/unit/test_synthetic_decision_workflow.py::test_successful_workflow_produces_valid_trace_and_explicit_gaps`; `MM-MF-002` — `::test_incomplete_or_late_history_abstains_without_running_policy_test_double`; `MM-MF-003` — `::test_post_cutoff_fixture_mutation_does_not_change_forecast_or_comparison`; `MM-MF-004` — `tests/integration/test_retail_synthetic_decision_workflow_cli.py::test_synthetic_decision_cli_replays_trace_and_paired_policy_comparison`; `MM-API-004` — `tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result`.
 - Evidence/provenance/cutoff and uncertainty: fictional fixture only; all
   publication dates are caller-declared and the residual diagnostic is
   uncalibrated.
@@ -152,8 +152,9 @@ independent blockers.
   represented as approved.
 - New or changed contracts: experimental HTTP request/result schema and
   produced M1F-01 `DecisionTrace`.
-- Docs updated: pending implementation.
+- Docs updated: M1F-02 walkthrough/model card/change request, API walkthrough, system and semantic maps, capability/evidence ledgers, atlas, debugging/learning, retail MVP, roadmap, execution plan, project status and backlog.
 - Known limitations: actual WorldKernel, authorized data, empirical forecasts,
   uncertainty calibration, human identity/review, persistence and writes remain
   absent.
-- Independent explanation: pending implementation.
+- Official CI: PR #59 test run [45457848087](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457848087) and symbol-catalog run [45457847930](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457847930) failed before steps. Step summaries were empty and log downloads returned 404 `BlobNotFound`; exact cause is unavailable for these runs. Earlier PR #58 diagnostics identify B-08 billing/spending-limit annotation.
+- Independent explanation: start with the [M1F-02 walkthrough](../M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), replay the CLI command there, then compare its JSON fields to the trace schema and cited test functions.
