@@ -15,13 +15,38 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-08 | Official GitHub Actions verification: PR #60 head `6374f0bb9a981271cb9340a190dcdebec6263cc9` failed runs `45476173736` (`symbol-catalog`) and `45476173796` (`test`). PR #61 failed on three successive code/documentation heads: `78a4e5e1ea4dda4b14d0b5313affcb9b9f5da1d1` (runs `45490939631`, `45490939756`), `4c7300f88b6425fb144de657f263f8e9979c40ac` (runs `45492040417`, `45492040445`) and `040d160477a5185f40ec9dbe257362990162a109` (runs `45492555578`, `45492555540`). On all inspected #61 heads, jobs completed with failure but exposed no steps; log downloads returned `404 BlobNotFound`, artifacts and combined commit statuses were empty. The cause of these failures is not established. | Successful required workflows on the exact reviewed head, or inspectable diagnostics and a verified resolution; local gates are not a substitute | Project owner / repository or Actions administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PRs draft and report Actions status as failed |
+| B-08 | Latest observed PR-triggered `test` and `symbol-catalog` runs for every open draft #52–#61 completed with failure; exact run IDs are listed below. PR #57's description records a verified billing/spending-limit annotation on its own earlier runs. That makes a shared Actions billing limit plausible, but does not establish the cause of other runs. On the latest inspected #61 head, both jobs failed without step records; logs returned `404 BlobNotFound`, and artifacts/statuses were empty. | Successful required workflows on the exact reviewed head, or inspectable diagnostics and a verified resolution; local gates are not a substitute | Project owner / repository or Actions administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PRs draft and report Actions status as failed |
 | B-09 | Integration of the current review queue: PRs #52–#61 are open drafts and unmerged as of 2026-11-24. Dependent tasks cannot be promoted based on local implementation or tests alone. PR #60 also has the separate failed-workflow evidence in B-08. | Human review and integration decisions for prerequisite PRs; independently inspect required Actions outcomes where workflows run; then reconcile task dependencies against merged heads | Project owner / repository reviewers | Continue genuinely independent ready work, preserve the draft branches and evidence, and do not duplicate slices or assume dependency completion |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for
 the named real integration, not a prohibition on design and tests.
+
+## B-08 — latest observed workflow runs
+
+Both configured pull-request workflows completed with failure on the
+following pinned heads. These are official Actions results, separate from
+local quality-gate receipts.
+
+| PR / head | Python API CI (`test`) | Engineering documentation catalog (`symbol-catalog`) |
+| --- | --- | --- |
+| [#52](https://github.com/GustavoMFDS/MirrorMind/pull/52), `5c307e4` | [45319452833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452833) failed | [45319452852](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452852) failed |
+| [#53](https://github.com/GustavoMFDS/MirrorMind/pull/53), `210f0f3` | [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471) failed | [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864) failed |
+| [#54](https://github.com/GustavoMFDS/MirrorMind/pull/54), `83c80d8` | [45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041) failed | [45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150) failed |
+| [#55](https://github.com/GustavoMFDS/MirrorMind/pull/55), `fcd4781` | [45340088124](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45340088124) failed | [45340088189](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45340088189) failed |
+| [#56](https://github.com/GustavoMFDS/MirrorMind/pull/56), `c33bd7d` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) failed | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) failed |
+| [#57](https://github.com/GustavoMFDS/MirrorMind/pull/57), `646e4db` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) failed | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) failed |
+| [#58](https://github.com/GustavoMFDS/MirrorMind/pull/58), `465a2f2` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) failed | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) failed |
+| [#59](https://github.com/GustavoMFDS/MirrorMind/pull/59), `a5951e4` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) failed | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) failed |
+| [#60](https://github.com/GustavoMFDS/MirrorMind/pull/60), `6374f0b` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) failed | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) failed |
+| [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61), `0eebfe3` | [45493161127](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45493161127) failed | [45493161140](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45493161140) failed |
+
+PR #57's body records a verified billing/spending-limit annotation for its
+own listed runs and says repository CI steps did not execute. Treat shared
+billing as a hypothesis for other PRs: current #61 job records contain no
+steps, log downloads return `404 BlobNotFound`, and artifact/combined-status
+queries are empty. The connector could not expose a root-cause annotation.
 
 ## Source references and precise restrictions
 
@@ -36,16 +61,10 @@ the named real integration, not a prohibition on design and tests.
   configured signer's reply, not independent truth. A service can
   freshly sign stale state; separately protected storage/keys and
   operational review are distinct from local code acceptance.
-- [PR #60](https://github.com/GustavoMFDS/MirrorMind/pull/60) remains
-  draft. Its current exact-head Actions runs failed; connected diagnostics
-  exposed neither annotations nor logs. Do not infer an account/billing cause
-  from the available current-run evidence.
-- [PR #61](https://github.com/GustavoMFDS/MirrorMind/pull/61) also has
-  repeated failed `test` and `symbol-catalog` runs on heads `78a4e5e`,
-  `4c7300f` and `040d160`. All three sets have no step records or artifacts;
-  log downloads returned `404 BlobNotFound`. Cause remains unestablished; do
-  not infer billing, account or source-code failure from these incomplete
-  diagnostics.
+- [PR #60](https://github.com/GustavoMFDS/MirrorMind/pull/60) and
+  [PR #61](https://github.com/GustavoMFDS/MirrorMind/pull/61) remain drafts;
+  see the pinned B-08 run table. Current #61 diagnostics do not prove an
+  account-level cause or a source-code failure.
 - [Gateway gate](WORLDKERNEL_GATEWAY_GATE.md) rejects unrepresentable
   fields; a simulated result must actually come from the named engine.
 - [Security expectations](../SECURITY.md) and [decision log](../DECISIONS.md)
