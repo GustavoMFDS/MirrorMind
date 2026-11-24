@@ -94,3 +94,12 @@ These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but 
   Detects publisher-only rollback **conditionally** with an intact
   registry; it is not an external trusted current-head service, a
   cross-file transaction or an authorization/ingestion feature.
+
+## Challenged external-head reads (experimental, no deployed service)
+
+- [Nonce-bound signed HTTPS head client](REMOTE_FENCE_HEAD_CLIENT.md) —
+  optional outbound-only comparison of a signed, short-lived remote
+  current-head *claim* against the local fully verified registry.
+  [Scoped change request](changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md).
+  The service, separate key custody, remote currentness and real
+  ingestion permission are **not provided by this repository**.

@@ -137,3 +137,17 @@ verifies terminal publisher state. A publisher-only coherent backup
 restore becomes detectable if the registry is intact. No independent
 server, backup custodian, distributed transaction, signer identity
 or legally authorized source processing was created.
+
+## MM-M1b experimental challenged remote current-head reader
+
+The [remote head client](REMOTE_FENCE_HEAD_CLIENT.md) is a narrow
+optional **outbound HTTPS read** adapter with a random per-request
+nonce, fixed DNS endpoint, standard TLS validation and a
+domain-separated Ed25519 service signature. It binds exact
+source-review declaration/snapshot and compares the returned
+sequence/digest with [the separate local signed-fence registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md),
+which verifies the [governed publisher](ATOMIC_GOVERNED_PUBLISHER.md).
+The code neither deploys an external service nor certifies its
+administrative independence, durable latest-state operation, key
+custody or honesty. This network read does not grant any access
+rights or alter publisher transactions.

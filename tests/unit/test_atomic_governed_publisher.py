@@ -4,7 +4,7 @@ import shutil
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import FrozenInstanceError, replace
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 from hashlib import sha256
 from threading import Barrier
 
@@ -12,6 +12,7 @@ import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
+import mirrormind.modules.evidence.remote_fence_head_client as remote_client
 from mirrormind.modules.evidence.atomic_governed_publisher import (
     AtomicGovernedPublisher,
 )
@@ -1471,3 +1472,356 @@ def test_separate_registry_rejects_missed_publisher_update_until_refenced(tmp_pa
         expected_fence_sha256=_fence_sha256(f1), checked_on=NOW,
     )
     assert registry.compare_local(checked_on=NOW).authority_sequence == 2
+
+
+REMOTE_FENCE_ENDPOINT = "https://head-authority.example.org/v1/integrated-fence/head"
+REMOTE_FENCE_SERVICE = "REMOTE_AUTHORITY_001"
+REMOTE_FENCE_KEY_ID = "REMOTE_HEAD_KEY_001"
+REMOTE_NONCE = "b" * 64
+REMOTE_TIME = datetime(2026, 11, 21, 12, 0, tzinfo=UTC)
+
+
+def prepared_remote_registry(tmp_path):
+    case = fixture(tmp_path)
+    enrolled = enroll(case)
+    authority, roster, witness1, witness2, witnesses = dual_fence_keys()
+    registry = local_fence_registry(case, roster, witnesses, create=True)
+    first_fence = signed_integrated_fence(case, authority, authority_sequence=1)
+    registry.append(
+        dual_fence_link(first_fence, 0, "0" * 64, witness1, witness2),
+        expected_authority_sequence=0,
+        expected_fence_sha256="0" * 64,
+        checked_on=NOW,
+    )
+    service, service_public = keypair()
+    return {
+        "case": case,
+        "enrolled": enrolled,
+        "registry": registry,
+        "authority": authority,
+        "witness1": witness1,
+        "witness2": witness2,
+        "service": service,
+        "service_roster": {REMOTE_FENCE_KEY_ID: service_public},
+        "first_fence": first_fence,
+    }
+
+
+def make_signed_remote_head(bundle, *, nonce=REMOTE_NONCE,
+                            at=REMOTE_TIME, authority_sequence=None,
+                            fence_sha256=None, endpoint=REMOTE_FENCE_ENDPOINT,
+                            service_id=REMOTE_FENCE_SERVICE):
+    current = bundle["registry"].head(checked_on=NOW)
+    packet = bundle["case"]["packet"]
+    draft = remote_client.SignedRemoteFenceHead(
+        service_id=service_id,
+        service_key_id=REMOTE_FENCE_KEY_ID,
+        endpoint=endpoint,
+        nonce_hex=nonce,
+        packet_sha256=packet.declaration_sha256,
+        snapshot_sha256=packet.snapshot_sha256,
+        authority_sequence=(
+            current.authority_sequence
+            if authority_sequence is None else authority_sequence
+        ),
+        fence_sha256=(
+            current.fence_sha256 if fence_sha256 is None else fence_sha256
+        ),
+        issued_at_utc=at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        expires_at_utc=(at + timedelta(seconds=70)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        signature_hex="0" * 128,
+    )
+    return replace(
+        draft, signature_hex=bundle["service"].sign(
+            remote_client._canonical_remote_message(draft)
+        ).hex(),
+    )
+
+
+def check_remote_head(bundle, signed, *, nonce=REMOTE_NONCE,
+                      endpoint=REMOTE_FENCE_ENDPOINT,
+                      service_id=REMOTE_FENCE_SERVICE,
+                      trusted=None, checked_at=REMOTE_TIME):
+    return remote_client.verify_challenged_remote_head(
+        bundle["registry"], remote_client._signed_wire(signed),
+        requested_nonce_hex=nonce,
+        service_id=service_id,
+        endpoint=endpoint,
+        trusted_service_keys=(
+            bundle["service_roster"] if trusted is None else trusted
+        ),
+        checked_at=checked_at,
+    )
+
+
+def test_remote_challenged_head_matches_signed_local_heads_without_permissions(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    signed = make_signed_remote_head(bundle)
+    before = bundle["registry"].head(checked_on=NOW)
+    result = check_remote_head(bundle, signed)
+    assert result.authority_sequence == 1
+    assert result.current_fence_sha256 == before.fence_sha256
+    assert bundle["registry"].head(checked_on=NOW) == before
+    assert result.receipt()["authentication"] == "nonce_bound_configured_service_key"
+    assert result.receipt()["independent_authority_status"] == (
+        "not_established_by_this_client"
+    )
+    assert result.receipt()["publication_authorized"] is False
+    assert result.receipt()["ingestion_authorized"] is False
+    assert result.receipt()["forecast_eligible"] is False
+    for sensitive in ("PRIVATE-SERIES", "OPERATOR_001", REMOTE_NONCE):
+        assert sensitive not in str(result.receipt())
+
+
+def test_remote_response_replay_wrong_nonce_and_signature_tampering_fail(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    signed = make_signed_remote_head(bundle)
+    with pytest.raises(ValueError, match="wrong service, signer, challenge or packet"):
+        check_remote_head(bundle, signed, nonce="c" * 64)
+    forged = replace(signed, fence_sha256="f" * 64)
+    with pytest.raises(ValueError, match="signature invalid"):
+        check_remote_head(bundle, forged)
+    with pytest.raises(ValueError, match="wrong service, signer, challenge or packet"):
+        check_remote_head(bundle, replace(signed, packet_sha256="f" * 64))
+    with pytest.raises(ValueError, match="wrong service, signer, challenge or packet"):
+        check_remote_head(bundle, signed, service_id="ANOTHER_SERVICE_001")
+    with pytest.raises(ValueError, match="wrong service, signer, challenge or packet"):
+        check_remote_head(bundle, signed, endpoint=(
+            "https://another-authority.example.org/v1/integrated-fence/head"
+        ))
+    with pytest.raises(ValueError, match="signature invalid"):
+        _, wrong_public = keypair()
+        check_remote_head(bundle, signed, trusted={REMOTE_FENCE_KEY_ID: wrong_public})
+
+
+def test_remote_response_clock_interval_missing_fields_and_canonical_json(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    valid = make_signed_remote_head(bundle)
+    with pytest.raises(ValueError, match="not yet valid or expired"):
+        check_remote_head(bundle, valid, checked_at=REMOTE_TIME - timedelta(seconds=1))
+    with pytest.raises(ValueError, match="not yet valid or expired"):
+        check_remote_head(bundle, valid, checked_at=REMOTE_TIME + timedelta(seconds=71))
+    with pytest.raises(ValueError, match="validity interval"):
+        draft = replace(
+            valid,
+            expires_at_utc=(REMOTE_TIME + timedelta(seconds=121)).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            ),
+        )
+        remote_client._canonical_remote_message(draft)
+    with pytest.raises(ValueError, match="UTC-second"):
+        remote_client._canonical_remote_message(
+            replace(valid, issued_at_utc="2026-11-21T12:00:00+00:00")
+        )
+    with pytest.raises(ValueError, match="challenge or UTC clock"):
+        check_remote_head(bundle, valid, checked_at=NOW)
+    encoded = remote_client._signed_wire(valid)
+    with pytest.raises(ValueError, match="canonical"):
+        remote_client._parse_signed_response(b" " + encoded)
+    with pytest.raises(ValueError, match="duplicate"):
+        remote_client._parse_signed_response(
+            encoded[:-1] + b',"nonce_hex":"' + REMOTE_NONCE.encode() + b'"}'
+        )
+    with pytest.raises(ValueError, match="missing or extra"):
+        remote_client._parse_signed_response(b"{}")
+    with pytest.raises(ValueError, match="bounded size"):
+        remote_client._parse_signed_response(b"x" * 4097)
+    with pytest.raises(ValueError, match="missing or extra"):
+        remote_client._parse_signed_response(
+            b'{"status":"ok"}'
+        )
+
+
+def test_remote_head_distinct_service_keys_and_fixed_https_path_required(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    signed = make_signed_remote_head(bundle)
+    for endpoint in (
+        "http://head-authority.example.org/v1/integrated-fence/head",
+        "https://head-authority.example.org/elsewhere",
+        "https://user:password@head-authority.example.org/v1/integrated-fence/head",
+        "https://127.0.0.1/v1/integrated-fence/head",
+        "https://localhost/v1/integrated-fence/head",
+        "https://head-authority.example.org:8443/v1/integrated-fence/head",
+        "https://head-authority.example.org/v1/integrated-fence/head?x=y",
+        "https://head-authority.example.org/v1/integrated-fence/head#fragment",
+    ):
+        with pytest.raises(ValueError, match="HTTPS|IP literal"):
+            remote_client._valid_endpoint(endpoint)
+    assert remote_client._NoRedirect().redirect_request(
+        None, None, 302, "Found", None, "https://wrong.example.org/"
+    ) is None
+    auth_public = bundle["registry"]._fence_keys["INDEPENDENT_FENCE_001"]
+    witness_public = bundle["registry"]._witness_keys["FENCE_WITNESS_001"]
+    with pytest.raises(ValueError, match="role must differ"):
+        check_remote_head(
+            bundle, signed, trusted={REMOTE_FENCE_KEY_ID: auth_public}
+        )
+    with pytest.raises(ValueError, match="role must differ"):
+        check_remote_head(
+            bundle, signed, trusted={REMOTE_FENCE_KEY_ID: witness_public}
+        )
+    with pytest.raises(ValueError, match="public-key configuration"):
+        check_remote_head(
+            bundle, signed,
+            trusted={REMOTE_FENCE_KEY_ID: bundle["service_roster"][REMOTE_FENCE_KEY_ID],
+                     "ANOTHER_SERVICE_KEY": bundle["service_roster"][REMOTE_FENCE_KEY_ID]},
+        )
+
+
+def test_remote_signed_head_detects_two_file_restore_with_newer_remote_reply(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    case = bundle["case"]
+    registry = bundle["registry"]
+    old_governed = tmp_path / "remote-test-old-governed.db"
+    old_registry = tmp_path / "remote-test-old-registry.db"
+    shutil.copyfile(case["path"], old_governed)
+    shutil.copyfile(registry._path, old_registry)
+    revoke(case, bundle["enrolled"])
+    second_fence = signed_integrated_fence(
+        case, bundle["authority"], authority_sequence=2
+    )
+    registry.append(
+        dual_fence_link(
+            second_fence, 1, _fence_sha256(bundle["first_fence"]),
+            bundle["witness1"], bundle["witness2"],
+        ),
+        expected_authority_sequence=1,
+        expected_fence_sha256=_fence_sha256(bundle["first_fence"]),
+        checked_on=NOW,
+    )
+    newer_remote_reply = make_signed_remote_head(bundle)
+    assert check_remote_head(bundle, newer_remote_reply).authority_sequence == 2
+    shutil.copyfile(old_governed, case["path"])
+    shutil.copyfile(old_registry, registry._path)
+    restored = local_fence_registry(
+        case, registry._fence_keys, registry._witness_keys,
+    )
+    bundle["registry"] = restored
+    # A genuine outside signer that still reports sequence 2 detects paired rollback.
+    with pytest.raises(ValueError, match="remote signed current head differs"):
+        check_remote_head(bundle, newer_remote_reply)
+    # A malicious/stale remote signer can freshly sign an old head: NOT a proof.
+    old_signed = make_signed_remote_head(bundle)
+    assert check_remote_head(bundle, old_signed).authority_sequence == 1
+
+
+def test_remote_https_fetch_uses_fresh_nonce_and_never_calls_real_network(
+    tmp_path, monkeypatch,
+):
+    bundle = prepared_remote_registry(tmp_path)
+    seen = []
+    def fake_read(endpoint, nonce, packet_sha256):
+        seen.append((endpoint, nonce, packet_sha256))
+        assert endpoint == REMOTE_FENCE_ENDPOINT
+        assert nonce == REMOTE_NONCE
+        assert packet_sha256 == bundle['case']['packet'].declaration_sha256
+        return remote_client._signed_wire(
+            make_signed_remote_head(
+                bundle, nonce=nonce, at=datetime.now(UTC)
+            )
+        )
+    monkeypatch.setattr(remote_client.secrets, "token_hex", lambda n: REMOTE_NONCE)
+    monkeypatch.setattr(remote_client, "_https_read", fake_read)
+    result = remote_client.fetch_and_compare_remote_head(
+        bundle["registry"], endpoint=REMOTE_FENCE_ENDPOINT,
+        service_id=REMOTE_FENCE_SERVICE,
+        trusted_service_keys=bundle["service_roster"],
+    )
+    assert result.authority_sequence == 1
+    assert seen == [(
+        REMOTE_FENCE_ENDPOINT, REMOTE_NONCE,
+        bundle["case"]["packet"].declaration_sha256,
+    )]
+    monkeypatch.setattr(remote_client, "_https_read", lambda *_: (_ for _ in ()).throw(
+        ValueError("remote head HTTPS request failed closed")
+    ))
+    with pytest.raises(ValueError, match="failed closed"):
+        remote_client.fetch_and_compare_remote_head(
+            bundle["registry"], endpoint=REMOTE_FENCE_ENDPOINT,
+            service_id=REMOTE_FENCE_SERVICE,
+            trusted_service_keys=bundle["service_roster"],
+        )
+
+
+def test_remote_https_transport_enforces_timeout_mime_bytes_and_no_redirects(
+    tmp_path, monkeypatch,
+):
+    bundle = prepared_remote_registry(tmp_path)
+    reply = remote_client._signed_wire(make_signed_remote_head(bundle))
+    packet_hash = bundle["case"]["packet"].declaration_sha256
+    response = {"status": 200, "mime": "application/json", "body": reply}
+    requests_seen = []
+
+    class FakeResponse:
+        @property
+        def status(self):
+            return response["status"]
+
+        @property
+        def headers(self):
+            class Headers:
+                def get_content_type(self):
+                    return response["mime"]
+            return Headers()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            return None
+
+        def read(self, max_bytes):
+            assert max_bytes == 4097
+            return response["body"]
+
+    class FakeOpener:
+        def open(self, request, timeout):
+            requests_seen.append(request)
+            assert timeout == 3.0
+            assert request.full_url == (
+                f"{REMOTE_FENCE_ENDPOINT}?nonce={REMOTE_NONCE}"
+                f"&packet_sha256={packet_hash}"
+            )
+            assert request.get_method() == "GET"
+            assert request.get_header("Accept") == "application/json"
+            return FakeResponse()
+
+    def fake_opener(*handlers):
+        assert any(isinstance(h, remote_client._NoRedirect) for h in handlers)
+        assert any(
+            isinstance(h, remote_client.urllib.request.HTTPSHandler)
+            for h in handlers
+        )
+        assert any(
+            isinstance(h, remote_client.urllib.request.ProxyHandler)
+            for h in handlers
+        )
+        return FakeOpener()
+
+    monkeypatch.setattr(remote_client.urllib.request, "build_opener", fake_opener)
+    assert remote_client._https_read(
+        REMOTE_FENCE_ENDPOINT, REMOTE_NONCE, packet_hash,
+    ) == reply
+    assert len(requests_seen) == 1
+    response["mime"] = "text/plain"
+    with pytest.raises(ValueError, match="HTTP status or type"):
+        remote_client._https_read(REMOTE_FENCE_ENDPOINT, REMOTE_NONCE, packet_hash)
+    response["mime"] = "application/json"
+    response["status"] = 302
+    with pytest.raises(ValueError, match="HTTP status or type"):
+        remote_client._https_read(REMOTE_FENCE_ENDPOINT, REMOTE_NONCE, packet_hash)
+    response["status"] = 200
+    response["body"] = b"x" * 4097
+    with pytest.raises(ValueError, match="byte budget"):
+        remote_client._https_read(REMOTE_FENCE_ENDPOINT, REMOTE_NONCE, packet_hash)
+
+    class OfflineOpener:
+        def open(self, request, timeout):
+            raise remote_client.urllib.error.URLError("private network failure")
+
+    monkeypatch.setattr(
+        remote_client.urllib.request, "build_opener",
+        lambda *handlers: OfflineOpener(),
+    )
+    with pytest.raises(ValueError, match="failed closed"):
+        remote_client._https_read(REMOTE_FENCE_ENDPOINT, REMOTE_NONCE, packet_hash)

@@ -768,5 +768,54 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_separate_registry_rejects_missed_publisher_update_until_refenced",
     "limitation": "Registry-vs-publisher drift after a local revocation mismatches until a next doubly signed state is appended. Publication/registry update race is not eliminated by two separate SQLite transactions."
+  },
+  {
+    "id": "MM-RHEAD-001",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_challenged_head_matches_signed_local_heads_without_permissions",
+    "limitation": "With a fake HTTPS response, a separately signed nonce-matching packet-specific head agrees with a synthetic fully verified local combined-state registry. This does not operate or independently attest a remote service or grant permissions."
+  },
+  {
+    "id": "MM-RHEAD-002",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_response_replay_wrong_nonce_and_signature_tampering_fail",
+    "limitation": "Replayed nonce, changed signature-bound head or source packet, wrong service URL/ID and wrong signer key are rejected in generated-key fixtures. A colluding signer could still issue a fresh nonce-bound false old head."
+  },
+  {
+    "id": "MM-RHEAD-003",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_response_clock_interval_missing_fields_and_canonical_json",
+    "limitation": "Synthetic future/expired, overlong TTL, non-UTC-second date, duplicate/extra/oversized/noncanonical JSON fail closed. Clock depends on the caller for the offline helper and device UTC for the HTTPS path."
+  },
+  {
+    "id": "MM-RHEAD-004",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_distinct_service_keys_and_fixed_https_path_required",
+    "limitation": "Fixed-path HTTPS-only URL rejects HTTP, userinfo, IP/localhost, alternate path/port or query, and remote service keys cannot share authority/witness key bytes. DNS routing and separate operator custody are not proven."
+  },
+  {
+    "id": "MM-RHEAD-005",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_signed_head_detects_two_file_restore_with_newer_remote_reply",
+    "limitation": "A genuinely newer separately signed remote reply mismatches paired older SQLite copies; a malicious or stale signer that freshly signs the old head still passes. No independent live remote service was exercised."
+  },
+  {
+    "id": "MM-RHEAD-006",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_https_fetch_uses_fresh_nonce_and_never_calls_real_network",
+    "limitation": "The outbound helper forwards a generated nonce and packet hash and handles failure using mocked transport only. No real remote service, TLS peer or independent time authority is tested."
+  },
+  {
+    "id": "MM-RHEAD-007",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_https_transport_enforces_timeout_mime_bytes_and_no_redirects",
+    "limitation": "Fake HTTPS opener checks fixed request query, timeout, disabled proxy/redirect handlers, HTTP status, content type, maximum bytes and outage refusal. No real TLS interoperability or DNS failure recovery was tested."
   }
 ]

@@ -273,6 +273,13 @@
       "source": "src/mirrormind/modules/evidence/local_integrated_fence_registry.py",
       "test": "tests/unit/test_atomic_governed_publisher.py::test_separate_signed_fence_registry_persists_verifiable_heads_after_reopen",
       "notes": "Opt-in separate local single-packet SQLite journal holding 1-32 complete dual-witness Ed25519 signed combined policy/publication fence transitions with strict packet/key marker, full replay and registry-local BEGIN IMMEDIATE CAS; terminal journal comparison to a separately stored governed publisher DB detects publisher-only old-backup restores while the journal stays intact. There is no cross-file transaction or independent remote current authority, secure key custody, verified identity, immutable backup/freshness, source license permission or production ingestion. Restoring BOTH files or a valid signed suffix truncation may pass. Receipts always have publication_authorized=false, ingestion_authorized=false, forecast_eligible=false."
+    },
+    {
+      "id": "local_nonce_challenged_https_fence_head_client",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/remote_fence_head_client.py",
+      "test": "tests/unit/test_atomic_governed_publisher.py::test_remote_challenged_head_matches_signed_local_heads_without_permissions",
+      "notes": "Optional outbound-only HTTPS fixed-path reader generates a new OS-random challenge, checks bounded canonical JSON, a distinct configured Ed25519 service signer, exact source packet and current signed fence, 1-120 second UTC validity and compares the claimed current head against the separately signed local registry and governed SQLite snapshot. Uses system TLS, no redirect or proxy, 3-second timeout, 4096-byte cap. Tests use a fake transport: no remote head service is provided, reached or operated. The signer may freshly attest a false/stale head and clock/TLS/key-custody/independent currentness are not proven. No live publication admission, legal ingest rights or forecasts; all receipts report publication_authorized=false, ingestion_authorized=false, forecast_eligible=false."
     }
   ]
 }
