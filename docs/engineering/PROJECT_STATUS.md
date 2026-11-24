@@ -1,0 +1,82 @@
+# Project status — reviewed baseline, not live status
+
+**Baseline:** 2026-11-23 (Brazil local date); main
+`036b8d62b70f32c313552bc20692dc287f121188` (PR #50).
+This is the last confirmed product baseline before the delegation-doc
+change. It is not a promise that another agent has not since advanced
+the branch. Re-read Git, open PRs, actual code and quality receipts
+before using this document as an execution report.
+
+**Verified baseline:** 691 pytest tests passed, one existing
+Starlette/httpx deprecation warning. Six local gate checks passed
+(pytest, Ruff, symbol catalog, atlas, evidence and capabilities) on
+that SHA, including after relocation to the permanent Windows
+checkout at `D:\MirrorMind`. The checkout was clean at migration
+verification. GitHub Actions was not asserted green for that run.
+No PRs were open at the preceding status check; this is historical,
+not a current open-PR inventory.
+
+At this baseline the [capability ledger](CAPABILITY_LEDGER.json)
+contained 40 entries: 2 implemented, 31 experimental, 1 interface-only
+and 6 planned. Regenerate counts from the ledger rather than treating
+them as progress percentages. The reviewed API reports a scaffold,
+not a production-ready AI platform.
+
+## Architecture and actual execution boundaries
+
+| Area | Verified implementation / status | Missing product gate |
+| --- | --- | --- |
+| API and contracts | [FastAPI app](../../src/mirrormind/api/app.py), [system routes](../../src/mirrormind/api/routes/system.py), [scenario validation](../../src/mirrormind/api/routes/scenarios.py), [typed contracts](../../src/mirrormind/core/contracts.py) | No execution pipeline or tenant authorization implied |
+| Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
+| Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
+| Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
+| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol/summary | Actual compatible optional engine adapter, execution, result validation and budgets |
+| Decision, orchestration and UI | Design and review templates | Executable comparison, agent/RAG workflow, review interface |
+| Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |
+
+### Current governance chain
+
+The combined local SQLite publisher checks current operator policy and
+signed publication together. A distinct registry replays full signed
+integrated fence transitions with two witnesses. The HTTPS reader
+validates a fresh nonce-bound service signature and compares the
+claimed head to the registry and publisher. These are experimental
+metadata mechanisms; they do not authorize ingestion or forecasting.
+The remote signer/server has not been deployed or contacted in
+baseline tests. Even a fresh signature over a false old head can be
+accepted if local state is rolled back to match. See
+[protocol details](REMOTE_FENCE_HEAD_CLIENT.md).
+
+## Evidence interpretation
+
+The most recent known gate was local. Reproduce on the actual commit:
+
+```powershell
+Set-Location D:\MirrorMind
+git status --short --branch
+git log -1 --oneline
+$head = (git rev-parse HEAD).Trim()
+uv run --no-sync --extra dev python scripts/local_quality_gate.py --expected-head $head --receipt (Join-Path $env:TEMP "mirrormind-$($head.Substring(0,12))-quality.json")
+```
+
+For an isolated worktree, use its own correctly bound environment and
+working directory; never import the canonical checkout by accident.
+The [local gate guide](LOCAL_QUALITY_GATE.md) explains what it checks.
+If the environment is missing, follow the setup in [README](../../README.md)
+and record any dependency changes; do not silently commit generated
+lockfiles or reuse an editable environment bound to another worktree.
+
+## What is next
+
+The [master plan](MASTER_EXECUTION_PLAN.md) and
+[task backlog](TASK_BACKLOG.md) are the actionable sequence.
+The [blocker register](BLOCKERS.md) explains why external source,
+infrastructure and empirical claims remain gated. The
+[definition of done](DEFINITION_OF_DONE.md) defines closure rather
+than assigning a speculative percentage.
+
+After a material change, update this baseline only using the
+actual reviewed commit and verification. Distinguish branch-local
+evidence, merged-main evidence, actual remote CI and deployment
+evidence. Record outstanding work instead of declaring the product
+finished because test counts increased.

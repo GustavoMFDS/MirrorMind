@@ -45,6 +45,15 @@ Alternatively: `docker compose up --build` (requires Docker). Only the API scaff
 - [Roadmap and acceptance criteria](docs/ROADMAP.md)
 - [Security and evidence handling](docs/SECURITY.md)
 
+## Continuous development handoff
+
+Start with the [agent handoff](docs/engineering/CODEX_HANDOFF.md),
+[master execution plan](docs/engineering/MASTER_EXECUTION_PLAN.md) and
+[dated project status](docs/engineering/PROJECT_STATUS.md). These link
+prioritized work, acceptance gates and the source-reviewed documentation
+standard. Treat the historical status above as its dated scaffold
+baseline, not an inventory of every later experimental module.
+
 ## Living engineering documentation
 
 The [engineering knowledge hub](docs/engineering/README.md) explains how to trace features, locate functions, diagnose failures, propose changes to coding agents and learn the implementation. For future changes, copy the [change request template](docs/engineering/CHANGE_REQUEST_TEMPLATE.md), follow [AGENTS.md](AGENTS.md) and regenerate the Python symbol catalog with `python scripts/docs/catalog.py --write`. These docs do not change runtime capabilities or project scope.

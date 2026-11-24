@@ -1,6 +1,12 @@
 # Engineering agent instructions
 
-Read [the engineering knowledge hub](docs/engineering/README.md) before editing code or documentation.
+Read [the engineering knowledge hub](docs/engineering/README.md) and
+[the continuous agent handoff](docs/engineering/CODEX_HANDOFF.md) before
+editing code or documentation. Reconcile the current Git state and task
+ownership against the [master execution plan](docs/engineering/MASTER_EXECUTION_PLAN.md)
+and [task backlog](docs/engineering/TASK_BACKLOG.md). Follow the documented
+[definition of done](docs/engineering/DEFINITION_OF_DONE.md), source-walkthrough
+standard and owner approval boundaries.
 
 ## Non-negotiable workflow
 1. Understand the request and the actual code. Treat generated references as an index, not as proof of runtime behavior.

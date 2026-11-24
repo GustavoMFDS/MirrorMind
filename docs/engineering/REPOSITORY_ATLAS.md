@@ -797,3 +797,19 @@ grant, production custody or cross-file atomicity is implied.
 
 The client does not grant source rights, publish, ingest data, manage
 real service keys, or claim globally current external authority.
+
+
+## Continuous engineering handoff and execution register
+
+| Tracked document | Reviewed responsibility |
+| --- | --- |
+| [`MASTER_EXECUTION_PLAN.md`](MASTER_EXECUTION_PLAN.md) | Cross-milestone dependency order, intended architecture, delivery focus and document ownership |
+| [`PROJECT_STATUS.md`](PROJECT_STATUS.md) | Dated commit-pinned implementation and verification baseline; not live status |
+| [`TASK_BACKLOG.md`](TASK_BACKLOG.md) | Stable task IDs, priorities, dependencies, acceptance slices and claims |
+| [`DEFINITION_OF_DONE.md`](DEFINITION_OF_DONE.md) | Work-item and milestone acceptance, verification and owner review requirements |
+| [`BLOCKERS.md`](BLOCKERS.md) | External dependency, approval evidence, decision owner and safe independent work |
+| [`CODEX_HANDOFF.md`](CODEX_HANDOFF.md) | Safe parallel work, source walkthrough and learning standard, resume instructions |
+
+These are engineering planning and navigation documents. They do not
+add a runtime capability or authorize real ingestion, deployment,
+forecast claims or cross-repository changes.
