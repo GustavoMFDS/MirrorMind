@@ -12,6 +12,7 @@ already underway.
 
 | State | Items / evidence | Continuation |
 | --- | --- | --- |
+| DOC-01 reconciled | Updated the live project baseline against merged main PRs #50–#51, inspected open PRs #52–#61 and their pinned heads, separated local/official evidence, and aligned the semantic map, task backlog, blockers and atlas references. Final local catalog, atlas, evidence and capability guards passed. | Reconcile again when new commits, reviews, merges or evidence change the project state. |
 | M1 synthetic slices in review | PRs #52–#59 are open drafts. They cover the existing evidence composition, matched-baseline evaluation, trace contract, mapping, test-double policies and synthetic decision workflow. | Reuse the implementations; do not describe any as merged or as approved-data/real-engine acceptance. Exact heads and gates are in [PROJECT_STATUS](PROJECT_STATUS.md). |
 | M1C-02 covered by PR #53 | The existing seasonal-naive and trailing-mean baselines compare the same eligible origins with a fixed split and withheld-target regressions. | Keep the task tied to review of #53; do not add a redundant third model without a justified evaluation design. |
 | M2-01 in review | PR #60 is open draft at `6374f0bb9a981271cb9340a190dcdebec6263cc9`; its fictional in-memory retrieval implementation passed the exact local gate with 720 tests. Official Actions failed on both current workflows. | Keep retrieval experimental and wait for human review; no official CI success is claimed. |
