@@ -20,16 +20,16 @@
 
 ## 2. Acceptance criteria
 
-- [ ] Given a 28-day integer demand profile, initial stock, lead time, cost coefficients, replication count and seed, the runner returns results for fixed-cycle, reorder-point and forecast-aware order-up-to policies.
-- [ ] Each replication pre-generates one bounded synthetic daily demand stream and reuses it unchanged across all three policies; the report exposes one matching stream digest per policy and replication.
-- [ ] Arrival timing, lost-sales proxy, order policy, item/day units and cost coefficients have explicit documented semantics.
-- [ ] Results report fulfilled/unmet units, fill rate, stockout days, ending stock, orders, procurement/holding/order/unmet-demand costs and total synthetic cost units.
-- [ ] A deterministic lead-time sensitivity sweep runs the same policies and paired-seed procedure for the base lead time and its bounded adjacent values.
-- [ ] Inputs reject unsupported horizon, profile length, unit, cost, stock, seed and replication values; work is bounded before loops execute.
-- [ ] A no-argument CLI runs a fictional scenario and prints stable, sanitized JSON with explicit experimental/test-double labels.
-- [ ] The capability ledger, live capability handler, evidence map, atlas, generated symbol catalog and relevant architecture, API, debugging and learning docs agree.
-- [ ] Focused tests, full repository validation and documentation guards pass. Official CI state is recorded separately.
-- [ ] Mark M1E-03 `partial`: this test double does not satisfy its actual-engine dependency M1E-02 or the M1 completion gate.
+- [x] Given a 28-day integer demand profile, initial stock, lead time, cost coefficients, replication count and seed, the runner returns results for fixed-cycle, reorder-point and forecast-aware order-up-to policies.
+- [x] Each replication pre-generates one bounded synthetic daily demand stream and reuses it unchanged across all three policies; the report exposes one matching stream digest per policy and replication.
+- [x] Arrival timing, lost-sales proxy, order policy, item/day units and cost coefficients have explicit documented semantics.
+- [x] Results report fulfilled/unmet units, fill rate, stockout days, ending stock, orders, procurement/holding/order/unmet-demand costs and total synthetic cost units.
+- [x] A deterministic lead-time sensitivity sweep runs the same policies and paired-seed procedure for the base lead time and its bounded adjacent values.
+- [x] Inputs reject unsupported horizon, profile length, unit, cost, stock, seed and replication values; work is bounded before loops execute.
+- [x] A no-argument CLI runs a fictional scenario and prints stable, sanitized JSON with explicit experimental/test-double labels.
+- [x] The capability ledger, live capability handler, evidence map, atlas, generated symbol catalog and relevant architecture, API, debugging and learning docs agree.
+- [x] Focused tests, full repository validation and documentation guards pass. Official CI state is recorded separately.
+- [x] Mark M1E-03 `partial`: this test double does not satisfy its actual-engine dependency M1E-02 or the M1 completion gate.
 
 ## 3. Impact map
 
@@ -66,13 +66,14 @@ The calculation must be pure, bounded, deterministic and free of network, filesy
 
 ## 6. Evidence after implementation
 
-- Commit / PR: pending.
-- Modified symbols and files: pending.
-- Tests executed, result, environment: pending.
-- Claim IDs and cited test path/function: pending.
+- Commit / PR: code commit `09d047b431cc4c50fb6d1abdb88a494a4c7f6f7f`; draft [PR #58](https://github.com/GustavoMFDS/MirrorMind/pull/58), stacked on PR #55.
+- Modified symbols and files: `RetailPolicyAssumptions`, `RetailPolicyComparisonRequest`, `_build_demand_streams`, `_order_quantity`, `_simulate_replication`, `_aggregate_policy`, `_lead_time_scenarios`, `compare_synthetic_retail_policies`, the fictional CLI, capability metadata, tests, catalog, atlas and walkthroughs listed below.
+- Tests executed, result, environment: focused unit + CLI tests passed 10/10; `tests/integration/test_api.py` passed 6/6 with one existing Starlette/httpx deprecation warning. The exact code commit passed the canonical local gate: 747 pytest tests, Ruff, symbol catalog, atlas, evidence and capability checks. The local gate ran in the approved unrestricted Windows checkout; it is not official CI.
+- Official CI for the PR #58 code head: Actions `test` [45440111223](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45440111223) and `symbol-catalog` [45440111132](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45440111132) failed before job steps with the B-08 account payment/spending-limit annotation. No remote repository test result exists.
+- Claim IDs and cited test path/function: `MM-SIM-001` cites `tests/unit/test_retail_policy_simulation.py::test_three_policies_share_each_reproducible_demand_stream`; `local_retail_policy_test_double` cites `tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison`.
 - Evidence/provenance/cutoff and uncertainty: fictional profile and explicit model assumptions only; no real-world forecast or calibrated uncertainty.
 - Scope of human review and approval: local experimental capability only; no real-data, operational, production or engine approval.
-- New or changed contracts: pending implementation.
-- Docs updated: pending implementation.
+- New or changed contracts: experimental capability `local_retail_policy_test_double`; local output schema `mirrormind.retail.policy_comparison.v1`. `GET /v1/capabilities` reports the capability; no simulation HTTP route or WorldKernel contract changed.
+- Docs updated: `M1_RETAIL_POLICY_SIMULATION.md`, `SYSTEM_MAP.md`, `API_WALKTHROUGH.md`, `DEBUGGING.md`, `LEARNING.md`, `M1_EXECUTION_PLAN.md`, `PROJECT_STATUS.md`, `TASK_BACKLOG.md`, `CAPABILITY_LEDGER.json`, `EVIDENCE_MAP.json`, `REPOSITORY_ATLAS.md`, `SEMANTIC_COVERAGE.md`, `ARCHITECTURE.md`, `CONTRACTS.md`, `RETAIL_MVP.md`, `ROADMAP.md`, `STRUCTURE.md`, engineering README and generated `SYMBOLS.md`.
 - Known limitations / follow-up: M1E-02 actual engine, M1B/M1C empirical data and M1F end-to-end decision trace remain separate gates.
-- Independent explanation: pending implementation.
+- Independent explanation: run `python -m examples.m1_retail_policy_test_double`, compare per-replication demand digests across the three policy rows, then change the seed and rerun `tests/unit/test_retail_policy_simulation.py` to see pairing and replay guarantees.
