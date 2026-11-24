@@ -123,15 +123,15 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   starting working branch was clean at PR #60 head, and that branch remains
   preserved locally as `codex/g01-current-head-service-stacked`.
 - Commit / PR: implementation commit `23bc97337d3691c5ec930c11086b45e3e2b3a940`;
-  validation/documentation commit `90d31889c074eaa8522a7df8771bc672a2c95add`.
-  Draft PR creation follows this gate.
+  draft [PR #61](https://github.com/GustavoMFDS/MirrorMind/pull/61) targets
+  `main`. The exact-head local gate passed on `9897a76d955233c35fe89d87e2df574d6e6659ce`.
 - Modified symbols: `SignedRemoteFenceHead`, `_canonical_remote_message`,
   `_signed_wire`, `_parse_signed_response`, `RemoteFenceHeadStore`,
   `CurrentRemoteFenceHead`, `RemoteFenceHeadRequest`,
   `RemoteFenceHeadResponse`, `RemoteFenceHeadResponder.__init__` and
   `RemoteFenceHeadResponder.respond`.
 - Tests executed: the repository exact-head local quality gate passed on
-  `90d31889c074eaa8522a7df8771bc672a2c95add` at 2026-11-24 21:13 UTC:
+  `9897a76d955233c35fe89d87e2df574d6e6659ce` at 2026-11-24 21:15 UTC:
   695 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and
   capability ledger checks all passed. Pytest emitted one existing
   Starlette/httpx TestClient deprecation warning. The local receipt is kept
@@ -148,6 +148,8 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   map, roadmap, backlog/status and generated symbol catalog.
 - Known limitations: no live server, persistence, authentication, independent
   custody, nonce ledger, external integration or operational acceptance.
+- Official Actions: no PR-triggered workflow run was returned when PR #61
+  was inspected at creation. This is not a CI pass or failure.
 - Reproduction: `.venv\Scripts\python.exe scripts/local_quality_gate.py
-  --expected-head 90d31889c074eaa8522a7df8771bc672a2c95add --receipt
-  graphify-out\docs-engineering-refresh-20261124\g01-final-quality.json`.
+  --expected-head 9897a76d955233c35fe89d87e2df574d6e6659ce --receipt
+  graphify-out\docs-engineering-refresh-20261124\g01-pr-quality.json`.
