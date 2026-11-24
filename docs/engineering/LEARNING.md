@@ -504,3 +504,17 @@ why the generated v1 limits are not an independently enforced server quota,
 and why a deterministic request is not a simulation result. Finally, propose
 which pinned package and result checks M1E-02 must add without importing
 WorldKernel into MirrorMind's core.
+
+## Guided exercise 16 — compare synthetic inventory policies (35 minutes)
+
+Read the [M1 policy simulation walkthrough](M1_RETAIL_POLICY_SIMULATION.md),
+[`policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py),
+and both [unit tests](../../tests/unit/test_retail_policy_simulation.py) and
+[CLI integration tests](../../tests/integration/test_retail_policy_simulation_cli.py).
+Run `python -m examples.m1_retail_policy_test_double` twice and compare the
+JSON. Before inspecting the metrics, predict how fixed-cycle, reorder-point
+and profile-aware rules differ when lead time changes. Verify the same
+per-replication demand digest is present across policy and sensitivity rows.
+Change one cost coefficient and trace which total-cost components change.
+Then explain why neither the profile-aware rule nor a lower synthetic cost
+establishes a valid forecast, realistic cost model or winning business policy.

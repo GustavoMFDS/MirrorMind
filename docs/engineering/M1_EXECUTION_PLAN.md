@@ -6,10 +6,11 @@ An accepted architecture is not equivalent to implemented AI.
 
 Current state: API scaffold and ScenarioSpec validation are
 implemented; bounded synthetic preflights, review-only staging,
-offline retail baselines and release-aware evaluation exist as
-**experimental local slices**. Authorized evidence ingestion,
-empirical forecasting, decision evaluation and WorldKernel SDK
-execution adapter remain unimplemented.
+offline retail baselines, release-aware evaluation, a pure WorldKernel
+request mapper and a local three-policy test double exist as
+**experimental or interface-only slices**. Authorized evidence ingestion,
+empirical forecasting/uncertainty, actual WorldKernel execution and the
+integrated human-reviewed decision workflow remain unimplemented.
 
 ## 1. Dependency-ordered milestones
 
@@ -30,12 +31,14 @@ as-of selection. Its implementation is proposed in draft PR #52. The M1C-01
 [retail evidence-to-evaluation flow](M1_RETAIL_SYNTHETIC_EVALUATION.md) now
 composes the UCI-shaped evidence flow with the existing fixed baselines and
 per-origin release abstentions; its generated CLI uses only fictional bytes.
-Both remain experimental. The later stacked M1E-01 docs head passed the
-canonical full local gate with 737 tests, including the API module; official
-CI remains blocked by [B-08](BLOCKERS.md). The historical exact PR #52 SHA
-has not been rerun. This synthetic progress does not satisfy
-M1b's real-source rights and availability gate, M1c empirical holdout or
-calibrated uncertainty requirements.
+Both remain experimental. The exact PR #52 implementation SHA passed its
+canonical local gate with 696 tests; exact PR #53 head
+`210f0f382938a67e518df688cc4e19c03d3d7af6` passed with 700 tests, including
+the API integration module. Official Actions is separately blocked before
+jobs by [B-08](BLOCKERS.md). M1E-03 now has a partial local test-double
+proposal; it does not satisfy M1E-02 or the actual-engine gate. These
+synthetic slices do not satisfy M1b's real-source rights and availability
+gate, M1c's empirical holdout or M1d's calibrated uncertainty requirements.
 
 M1F-01 adds a versioned local decision-result contract on the current
 stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,
@@ -43,9 +46,9 @@ gaps, costs and human review separate, with local reference/cutoff checks and
 an exact-result digest. Its docs head passed the canonical local gate with
 712 tests, including API; official checks remain blocked by B-08. It is
 interface-only: no producer, ranking, API, storage, actual engine output or
-action permission exists. M1F-02 remains the first runnable end-to-end
-decision comparison and still depends on an actual compatible simulation
-path and the named M1 predecessors.
+action permission exists. M1F-02 can compose a clearly labeled local test
+double for an end-to-end synthetic demonstration, but remains partial until
+actual engine integration and its other named M1 predecessors pass.
 
 M1E-01 now has a pure, fail-closed request mapping for the inspected
 `retail.inventory` `0.1` to WorldKernel `retail.inventory.demo` `demo-1`
@@ -55,6 +58,15 @@ unknown state or parameters. It constructs JSON only. M1E-02 remains blocked
 on B-04 for a pinned compatible engine and actual SDK execution; no simulation
 capability is promoted. The current docs head passed the canonical local gate
 with 737 tests, including API; official checks remain blocked by B-08.
+
+M1E-03 has a local synthetic policy test double in the current continuation.
+It compares fixed-cycle, reorder-point and profile-aware rules over 28 days,
+using a shared seeded demand stream for each replication and lead-time
+sensitivity case. It reports stock/service/order and abstract cost metrics
+without ranking the policies. The detailed [walkthrough](M1_RETAIL_POLICY_SIMULATION.md)
+and [change request](changes/M1E_03_SYNTHETIC_POLICY_TEST_DOUBLE.md) mark
+this slice partial: no forecast is consumed, no actual WorldKernel result is
+present, and M1E-02 still depends on B-04.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not
@@ -108,6 +120,9 @@ A conforming eventual response must show:
 
 No current API route delivers that story. In particular,
 `POST /v1/scenarios/validate` remains `validated_not_executed`.
+The local policy test double addresses only the conditional policy-arithmetic
+portion. It does not join authorized evidence, forecast evaluation, actual
+engine output or the decision-result contract into an end-to-end user story.
 
 ## 4. Developer and learner acceptance
 

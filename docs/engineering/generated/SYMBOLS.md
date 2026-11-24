@@ -213,6 +213,26 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 | `prepare_retail_csv_evidence_flow` | function | `def prepare_retail_csv_evidence_flow(stream: BinaryIO, *, expected_sha256: str, declaration: SourceReviewDeclaration, inspected_on: date, series_id: str, origin_on: str) -> RetailCsvEvidenceFlow` | Compose bounded CSV staging, review metadata, quality and declared as-of selection. | [L101](../../../src/mirrormind/domains/retail/evidence_flow.py#L101) |
 | `prepare_retail_uci_evidence_flow` | function | `def prepare_retail_uci_evidence_flow(stream: BinaryIO, *, expected_sha256: str, declaration: SourceReviewDeclaration, inspected_on: date, declared_calendar: tuple[date, ...], declared_releases: tuple[DeclaredProductRelease, ...], origin_on: date) -> RetailUciEvidenceFlow` | Compose bounded XLSX projection and explicit, unverified calendar/release checks. | [L134](../../../src/mirrormind/domains/retail/evidence_flow.py#L134) |
 
+## `mirrormind.domains.retail.policy_simulation`
+
+Source: [`src/mirrormind/domains/retail/policy_simulation.py`](../../../src/mirrormind/domains/retail/policy_simulation.py)
+
+Static imports (including inside functions): `__future__`, `hashlib`, `json`, `pydantic`, `random`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_DemandStream` | class | `class _DemandStream` | — | [L29](../../../src/mirrormind/domains/retail/policy_simulation.py#L29) |
+| `RetailPolicyAssumptions` | class | `class RetailPolicyAssumptions` | Explicit units, inventory controls and abstract synthetic costs. | [L36](../../../src/mirrormind/domains/retail/policy_simulation.py#L36) |
+| `RetailPolicyComparisonRequest` | class | `class RetailPolicyComparisonRequest` | Input contract for one paired, 28-day synthetic experiment. | [L56](../../../src/mirrormind/domains/retail/policy_simulation.py#L56) |
+| `RetailPolicyComparisonRequest.validate_experiment_bounds` | method | `def validate_experiment_bounds(self) -> RetailPolicyComparisonRequest` | — | [L67](../../../src/mirrormind/domains/retail/policy_simulation.py#L67) |
+| `_build_demand_streams` | function | `def _build_demand_streams(request: RetailPolicyComparisonRequest) -> tuple[_DemandStream, ...]` | Generate one reproducible exogenous sequence per replication. | [L85](../../../src/mirrormind/domains/retail/policy_simulation.py#L85) |
+| `_order_quantity` | function | `def _order_quantity(*, policy_id: str, day_index: int, inventory_position_units: int, demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> int` | — | [L117](../../../src/mirrormind/domains/retail/policy_simulation.py#L117) |
+| `_simulate_replication` | function | `def _simulate_replication(*, policy_id: str, demand_units: tuple[int, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, int]` | Run one policy against one fixed demand stream using day-boundary rules. | [L148](../../../src/mirrormind/domains/retail/policy_simulation.py#L148) |
+| `_basis_points` | function | `def _basis_points(numerator: int, denominator: int) -> int \| None` | — | [L227](../../../src/mirrormind/domains/retail/policy_simulation.py#L227) |
+| `_aggregate_policy` | function | `def _aggregate_policy(*, policy_id: str, demand_streams: tuple[_DemandStream, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, object]` | — | [L233](../../../src/mirrormind/domains/retail/policy_simulation.py#L233) |
+| `_lead_time_scenarios` | function | `def _lead_time_scenarios(base_lead_time_days: int) -> tuple[int, ...]` | — | [L285](../../../src/mirrormind/domains/retail/policy_simulation.py#L285) |
+| `compare_synthetic_retail_policies` | function | `def compare_synthetic_retail_policies(request: RetailPolicyComparisonRequest) -> dict[str, object]` | Compare three replenishment rules using paired caller-declared inputs. | [L297](../../../src/mirrormind/domains/retail/policy_simulation.py#L297) |
+
 ## `mirrormind.domains.retail.release_backtest`
 
 Source: [`src/mirrormind/domains/retail/release_backtest.py`](../../../src/mirrormind/domains/retail/release_backtest.py)

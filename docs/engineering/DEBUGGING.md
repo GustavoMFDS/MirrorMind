@@ -172,3 +172,18 @@ fails mapping because it has an intervention and omits daily demand; do not
 add hidden defaults to make it pass. This module only constructs a request.
 It does not verify remote package identity, run the simulation, enforce
 wall-clock or memory limits, or validate result payloads.
+
+## Synthetic retail policy comparison differs from its expected fixture
+
+Reproduce with
+[`examples/m1_retail_policy_test_double.py`](../../examples/m1_retail_policy_test_double.py)
+and read the [M1 policy simulation walkthrough](M1_RETAIL_POLICY_SIMULATION.md).
+Run `tests/unit/test_retail_policy_simulation.py` and
+`tests/integration/test_retail_policy_simulation_cli.py`. Compare the request
+seed and profile first, then verify that the per-replication demand digest is
+identical across every policy and lead-time scenario. Trace day ordering in
+`_simulate_replication`: due orders arrive at day start, demand is fulfilled,
+holding cost is charged, and the policy places an order at day end. A mismatch
+is a local deterministic behavior change, not evidence about actual retail
+stock or costs. Never pass this result to the WorldKernel mapper as if it were
+an engine receipt.

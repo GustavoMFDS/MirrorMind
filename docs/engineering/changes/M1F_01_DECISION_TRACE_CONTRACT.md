@@ -128,8 +128,9 @@ digest dependency.
   `tests/integration/test_api.py`; Ruff, catalog, atlas, evidence and
   capability checks all exited successfully. Pytest reported one existing
   Starlette/httpx deprecation warning. The gate ran outside the restricted
-  sandbox. B-07 is resolved for this stack, but the historical PR #52 SHA was
-  not rerun. A direct registered capability-handler/ledger comparison also
+  sandbox. B-07 is resolved for this stack. PR #52 implementation SHA
+  `c51ab30370db47e9f7105c97f870008e4fc442c5` separately passed the canonical
+  gate with 696 tests including API. A direct registered capability-handler/ledger comparison also
   passed; it is not an HTTP runtime check.
 - Claim IDs and cited test path/function: `MM-DTRACE-001` cites
   `tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate`.
@@ -156,6 +157,6 @@ digest dependency.
   job steps ran.
 - Known limitations / follow-up: M1F-02 must produce and replay an actual
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
-  remain separate. B-07/B-08 still block the exact full gate/official CI
-  evidence for the stacked branch.
+  remain separate. The exact PR #54 head passed the full local gate; B-08
+  still blocks official CI for the stacked branch.
 - Independent explanation: pending implementation.

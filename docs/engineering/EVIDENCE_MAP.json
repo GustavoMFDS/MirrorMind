@@ -873,5 +873,12 @@
     "test": "tests/unit/test_worldkernel_mapping.py",
     "function": "test_supported_inventory_scenario_maps_to_exact_v1_request",
     "limitation": "The synthetic case proves exact local request construction only. It does not verify unit provenance, source rights, a pinned engine package, SDK execution, server-enforced quotas, result validity or business policy quality."
+  },
+  {
+    "id": "MM-SIM-001",
+    "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
+    "test": "tests/unit/test_retail_policy_simulation.py",
+    "function": "test_three_policies_share_each_reproducible_demand_stream",
+    "limitation": "The test proves deterministic local mechanics and equal synthetic demand digests across three policies and lead-time scenarios. Inputs and cost coefficients are caller assertions; no real stock, demand, forecast, engine result, optimal policy or operational approval is verified."
   }
 ]

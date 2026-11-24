@@ -10,7 +10,7 @@ records external decisions. This roadmap retains milestone scope and
 historical development notes, not a second mutable task tracker.
 
 - **MM-M0 — Completed scaffold:** FastAPI, `/health`, `/v1/capabilities`, scenario contract validation, tests, Docker and CI, decision log.
-- **MM-M1 — Planned retail fundamentals:** ingest permitted M5 subset, validate cutoff, backtest two demand models, run first inventory simulation through gateway.
+- **MM-M1 — In progress; acceptance remains open:** synthetic evidence/evaluation slices and a local three-policy test double are available in draft branch proposals. Authorized source ingestion, empirical forecasting/uncertainty, actual WorldKernel execution and the integrated human-review workflow remain open.
 - **MM-M2 — Planned AI application:** evidence/RAG, agent tool workflow, traceable scenario analysis, UI and human review.
 - **MM-M3 — Planned engineering:** durable async jobs, token/call and compute budgets enforced, tracing, RBAC, tenant separation, failure recovery and load tests.
 - **MM-M4 — Planned generalization:** at least one *different* domain adapter, versioned contracts and validated WorldKernel integration.
@@ -72,6 +72,13 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   `worldkernel_adapter` capability remains planned. See the
   [mapping walkthrough](engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
   [M1 plan](engineering/M1_EXECUTION_PLAN.md).
+
+- **MM-M1E-03 — Synthetic policy test double (partial branch proposal):** a
+  [local 28-day policy comparison](engineering/M1_RETAIL_POLICY_SIMULATION.md)
+  runs fixed-cycle, reorder-point and profile-aware rules on paired seeded
+  demand streams, with explicit item/day units, stock, abstract costs and
+  lead-time sensitivity. It is not a WorldKernel adapter, forecast,
+  recommendation or measured retail result. M1E-02 remains blocked on B-04.
 
 - **MM-M1c-exp — Synthetic one-step baseline experiment (not full MM-M1c):**
   reviewed [rolling-origin benchmark](engineering/M1_TEMPORAL_BACKTEST.md)

@@ -170,6 +170,13 @@
       "notes": "Local composition of the reviewed retail evidence flow with fixed matched-origin release-aware baseline evaluation. It does not authenticate source rights or release dates, establish complete demand, train a model, calibrate uncertainty, expose an evaluation HTTP endpoint or justify real forecasts/recommendations."
     },
     {
+      "id": "local_retail_policy_test_double",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/policy_simulation.py",
+      "test": "tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison",
+      "notes": "Pure local comparison of three replenishment rules over caller-declared 28-day demand assumptions, with paired seeded demand streams and lead-time sensitivity. It does not authenticate inputs, forecast demand, execute WorldKernel, rank policies, validate business costs or authorize an operational action."
+    },
+    {
       "id": "local_retail_backtest_coverage_gate",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/coverage_gate.py",

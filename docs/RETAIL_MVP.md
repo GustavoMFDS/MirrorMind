@@ -23,6 +23,18 @@ Start with a **bounded** subset of the historical M5 Forecasting dataset (produc
 
 These criteria are targets, not current capabilities.
 
+## Experimental synthetic policy test double
+
+The [M1 retail policy comparison](engineering/M1_RETAIL_POLICY_SIMULATION.md)
+now exercises three replenishment rules for 28 days against paired seeded
+fictional demand streams, with explicit starting stock, lead time and abstract
+cost assumptions. It demonstrates local policy mechanics and lead-time
+sensitivity only. The input profile is not an evaluated forecast, the cost
+units are not currency or measured business costs, and the result is not a
+WorldKernel execution or policy recommendation. The full M1 policy acceptance
+still requires the separate [WorldKernel gateway gate](engineering/WORLDKERNEL_GATEWAY_GATE.md),
+validated forecasts/assumptions and a human-reviewed decision trace.
+
 ## Synthetic-only preflight while M1 remains incomplete
 
 A small, local example can validate date labels and count gaps

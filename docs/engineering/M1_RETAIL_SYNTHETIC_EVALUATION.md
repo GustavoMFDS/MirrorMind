@@ -163,10 +163,11 @@ Curated claim **MM-REVAL-001** maps to
 
 The live capability list is covered by
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`.
-On the documented Windows execution environment, that module is blocked
-before the endpoint runs because asyncio cannot create its local socket
-pair; see [B-07](BLOCKERS.md). A direct registered-handler/ledger check is
-not equivalent to an HTTP runtime test.
+The canonical local gate on exact PR #53 head
+`210f0f382938a67e518df688cc4e19c03d3d7af6` passed that HTTP integration
+module. An earlier restricted attempt timed out before the handler and did
+not establish a root cause. A local `TestClient` test is not evidence of a
+deployed or production API.
 
 ## Safety, failures and maintenance
 

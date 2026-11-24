@@ -12,7 +12,7 @@ and the [shared contracts](CONTRACT_WALKTHROUGH.md).
 | --- | --- | --- |
 | `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system and scenario routers | Running a worker, starting an agent, retrieving documents or creating a database |
 | `system.health()` | `GET /health`, HTTP 200 and `{"status":"ok","service":"mirrormind-api"}` | Readiness of a future datastore/forecast/WorldKernel engine |
-| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including the synthetic retail evidence and evaluation flows) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
+| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including evidence, evaluation and policy test-double slices) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
 | `scenarios.validate_scenario(spec)` | `POST /v1/scenarios/validate`; Pydantic validates v0.1 `ScenarioSpec`, returns a summary with `validated_not_executed` | Forecast, RAG, simulation, approval, audit or budget enforcement |
 
 `mirrormind.api:app` is the stable import expected by uvicorn.
@@ -49,16 +49,19 @@ a domain-specific source-validation layer.
 | **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies the scaffold lists the WorldKernel adapter under `planned` | This test alone does not verify all future capability claims |
 | **MM-API-003** | `tests/integration/test_api.py::test_runs_cannot_exceed_budget` returns HTTP 422 for excess declared run count | A rejected request is not evidence of enforced runtime quotas |
 
-The `local_retail_synthetic_evidence_flow` and
-`local_retail_evidence_evaluation` labels describe Python library
-experiments and a local example CLI only. No evidence payload or evaluation
-execution is exposed by an HTTP route. The parity regression
+The `local_retail_synthetic_evidence_flow`,
+`local_retail_evidence_evaluation` and `local_retail_policy_test_double`
+labels describe Python library experiments and local example CLIs only. No
+evidence payload, evaluation execution or simulation execution is exposed by
+an HTTP route. The parity regression
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
 checks that the API's implemented/experimental/planned lists match the
 reviewed ledger; matching labels do not establish the semantic truth of a
-capability claim. The Windows `TestClient` test currently cannot create its
-asyncio socket pair in this execution environment; a direct handler check
-does not substitute for HTTP runtime verification (see [B-07](BLOCKERS.md)).
+capability claim. The canonical local gate passed on PR #53 SHA
+`210f0f382938a67e518df688cc4e19c03d3d7af6`, including the HTTP integration
+module. An earlier restricted execution timed out before the handler; its
+root cause was not established. Local test-client evidence is not a deployed
+service or production-readiness claim.
 
 ```bash
 python -m pytest -q tests/integration/test_api.py
@@ -66,8 +69,10 @@ python -m ruff check src tests
 python scripts/docs/evidence.py --check
 ```
 
-These are reproduction instructions, **not claims of local execution**
-for this docs-only change.
+Use these commands against the exact review head. A passing local
+`TestClient` suite verifies the tested handlers in-process; it does not
+establish deployed-service availability, authentication or production
+readiness.
 
 ## 4. Gateway interface and pure request mapping are not execution
 
@@ -80,8 +85,11 @@ module constructs a strict request for one world/revision when explicit units,
 state, parameters and operator limits are supplied. It rejects unsupported
 interventions and unresolved evidence/forecast references. Its limits are
 request preflight values, not server-enforced quotas; it does not send a
-request or validate a response. A later pinned SDK adapter must preserve the
-one-way dependency MirrorMind -> WorldKernel and test actual registered-world
+request or validate a response. The [local synthetic retail policy
+comparison](M1_RETAIL_POLICY_SIMULATION.md) runs through a Python library call
+and example CLI only; it does not implement this protocol or produce a
+WorldKernel result. A later pinned SDK adapter must preserve the one-way
+dependency MirrorMind -> WorldKernel and test actual registered-world
 execution, result validation and runtime failure behavior.
 
 ## 5. Independent exercise

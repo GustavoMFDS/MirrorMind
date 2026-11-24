@@ -124,8 +124,9 @@ it makes no runtime, forecast, business-validity or security guarantee.
   `tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
 - Local versus official: the exact PR #55 docs head passed the complete
   local gate outside the restricted sandbox, resolving B-07 for this stack.
-  The exact PR #52 SHA remains historical and was not rerun. On PR #55 docs
-  head `2330dc50a49bb80abc601b0635e5e7d4916ee283`, official `test` run
+  PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5`
+  separately passed the canonical gate with 696 tests including API. On PR
+  #55 docs head `2330dc50a49bb80abc601b0635e5e7d4916ee283`, official `test` run
   [45330280291](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45330280291)
   and `symbol-catalog` run
   [45330280468](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45330280468)

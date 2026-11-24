@@ -853,6 +853,20 @@ The mapper does not execute the request, prove `demo-1` identifies immutable
 code, or expose a runtime capability. `worldkernel_adapter` remains planned.
 
 
+## 54. Synthetic retail policy comparison (test double only)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py) | Validates bounded 28-day assumptions, generates paired seeded demand streams, applies three replenishment rules and reports lead-time sensitivity; no forecast, ranking or external engine |
+| [`examples/m1_retail_policy_test_double.py`](../../examples/m1_retail_policy_test_double.py) | Prints a deterministic fictional policy-comparison report; no real data or network access |
+| [`tests/unit/test_retail_policy_simulation.py`](../../tests/unit/test_retail_policy_simulation.py) | Tests deterministic streams, policy outcomes, metric accounting, invalid inputs, bounded work and the optional-engine import boundary |
+| [`tests/integration/test_retail_policy_simulation_cli.py`](../../tests/integration/test_retail_policy_simulation_cli.py) | Replays the no-argument CLI and checks the local-only/no-selection contract |
+| [`docs/engineering/M1_RETAIL_POLICY_SIMULATION.md`](M1_RETAIL_POLICY_SIMULATION.md) | Walkthrough, assumptions, algorithms, flow, examples, test evidence, safety, debugging and learning exercises |
+| [`docs/engineering/changes/M1E_03_SYNTHETIC_POLICY_TEST_DOUBLE.md`](changes/M1E_03_SYNTHETIC_POLICY_TEST_DOUBLE.md) | M1E-03 scoped change request, acceptance criteria, impact map and partial-delivery boundary |
+
+`local_retail_policy_test_double` is experimental. It does not satisfy the
+M1E-02 actual WorldKernel engine gate or produce an operational decision.
+
 ## Continuous engineering handoff and execution register
 
 | Tracked document | Reviewed responsibility |

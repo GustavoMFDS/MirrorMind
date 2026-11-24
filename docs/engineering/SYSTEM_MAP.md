@@ -1,10 +1,16 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the stacked M1B-02/M1C-01/M1F-01/M1E-01 branch work. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight and a fixed-split retail baseline evaluation are experimental. The decision trace result schema is interface-only. The WorldKernel request mapper is a pure, fail-closed translation only; no engine call, authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`), stacked PRs #52–#57 and the M1E-03 local test-double work. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, retail evidence evaluation and the three-policy synthetic comparison are experimental. The decision trace result schema is interface-only. The WorldKernel request mapper is a pure, fail-closed translation only; no actual engine call, authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
 HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. Separately, a trusted local caller can pass `ScenarioSpec`, explicit units and operator limits to `modules/simulation/worldkernel_mapping.py` to construct a WorldKernel v1 request. The `modules/simulation/gateway.py` interface still has no executor and the mapper does **not** execute WorldKernel simulations.
+
+The local retail test double is a separate offline path: a caller supplies a
+strict 28-day profile and inventory/cost assumptions to
+`domains/retail/policy_simulation.py`; the module generates paired demand
+streams, compares three rules and reports an explicit lead-time sensitivity
+sweep. The JSON report is experimental and has no HTTP execution route.
 
 Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/scenarios/validate`. The externally declared capabilities must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
 
@@ -20,6 +26,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | Prepare a source review packet (not approval) | [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [guide](SOURCE_INTAKE_REVIEW.md) | [synthetic unit tests](../../tests/unit/test_source_intake_review.py); binds staged byte digest and opaque review references; never grants ingestion |
 | Compose local retail evidence preflight | [`domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py), [M1 guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), [scoped change request](changes/M1B_02_SYNTHETIC_EVIDENCE_FLOW.md) | [integration tests](../../tests/integration/test_retail_evidence_flow.py); CSV as-of rows use caller-declared dates, UCI checks require explicit calendar/release tuples, and receipts are aggregate-only; no source authorization |
 | Evaluate a prepared retail evidence flow | [`domains/retail/evaluation_flow.py`](../../src/mirrormind/domains/retail/evaluation_flow.py), [M1 evaluation guide](M1_RETAIL_SYNTHETIC_EVALUATION.md), [fixed synthetic CLI](../../examples/m1_retail_synthetic_evaluation.py) | [integration tests](../../tests/integration/test_retail_synthetic_evaluation.py) prove fixed split, matched-origin statuses, mutation resistance and sanitized receipts on a generated fixture; no authenticated source, empirical performance or HTTP evaluation endpoint |
+| Compare retail replenishment policies on paired fictional demand | [`domains/retail/policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py), [M1 policy simulation guide](M1_RETAIL_POLICY_SIMULATION.md), [synthetic CLI](../../examples/m1_retail_policy_test_double.py) | [unit tests](../../tests/unit/test_retail_policy_simulation.py) and [CLI integration test](../../tests/integration/test_retail_policy_simulation_cli.py) prove local determinism, paired streams and bounded sensitivity only; no trained forecast, actual engine, recommendation or authorization |
 | Atomically apply current operator policy to local checkpoint publication (not external authority) | [`modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py), [guide](ATOMIC_GOVERNED_PUBLISHER.md) | [signed revocation/race tests](../../tests/unit/test_atomic_governed_publisher.py); opt-in single new SQLite file, real identity/currentness missing |
 | Record dual-admin operator key policy (not publisher enforcement) | [`modules/evidence/operator_governance.py`](../../src/mirrormind/modules/evidence/operator_governance.py), [policy guide](OPERATOR_GOVERNANCE.md) | [synthetic dual-admin and rollback tests](../../tests/unit/test_operator_governance.py); separate SQLite, no atomic policy+publication integration |
 | Retain signer-gated local witness publication metadata (not a live authority) | [`modules/evidence/local_checkpoint_publisher.py`](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py), [guide](LOCAL_CHECKPOINT_PUBLISHER.md) | [synthetic operator and CAS tests](../../tests/unit/test_local_checkpoint_publisher.py); distinct key roles and local SQLite, no authenticated current head |
@@ -39,6 +46,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 - General-purpose decision platform; retail is the first reference domain, not a hard-coded limitation.
 - Keep **observed evidence**, **forecast estimates** and **simulated counterfactuals** conceptually separate.
 - No core dependency on WorldKernel. Integrate through an optional, versioned simulation gateway.
+- Keep the local synthetic retail test double separate from the actual WorldKernel adapter and from forecast quality claims.
 - Preserve permission provenance and human review; don't claim live agents, RAG, forecasting, connectors or simulations until implemented and tested.
 - An interface alone does not establish functioning integration.
 
