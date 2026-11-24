@@ -105,34 +105,27 @@ missing values with zero.
 ## 6. Evidence after implementation
 
 Branch `codex/m1d-01-disjoint-residual-calibration`, implementation commit
-`10fe58fc3aca45c27288dcc6055ac5d84ab035af`, draft [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56)
+`10fe58fc3aca45c27288dcc6055ac5d84ab035af`, latest docs commit
+`aa2be84ba135ac93cf75b8f0491318d19757f693`, draft [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56)
 stacked on draft PR #53. Focused residual-envelope tests: 81 passed;
-dependent eligibility/value/selection consumer tests: 94 passed; feasible
-full suite excluding the known B-07 API module: 694 passed. Ruff, symbol
-catalog, atlas, evidence and capability guards, direct capability-handler
-versus ledger parity (2 implemented, 33 experimental, 6 planned), and
-`git diff --check` passed. Capability
+dependent eligibility/value/selection consumer tests: 94 passed. The canonical
+local gate passed on the docs head: 700 tests including the API module, Ruff,
+symbol catalog, atlas, evidence and capability guards. Pytest reported one
+existing Starlette/httpx deprecation warning. The standalone API health test
+also passed outside the restricted sandbox. Capability
 `local_retail_prequential_residual_envelope` remains experimental.
 
 Reproduce locally from the repository root:
 
 ```bash
-python -m pytest -q tests/unit/test_retail_residual_envelope.py
-python -m pytest -q tests/unit/test_retail_eligibility_drift.py tests/unit/test_retail_eligible_values.py tests/unit/test_retail_selection_sensitivity.py tests/unit/test_retail_sensitivity_sweep.py
-python -m pytest -q --ignore=tests/integration/test_api.py
-python -m ruff check src tests
-python scripts/docs/catalog.py --check
-python scripts/docs/coverage.py --check
-python scripts/docs/evidence.py --check
-python scripts/docs/capabilities.py --check
+python scripts/local_quality_gate.py --expected-head aa2be84ba135ac93cf75b8f0491318d19757f693
 ```
 
-The API integration module remains excluded because B-07 records its
-pre-handler Windows asyncio socket-pair hang; no test or guard was weakened.
-On this exact PR head, official [test run 45334623041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45334623041)
-and [symbol-catalog run 45334623086](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45334623086)
-failed before any job steps. The GitHub connector returned no failure
-annotation for these two runs; the billing/spending-limit cause recorded in
-B-08 on earlier PR heads is not independently re-confirmed for this SHA.
-Do not claim calibrated or nominal coverage, official CI success or a
-complete canonical local gate.
+The exact PR #52 SHA associated with B-07 was not rerun. On the current PR #56
+stack, both `test_health` and the canonical full gate passed outside the
+restricted sandbox, so B-07 is resolved for this stack. The docs-head official
+[test run 45335148902](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148902)
+and [symbol-catalog run 45335148877](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148877)
+failed before job steps; the connector returned no reason annotation for these
+runs, so see B-08 for the verified earlier-head billing annotations. Do not
+claim calibrated or nominal coverage or official CI success.

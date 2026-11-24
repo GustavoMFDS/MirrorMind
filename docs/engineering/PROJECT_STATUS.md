@@ -97,16 +97,21 @@ M1D-01 is implemented in `10fe58fc3aca45c27288dcc6055ac5d84ab035af` on
 PR #53. It replaces rolling residual labels with fixed pre-holdout calibration
 dates and explicit disjoint-window metadata. The late-release regression
 proves that a published earlier holdout target cannot refill calibration.
-Local evidence: 81 focused residual tests, 94 dependent consumer tests and
-694 tests excluding `tests/integration/test_api.py` passed; Ruff, catalog,
-atlas, evidence and capability guards plus direct handler/ledger parity
-passed. Official `test` run [45334623041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45334623041)
-and `symbol-catalog` run [45334623086](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45334623086)
-failed with zero job steps. The current connector response exposed no reason
-annotation; earlier draft heads carry B-08's billing/spending-limit
-annotation. No canonical full-gate or CI pass is claimed. This remains
-experimental and does not clear B-02 or establish empirical calibration. See
-the active claim in [TASK_BACKLOG](TASK_BACKLOG.md) and the
+Local evidence on docs head `aa2be84ba135ac93cf75b8f0491318d19757f693`:
+81 focused residual tests, 94 dependent consumer tests, and the canonical
+`scripts/local_quality_gate.py --expected-head aa2be84ba135ac93cf75b8f0491318d19757f693`
+passed. The full suite reported 700 passed, including
+`tests/integration/test_api.py`; Ruff and catalog, atlas, evidence and
+capability guards also passed. Pytest emitted one existing Starlette/httpx
+deprecation warning. `test_health` and the full gate passed outside the
+restricted sandbox, resolving B-07 for this stack; the earlier exact PR #52
+SHA has not been rerun. Official `test` run
+[45335148902](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148902)
+and `symbol-catalog` run
+[45335148877](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148877)
+failed before job steps, without a returned cause annotation (B-08). This
+remains experimental and does not establish empirical calibration. See the
+active claim in [TASK_BACKLOG](TASK_BACKLOG.md) and the
 [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
 
 ## Architecture and actual execution boundaries

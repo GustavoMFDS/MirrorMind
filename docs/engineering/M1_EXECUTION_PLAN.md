@@ -30,8 +30,9 @@ as-of selection. Its implementation is proposed in draft PR #52. The M1C-01
 [retail evidence-to-evaluation flow](M1_RETAIL_SYNTHETIC_EVALUATION.md) now
 composes the UCI-shaped evidence flow with the existing fixed baselines and
 per-origin release abstentions; its generated CLI uses only fictional bytes.
-Both remain experimental. Full local and official CI evidence is limited by
-[B-07 and B-08](BLOCKERS.md). This synthetic progress does not satisfy
+Both remain experimental. The current stacked branch has passed the canonical
+full local gate, including the API module, outside the restricted sandbox;
+official CI evidence remains blocked by [B-08](BLOCKERS.md). This synthetic progress does not satisfy
 M1b's real-source rights and availability gate, M1c empirical holdout or
 calibrated uncertainty requirements.
 
@@ -59,6 +60,10 @@ absolute-residual envelope remains an experimental retrospective heuristic;
 M1D-02 still requires approved empirical observations and an untouched
 holdout blocked by B-02. See the [uncertainty walkthrough](RETAIL_RESIDUAL_ENVELOPE.md)
 and [scoped change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+The current PR #56 docs head passed the canonical local gate (700 tests,
+including API, and all local docs guards); the earlier PR #52 exact-SHA B-07
+incident remains historical and was not rerun. Official checks remain blocked
+by B-08, so no CI success is claimed.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not
