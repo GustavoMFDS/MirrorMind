@@ -26,6 +26,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/api/routes/scenarios.py`](../../src/mirrormind/api/routes/scenarios.py) | G | Data validation only; [API walkthrough](API_WALKTHROUGH.md) |
 | [`src/mirrormind/core/__init__.py`](../../src/mirrormind/core/__init__.py) | I | Core package marker |
 | [`src/mirrormind/core/contracts.py`](../../src/mirrormind/core/contracts.py) | G | Versioned Pydantic fields and two cross-field rules; [contracts walkthrough](CONTRACT_WALKTHROUGH.md) |
+| [`src/mirrormind/core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py) | R | Immutable v1 decision-result contract with local reference, time and review-digest validation; [walkthrough](DECISION_TRACE_RESULT.md); no result producer or execution |
 | [`src/mirrormind/domains/__init__.py`](../../src/mirrormind/domains/__init__.py) | I | Domain package only; no automatic sector adapter |
 | [`src/mirrormind/domains/retail/__init__.py`](../../src/mirrormind/domains/retail/__init__.py) | I | Retail namespace without source acquisition |
 | [`src/mirrormind/domains/retail/calendar_coverage.py`](../../src/mirrormind/domains/retail/calendar_coverage.py) | G | Strict caller-declared date schedule compared with positive-line observations; [guide](DECLARED_CALENDAR_COVERAGE.md), no verified operating calendar |

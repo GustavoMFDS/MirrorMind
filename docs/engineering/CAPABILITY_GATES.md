@@ -60,6 +60,15 @@ forecasting or a production endpoint.
    limitations. Only mark a capability implemented
    **at the scope that those tests establish**.
 
+### Decision trace result schema is interface-only
+
+[`DecisionTrace`](DECISION_TRACE_RESULT.md) is a strict local result shape
+for later M1 components. Its synthetic tests prove internal references,
+declared time rules and approval-digest consistency. The schema cannot verify
+that an evidence, model-card or engine reference is real, permitted or
+authenticated. `decision_evaluation` therefore remains `planned`, and the
+schema is not listed by the HTTP capability route as executable behavior.
+
 For forecasting: rolling temporal holdouts and a documented
 baseline are necessary before making performance claims.
 For retrieval: permission filtering, source lineage and

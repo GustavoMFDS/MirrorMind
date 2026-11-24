@@ -29,6 +29,7 @@ The catalog captures syntax; use official Python docs, implementation and tests 
 5. Draft a future evidence/forecast/simulation flow that keeps observed data, predictions and simulated results distinct, without claiming that it exists.
 
 You should be able to add a contract field, test a route and explain compatibility before agent-led feature work.
+
 ## Guided exercise 6 — input validation is not execution (30 minutes)
 
 Read [the contract walkthrough](CONTRACT_WALKTHROUGH.md) and follow
@@ -479,3 +480,14 @@ cutoff and explain why no metrics or winner is returned. Finally explain why
 the fixture's zero seasonal-naive MAE is not evidence of real predictive
 skill, and list the publisher, calendar, holdout and uncertainty evidence
 needed before an empirical claim.
+
+## Guided exercise 14 — bind review to an exact result
+
+Read the [decision trace result walkthrough](DECISION_TRACE_RESULT.md) and
+[`DecisionTrace`](../../src/mirrormind/core/decision_trace.py). Run
+`python -m pytest -q tests/unit/test_decision_trace.py`. Before changing the
+fixture, predict which cross-reference validator runs and why an unavailable
+cost cannot be encoded as zero. Compute `result_sha256`, create an approved
+`HumanReview`, then change one forecast value without changing the digest and
+predict the rejection. Explain why this proves local content binding but
+does not authenticate a reviewer, data source or simulation.

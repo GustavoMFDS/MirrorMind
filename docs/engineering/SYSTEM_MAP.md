@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and current stacked M1B-02/M1C-01 branch work. The API/contracts and simulation gateway interface exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight and a fixed-split retail baseline evaluation are experimental. No authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and current stacked M1B-02/M1C-01/M1F-01 branch work. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight and a fixed-split retail baseline evaluation are experimental. The new decision trace result schema is interface-only. No authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
@@ -12,6 +12,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | User request | Inspect first | Evidence |
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
+| Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py); no producer, API or action execution |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |

@@ -51,6 +51,13 @@
       "notes": "WorldKernel is independent; no versioned adapter translating and executing scenarios."
     },
     {
+      "id": "decision_trace_result_contract",
+      "status": "interface_only",
+      "source": "src/mirrormind/core/decision_trace.py",
+      "test": "tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate",
+      "notes": "Immutable local v1 result schema validates typed sections, local references, declared cutoff rules and review digest binding. It neither produces or authenticates evidence, forecasts or engine results nor exposes decision execution in the API."
+    },
+    {
       "id": "decision_evaluation",
       "status": "planned",
       "source": null,

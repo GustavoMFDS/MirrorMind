@@ -30,6 +30,18 @@ Never paste secrets, access tokens, user records, raw customer datasets or priva
 - Service/router mismatch: `api/app.py`, `api/routes/system.py`, `tests/integration/test_api.py`.
 - Missing capability: check `GET /v1/capabilities` and [ROADMAP](../ROADMAP.md) before diagnosing a future feature as broken.
 - Integrating WorldKernel: inspect `modules/simulation/gateway.py` and versioned contracts. An interface is not live execution.
+
+## Decision trace validation or review-digest mismatch
+
+Run the focused synthetic tests in
+[`test_decision_trace.py`](../../tests/unit/test_decision_trace.py), then
+follow the nested model and `DecisionTrace.check_trace_references_and_cutoff`
+in [`decision_trace.py`](../../src/mirrormind/core/decision_trace.py). Check
+record IDs and type-specific local references first, then timezone-aware
+cutoff/availability fields, cost status and review digest. The references and
+timestamps are caller assertions; do not log private payloads or infer source
+rights, model execution, engine execution, reviewer identity or authorization
+from a passing validation.
 - For planned evidence/agents, design permission-bound provenance, error handling and budget limits before implementing.
 - For fictional UCI-shaped retail projection failures: trace [`domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py), [reviewed method guide](UCI_RETAIL_PROJECTION.md) and [unit regressions](../../tests/unit/test_uci_retail_projection.py). Do not copy customer IDs or invoice descriptions into bug reports.
 - For bounded local XLSX input failures: inspect [`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), [the workbook guide](UCI_WORKBOOK_READER.md) and [ZIP/schema tests](../../tests/unit/test_uci_workbook.py). Never paste original workbook bytes or customer fields in an issue.

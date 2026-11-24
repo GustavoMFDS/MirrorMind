@@ -35,6 +35,14 @@ Both remain experimental. Full local and official CI evidence is limited by
 M1b's real-source rights and availability gate, M1c empirical holdout or
 calibrated uncertainty requirements.
 
+M1F-01 adds a versioned local decision-result contract on the current
+stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,
+gaps, costs and human review separate, with local reference/cutoff checks and
+an exact-result digest. It is interface-only: no producer, ranking, API,
+storage, actual engine output or action permission exists. M1F-02 remains the
+first runnable end-to-end decision comparison and still depends on an actual
+compatible simulation path and the named M1 predecessors.
+
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not
 proof of current stock, stockouts or true latent demand.

@@ -859,5 +859,12 @@
     "test": "tests/integration/test_retail_synthetic_evaluation.py",
     "function": "test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts",
     "limitation": "The generated fixture proves reproducibility, matched-origin accounting and output redaction for this local path only. Its declared releases are unauthenticated, positive invoice units are not complete demand, and the scores do not establish empirical forecasting skill or calibrated uncertainty."
+  },
+  {
+    "id": "MM-DTRACE-001",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_valid_trace_keeps_decision_evidence_categories_separate",
+    "limitation": "Synthetic contract validation proves local type/reference/cutoff structure only. Caller references are unauthenticated; no evidence, forecast, simulation, reviewer identity, authorization or decision execution is verified."
   }
 ]

@@ -77,6 +77,32 @@ Static imports (including inside functions): `pydantic`, `typing`
 | `ScenarioSpec` | class | `class ScenarioSpec` | — | [L32](../../../src/mirrormind/core/contracts.py#L32) |
 | `ScenarioSpec.check_budget` | method | `def check_budget(self) -> 'ScenarioSpec'` | — | [L47](../../../src/mirrormind/core/contracts.py#L47) |
 
+## `mirrormind.core.decision_trace`
+
+Source: [`src/mirrormind/core/decision_trace.py`](../../../src/mirrormind/core/decision_trace.py)
+
+Static imports (including inside functions): `datetime`, `decimal`, `hashlib`, `json`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_TraceModel` | class | `class _TraceModel` | — | [L46](../../../src/mirrormind/core/decision_trace.py#L46) |
+| `_require_timezone` | function | `def _require_timezone(value: datetime) -> datetime` | — | [L50](../../../src/mirrormind/core/decision_trace.py#L50) |
+| `_require_optional_timezone` | function | `def _require_optional_timezone(value: datetime \| None) -> datetime \| None` | — | [L56](../../../src/mirrormind/core/decision_trace.py#L56) |
+| `EvidenceReference` | class | `class EvidenceReference` | Opaque pointer supplied by a caller; not an authenticated source record. | [L60](../../../src/mirrormind/core/decision_trace.py#L60) |
+| `ObservedFact` | class | `class ObservedFact` | One scalar observation, separate from estimates and modeled outcomes. | [L72](../../../src/mirrormind/core/decision_trace.py#L72) |
+| `ForecastEstimate` | class | `class ForecastEstimate` | — | [L84](../../../src/mirrormind/core/decision_trace.py#L84) |
+| `ModelingAssumption` | class | `class ModelingAssumption` | — | [L93](../../../src/mirrormind/core/decision_trace.py#L93) |
+| `OutcomeMetric` | class | `class OutcomeMetric` | — | [L98](../../../src/mirrormind/core/decision_trace.py#L98) |
+| `ConditionalOutcome` | class | `class ConditionalOutcome` | A declared conditional result; the reference does not prove execution. | [L104](../../../src/mirrormind/core/decision_trace.py#L104) |
+| `MissingEvidence` | class | `class MissingEvidence` | — | [L117](../../../src/mirrormind/core/decision_trace.py#L117) |
+| `CostMeasurement` | class | `class CostMeasurement` | — | [L123](../../../src/mirrormind/core/decision_trace.py#L123) |
+| `CostMeasurement.check_measurement` | method | `def check_measurement(self) -> 'CostMeasurement'` | — | [L132](../../../src/mirrormind/core/decision_trace.py#L132) |
+| `HumanReview` | class | `class HumanReview` | — | [L141](../../../src/mirrormind/core/decision_trace.py#L141) |
+| `HumanReview.check_decision_fields` | method | `def check_decision_fields(self) -> 'HumanReview'` | — | [L150](../../../src/mirrormind/core/decision_trace.py#L150) |
+| `DecisionTrace` | class | `class DecisionTrace` | Immutable v1 result shape; approval records review but grants no action. | [L165](../../../src/mirrormind/core/decision_trace.py#L165) |
+| `DecisionTrace.result_sha256` | method | `def result_sha256(self) -> str` | Hash canonical result fields, excluding review to avoid circularity. | [L187](../../../src/mirrormind/core/decision_trace.py#L187) |
+| `DecisionTrace.check_trace_references_and_cutoff` | method | `def check_trace_references_and_cutoff(self) -> 'DecisionTrace'` | — | [L209](../../../src/mirrormind/core/decision_trace.py#L209) |
+
 ## `mirrormind.domains.__init__`
 
 Source: [`src/mirrormind/domains/__init__.py`](../../../src/mirrormind/domains/__init__.py)

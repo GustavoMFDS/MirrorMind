@@ -22,6 +22,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Repository atlas](REPOSITORY_ATLAS.md) — human-reviewed links to **every tracked code, test, config and document file**; a CI guard fails on missing files/links.
 - [Semantic learning map](SEMANTIC_COVERAGE.md) — current implemented, interface-only and planned capability boundaries, source by source.
 - [Contracts walkthrough](CONTRACT_WALKTHROUGH.md) — stepwise Pydantic validation and its limits: input shape is not authorized evidence or simulation.
+- [Decision trace result contract](DECISION_TRACE_RESULT.md) — versioned, interface-only envelope for observations, forecasts, conditional outcomes, gaps, costs and human review; no decision execution.
 - [API walkthrough](API_WALKTHROUGH.md) — each implemented HTTP route and the interface-only simulation gateway.
 - [Curated evidence map](EVIDENCE_MAP.json) — human-reviewed claim IDs mapped to cited pytest functions and explicit limitations.
 - [Capability truth ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md) — distinguish implemented/experimental/interface-only/planned capabilities; CI and API regressions detect drift.

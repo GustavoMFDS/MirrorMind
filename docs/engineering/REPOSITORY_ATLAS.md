@@ -825,6 +825,19 @@ does not verify data rights, source identity or actual publisher availability.
 The experimental result is not an empirical forecast or recommendation;
 release dates and positive-line units remain unverified proxies.
 
+## 52. Versioned decision trace result contract (interface-only)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py) | Frozen Pydantic v1 result models, local cross-reference/cutoff checks and SHA-256 content binding for a supplied human-review record; no authentication or action authorization |
+| [`examples/m1_decision_trace_contract.py`](../../examples/m1_decision_trace_contract.py) | Prints one deterministic, entirely fictional trace with pending human review and declared/unavailable costs |
+| [`tests/unit/test_decision_trace.py`](../../tests/unit/test_decision_trace.py) | Valid fixture, reproducibility, reference, temporal, cost, approval-digest and immutability regressions |
+| [`docs/engineering/DECISION_TRACE_RESULT.md`](DECISION_TRACE_RESULT.md) | Architecture, fields, data flow, digest algorithm, failure behavior, reproducible example, tests, exercises and limits |
+| [`docs/engineering/changes/M1F_01_DECISION_TRACE_CONTRACT.md`](changes/M1F_01_DECISION_TRACE_CONTRACT.md) | M1F-01 scope, acceptance criteria, impact map and evidence record |
+
+The capability remains `interface_only`; `decision_evaluation` remains
+`planned`. The schema neither creates traces nor validates external records.
+
 
 ## Continuous engineering handoff and execution register
 

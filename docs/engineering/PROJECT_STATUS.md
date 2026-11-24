@@ -67,11 +67,27 @@ unit tests passed together; 694 tests passed when excluding
 the symbol catalog, atlas, evidence and capability guards passed locally.
 A direct registered capability-handler/ledger comparison passed, but HTTP
 runtime did not run. The full exact-head local gate was not completed due the
-previously reproduced B-07 host-side asyncio socket-pair hang. On this exact
-SHA, GitHub Actions `test` run [45322594833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594833)
-and `symbol-catalog` run [45322594817](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594817)
+previously reproduced B-07 host-side asyncio socket-pair hang. On its latest
+documentation head `210f0f382938a67e518df688cc4e19c03d3d7af6`, GitHub Actions
+`test` run [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471)
+and `symbol-catalog` run [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864)
 failed before job execution with the account payment/spending-limit
 annotation (B-08). Neither local nor remote full-gate success is claimed.
+
+The active continuation branch `codex/m1f-01-decision-trace-contract`
+implements M1F-01 on top of the M1C-01 stack. The local result contract
+separates observations, estimates, conditional outcomes, assumptions, missing
+evidence, cost measurement states and human review. Twelve focused tests and
+the deterministic fictional CLI pass; 706 tests pass when
+`tests/integration/test_api.py` is excluded. Ruff, symbol catalog, atlas,
+evidence and capability guards pass locally, as does a direct registered
+capability-handler/ledger comparison. HTTP runtime was not tested and no new
+route was added. The result digest is content binding, not a signature; all
+source/model/engine references remain caller assertions. The task remains
+interface-only and has no trace producer, storage, decision ranking,
+execution permission or real engine evidence. The source and reference
+walkthrough are in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md);
+implementation PR and exact-head gate evidence are pending.
 
 ## Architecture and actual execution boundaries
 
