@@ -5,10 +5,11 @@ decision workflow while keeping MirrorMind domain-neutral.
 An accepted architecture is not equivalent to implemented AI.
 
 Current state: API scaffold and ScenarioSpec validation are
-implemented; a bounded [synthetic daily preflight](M1_DATA_PREFLIGHT.md)
-is an **experimental local example**. Evidence ingestion,
-forecasting, decision evaluation and WorldKernel adapter
-remain planned.
+implemented; bounded synthetic preflights, review-only staging,
+offline retail baselines and release-aware evaluation exist as
+**experimental local slices**. Authorized evidence ingestion,
+empirical forecasting, decision evaluation and WorldKernel adapter
+remain unimplemented.
 
 ## 1. Dependency-ordered milestones
 
@@ -20,6 +21,19 @@ remain planned.
 | **M1d — uncertainty and sensitivity** | Calibrated or explicitly uncalibrated interval procedure and robustness across missing days/lead times | Interval-coverage tests, drift/abstention cases, forecast card update | Do not present intervals as guaranteed |
 | **M1e — first simulation gateway** | Concrete, optional WorldKernel adapter over explicit version mapping and trusted worlds | SDK contract tests, unsupported input rejections, server-owned budgets, real fixture E2E without fabricating stock | `worldkernel_adapter` may become experimental after tests |
 | **M1f — reviewable decision comparison** | Trace observations, forecasts and conditional scenario outcomes without automatic business writes | Decision trace, approval gates, cost budgets and independent replay | No agentic automation or operational promise until implemented |
+
+## Current synthetic M1 path — 2026-11-24
+
+The M1B-02 [evidence flow](M1_SYNTHETIC_EVIDENCE_FLOW.md) composes local
+CSV/XLSX staging, review-only metadata, declared calendar/release checks and
+as-of selection. Its implementation is proposed in draft PR #52. The M1C-01
+[retail evidence-to-evaluation flow](M1_RETAIL_SYNTHETIC_EVALUATION.md) now
+composes the UCI-shaped evidence flow with the existing fixed baselines and
+per-origin release abstentions; its generated CLI uses only fictional bytes.
+Both remain experimental. Full local and official CI evidence is limited by
+[B-07 and B-08](BLOCKERS.md). This synthetic progress does not satisfy
+M1b's real-source rights and availability gate, M1c empirical holdout or
+calibrated uncertainty requirements.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not

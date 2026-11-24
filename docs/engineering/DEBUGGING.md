@@ -129,3 +129,20 @@ missing release is invalid input, not evidence of zero sales. Do not dump raw
 rows, references or workbook XML while diagnosing. Matching hashes and
 synthetic release declarations never prove rights or real publisher
 availability.
+
+## Retail evidence evaluation abstains or rejects a cutoff
+
+Reproduce the complete fictional path with
+[`examples/m1_retail_synthetic_evaluation.py`](../../examples/m1_retail_synthetic_evaluation.py)
+and the [evaluation guide](M1_RETAIL_SYNTHETIC_EVALUATION.md). If the
+evaluator raises that the cutoff must match the evidence-flow audit, compare
+`evaluation_on` with `flow.release_audit.origin_on`; rebuild the flow at the
+intended cutoff rather than changing or inferring release dates. For a valid
+abstention, inspect `origin_receipts` and distinguish
+`target_missing_not_zero`, `target_unpublished_at_evaluation` and
+`required_history_unavailable`. Never treat any of these as zero sales.
+The evaluator reuses `backtest_declared_retail_releases`; inspect that
+helper and its unit tests for product-day validation and seven-day history
+rules. Do not log the typed projection or identifiers while debugging. A
+stable fixture digest and matching cutoff still do not verify publisher
+availability, source rights or demand completeness.

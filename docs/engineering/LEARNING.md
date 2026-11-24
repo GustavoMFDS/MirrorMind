@@ -463,3 +463,19 @@ typed result with `receipt()`: identify the fields retained for a later local
 experiment, the fields omitted from receipts, and the still-false
 `ingestion_authorized` and `forecast_eligible` flags. The exercise uses only
 invented fixtures and does not establish a real source's rights or vintages.
+
+## Guided exercise — trace a fixed-split retail evaluation (40 minutes)
+
+Read [`evaluation_flow.py`](../../src/mirrormind/domains/retail/evaluation_flow.py),
+the [M1 evidence-to-evaluation guide](M1_RETAIL_SYNTHETIC_EVALUATION.md),
+the [synthetic fixture card](datasets/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md)
+and the [baseline model card](model_cards/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md).
+Run the example CLI twice and compare the complete JSON. Before running the
+integration test, predict why the seven targets produce two scored origins,
+three unavailable-history statuses, one missing target and one unpublished
+target. Mutate the final unavailable target and verify the digest changes
+while metrics and origin receipts stay fixed. Then set all releases after the
+cutoff and explain why no metrics or winner is returned. Finally explain why
+the fixture's zero seasonal-naive MAE is not evidence of real predictive
+skill, and list the publisher, calendar, holdout and uncertainty evidence
+needed before an empirical claim.

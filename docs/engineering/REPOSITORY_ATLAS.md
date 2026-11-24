@@ -810,6 +810,21 @@ real service keys, or claim globally current external authority.
 The capability remains `experimental`; a syntactically valid review packet
 does not verify data rights, source identity or actual publisher availability.
 
+## 51. Fixed-split retail evidence evaluation
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/evaluation_flow.py`](../../src/mirrormind/domains/retail/evaluation_flow.py) | Composes a prepared UCI-shaped evidence flow with the existing fixed release-aware backtest; requires matching declared audit and evaluation cutoffs |
+| [`examples/m1_retail_synthetic_evaluation.py`](../../examples/m1_retail_synthetic_evaluation.py) | Generates canonical fictional XLSX bytes in memory, supplies explicit synthetic releases and prints a versioned aggregate receipt |
+| [`tests/integration/test_retail_synthetic_evaluation.py`](../../tests/integration/test_retail_synthetic_evaluation.py) | Checks deterministic CLI output, cutoff mismatch, withheld-target mutation, per-origin abstentions and identifier minimization |
+| [`docs/engineering/M1_RETAIL_SYNTHETIC_EVALUATION.md`](M1_RETAIL_SYNTHETIC_EVALUATION.md) | Architecture, algorithm, result contract, tests, security, diagnostics and learning exercises |
+| [`docs/engineering/changes/M1C_01_SYNTHETIC_RETAIL_EVALUATION.md`](changes/M1C_01_SYNTHETIC_RETAIL_EVALUATION.md) | M1C-01 scope, acceptance, impact map and implementation evidence |
+| [`docs/engineering/datasets/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md`](datasets/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md) | Fictional workbook, explicit availability declarations, privacy and provenance limits |
+| [`docs/engineering/model_cards/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md`](model_cards/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md) | Fixed baselines, temporal holdout, metrics and no-uncertainty boundary |
+
+The experimental result is not an empirical forecast or recommendation;
+release dates and positive-line units remain unverified proxies.
+
 
 ## Continuous engineering handoff and execution register
 

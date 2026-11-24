@@ -852,5 +852,12 @@
     "test": "tests/integration/test_retail_evidence_flow.py",
     "function": "test_csv_flow_rejects_digest_and_review_declaration_mismatch",
     "limitation": "Expected-byte and review-packet digest mismatches fail closed locally. A matching caller-provided digest is not a publisher signature, permission or provenance verification."
+  },
+  {
+    "id": "MM-REVAL-001",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_EVALUATION.md",
+    "test": "tests/integration/test_retail_synthetic_evaluation.py",
+    "function": "test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts",
+    "limitation": "The generated fixture proves reproducibility, matched-origin accounting and output redaction for this local path only. Its declared releases are unauthenticated, positive invoice units are not complete demand, and the scores do not establish empirical forecasting skill or calibrated uncertainty."
   }
 ]

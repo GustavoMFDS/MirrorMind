@@ -156,6 +156,13 @@
       "notes": "Fixed one-day baseline comparison on fictional positive invoice-line records with caller-declared, unverified releases. No authenticated publisher data, complete demand calendar, empirical forecast skill, production inference or WorldKernel."
     },
     {
+      "id": "local_retail_evidence_evaluation",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/evaluation_flow.py",
+      "test": "tests/integration/test_retail_synthetic_evaluation.py::test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts",
+      "notes": "Local composition of the reviewed retail evidence flow with fixed matched-origin release-aware baseline evaluation. It does not authenticate source rights or release dates, establish complete demand, train a model, calibrate uncertainty, expose an evaluation HTTP endpoint or justify real forecasts/recommendations."
+    },
+    {
       "id": "local_retail_backtest_coverage_gate",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/coverage_gate.py",

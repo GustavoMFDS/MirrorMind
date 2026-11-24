@@ -162,6 +162,16 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `EligibleRetailValueComparison.receipt` | method | `def receipt(self) -> dict[str, str \| int \| float \| None]` | Expose exact eligibility fractions and only conditional statistics. | [L43](../../../src/mirrormind/domains/retail/eligible_values.py#L43) |
 | `compare_eligible_retail_values` | function | `def compare_eligible_retail_values(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> EligibleRetailValueComparison` | Compare two disjoint eligible subsets; refuse sparse comparisons. | [L74](../../../src/mirrormind/domains/retail/eligible_values.py#L74) |
 
+## `mirrormind.domains.retail.evaluation_flow`
+
+Source: [`src/mirrormind/domains/retail/evaluation_flow.py`](../../../src/mirrormind/domains/retail/evaluation_flow.py)
+
+Static imports (including inside functions): `__future__`, `datetime`, `mirrormind.domains.retail.evidence_flow`, `mirrormind.domains.retail.release_backtest`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `evaluate_retail_evidence_flow` | function | `def evaluate_retail_evidence_flow(flow: RetailUciEvidenceFlow, *, stock_code: str, evaluation_on: date, holdout_days: int=7) -> dict[str, object]` | Return an aggregate fixed-split evaluation and one status per target. | [L17](../../../src/mirrormind/domains/retail/evaluation_flow.py#L17) |
+
 ## `mirrormind.domains.retail.evidence_flow`
 
 Source: [`src/mirrormind/domains/retail/evidence_flow.py`](../../../src/mirrormind/domains/retail/evidence_flow.py)

@@ -268,6 +268,15 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   remain unverified proxies, not authorized real-demand evidence, empirical
   forecasts, calibrated intervals, API serving or WorldKernel execution.
 
+- **MM-M1c retail evidence-to-evaluation composition (experimental):**
+  [M1 evaluation guide](engineering/M1_RETAIL_SYNTHETIC_EVALUATION.md)
+  and [generated fixture card](engineering/datasets/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md)
+  connect the reviewed local workbook flow to the fixed release-aware
+  baselines, preserve matched-origin abstentions and emit aggregate/per-origin
+  receipts. The CLI uses deterministic fictional bytes; no real-source
+  availability, demand completeness, empirical performance or calibrated
+  uncertainty is established.
+
 - **MM-M1c retail matched-origin coverage gate (experimental):**
   [coverage threshold review](engineering/RETAIL_COVERAGE_GATE.md) and
   [fictional regressions](../tests/unit/test_retail_coverage_gate.py)
