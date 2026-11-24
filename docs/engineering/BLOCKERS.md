@@ -40,13 +40,14 @@ local quality-gate receipts.
 | [#58](https://github.com/GustavoMFDS/MirrorMind/pull/58), `465a2f2` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) failed | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) failed |
 | [#59](https://github.com/GustavoMFDS/MirrorMind/pull/59), `a5951e4` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) failed | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) failed |
 | [#60](https://github.com/GustavoMFDS/MirrorMind/pull/60), `6374f0b` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) failed | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) failed |
-| [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61), `0eebfe3` | [45493161127](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45493161127) failed | [45493161140](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45493161140) failed |
+| [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61), `7d9282d` | [45494216240](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45494216240) failed | [45494216188](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45494216188) failed |
 
 PR #57's body records a verified billing/spending-limit annotation for its
 own listed runs and says repository CI steps did not execute. Treat shared
-billing as a hypothesis for other PRs: current #61 job records contain no
-steps, log downloads return `404 BlobNotFound`, and artifact/combined-status
-queries are empty. The connector could not expose a root-cause annotation.
+billing as a hypothesis for other PRs: #61 runs on head `7d9282d` also failed
+without step records; log downloads return `404 BlobNotFound`, and
+artifact/combined-status queries are empty. The connector could not expose a
+root-cause annotation.
 
 ## Source references and precise restrictions
 
