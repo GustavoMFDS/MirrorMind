@@ -24,7 +24,8 @@
 - [x] Given a bounded generated UCI-shaped workbook, caller-declared calendar and explicit releases, the workbook path composes projection, calendar coverage and release audit; late and future product-days are withheld/count-only at the origin.
 - [x] Digest mismatch, declaration/source mismatch, missing calendar dates and missing release declarations fail closed through existing validators; the underlying helpers retain duplicate/invalid release validation.
 - [x] Receipts contain aggregate counts and digest/status metadata only; they exclude source references, series/product identifiers, invoice/customer data and raw values.
-- [x] Capability ledger, API route, evidence map, repository atlas, generated symbol catalog and human-written engineering/learning/debugging docs agree structurally; full API/test parity remains part of the pending full local gate.
+- [x] Capability ledger, registered API handler, evidence map, repository atlas, generated symbol catalog and human-written engineering/learning/debugging docs agree structurally; documentation guards and a direct registered-handler/ledger parity check passed locally.
+- [ ] The full API integration suite and exact-commit local quality gate pass. The current Windows execution blocked before application code in `tests/integration/test_api.py::test_health`; see B-07. Official Actions is separately blocked by B-08.
 - [x] Existing public contracts and helper semantics remain unchanged; no network, disk persistence or authorization behavior is added.
 
 ## 3. Impact map
@@ -60,13 +61,14 @@ The helpers already bound bytes, rows, groups, workbook archive members and date
 
 ## 6. Evidence after implementation
 
-- Commit / PR: branch `codex/m1b-02-synthetic-evidence-flow`; commit and PR pending.
+- Commit / PR: branch `codex/m1b-02-synthetic-evidence-flow`, commit `c51ab30370db47e9f7105c97f870008e4fc442c5`, draft [PR #52](https://github.com/GustavoMFDS/MirrorMind/pull/52). No merge or production release is claimed.
 - Modified symbols: `RetailCsvEvidenceFlow`, `RetailUciEvidenceFlow`, `prepare_retail_csv_evidence_flow`, `prepare_retail_uci_evidence_flow`, and the experimental `/v1/capabilities` entry.
-- Tests executed, result, environment: five focused integration tests passed; Ruff and the catalog, atlas, evidence and capability guards passed locally. The full commit-bound quality gate is pending.
+- Tests executed, result, environment: the five focused integration tests passed; a full run excluding `tests/integration/test_api.py` passed 690 tests in 15.60 seconds; direct invocation of the registered `/v1/capabilities` router handler matched the ledger's implemented, experimental and planned sets. Ruff and the catalog, atlas, evidence and capability guards passed locally. The exact-commit gate returned `local_gate_failed_or_incomplete` because its pytest stage exited 124 at the configured 900-second timeout; the remaining gate stages did not run. Verbose pytest collected 696 tests and stopped at `test_health` before application code. A standalone `asyncio.new_event_loop()` reproduced blocking in `socket.accept` inside `_fallback_socketpair` on Python 3.13.5 and the installed Python 3.12; the likely host/sandbox loopback cause is still a hypothesis.
 - Claim IDs and cited test path/function: `MM-FLOW-001`–`MM-FLOW-005`, each cites a top-level function in `tests/integration/test_retail_evidence_flow.py`.
 - Evidence/provenance/cutoff and uncertainty: generated/synthetic inputs and caller-declared dates only; no real-source or publisher verification.
-- Scope of human review and approval: local experimental behavior only; not production permission.
+- Scope of human review and approval: local experimental behavior only; not production permission. PR #52 remains a draft pending exact-commit verification.
 - New or changed contracts: additive local Python library API and experimental capability identifier; existing helper and HTTP data contracts remain unchanged.
-- Docs updated: M1 flow walkthrough, change request, system map, API walkthrough, semantic map, capability/evidence ledgers, atlas, backlog, status, debugging, learning and generated symbol catalog.
-- Known limitations / follow-up: M1B-01/B-01/B-02 still govern genuine data rights and availability; M1C-01 consumer wiring remains separate.
+- Docs updated: M1 flow walkthrough, change request, system map, API walkthrough, semantic map, capability/evidence ledgers, atlas, backlog, status, blocker register, debugging, learning and generated symbol catalog.
+- Official GitHub Actions: checks for this SHA failed before starting. Their annotations state recent account payments failed or the spending limit must be increased; see B-08 and [run 45318084072](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084072), [run 45318084108](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084108). No CI test result is available.
+- Known limitations / follow-up: B-07 blocks the Windows API `TestClient` path and full local gate; B-08 blocks official checks. M1B-01/B-01/B-02 still govern genuine data rights and availability; M1C-01 consumer wiring remains separate.
 - Independent explanation: the new domain-level entrypoints delegate parsing, review binding, calendar checks, release auditing and as-of selection to existing helpers. To change a parser rule, update its existing module and tests; change only the composition and its integration test when the order or returned contract changes.
