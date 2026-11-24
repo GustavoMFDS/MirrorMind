@@ -77,24 +77,23 @@ annotation (B-08). Neither local nor remote full-gate success is claimed.
 The active continuation branch `codex/m1f-01-decision-trace-contract`
 implements M1F-01 on top of the M1C-01 stack. The local result contract
 separates observations, estimates, conditional outcomes, assumptions, missing
-evidence, cost measurement states and human review. Twelve focused tests and
-the deterministic fictional CLI pass; 706 tests pass when
-`tests/integration/test_api.py` is excluded. Ruff, symbol catalog, atlas,
-evidence and capability guards pass locally, as does a direct registered
-capability-handler/ledger comparison. HTTP runtime was not tested and no new
-route was added. The result digest is content binding, not a signature; all
-source/model/engine references remain caller assertions. The task remains
-interface-only and has no trace producer, storage, decision ranking,
-execution permission or real engine evidence. The source and reference
-walkthrough are in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). The
-implementation commit is `27f1f1c9dec3886299077793a2d42a647313d7ae` on
-`codex/m1f-01-decision-trace-contract`, proposed as draft [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54)
-stacked on PR #53. Its official `test` run
-[45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
-and `symbol-catalog` run
-[45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
-failed before job start due the same B-08 account billing annotation.
-Exact-head full local gate remains unverified under B-07; PR remains draft.
+evidence, cost measurement states and human review. Review correction commit
+`f02459d977fd263b03ddf60264b9069ae08b189b` adds terminal-review chronology,
+context-independent lossless Decimal hashing, and field/aggregate/reference
+bounds; evidence links now name each regression function. The decision-trace
+unit suite passes 28 tests. Ruff, source catalog, atlas, evidence and
+capability checks pass locally, as does `git diff --check`. For the atlas
+check, only the existing untracked Graphify output was excluded via
+a temporary local Git exclude file; no source guard or project ignore rule was
+changed. The full integrated gate is pending. HTTP runtime was not tested and
+no new route was added. The result digest remains a recomputable content hash,
+not a signature; all source/model/engine references remain caller assertions.
+The task remains interface-only and has no authenticated producer, storage,
+decision ranking, execution permission or real engine evidence. The source
+walkthrough is in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). PR #54
+remains a draft stacked on #53. Its prior head's GitHub checks failed before
+job start with B-08; no official check has yet been inspected for this new
+commit.
 
 ## Architecture and actual execution boundaries
 

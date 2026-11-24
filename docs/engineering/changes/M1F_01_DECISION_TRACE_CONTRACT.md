@@ -167,4 +167,29 @@ do not replace HTTP body-size, rate or concurrency controls.
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
   remain separate. B-07/B-08 still block the exact full gate/official CI
   evidence for the stacked branch.
-- Independent explanation: pending implementation.
+- Independent explanation: completed in `DECISION_TRACE_RESULT.md` and its
+  linked source walkthrough and learning exercises.
+
+## Review correction evidence — 2026-11-24
+
+- Commit: `f02459d977fd263b03ddf60264b9069ae08b189b` on
+  `codex/m1f-01-decision-trace-contract`, PR #54.
+- Reproduced before correction: an approved/rejected review one second before
+  trace creation validated; two distinct amounts hashed identically at Decimal
+  precision 3; each record section and a reference list accepted values beyond
+  the requested bounds. The corrected red run reported 11 failing assertions
+  after fixture timestamps were aligned with existing cutoff data.
+- Resolution: compare review timestamps by instant, canonicalize costs with
+  context-independent fixed-point formatting, cap each section at 1,000, the
+  full trace at 1,000 records, and nested reference/metric tuples at 100;
+  resolve evidence IDs through one map. The v1 fixture digest remains
+  `fccf54eccb7971ea4731e08df4baae8755a394688d47d19d2c54d8ebe1f5b4ec`.
+- Verification on the correction commit: `tests/unit/test_decision_trace.py`
+  passed 28 tests; `ruff check src tests`, catalog check, atlas, evidence and
+  capability guards passed. The atlas used a temporary local Git excludes file
+  for existing untracked Graphify output directories; no guard, project ignore
+  rule or artifact was changed. The complete integrated gate and remote checks
+  on this commit remain pending.
+- Limits: the local contract does not authenticate reviewer/reference claims,
+  trust timestamps, cap HTTP request size or concurrency, or execute a
+  decision. `decision_trace_result_contract` remains `interface_only`.
