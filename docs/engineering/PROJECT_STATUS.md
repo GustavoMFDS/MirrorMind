@@ -54,6 +54,25 @@ and [symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/
 Do not treat the green local subset as a substitute for the complete gate
 or official CI.
 
+The next stacked slice is on `codex/m1c-01-synthetic-retail-evaluation`
+at `10ee6866f3340c679e0bfe3bfee11e199a32b56a` and is proposed as draft
+[PR #53](https://github.com/GustavoMFDS/MirrorMind/pull/53), based on
+PR #52's branch. It composes the staged synthetic evidence flow with the
+existing release-aware baseline evaluator and exposes a deterministic
+fictional evaluation CLI. This is branch-local and experimental; it does
+not add real-data ingestion, an HTTP forecast endpoint or predictive-skill
+evidence. Four focused integration tests and six existing retail-backtest
+unit tests passed together; 694 tests passed when excluding
+`tests/integration/test_api.py`. Ruff for `src`, `tests` and the new example,
+the symbol catalog, atlas, evidence and capability guards passed locally.
+A direct registered capability-handler/ledger comparison passed, but HTTP
+runtime did not run. The full exact-head local gate was not completed due the
+previously reproduced B-07 host-side asyncio socket-pair hang. On this exact
+SHA, GitHub Actions `test` run [45322594833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594833)
+and `symbol-catalog` run [45322594817](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594817)
+failed before job execution with the account payment/spending-limit
+annotation (B-08). Neither local nor remote full-gate success is claimed.
+
 ## Architecture and actual execution boundaries
 
 | Area | Verified implementation / status | Missing product gate |
