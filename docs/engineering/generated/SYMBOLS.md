@@ -380,6 +380,28 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 | `LocalCheckpointPublisher.snapshot` | method | `def snapshot(self, packet: SourceReviewPacket, *, checked_on: date, externally_expected_head_sha256: str \| None=None) -> LocalPublicationRevision` | Recheck full local signed history; external head may detect rollback. | [L483](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L483) |
 | `LocalCheckpointPublisher.publish` | method | `def publish(self, packet: SourceReviewPacket, command: SignedPublicationCommand, *, expected_sequence: int, expected_receipt_sha256: str, checked_on: date) -> LocalPublicationRevision` | Verify exact operator-signed proposal, then atomically commit. | [L514](../../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py#L514) |
 
+## `mirrormind.modules.evidence.local_integrated_fence_registry`
+
+Source: [`src/mirrormind/modules/evidence/local_integrated_fence_registry.py`](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `json`, `mirrormind.modules.evidence.atomic_governed_publisher`, `mirrormind.modules.evidence.intake_review`, `mirrormind.modules.evidence.integrated_fence_transcript`, `mirrormind.modules.evidence.integrated_head_fence`, `pathlib`, `re`, `sqlite3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `LocalFenceRegistryHead` | class | `class LocalFenceRegistryHead` | Replayed registry head, NOT a permission or independent timestamp. | [L39](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L39) |
+| `LocalFenceRegistryHead.receipt` | method | `def receipt(self) -> dict[str, int \| str \| bool \| None]` | — | [L48](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L48) |
+| `_dump_link` | function | `def _dump_link(link: SignedIntegratedFenceTransition) -> str` | Deterministic bounded JSON of complete signed payload, not just heads. | [L63](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L63) |
+| `_load_link` | function | `def _load_link(serialized: str) -> SignedIntegratedFenceTransition` | Strictly parse one stored canonical transition; refuse extra/missing fields. | [L78](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L78) |
+| `LocalIntegratedFenceRegistry` | class | `class LocalIntegratedFenceRegistry` | CAS-persist one packet's witnessed fence chain in a distinct SQLite file. | [L123](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L123) |
+| `LocalIntegratedFenceRegistry.__init__` | method | `def __init__(self, path: Path, gate: AtomicGovernedPublisher, packet: SourceReviewPacket, *, trusted_fence_keys: Mapping[str, bytes], trusted_witness_keys: Mapping[str, bytes], create: bool=False) -> None` | — | [L131](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L131) |
+| `LocalIntegratedFenceRegistry._connect` | method | `def _connect(self) -> sqlite3.Connection` | — | [L214](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L214) |
+| `LocalIntegratedFenceRegistry._verify_schema` | method | `def _verify_schema(self, db: sqlite3.Connection) -> None` | — | [L217](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L217) |
+| `LocalIntegratedFenceRegistry._replay` | method | `def _replay(self, db: sqlite3.Connection, checked_on: date) -> tuple[LocalFenceRegistryHead, tuple[SignedIntegratedFenceTransition, ...]]` | — | [L227](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L227) |
+| `LocalIntegratedFenceRegistry.head` | method | `def head(self, *, checked_on: date) -> LocalFenceRegistryHead` | Read and verify all signed stored links, without trusting publisher DB. | [L289](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L289) |
+| `LocalIntegratedFenceRegistry.compare_local` | method | `def compare_local(self, *, checked_on: date) -> LocalFenceRegistryHead` | Fail when governed publisher differs from verified separately stored pin. | [L308](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L308) |
+| `LocalIntegratedFenceRegistry.append` | method | `def append(self, link: SignedIntegratedFenceTransition, *, expected_authority_sequence: int, expected_fence_sha256: str, checked_on: date) -> LocalFenceRegistryHead` | Commit a next doubly witnessed fence with registry-local BEGIN IMMEDIATE. | [L341](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L341) |
+| `_fence_digest` | function | `def _fence_digest(link: SignedIntegratedFenceTransition) -> str` | — | [L404](../../../src/mirrormind/modules/evidence/local_integrated_fence_registry.py#L404) |
+
 ## `mirrormind.modules.evidence.local_review_registry`
 
 Source: [`src/mirrormind/modules/evidence/local_review_registry.py`](../../../src/mirrormind/modules/evidence/local_review_registry.py)

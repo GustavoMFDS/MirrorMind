@@ -84,3 +84,13 @@ These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but 
   [Change request](changes/M1B_DUAL_WITNESS_FENCE_CONTINUITY.md).
   No trusted independent latest state, key custody, real-source rights,
   live publication admission or source ingestion.
+
+## Experimental locally persisted signed combined-state head
+
+- [Separate local integrated-fence registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md):
+  opt-in second SQLite file storing fully signed dual-witness forward
+  transitions, bounded history replay and registry-only CAS.
+  [Change request](changes/M1B_SEPARATE_DURABLE_FENCE_REGISTRY.md).
+  Detects publisher-only rollback **conditionally** with an intact
+  registry; it is not an external trusted current-head service, a
+  cross-file transaction or an authorization/ingestion feature.

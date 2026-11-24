@@ -266,6 +266,13 @@
       "source": "src/mirrormind/modules/evidence/integrated_fence_transcript.py",
       "test": "tests/unit/test_atomic_governed_publisher.py::test_dual_witness_fence_chain_verified_against_integrated_local_snapshot",
       "notes": "Offline bounded 1-32 chained, per-source combined policy/publication Ed25519 fences with one authority and two distinct separately configured witness signatures per transition, exact caller-supplied anchor/current pins and final transactional local SQLite equality. A separately supplied fork classifier reports two authentic same-predecessor signed successors without selecting a winner. Hidden forks, stale pins, fraudulent witness clocks, real signer custody/identity, independent current-head service, production authorization, licensed ingestion and forecasts remain outside the experiment. Never grants publication, ingestion or forecast eligibility."
+    },
+    {
+      "id": "local_separate_integrated_fence_registry",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/evidence/local_integrated_fence_registry.py",
+      "test": "tests/unit/test_atomic_governed_publisher.py::test_separate_signed_fence_registry_persists_verifiable_heads_after_reopen",
+      "notes": "Opt-in separate local single-packet SQLite journal holding 1-32 complete dual-witness Ed25519 signed combined policy/publication fence transitions with strict packet/key marker, full replay and registry-local BEGIN IMMEDIATE CAS; terminal journal comparison to a separately stored governed publisher DB detects publisher-only old-backup restores while the journal stays intact. There is no cross-file transaction or independent remote current authority, secure key custody, verified identity, immutable backup/freshness, source license permission or production ingestion. Restoring BOTH files or a valid signed suffix truncation may pass. Receipts always have publication_authorized=false, ingestion_authorized=false, forecast_eligible=false."
     }
   ]
 }

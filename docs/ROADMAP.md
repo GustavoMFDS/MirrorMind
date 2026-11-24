@@ -483,3 +483,14 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   Neither trusted external latest-head retrieval nor actual key custody,
   fork discovery, independent timestamp authority, real source permission,
   live publication admission or forecasting is implemented.
+
+- **MM-M1b separate durable signed-fence pin (experimental):**
+  [local separate-file registry](engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md)
+  persists complete dual-witness signed combined-head transitions with
+  registry-local transactional CAS, full replay and read-only comparison
+  to the governed SQLite publisher. A coherent publisher-only old-backup
+  restore mismatches a more recent intact separate registry; restoring
+  both databases or removing a valid signed suffix is not ruled out.
+  **No** independently operated remote current-head authority, key
+  custody, two-file atomic transaction, live admission, licensed real
+  ingestion or production forecasting was introduced.
