@@ -97,19 +97,20 @@ M1D-01 is implemented in `10fe58fc3aca45c27288dcc6055ac5d84ab035af` on
 PR #53. It replaces rolling residual labels with fixed pre-holdout calibration
 dates and explicit disjoint-window metadata. The late-release regression
 proves that a published earlier holdout target cannot refill calibration.
-Local evidence on docs head `aa2be84ba135ac93cf75b8f0491318d19757f693`:
+Local evidence on tested docs head `0c2e789256e381c2790c49a14c2acc7802d11b9d`:
 81 focused residual tests, 94 dependent consumer tests, and the canonical
-`scripts/local_quality_gate.py --expected-head aa2be84ba135ac93cf75b8f0491318d19757f693`
+`scripts/local_quality_gate.py --expected-head 0c2e789256e381c2790c49a14c2acc7802d11b9d`
 passed. The full suite reported 700 passed, including
 `tests/integration/test_api.py`; Ruff and catalog, atlas, evidence and
 capability guards also passed. Pytest emitted one existing Starlette/httpx
 deprecation warning. `test_health` and the full gate passed outside the
 restricted sandbox, resolving B-07 for this stack; the earlier exact PR #52
 SHA has not been rerun. Official `test` run
-[45335148902](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148902)
+[45336376803](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45336376803)
 and `symbol-catalog` run
-[45335148877](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148877)
-failed before job steps, without a returned cause annotation (B-08). This
+[45336376776](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45336376776)
+failed before job steps with the verified B-08 annotation: recent account
+payments failed or the spending limit needs to be increased. This
 remains experimental and does not establish empirical calibration. See the
 active claim in [TASK_BACKLOG](TASK_BACKLOG.md) and the
 [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).

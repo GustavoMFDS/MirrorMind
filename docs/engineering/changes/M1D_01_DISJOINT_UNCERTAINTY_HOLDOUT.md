@@ -106,7 +106,7 @@ missing values with zero.
 
 Branch `codex/m1d-01-disjoint-residual-calibration`, implementation commit
 `10fe58fc3aca45c27288dcc6055ac5d84ab035af`, latest docs commit
-`aa2be84ba135ac93cf75b8f0491318d19757f693`, draft [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56)
+`0c2e789256e381c2790c49a14c2acc7802d11b9d`, draft [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56)
 stacked on draft PR #53. Focused residual-envelope tests: 81 passed;
 dependent eligibility/value/selection consumer tests: 94 passed. The canonical
 local gate passed on the docs head: 700 tests including the API module, Ruff,
@@ -118,14 +118,14 @@ also passed outside the restricted sandbox. Capability
 Reproduce locally from the repository root:
 
 ```bash
-python scripts/local_quality_gate.py --expected-head aa2be84ba135ac93cf75b8f0491318d19757f693
+python scripts/local_quality_gate.py --expected-head 0c2e789256e381c2790c49a14c2acc7802d11b9d
 ```
 
 The exact PR #52 SHA associated with B-07 was not rerun. On the current PR #56
 stack, both `test_health` and the canonical full gate passed outside the
-restricted sandbox, so B-07 is resolved for this stack. The docs-head official
-[test run 45335148902](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148902)
-and [symbol-catalog run 45335148877](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45335148877)
-failed before job steps; the connector returned no reason annotation for these
-runs, so see B-08 for the verified earlier-head billing annotations. Do not
+restricted sandbox, so B-07 is resolved for this stack. The tested docs-head
+official [test run 45336376803](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45336376803)
+and [symbol-catalog run 45336376776](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45336376776)
+failed before job steps with the B-08 annotation that recent account payments
+failed or the spending limit needed to be increased. Do not
 claim calibrated or nominal coverage or official CI success.
