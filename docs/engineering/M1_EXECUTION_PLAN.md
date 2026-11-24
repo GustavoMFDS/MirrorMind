@@ -30,10 +30,12 @@ as-of selection. Its implementation is proposed in draft PR #52. The M1C-01
 [retail evidence-to-evaluation flow](M1_RETAIL_SYNTHETIC_EVALUATION.md) now
 composes the UCI-shaped evidence flow with the existing fixed baselines and
 per-origin release abstentions; its generated CLI uses only fictional bytes.
-Both remain experimental. Full local and official CI evidence is limited by
-[B-07 and B-08](BLOCKERS.md). This synthetic progress does not satisfy
-M1b's real-source rights and availability gate, M1c empirical holdout or
-calibrated uncertainty requirements.
+Both remain experimental. Exact canonical local gates passed on the current
+M1C-01, M1F-01 and M1F-02 heads; the earlier restricted-sandbox socket-pair
+stall is historical under [B-07](BLOCKERS.md). Official Actions remains
+blocked before job steps by [B-08](BLOCKERS.md). This synthetic progress does
+not satisfy M1b's real-source rights and availability gate, M1c empirical
+holdout or calibrated uncertainty requirements.
 
 M1F-01 adds a versioned local decision-result contract on the current
 stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,

@@ -62,10 +62,10 @@ The existing `evidence_and_rag` capability stays planned; a narrow
   network access or write.
 - [x] The CLI accepts only bounded query and top-k options and uses only a
   generated fictional fixture with a fixed local access context.
-- [ ] The capability ledger, live `/v1/capabilities` parity test, evidence map,
+- [x] The capability ledger, live `/v1/capabilities` parity test, evidence map,
   atlas, symbol catalog, system map, API capability docs, debugging notes,
   learning exercise and source walkthrough describe the implemented boundary.
-- [ ] Full local quality gate passes on a committed SHA. No real dataset or
+- [x] Full local quality gate passes on a committed SHA. No real dataset or
   provider evidence is claimed.
 
 ## 3. Impact map (confirmed before implementation)
@@ -120,17 +120,22 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: local feature commit pending; draft PR will target the PR #54 branch.
+- Commit / PR: implementation commit
+  `e151f9d9925d83d2b3e27fb88683672a93b48c30`; draft [PR #60](https://github.com/GustavoMFDS/MirrorMind/pull/60)
+  targets the PR #54 branch. The PR remains unmerged and awaits review.
 - Modified symbols and files: `EvidenceDocument`, `EvidenceAccessContext`,
   `EvidenceQuery`, `EvidenceCitation`, `RetrievedEvidence`,
   `EvidenceRetrievalResult`, `InMemoryEvidenceIndex.build/search`, the fixed
   fictional corpus, local CLI and capability declaration.
-- Tests executed, result, environment: 8 focused retrieval unit/CLI tests
-  passed before the full documented suite run; 714 repository tests passed
-  with `tests/integration/test_api.py` excluded. Ruff, symbol catalog, atlas,
-  evidence-map and capability-ledger guards passed on Python 3.13.5. The live
-  API parity test produced no output for 60 seconds and was interrupted under
-  existing blocker B-07; the canonical full gate is not claimed as passing.
+- Tests executed, result, environment: canonical
+  `scripts/local_quality_gate.py --expected-head
+  e151f9d9925d83d2b3e27fb88683672a93b48c30` passed on Python 3.13.5 at
+  `2026-11-24T19:18:35.552346+00:00`: 720 tests passed, followed by Ruff,
+  symbol catalog, atlas coverage, evidence map and capability ledger checks.
+  The HTTP capability-parity test ran within that suite. One existing
+  Starlette/httpx `TestClient` deprecation warning was emitted. An earlier
+  focused attempt in the restricted sandbox stalled and was interrupted;
+  the later full gate used the approved execution environment and passed.
 - Claim IDs and cited test path/function: `MM-RETR-001` through `MM-RETR-006`
   in `docs/engineering/EVIDENCE_MAP.json`, covering permission filtering,
   citation spans, untrusted text, CLI replay, duplicate IDs and strict model
@@ -148,4 +153,10 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   catalog.
 - Known limitations / follow-up: real identity and source authorization,
   durable index, retrieval evaluation and agent/tool consumers remain open.
-- Independent explanation: pending implementation.
+  GitHub Actions for PR #60 failed before job steps because the connected
+  account has a billing/spending-limit restriction (B-08); this is not a
+  repository test result. Human review and merge remain pending.
+- Independent explanation: the learning exercise traces scope filtering before
+  tokenization, verifies excerpt offsets and digest bytes, and distinguishes
+  the fixed demo scope from authentication. Independent human review remains
+  pending with PR #60.

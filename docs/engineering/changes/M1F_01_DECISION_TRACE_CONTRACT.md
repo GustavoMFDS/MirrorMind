@@ -114,7 +114,8 @@ digest dependency.
 
 - Commit / PR: source is at
   `27f1f1c9dec3886299077793a2d42a647313d7ae` on
-  `codex/m1f-01-decision-trace-contract`, proposed as draft
+  `codex/m1f-01-decision-trace-contract`; current PR head is
+  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029`. Proposed as draft
   [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), stacked on
   draft PR #53.
 - Modified symbols and files: `DecisionTrace`, `EvidenceReference`,
@@ -123,14 +124,12 @@ digest dependency.
   in `src/mirrormind/core/decision_trace.py`; reproducible fixture CLI in
   `examples/m1_decision_trace_contract.py`; 12 pure unit tests.
 - Tests executed, result, environment: focused unit suite passed 12 tests in
-  0.29 seconds. The broader suite passed 706 tests in 19.57 seconds with
-  `tests/integration/test_api.py` excluded. Ruff passed for `src`, `tests`
-  and the new example. Catalog, atlas/link coverage, evidence and capability
-  guards and `git diff --check` passed after the final documentation changes.
-  A direct registered capability-handler/ledger comparison passed; it is not
-  an HTTP runtime check. The canonical full local gate was not run because
-  B-07 reproduces a host-side socket-pair hang in the API health test before
-  application code.
+  0.29 seconds. The canonical exact-head gate on current PR head
+  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed 712 tests, including the
+  API integration module; Ruff, catalog, atlas, evidence and capability
+  checks also passed. One existing Starlette/httpx deprecation warning was
+  emitted. The earlier restricted-sandbox socket-pair stall is historical
+  (B-07); its root cause is unknown.
 - Claim IDs and cited test path/function: `MM-DTRACE-001` cites
   `tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate`.
 - Evidence/provenance/cutoff and uncertainty: generated fictional values only;
@@ -144,13 +143,15 @@ digest dependency.
   gates and ledger, evidence map, repository atlas, input-contract guide,
   decision trace template, M1 plan, backlog, project status, debugging,
   learning guide and generated symbol catalog.
-- Official CI: M1F head `27f1f1c9dec3886299077793a2d42a647313d7ae` checks
+- Official CI: M1F implementation head `27f1f1c9dec3886299077793a2d42a647313d7ae` checks
   failed before job start: [test run 45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
   and [symbol-catalog run 45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
   carry the B-08 account payment/spending-limit annotation. This is not an
   observed test failure; no remote test result is inferred.
 - Known limitations / follow-up: M1F-02 must produce and replay an actual
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
-  remain separate. B-07/B-08 still block the exact full gate/official CI
-  evidence for the stacked branch.
-- Independent explanation: pending implementation.
+  remain separate. The exact local gate passed on current PR head
+  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029`; B-08 still blocks official
+  CI from starting on affected PR heads. Human review remains pending.
+- Independent explanation: the guide includes a learner exercise; independent
+  human review of the contract remains pending.

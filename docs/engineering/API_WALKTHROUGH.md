@@ -56,9 +56,11 @@ execution is exposed by an HTTP route. The parity regression
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
 checks that the API's implemented/experimental/planned lists match the
 reviewed ledger; matching labels do not establish the semantic truth of a
-capability claim. The Windows `TestClient` test currently cannot create its
-asyncio socket pair in this execution environment; a direct handler check
-does not substitute for HTTP runtime verification (see [B-07](BLOCKERS.md)).
+capability claim. A focused attempt once stalled in the restricted sandbox;
+the later canonical gate on M2-01 SHA
+`e151f9d9925d83d2b3e27fb88683672a93b48c30` passed this HTTP test as part of
+the 720-test suite. See [B-07](BLOCKERS.md) for the bounded environment
+history and exact-SHA evidence.
 
 `local_fictional_evidence_retrieval` follows the same library-only boundary:
 its fixed demo example uses generated text and a caller-declared scope. There

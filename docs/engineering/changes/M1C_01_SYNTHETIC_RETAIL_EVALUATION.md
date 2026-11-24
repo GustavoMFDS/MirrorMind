@@ -15,7 +15,7 @@
 - Add `local_retail_evidence_evaluation` as `experimental` in the capability ledger and `/v1/capabilities`; do not promote the broader `forecasting` capability.
 - Production behavior: local in-memory composition only. The example CLI generates only fictional rows and caller-declared release dates.
 - Narrow evidence: tests must prove matching cutoffs, deterministic fixed split, matched baseline origins, per-origin statuses, no leakage from a withheld target, and sanitized receipts. These are not empirical forecasting claims.
-- HTTP test execution remains subject to blocker B-07. Verify the registered handler against the ledger directly as a separate, clearly labeled check; do not claim HTTP runtime verification if `TestClient` cannot run.
+- The exact current PR #53 head `210f0f382938a67e518df688cc4e19c03d3d7af6` passed the canonical gate with 700 tests, including the HTTP capability-parity test. The earlier restricted-sandbox stall is historical (B-07); GitHub Actions on this head remain independently blocked by B-08.
 
 ## 2. Acceptance criteria
 
@@ -27,7 +27,8 @@
 - [x] The generated CLI uses only a deterministic fictional workbook and explicit release declarations; repeated runs produce identical result JSON under the same Python/openpyxl/zlib toolchain.
 - [x] Keep the new capability `experimental`, keep `forecasting` planned, regenerate the symbol catalog, add an atlas link, and update the system map, M1 guide, model/data cards, evidence/capability ledgers, backlog, debugging and learning docs.
 - [x] Run focused tests, Ruff, catalog, atlas, evidence and capability guards. Report exact full-gate and CI status; do not weaken tests or use the environment workaround as proof of HTTP execution.
-- [ ] Complete the canonical exact-head local gate and official CI green on a reviewable head. B-07 and B-08 currently block these two independent checks.
+- [x] Complete the canonical exact-head local gate on PR #53 head `210f0f382938a67e518df688cc4e19c03d3d7af6`: 700 tests and all six local stages passed.
+- [ ] Obtain official CI results on the reviewable head. B-08 prevents the Actions jobs from starting; this is separate from the passed local gate.
 
 ## 3. Impact map
 
@@ -65,12 +66,12 @@ The wrapper must not reparse workbooks or duplicate release/forecast validation.
 
 - Commit / PR: implementation is on `codex/m1c-01-synthetic-retail-evaluation` at `10ee6866f3340c679e0bfe3bfee11e199a32b56a`, proposed as draft [PR #53](https://github.com/GustavoMFDS/MirrorMind/pull/53), stacked on draft [PR #52](https://github.com/GustavoMFDS/MirrorMind/pull/52). PR #52 must be reviewed/merged before this stack can be integrated.
 - Modified symbols and files: `evaluate_retail_evidence_flow`, deterministic fixture and CLI helpers in `examples/m1_retail_synthetic_evaluation.py`, capability/API metadata, four integration tests and the guide/cards/maps listed in the impact section.
-- Tests executed, result, environment: four focused integration tests and six existing retail-backtest unit tests passed together; the full suite excluding `tests/integration/test_api.py` passed 694 tests in 15.43 seconds. Ruff passed for `src`, `tests` and the new example; catalog, atlas, evidence and capability guards passed. A focused API handler-to-ledger parity check passed. The exact-head canonical gate was not rerun because B-07 reproduces before the application handler; the HTTP test is not verified.
+- Tests executed, result, environment: four focused integration tests and six existing retail-backtest unit tests passed together. The exact PR #53 head `210f0f382938a67e518df688cc4e19c03d3d7af6` later passed the canonical gate with 700 tests, including `tests/integration/test_api.py`; Ruff, catalog, atlas, evidence and capability checks passed. One existing Starlette/httpx deprecation warning was emitted. The earlier restricted-sandbox timeout did not establish an application failure.
 - Claim IDs and cited test path/function: `MM-REVAL-001` cites `tests/integration/test_retail_synthetic_evaluation.py::test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts`.
 - Evidence/provenance/cutoff and uncertainty: in-memory fictional workbook and explicit caller-declared releases only. The default day-35 cutoff uses a fixed last-seven-calendar-day holdout. No publisher availability, source rights, complete demand calendar, empirical skill or uncertainty calibration is established.
 - Scope of human review and approval: experimental local evaluation only; no source-use permission, real-world forecast or production approval.
 - New or changed contracts: additive Python composition function with schema `mirrormind.retail.evidence_evaluation.v1`, deterministic synthetic CLI and `local_retail_evidence_evaluation` experimental capability. No evaluation HTTP endpoint was added.
 - Docs updated: evaluation guide, dataset/model cards, change request, M1 plan, system map, API walkthrough, semantic map, roadmap, capability/evidence ledgers, atlas, backlog, debugging, learning and generated symbol catalog.
 - Official CI: checks on the current PR #53 docs head `210f0f382938a67e518df688cc4e19c03d3d7af6` failed before jobs started: [test run 45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471) and [symbol-catalog run 45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864) both carry the annotation that recent account payments failed or the spending limit must be increased. The preceding code head also failed before jobs in runs 45322594833 and 45322594817. This is B-08, not an observed test failure. No remote test result is inferred.
-- Known limitations / follow-up: B-01/B-02 still block real-source use and empirical evaluation; B-07/B-08 block exact full-gate and official CI completion. Keep both PRs in draft until those gates can be completed.
+- Known limitations / follow-up: B-01/B-02 still block real-source use and empirical evaluation. B-08 blocks official CI; the exact local gate is complete. PRs #52 and #53 remain draft pending review, and PR #52's later docs-only head still needs its own exact-head validation.
 - Independent explanation: the new evaluator checks the M1B-02 audit cutoff, calls the existing release backtest and wraps its aggregate metrics/status list without exposing product or invoice/customer identifiers. The CLI builds a fixed, normalized XLSX fixture in memory to make digest-bearing output repeatable; update the existing projection and backtest helpers rather than copying their algorithms.
