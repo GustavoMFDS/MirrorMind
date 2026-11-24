@@ -123,16 +123,21 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   starting working branch was clean at PR #60 head, and that branch remains
   preserved locally as `codex/g01-current-head-service-stacked`.
 - Commit / PR: implementation commit `23bc97337d3691c5ec930c11086b45e3e2b3a940`;
-  draft PR creation follows the exact-head gate.
+  validation/documentation commit `90d31889c074eaa8522a7df8771bc672a2c95add`.
+  Draft PR creation follows this gate.
 - Modified symbols: `SignedRemoteFenceHead`, `_canonical_remote_message`,
   `_signed_wire`, `_parse_signed_response`, `RemoteFenceHeadStore`,
   `CurrentRemoteFenceHead`, `RemoteFenceHeadRequest`,
   `RemoteFenceHeadResponse`, `RemoteFenceHeadResponder.__init__` and
   `RemoteFenceHeadResponder.respond`.
-- Tests executed: four service selectors and seven existing remote-head
-  regressions passed on the source commit before rebase (11 passed); after
-  rebase, `tests/integration/test_api.py::test_health` passed with the
-  elevated local runner. Final exact-head gate is still pending.
+- Tests executed: the repository exact-head local quality gate passed on
+  `90d31889c074eaa8522a7df8771bc672a2c95add` at 2026-11-24 21:13 UTC:
+  695 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and
+  capability ledger checks all passed. Pytest emitted one existing
+  Starlette/httpx TestClient deprecation warning. The local receipt is kept
+  under ignored `graphify-out/`; the script explicitly reports that this is
+  not official GitHub Actions. The focused service/client selector had also
+  passed 11 tests on the original implementation commit before rebase.
 - Evidence claim IDs: MM-RHEAD-008 through MM-RHEAD-011, backed by the four
   `test_remote_head_service_*` selectors in
   `tests/unit/test_atomic_governed_publisher.py`.
@@ -143,8 +148,6 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   map, roadmap, backlog/status and generated symbol catalog.
 - Known limitations: no live server, persistence, authentication, independent
   custody, nonce ledger, external integration or operational acceptance.
-- Reproduction: `.venv\Scripts\python.exe -m pytest -q
-  tests/unit/test_atomic_governed_publisher.py -k
-  "remote_head_service_ or remote_challenged_head or remote_response or
-  remote_head_distinct or remote_signed_head or remote_https_"`; final exact
-  gate command and SHA will be recorded after execution.
+- Reproduction: `.venv\Scripts\python.exe scripts/local_quality_gate.py
+  --expected-head 90d31889c074eaa8522a7df8771bc672a2c95add --receipt
+  graphify-out\docs-engineering-refresh-20261124\g01-final-quality.json`.
