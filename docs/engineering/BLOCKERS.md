@@ -25,20 +25,21 @@ the named real integration, not a prohibition on design and tests.
 
 ## B-08 exact diagnostics and runner assessment — 2026-11-24
 
-The GitHub diagnostics were pinned to the exact currently published PR head
-for each row. Both required workflows have an annotation that says the job
-was not started because recent account payments failed or the spending limit
-needs to be increased. The checks have no repository steps, so these runs
-provide no result for the code. The annotation is explicit about the class of
-start gate but does not identify whether a failed payment or a spending cap is
-the actionable account condition.
+This is a point-in-time diagnostic snapshot: #54 was at head `2794abf` and #55
+at head `3f9bbb8` when their latest checks below were inspected. The #55 head
+was checked before syncing the newer #54 documentation commit; inspect checks
+again after publishing that reconciliation. Both required workflows carry an
+annotation that the job was not started because recent account payments
+failed or the spending limit needs to be increased. These runs provide no
+result for repository code. The annotation states the start-gate category but
+does not distinguish a payment failure from a spending cap.
 
 | PR | Published head | `test` run | `symbol-catalog` run |
 | --- | --- | --- | --- |
 | #52 | `5c307e426c43aee4179e3257d7d367214e8c3a63` | [45319452833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452833) | [45319452852](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452852) |
 | #53 | `210f0f382938a67e518df688cc4e19c03d3d7af6` | [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471) | [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864) |
-| #54 | `9113d861affc2f4a6480f188a093f534196a0766` | [45517352710](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352710) | [45517352734](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352734) |
-| #55 | `970843edd260d0c794e7959150ab7c76af146ae4` | [45517375803](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517375803) | [45517375893](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517375893) |
+| #54 | `2794abff855665fb65f32af655415c52dde68872` | [45518440891](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440891) | [45518440963](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440963) |
+| #55 | `3f9bbb876336334aac9abe289f9f9c0161d42b72` | [45518147296](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147296) | [45518147363](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147363) |
 | #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
 | #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
 | #58 | `465a2f2c46fb6484aa2f0abea7920953ca4f0d00` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) |

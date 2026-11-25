@@ -36,23 +36,30 @@ Published #52 and #53 heads are ancestors of this candidate. The candidate
 therefore contains the published #52–#55 stack plus reproduced review fixes
 for #54 and #55. No merge to `main` has occurred.
 
-The complete local gate passed on both exact clean SHAs outside the restricted
+The complete local gate passed on exact clean SHAs outside the restricted
 sandbox: 756 pytest tests, Ruff, symbol catalog, repository atlas, evidence
-map, and capability checks. The latest result is bound to `4d1d5b9`. Pytest
+map, and capability checks. Follow-up gates also passed on `970843e` and
+published pre-sync head `3f9bbb8`, each with 756 tests and all five other
+stages. The #54-only documentation follow-up `2794abf` passed 728 tests and
+all five other stages. Pytest
 reported one existing Starlette/httpx deprecation warning. A restricted replay
 of source integration `07c405b` timed out at 900 seconds in pytest and did not
 complete; see [B-07](BLOCKERS.md). No test was skipped in either passing gate.
-The latest candidate was not published when checked,
-so it has no official Actions result. Published PR heads #52–#61 have the
-separate B-08 pre-job account gate; see its exact run table and runner
-assessment in [BLOCKERS](BLOCKERS.md). No Actions success is inferred from
-the local receipt.
+Gate `970843e` ran before publication. Branches #54 and #55 were then
+fast-forward-pushed; published heads `2794abf` and `3f9bbb8` both received
+`test` and `symbol-catalog` failures before repository steps, with the exact
+account annotation recorded in [B-08](BLOCKERS.md). No remote test ran.
+Review responses were posted on [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54#issuecomment-7148444643)
+and [PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55#issuecomment-7148445794).
+The newer #54 docs commit is being reconciled into #55; its resulting
+integrated state still needs a fresh full local gate. No Actions success is
+inferred from local receipts.
 
 The #54 and #55 branch-specific gate statements below describe evidence at
 their then-current commits. Wording that says the corrected integrated gate
-is pending is superseded by this exact-SHA evidence. Correction commits still
-require publication, fresh official checks and reviewer responses; that does
-not authorize merge or bypass required protections.
+is pending is superseded by this exact-SHA evidence. Official checks remain
+blocked before job steps under B-08; PR comments are responses, not approvals.
+No merge to `main` or bypass of required protections occurred.
 
 For B-01/B-02, the [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
 now contains decision-ready options: UCI Online Retail II for explicitly

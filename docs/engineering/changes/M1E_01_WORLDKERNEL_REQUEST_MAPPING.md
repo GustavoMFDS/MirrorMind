@@ -180,11 +180,13 @@ not representable in exchange v1 remain an explicit future-adapter contract.
 The review correction is in the integrated PR #55 candidate at
 `07c405b0d49ab05611413acce61af1123111fb48`; documentation follow-up
 `4d1d5b92e990f6d771209097fde1622c3c88958f` preserves the same source state.
-Both exact clean SHAs passed the complete local gate: 756 tests, Ruff, symbol
-catalog, atlas, evidence and capability checks. Pytest reported one existing
-Starlette/httpx deprecation warning. A restricted replay of `07c405b` timed
-out at 900 seconds in pytest; the complete passes ran outside that sandbox
-and did not skip tests. Official Actions on the published PR heads are
-separate and fail before job steps under B-08; the corrected branch has not
-yet been pushed. This does not verify WorldKernel execution, server resource
-enforcement, or an official CI result.
+The exact clean SHAs `07c405b`, `4d1d5b9`, `970843e` and `3f9bbb8` passed the
+complete integrated local gate: 756 tests, Ruff, symbol catalog, atlas,
+evidence and capability checks. Pytest reported one existing Starlette/httpx
+deprecation warning. A restricted replay of `07c405b` timed out at 900 seconds
+in pytest; complete passes ran outside that sandbox and did not skip tests.
+The correction branch was fast-forward-pushed at `3f9bbb876336334aac9abe289f9f9c0161d42b72`.
+Its [test run 45518147296](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147296)
+and [symbol-catalog run 45518147363](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147363)
+failed before repository steps under B-08. This does not verify WorldKernel
+execution, server resource enforcement, or official CI success.
