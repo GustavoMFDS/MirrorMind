@@ -114,8 +114,13 @@ gate exposed one documentation inventory failure after shared status pages
 from unrelated PR #55–#59 work were selected; 737 tests passed and
 `tests/unit/test_docs_coverage.py::test_live_repository_passes_linked_inventory`
 reported two absent M1E links. The shared pages have been restored to PR #54's
-dependency scope; the full exact gate is pending rerun. No retrieval code or
-verifier was changed to address this documentation mismatch.
+dependency scope. The exact corrected integration head
+`d1d4f74d69a3d4e772ba3eeb3119493491921875` passed the complete local gate:
+738 tests, Ruff, catalog, atlas, evidence and capability checks. One existing
+Starlette/httpx TestClient deprecation warning appeared. The initial failure
+and correction are both retained here; neither retrieval code nor verifiers
+were changed to address the documentation mismatch. Local validation does not
+resolve official Actions B-08.
 
 The scope filter is caller-declared, not authenticated RBAC. The digest binds
 the excerpt bytes but does not authenticate the source snapshot or prove
