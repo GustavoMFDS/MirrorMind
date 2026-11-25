@@ -226,19 +226,38 @@ do not replace HTTP body-size, rate or concurrency controls.
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.
 
-### Subsequent stack reconciliation — 2026-11-24
+## PR #53 dependency synchronization — 2026-11-25
 
-The corrected contract and its evidence follow-up were fast-forward-published
-on PR #54 at documentation head `2794abff855665fb65f32af655415c52dde68872`.
-The exact head passed the complete local gate with 728 tests, Ruff, catalog,
-atlas, evidence and capability checks. Its required Actions checks failed
-before workflow steps with the explicit GitHub account payment/spending-limit
-annotation; no remote repository test ran. The PR #54 changes and its
-documentation follow-up were then reconciled into the #55 stack at published
-head `b292db0231d00f307eb4b0694b8e73014bdb9211`; that exact integrated head
-passed the complete local gate with 756 tests and the same five other stages.
-Its four inspected Actions runs also failed before job steps with the same
-annotation. The gate receipts are local evidence only. See [the blocker
-register](../BLOCKERS.md) for run IDs and the separate self-hosted runner
-assessment. No required check was disabled, and the `interface_only`
-capability remains unchanged.
+- Merge commit `e493b4c` synchronizes PR #54 with published PR #53 head
+  `79d3679013576c6a209bed9fa031b7f0fabd0d8d`. Shared blocker, status, backlog
+  and M1C change-request records were reconciled by preserving both PRs'
+  evidence. The M1C regression for child receipt authority flags remains in
+  `tests/integration/test_retail_synthetic_evaluation.py`.
+- Complete local quality gate passed on published integrated head
+  `1ecd3acbbebe0473f9d03ac0ee6688a0e4a95401` at 2026-11-25 04:21:50 UTC:
+  728 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and
+  capability checks. The API integration suite ran. One existing
+  Starlette/httpx TestClient deprecation warning appeared. This is local
+  evidence, not official CI.
+- On exact head `1ecd3ac`, Actions test runs
+  [45546319379](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546319379)
+  and [45546314259](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546314259)
+  and symbol-catalog runs
+  [45546319380](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546319380)
+  and [45546314591](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546314591)
+  failed before repository steps. Their annotation states recent account
+  payments failed or the spending limit needs to be increased, without
+  distinguishing the condition. No code tests ran remotely. This is B-08;
+  do not infer a billing root cause or self-hosted runner workaround from it.
+
+## PR #55 dependency synchronization — 2026-11-25
+
+PR #55 was synchronized with the corrected PR #54 head `4d22006` by merge
+`b9eba02`; history was retained without cherry-picking duplicate fixes. Its
+published head `56aa92a` includes the mutable-scenario and effective-budget
+correction in the dependent WorldKernel request mapper. The exact #55 local
+gate passed 756 tests plus Ruff, catalog, atlas, evidence and capability
+checks at 2026-11-25 04:39:14 UTC. Its Actions failed before job steps under
+the exact alternative-condition annotation recorded in [B-08](../BLOCKERS.md);
+no remote code tests ran. This downstream mapping work does not change the
+M1F-01 contract's `interface_only` status or imply engine execution.
