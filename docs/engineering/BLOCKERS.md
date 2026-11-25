@@ -21,7 +21,7 @@ that has not actually been granted.
 ### B-08 current diagnostics and runner assessment — 2026-11-25
 
 The published exact heads last inspected for this queue were #52 `b431d11`,
-#53 `79d3679`, #54 `4d22006`, #55 `56aa92a` and #56 pre-sync `c33bd7d`.
+#53 `79d3679`, #54 `4d22006`, #55 `56aa92a` and #56 `55427f3`.
 The #52/#53 job summaries expose no steps or logs and no specific cause was
 recovered. The latest inspected #54, #55 and #56 test checks have the explicit
 pre-job annotation: “recent account payments have failed or your spending
@@ -36,14 +36,16 @@ self-hosted runner bypasses the account gate.
 | #53 | `79d3679013576c6a209bed9fa031b7f0fabd0d8d` | [45544705354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705354) | [45544705397](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705397) |
 | #54 | `4d220066c3e9ab83a321ac9517bbabc8fc22e293` | [45546742718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742718) | [45546742695](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742695) |
 | #55 | `56aa92a6920a429b83458380231642fe59feaf08` | [45548299466](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45548299466) | [45548299391](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45548299391) |
-| #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
+| #56 | `55427f3c8a1ac62fa143922decb531b6133919ce` | [45550139210](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139210) | [45550139208](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139208) |
 
 The previous exact local gate for #56 was on docs head `0c2e789` and passed
-700 tests plus Ruff, catalog, atlas, evidence and capability checks. The new
-local merge commit `b9bb86df73c698588a3e2e5b818a31f4002d5d25`, which integrates
-PR #53 head `79d3679`, passed the same complete gate at 2026-11-25 04:52:39
-UTC. The table still records Actions for the published pre-sync #56 head
-`c33bd7d`; no remote checks are yet verified for the local merge commit.
+700 tests plus Ruff, catalog, atlas, evidence and capability checks. Merge
+commit `b9bb86df73c698588a3e2e5b818a31f4002d5d25`, which integrates PR #53
+head `79d3679`, passed the complete gate at 2026-11-25 04:52:39 UTC. Published
+docs head `55427f3c8a1ac62fa143922decb531b6133919ce` passed it again at
+04:55:54 UTC. Its Actions test and catalog jobs then failed before starting
+with the exact alternative-condition annotation described above; neither
+local pass is official CI.
 
 GitHub's billing guide states that self-hosted runners do not incur its
 per-minute Actions charge; the operator still pays for compute, isolation,

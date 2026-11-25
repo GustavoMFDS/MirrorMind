@@ -108,16 +108,16 @@ focused residual tests, 94 dependent consumer tests and the canonical full gate
 passed. Merge commit `b9bb86d` integrates PR #53's receipt-parity regressions
 and passed the exact-head canonical gate: 700 tests including API, Ruff,
 catalog, atlas, evidence and capability checks at 2026-11-25 04:52:39 UTC.
-Pytest reported one existing Starlette/httpx deprecation warning. The latest
-published pre-sync head remains `c33bd7d`; its test run
-[45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246)
+Published docs head `55427f3c8a1ac62fa143922decb531b6133919ce` passed the full
+gate again at 04:55:54 UTC. Pytest reported one existing Starlette/httpx
+deprecation warning. Its latest test run
+[45550139210](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139210)
 and symbol-catalog run
-[45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153)
-failed. Diagnostics on the test check report that recent account payments
-failed or the spending limit needs to be increased, without distinguishing the
-condition; no repository tests ran remotely. This remains experimental and
-does not establish empirical calibration. Official checks for the newly
-integrated head remain pending publication and inspection.
+[45550139208](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139208)
+failed before job steps. The annotation lists recent account payment failure
+or a spending-limit increase as alternatives and does not identify the cause;
+no repository tests ran remotely. This remains experimental and does not
+establish empirical calibration or official CI success.
 See [TASK_BACKLOG](TASK_BACKLOG.md) and the
 [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
 

@@ -132,9 +132,13 @@ The exact PR #52 SHA associated with the historical B-07 timeout was not
 rerun. The current integrated PR #56 stack, including PR #53 review regressions,
 passed `test_health` in the prior run and the canonical full gate at the exact
 merge commit above. B-07 is resolved for this tested stack; the old SHA remains
-historical evidence. The latest published PR #56 Actions runs still point to
-pre-sync head `c33bd7d`: [test 45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246)
-and [symbol-catalog 45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153)
-failed before job steps. Their annotation lists two possible account
-conditions without identifying the cause. Do not claim calibrated or nominal
-coverage or official CI success.
+historical evidence. Published PR #56 docs head
+`55427f3c8a1ac62fa143922decb531b6133919ce` passed the canonical gate again at
+2026-11-25 04:55:54 UTC. Its latest Actions [test
+45550139210](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139210)
+and [symbol-catalog
+45550139208](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139208)
+failed before job steps. The exact annotation says the job was not started
+because recent account payments failed or the spending limit needs to be
+increased; it does not identify which condition applies. Do not claim
+calibrated or nominal coverage or official CI success.
