@@ -188,8 +188,25 @@ do not replace HTTP body-size, rate or concurrency controls.
   passed 28 tests; `ruff check src tests`, catalog check, atlas, evidence and
   capability guards passed. The atlas used a temporary local Git excludes file
   for existing untracked Graphify output directories; no guard, project ignore
-  rule or artifact was changed. The complete integrated gate and remote checks
-  on this commit remain pending.
+  rule or artifact was changed.
+- Integrated verification: merge commit
+  `07c405b0d49ab05611413acce61af1123111fb48` retains both correction commits
+  as ancestry and passed the complete local gate on its exact clean SHA:
+  756 tests plus Ruff, catalog, atlas, evidence and capability checks. The
+  restricted replay timed out at 900 seconds; the full pass ran outside that
+  sandbox. One existing Starlette/httpx deprecation warning appeared.
+  Documentation follow-up `4d1d5b92e990f6d771209097fde1622c3c88958f` and
+  current integrated head `970843edd260d0c794e7959150ab7c76af146ae4` also
+  passed the full gate with the same source state.
+- Publication / official CI: the correction branch was fast-forward-pushed at
+  `9113d861affc2f4a6480f188a093f534196a0766`. On that exact published head,
+  Actions [test run 45517352710](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352710)
+  and [symbol-catalog run 45517352734](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352734)
+  failed before repository steps with the account payment/spending-limit
+  annotation. No remote test ran. A PR follow-up with commits, regressions and
+  local gate evidence was posted at
+  [issue comment 7148444643](https://github.com/GustavoMFDS/MirrorMind/pull/54#issuecomment-7148444643).
+  B-08 remains open; local gate evidence does not substitute for official CI.
 - Limits: the local contract does not authenticate reviewer/reference claims,
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.
