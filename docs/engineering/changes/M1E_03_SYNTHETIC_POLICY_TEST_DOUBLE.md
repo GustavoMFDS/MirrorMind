@@ -77,3 +77,55 @@ The calculation must be pure, bounded, deterministic and free of network, filesy
 - Docs updated: `M1_RETAIL_POLICY_SIMULATION.md`, `SYSTEM_MAP.md`, `API_WALKTHROUGH.md`, `DEBUGGING.md`, `LEARNING.md`, `M1_EXECUTION_PLAN.md`, `PROJECT_STATUS.md`, `TASK_BACKLOG.md`, `CAPABILITY_LEDGER.json`, `EVIDENCE_MAP.json`, `REPOSITORY_ATLAS.md`, `SEMANTIC_COVERAGE.md`, `ARCHITECTURE.md`, `CONTRACTS.md`, `RETAIL_MVP.md`, `ROADMAP.md`, `STRUCTURE.md`, engineering README and generated `SYMBOLS.md`.
 - Known limitations / follow-up: M1E-02 actual engine, M1B/M1C empirical data and M1F end-to-end decision trace remain separate gates.
 - Independent explanation: run `python -m examples.m1_retail_policy_test_double`, compare per-replication demand digests across the three policy rows, then change the seed and rerun `tests/unit/test_retail_policy_simulation.py` to see pairing and replay guarantees.
+
+## Independent review correction — arrival-day demand caveat
+
+- [x] Both emitted modeling caveats remain visible in the comparison and are
+  represented as typed trace assumptions by the M1F-02 consumer; the affected
+  profile-aware outcomes reference them without changing the toy policy rule.
+
+Review of PR #58 identified that the profile-aware policy sums expected demand
+over `[day + 1, arrival_day)`. The existing boundary test confirmed this is
+the documented toy rule, rather than an accidental discrepancy, but the
+comparison did not expose the limitation in its output. For a one-day lead
+time the interval is empty; at zero inventory position and zero safety stock,
+the target and order are zero even when expected arrival-day demand is
+positive. The name `forecast_aware_order_up_to` must not be read as a claim
+that this is a conventional protection-period or optimized policy.
+
+The correction preserves the half-open interval and the existing
+`test_profile_aware_target_stops_before_arrival_day` boundary. The result now
+includes `modeling_caveats` with the excluded arrival-day demand, the concrete
+one-day case and the toy-policy limitation. The CLI integration test checks
+that the caveat remains visible in the emitted JSON. A separate mass-balance
+regression verifies item conservation for each policy, scenario and
+replication under the local event order. This metadata does not establish
+that downstream consumers persist it; PR #59 must carry the caveat into its
+decision trace, with a focused integration test.
+
+- Reproduction: `tests/unit/test_retail_policy_simulation.py::test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat` first failed because the output had no `modeling_caveats`, after confirming positive arrival-day demand and a zero order. After the correction, the regression passes and checks the exact output caveats.
+- Conservation: `tests/unit/test_retail_policy_simulation.py::test_inventory_mass_balance_holds_for_every_policy_replication` checks initial stock plus procurement equals fulfilled demand, ending stock and pending orders when the fixture uses a unit procurement coefficient of one.
+- Consumer contract: `tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison` asserts the caveat is present and does not call the rule standard or optimized.
+- Focused validation: `python -m pytest -q tests/unit/test_retail_policy_simulation.py tests/integration/test_retail_policy_simulation_cli.py` passed 12 tests; focused Ruff passed.
+- Integrated validation: merge commit `2f4822eafb768f289d03b10b6581c1e87c57bc4d` reconciles the corrected #55 dependency into #58 and carries the review correction. Exact integrated heads `b7d226f41d17f4db3f1b220b417309cc0872b614` and `624fd5a8f01b9063da739c4f6e3864336978ad95` passed the complete local gate: 768 tests, Ruff, symbol catalog, atlas, evidence and capability checks. The final receipt is `mirrormind-624fd5a8f01b-quality.json` under the local temporary directory. One existing Starlette/httpx deprecation warning appeared. The published #58 head's Actions `test` [run 45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099) and `symbol-catalog` [run 45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076) failed before job steps with the explicit B-08 account payment/spending-limit annotation. They provide no remote code-test result.
+- Limitations: no algorithm semantics changed; this does not make the policy a conventional order-up-to method or establish inventory quality. The local test double still does not invoke WorldKernel. Actual execution remains gated by B-04.
+
+Learning exercise: reproduce the zero-stock/one-day case, inspect the result
+metadata, and trace it through `_order_quantity`. Then explain why preserving
+the implementation boundary is different from claiming the boundary is a
+retail standard. A future protection-period policy would require a separately
+reviewed change request and distinct acceptance tests.
+
+### Cross-PR trace preservation in PR #59
+
+The corrected #59 workflow propagates both entries from `modeling_caveats` into
+`ModelingAssumption` records and adds their references only to the affected
+`forecast_aware_order_up_to` outcomes. The focused regression
+`tests/unit/test_synthetic_decision_workflow.py::test_profile_aware_policy_modeling_caveats_are_bound_into_trace`
+checks the exact caveat set and those outcome references. This preserves the
+fixed-day comparison boundary and does not rename the policy as a conventional
+or optimized order-up-to algorithm. Focused workflow unit, CLI and API checks
+passed 16 tests with one existing Starlette/httpx deprecation warning, and
+focused Ruff passed. The exact integrated #59 merge is still awaiting its full
+local gate; see the [M1F-02 change request](M1F_02_SYNTHETIC_DECISION_WORKFLOW.md)
+for the final commit and receipt.

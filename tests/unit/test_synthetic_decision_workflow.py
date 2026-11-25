@@ -1,6 +1,9 @@
 """Evidence-backed regressions for the composed synthetic retail workflow."""
 from __future__ import annotations
 
+import copy
+import hashlib
+import json
 from datetime import date, timedelta
 from types import SimpleNamespace
 
@@ -65,9 +68,22 @@ def test_successful_workflow_produces_valid_trace_and_explicit_gaps():
     outcomes = {item.outcome_id for item in trace.outcomes}
     assert all(len(item.fact_refs) == 7 and set(item.fact_refs) <= facts
                for item in trace.forecasts)
-    assert all(set(item.forecast_refs) == forecasts
-               and set(item.assumption_refs) == assumptions
-               for item in trace.outcomes)
+    policy_caveats = {
+        item.assumption_id
+        for item in trace.assumptions
+        if item.assumption_id.startswith("assumption-policy-caveat-")
+    }
+    base_assumptions = assumptions - policy_caveats
+    assert all(set(item.forecast_refs) == forecasts for item in trace.outcomes)
+    assert all(base_assumptions <= set(item.assumption_refs) for item in trace.outcomes)
+    assert all(
+        (set(item.assumption_refs) - base_assumptions) == policy_caveats
+        if item.alternative_ref.startswith(
+            "retail_policy:forecast_aware_order_up_to:"
+        )
+        else not (set(item.assumption_refs) & policy_caveats)
+        for item in trace.outcomes
+    )
     assert all(set(item.blocks_refs) <= forecasts | outcomes
                for item in trace.missing_evidence)
 
@@ -94,6 +110,104 @@ def test_post_cutoff_fixture_mutation_does_not_change_forecast_or_comparison():
     )
     assert baseline["trace"]["forecasts"] == mutated["trace"]["forecasts"]
     assert baseline["trace_sha256"] != mutated["trace_sha256"]
+
+
+def test_trace_identity_includes_replications_and_exact_replay_is_stable():
+    request = SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    first = run_synthetic_decision_workflow(request)
+    replay = run_synthetic_decision_workflow(request)
+    changed_replications = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=2, seed=17)
+    )
+
+    first_trace = DecisionTrace.model_validate(first["trace"])
+    replay_trace = DecisionTrace.model_validate(replay["trace"])
+    changed_trace = DecisionTrace.model_validate(changed_replications["trace"])
+
+    assert first_trace.trace_id == replay_trace.trace_id
+    assert first_trace.decision_ref == replay_trace.decision_ref
+    assert first_trace.revision == replay_trace.revision == 1
+    assert first["trace_sha256"] == replay["trace_sha256"]
+    assert first_trace.trace_id != changed_trace.trace_id
+    assert first_trace.decision_ref != changed_trace.decision_ref
+    assert first["trace_sha256"] != changed_replications["trace_sha256"]
+
+
+def test_versioned_artifact_and_workflow_digests_bind_the_complete_response():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+
+    def canonical_digest(value: object) -> str:
+        encoded = json.dumps(
+            value,
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        return hashlib.sha256(encoded).hexdigest()
+
+    artifact_values = {
+        "evaluation": result["evaluation"],
+        "uncertainty": result["uncertainty"],
+        "forecast_evidence_receipt": result["forecast_evidence_receipt"],
+        "forecast": result["forecast"],
+        "simulation": result["simulation"],
+    }
+    assert set(result["artifact_digests"]) == set(artifact_values)
+    for artifact_id, payload in artifact_values.items():
+        binding = result["artifact_digests"][artifact_id]
+        assert binding["schema_version"].startswith("mirrormind.")
+        assert binding["sha256"] == canonical_digest(
+            {"schema_version": binding["schema_version"], "artifact": payload}
+        )
+
+    envelope = {
+        key: value
+        for key, value in result.items()
+        if key != "workflow_result_sha256"
+    }
+    assert result["workflow_result_sha256"] == canonical_digest(envelope)
+    assert result["workflow_result_sha256"] != result["trace_sha256"]
+
+    tampered = copy.deepcopy(envelope)
+    tampered["simulation"]["result"]["modeling_caveats"][0] = "tampered"
+    assert canonical_digest(tampered) != result["workflow_result_sha256"]
+
+
+def test_profile_aware_policy_modeling_caveats_are_bound_into_trace():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    trace = DecisionTrace.model_validate(result["trace"])
+    caveats = result["simulation"]["result"]["modeling_caveats"]
+    caveat_assumptions = {
+        assumption.assumption_id: assumption.statement
+        for assumption in trace.assumptions
+        if assumption.assumption_id.startswith("assumption-policy-caveat-")
+    }
+    assert set(caveat_assumptions.values()) == set(caveats)
+
+    profile_aware = [
+        outcome
+        for outcome in trace.outcomes
+        if outcome.alternative_ref.startswith(
+            "retail_policy:forecast_aware_order_up_to:"
+        )
+    ]
+    other_policies = [
+        outcome
+        for outcome in trace.outcomes
+        if not outcome.alternative_ref.startswith(
+            "retail_policy:forecast_aware_order_up_to:"
+        )
+    ]
+    assert len(profile_aware) == 3
+    assert len(other_policies) == 6
+    caveat_refs = set(caveat_assumptions)
+    assert all(caveat_refs <= set(outcome.assumption_refs) for outcome in profile_aware)
+    assert all(not caveat_refs.intersection(outcome.assumption_refs) for outcome in other_policies)
 
 
 @pytest.mark.parametrize("case", ["missing", "late", "unpublished"])
@@ -165,6 +279,15 @@ def test_incomplete_or_late_history_abstains_without_running_policy_test_double(
     }
     assert result["trace"] is None
     assert result["trace_sha256"] is None
+    assert result["decision_identity_sha256"] is None
+    assert len(result["workflow_result_sha256"]) == 64
+    assert set(result["artifact_digests"]) == {
+        "evaluation",
+        "uncertainty",
+        "forecast_evidence_receipt",
+        "forecast",
+        "simulation",
+    }
     if case == "missing":
         assert result["abstention"]["missing_or_unprojected_days"] == ["2011-01-23"]
     elif case == "late":

@@ -171,7 +171,58 @@ are intentionally unsupported. The existing `examples/retail-scenario.json`
 fails mapping because it has an intervention and omits daily demand; do not
 add hidden defaults to make it pass. This module only constructs a request.
 It does not verify remote package identity, run the simulation, enforce
-wall-clock or memory limits, or validate result payloads.
+`timeout_seconds`, model-call/output-token limits, worker quotas, wall-clock or
+memory limits, or validate result payloads. A future adapter must enforce
+budgets absent from exchange v1 or reject before execution.
+
+## Retail residual diagnostic abstains for insufficient calibration
+
+Inspect [`residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py),
+the [fixed split rules](RETAIL_RESIDUAL_ENVELOPE.md) and
+[`test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py).
+Read `calibration_target_window_start/end` first: calibration labels are a
+fixed interval immediately before `holdout_target_window_start`. At each
+origin, a target in that interval contributes only after its declared release
+is available and its own seven feature dates pass their own-origin checks.
+Late releases, missing positive-line dates or unavailable feature history can
+reduce the active residual count; a later holdout outcome cannot refill the
+calibration interval. The correct response is an explicit abstention or a
+reviewed change to the window/minimum settings, never zero imputation or
+reusing holdout labels. Verify the exact `evaluated_origins` denominator and
+keep `nominal_coverage` and `calibrated_prediction_interval` unset. The
+synthetic diagnostic does not authenticate releases or establish empirical
+coverage.
+
+## Synthetic decision workflow abstains or a digest/identity is unexpected
+
+Reproduce with
+[`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py)
+and follow the [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
+Compare `as_of` with the historical `evaluation_cutoff` and the seven dates in
+`forecast.history_start/history_end`. Inspect
+`forecast_evidence_receipt.release_audit`; distinguish absent dates from
+declared releases after the cutoff. An abstention must have no forecast, no
+trace and no policy invocation, while retaining artifact digests and the
+whole-response digest. Its decision identity is null because no trace exists.
+
+On success, verify `trace_sha256` against the serialized M1F-01 trace, then
+check `artifact_digests`, `decision_identity_sha256` and
+`workflow_result_sha256` as separate scopes. The identity includes the
+validated request and five versioned artifact digests, so changing only the
+replication count must change the identity. The workflow digest includes the
+trace and outer response fields and excludes only itself. Recompute it after a
+copy is modified. The digests detect content changes but do not prove producer
+identity, provenance or approval. Use
+`test_trace_identity_includes_replications_and_exact_replay_is_stable` and
+`test_versioned_artifact_and_workflow_digests_bind_the_complete_response` to
+reproduce the reviewed cases.
+
+For trace references, follow each forecast's seven `fact_refs` and each
+outcome's forecast/assumption references. Check that profile-aware outcomes
+carry the comparison's `modeling_caveats`, including the one-day lead-time
+arrival-day demand exclusion. The HTTP route is experimental and has no
+authentication, request body-size limit, rate limit or concurrency control;
+do not expose it publicly. A digest is not a signature.
 
 ## Synthetic retail policy comparison differs from its expected fixture
 
@@ -183,40 +234,13 @@ Run `tests/unit/test_retail_policy_simulation.py` and
 seed and profile first, then verify that the per-replication demand digest is
 identical across every policy and lead-time scenario. Trace day ordering in
 `_simulate_replication`: due orders arrive at day start, demand is fulfilled,
-holding cost is charged, and the policy places an order at day end. A mismatch
-is a local deterministic behavior change, not evidence about actual retail
-stock or costs. Never pass this result to the WorldKernel mapper as if it were
-an engine receipt.
-## Retail residual diagnostic abstains for insufficient calibration
-
-Inspect [`residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py),
-the [fixed split rules](RETAIL_RESIDUAL_ENVELOPE.md) and
-[`test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py).
-Read `calibration_target_window_start/end` first: calibration labels are a
-fixed interval immediately before `holdout_target_window_start`. At each
-origin, a target in that interval contributes only after its declared release
-is available and its own seven feature dates passed their own-origin checks.
-Late releases, missing positive-line dates or unavailable feature history can
-reduce the active residual count; a later holdout outcome cannot refill the
-calibration interval. The correct response is an explicit abstention or a
-reviewed change to the window/minimum settings, never zero imputation or
-reusing holdout labels. Verify the exact `evaluated_origins` denominator and
-keep `nominal_coverage` and `calibrated_prediction_interval` unset. The
-synthetic diagnostic does not authenticate releases or establish empirical
-coverage.
-
-## Synthetic decision workflow abstains or trace references fail
-
-Reproduce with
-[`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py)
-and follow the [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
-Compare `as_of` with the historical `evaluation_cutoff` and the seven dates in
-`forecast.history_start/history_end`. Inspect
-`forecast_evidence_receipt.release_audit` and keep absent dates separate from
-declared releases after the cutoff. An abstention must have no forecast, no
-trace and no policy invocation; do not loosen the seven-day rule or infer
-zeros. On a successful result, validate `trace_sha256` against the serialized
-M1F-01 `DecisionTrace`, then follow each forecast's seven `fact_refs` and each
-outcome's forecast/assumption references. A digest is not a signature. The
-output is generated fixture data plus a local test double; it cannot prove
-rights, forecast skill, calibrated uncertainty, engine execution or authority.
+holding cost is charged, and the policy places an order at day end. If a
+one-day lead-time run with zero stock and safety stock orders zero despite a
+positive arrival-day profile value, inspect the result's `modeling_caveats`
+and `_order_quantity` interval `[day + 1, arrival_day)`. This is the current
+toy convention; the output must not be described as a standard or optimized
+order-up-to policy. Check `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`
+and `test_inventory_mass_balance_holds_for_every_policy_replication` before
+changing that behavior. A mismatch is a local deterministic behavior change,
+not evidence about actual retail stock or costs. Never pass this result to the
+WorldKernel mapper as if it were an engine receipt.

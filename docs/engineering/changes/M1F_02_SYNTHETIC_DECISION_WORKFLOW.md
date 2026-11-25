@@ -158,3 +158,103 @@ independent blockers.
   absent.
 - Official CI: PR #59 test run [45457848087](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457848087) and symbol-catalog run [45457847930](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457847930) failed before steps. Step summaries were empty and log downloads returned 404 `BlobNotFound`; exact cause is unavailable for these runs. Earlier PR #58 diagnostics identify B-08 billing/spending-limit annotation.
 - Independent explanation: start with the [M1F-02 walkthrough](../M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), replay the CLI command there, then compare its JSON fields to the trace schema and cited test functions.
+
+## Independent review correction — decision identity and complete result binding
+
+### Goal and motivation
+
+Source review of PR #59 found that `_build_trace` uses only `as_of` and `seed`
+for `trace_id` and `decision_ref`, while fixing every revision at 1. Two
+requests with the same date and seed but different replication counts therefore
+receive the same identity despite different policy outcomes. The successful
+response also exposes `trace_sha256`, which binds the serialized M1F-01 trace
+only; it does not bind the separate evaluation, residual, fixture-receipt or
+simulation result in the surrounding workflow response. After #58, the policy
+comparison exposes `modeling_caveats`, but #59 does not yet carry them into the
+decision trace.
+
+The correction derives a deterministic decision identity from the validated
+request and a set of explicitly versioned result-artifact digests. Exact
+replays retain the same identity and revision; a different request or any
+different artifact content receives a different identity. Revision `1` means
+the first immutable result for this content identity; it is not an incrementing
+review or persistence history.
+
+The response retains `trace_sha256` as the digest of the trace alone. It adds
+versioned digests for evaluation, uncertainty, forecast evidence, forecast and
+simulation artifacts, plus `workflow_result_sha256` over the complete response
+including the trace and those digests. These hashes provide reproducible
+content binding only: they are not signatures, source authentication or human
+approval. `human_review` remains `not_requested` and no action is authorized.
+The exact #58 profile-policy caveats become trace `ModelingAssumption` records
+referenced by each `forecast_aware_order_up_to` conditional outcome.
+
+The FastAPI route remains part of the experimental API scaffold. Its current
+implementation has no identity/tenant authorization, request-body size limit,
+rate limit or concurrency control; “local-only” is not enforced by the route.
+Do not expose it on a public or production deployment. Adding those operational
+controls is outside this correction and remains an explicit exposure gate.
+
+### Acceptance criteria
+
+- [ ] Same request and generated artifacts replay to the same trace ID,
+  decision reference, revision and trace digest.
+- [ ] Changing `replications` while keeping `as_of` and `seed` fixed changes
+  both trace identity and the result digest; all outcome-affecting result
+  artifacts are included in the canonical identity input.
+- [ ] The response declares a schema version and SHA-256 digest for each
+  evaluation, uncertainty, forecast-evidence, forecast and simulation artifact.
+- [ ] `trace_sha256` independently recomputes from only the serialized
+  `DecisionTrace`; `workflow_result_sha256` independently recomputes from the
+  complete successful response excluding only its self-referential digest.
+- [ ] Both policy-model caveats from #58 appear as trace assumptions and
+  are referenced by profile-aware conditional outcomes. The existing trace
+  schema, API route, non-authorization flags and `not_requested` review state
+  remain compatible.
+- [ ] Tests reproduce an identity collision between different replication
+  counts, verify exact replay, mutate a bound nested artifact, and confirm the
+  profile-aware caveat is preserved in trace assumptions/references.
+- [ ] Technical, debugging and learning walkthroughs explain both digests,
+  identity semantics, output artifact versions, deployment limits and tests;
+  the evidence map, atlas, generated catalog and full local gate pass.
+
+### Impact and constraints
+
+| Layer | Relevant file/symbol | Change | Evidence |
+| --- | --- | --- | --- |
+| Service identity | `synthetic_decision_workflow.py::_build_trace` | Hash request plus versioned artifact digests; set content-addressed IDs | Identity replay/collision unit tests |
+| Workflow envelope | `run_synthetic_decision_workflow` | Add per-artifact digests and whole-response digest | Independent canonical recomputation and tamper test |
+| Trace content | `_build_trace`, `_policy_outcomes` | Carry policy caveats as assumptions referenced by applicable outcomes | Trace caveat regression |
+| Public route | `api/routes/decisions.py` | No route behavior change beyond additive result fields | Existing service/API parity regression |
+| Documentation | M1F-02 walkthrough, trace guide, system map, debugging, learning, CR, evidence/backlog | Explain identity, digest scope, limitations and reproducibility | Documentation guards and exact-head gate |
+| Persistence/authority | None | No storage, authentication, signature, approval or write added | Existing non-authorization assertions |
+
+Keep the response schema label at v1 because these are additive result
+metadata fields and existing required fields retain their meaning. Do not
+interpret `revision=1` as a server-issued history, or either SHA-256 value as
+trust in an asserted source, model, policy or human identity. Fixing transport
+limits or authorization would be a separate reviewed change.
+
+### Implementation and evidence record
+
+1. Add failing regressions for the replication collision, deterministic replay,
+   whole-response digest/tampering and trace caveat propagation.
+2. Implement a compact sorted-key UTF-8 JSON digest helper and explicit
+   artifact schema identifiers; do not hash arbitrary Python repr output.
+3. Keep the trace digest contract separate from the workflow-envelope digest.
+4. Update source catalog and the M1F-02/trace learning and debugging docs.
+5. Run the focused tests, then the exact integrated canonical local gate.
+6. Record the commit, receipt and official Actions outcome separately here and
+   in the PR response; do not promote the experimental capability.
+
+**Current evidence state:** the collision, incomplete digest scope and missing
+caveat propagation were reproduced by focused red regressions before the
+service correction. The corrected workflow unit, CLI and API tests then passed
+16 tests, and focused Ruff passed; pytest reported one existing
+Starlette/httpx deprecation warning. The exact integrated merge has not yet
+run the full local gate. The earlier 766-test receipt on published PR #59
+head `a5951e49a78796908ecd1975c65052b5a2548cd7` predates these corrections and
+does not validate them. The older remote Actions runs failed before steps
+without a recoverable annotation, so no more specific cause than “job did not
+start” is claimed for those runs. Record the exact merge commit, gate receipt
+and post-push Actions outcome here before considering the correction complete.

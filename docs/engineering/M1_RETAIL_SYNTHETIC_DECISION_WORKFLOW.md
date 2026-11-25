@@ -39,11 +39,13 @@ flowchart TD
   A -->|No| X[Structured abstention; no simulation]
   A -->|Yes| B[Existing seasonal-naive one-step rule projected 28 days]
   B --> P[Existing paired policy test double]
-  P --> T[Existing DecisionTrace v1 models]
+  P --> H[Versioned artifact and content-identity digests]
+  H --> T[Existing DecisionTrace v1 models]
   E --> O[Versioned response]
   U --> O
   A --> O
   T --> O
+  H --> O
   O --> C[CLI and experimental HTTP route]
 ```
 
@@ -54,7 +56,7 @@ flowchart TD
 | `residual_envelope.py` | Reuse the disjoint fixed calibration/holdout diagnostic | Output remains `heuristic_envelope_not_prediction_interval`; no interval is attached to the forecast |
 | `baselines.py::project_seasonal_naive_lag7` | Repeatedly invoke the existing one-step seasonal-naive rule to form 28 integer steps | Seven complete published fixture values are mandatory; this does not fit or validate a predictive model |
 | `policy_simulation.py` | Run three policy rules against shared seeded streams and bounded assumptions | Local test double only; costs are synthetic units; no WorldKernel call or ranking |
-| `synthetic_decision_workflow.py` | Orchestrate cutoffs, abstention, comparison and trace construction | In-memory only; rejects missing history before invoking simulation |
+| `synthetic_decision_workflow.py` | Orchestrate cutoffs, abstention, comparison, trace construction and deterministic result digests | In-memory only; rejects missing history before invoking simulation; hashes provide no authentication or authorization |
 | `api/routes/decisions.py` | Expose one bounded local route calling the same service | No file upload, URL fetch, database, writes, tool selection or action authority |
 | `examples/m1_retail_decision_workflow.py` | Provide a deterministic command-line entrypoint | Uses generated fixture data only |
 
@@ -126,10 +128,15 @@ scenarios. The service limits replications to 198 because
 the existing 50,000-transition budget.
 
 Each base and sensitivity result becomes a `ConditionalOutcome`. Its forecast
-references point to all 28 profile records; its assumption references point
-to the full assumption register. The trace and response preserve `ranking=None`
-and `worldkernel_not_invoked`. Synthetic cost units are not currency or
-measured operating costs.
+references point to all 28 profile records; its assumption references point to
+the full assumption register. The policy comparator also reports explicit
+`modeling_caveats`. `_build_trace` turns each caveat into a typed
+`ModelingAssumption`; only the profile-aware outcome references the caveat
+because the caveat describes how that forecast is consumed. In particular, its
+one-day-lead target interval excludes arrival-day demand. The result therefore
+does not establish a standard or optimized replenishment rule. The trace and
+response preserve `ranking=None` and `worldkernel_not_invoked`. Synthetic cost
+units are not currency or measured operating costs.
 
 ### 3.5 Decision trace
 
@@ -141,10 +148,25 @@ policies over three lead-time values. `MissingEvidence` identifies absent
 source rights/vintages, empirical model validation, calibrated uncertainty and
 actual engine output. Compute and WorldKernel costs are explicitly unavailable.
 
-`result_sha256` binds the canonical result fields but is not a signature or
-review identity. The trace has `human_review.status="not_requested"`. Its
-`created_at` is a deterministic **fixture logical timestamp** for replay; it is
-not a wall-clock execution audit.
+`result_sha256` binds the canonical `DecisionTrace` result fields but is not a
+signature or review identity. The outer workflow separately computes
+`artifact_digests` for the versioned evaluation, uncertainty, evidence receipt,
+forecast and simulation values. `decision_identity_sha256` hashes the workflow
+schema, validated request (including `as_of`, seed and replication count) and
+those artifact digests. Thus two requests that differ only in replications do
+not reuse the same trace identity. Exact replay of the same request and
+artifacts produces the same identity; `revision=1` is a content identity
+revision, not a persisted history counter. `workflow_result_sha256` then binds
+the complete response envelope, including the trace and its digest, while
+excluding only its own field. On abstention, artifact and workflow digests are
+still present but `decision_identity_sha256` is null because no decision trace
+was produced. These hashes detect content changes when recomputed; they do not
+authenticate a producer, sign the payload, establish provenance or record
+human approval.
+
+The trace has `human_review.status="not_requested"`. Its `created_at` is a
+deterministic **fixture logical timestamp** for replay; it is not a wall-clock
+execution audit.
 
 ## 4. Contracts and examples
 
@@ -184,15 +206,18 @@ policy result.
 
 `mirrormind.synthetic_retail_decision_workflow.v1` contains `status`, `as_of`,
 `evaluation`, `uncertainty`, `forecast_evidence_receipt`, `forecast`,
-`simulation`, `trace`, `trace_sha256`, `human_review`, `action_authorized`,
+`simulation`, `artifact_digests`, `decision_identity_sha256`, `trace`,
+`trace_sha256`, `workflow_result_sha256`, `human_review`, `action_authorized`,
 and `writes_performed`. On a successful fixture, status is
 `synthetic_comparison_ready_experimental`. An incomplete history returns
 `abstained_required_history_unavailable`, `trace=null`, and
 `simulation.policy_test_double_invoked=false`.
 
 The response includes synthetic replication-level outputs for teaching and
-replay. Treat the result as fictional, non-authorizing data. Do not use it as a
-business recommendation or an API contract for real-data ingestion.
+replay, versioned digests for each major artifact, a decision identity for a
+successful trace and a whole-envelope digest. Treat the result as fictional,
+non-authorizing data. Do not use it as a business recommendation or an API
+contract for real-data ingestion.
 
 ## 5. Failure handling, safety and limits
 
@@ -206,12 +231,15 @@ business recommendation or an API contract for real-data ingestion.
 | WorldKernel absent or unavailable | It is not called; result and trace state this explicitly | No actual engine acceptance exists under B-04 |
 
 The route is experimental and currently belongs to an API scaffold without
-identity or tenant authorization. It uses only a fixed generated fixture,
-strict bounded CPU work, no persistence and no business writes. This does not
-make it a production endpoint. Source licensing, original availability,
-privacy approval, real-data evaluation, forecast skill, uncertainty
-calibration, realistic cost assumptions, WorldKernel execution, durable jobs,
-identity and human action authorization remain outside this slice.
+authentication, identity or tenant authorization. It has no explicit request
+body-size limit, rate limit or concurrency control. Replication and horizon
+bounds constrain the domain calculation but do not protect the HTTP transport
+or shared service capacity. It uses only a fixed generated fixture, no
+persistence and no business writes. It is not safe to expose as a public or
+production endpoint. Source licensing, original availability, privacy
+approval, real-data evaluation, forecast skill, uncertainty calibration,
+realistic cost assumptions, WorldKernel execution, durable jobs, identity and
+human action authorization remain outside this slice.
 
 ## 6. Tests and what they prove
 
@@ -225,6 +253,17 @@ identity and human action authorization remain outside this slice.
   mutates day 35 after the default forecast cutoff and checks the profile,
   policy outputs and historical scores remain fixed while snapshot lineage
   changes.
+- `tests/unit/test_synthetic_decision_workflow.py::test_trace_identity_includes_replications_and_exact_replay_is_stable`
+  reproduces the former identity collision for one versus two replications and
+  verifies that different content has different identity while exact replay is
+  stable.
+- `tests/unit/test_synthetic_decision_workflow.py::test_versioned_artifact_and_workflow_digests_bind_the_complete_response`
+  verifies schema-versioned artifact hashes and the outer digest; changing a
+  nested simulation value makes the recorded workflow digest stale. This is
+  integrity by recomputation, not authentication or a signature.
+- `tests/unit/test_synthetic_decision_workflow.py::test_profile_aware_policy_modeling_caveats_are_bound_into_trace`
+  checks that the comparator's profile-aware modeling caveat is represented in
+  the trace and linked to the affected outcome.
 - `tests/unit/test_synthetic_decision_workflow.py::test_incomplete_or_late_history_abstains_without_running_policy_test_double`
   covers missing, late and unpublished cases while making a policy call fail
   the test immediately.
@@ -240,7 +279,10 @@ identity and human action authorization remain outside this slice.
 Curated claims: **MM-MF-001** successful trace separation;
 **MM-MF-002** safe abstention before policy execution;
 **MM-MF-003** post-cutoff mutation resistance;
-**MM-MF-004** deterministic CLI replay. See the reviewed
+**MM-MF-004** deterministic CLI replay;
+**MM-MF-005** request-sensitive trace identity;
+**MM-MF-006** complete result digest binding; and
+**MM-MF-007** trace-bound policy-modeling caveats. See the reviewed
 [evidence map](EVIDENCE_MAP.json) for exact test selectors and limitations.
 
 All of these are local synthetic checks. They do not satisfy M1B-03,
@@ -256,8 +298,11 @@ declarations before touching policy arithmetic. For a successful run, trace
 the profile and seed to `compare_synthetic_retail_policies`. Check one
 `ConditionalOutcome` at a time against its `lead_time_days`, `policy_id`,
 `seed`, `runs`, forecast references and assumption references. Recompute the
-trace digest with `DecisionTrace.result_sha256`; do not treat it as a
-signature.
+trace digest with `DecisionTrace.result_sha256`, compare it with the artifact
+digest map and recompute `workflow_result_sha256` after excluding only that
+field. Do not treat any digest as a signature. For identity collisions,
+compare the validated request and schema-versioned artifact digests before
+tracing `_decision_identity_sha256`.
 
 When changing a fixture release date, update the release-aware regressions and
 explain how it affects both the historical diagnostic window and the current
@@ -282,3 +327,11 @@ validated engine receipt; never relabel this local test double as execution.
 5. Add a new trace gap without adding its `blocks_refs`. Observe the
    `DecisionTrace` validation failure, then decide which forecast or outcome
    record the missing evidence actually limits.
+6. Replay the same request with `replications=1` and `replications=2`. Compare
+   `decision_identity_sha256` and `trace_id`, then replay one request exactly.
+   Explain why revision 1 is scoped to a content identity rather than a
+   history store.
+7. Change one nested simulation value in a copied response and recompute
+   `workflow_result_sha256`. Compare it with `trace_sha256`; explain why a
+   trace digest alone cannot bind the whole workflow envelope and why neither
+   digest authenticates its producer.

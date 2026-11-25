@@ -6,6 +6,8 @@ claim forecast validity, call WorldKernel, rank policies or write business state
 """
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import UTC, date, datetime, time, timedelta
 from typing import Any
 
@@ -54,6 +56,17 @@ MODEL_CARD_REF = (
     "docs/engineering/model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md"
 )
 LOCAL_ENGINE_CONTRACT_REF = "mirrormind.local.retail_policy_test_double.v1"
+WORKFLOW_SCHEMA_VERSION = "mirrormind.synthetic_retail_decision_workflow.v1"
+DECISION_IDENTITY_SCHEMA_VERSION = "mirrormind.synthetic_retail_decision_identity.v1"
+_ARTIFACT_SCHEMA_VERSIONS = {
+    "evaluation": "mirrormind.synthetic_retail_evaluation_artifact.v1",
+    "uncertainty": "mirrormind.synthetic_retail_uncertainty_artifact.v1",
+    "forecast_evidence_receipt": (
+        "mirrormind.synthetic_retail_forecast_evidence_receipt.v1"
+    ),
+    "forecast": "mirrormind.synthetic_retail_forecast_profile.v1",
+    "simulation": "mirrormind.synthetic_retail_policy_simulation_artifact.v1",
+}
 _UTC = UTC
 
 
@@ -100,6 +113,51 @@ def _cutoff_timestamp(value: date) -> datetime:
     return datetime.combine(value, time(23, 59, 59, tzinfo=_UTC))
 
 
+def _canonical_json_sha256(value: object) -> str:
+    """Hash a JSON value using the workflow's sorted-key UTF-8 encoding."""
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _versioned_artifact_digests(
+    result: dict[str, object],
+) -> dict[str, dict[str, str]]:
+    """Bind each returned evaluation artifact to its declared local schema."""
+    return {
+        artifact_id: {
+            "schema_version": schema_version,
+            "sha256": _canonical_json_sha256(
+                {
+                    "schema_version": schema_version,
+                    "artifact": result[artifact_id],
+                }
+            ),
+        }
+        for artifact_id, schema_version in _ARTIFACT_SCHEMA_VERSIONS.items()
+    }
+
+
+def _decision_identity_sha256(
+    request: SyntheticDecisionWorkflowRequest,
+    artifact_digests: dict[str, dict[str, str]],
+) -> str:
+    """Create a deterministic identity for this exact request/result pair."""
+    return _canonical_json_sha256(
+        {
+            "schema_version": DECISION_IDENTITY_SCHEMA_VERSION,
+            "workflow_schema_version": WORKFLOW_SCHEMA_VERSION,
+            "request": request.model_dump(mode="json"),
+            "artifact_digests": artifact_digests,
+        }
+    )
+
+
 def _flow_snapshot_digest(flow: Any) -> str:
     review_receipt = flow.review_packet.receipt()
     digest = review_receipt.get("snapshot_sha256")
@@ -138,7 +196,7 @@ def _requested_history_window(as_of: date) -> tuple[date, ...]:
 
 def _policy_outcomes(
     comparison: dict[str, object], *, forecast_refs: tuple[str, ...],
-    assumption_refs: tuple[str, ...],
+    assumption_refs: tuple[str, ...], policy_caveat_refs: tuple[str, ...],
 ) -> tuple[ConditionalOutcome, ...]:
     outcomes: list[ConditionalOutcome] = []
     scenarios = comparison["lead_time_sensitivity"]
@@ -158,6 +216,9 @@ def _policy_outcomes(
             means = policy["mean_metrics_per_replication"]
             if not isinstance(means, dict):
                 raise TypeError("policy comparison returned invalid mean metrics")
+            policy_assumption_refs = assumption_refs
+            if policy_id == "forecast_aware_order_up_to":
+                policy_assumption_refs += policy_caveat_refs
             fill_rate = means["fill_rate_basis_points"]
             if fill_rate is None:
                 raise ValueError("positive forecast profile must produce a fill-rate denominator")
@@ -198,7 +259,7 @@ def _policy_outcomes(
                     ),
                     engine_contract_ref=LOCAL_ENGINE_CONTRACT_REF,
                     forecast_refs=forecast_refs,
-                    assumption_refs=assumption_refs,
+                    assumption_refs=policy_assumption_refs,
                     metrics=metrics,
                     seed=comparison["seed"],
                     runs=comparison["replications"],
@@ -210,6 +271,7 @@ def _policy_outcomes(
 def _build_trace(
     *,
     as_of: date,
+    identity_sha256: str,
     snapshot_sha256: str,
     observations: tuple[tuple[date, int, date], ...],
     history: tuple[tuple[date, int, date], ...],
@@ -263,7 +325,7 @@ def _build_trace(
     )
     forecast_refs = tuple(item.forecast_id for item in forecasts)
 
-    assumptions = (
+    base_assumptions = (
         ModelingAssumption(
             assumption_id="assumption-demand-semantics",
             statement=(
@@ -318,9 +380,30 @@ def _build_trace(
             ),
         ),
     )
-    assumption_refs = tuple(item.assumption_id for item in assumptions)
+    modeling_caveats = comparison.get("modeling_caveats")
+    if (
+        not isinstance(modeling_caveats, list)
+        or not modeling_caveats
+        or len(modeling_caveats) > 8
+        or any(type(item) is not str for item in modeling_caveats)
+    ):
+        raise TypeError("policy comparison returned invalid modeling caveats")
+    policy_caveat_assumptions = tuple(
+        ModelingAssumption(
+            assumption_id=f"assumption-policy-caveat-{index:03d}",
+            statement=statement,
+        )
+        for index, statement in enumerate(modeling_caveats, start=1)
+    )
+    assumptions = base_assumptions + policy_caveat_assumptions
+    policy_caveat_refs = tuple(
+        item.assumption_id for item in policy_caveat_assumptions
+    )
     outcomes = _policy_outcomes(
-        comparison, forecast_refs=forecast_refs, assumption_refs=assumption_refs
+        comparison,
+        forecast_refs=forecast_refs,
+        assumption_refs=tuple(item.assumption_id for item in base_assumptions),
+        policy_caveat_refs=policy_caveat_refs,
     )
     outcome_refs = tuple(item.outcome_id for item in outcomes)
 
@@ -359,10 +442,8 @@ def _build_trace(
         ),
     )
     return DecisionTrace(
-        trace_id=f"trace-retail-synthetic-{as_of.isoformat()}-seed-{comparison['seed']}",
-        decision_ref=(
-            f"decision-retail-synthetic-{as_of.isoformat()}-seed-{comparison['seed']}"
-        ),
+        trace_id=f"trace-retail-synthetic-{identity_sha256}",
+        decision_ref=f"decision-retail-synthetic-{identity_sha256}",
         revision=1,
         question=(
             "How do three fictional replenishment policies compare under one "
@@ -460,7 +541,7 @@ def run_synthetic_decision_workflow(
     )
 
     result: dict[str, object] = {
-        "schema_version": "mirrormind.synthetic_retail_decision_workflow.v1",
+        "schema_version": WORKFLOW_SCHEMA_VERSION,
         "as_of": request.as_of.isoformat(),
         "evaluation": {
             "role": "historical_diagnostic_before_forecast_feature_window",
@@ -520,6 +601,9 @@ def run_synthetic_decision_workflow(
                 "trace_sha256": None,
             }
         )
+        result["artifact_digests"] = _versioned_artifact_digests(result)
+        result["decision_identity_sha256"] = None
+        result["workflow_result_sha256"] = _canonical_json_sha256(result)
         return result
 
     history = tuple(
@@ -537,17 +621,8 @@ def run_synthetic_decision_workflow(
         seed=request.seed,
     )
     comparison = compare_synthetic_retail_policies(comparison_request)
-    trace = _build_trace(
-        as_of=request.as_of,
-        snapshot_sha256=_flow_snapshot_digest(forecast_flow),
-        observations=observations,
-        history=history,
-        forecast_profile=profile,
-        comparison=comparison,
-    )
     result.update(
         {
-            "status": "synthetic_comparison_ready_experimental",
             "forecast": {
                 "status": "experimental_synthetic_profile_not_empirically_validated",
                 "model": "seasonal_naive_lag7",
@@ -565,8 +640,27 @@ def run_synthetic_decision_workflow(
                 "policy_test_double_invoked": True,
                 "result": comparison,
             },
+        }
+    )
+    artifact_digests = _versioned_artifact_digests(result)
+    identity_sha256 = _decision_identity_sha256(request, artifact_digests)
+    trace = _build_trace(
+        as_of=request.as_of,
+        identity_sha256=identity_sha256,
+        snapshot_sha256=_flow_snapshot_digest(forecast_flow),
+        observations=observations,
+        history=history,
+        forecast_profile=profile,
+        comparison=comparison,
+    )
+    result.update(
+        {
+            "status": "synthetic_comparison_ready_experimental",
+            "artifact_digests": artifact_digests,
+            "decision_identity_sha256": identity_sha256,
             "trace": trace.model_dump(mode="json"),
             "trace_sha256": trace.result_sha256,
         }
     )
+    result["workflow_result_sha256"] = _canonical_json_sha256(result)
     return result

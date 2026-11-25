@@ -1,6 +1,7 @@
 """Synthetic contract tests; no evidence, model or engine is authenticated here."""
 import json
 from copy import deepcopy
+from decimal import localcontext
 
 import pytest
 from pydantic import ValidationError
@@ -33,7 +34,9 @@ def test_synthetic_example_json_is_reproducible():
     document = json.loads(first)
     assert document["trace"]["schema_version"] == "mirrormind.decision_trace.v1"
     assert document["trace"]["human_review"]["status"] == "pending"
-    assert len(document["result_sha256"]) == 64
+    assert document["result_sha256"] == (
+        "fccf54eccb7971ea4731e08df4baae8755a394688d47d19d2c54d8ebe1f5b4ec"
+    )
 
 
 def test_unknown_local_references_are_rejected():
@@ -140,6 +143,120 @@ def test_review_digest_binds_approval_to_exact_result_content():
     changed["forecasts"][0]["value"] = 9  # type: ignore[index]
     with pytest.raises(ValidationError, match="does not match result digest"):
         DecisionTrace.model_validate(changed)
+
+
+@pytest.mark.parametrize("status", ["approved", "rejected"])
+def test_terminal_review_cannot_precede_trace_creation(status: str) -> None:
+    payload = _valid_trace_payload()
+    payload["cutoff_at"] = "2026-11-25T12:00:00Z"
+    payload["created_at"] = "2026-11-25T13:00:00Z"
+    draft = DecisionTrace.model_validate(payload)
+    payload["human_review"] = {
+        "status": status,
+        "reviewer_ref": "reviewer-001",
+        "decided_at": "2026-11-25T12:59:59Z",
+        "reviewed_result_sha256": draft.result_sha256,
+    }
+
+    with pytest.raises(ValidationError, match="decision cannot precede trace creation"):
+        DecisionTrace.model_validate(payload)
+
+
+@pytest.mark.parametrize("status", ["approved", "rejected"])
+@pytest.mark.parametrize(
+    "decided_at",
+    ["2026-11-25T13:00:00Z", "2026-11-25T08:00:00-05:00"],
+)
+def test_terminal_review_accepts_creation_boundary_and_equivalent_timezone(
+    status: str, decided_at: str
+) -> None:
+    payload = _valid_trace_payload()
+    payload["cutoff_at"] = "2026-11-25T12:00:00Z"
+    payload["created_at"] = "2026-11-25T13:00:00Z"
+    draft = DecisionTrace.model_validate(payload)
+    payload["human_review"] = {
+        "status": status,
+        "reviewer_ref": "reviewer-001",
+        "decided_at": decided_at,
+        "reviewed_result_sha256": draft.result_sha256,
+    }
+
+    trace = DecisionTrace.model_validate(payload)
+
+    assert trace.human_review.status == status
+    assert trace.human_review.decided_at == trace.created_at
+
+
+def _trace_with_cost(amount: str) -> DecisionTrace:
+    payload = _valid_trace_payload()
+    payload["costs"][0]["amount"] = amount  # type: ignore[index]
+    return DecisionTrace.model_validate(payload)
+
+
+def test_result_digest_is_lossless_and_independent_of_decimal_context() -> None:
+    lower = _trace_with_cost("123456.71")
+    upper = _trace_with_cost("123456.72")
+
+    with localcontext() as context:
+        context.prec = 3
+        reduced_precision = (lower.result_sha256, upper.result_sha256)
+    with localcontext() as context:
+        context.prec = 50
+        full_precision = (lower.result_sha256, upper.result_sha256)
+
+    assert reduced_precision[0] != reduced_precision[1]
+    assert reduced_precision == full_precision
+    assert _trace_with_cost("12.3400").result_sha256 == _trace_with_cost(
+        "12.34"
+    ).result_sha256
+    assert _trace_with_cost("0.000").result_sha256 == _trace_with_cost(
+        "0"
+    ).result_sha256
+
+
+@pytest.mark.parametrize(
+    "section",
+    [
+        "evidence",
+        "observations",
+        "forecasts",
+        "assumptions",
+        "outcomes",
+        "missing_evidence",
+        "costs",
+    ],
+)
+def test_trace_record_sections_have_a_maximum_size(section: str) -> None:
+    payload = _valid_trace_payload()
+    payload[section] = payload[section] * 1001  # type: ignore[operator]
+
+    with pytest.raises(ValidationError) as error:
+        DecisionTrace.model_validate(payload)
+
+    assert any(issue["type"] == "too_long" for issue in error.value.errors())
+
+
+def test_trace_reference_lists_have_a_maximum_size() -> None:
+    payload = _valid_trace_payload()
+    payload["observations"][0]["evidence_refs"] = [  # type: ignore[index]
+        f"evidence-{index}" for index in range(101)
+    ]
+
+    with pytest.raises(ValidationError) as error:
+        DecisionTrace.model_validate(payload)
+
+    assert any(issue["type"] == "too_long" for issue in error.value.errors())
+
+
+def test_total_trace_records_are_bounded_across_sections() -> None:
+    payload = _valid_trace_payload()
+    payload["evidence"] = [payload["evidence"][0]] * 500  # type: ignore[index]
+    payload["assumptions"] = [payload["assumptions"][0]] * 501  # type: ignore[index]
+
+    with pytest.raises(
+        ValidationError, match="decision trace cannot exceed 1000 records"
+    ):
+        DecisionTrace.model_validate(payload)
 
 
 def test_trace_models_are_immutable_after_validation():

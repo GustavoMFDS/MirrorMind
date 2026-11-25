@@ -20,7 +20,10 @@ plus the [shared contracts](CONTRACT_WALKTHROUGH.md).
 `mirrormind.api:app` is the stable import expected by uvicorn.
 The API layer contains no statistical model or domain-specific
 inventory rules. There is **no authentication** in this M0
-scaffold, so it must not be exposed as a production API.
+scaffold, and it currently has no explicit HTTP request body-size,
+rate or concurrency controls. Pydantic/domain bounds do not replace
+transport or shared-capacity limits, so the scaffold must not be
+exposed as a public or production API.
 
 ## 2. Four requests; four different claims
 
@@ -44,8 +47,9 @@ experimental. It never invokes WorldKernel or writes business state.
 
 FastAPI generates HTTP 422 for invalid Pydantic body
 validation. The scaffold does not currently add a durable
-job store, independent authentication/authorization, or
-a domain-specific source-validation layer.
+job store, independent authentication/authorization, a request
+body-size limit, rate/concurrency controls or a domain-specific
+source-validation layer.
 
 ## 3. Curated observations (not certifications)
 
@@ -111,7 +115,11 @@ The handler validates `SyntheticDecisionWorkflowRequest` before entering
 abstention before policy simulation if a date is missing or late. On success,
 the exact same service builds the result trace used by the CLI. Read the
 [M1F-02 workflow walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) for
-the date split, trace-reference algorithm and failure paths.
+the date split, trace-reference algorithm, modeling caveat propagation,
+request-sensitive decision identity, artifact digests and failure paths. Its
+trace digest covers the typed trace; a separate whole-workflow digest covers
+the response envelope. Neither digest authenticates the producer or adds
+request transport protections.
 
 ## 6. Independent exercise
 

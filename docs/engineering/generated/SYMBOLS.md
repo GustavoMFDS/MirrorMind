@@ -95,23 +95,24 @@ Static imports (including inside functions): `datetime`, `decimal`, `hashlib`, `
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `_TraceModel` | class | `class _TraceModel` | — | [L46](../../../src/mirrormind/core/decision_trace.py#L46) |
-| `_require_timezone` | function | `def _require_timezone(value: datetime) -> datetime` | — | [L50](../../../src/mirrormind/core/decision_trace.py#L50) |
-| `_require_optional_timezone` | function | `def _require_optional_timezone(value: datetime \| None) -> datetime \| None` | — | [L56](../../../src/mirrormind/core/decision_trace.py#L56) |
-| `EvidenceReference` | class | `class EvidenceReference` | Opaque pointer supplied by a caller; not an authenticated source record. | [L60](../../../src/mirrormind/core/decision_trace.py#L60) |
-| `ObservedFact` | class | `class ObservedFact` | One scalar observation, separate from estimates and modeled outcomes. | [L72](../../../src/mirrormind/core/decision_trace.py#L72) |
-| `ForecastEstimate` | class | `class ForecastEstimate` | — | [L84](../../../src/mirrormind/core/decision_trace.py#L84) |
-| `ModelingAssumption` | class | `class ModelingAssumption` | — | [L93](../../../src/mirrormind/core/decision_trace.py#L93) |
-| `OutcomeMetric` | class | `class OutcomeMetric` | — | [L98](../../../src/mirrormind/core/decision_trace.py#L98) |
-| `ConditionalOutcome` | class | `class ConditionalOutcome` | A declared conditional result; the reference does not prove execution. | [L104](../../../src/mirrormind/core/decision_trace.py#L104) |
-| `MissingEvidence` | class | `class MissingEvidence` | — | [L117](../../../src/mirrormind/core/decision_trace.py#L117) |
-| `CostMeasurement` | class | `class CostMeasurement` | — | [L123](../../../src/mirrormind/core/decision_trace.py#L123) |
-| `CostMeasurement.check_measurement` | method | `def check_measurement(self) -> 'CostMeasurement'` | — | [L132](../../../src/mirrormind/core/decision_trace.py#L132) |
-| `HumanReview` | class | `class HumanReview` | — | [L141](../../../src/mirrormind/core/decision_trace.py#L141) |
-| `HumanReview.check_decision_fields` | method | `def check_decision_fields(self) -> 'HumanReview'` | — | [L150](../../../src/mirrormind/core/decision_trace.py#L150) |
-| `DecisionTrace` | class | `class DecisionTrace` | Immutable v1 result shape; approval records review but grants no action. | [L165](../../../src/mirrormind/core/decision_trace.py#L165) |
-| `DecisionTrace.result_sha256` | method | `def result_sha256(self) -> str` | Hash canonical result fields, excluding review to avoid circularity. | [L187](../../../src/mirrormind/core/decision_trace.py#L187) |
-| `DecisionTrace.check_trace_references_and_cutoff` | method | `def check_trace_references_and_cutoff(self) -> 'DecisionTrace'` | — | [L209](../../../src/mirrormind/core/decision_trace.py#L209) |
+| `_TraceModel` | class | `class _TraceModel` | — | [L48](../../../src/mirrormind/core/decision_trace.py#L48) |
+| `_require_timezone` | function | `def _require_timezone(value: datetime) -> datetime` | — | [L52](../../../src/mirrormind/core/decision_trace.py#L52) |
+| `_require_optional_timezone` | function | `def _require_optional_timezone(value: datetime \| None) -> datetime \| None` | — | [L58](../../../src/mirrormind/core/decision_trace.py#L58) |
+| `_canonical_decimal` | function | `def _canonical_decimal(value: Decimal) -> str` | Format a finite Decimal without consulting or rounding through context. | [L62](../../../src/mirrormind/core/decision_trace.py#L62) |
+| `EvidenceReference` | class | `class EvidenceReference` | Opaque pointer supplied by a caller; not an authenticated source record. | [L72](../../../src/mirrormind/core/decision_trace.py#L72) |
+| `ObservedFact` | class | `class ObservedFact` | One scalar observation, separate from estimates and modeled outcomes. | [L84](../../../src/mirrormind/core/decision_trace.py#L84) |
+| `ForecastEstimate` | class | `class ForecastEstimate` | — | [L98](../../../src/mirrormind/core/decision_trace.py#L98) |
+| `ModelingAssumption` | class | `class ModelingAssumption` | — | [L109](../../../src/mirrormind/core/decision_trace.py#L109) |
+| `OutcomeMetric` | class | `class OutcomeMetric` | — | [L114](../../../src/mirrormind/core/decision_trace.py#L114) |
+| `ConditionalOutcome` | class | `class ConditionalOutcome` | A declared conditional result; the reference does not prove execution. | [L120](../../../src/mirrormind/core/decision_trace.py#L120) |
+| `MissingEvidence` | class | `class MissingEvidence` | — | [L139](../../../src/mirrormind/core/decision_trace.py#L139) |
+| `CostMeasurement` | class | `class CostMeasurement` | — | [L147](../../../src/mirrormind/core/decision_trace.py#L147) |
+| `CostMeasurement.check_measurement` | method | `def check_measurement(self) -> 'CostMeasurement'` | — | [L156](../../../src/mirrormind/core/decision_trace.py#L156) |
+| `HumanReview` | class | `class HumanReview` | — | [L165](../../../src/mirrormind/core/decision_trace.py#L165) |
+| `HumanReview.check_decision_fields` | method | `def check_decision_fields(self) -> 'HumanReview'` | — | [L174](../../../src/mirrormind/core/decision_trace.py#L174) |
+| `DecisionTrace` | class | `class DecisionTrace` | Immutable v1 result shape; approval records review but grants no action. | [L189](../../../src/mirrormind/core/decision_trace.py#L189) |
+| `DecisionTrace.result_sha256` | method | `def result_sha256(self) -> str` | Hash canonical result fields, excluding review to avoid circularity. | [L225](../../../src/mirrormind/core/decision_trace.py#L225) |
+| `DecisionTrace.check_trace_references_and_cutoff` | method | `def check_trace_references_and_cutoff(self) -> 'DecisionTrace'` | — | [L247](../../../src/mirrormind/core/decision_trace.py#L247) |
 
 ## `mirrormind.domains.__init__`
 
@@ -231,17 +232,17 @@ Static imports (including inside functions): `__future__`, `hashlib`, `json`, `p
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `_DemandStream` | class | `class _DemandStream` | — | [L29](../../../src/mirrormind/domains/retail/policy_simulation.py#L29) |
-| `RetailPolicyAssumptions` | class | `class RetailPolicyAssumptions` | Explicit units, inventory controls and abstract synthetic costs. | [L36](../../../src/mirrormind/domains/retail/policy_simulation.py#L36) |
-| `RetailPolicyComparisonRequest` | class | `class RetailPolicyComparisonRequest` | Input contract for one paired, 28-day synthetic experiment. | [L56](../../../src/mirrormind/domains/retail/policy_simulation.py#L56) |
-| `RetailPolicyComparisonRequest.validate_experiment_bounds` | method | `def validate_experiment_bounds(self) -> RetailPolicyComparisonRequest` | — | [L67](../../../src/mirrormind/domains/retail/policy_simulation.py#L67) |
-| `_build_demand_streams` | function | `def _build_demand_streams(request: RetailPolicyComparisonRequest) -> tuple[_DemandStream, ...]` | Generate one reproducible exogenous sequence per replication. | [L85](../../../src/mirrormind/domains/retail/policy_simulation.py#L85) |
-| `_order_quantity` | function | `def _order_quantity(*, policy_id: str, day_index: int, inventory_position_units: int, demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> int` | — | [L117](../../../src/mirrormind/domains/retail/policy_simulation.py#L117) |
-| `_simulate_replication` | function | `def _simulate_replication(*, policy_id: str, demand_units: tuple[int, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, int]` | Run one policy against one fixed demand stream using day-boundary rules. | [L148](../../../src/mirrormind/domains/retail/policy_simulation.py#L148) |
-| `_basis_points` | function | `def _basis_points(numerator: int, denominator: int) -> int \| None` | — | [L227](../../../src/mirrormind/domains/retail/policy_simulation.py#L227) |
-| `_aggregate_policy` | function | `def _aggregate_policy(*, policy_id: str, demand_streams: tuple[_DemandStream, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, object]` | — | [L233](../../../src/mirrormind/domains/retail/policy_simulation.py#L233) |
-| `_lead_time_scenarios` | function | `def _lead_time_scenarios(base_lead_time_days: int) -> tuple[int, ...]` | — | [L285](../../../src/mirrormind/domains/retail/policy_simulation.py#L285) |
-| `compare_synthetic_retail_policies` | function | `def compare_synthetic_retail_policies(request: RetailPolicyComparisonRequest) -> dict[str, object]` | Compare three replenishment rules using paired caller-declared inputs. | [L297](../../../src/mirrormind/domains/retail/policy_simulation.py#L297) |
+| `_DemandStream` | class | `class _DemandStream` | — | [L34](../../../src/mirrormind/domains/retail/policy_simulation.py#L34) |
+| `RetailPolicyAssumptions` | class | `class RetailPolicyAssumptions` | Explicit units, inventory controls and abstract synthetic costs. | [L41](../../../src/mirrormind/domains/retail/policy_simulation.py#L41) |
+| `RetailPolicyComparisonRequest` | class | `class RetailPolicyComparisonRequest` | Input contract for one paired, 28-day synthetic experiment. | [L61](../../../src/mirrormind/domains/retail/policy_simulation.py#L61) |
+| `RetailPolicyComparisonRequest.validate_experiment_bounds` | method | `def validate_experiment_bounds(self) -> RetailPolicyComparisonRequest` | — | [L72](../../../src/mirrormind/domains/retail/policy_simulation.py#L72) |
+| `_build_demand_streams` | function | `def _build_demand_streams(request: RetailPolicyComparisonRequest) -> tuple[_DemandStream, ...]` | Generate one reproducible exogenous sequence per replication. | [L90](../../../src/mirrormind/domains/retail/policy_simulation.py#L90) |
+| `_order_quantity` | function | `def _order_quantity(*, policy_id: str, day_index: int, inventory_position_units: int, demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> int` | — | [L122](../../../src/mirrormind/domains/retail/policy_simulation.py#L122) |
+| `_simulate_replication` | function | `def _simulate_replication(*, policy_id: str, demand_units: tuple[int, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, int]` | Run one policy against one fixed demand stream using day-boundary rules. | [L153](../../../src/mirrormind/domains/retail/policy_simulation.py#L153) |
+| `_basis_points` | function | `def _basis_points(numerator: int, denominator: int) -> int \| None` | — | [L232](../../../src/mirrormind/domains/retail/policy_simulation.py#L232) |
+| `_aggregate_policy` | function | `def _aggregate_policy(*, policy_id: str, demand_streams: tuple[_DemandStream, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, object]` | — | [L238](../../../src/mirrormind/domains/retail/policy_simulation.py#L238) |
+| `_lead_time_scenarios` | function | `def _lead_time_scenarios(base_lead_time_days: int) -> tuple[int, ...]` | — | [L290](../../../src/mirrormind/domains/retail/policy_simulation.py#L290) |
+| `compare_synthetic_retail_policies` | function | `def compare_synthetic_retail_policies(request: RetailPolicyComparisonRequest) -> dict[str, object]` | Compare three replenishment rules using paired caller-declared inputs. | [L302](../../../src/mirrormind/domains/retail/policy_simulation.py#L302) |
 
 ## `mirrormind.domains.retail.release_backtest`
 
@@ -293,20 +294,23 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 
 Source: [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py)
 
-Static imports (including inside functions): `__future__`, `datetime`, `mirrormind.core.decision_trace`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.policy_simulation`, `mirrormind.domains.retail.residual_envelope`, `mirrormind.domains.retail.synthetic_fixtures`, `mirrormind.modules.forecasting.baselines`, `pydantic`, `typing`
+Static imports (including inside functions): `__future__`, `datetime`, `hashlib`, `json`, `mirrormind.core.decision_trace`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.policy_simulation`, `mirrormind.domains.retail.residual_envelope`, `mirrormind.domains.retail.synthetic_fixtures`, `mirrormind.modules.forecasting.baselines`, `pydantic`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `SyntheticDecisionWorkflowRequest` | class | `class SyntheticDecisionWorkflowRequest` | Strict bounded options for the generated local decision example. | [L60](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L60) |
-| `SyntheticDecisionWorkflowRequest.validate_as_of` | method | `def validate_as_of(cls, value: date) -> date` | — | [L73](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L73) |
-| `_default_policy_assumptions` | function | `def _default_policy_assumptions() -> RetailPolicyAssumptions` | Return the same explicit fictional controls used by the M1E-03 demo. | [L83](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L83) |
-| `_cutoff_timestamp` | function | `def _cutoff_timestamp(value: date) -> datetime` | — | [L99](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L99) |
-| `_flow_snapshot_digest` | function | `def _flow_snapshot_digest(flow: Any) -> str` | — | [L103](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L103) |
-| `_eligible_observation_rows` | function | `def _eligible_observation_rows(flow: Any, *, as_of: date) -> tuple[tuple[date, int, date], ...]` | — | [L111](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L111) |
-| `_requested_history_window` | function | `def _requested_history_window(as_of: date) -> tuple[date, ...]` | — | [L135](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L135) |
-| `_policy_outcomes` | function | `def _policy_outcomes(comparison: dict[str, object], *, forecast_refs: tuple[str, ...], assumption_refs: tuple[str, ...]) -> tuple[ConditionalOutcome, ...]` | — | [L139](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L139) |
-| `_build_trace` | function | `def _build_trace(*, as_of: date, snapshot_sha256: str, observations: tuple[tuple[date, int, date], ...], history: tuple[tuple[date, int, date], ...], forecast_profile: tuple[int, ...], comparison: dict[str, object]) -> DecisionTrace` | — | [L210](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L210) |
-| `run_synthetic_decision_workflow` | function | `def run_synthetic_decision_workflow(request: SyntheticDecisionWorkflowRequest, *, future_units: int=9, all_unpublished: bool=False) -> dict[str, object]` | Run one deterministic, non-persisting synthetic decision comparison. | [L398](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L398) |
+| `SyntheticDecisionWorkflowRequest` | class | `class SyntheticDecisionWorkflowRequest` | Strict bounded options for the generated local decision example. | [L73](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L73) |
+| `SyntheticDecisionWorkflowRequest.validate_as_of` | method | `def validate_as_of(cls, value: date) -> date` | — | [L86](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L86) |
+| `_default_policy_assumptions` | function | `def _default_policy_assumptions() -> RetailPolicyAssumptions` | Return the same explicit fictional controls used by the M1E-03 demo. | [L96](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L96) |
+| `_cutoff_timestamp` | function | `def _cutoff_timestamp(value: date) -> datetime` | — | [L112](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L112) |
+| `_canonical_json_sha256` | function | `def _canonical_json_sha256(value: object) -> str` | Hash a JSON value using the workflow's sorted-key UTF-8 encoding. | [L116](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L116) |
+| `_versioned_artifact_digests` | function | `def _versioned_artifact_digests(result: dict[str, object]) -> dict[str, dict[str, str]]` | Bind each returned evaluation artifact to its declared local schema. | [L128](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L128) |
+| `_decision_identity_sha256` | function | `def _decision_identity_sha256(request: SyntheticDecisionWorkflowRequest, artifact_digests: dict[str, dict[str, str]]) -> str` | Create a deterministic identity for this exact request/result pair. | [L146](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L146) |
+| `_flow_snapshot_digest` | function | `def _flow_snapshot_digest(flow: Any) -> str` | — | [L161](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L161) |
+| `_eligible_observation_rows` | function | `def _eligible_observation_rows(flow: Any, *, as_of: date) -> tuple[tuple[date, int, date], ...]` | — | [L169](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L169) |
+| `_requested_history_window` | function | `def _requested_history_window(as_of: date) -> tuple[date, ...]` | — | [L193](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L193) |
+| `_policy_outcomes` | function | `def _policy_outcomes(comparison: dict[str, object], *, forecast_refs: tuple[str, ...], assumption_refs: tuple[str, ...], policy_caveat_refs: tuple[str, ...]) -> tuple[ConditionalOutcome, ...]` | — | [L197](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L197) |
+| `_build_trace` | function | `def _build_trace(*, as_of: date, identity_sha256: str, snapshot_sha256: str, observations: tuple[tuple[date, int, date], ...], history: tuple[tuple[date, int, date], ...], forecast_profile: tuple[int, ...], comparison: dict[str, object]) -> DecisionTrace` | — | [L271](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L271) |
+| `run_synthetic_decision_workflow` | function | `def run_synthetic_decision_workflow(request: SyntheticDecisionWorkflowRequest, *, future_units: int=9, all_unpublished: bool=False) -> dict[str, object]` | Run one deterministic, non-persisting synthetic decision comparison. | [L479](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L479) |
 
 ## `mirrormind.domains.retail.synthetic_fixtures`
 
@@ -679,15 +683,15 @@ Static imports (including inside functions): `...core.contracts`, `pydantic`, `t
 
 Source: [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py)
 
-Static imports (including inside functions): `...core.contracts`, `collections.abc`, `dataclasses`, `types`, `typing`
+Static imports (including inside functions): `...core.contracts`, `collections.abc`, `dataclasses`, `pydantic`, `types`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `WorldKernelMappingError` | class | `class WorldKernelMappingError` | The MirrorMind scenario cannot be represented by the allowlisted world. | [L22](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L22) |
-| `WorldKernelWorldMapping` | class | `class WorldKernelWorldMapping` | Exact source and target identifiers reviewed for request translation. | [L27](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L27) |
-| `WorldKernelOperatorLimits` | class | `class WorldKernelOperatorLimits` | Trusted composition-root ceilings, independent of scenario input. | [L51](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L51) |
-| `WorldKernelOperatorLimits.__post_init__` | method | `def __post_init__(self) -> None` | — | [L58](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L58) |
-| `InventoryWorldUnitContext` | class | `class InventoryWorldUnitContext` | Explicit units required by the integer-only inventory demo contract. | [L75](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L75) |
-| `_nonnegative_integer_object` | function | `def _nonnegative_integer_object(values: object, *, name: str, allowed_fields: frozenset[str], required_fields: frozenset[str]) -> dict[str, int]` | — | [L83](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L83) |
-| `_validate_units` | function | `def _validate_units(unit_context: InventoryWorldUnitContext) -> None` | — | [L113](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L113) |
-| `build_worldkernel_exchange_request` | function | `def build_worldkernel_exchange_request(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext) -> dict[str, object]` | Build a strict WorldKernel v1 request without executing it. | [L128](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L128) |
+| `WorldKernelMappingError` | class | `class WorldKernelMappingError` | The MirrorMind scenario cannot be represented by the allowlisted world. | [L24](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L24) |
+| `WorldKernelWorldMapping` | class | `class WorldKernelWorldMapping` | Exact source and target identifiers reviewed for request translation. | [L29](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L29) |
+| `WorldKernelOperatorLimits` | class | `class WorldKernelOperatorLimits` | Trusted composition-root ceilings, independent of scenario input. | [L53](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L53) |
+| `WorldKernelOperatorLimits.__post_init__` | method | `def __post_init__(self) -> None` | — | [L60](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L60) |
+| `InventoryWorldUnitContext` | class | `class InventoryWorldUnitContext` | Explicit units required by the integer-only inventory demo contract. | [L77](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L77) |
+| `_nonnegative_integer_object` | function | `def _nonnegative_integer_object(values: object, *, name: str, allowed_fields: frozenset[str], required_fields: frozenset[str]) -> dict[str, int]` | — | [L85](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L85) |
+| `_validate_units` | function | `def _validate_units(unit_context: InventoryWorldUnitContext) -> None` | — | [L115](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L115) |
+| `build_worldkernel_exchange_request` | function | `def build_worldkernel_exchange_request(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext) -> dict[str, object]` | Build a strict WorldKernel v1 request without executing it. | [L130](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L130) |
