@@ -122,6 +122,15 @@ and correction are both retained here; neither retrieval code nor verifiers
 were changed to address the documentation mismatch. Local validation does not
 resolve official Actions B-08.
 
+The documentation-only evidence follow-up at published head
+`5b0a026cc008bffb953b3a6ae7d3cbdd252bd161` was also gated exactly: 738 tests,
+Ruff, catalog, atlas, evidence and capability checks passed with the same
+existing warning. See the [retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md)
+and [change request](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md).
+The corresponding Actions checks failed before repository steps; their exact
+annotation text was not exposed, so this is not CI success or an account-cause
+finding.
+
 The scope filter is caller-declared, not authenticated RBAC. The digest binds
 the excerpt bytes but does not authenticate the source snapshot or prove
 absolute offsets without source bytes. Retrieval remains local, fictional and
