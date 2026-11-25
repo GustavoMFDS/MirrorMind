@@ -182,8 +182,14 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   `2026-11-25T02:50:34.876565+00:00`: 697 pytest tests, Ruff, catalog, atlas,
   evidence and capability checks all passed. The only warning is the existing
   Starlette/httpx `TestClient` deprecation. This is local evidence, not
-  official Actions CI; publication and exact corrected-head Actions evidence
-  are recorded separately.
+  official Actions CI.
+- Exact documented head `4931e049dcf03a7b3843bb4c12a54ea4d26b533a` also passed
+  the full gate at `2026-11-25T02:52:00.508060+00:00`: 697 tests and all six
+  stages. Corrected-head Actions runs `45536001576` (`test`) and
+  `45536001585` (`symbol-catalog`) failed before steps; both had empty step
+  lists, log retrieval returned `BlobNotFound`, and neither exposed a cause
+  annotation. This B-08 failure remains unexplained and is not attributed to
+  billing; it is not a remote test result.
 - Scope: no HTTP adapter, persistence, CAS, authentication, nonce tracking or
   independent custody was added. A future transport must map exceptions at
   its own boundary without changing the typed responder contract.
