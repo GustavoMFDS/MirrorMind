@@ -112,11 +112,16 @@ rejected or enforced by a future adapter. No engine is imported or executed;
 B-04 remains open.
 
 The prior integrated #52–#55 candidate `fd72b76` passed 756 tests plus all
-five non-pytest gate checks. PR #55's published pre-sync head is
-`b292db0231d00f307eb4b0694b8e73014bdb9211`; its test and symbol-catalog runs
-failed before repository steps under B-08. The local branch is now merging
-published PR #54 head `4d22006`. The new integrated exact-head gate is pending;
-do not treat the prior 756-test receipt as proof for this new state.
+five non-pytest gate checks. Merge commit `b9eba02` synchronizes PR #55 with
+published PR #54 head `4d22006`, preserving both histories and PR #53's
+nested-receipt regressions. This exact integrated head passed the full local
+gate at 2026-11-25 04:35:17 UTC: 756 tests, Ruff, catalog, atlas, evidence and
+capability checks, with one existing Starlette/httpx deprecation warning.
+PR #55's prior published pre-sync head `b292db0231d00f307eb4b0694b8e73014bdb9211`
+had failed test and symbol-catalog checks before repository steps under B-08.
+The synchronized candidate is local and has no official Actions result yet.
+The mapper remains request construction only; no WorldKernel import or
+execution is claimed.
 
 ## Architecture and actual execution boundaries
 
