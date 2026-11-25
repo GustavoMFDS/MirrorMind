@@ -14,6 +14,46 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
+## 1.1 Owner-approved continuation decisions — 2026-11-25
+
+- Research preparation proceeds A then B: UCI Online Retail #352 event-time
+  retrospective first, then an aggregate Census release-vintage study.
+  ALFRED is conditional on free authorized access, acceptable series terms and
+  adequate archive evidence. This is not approval to acquire or process real
+  data. Keep raw data out of Git, CI, logs, prompts and external services;
+  automated tests remain synthetic.
+- Before processing the original UCI workbook, verify original terms,
+  attribution/change notice, minimal product/day/positive-quantity projection
+  after cancellation classification, private local storage,
+  retention/deletion and the exact source manifest. Do not derive availability
+  from `InvoiceDate`; preserve the event-time retrospective label.
+- GitHub Actions allowance is exhausted. No paid usage, paid runner or
+  spending-limit increase is approved. The no-cost self-hosted option is
+  evaluated in [B-08](BLOCKERS.md); no isolated ephemeral host is selected,
+  and existing job annotations do not prove that runner substitution would
+  bypass the pre-start account gate. Do not register a runner or change a
+  workflow. Use [the temporary local gate](LOCAL_QUALITY_GATE.md) on exact
+  clean heads, keep local and official evidence separate, and gate the exact
+  reconciled candidate. Do not retry identical pre-job failures.
+- Continue M1E-02 using the existing M1E-01 WorldKernel request mapper. Inspect
+  the separate WorldKernel repository read-only, pin a reviewed revision,
+  validate the actual local `worldkernel.result.v1` exchange, and keep the
+  optional dependency and project boundary intact. No changes to WorldKernel
+  or production deployment are authorized.
+
+The latest owner-recovered PR #57 comment records that the test and
+symbol-catalog job records on published head 678755e had no steps and
+runner_id=0; the exact annotations remain unavailable, so do not infer their
+individual start cause. The exact-head local gate on that PR head passed 712
+tests and all six checks, which is not official CI. See
+[comment 7167002881](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881).
+
+The separate, unsubmitted M1E-02 branch has a pinned synthetic engine run and
+a passing exact-head local gate. Its restricted-sandbox timeout was traced to
+local asyncio socket-pair creation; the same test and full gate passed outside
+that restriction. This does not retroactively explain the historical 8f906b8
+timeout. Preserve both the scope and limits in the blocker register.
+
 Read in order:
 
 1. [Master plan](MASTER_EXECUTION_PLAN.md) — desired architecture,

@@ -136,8 +136,8 @@ terms, attribution/change notice, field-minimization, secure storage,
 retention/deletion and manifest checks above and obtain source-specific
 approval. Automated tests remain synthetic-only.
 
-**Current source state:** the UCI event-time evaluator is proposed and
-implemented on draft PR #57; no real file was acquired. The local 1 MiB XLSX
+**Current source state:** the UCI event-time evaluator from draft PR #57 is
+present in the local M1 integration candidate; no real file was acquired. The local 1 MiB XLSX
 reader still cannot process UCI's complete 22.6 MB workbook, so a separately
 reviewed bounded streaming path would be required before full-file use.
 Unverified publication time, empirical performance and source permission are
@@ -239,6 +239,6 @@ alternative vintage source; no API key, access or download is assumed here.
   from an aggregate Census series.
 
 Owner direction is recorded in [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818).
-**Current status:** A's synthetic evaluator is present on the draft PR branch;
+**Current status:** A's synthetic evaluator is present on the local candidate;
 B's protocol is prepared. Neither source was downloaded, no source-specific
 processing approval was granted and no empirical result is claimed.

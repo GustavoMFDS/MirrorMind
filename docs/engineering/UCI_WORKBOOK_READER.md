@@ -41,15 +41,19 @@ experimental budgets rather than truncating them:
 | Individual uncompressed ZIP entry | **64 MiB** |
 | Total advertised uncompressed ZIP entry sizes | **128 MiB** |
 | Declared uncompressed/compressed size ratio | **200:1** per entry |
-| Transaction rows parsed by the projection | **10,000** maximum, not silently truncated |
-| Product-day output groups | **2,000** maximum |
+| Transaction rows parsed by the projection | Default **10,000**; explicit local maximum **600,000**, not silently truncated |
+| Product-day output groups | Default **2,000**; explicit local maximum **100,000** |
 
 These checks reduce obvious resource abuse but **do not** provide a
 general hostile-file sandbox or runtime CPU/memory metering.
 The overall parser and its upstream reader still operate inside the
-caller's trust boundary. Original UCI dataset 352 contains over
-500,000 rows and is **not accepted end-to-end by these default
-limits**; do not describe this as full original-workbook compatibility.
+caller's trust boundary. The UCI catalog reports 541,909 rows. The
+explicit parser ceiling of 600,000 rows can represent that catalog
+count, but no original workbook was acquired or parsed; compressed
+size, exact schema, row types, group count, processing time and output
+compatibility remain unverified. The example opts into larger limits
+only for generated data, and the default 10,000/2,000 budgets remain
+unchanged.
 
 ## 2. Method-by-method contracts and unsafe inputs
 
@@ -171,7 +175,7 @@ use. Why is its `InvoiceDate` not an authenticated
 `available_on` for real-time as-of backtesting?
 
 **Not yet delivered:** rights/privacy approval for original
-UCI file, full 541,909-row bounded pipeline, verified
+UCI file, verified processing of the catalog-sized source, verified
 historical release vintages, independent holdout scores,
 real trained forecasting, customer-facing inference or
 WorldKernel integration. No production promotion.

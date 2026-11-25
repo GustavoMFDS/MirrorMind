@@ -59,8 +59,12 @@ this narrowly tested contract:
   `datetime`**, representing the source's
   purported transaction event time. No string
   or timezone-aware alternative is assumed.
-- Caller caps: at most 10,000 input rows
+- Default caps: at most 10,000 input rows
   and 2,000 output product-day groups. A
+  caller may choose a larger explicit budget, up to
+  600,000 input rows and 100,000 product-day groups;
+  the limits are not evidence that the original UCI
+  workbook has been processed or verified. A
   maximum of 1 billion **accepted positive
   units in total** prevents unbounded aggregation.
 
@@ -101,7 +105,7 @@ projection as a direct input.
 | `UciRetailProjection.receipt()` | Aggregate counters, `not_authorized` and `publication_time_unknown` signals | Product codes in the internal `days` tuple remain potentially sensitive and need access control |
 | `_invoice_number(value)` | Narrow numeric/string invoice grammar, preserves leading cancellation marker | Unsupported invoice patterns fail rather than being treated as sales |
 | `_transaction_day(value)` | Naive `datetime` to source event date | Cannot establish timezone, business-day cutoff or publication vintage |
-| `project_uci_retail_rows(rows, max_rows, max_groups)` | Bounded single-pass positive-line aggregation by (stock code, event day) | Rejects malformed inputs/budgets and excludes cancellation, negative and zero lines with disclosed counters |
+| `project_uci_retail_rows(rows, max_rows, max_groups)` | Bounded single-pass positive-line aggregation by (stock code, event day); defaults are 10,000 rows/2,000 groups and absolute ceilings are 600,000/100,000 | Rejects malformed inputs/budgets and excludes cancellation, negative and zero lines with disclosed counters; higher caps do not certify source support |
 
 All row fields are validated **before** classifying
 cancellations and negative quantities. An invoice
@@ -192,12 +196,8 @@ projected daily record. Its absence is
 date is not proof of when the transaction
 was first available to a forecaster.
 
-A future separate PR may add a bounded
-**read-only, opt-in, approved-local-workbook**
-reader and controlled field projection.
-That needs independent rights/privacy
-approval, attribution, trusted source
-snapshot hash, schema-specific cancellation
-handling, duplicate strategy, XLSX zip
-bomb/resource limits and explicit
-publication-time caveats first.
+The existing bounded [XLSX reader](UCI_WORKBOOK_READER.md)
+and [synthetic event-time evaluator](M1_UCI_EVENT_TIME_RESEARCH.md)
+extend this path without authorizing real data. The
+UCI source rights/privacy review remains required
+before original-workbook use.

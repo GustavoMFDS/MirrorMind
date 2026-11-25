@@ -1076,5 +1076,26 @@
     "test": "tests/integration/test_uci_workbook_flow.py",
     "function": "test_synthetic_local_xlsx_file_to_product_day_projection",
     "limitation": "Fictional local XLSX test does not use real UCI records, independently proven first-availability dates, trained models or WorldKernel."
+  },
+  {
+    "id": "MM-UCIE-001",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/integration/test_uci_event_time_cli.py",
+    "function": "test_synthetic_cli_is_reproducible_and_keeps_event_time_limitations",
+    "limitation": "The integration is deterministic and identifier-minimized only for a generated workbook. It does not establish original source rights, real-workbook compatibility, actual date completeness or point-in-time publication history."
+  },
+  {
+    "id": "MM-UCIE-002",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_incomplete_target_day_abstains_instead_of_becoming_zero",
+    "limitation": "The evaluator abstains when a caller omits a synthetic date declaration. It cannot authenticate completeness claims for a real source."
+  },
+  {
+    "id": "MM-UCIE-003",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_validation_scores_do_not_depend_on_locked_holdout_values",
+    "limitation": "This mutation regression establishes validation independence from later fixture values only. It does not test preprocessing leakage or revised source vintages."
   }
 ]

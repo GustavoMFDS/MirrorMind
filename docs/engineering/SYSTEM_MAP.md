@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-25 against the M1F-02 integrated candidate and the local M1E-02/M1E-04 WorldKernel continuation. Bounded CSV/XLSX staging, retail evaluation, the paired policy test double, the synthetic decision workflow and exact-pin local engine adapters are experimental. The decision trace result schema remains interface-only as a general capability; its M1F-02 producer is synthetic and non-authorizing. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-25 against the local integration candidate combining PR #57's synthetic UCI event-time evaluator with M1F-02 and M1E-02/M1E-04. Bounded CSV/XLSX staging, retrospective UCI evaluation, the paired policy test double, the synthetic decision workflow and exact-pin local engine adapters are experimental. UCI output is event-time retrospective with unverified publication availability. The decision trace result schema remains interface-only as a general capability; its M1F-02 producer is synthetic and non-authorizing. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
@@ -15,6 +15,14 @@ engine states and metrics against the in-process reference. M1F-02 composes
 generated evidence and the test double through the experimental HTTP route;
 only the CLI can explicitly select WorldKernel. No path grants decision
 authority.
+
+The separate UCI event-time CLI builds a deterministic workbook in memory,
+passes it through the bounded XLSX reader and product-day projection, then
+calls `evaluate_uci_event_time` for a predeclared validation or holdout split.
+The evaluator requires caller-declared complete dates before treating an
+absent product-day as zero, freezes its product cohort from fit dates, and
+returns ordinal-only product summaries. This path does not fetch real source
+bytes and does not convert `InvoiceDate` into publication availability.
 
 Current supported routes: `GET /health`, `GET /v1/capabilities`,
 `POST /v1/scenarios/validate`, and the experimental
@@ -31,6 +39,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover bounded references/records, evidence-ID lookup, review chronology and context-independent Decimal digests; no authenticated producer, API or action execution |
+| Evaluate UCI-shaped product-day observations | [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md) | [`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) and [`test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) exercise synthetic coverage, cohort, holdout, metrics and redaction; no real source rights, snapshot completeness or point-in-time availability |
 | Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API/default CLI test double plus explicit CLI WorldKernel engine regression; no source authorization, empirical forecast, authenticated review, public transport controls or writes |
 | Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py) cover revalidation of mutable scenarios and the lower scenario/operator run ceiling; no engine import or execution |
 | Execute the M1 policy comparison in WorldKernel | [`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py), [`worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py), [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) | Synthetic mapper/state/parity regressions plus exact-pin engine and CLI integration tests; no real data, forecast validity, hostile-code isolation or HTTP execution |

@@ -901,14 +901,13 @@ M1E-02 actual WorldKernel engine gate or produce an operational decision.
 | [`docs/engineering/WORLDKERNEL_POLICY_WORLD.md`](WORLDKERNEL_POLICY_WORLD.md) | Architecture, state transition, contract, security, failure modes, reproductions, tests and learning exercises |
 | [`docs/engineering/changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md`](changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md) | M1E-04 scope, acceptance criteria, impact map and exact-head evidence |
 | [`docs/engineering/datasets/UCI_ONLINE_RETAIL_EVENT_TIME_CARD.md`](datasets/UCI_ONLINE_RETAIL_EVENT_TIME_CARD.md) | Proposed UCI research dataset card and pre-acquisition privacy/permission gate; no source bytes acquired |
-| [`docs/engineering/datasets/CENSUS_MARTS_RELEASE_VINTAGE_PROTOCOL.md`](datasets/CENSUS_MARTS_RELEASE_VINTAGE_PROTOCOL.md) | Proposed aggregate Census temporal protocol and archive/privacy controls; no source data acquired |
 
 The experimental handler is available only through explicit local CLI
 composition. The API and default CLI remain on the in-process test double.
 Exact parity on fictional input is not evidence of real forecasts, source
 permission, policy optimality, hostile-code isolation or production safety.
 
-## 55. Synthetic retail decision workflow (experimental, no action authority)
+## 57. Synthetic retail decision workflow (experimental, no action authority)
 
 | Tracked path | Function / review boundary |
 | --- | --- |
@@ -927,6 +926,24 @@ is not authorized data; the seasonal profile is not an empirical forecast;
 the residual diagnostic is uncalibrated; and the policy test double is not
 WorldKernel. The trace supports inspection and replay only, not approval,
 ranking, persistence or operational action.
+
+## 58. Synthetic UCI event-time retrospective (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py) | Freezes the product cohort from fit dates, uses fixed validation/holdout origins, requires declared complete dates, abstains on unknown coverage and emits ordinal-only product summaries |
+| [`examples/m1_uci_event_time_research.py`](../../examples/m1_uci_event_time_research.py) | Creates a deterministic fictional workbook in memory and runs the bounded parser/evaluator without source download or persistent data files |
+| [`tests/unit/test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) | Covers fixed split/cohort, coverage and missing-date abstention, zero-safe metrics, holdout noninterference, validation and output minimization |
+| [`tests/integration/test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) | Replays the generated CLI and verifies deterministic parsing, cancellation/quantity classification and honest limitations |
+| [`docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md`](M1_UCI_EVENT_TIME_RESEARCH.md) | Explains source/event-time boundaries, data flow, algorithms, metric eligibility, examples, errors, tests and learning exercises |
+| [`docs/engineering/changes/M1B_01_UCI_EVENT_TIME_PILOT.md`](changes/M1B_01_UCI_EVENT_TIME_PILOT.md) | Defines scope, impact map, acceptance criteria and source-specific approval boundary |
+| [`docs/engineering/datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md`](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md) | Describes generated rows and fixture limits; no original source bytes or permission claims |
+| [`docs/engineering/model_cards/SYNTHETIC_UCI_EVENT_TIME.md`](model_cards/SYNTHETIC_UCI_EVENT_TIME.md) | Records fixed splits, matched baselines and metric rules; makes no empirical or uncertainty claim |
+| [`docs/engineering/CENSUS_ALFRED_VINTAGE_PROTOCOL.md`](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | Keeps the independent aggregate release-vintage proposal separate from SKU demand and UCI event-time evaluation |
+
+The evaluator is experimental and synthetic-only in automated use. It does not
+infer publication time from `InvoiceDate`, authenticate a source manifest or
+prove completeness, source rights or predictive performance.
 
 ## Continuous engineering handoff and execution register
 

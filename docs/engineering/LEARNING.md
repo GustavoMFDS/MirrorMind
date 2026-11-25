@@ -636,3 +636,19 @@ not substituted for returned engine state. Finally inspect the API route and
 verify that HTTP cannot inject this local comparator. A passing exact-engine
 test still does not establish source rights, policy optimality, hostile-code
 isolation, CPU/memory quotas or production safety.
+
+## Guided exercise — understand the UCI event-time boundary (35 minutes)
+
+Read [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py),
+the [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md), the [synthetic
+dataset card](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md), the [model
+card](model_cards/SYNTHETIC_UCI_EVENT_TIME.md), and
+[`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py). Run the
+generated CLI twice and compare JSON. Trace how fit dates freeze the product
+cohort, then predict how a missing declared date affects target and history
+abstentions. Change a product-day value on a declared complete date; contrast
+the resulting zero assumption with removing that date from the coverage
+declaration. Mutate a holdout value and verify validation metrics stay fixed.
+Finally locate where `InvoiceDate` becomes an event day and explain why a
+verified publication vintage requires a distinct source contract. Do not use
+real UCI rows in this exercise.

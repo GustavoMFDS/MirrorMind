@@ -27,8 +27,8 @@ customer rights.
 
 Tests enforce resource guards and error handling on
 small workbooks; they do not establish complete safety
-against malicious XML/ZIP parsers, the ability to ingest
-the full original 541,909-row file, accurate cancellation
+against malicious XML/ZIP parsers, compatibility with
+the original 541,909-row file under explicit caps, accurate cancellation
 reconciliation or empirical forecast quality.
 
 Read [the source-method guide](../UCI_WORKBOOK_READER.md),
