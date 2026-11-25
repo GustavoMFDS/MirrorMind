@@ -16,7 +16,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Later exact clean integrated heads `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and `fd72b76` passed all six local-gate stages with 756 tests; PR #54 head `4d22006` passed with 728 tests. PR #55 sync merge `b9eba02` and its documentation follow-up `cc9bdb4` each passed the complete exact-head gate with 756 tests and all five other stages. The timeout remains historical; no application code or test verifier was weakened. | Reopen only if a later exact-head gate reproduces a failure; do not skip API tests | Codex execution environment / project maintainer | Preserve the restricted timeout and exact-head receipts as separate evidence; keep API tests enabled and rerun outside the restricted environment if the timeout recurs. |
-| B-08 | Published PR #52 head `b431d11` and #53 head `79d3679` each have failed `test`/`symbol-catalog` runs without repository logs. Published PR #54 head `4d22006` and PR #55 pre-sync head `b292db0` also have failed checks. The exact annotation on #54/#55 says recent account payments failed **or** the spending limit needs to be increased; it does not identify which condition applies. No repository test steps ran. The newly synchronized PR #55 candidate is local at `b9eba02`; its official checks have not been inspected yet. See the head-bound run table below. This does not establish a billing root cause or whether a runner change bypasses the pre-job gate. | Repository/account owner checks the GitHub Billing & plans state named by the diagnostic, identifies the actual condition and restores normal check execution; then verify required runs on reviewed heads | GitHub account owner / repository administrator | Preserve required checks and protections. Keep local gate evidence separate; assess a hardened ephemeral runner without treating it as a proven workaround. |
+| B-08 | The latest inspected `test` and `symbol-catalog` checks for published PR heads #52–#61 all failed before repository steps. Their exact annotations list recent account payment failure **or** a spending-limit increase as alternatives; the message does not identify the actual condition or underlying root cause. No repository test steps or logs were returned. See the head-bound table below. This is evidence of a pre-job block, not proof that account billing is the root cause or that a runner change will bypass it. | Account/repository owner inspects the exact GitHub account and Actions state named by the diagnostic, restores normal check execution, then verifies required runs on reviewed heads | GitHub account owner / repository administrator | Preserve required checks and protections. Keep local gate evidence separate; assess a hardened ephemeral runner without treating it as a proven workaround. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
@@ -25,29 +25,32 @@ the named real integration, not a prohibition on design and tests.
 
 ## B-08 exact diagnostics and runner assessment — 2026-11-25
 
-This table records the latest inspected published heads for #52–#55 and the
-last inspected heads for #56–#61. For #54 and #55, diagnostics confirm the
-failed runs did not start repository steps; the annotation says recent account
-payments failed **or** the spending limit needs to be increased. It explicitly
-directs the account owner to Billing & plans but does not distinguish the two
-conditions. No code-test result or specific billing cause is inferred.
+This point-in-time table records the latest inspected published heads for
+#52–#61 before the local PR #58 sync. Detail calls for both required checks on
+each head returned the same pre-job annotation and no job or log records. The
+message says recent account payments failed **or** the spending limit needs to
+be increased, and directs the owner to Billing & plans. It does not distinguish
+the alternatives. No code-test result or specific account cause is inferred.
 
 | PR | Published head | `test` run | `symbol-catalog` run |
 | --- | --- | --- | --- |
 | #52 | `b431d11bf0ac841ff30353a06263d23fb901307c` | [45542863564](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863564) | [45542863839](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863839) |
 | #53 | `79d3679013576c6a209bed9fa031b7f0fabd0d8d` | [45544705354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705354) | [45544705397](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705397) |
 | #54 | `4d220066c3e9ab83a321ac9517bbabc8fc22e293` | [45546742718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742718) | [45546742695](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742695) |
-| #55 | `b292db0231d00f307eb4b0694b8e73014bdb9211` | [45519636625](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636625) | [45519636706](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636706) |
-| #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
+| #55 | `56aa92a6920a429b83458380231642fe59feaf08` | [45548299466](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45548299466) | [45548299391](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45548299391) |
+| #56 | `e993391a61a99d63008bc970cb19af673be4c18c` | [45550857405](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857405) | [45550857276](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857276) |
 | #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
-| #58 | `465a2f2c46fb6484aa2f0abea7920953ca4f0d00` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) |
-| #59 | `a5951e49a78796908ecd1975c65052b5a2548cd7` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) |
-| #60 | `6374f0bb9a981271cb9340a190dcdebec6263cc9` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) |
-| #61 | `288021f25e24efc26591b064eafa1d8b4e287ac8` | [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331) | [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221) |
+| #58 | `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` | [45522848614](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848614) | [45522848658](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848658) |
+| #59 | `afce53a8ebc24261ea33ab705394eecb86459781` | [45529860767](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529860767) | [45529860606](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529860606) |
+| #60 | `59deef2a780d7802d8b8d29b66dd0189e96365ea` | [45538613621](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45538613621) | [45538613716](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45538613716) |
+| #61 | `8101bc78dfa6a0f96bdfabe3dd8c9dc46d19a93e` | [45539810679](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45539810679) | [45539810723](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45539810723) |
 
-Earlier diagnostics for the listed #56–#61 heads also showed failed checks
-before repository steps. No repository workflow test pass can be inferred
-from any of these statuses.
+Local merge commit `5544bc0c2116d825a37d49a3ec75960e9896dd23` integrates #58
+with #55 and passed the complete local gate at 2026-11-25 05:12:21 UTC: 768
+tests plus Ruff, catalog, atlas, evidence and capability checks. That candidate
+was not yet published when the diagnostics above were collected, so its
+official checks remain unobserved here. None of the listed failures is a
+repository test result.
 
 ### Self-hosted runner option
 

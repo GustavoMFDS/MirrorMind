@@ -111,3 +111,29 @@ metadata, and trace it through `_order_quantity`. Then explain why preserving
 the implementation boundary is different from claiming the boundary is a
 retail standard. A future protection-period policy would require a separately
 reviewed change request and distinct acceptance tests.
+
+## PR #55 dependency synchronization and exact-head gate — 2026-11-25
+
+Merge `5544bc0c2116d825a37d49a3ec75960e9896dd23` synchronizes PR #58 with
+the published PR #55 head `56aa92a6920a429b83458380231642fe59feaf08`. This
+retains PR #55's mutation-safe `ScenarioSpec` validation and effective minimum
+run ceiling, with no duplicate cherry-picks. It also retains the PR #53 nested
+receipt authority regressions. The exact merge head passed the complete local
+gate at 2026-11-25 05:12:21 UTC: 768 tests, Ruff, symbol catalog, atlas,
+evidence and capability checks. One existing Starlette/httpx deprecation
+warning appeared. This is local evidence, not official Actions.
+
+The review caveat remains visible in `test_profile_aware_target_stops_before_arrival_day`
+and `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`; conservation
+and paired-stream behavior remain checked by
+`test_inventory_mass_balance_holds_for_every_policy_replication`,
+`test_three_policies_share_each_reproducible_demand_stream`, and
+`test_sensitivity_reuses_the_same_paired_streams`. The one-day rule is still a
+toy heuristic, not an optimized or conventional inventory policy. The latest
+published PR #58 head before this sync was `46b07a0`; its Actions test
+[45522848614](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848614)
+and symbol-catalog
+[45522848658](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848658)
+checks failed before job steps with an annotation listing alternative account
+conditions. It did not identify the cause and ran no repository tests. Actual
+WorldKernel execution remains blocked by B-04.

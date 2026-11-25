@@ -119,11 +119,36 @@ nested-receipt regressions. Merge commit `b9eba02` and documentation head
 On exact head `cc9bdb4` at 2026-11-25 04:37:00 UTC, all 756 tests, Ruff,
 catalog, atlas, evidence and capability checks passed, with one existing
 Starlette/httpx deprecation warning.
-PR #55's prior published pre-sync head `b292db0231d00f307eb4b0694b8e73014bdb9211`
-had failed test and symbol-catalog checks before repository steps under B-08.
-The synchronized candidate is local and has no official Actions result yet.
-The mapper remains request construction only; no WorldKernel import or
-execution is claimed.
+Published PR #55 head `56aa92a6920a429b83458380231642fe59feaf08` includes the
+review correction and docs sync; its exact gate passed 756 tests plus Ruff,
+catalog, atlas, evidence and capability checks at 2026-11-25 04:39:14 UTC.
+Its latest Actions checks failed before job steps with the alternative account
+annotation under B-08; no remote tests ran. The mapper remains request
+construction only; no WorldKernel import or execution is claimed.
+
+## PR #56 disjoint residual calibration
+
+Merge `b9bb86d` integrates PR #53's receipt-parity regressions into PR #56.
+Published head `e993391a61a99d63008bc970cb19af673be4c18c` passed the exact
+local gate at 2026-11-25 05:02:30 UTC: 700 tests plus Ruff, symbol catalog,
+atlas, evidence and capability checks. One existing Starlette/httpx
+deprecation warning appeared. Its Actions test [45550857405](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857405)
+and symbol-catalog [45550857276](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857276)
+checks failed before job steps with an annotation listing alternative account
+conditions; no remote tests ran. This remains experimental and does not prove
+empirical calibration. The latest change and exact-head gate are recorded in
+the [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+
+## PR #58 synthetic policy comparison
+
+PR #58's current local dependency sync is merge `5544bc0c2116d825a37d49a3ec75960e9896dd23`,
+which brings published PR #55 head `56aa92a` into the simulation branch without
+duplicate cherry-picks. The exact merged head passed 768 tests plus Ruff,
+catalog, atlas, evidence and capability checks at 2026-11-25 05:12:21 UTC.
+The arrival-day/one-day behavior stays an explicit toy-policy caveat; paired
+streams and item mass balance remain tested. The previous published #58 head
+`46b07a0` had pre-job Actions failures under B-08. No policy optimization or
+WorldKernel execution is claimed; actual engine acceptance remains B-04.
 
 ## Architecture and actual execution boundaries
 
@@ -133,7 +158,7 @@ execution is claimed.
 | Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), [composite retail preflight](../../src/mirrormind/domains/retail/evidence_flow.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
 | Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
 | Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
-| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol and strict pure [WorldKernel request mapping](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Actual compatible optional engine adapter, execution, result validation and budgets |
+| Simulation | [Synthetic retail policy comparison](M1_RETAIL_POLICY_SIMULATION.md), [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py), and strict pure [WorldKernel request mapping](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Actual compatible optional engine adapter, execution, result validation and budgets |
 | Decision, orchestration and UI | Design and review templates | Executable comparison, agent/RAG workflow, review interface |
 | Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |
 
