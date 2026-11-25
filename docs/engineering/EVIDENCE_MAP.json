@@ -875,10 +875,80 @@
     "limitation": "The synthetic case proves exact local request construction only. It does not verify unit provenance, source rights, a pinned engine package, SDK execution, server-enforced quotas, result validity or business policy quality."
   },
   {
+    "id": "MM-WKMAP-002",
+    "guide": "docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md",
+    "test": "tests/unit/test_worldkernel_mapping.py",
+    "function": "test_mapping_revalidates_mutated_scenario_before_budget_mapping",
+    "limitation": "Reconstructs and validates the current local scenario at request-mapping time only; it does not make the model immutable across later caller changes or enforce a worker/server runtime quota."
+  },
+  {
+    "id": "MM-WKMAP-003",
+    "guide": "docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md",
+    "test": "tests/unit/test_worldkernel_mapping.py",
+    "function": "test_mapping_preserves_lower_scenario_or_operator_run_ceiling",
+    "limitation": "Checks the request's declared max_runs against two local ceilings; it does not prove that an external WorldKernel executor enforces the declaration or the other scenario budgets."
+  },
+  {
+    "id": "MM-DTRACE-002",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_terminal_review_cannot_precede_trace_creation",
+    "limitation": "Checks chronology for caller-supplied timestamps; it does not authenticate reviewers or establish trusted clocks."
+  },
+  {
+    "id": "MM-DTRACE-003",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_result_digest_is_lossless_and_independent_of_decimal_context",
+    "limitation": "Checks deterministic Python Decimal canonicalization for local fixtures; it does not establish cross-language canonicalization or external provenance."
+  },
+  {
+    "id": "MM-DTRACE-004",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_total_trace_records_are_bounded_across_sections",
+    "limitation": "Enforces an aggregate record bound in the trace schema; it does not enforce HTTP body size, rate, memory budgets or concurrent request limits."
+  },
+  {
+    "id": "MM-DTRACE-005",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_terminal_review_accepts_creation_boundary_and_equivalent_timezone",
+    "limitation": "Checks equal-instant and timezone-offset handling for synthetic review payloads; it does not establish trusted time or reviewer identity."
+  },
+  {
+    "id": "MM-DTRACE-006",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_trace_record_sections_have_a_maximum_size",
+    "limitation": "Checks a per-section schema bound; it does not impose transport or concurrent-work limits."
+  },
+  {
+    "id": "MM-DTRACE-007",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_trace_reference_lists_have_a_maximum_size",
+    "limitation": "Checks a per-record reference bound; it does not authenticate referenced records or enforce a request-size limit."
+  },
+  {
     "id": "MM-SIM-001",
     "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
     "test": "tests/unit/test_retail_policy_simulation.py",
     "function": "test_three_policies_share_each_reproducible_demand_stream",
     "limitation": "The test proves deterministic local mechanics and equal synthetic demand digests across three policies and lead-time scenarios. Inputs and cost coefficients are caller assertions; no real stock, demand, forecast, engine result, optimal policy or operational approval is verified."
+  },
+  {
+    "id": "MM-SIM-002",
+    "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
+    "test": "tests/unit/test_retail_policy_simulation.py",
+    "function": "test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat",
+    "limitation": "The test reproduces the local half-open target interval and checks its output caveat; it does not establish a standard or optimized policy, downstream trace persistence, or business quality."
+  },
+  {
+    "id": "MM-SIM-003",
+    "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
+    "test": "tests/unit/test_retail_policy_simulation.py",
+    "function": "test_inventory_mass_balance_holds_for_every_policy_replication",
+    "limitation": "The test checks quantity conservation for local synthetic fixtures using a unit procurement coefficient; it is not evidence for actual purchasing, inventory operations, costs or service levels."
   }
 ]

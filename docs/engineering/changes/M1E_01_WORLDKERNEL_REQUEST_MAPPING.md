@@ -10,9 +10,11 @@ local JSON exchange, but its request is not interchangeable with
 **Desired behavior:** add a pure, deterministic mapper for the one reviewed
 built-in retail world. Require an exact MirrorMind world/version pair, an
 explicit compatible unit context, a supported state and parameter shape, and
-operator-configured step/run/transition limits. Reject references or
-interventions that the exchange cannot faithfully represent. The mapper must
-not import, install, start or call WorldKernel.
+operator-configured step/run/transition limits. Revalidate mutable scenario
+state at the mapping boundary and ensure the emitted run ceiling is the lower
+of scenario and operator budgets. Reject references or interventions that the
+exchange cannot faithfully represent. The mapper must not import, install,
+start or call WorldKernel.
 
 **Why:** M1E-01 is a P0 dependency for an actual optional engine adapter. A
 tested translation boundary can be completed independently while the engine
@@ -46,8 +48,9 @@ review is not a runtime pin or compatibility certification.
   intervention, evidence or forecast references, and unit/world revisions
   outside the allowlist.
 - [x] Enforce operator-owned limits supplied separately from `ScenarioSpec`;
-  reject horizon, run count and total transitions over those limits and put
-  those same limits in the v1 request.
+  reject horizon and total transitions over those limits, revalidate the
+  current mutable scenario, and cap requested/emitted runs by both the
+  scenario budget and operator ceiling.
 - [x] Produce a deterministic JSON-compatible request without importing or
   requiring the WorldKernel package; do not execute the request.
 - [x] Keep API responses and capability claims unchanged; the adapter remains
@@ -73,9 +76,15 @@ All test/example values are synthetic. The mapping does not verify source
 rights, unit provenance, world code identity or registered-world trust. The
 unit context is an explicit caller assertion. `demo-1` identifies the remote
 trusted registration manifest entry, not a cryptographic artifact. Caller
-data cannot raise the separately supplied operator caps, but the mapper alone
-does not authenticate who constructed those caps or enforce wall-clock,
-worker, memory or server budgets.
+data cannot raise the separately supplied operator caps. The outgoing run
+limit is the minimum of the scenario budget and operator ceiling, and the
+mapper reconstructs the scenario from its current serialized fields so
+post-construction mutation cannot bypass cross-field validation. The mapper
+alone does not authenticate who constructed the operator limits or enforce
+wall-clock, worker, memory or server budgets. WorldKernel exchange v1 has no
+fields for `timeout_seconds`, `max_model_calls` or `max_output_tokens`; a
+future execution adapter must enforce applicable values or reject before
+execution.
 
 ## 4. Compatibility and risks
 
@@ -83,8 +92,10 @@ No `ScenarioSpec` or HTTP schema changes. Existing inputs that include an
 unsupported intervention or omit a required model input continue to validate
 as scenarios but fail at the new mapping boundary. This is intentional
 fail-closed behavior: the current WorldKernel demo otherwise supplies its own
-default demand/reorder values. The mapper returns a plain request object only;
-it makes no runtime, forecast, business-validity or security guarantee.
+default demand/reorder values. A scenario that was mutated into an invalid
+state after construction now fails at mapping with `WorldKernelMappingError`.
+The mapper returns a plain request object only; it makes no runtime, forecast,
+business-validity or security guarantee.
 
 ## 5. Implementation plan
 
@@ -108,7 +119,8 @@ it makes no runtime, forecast, business-validity or security guarantee.
   `WorldKernelOperatorLimits`, `InventoryWorldUnitContext` and
   `build_worldkernel_exchange_request` in
   `src/mirrormind/modules/simulation/worldkernel_mapping.py`.
-- Tests: `tests/unit/test_worldkernel_mapping.py` passed **25 tests**. The
+- Tests at the original implementation head:
+  `tests/unit/test_worldkernel_mapping.py` passed **25 tests**. The
   canonical local gate on docs head
   `2330dc50a49bb80abc601b0635e5e7d4916ee283` passed **737 tests**, including
   `tests/integration/test_api.py`; Ruff, symbol catalog, atlas, evidence and
@@ -147,3 +159,37 @@ it makes no runtime, forecast, business-validity or security guarantee.
   `python scripts/docs/coverage.py --check`;
   `python scripts/docs/evidence.py --check`;
   `python scripts/docs/capabilities.py --check`.
+
+## 7. Independent review correction — scenario budget boundary
+
+Review of PR #55 identified that `ScenarioSpec` is mutable: a caller could
+construct a scenario that satisfies its nested run budget, mutate `runs`, and
+then map the invalid object. It also found that the request's declared
+`max_runs` could exceed the scenario's own lower budget when the operator cap
+was higher. Both cases were reproduced before the correction.
+
+The mapper now revalidates a Python-mode snapshot at entry, converts only
+Pydantic `ValidationError` into the generic mapping-boundary error, and emits
+`min(operator_limits.max_runs, scenario.budget.max_simulation_runs)`. Focused
+regressions are named
+`test_mapping_revalidates_mutated_scenario_before_budget_mapping` and
+`test_mapping_preserves_lower_scenario_or_operator_run_ceiling`. They prove
+local validation and request declaration only. The pure mapper still does not
+execute WorldKernel or enforce worker resources. Mapping and execution budgets
+not representable in exchange v1 remain an explicit future-adapter contract.
+
+The review correction is in the integrated PR #55 candidate at
+`07c405b0d49ab05611413acce61af1123111fb48`; documentation follow-up
+`4d1d5b92e990f6d771209097fde1622c3c88958f` preserves the same source state.
+The exact clean SHAs `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and the
+reconciled merge `fd72b76` passed the complete integrated local gate: 756 tests, Ruff, symbol catalog, atlas,
+evidence and capability checks. Pytest reported one existing Starlette/httpx
+deprecation warning. A restricted replay of `07c405b` timed out at 900 seconds
+in pytest; complete passes ran outside that sandbox and did not skip tests.
+Pre-sync branch head `3f9bbb876336334aac9abe289f9f9c0161d42b72` was
+fast-forward-pushed. Its [test run 45518147296](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147296)
+and [symbol-catalog run 45518147363](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147363)
+failed before repository steps under B-08. The reconciled merge
+`fd72b76` has a full local pass but is not yet published. None of this
+verifies WorldKernel execution, server resource enforcement, or official CI
+success.

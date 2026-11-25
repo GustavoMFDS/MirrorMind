@@ -144,3 +144,84 @@ bytes, source-specific adapter, customer-data
 review, real historical publication times,
 held-out real-data predictive results,
 calibrated uncertainty or WorldKernel integration.
+
+## 5. Decision-ready alternatives for B-01 / B-02
+
+This section prepares a source and temporal-method decision. It grants no
+permission to download data or make a real-source capability claim.
+
+### Option A — UCI Online Retail II for retrospective transaction research
+
+UCI's current [Online Retail II record](https://archive.ics.uci.edu/dataset/502/online+retail)
+states CC BY 4.0, 1,067,371 transactions, and event dates from 2009-12-01
+through 2011-12-09. It also lists customer and invoice identifiers. The page
+records a 2019-09-20 donation date, which is not evidence of when each row was
+first available to a forecaster. A legal license statement does not resolve
+privacy, intended use, retention, or historical-availability questions.
+
+**Permitted research scope if the owner approves:** one exact source snapshot,
+attribution and change notice, local-only controlled processing, reviewed
+data card, minimal aggregation, no raw rows in Git/CI/prompts, and explicitly
+retrospective event-time analysis. Do not call it leakage-free point-in-time
+backtesting, live demand, inventory optimization, or M1C-03 empirical
+validation unless independent release-time evidence is obtained. Removing
+`CustomerID` and `InvoiceNo` is a minimization step, not proof of
+anonymization.
+
+### Option B — Census MARTS release-vintage method pilot
+
+The U.S. Census Bureau publishes advance and monthly retail release schedules.
+Its methodology states that advance national retail estimates appear about
+ten business days after the reference month and are revised about one month
+later by the larger monthly survey. Those products are monthly U.S. industry
+aggregates, not SKU demand, store inventory, or supplier lead times. The
+[release schedule](https://www.census.gov/retail/release_schedule.html) and
+[MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)
+make this a candidate for testing temporal controls, not for validating the
+retail policy or WorldKernel mapping.
+
+Before a pilot, locate and preserve the actual first-release value file for
+each selected month. A published release date alone does not prove that the
+retained historical value is the first release. Record source URL, file bytes
+and SHA-256, release timestamp/time zone, retrieval time, revision relation,
+series definition and transformation. Where vintages are absent, do not
+reconstruct them from today's revised series. [ALFRED real-time periods](https://fred.stlouisfed.org/docs/api/fred/realtime_period.html)
+describe retrieval by historical knowledge period and may be evaluated as an
+alternative vintage source; no API key, access or download is assumed here.
+
+### Proposed temporal protocol (owner decision required)
+
+1. Select one aggregate series and geography, one to three monthly forecast
+   horizons, and first-release or revised-final target semantics before
+   inspecting holdout performance.
+2. Preserve a chronological final holdout of the latest 12–24 eligible
+   months, subject to source history and vintage completeness. Use expanding
+   origins strictly before that holdout; never shuffle timestamps.
+3. At each origin, expose only feature values whose documented release
+   timestamp is no later than that origin. Keep reference month and release
+   time as separate fields. Do not fill missing targets with zero.
+4. Compare against matched seasonal-naive (lag 12) and trailing-three-month
+   mean baselines on the same eligible origins. Report MAE, RMSE, MASE where
+   defined, coverage, excluded origins, and target vintage. Freeze the split
+   and baseline before model tuning; report uncertainty separately and do
+   not infer inventory-policy quality from aggregate sales.
+5. Store an immutable vintage manifest and dataset card before any run. A
+   reviewer must approve rights, terms, retention, cost/access requirements
+   and the exact research-only scope before retrieval.
+
+### Decision requested from the project owner
+
+- Approve or reject a **no-download, design-only** Census/ALFRED method pilot
+  and its aggregate-only scope.
+- If approved, choose Census first releases or an ALFRED series after an
+  availability and terms check; set geography and horizon. Data retrieval
+  still waits for a reviewed dataset card and access approval.
+- Decide separately whether UCI transaction research is in scope, including
+  attribution, commercial/research purpose, privacy review, minimization,
+  retention and local storage boundary.
+- Keep B-01/B-02 open for SKU-level retail evidence until an approved source
+  supplies defensible point-in-time availability and a locked empirical
+  holdout.
+
+**Current status:** options and protocol are prepared for owner decision;
+neither source was downloaded, and no approval or empirical result is claimed.

@@ -103,6 +103,57 @@ def test_profile_aware_target_stops_before_arrival_day() -> None:
     assert _order_quantity(**inputs, lead_time_days=2) == 17
 
 
+def test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat() -> None:
+    profile = tuple(8 + (day % 3) for day in range(28))
+    assumptions = _request().assumptions.model_dump()
+    assumptions.update(
+        {
+            "initial_stock_units": 0,
+            "lead_time_days": 1,
+            "safety_stock_units": 0,
+            "procurement_cost_per_unit": 1,
+        }
+    )
+    request = _request(demand_profile_units=profile, assumptions=assumptions)
+    quantity = _order_quantity(
+        policy_id="forecast_aware_order_up_to",
+        day_index=0,
+        inventory_position_units=0,
+        demand_profile_units=request.demand_profile_units,
+        lead_time_days=1,
+        assumptions=request.assumptions,
+    )
+
+    assert request.demand_profile_units[1] > 0
+    assert quantity == 0
+
+    caveats = compare_synthetic_retail_policies(request)["modeling_caveats"]
+    assert caveats == [
+        "forecast_aware_order_up_to sums expected profile indices [day + 1, arrival_day); it excludes demand on the arrival day.",
+        "With lead_time_days=1, that interval is empty. With zero safety stock and zero inventory position, the rule orders zero even when arrival-day demand is positive.",
+        "This is a toy day-boundary heuristic, not a standard or optimized order-up-to policy.",
+    ]
+
+
+def test_inventory_mass_balance_holds_for_every_policy_replication() -> None:
+    assumptions = _request().assumptions.model_dump()
+    assumptions["procurement_cost_per_unit"] = 1
+    request = _request(assumptions=assumptions)
+    result = compare_synthetic_retail_policies(request)
+
+    for scenario in result["lead_time_sensitivity"]:
+        for policy in scenario["policies"]:
+            for replication in policy["replication_results"]:
+                metrics = replication["metrics"]
+                assert (
+                    request.assumptions.initial_stock_units
+                    + metrics["procurement_cost_units"]
+                    == metrics["fulfilled_units"]
+                    + metrics["ending_on_hand_units"]
+                    + metrics["pending_order_units"]
+                )
+
+
 def test_summary_reports_inventory_service_and_synthetic_cost_components() -> None:
     result = compare_synthetic_retail_policies(_request())
     policy = result["lead_time_sensitivity"][1]["policies"][0]

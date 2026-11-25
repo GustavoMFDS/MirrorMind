@@ -77,3 +77,36 @@ The calculation must be pure, bounded, deterministic and free of network, filesy
 - Docs updated: `M1_RETAIL_POLICY_SIMULATION.md`, `SYSTEM_MAP.md`, `API_WALKTHROUGH.md`, `DEBUGGING.md`, `LEARNING.md`, `M1_EXECUTION_PLAN.md`, `PROJECT_STATUS.md`, `TASK_BACKLOG.md`, `CAPABILITY_LEDGER.json`, `EVIDENCE_MAP.json`, `REPOSITORY_ATLAS.md`, `SEMANTIC_COVERAGE.md`, `ARCHITECTURE.md`, `CONTRACTS.md`, `RETAIL_MVP.md`, `ROADMAP.md`, `STRUCTURE.md`, engineering README and generated `SYMBOLS.md`.
 - Known limitations / follow-up: M1E-02 actual engine, M1B/M1C empirical data and M1F end-to-end decision trace remain separate gates.
 - Independent explanation: run `python -m examples.m1_retail_policy_test_double`, compare per-replication demand digests across the three policy rows, then change the seed and rerun `tests/unit/test_retail_policy_simulation.py` to see pairing and replay guarantees.
+
+## Independent review correction — arrival-day demand caveat
+
+Review of PR #58 identified that the profile-aware policy sums expected demand
+over `[day + 1, arrival_day)`. The existing boundary test confirmed this is
+the documented toy rule, rather than an accidental discrepancy, but the
+comparison did not expose the limitation in its output. For a one-day lead
+time the interval is empty; at zero inventory position and zero safety stock,
+the target and order are zero even when expected arrival-day demand is
+positive. The name `forecast_aware_order_up_to` must not be read as a claim
+that this is a conventional protection-period or optimized policy.
+
+The correction preserves the half-open interval and the existing
+`test_profile_aware_target_stops_before_arrival_day` boundary. The result now
+includes `modeling_caveats` with the excluded arrival-day demand, the concrete
+one-day case and the toy-policy limitation. The CLI integration test checks
+that the caveat remains visible in the emitted JSON. A separate mass-balance
+regression verifies item conservation for each policy, scenario and
+replication under the local event order. This metadata does not establish
+that downstream consumers persist it; PR #59 must carry the caveat into its
+decision trace, with a focused integration test.
+
+- Reproduction: `tests/unit/test_retail_policy_simulation.py::test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat` first failed because the output had no `modeling_caveats`, after confirming positive arrival-day demand and a zero order. After the correction, the regression passes and checks the exact output caveats.
+- Conservation: `tests/unit/test_retail_policy_simulation.py::test_inventory_mass_balance_holds_for_every_policy_replication` checks initial stock plus procurement equals fulfilled demand, ending stock and pending orders when the fixture uses a unit procurement coefficient of one.
+- Consumer contract: `tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison` asserts the caveat is present and does not call the rule standard or optimized.
+- Focused validation: `python -m pytest -q tests/unit/test_retail_policy_simulation.py tests/integration/test_retail_policy_simulation_cli.py` passed 12 tests; focused Ruff passed. The full integrated gate remains required on the reconciled PR #58 candidate.
+- Limitations: no algorithm semantics changed; this does not make the policy a conventional order-up-to method or establish inventory quality. The local test double still does not invoke WorldKernel. Actual execution remains gated by B-04.
+
+Learning exercise: reproduce the zero-stock/one-day case, inspect the result
+metadata, and trace it through `_order_quantity`. Then explain why preserving
+the implementation boundary is different from claiming the boundary is a
+retail standard. A future protection-period policy would require a separately
+reviewed change request and distinct acceptance tests.

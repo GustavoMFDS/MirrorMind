@@ -171,7 +171,9 @@ are intentionally unsupported. The existing `examples/retail-scenario.json`
 fails mapping because it has an intervention and omits daily demand; do not
 add hidden defaults to make it pass. This module only constructs a request.
 It does not verify remote package identity, run the simulation, enforce
-wall-clock or memory limits, or validate result payloads.
+`timeout_seconds`, model-call/output-token limits, worker quotas, wall-clock or
+memory limits, or validate result payloads. A future adapter must enforce
+budgets absent from exchange v1 or reject before execution.
 
 ## Synthetic retail policy comparison differs from its expected fixture
 
@@ -183,7 +185,13 @@ Run `tests/unit/test_retail_policy_simulation.py` and
 seed and profile first, then verify that the per-replication demand digest is
 identical across every policy and lead-time scenario. Trace day ordering in
 `_simulate_replication`: due orders arrive at day start, demand is fulfilled,
-holding cost is charged, and the policy places an order at day end. A mismatch
-is a local deterministic behavior change, not evidence about actual retail
-stock or costs. Never pass this result to the WorldKernel mapper as if it were
-an engine receipt.
+holding cost is charged, and the policy places an order at day end. If a
+one-day lead-time run with zero stock and safety stock orders zero despite a
+positive arrival-day profile value, inspect the result's `modeling_caveats`
+and `_order_quantity` interval `[day + 1, arrival_day)`. This is the current
+toy convention; the output must not be described as a standard or optimized
+order-up-to policy. Check `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`
+and `test_inventory_mass_balance_holds_for_every_policy_replication` before
+changing that behavior. A mismatch is a local deterministic behavior change,
+not evidence about actual retail stock or costs. Never pass this result to the
+WorldKernel mapper as if it were an engine receipt.
