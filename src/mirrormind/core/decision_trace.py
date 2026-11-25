@@ -41,6 +41,8 @@ Label = Annotated[
 ScalarValue: TypeAlias = StrictStr | StrictInt | FiniteFloat | StrictBool
 NumericValue: TypeAlias = StrictInt | FiniteFloat
 Sha256Digest = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+_MAX_TRACE_RECORDS = 1_000
+_MAX_REFERENCES_PER_RECORD = 100
 
 
 class _TraceModel(BaseModel):
@@ -55,6 +57,16 @@ def _require_timezone(value: datetime) -> datetime:
 
 def _require_optional_timezone(value: datetime | None) -> datetime | None:
     return _require_timezone(value) if value is not None else None
+
+
+def _canonical_decimal(value: Decimal) -> str:
+    """Format a finite Decimal without consulting or rounding through context."""
+    if value.is_zero():
+        return "0"
+    fixed_point = format(value, "f")
+    if "." in fixed_point:
+        fixed_point = fixed_point.rstrip("0").rstrip(".")
+    return fixed_point
 
 
 class EvidenceReference(_TraceModel):
@@ -76,7 +88,9 @@ class ObservedFact(_TraceModel):
     value: ScalarValue
     unit: Label
     observed_at: datetime
-    evidence_refs: tuple[RecordId, ...] = Field(min_length=1)
+    evidence_refs: tuple[RecordId, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
 
     _aware_observed_at = field_validator("observed_at")(_require_timezone)
 
@@ -87,7 +101,9 @@ class ForecastEstimate(_TraceModel):
     value: ScalarValue
     unit: Label
     model_card_ref: Reference
-    fact_refs: tuple[RecordId, ...] = Field(min_length=1)
+    fact_refs: tuple[RecordId, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
 
 
 class ModelingAssumption(_TraceModel):
@@ -107,9 +123,15 @@ class ConditionalOutcome(_TraceModel):
     outcome_id: RecordId
     alternative_ref: Reference
     engine_contract_ref: Reference
-    forecast_refs: tuple[RecordId, ...] = Field(min_length=1)
-    assumption_refs: tuple[RecordId, ...] = Field(min_length=1)
-    metrics: tuple[OutcomeMetric, ...] = Field(min_length=1)
+    forecast_refs: tuple[RecordId, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
+    assumption_refs: tuple[RecordId, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
+    metrics: tuple[OutcomeMetric, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
     seed: int = Field(ge=0, le=2**63 - 1)
     runs: int = Field(ge=1, le=10_000)
 
@@ -117,7 +139,9 @@ class ConditionalOutcome(_TraceModel):
 class MissingEvidence(_TraceModel):
     gap_id: RecordId
     description: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=512)]
-    blocks_refs: tuple[RecordId, ...] = Field(min_length=1)
+    blocks_refs: tuple[RecordId, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
 
 
 class CostMeasurement(_TraceModel):
@@ -172,13 +196,27 @@ class DecisionTrace(_TraceModel):
     question: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=512)]
     cutoff_at: datetime
     created_at: datetime
-    evidence: tuple[EvidenceReference, ...] = ()
-    observations: tuple[ObservedFact, ...] = ()
-    forecasts: tuple[ForecastEstimate, ...] = ()
-    assumptions: tuple[ModelingAssumption, ...] = ()
-    outcomes: tuple[ConditionalOutcome, ...] = ()
-    missing_evidence: tuple[MissingEvidence, ...] = ()
-    costs: tuple[CostMeasurement, ...] = ()
+    evidence: tuple[EvidenceReference, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    observations: tuple[ObservedFact, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    forecasts: tuple[ForecastEstimate, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    assumptions: tuple[ModelingAssumption, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    outcomes: tuple[ConditionalOutcome, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    missing_evidence: tuple[MissingEvidence, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    costs: tuple[CostMeasurement, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
     human_review: HumanReview = Field(default_factory=HumanReview)
 
     _aware_trace_times = field_validator("cutoff_at", "created_at")(_require_timezone)
@@ -192,7 +230,7 @@ class DecisionTrace(_TraceModel):
             if isinstance(value, datetime):
                 return value.isoformat()
             if isinstance(value, Decimal):
-                return format(value.normalize(), "f")
+                return _canonical_decimal(value)
             raise TypeError(f"unsupported canonical result value: {type(value).__name__}")
 
         canonical = json.dumps(
@@ -210,7 +248,27 @@ class DecisionTrace(_TraceModel):
         if self.created_at < self.cutoff_at:
             raise ValueError("trace creation cannot precede the declared cutoff")
 
-        evidence_ids = {item.evidence_id for item in self.evidence}
+        if (
+            self.human_review.status in {"approved", "rejected"}
+            and self.human_review.decided_at is not None
+            and self.human_review.decided_at < self.created_at
+        ):
+            raise ValueError("human review decision cannot precede trace creation")
+
+        record_sections = (
+            self.evidence,
+            self.observations,
+            self.forecasts,
+            self.assumptions,
+            self.outcomes,
+            self.missing_evidence,
+            self.costs,
+        )
+        if 1 + sum(len(section) for section in record_sections) > _MAX_TRACE_RECORDS:
+            raise ValueError(f"decision trace cannot exceed {_MAX_TRACE_RECORDS} records")
+
+        evidence_by_id = {item.evidence_id: item for item in self.evidence}
+        evidence_ids = set(evidence_by_id)
         fact_ids = {item.fact_id for item in self.observations}
         forecast_ids = {item.forecast_id for item in self.forecasts}
         assumption_ids = {item.assumption_id for item in self.assumptions}
@@ -241,7 +299,7 @@ class DecisionTrace(_TraceModel):
             if unknown:
                 raise ValueError(f"unknown evidence reference: {min(unknown)}")
             for evidence_ref in fact.evidence_refs:
-                evidence = next(item for item in self.evidence if item.evidence_id == evidence_ref)
+                evidence = evidence_by_id[evidence_ref]
                 if evidence.available_at < fact.observed_at:
                     raise ValueError("evidence availability precedes its observation")
 

@@ -95,10 +95,16 @@ caller's values.
    start of day `d + L`, where `L` is lead time; arrivals outside the 28-day
    horizon stay in the reported pipeline. The profile-aware target sums
    expected demand at indices `[d + 1, d + L)`: intervening demand after the
-   order day and before receipt. With a one-day lead time, receipt is the next
-   morning, so there is no intervening demand period and safety stock remains
-   the target. This boundary is covered by
-   `test_profile_aware_target_stops_before_arrival_day`.
+   order day and before receipt. This half-open interval excludes demand on
+   the arrival day. With a one-day lead time, receipt is the next morning, so
+   the interval is empty; when safety stock and inventory position are both
+   zero, the policy orders zero even if expected arrival-day demand is
+   positive. This is the implemented toy heuristic, not a standard or
+   optimized order-up-to policy. The result exposes this limitation in
+   `modeling_caveats`. The boundary remains covered by
+   `test_profile_aware_target_stops_before_arrival_day`, and
+   `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat` asserts the
+   concrete case and its output metadata.
 5. `_aggregate_policy` returns exact metric totals across replications and
    per-replication means. It retains each stream digest alongside that run's
    metrics. Fill rate uses the combined fulfilled / total-demand denominator,
@@ -141,6 +147,11 @@ scenario has the same three ordered policy IDs and contains:
   days, ending stock, pending order quantity and order count.
 - `ranking: null` and `ranking_status: "not_computed"` to prevent the report
   from silently selecting a policy.
+- `modeling_caveats`: explicit limits on the profile-aware rule's half-open
+  protection window and its toy status. Consumers, including a future
+  decision trace, must retain these caveats with the comparison. Their
+  presence does not prove downstream persistence; that contract is verified
+  separately by the integrated workflow tests.
 
 One recorded run of the documented CLI produced the following base two-day
 lead-time summary. It is an arithmetic check on the fictional fixture, not a
@@ -180,6 +191,8 @@ scenarios for independent replay.
 | `test_seed_changes_paired_exogenous_stream_digests` | Changing the seed changes the demand stream digests | A seed does not make assumptions empirically representative |
 | `test_policy_rules_can_produce_distinct_conditional_outcomes` | The three decision rules can yield distinct fixture costs under the same exogenous streams | A lower conditional synthetic cost does not establish a business winner |
 | `test_profile_aware_target_stops_before_arrival_day` | A one-day lead time has no intervening demand; a two-day lead time covers only the next day's demand before receipt | Tests the local day-boundary convention, not a retail service standard |
+| `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat` | Reproduces positive expected arrival-day demand with a zero order at one-day lead and verifies that the result states why and rejects an optimization claim | Documents the current toy rule; does not establish a conventional protection period or business quality |
+| `test_inventory_mass_balance_holds_for_every_policy_replication` | Checks initial stock plus received and pending purchases equals fulfilled demand plus ending stock and pending purchases for each policy run | Fixture conservation under the local event order only; not evidence for actual inventory operations |
 | `test_summary_reports_inventory_service_and_synthetic_cost_components` | Units and stock/service/order/cost totals are present and cost components add to total cost | Cost coefficients are caller assertions, not an accounting model |
 | `test_invalid_profile_and_unsupported_units_fail_closed` | Wrong-length profiles, unsupported item units and replication counts over the local budget are rejected | Does not validate organizational unit governance |
 | `test_out_of_range_profile_stock_cost_and_seed_fail_validation` | Daily demand, initial stock, a cost coefficient, and seed values beyond the contract bounds are rejected | Bounds do not establish that accepted assumptions are realistic |
@@ -189,7 +202,12 @@ scenarios for independent replay.
 
 Curated claim `MM-SIM-001` cites
 `tests/unit/test_retail_policy_simulation.py::test_three_policies_share_each_reproducible_demand_stream`.
-The capability ledger separately cites the end-to-end CLI integration test.
+`MM-SIM-002` cites
+`test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`, and
+`MM-SIM-003` cites
+`test_inventory_mass_balance_holds_for_every_policy_replication` in the same
+unit test file. The capability ledger separately cites the end-to-end CLI
+integration test.
 
 ## Safety, failures and limitations
 
@@ -211,6 +229,10 @@ The capability ledger separately cites the end-to-end CLI integration test.
   profile. That profile is available as an explicit scenario assumption; it
   must not be confused with information actually observed at a forecast
   cutoff.
+- The profile-aware target excludes arrival-day demand by design. In the
+  one-day/zero-safety-stock case it can place no order under positive
+  expected demand. The result repeats this caveat; consumers must not label
+  the rule standard, optimal or operationally safe.
 - Costs omit taxes, discounts, capacity, backorders, spoilage, cash timing and
   multiple product interactions. Unmet demand is a proxy, not observed lost
   sales or service-level measurement.

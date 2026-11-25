@@ -111,6 +111,30 @@ def test_mapping_is_deterministic_and_uses_operator_limits() -> None:
     }
 
 
+def test_mapping_revalidates_mutated_scenario_before_budget_mapping() -> None:
+    scenario = _scenario(runs=3, budget={"max_simulation_runs": 3})
+    scenario.runs = 4
+
+    with pytest.raises(WorldKernelMappingError, match="revalidation"):
+        _map(scenario, operator_limits=_limits(max_runs=10))
+
+
+@pytest.mark.parametrize(
+    ("scenario_max_runs", "operator_max_runs", "expected_max_runs"),
+    [(2, 10, 2), (10, 3, 3)],
+)
+def test_mapping_preserves_lower_scenario_or_operator_run_ceiling(
+    scenario_max_runs: int, operator_max_runs: int, expected_max_runs: int
+) -> None:
+    scenario = _scenario(runs=1, budget={"max_simulation_runs": scenario_max_runs})
+    request = _map(
+        scenario,
+        operator_limits=_limits(max_runs=operator_max_runs),
+    )
+
+    assert request["limits"]["max_runs"] == expected_max_runs  # type: ignore[index]
+
+
 @pytest.mark.parametrize(
     ("changes", "message"),
     [

@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Literal
 
+from pydantic import ValidationError
+
 from ...core.contracts import ScenarioSpec
 
 _MAX_SCENARIO_STEPS = 366
@@ -140,6 +142,14 @@ def build_worldkernel_exchange_request(
     """
     if not isinstance(scenario, ScenarioSpec):
         raise WorldKernelMappingError("scenario must be a validated ScenarioSpec")
+    try:
+        # ScenarioSpec is mutable; rebuild from its current fields so a mutation
+        # after initial construction cannot bypass nested cross-field budgets.
+        scenario = ScenarioSpec.model_validate(scenario.model_dump(mode="python"))
+    except ValidationError as exc:
+        raise WorldKernelMappingError(
+            "scenario failed mapping-boundary revalidation"
+        ) from exc
     if not isinstance(operator_limits, WorldKernelOperatorLimits):
         raise WorldKernelMappingError("operator-owned limits are required")
     if scenario.schema_version != "0.1":
@@ -183,9 +193,16 @@ def build_worldkernel_exchange_request(
         required_fields=_REQUIRED_PARAMETER_FIELDS,
     )
 
+    effective_max_runs = min(
+        operator_limits.max_runs,
+        scenario.budget.max_simulation_runs,
+    )
+    if scenario.runs > effective_max_runs:
+        raise WorldKernelMappingError(
+            "scenario run count exceeds a scenario budget or operator limit"
+        )
     if (
         scenario.horizon_days > operator_limits.max_steps
-        or scenario.runs > operator_limits.max_runs
         or scenario.horizon_days * scenario.runs
         > operator_limits.max_total_transitions
     ):
@@ -202,7 +219,7 @@ def build_worldkernel_exchange_request(
         "parameters": parameters,
         "limits": {
             "max_steps": operator_limits.max_steps,
-            "max_runs": operator_limits.max_runs,
+            "max_runs": effective_max_runs,
             "max_total_transitions": operator_limits.max_total_transitions,
         },
     }

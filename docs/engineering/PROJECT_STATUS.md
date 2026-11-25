@@ -53,73 +53,102 @@ loopback cause was proposed but never established. The subsequent full gate
 pass on the current head resolves that timeout as an active blocker for PR #52;
 retain the failure as historical evidence only. See [B-07](BLOCKERS.md).
 
-On current published head `b431d11`, the `test` and `symbol-catalog` Actions
-runs failed, but their job summaries expose no steps or logs and their specific
-cause was not recovered. On prior published head `e3aedaf`, an exact annotation
-listed failed recent account payments or an increased spending limit as
-alternatives without identifying which condition applied. See [B-08](BLOCKERS.md),
-[current test run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863564)
-and [current symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863839).
-The local pass does not substitute for official CI.
-
 PR #53 is on `codex/m1c-01-synthetic-retail-evaluation`, stacked on PR #52.
 Merge commit `e922b03` synchronizes it with PR #52 head `b431d11`; its current
 published head is `79d3679013576c6a209bed9fa031b7f0fabd0d8d`. The PR remains a
-draft and unmerged. Its experimental evaluator composes the staged synthetic
-evidence flow with release-aware matched-origin baselines and a deterministic
-fictional CLI; it adds no real-data ingestion or HTTP forecast endpoint. The
-exact-head gate passed 700 tests, Ruff, catalog, atlas, evidence and capability
-checks at 2026-11-25 04:08:00 UTC. API tests ran; one existing Starlette/httpx
-deprecation warning appeared. The added regression assertions keep the outer
-result and nested evidence receipt unverified, unauthorized and not forecast
-eligible. Actions runs [45544705354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705354)
+draft and unmerged. It composes the staged synthetic evidence flow with
+release-aware matched-origin baselines and a deterministic fictional CLI; no
+real-data ingestion, HTTP forecast endpoint or predictive-skill evidence is
+added. Four integration tests plus six retail backtest unit tests pass, and
+the exact-head gate passed 700 tests plus Ruff, catalog, atlas, evidence and
+capability checks at 2026-11-25 04:08:00 UTC. API tests ran; one existing
+Starlette/httpx deprecation warning was emitted. This is local evidence only.
+Current Actions runs [45544705354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705354)
 and [45544705397](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705397)
-failed without job steps/logs and without a recovered specific cause. B-01/B-02
-still gate real data and empirical evaluation; B-08 blocks official CI.
+failed with no steps/logs and no specific cause recovered. B-01/B-02 still gate
+real data and empirical evaluation; B-08 blocks official CI. The older B-07
+timeout on #52 is historical, not evidence of failure on #53.
 
-M1F-01 has a versioned interface-only decision-trace contract in draft
-[PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), stacked on PR #53.
-Merge commit `e493b4c` synchronizes it with published PR #53 head `79d3679`.
-Review fix `f02459d` compares review chronology as timezone-aware instants,
-hashes Decimal values losslessly across contexts, bounds collections and
-indexes references. The published integrated head `4d22006` passed 728 tests
-plus Ruff, catalog, atlas, evidence and capability checks at 2026-11-25
-04:25:37 UTC. Its latest inspected Actions failed before repository steps with
-the unresolved account annotation in B-08. The contract remains interface-only;
-decision evaluation is not implemented.
-
-M1E-01 has a pure strict request mapper in draft
-[PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55), stacked on #54.
-The published head `56aa92a` includes review fix `07c405b` for post-validation
-scenario mutation and the effective minimum of scenario/operator run limits.
-Merge `b9eba02` syncs it with PR #54 head `4d22006`; its full gate passed 756
-tests and all five other checks at 2026-11-25 04:39:14 UTC. The latest Actions
-failed before repository steps with the unresolved account annotation under
-B-08. The mapper constructs a request only; B-04 still blocks a pinned SDK
-and actual registered-world run.
-
-M1D-01 is implemented in `10fe58fc3aca45c27288dcc6055ac5d84ab035af` on
-`codex/m1d-01-disjoint-residual-calibration` and proposed in draft
-[PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56), based on PR #53.
-It uses fixed pre-holdout calibration dates and explicit disjoint-window
-metadata; the late-release regression proves a published earlier holdout
-target cannot refill calibration. On prior tested docs head `0c2e789`, 81
-focused residual tests, 94 dependent consumer tests and the canonical full gate
-passed. Merge commit `b9bb86d` integrates PR #53's receipt-parity regressions
-and passed the exact-head canonical gate: 700 tests including API, Ruff,
-catalog, atlas, evidence and capability checks at 2026-11-25 04:52:39 UTC.
-Published docs head `55427f3c8a1ac62fa143922decb531b6133919ce` passed the full
-gate again at 04:55:54 UTC. Pytest reported one existing Starlette/httpx
-deprecation warning. Its latest test run
-[45550139210](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139210)
+The active continuation branch `codex/m1f-01-decision-trace-contract`
+implements M1F-01 on top of the M1C-01 stack. The local result contract
+separates observations, estimates, conditional outcomes, assumptions, missing
+evidence, cost measurement states and human review. Review correction commit
+`f02459d977fd263b03ddf60264b9069ae08b189b` adds terminal-review chronology,
+context-independent lossless Decimal hashing, and field/aggregate/reference
+bounds; evidence links now name each regression function. The decision-trace
+unit suite passes 28 tests. Ruff, source catalog, atlas, evidence and
+capability checks pass locally, as does `git diff --check`. For the atlas
+check, only the existing untracked Graphify output was excluded via
+a temporary local Git exclude file; no source guard or project ignore rule was
+changed. The published integrated candidate `4d220066c3e9ab83a321ac9517bbabc8fc22e293`
+passed the complete local gate at 2026-11-25 04:25:37 UTC: 728 tests, Ruff,
+catalog, atlas, evidence and capability checks. One existing
+Starlette/httpx deprecation warning appeared. HTTP runtime was not tested and
+no new route was added. The result digest remains a recomputable content hash,
+not a signature; all source/model/engine references remain caller assertions.
+The task remains interface-only and has no authenticated producer, storage,
+decision ranking, execution permission or real engine evidence. The source
+walkthrough is in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). PR #54
+remains a draft stacked on #53. Merge commit `e493b4c` synchronizes the local
+branch with published PR #53 head `79d3679`, retaining both histories and the
+nested-receipt regressions. The complete local gate passed on this integrated
+candidate as recorded above. On published #54 head `4d22006`, the latest test
+run [45546742718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742718)
 and symbol-catalog run
-[45550139208](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139208)
-failed before job steps. The annotation lists recent account payment failure
-or a spending-limit increase as alternatives and does not identify the cause;
-no repository tests ran remotely. This remains experimental and does not
-establish empirical calibration or official CI success.
-See [TASK_BACKLOG](TASK_BACKLOG.md) and the
-[M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+[45546742695](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742695)
+failed before repository steps with the same alternative account annotation;
+no code tests ran remotely. See [B-08](BLOCKERS.md).
+
+## PR #55 review correction and current sync
+
+Draft PR #55's implementation commit `8769241` builds a pure allowlisted
+request for the versioned WorldKernel exchange. Review fix `07c405b`
+revalidates the mutable `ScenarioSpec` at the mapping boundary and enforces
+the effective minimum of scenario and operator `max_runs`. Regression tests
+are `test_mapping_revalidates_mutated_scenario_before_budget_mapping` and
+`test_mapping_preserves_lower_scenario_or_operator_run_ceiling`. The walkthrough
+explains why unrepresentable scenario timeouts/model/output budgets must be
+rejected or enforced by a future adapter. No engine is imported or executed;
+B-04 remains open.
+
+The prior integrated #52–#55 candidate `fd72b76` passed 756 tests plus all
+five non-pytest gate checks. Merge commit `b9eba02` synchronizes PR #55 with
+published PR #54 head `4d22006`, preserving both histories and PR #53's
+nested-receipt regressions. Merge commit `b9eba02` and documentation head
+`cc9bdb4739507baa55cb857579ef70f7c92430d8` both passed the full local gate.
+On exact head `cc9bdb4` at 2026-11-25 04:37:00 UTC, all 756 tests, Ruff,
+catalog, atlas, evidence and capability checks passed, with one existing
+Starlette/httpx deprecation warning.
+Published PR #55 head `56aa92a6920a429b83458380231642fe59feaf08` includes the
+review correction and docs sync; its exact gate passed 756 tests plus Ruff,
+catalog, atlas, evidence and capability checks at 2026-11-25 04:39:14 UTC.
+Its latest Actions checks failed before job steps with the alternative account
+annotation under B-08; no remote tests ran. The mapper remains request
+construction only; no WorldKernel import or execution is claimed.
+
+## PR #56 disjoint residual calibration
+
+Merge `b9bb86d` integrates PR #53's receipt-parity regressions into PR #56.
+Published head `e993391a61a99d63008bc970cb19af673be4c18c` passed the exact
+local gate at 2026-11-25 05:02:30 UTC: 700 tests plus Ruff, symbol catalog,
+atlas, evidence and capability checks. One existing Starlette/httpx
+deprecation warning appeared. Its Actions test [45550857405](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857405)
+and symbol-catalog [45550857276](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857276)
+checks failed before job steps with an annotation listing alternative account
+conditions; no remote tests ran. This remains experimental and does not prove
+empirical calibration. The latest change and exact-head gate are recorded in
+the [M1D-01 change request on PR #56](https://github.com/GustavoMFDS/MirrorMind/blob/e993391a61a99d63008bc970cb19af673be4c18c/docs/engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+
+## PR #58 synthetic policy comparison
+
+PR #58's current local dependency sync is merge `5544bc0c2116d825a37d49a3ec75960e9896dd23`,
+which brings published PR #55 head `56aa92a` into the simulation branch without
+duplicate cherry-picks. The exact merged head passed 768 tests plus Ruff,
+catalog, atlas, evidence and capability checks at 2026-11-25 05:12:21 UTC.
+The arrival-day/one-day behavior stays an explicit toy-policy caveat; paired
+streams and item mass balance remain tested. The previous published #58 head
+`46b07a0` had pre-job Actions failures under B-08. No policy optimization or
+WorldKernel execution is claimed; actual engine acceptance remains B-04.
 
 ## Architecture and actual execution boundaries
 
@@ -129,7 +158,7 @@ See [TASK_BACKLOG](TASK_BACKLOG.md) and the
 | Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), [composite retail preflight](../../src/mirrormind/domains/retail/evidence_flow.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
 | Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
 | Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
-| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol/summary | Actual compatible optional engine adapter, execution, result validation and budgets |
+| Simulation | [Synthetic retail policy comparison](M1_RETAIL_POLICY_SIMULATION.md), [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py), and strict pure [WorldKernel request mapping](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Actual compatible optional engine adapter, execution, result validation and budgets |
 | Decision, orchestration and UI | Design and review templates | Executable comparison, agent/RAG workflow, review interface |
 | Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |
 

@@ -77,3 +77,63 @@ The calculation must be pure, bounded, deterministic and free of network, filesy
 - Docs updated: `M1_RETAIL_POLICY_SIMULATION.md`, `SYSTEM_MAP.md`, `API_WALKTHROUGH.md`, `DEBUGGING.md`, `LEARNING.md`, `M1_EXECUTION_PLAN.md`, `PROJECT_STATUS.md`, `TASK_BACKLOG.md`, `CAPABILITY_LEDGER.json`, `EVIDENCE_MAP.json`, `REPOSITORY_ATLAS.md`, `SEMANTIC_COVERAGE.md`, `ARCHITECTURE.md`, `CONTRACTS.md`, `RETAIL_MVP.md`, `ROADMAP.md`, `STRUCTURE.md`, engineering README and generated `SYMBOLS.md`.
 - Known limitations / follow-up: M1E-02 actual engine, M1B/M1C empirical data and M1F end-to-end decision trace remain separate gates.
 - Independent explanation: run `python -m examples.m1_retail_policy_test_double`, compare per-replication demand digests across the three policy rows, then change the seed and rerun `tests/unit/test_retail_policy_simulation.py` to see pairing and replay guarantees.
+
+## Independent review correction — arrival-day demand caveat
+
+Review of PR #58 identified that the profile-aware policy sums expected demand
+over `[day + 1, arrival_day)`. The existing boundary test confirmed this is
+the documented toy rule, rather than an accidental discrepancy, but the
+comparison did not expose the limitation in its output. For a one-day lead
+time the interval is empty; at zero inventory position and zero safety stock,
+the target and order are zero even when expected arrival-day demand is
+positive. The name `forecast_aware_order_up_to` must not be read as a claim
+that this is a conventional protection-period or optimized policy.
+
+The correction preserves the half-open interval and the existing
+`test_profile_aware_target_stops_before_arrival_day` boundary. The result now
+includes `modeling_caveats` with the excluded arrival-day demand, the concrete
+one-day case and the toy-policy limitation. The CLI integration test checks
+that the caveat remains visible in the emitted JSON. A separate mass-balance
+regression verifies item conservation for each policy, scenario and
+replication under the local event order. This metadata does not establish
+that downstream consumers persist it; PR #59 must carry the caveat into its
+decision trace, with a focused integration test.
+
+- Reproduction: `tests/unit/test_retail_policy_simulation.py::test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat` first failed because the output had no `modeling_caveats`, after confirming positive arrival-day demand and a zero order. After the correction, the regression passes and checks the exact output caveats.
+- Conservation: `tests/unit/test_retail_policy_simulation.py::test_inventory_mass_balance_holds_for_every_policy_replication` checks initial stock plus procurement equals fulfilled demand, ending stock and pending orders when the fixture uses a unit procurement coefficient of one.
+- Consumer contract: `tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison` asserts the caveat is present and does not call the rule standard or optimized.
+- Focused validation: `python -m pytest -q tests/unit/test_retail_policy_simulation.py tests/integration/test_retail_policy_simulation_cli.py` passed 12 tests; focused Ruff passed.
+- Integrated validation: merge commit `2f4822eafb768f289d03b10b6581c1e87c57bc4d` reconciles the corrected #55 dependency into #58 and carries the review correction. Exact integrated heads `b7d226f41d17f4db3f1b220b417309cc0872b614` and `624fd5a8f01b9063da739c4f6e3864336978ad95` passed the complete local gate: 768 tests, Ruff, symbol catalog, atlas, evidence and capability checks. The final receipt is `mirrormind-624fd5a8f01b-quality.json` under the local temporary directory. One existing Starlette/httpx deprecation warning appeared. The published #58 head's Actions `test` [run 45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099) and `symbol-catalog` [run 45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076) failed before job steps with the explicit B-08 account payment/spending-limit annotation. They provide no remote code-test result.
+- Limitations: no algorithm semantics changed; this does not make the policy a conventional order-up-to method or establish inventory quality. The local test double still does not invoke WorldKernel. Actual execution remains gated by B-04.
+
+Learning exercise: reproduce the zero-stock/one-day case, inspect the result
+metadata, and trace it through `_order_quantity`. Then explain why preserving
+the implementation boundary is different from claiming the boundary is a
+retail standard. A future protection-period policy would require a separately
+reviewed change request and distinct acceptance tests.
+
+## PR #55 dependency synchronization and exact-head gate — 2026-11-25
+
+Merge `5544bc0c2116d825a37d49a3ec75960e9896dd23` synchronizes PR #58 with
+the published PR #55 head `56aa92a6920a429b83458380231642fe59feaf08`. This
+retains PR #55's mutation-safe `ScenarioSpec` validation and effective minimum
+run ceiling, with no duplicate cherry-picks. It also retains the PR #53 nested
+receipt authority regressions. The exact merge head passed the complete local
+gate at 2026-11-25 05:12:21 UTC: 768 tests, Ruff, symbol catalog, atlas,
+evidence and capability checks. One existing Starlette/httpx deprecation
+warning appeared. This is local evidence, not official Actions.
+
+The review caveat remains visible in `test_profile_aware_target_stops_before_arrival_day`
+and `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`; conservation
+and paired-stream behavior remain checked by
+`test_inventory_mass_balance_holds_for_every_policy_replication`,
+`test_three_policies_share_each_reproducible_demand_stream`, and
+`test_sensitivity_reuses_the_same_paired_streams`. The one-day rule is still a
+toy heuristic, not an optimized or conventional inventory policy. The latest
+published PR #58 head before this sync was `46b07a0`; its Actions test
+[45522848614](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848614)
+and symbol-catalog
+[45522848658](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848658)
+checks failed before job steps with an annotation listing alternative account
+conditions. It did not identify the cause and ran no repository tests. Actual
+WorldKernel execution remains blocked by B-04.

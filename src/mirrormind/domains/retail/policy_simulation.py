@@ -24,6 +24,11 @@ POLICY_IDS = (
     "reorder_point_fixed_quantity",
     "forecast_aware_order_up_to",
 )
+_MODELING_CAVEATS = (
+    "forecast_aware_order_up_to sums expected profile indices [day + 1, arrival_day); it excludes demand on the arrival day.",
+    "With lead_time_days=1, that interval is empty. With zero safety stock and zero inventory position, the rule orders zero even when arrival-day demand is positive.",
+    "This is a toy day-boundary heuristic, not a standard or optimized order-up-to policy.",
+)
 
 
 class _DemandStream(TypedDict):
@@ -333,6 +338,7 @@ def compare_synthetic_retail_policies(
         "engine_execution": "worldkernel_not_invoked",
         "input_status": "caller_supplied_assumptions_not_authenticated",
         "decision_status": "comparison_only_no_policy_selection_or_authorization",
+        "modeling_caveats": list(_MODELING_CAVEATS),
         "horizon_days": HORIZON_DAYS,
         "replications": request.replications,
         "seed": request.seed,

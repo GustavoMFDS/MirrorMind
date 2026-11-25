@@ -481,7 +481,7 @@ the fixture's zero seasonal-naive MAE is not evidence of real predictive
 skill, and list the publisher, calendar, holdout and uncertainty evidence
 needed before an empirical claim.
 
-## Guided exercise 14 — bind review to an exact result
+## Guided exercise — bind review to an exact result
 
 Read the [decision trace result walkthrough](DECISION_TRACE_RESULT.md) and
 [`DecisionTrace`](../../src/mirrormind/core/decision_trace.py). Run
@@ -492,32 +492,59 @@ cost cannot be encoded as zero. Compute `result_sha256`, create an approved
 predict the rejection. Explain why this proves local content binding but
 does not authenticate a reviewer, data source or simulation.
 
-## Guided exercise 15 — inspect a strict external mapping (35 minutes)
+## Guided exercise — inspect a strict external mapping (35 minutes)
 
 Read the [WorldKernel mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md),
 then trace `build_worldkernel_exchange_request` through
 `tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
 Predict the error for an unlisted world version, `lead_time_days`, a forecast
-reference and an operator transition cap below `horizon_days * runs`. Explain
-why the explicit unit object is still an assertion rather than provenance,
-why the generated v1 limits are not an independently enforced server quota,
-and why a deterministic request is not a simulation result. Finally, propose
-which pinned package and result checks M1E-02 must add without importing
-WorldKernel into MirrorMind's core.
+reference and an operator transition cap below `horizon_days * runs`. Then run
+`test_mapping_revalidates_mutated_scenario_before_budget_mapping` and
+`test_mapping_preserves_lower_scenario_or_operator_run_ceiling`: trace how a
+mutable Pydantic object is revalidated and how the lower run ceiling is chosen.
+Explain why the explicit unit object is still an assertion rather than
+provenance, why the generated v1 limits are not an independently enforced
+server quota, and why a deterministic request is not a simulation result.
+Finally, identify where M1E-02 must enforce timeout/model-call/output-token
+budgets missing from exchange v1 and propose package/result checks without
+importing WorldKernel into MirrorMind's core.
+
+## Guided exercise — trace chronology, canonical cost digests and resource bounds
+
+Read [the result contract walkthrough](DECISION_TRACE_RESULT.md) and follow
+`DecisionTrace.check_trace_references_and_cutoff` into the evidence-ID map and
+review-time comparison. Run `tests/unit/test_decision_trace.py`, then inspect
+`test_terminal_review_cannot_precede_trace_creation`,
+`test_terminal_review_accepts_creation_boundary_and_equivalent_timezone`,
+`test_result_digest_is_lossless_and_independent_of_decimal_context`, and the
+collection-bound tests. Explain why a reviewer timestamp is compared as an
+instant, why `Decimal.normalize()` can round under the active context, and why
+the bounds on records/references do not enforce a transport request-size or
+rate limit. Reproduce a same-length, valid-looking payload that stays below
+every bound and identify which independent data-provenance checks are still
+missing.
 
 ## Guided exercise 16 — compare synthetic inventory policies (35 minutes)
 
 Read the [M1 policy simulation walkthrough](M1_RETAIL_POLICY_SIMULATION.md),
 [`policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py),
-and both [unit tests](../../tests/unit/test_retail_policy_simulation.py) and
+and its [unit tests](../../tests/unit/test_retail_policy_simulation.py) and
 [CLI integration tests](../../tests/integration/test_retail_policy_simulation_cli.py).
 Run `python -m examples.m1_retail_policy_test_double` twice and compare the
-JSON. Before inspecting the metrics, predict how fixed-cycle, reorder-point
-and profile-aware rules differ when lead time changes. Verify the same
-per-replication demand digest is present across policy and sensitivity rows.
-Change one cost coefficient and trace which total-cost components change.
-Then explain why neither the profile-aware rule nor a lower synthetic cost
-establishes a valid forecast, realistic cost model or winning business policy.
+JSON. Before inspecting metrics, predict how fixed-cycle, reorder-point and
+profile-aware rules differ when lead time changes. Verify each replication's
+demand digest matches across policy and sensitivity rows. Change one cost
+coefficient and trace the affected total-cost components. Then explain why the
+profile-aware rule and a lower synthetic cost establish neither a valid
+forecast nor a realistic or optimal business policy. Set initial stock and
+safety stock to zero with a one-day lead time, then inspect the positive
+arrival-day profile value and the emitted `modeling_caveats`. Trace the case
+through `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`, keep
+`test_profile_aware_target_stops_before_arrival_day` intact, and run
+`test_inventory_mass_balance_holds_for_every_policy_replication`. Explain why
+the caveat documents this implementation boundary without establishing that
+the rule is a conventional protection-period policy.
+
 ## Guided exercise 17 — keep uncertainty calibration labels disjoint (40 minutes)
 
 Read [`evaluate_retail_residual_envelopes`](../../src/mirrormind/domains/retail/residual_envelope.py),

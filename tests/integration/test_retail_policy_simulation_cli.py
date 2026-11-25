@@ -19,6 +19,11 @@ def test_synthetic_policy_cli_replays_paired_comparison(capsys) -> None:
     assert report["decision_status"] == (
         "comparison_only_no_policy_selection_or_authorization"
     )
+    assert "modeling_caveats" in report
+    assert any(
+        "not a standard or optimized" in caveat
+        for caveat in report["modeling_caveats"]
+    )
     assert len(report["lead_time_sensitivity"]) == 3
     assert all(
         len(scenario["policies"]) == 3

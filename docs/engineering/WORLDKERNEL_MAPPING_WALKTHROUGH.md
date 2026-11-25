@@ -28,7 +28,8 @@ flowchart LR
 
 1. The caller constructs `ScenarioSpec` using existing MirrorMind fields.
 2. The trusted composition root supplies `WorldKernelOperatorLimits`
-   separately. Scenario fields cannot increase those ceilings.
+   separately. The mapper revalidates a snapshot of the mutable scenario and
+   uses the lower of the scenario run budget and operator run ceiling.
 3. The caller supplies an explicit `InventoryWorldUnitContext`. These unit
    labels are assertions; the mapper cannot authenticate their source.
 4. `build_worldkernel_exchange_request` checks the exact world/version pair,
@@ -68,11 +69,32 @@ not evidence that the original data source actually used those units.
 
 ### `build_worldkernel_exchange_request`
 
-The function has no I/O and depends only on MirrorMind's existing
-`ScenarioSpec` plus Python standard library. It creates a fresh JSON-compatible
-object with the exact v1 root keys. Seed, run count, step count, initial state,
-parameters and operator limits are copied explicitly; unknown scenario fields
-are never forwarded.
+The function has no I/O and depends on MirrorMind's existing `ScenarioSpec`,
+Pydantic validation and Python standard library. `ScenarioSpec` is mutable, so
+the function serializes its current fields in Python mode and reconstructs a
+validated snapshot before reading nested values. This repeats cross-field
+validation at the mapping trust boundary; a caller cannot construct a valid
+scenario and then mutate `runs` above `budget.max_simulation_runs` before
+mapping. A validation failure is translated to the public
+`WorldKernelMappingError` without exposing Pydantic's detailed error payload.
+
+The outgoing `limits.max_runs` is
+`min(operator_limits.max_runs, scenario.budget.max_simulation_runs)`. The
+requested `scenario.runs` must fit under that effective ceiling. Horizon and
+total-transition checks still use the separately supplied operator limits.
+This means a scenario's declared budget can make the request stricter; it can
+never increase operator authority. These are request declarations and local
+mapping checks, not an independently enforced worker quota.
+
+The mapper creates a fresh JSON-compatible object with the exact v1 root
+keys. Seed, run count, step count, initial state, parameters and effective
+limits are copied explicitly; unknown scenario fields are never forwarded.
+`ScenarioSpec.budget.timeout_seconds`, `max_model_calls` and
+`max_output_tokens` have no corresponding WorldKernel v1 request fields.
+Because this function does not execute the request, it cannot enforce those
+budgets. A future adapter must enforce applicable budgets at its execution
+boundary or reject the request before execution; it must not silently drop a
+budget and then claim it was honored.
 
 The WorldKernel inventory handler reads `stock`, `sold`, `unmet`, `orders`,
 `daily_demand`, `reorder_point` and `reorder_quantity`. Mapping requires
@@ -145,6 +167,12 @@ contains these focused checks:
   synthetic allowlisted request's exact fields and target identifiers.
 - `test_mapping_is_deterministic_and_uses_operator_limits`: proves repeated
   pure construction is stable and limits come from separate operator input.
+- `test_mapping_revalidates_mutated_scenario_before_budget_mapping`: proves a
+  post-construction mutation that breaks the nested run budget fails at the
+  mapper boundary.
+- `test_mapping_preserves_lower_scenario_or_operator_run_ceiling`: proves the
+  outgoing `max_runs` is the lower of the scenario declaration and operator
+  ceiling.
 - `test_unrepresentable_scenario_fields_are_rejected`: proves aliases,
   revisions, interventions, evidence and forecast references fail closed.
 - `test_state_requires_stock_and_rejects_unknown_fields` and
@@ -156,12 +184,15 @@ contains these focused checks:
   has no direct runtime package import; it is not an API deployment test.
 
 All fixtures are generated and local. They do not prove cross-repository SDK
-compatibility, engine execution, result validity, source authorization,
-forecast accuracy or performance.
+compatibility, engine execution, runtime enforcement of timeout/model/token
+budgets, result validity, source authorization, forecast accuracy or
+performance.
 
-The evidence map claim `MM-WKMAP-001` points to
-`test_supported_inventory_scenario_maps_to_exact_v1_request` and retains this
-synthetic-only limitation.
+Evidence claim `MM-WKMAP-001` cites the exact mapping test;
+`MM-WKMAP-002` cites post-construction revalidation; and `MM-WKMAP-003`
+cites the dual-ceiling test. Their limitations distinguish request
+construction from runtime budget enforcement, engine execution and
+source/model validity.
 
 ## Learning and investigation exercises
 
@@ -176,6 +207,14 @@ synthetic-only limitation.
    units from a real source.
 5. Inspect the WorldKernel inventory handler and identify why immediate
    replenishment cannot establish a real supplier lead time or stock policy.
+6. Construct a valid scenario with `runs=3` and
+   `budget.max_simulation_runs=3`, then mutate `runs` to 4 before mapping.
+   Explain why revalidating at the boundary matters even though the original
+   constructor validated the object. Next compare the outgoing limit when the
+   scenario cap is 2 and operator cap is 10, then reverse the caps. Identify
+   which future adapter layer must enforce `timeout_seconds`,
+   `max_model_calls` and `max_output_tokens`, since exchange v1 cannot carry
+   those fields.
 
 ## Maintenance and evolution
 
