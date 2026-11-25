@@ -9,19 +9,73 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | Real source rights: M5 unresolved; UCI CC BY 4.0 preliminary review, not ingestion approval | Original license/terms, intended use/distribution/attribution, privacy/minimization and retention review, accepted dataset card and source approval | Project owner / appropriate rights reviewer | Review official evidence, compare alternate sources, implement bounded fictional fixtures and adapters |
-| B-02 | Historical availability and empirical evaluation | Verified source vintages/revisions or explicitly justified evaluation scope, immutable snapshot, locked split and approved data; never substitute transaction/event timestamp for first availability | Evidence/model reviewer | Synthetic delay, missingness, leakage and holdout regressions; prepare evaluation protocol |
+| B-01 | Real source rights: M5 unresolved; UCI Online Retail II shows CC BY 4.0, which is not project-use or privacy approval. UCI and aggregate Census/ALFRED options are documented for owner decision; no data was downloaded. | Original license/terms, intended research or commercial use, attribution, privacy/minimization, retention, accepted dataset card and explicit source approval | Project owner / appropriate rights reviewer | Keep synthetic fixtures; choose/reject the no-download aggregate method pilot and decide separately on UCI handling |
+| B-02 | Historical availability and empirical evaluation: event time is not first availability. A concrete Census/ALFRED release-vintage protocol is proposed; retained first-release values remain unverified. | Verified source vintages/revisions, immutable snapshot, locked chronological split and approved data; never substitute transaction/event timestamp for first availability | Project owner with evidence/model reviewer | Implement synthetic delay, missingness, leakage and holdout regressions; prepare exact source manifest only after decision |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | PR #52 full local suite on `c51ab30370db47e9f7105c97f870008e4fc442c5`: the commit-bound gate timed out at its 900-second pytest limit. Verbose replay collected 696 tests and stopped at `tests/integration/test_api.py::test_health`; a standalone loop creation reproduced blocking in `socket.accept` inside Python's `_fallback_socketpair` on Python 3.13.5, and loop creation also blocked under the installed Python 3.12. This happens before the application handler; a sandbox/host loopback restriction is a hypothesis, not a proven root cause. | Run the exact SHA in an environment where asyncio can create its local socket pair; complete the canonical gate without skipping the API tests | Codex execution environment / project maintainer | Five M1B-02 tests passed; 690 tests passed excluding `tests/integration/test_api.py`; direct registered capability-handler/ledger parity passed; Ruff and docs guards passed. Do not call the full suite green or change application behavior to hide the host issue. |
-| B-08 | Official GitHub Actions jobs for PRs #52, #53 and #54, plus PR #55 code head, did not start. On PR #54 head `27f1f1c9dec3886299077793a2d42a647313d7ae`, `test` run [45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821) and `symbol-catalog` run [45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808) each have an annotation stating recent account payments failed or the spending limit needs to be increased. The PR #54 documentation head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` shows the same pre-job block on `test` run [45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041) and `symbol-catalog` run [45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150); diagnostics confirmed the billing/spending-limit annotation and no job execution. PR #53 documentation head `210f0f382938a67e518df688cc4e19c03d3d7af6` had the same result in runs [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471) and [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864); its code head `10ee6866f3340c679e0bfe3bfee11e199a32b56a` had the same result in runs [45322594833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594833) and [45322594817](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594817). PR #52 runs [45318084072](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084072) and [45318084108](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084108) show the same pre-job block. PR #55 code head `87692412606e65b5e1500164b2c8708bb98cf120` also failed before job start: `test` run [45329990098](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990098) and `symbol-catalog` run [45329990164](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45329990164) have the same billing/spending-limit annotation; diagnostics confirm no job execution. | Repository/account owner resolves GitHub billing or spending limit, then reruns checks for the reviewed heads | GitHub account owner / billing administrator | Keep draft PRs and local evidence current; do not claim remote CI passed or alter protections |
+| B-07 | A restricted run of the integrated PR #52–#55 candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. The same exact clean SHA passed the complete local gate outside the restricted sandbox: 756 tests and all six stages. The earlier PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` remains historical and was not rerun. | For later integrated heads, run the exact clean SHA through the complete gate; do not skip API tests | Codex execution environment / project maintainer | The integrated candidate passed pytest, Ruff, catalog, atlas, evidence and capability checks outside the sandbox with one existing Starlette/httpx deprecation warning. The restricted timeout is recorded, not hidden; no application code or verifier was changed to avoid it. |
+| B-08 | On the latest published heads of PRs #52–#61, `test` and `symbol-catalog` checks are failed before repository steps, each with an explicit GitHub annotation for recent account payments or spending-limit settings. Exact run links and check-run diagnostics are below. This is evidence for why those jobs did not start; it is not a test failure and does not reveal which account setting needs action. Local correction head `07c405b` is not pushed and has no official result yet. | Account owner inspects the GitHub billing/plan state; then rerun checks on the corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. Evaluate, but do not configure, a hardened ephemeral self-hosted runner unless its trust, admin and cost requirements are accepted. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for
 the named real integration, not a prohibition on design and tests.
+
+## B-08 exact diagnostics and runner assessment — 2026-11-24
+
+The GitHub diagnostics were pinned to the exact currently published PR head
+for each row. Both required workflows have an annotation that says the job
+was not started because recent account payments failed or the spending limit
+needs to be increased. The checks have no repository steps, so these runs
+provide no result for the code. The annotation is explicit about the class of
+start gate but does not identify whether a failed payment or a spending cap is
+the actionable account condition.
+
+| PR | Published head | `test` run | `symbol-catalog` run |
+| --- | --- | --- | --- |
+| #52 | `5c307e426c43aee4179e3257d7d367214e8c3a63` | [45319452833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452833) | [45319452852](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452852) |
+| #53 | `210f0f382938a67e518df688cc4e19c03d3d7af6` | [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471) | [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864) |
+| #54 | `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` | [45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041) | [45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150) |
+| #55 | `fcd478130c26c653d0d1d9f4d2f905bf24eaf3a9` | [45340088124](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45340088124) | [45340088189](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45340088189) |
+| #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
+| #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
+| #58 | `465a2f2c46fb6484aa2f0abea7920953ca4f0d00` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) |
+| #59 | `a5951e49a78796908ecd1975c65052b5a2548cd7` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) |
+| #60 | `6374f0bb9a981271cb9340a190dcdebec6263cc9` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) |
+| #61 | `288021f25e24efc26591b064eafa1d8b4e287ac8` | [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331) | [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221) |
+
+The PR #61 detail diagnostics additionally showed zero workflow steps and
+the same annotation on both checks; the same annotation was read from the
+latest `test` and `symbol-catalog` check runs for #52–#60. No repository
+workflow log or check execution can be inferred from these statuses.
+
+### Self-hosted runner option
+
+The repository API reported this repository as private at the time of review.
+GitHub still warns that private/internal repositories require caution because
+read-access users may fork and submit pull requests that compromise a
+persistent self-hosted runner, its workspace, secrets or token. GitHub
+recommends self-hosted runners for private repositories over public ones, but
+its security guide does not treat a private repository as an isolated trust
+boundary. See [GitHub's secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+and [runner setup guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners).
+
+If the account owner chooses this path, the candidate design is one
+just-in-time runner in a disposable VM per check, destroyed after the job;
+no persistent workstation or shared runner. Keep the existing job IDs,
+commands, test selection and required-check names. Restrict assignment to this
+repository and the two required workflows; accept only `pull_request` jobs,
+never run pull-request code through `pull_request_target`; provide no
+repository secrets and a read-only short-lived `GITHUB_TOKEN`; block access to
+host credentials, sibling projects, Docker control sockets and private
+networks; allow only dependency/artifact endpoints required by the existing
+workflows; retain an auditable image, egress and teardown record. A clean
+single-use VM is a proposed containment boundary, not a demonstrated security
+guarantee or a confirmed way to clear the current account-level start gate.
+Cloud runner costs, repository-admin setup, fork policy and billing behavior
+remain unverified. No self-hosted runner or workflow change was made.
 
 ## Source references and precise restrictions
 
@@ -29,7 +83,9 @@ the named real integration, not a prohibition on design and tests.
   permission grant. Public accessibility is not permission.
 - [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
   records the official license statement and unresolved privacy,
-  historical availability, scope and source snapshot issues.
+  historical availability, scope and source snapshot issues. Its B-01/B-02
+  section compares UCI retrospective research with a no-download
+  Census/ALFRED temporal-method proposal; owner approval remains pending.
 - [Data card](DATASET_CARD_TEMPLATE.md) and [model card](FORECAST_MODEL_CARD_TEMPLATE.md)
   require evidence before empirical or licensed-ingestion claims.
 - [Remote head reader](REMOTE_FENCE_HEAD_CLIENT.md) authenticates a

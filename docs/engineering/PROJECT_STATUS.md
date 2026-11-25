@@ -25,6 +25,41 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
+## Current review-correction candidate — 2026-11-24
+
+The active checkout is `codex/m1e-01-worldkernel-mapping` at integrated local
+SHA `07c405b0d49ab05611413acce61af1123111fb48`. Its merge commit includes
+the #54 correction commits `f02459d` and `9113d86` as ancestry, without
+cherry-picking or duplicating them, and reconciles #54/#55 documentation.
+Published #52 and #53 heads are ancestors of this candidate. The candidate
+therefore contains the published #52–#55 stack plus reproduced review fixes
+for #54 and #55. No merge to `main` has occurred.
+
+The complete local gate passed on that exact clean SHA outside the restricted
+sandbox: 756 pytest tests, Ruff, symbol catalog, repository atlas, evidence
+map, and capability checks. Pytest reported one existing Starlette/httpx
+deprecation warning. A restricted replay of the same SHA timed out at 900
+seconds in pytest and did not complete; see [B-07](BLOCKERS.md). No test was
+skipped in the passing gate. The candidate was not published when checked,
+so it has no official Actions result. Published PR heads #52–#61 have the
+separate B-08 pre-job account gate; see its exact run table and runner
+assessment in [BLOCKERS](BLOCKERS.md). No Actions success is inferred from
+the local receipt.
+
+The #54 and #55 branch-specific gate statements below describe evidence at
+their then-current commits. Wording that says the corrected integrated gate
+is pending is superseded by this exact-SHA evidence. Correction commits still
+require publication, fresh official checks and reviewer responses; that does
+not authorize merge or bypass required protections.
+
+For B-01/B-02, the [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+now contains decision-ready options: UCI Online Retail II for explicitly
+retrospective transaction research, and Census/ALFRED release vintages for
+aggregate temporal-method testing. Neither is approved or downloaded. The
+protocol fixes eligible vintages, chronological holdout, per-origin feature
+availability, matched baselines and metrics; SKU-level evaluation remains
+blocked until rights and point-in-time source evidence are approved.
+
 ## Active branch evidence — 2026-11-24
 
 The composed synthetic evidence flow is implemented at
@@ -84,16 +119,17 @@ bounds; evidence links name each regression function. The decision-trace unit
 suite passed 28 tests, Ruff and all documentation guards passed on the
 correction branch. For the atlas check, only existing untracked Graphify
 outputs were excluded through a temporary local Git excludes file; no
-repository ignore rule or guard changed. The integrated gate is pending. The
-result remains interface-only: no authenticated producer, storage, decision
+repository ignore rule or guard changed. The corrected integrated candidate
+gate passed as recorded above. The result remains interface-only: no
+authenticated producer, storage, decision
 ranking, execution permission or real engine evidence. HTTP runtime was not
 tested and no route was added. Its result digest is recomputable content
 binding, not a signature; source/model/engine references remain caller
 assertions. The correction and evidence follow-up are on
 `codex/m1f-01-decision-trace-contract` at `9113d86` and proposed in draft
 [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), stacked on #53.
-The previous official head checks failed before job start under B-08; no
-official check has yet been inspected for these correction commits.
+The then-published official head checks failed before job start under B-08;
+the correction commits have not yet been published or checked remotely.
 
 The active continuation `codex/m1e-01-worldkernel-mapping` advances M1E-01.
 It inspects the separate WorldKernel exchange and adds a pure mapping for
@@ -129,8 +165,9 @@ lower scenario budget. Both cases were reproduced; the active integration
 branch now revalidates the current scenario snapshot, applies the lower
 scenario/operator run ceiling, and documents that v1 cannot carry timeout,
 model-call or output-token budgets. Regressions cover both behaviors. The
-original #55 gate results above predate this correction and do not establish
-the corrected integrated state; its exact-head local gate remains pending.
+original #55 gate results above predate this correction. The exact integrated
+state passed its complete local gate at `07c405b` as documented above;
+official checks remain pending publication and B-08 account-gate resolution.
 
 ## Architecture and actual execution boundaries
 

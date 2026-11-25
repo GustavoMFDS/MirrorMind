@@ -168,10 +168,12 @@ do not replace HTTP body-size, rate or concurrency controls.
   and [symbol-catalog run 45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150)
   with the same account billing annotation. This confirms B-08; no repository
   job steps ran.
-- Known limitations / follow-up: M1F-02 must produce and replay an actual
-  synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
-  remain separate. B-07/B-08 still block the exact full gate/official CI
-  evidence for the stacked branch.
+- Known limitations / follow-up at the initial implementation head:
+  M1F-02 must produce and replay an actual synthetic
+  evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates remain
+  separate. The later integrated candidate's complete local gate is recorded
+  under review-correction evidence below; B-08 still blocks official CI on
+  published heads.
 - Independent explanation: completed in `DECISION_TRACE_RESULT.md` and its
   linked source walkthrough and learning exercises.
 
@@ -189,12 +191,19 @@ do not replace HTTP body-size, rate or concurrency controls.
   full trace at 1,000 records, and nested reference/metric tuples at 100;
   resolve evidence IDs through one map. The v1 fixture digest remains
   `fccf54eccb7971ea4731e08df4baae8755a394688d47d19d2c54d8ebe1f5b4ec`.
-- Verification on the correction commit: `tests/unit/test_decision_trace.py`
-  passed 28 tests; `ruff check src tests`, catalog check, atlas, evidence and
-  capability guards passed. The atlas used a temporary local Git excludes file
-  for existing untracked Graphify output directories; no guard, project ignore
-  rule or artifact was changed. The complete integrated gate and remote checks
-  on this commit remain pending.
+- Focused verification on the correction commit:
+  `tests/unit/test_decision_trace.py` passed 28 tests; `ruff check src tests`,
+  catalog check, atlas, evidence and capability guards passed. The atlas used
+  a temporary local Git excludes file for existing untracked Graphify output
+  directories; no guard, project ignore rule or artifact was changed.
+- Integrated verification: merge commit
+  `07c405b0d49ab05611413acce61af1123111fb48` retains both correction commits
+  as ancestry and passed the complete local gate on its exact clean SHA:
+  756 tests plus Ruff, catalog, atlas, evidence and capability checks. The
+  restricted replay timed out at 900 seconds; the full pass ran outside that
+  sandbox. One existing Starlette/httpx deprecation warning appeared. The
+  correction branch has not yet been pushed, and no official CI result exists
+  for the corrected SHA. Published heads remain subject to B-08.
 - Limits: the local contract does not authenticate reviewer/reference claims,
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.

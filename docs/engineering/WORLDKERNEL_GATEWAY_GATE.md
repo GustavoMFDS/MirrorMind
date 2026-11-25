@@ -88,3 +88,94 @@ unverified assumptions or unsupported features.
 Explain why an ordinary WorldKernel synthetic demo
 cannot be presented as a forecast or as validated
 retail business advice.
+
+## 5. B-04 proposal — optional pinned local SDK adapter
+
+### Source inspection and compatibility finding
+
+The expected local checkout `C:\Dev\WorldKernel` was not present in this
+environment. The inspection below used only the read-only GitHub source at
+commit [`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`](https://github.com/GustavoMFDS/WorldKernel/tree/9b133ef873f2b6a7206c9c5742d40df4fccdb04a):
+`pyproject.toml`, `docs/EXCHANGE.md`, `docs/RESOURCE_LIMITS.md`,
+`src/worldkernel/adapters/exchange.py`,
+`src/worldkernel/examples/bootstrap.py`,
+`src/worldkernel/core/registry.py`, and
+`src/worldkernel/examples/inventory.py`. No file in that repository was
+changed, and no runtime/package test was executed here.
+
+The inspected package declares version `0.0.1`, Python `>=3.11`, and no
+runtime dependencies. Its local Python/CLI exchange accepts
+`worldkernel.simulation.v1` and returns `worldkernel.result.v1`.
+`register_builtin_worlds()` registers `retail.inventory.demo` at
+`demo-1`; `execute_exchange(..., require_registered_version=True)` checks
+that registration metadata before calling the trusted handler. The current
+MirrorMind mapping covers the request fields used by this path: world and
+revision, steps, runs, seed, explicit initial state, parameters and declared
+limits. Unsupported MirrorMind interventions and evidence/forecast references
+remain unrepresentable and must continue to fail closed.
+
+The exact target is **technically compatible as a request mapping**, but it
+does not satisfy a conventional lead-time inventory simulation. The reviewed
+handler randomly perturbs daily demand by up to two units and replenishes
+immediately when stock falls below a threshold; its module states that it does
+not model lead times. The exchange's `limits` are caller-declared preflight,
+not an independently authoritative server budget. Registered `demo-1` is
+trusted Python metadata, not a signed package identity. These facts rule out
+using this handler as the actual execution engine for M1E-03's separate
+lead-time policy comparison without a new, reviewed world model.
+
+### Proposed MirrorMind integration boundary
+
+If the owner accepts this exact candidate, implement M1E-02 in MirrorMind as
+an optional, versioned adapter:
+
+1. Declare a separate optional dependency using a direct VCS reference pinned
+   to the full commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`, and commit a
+   resolver lock. Do not make WorldKernel a core/runtime requirement.
+2. Keep SDK imports lazy inside the selected adapter path. With the extra
+   absent or the adapter disabled, MirrorMind API import, health and current
+   capabilities must work without importing `worldkernel`.
+3. Revalidate the current `ScenarioSpec` at the boundary. Apply the lower of
+   scenario and trusted operator run ceilings and the operator transition
+   ceiling before calling the SDK. Register the built-in worlds explicitly,
+   then invoke the reviewed request with
+   `require_registered_version=True`.
+4. Validate the returned schema, engine, world, declared and registered
+   versions, match flag, seed, steps, run count, final-state count and every
+   final-state field before constructing a `SimulationSummary`. Reject
+   booleans, floats, unknown fields and version mismatches; never turn a
+   malformed engine result into a successful summary.
+5. Record the package commit separately from `demo-1` in the local run
+   provenance. Treat outcomes as conditional on that exact trusted handler;
+   do not claim the exchange itself proves code identity or policy quality.
+6. Treat `timeout_seconds` as unsupported for an in-process SDK call: either
+   execute it inside a separately reviewed killable worker or reject before
+   execution. This demo makes no model calls or token output; keep those
+   budgets explicitly not applicable rather than implying that the SDK
+   enforces them.
+
+### Reproducible acceptance plan
+
+The dependency-pinned integration extra should be tested without network
+access after installation and without downloading any retail dataset:
+
+- **Disabled import:** existing subprocess guard still proves core/API startup
+  does not import WorldKernel.
+- **Registered request:** register built-ins, map one fictional scenario and
+  execute strict revision checking; assert the v1 result metadata, expected
+  run/step/seed values and exact final-state shape.
+- **Fail-closed cases:** missing package, wrong schema, unknown world/revision,
+  malformed state, limit violation and handler exception must produce an
+  unavailable or generic typed failure, never a numeric success.
+- **Replay and conservation:** repeat the same pinned request and compare
+  results; for each run verify
+  `initial_stock + new_orders * reorder_quantity = final_stock + newly_sold`
+  using the initial counters and returned cumulative order/sold counts.
+- **Provenance and limits:** assert package commit and registration revision
+  are both present and distinct; prove scenario/operator ceilings are applied
+  before SDK invocation and no unsupported input is discarded.
+
+The exact external pin, optional-extra layout and trusted local execution
+mode are the remaining owner/maintainer decision for B-04. This proposal is
+not an adapter implementation or certification; no WorldKernel dependency,
+test fixture, workflow or external repository change was added here.

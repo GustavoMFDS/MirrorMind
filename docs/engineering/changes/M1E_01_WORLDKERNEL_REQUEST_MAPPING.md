@@ -177,7 +177,12 @@ local validation and request declaration only. The pure mapper still does not
 execute WorldKernel or enforce worker resources. Mapping and execution budgets
 not representable in exchange v1 remain an explicit future-adapter contract.
 
-The review correction is in the active PR #55 integration branch. Its full
-integrated gate and final commit evidence are recorded after that gate runs;
-the original-head results above are historical and are not evidence for the
-corrected integrated state.
+The review correction is in the integrated PR #55 candidate at
+`07c405b0d49ab05611413acce61af1123111fb48`. The exact clean SHA passed the
+complete local gate: 756 tests, Ruff, symbol catalog, atlas, evidence and
+capability checks. Pytest reported one existing Starlette/httpx deprecation
+warning. A restricted replay timed out at 900 seconds in pytest; the complete
+pass ran outside that sandbox and did not skip tests. Official Actions on the
+published PR heads are separate and still fail before job steps under B-08;
+the corrected SHA has not yet been pushed. This does not verify WorldKernel
+execution, server resource enforcement, or an official CI result.
