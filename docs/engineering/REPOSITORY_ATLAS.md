@@ -946,6 +946,20 @@ The evaluator is experimental and synthetic-only in automated use. It does not
 infer publication time from `InvoiceDate`, authenticate a source manifest or
 prove completeness, source rights or predictive performance.
 
+## 59. Synthetic aggregate Census vintage selector (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py) | Provides immutable normalized vintage records and a bounded, pure date-only as-of selector; preserves release IDs and digest strings without authenticating source bytes |
+| [`tests/unit/test_census_vintages.py`](../../tests/unit/test_census_vintages.py) | Regresses strict release cutoff, revision selection, missing history, duplicate ambiguity, metadata conflicts, malformed values, mixed series and input budgets |
+| [`docs/engineering/CENSUS_VINTAGE_ADAPTER.md`](CENSUS_VINTAGE_ADAPTER.md) | Walks through the contract, algorithm, data flow, failure boundaries, examples, test evidence and learning exercises |
+| [`docs/engineering/datasets/SYNTHETIC_CENSUS_VINTAGES.md`](datasets/SYNTHETIC_CENSUS_VINTAGES.md) | Identifies every fixture value as fictional and records that no real source rights, snapshot or retention has been reviewed |
+| [`docs/engineering/changes/M1B_04_CENSUS_VINTAGE_ADAPTER.md`](changes/M1B_04_CENSUS_VINTAGE_ADAPTER.md) | Defines the bounded change request, acceptance criteria, impact map and evidence for a local synthetic-only adapter |
+
+The selector consumes caller-supplied normalized records in memory. It makes no
+source request, reads no file or credential, and cannot establish source
+authenticity, permission, completeness or forecast eligibility.
+
 ## Continuous engineering handoff and execution register
 
 | Tracked document | Reviewed responsibility |

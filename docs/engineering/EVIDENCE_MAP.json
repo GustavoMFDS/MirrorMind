@@ -1071,6 +1071,20 @@
     "limitation": "The exact installed pin produces a deterministic synthetic trace with distinct selected-output and parity-oracle records and bound execution metadata. Shared-rule parity is not independent scientific validation, installed-file attestation, source authorization or production isolation."
   },
   {
+    "id": "MM-CEN-001",
+    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
+    "test": "tests/unit/test_census_vintages.py",
+    "function": "test_selects_latest_revision_per_month_strictly_before_target_release",
+    "limitation": "Proves cutoff and revision selection over generated normalized records only; it does not verify a source file, Census/ALFRED publication date, legal permission, archive completeness or forecast performance."
+  },
+  {
+    "id": "MM-CEN-002",
+    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
+    "test": "tests/unit/test_census_vintages.py",
+    "function": "test_same_day_first_estimate_is_excluded_and_receipt_is_unverified",
+    "limitation": "Shows the date-only adapter excludes same-day releases and keeps false authorization flags on fictional input; it does not establish intraday ordering or an authenticated permission boundary."
+  },
+  {
     "id": "MM-XLSX-001",
     "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
     "test": "tests/unit/test_uci_workbook.py",

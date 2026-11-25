@@ -45,6 +45,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | G | Bounded transaction-to-day positive-unit projection on fictional mappings; [source walkthrough](UCI_RETAIL_PROJECTION.md) |
 | [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
 | [`src/mirrormind/domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py) | G | Fixed event-time retrospective over caller-declared synthetic complete dates; [research guide](M1_UCI_EVENT_TIME_RESEARCH.md); no historical publication or point-in-time claim |
+| [`src/mirrormind/domains/retail/census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py) | G | Pure bounded selector over normalized fictional monthly vintage records; [adapter guide](CENSUS_VINTAGE_ADAPTER.md); no source parser, byte verification, authorization or forecast scoring |
 | [`src/mirrormind/domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py) | G | Experimental composition of bounded CSV/XLSX readers, review-only packets, declared calendar/release checks and CSV as-of selection; [M1 flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), no authorization or forecast eligibility |
 | [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../src/mirrormind/domains/retail/synthetic_fixtures.py) | G | Canonical in-memory fictional workbook and release dates reused by examples/API; no external data or publisher proof |
 | [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | G | Compose synthetic evidence, diagnostics, release-gated profile, selected policy engine and DecisionTrace v2 with outcome-linked selected execution and optional parity evidence; [M1F-02 guide](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), API remains test-double-only |
@@ -233,3 +234,16 @@ This capability is experimental and event-time-only:
 and no original UCI records were processed. See the
 [dataset card](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md)
 and [model card](model_cards/SYNTHETIC_UCI_EVENT_TIME.md).
+
+## Synthetic aggregate Census vintage selector
+
+[`domains/retail/census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py)
+validates normalized in-memory records and selects the latest publication
+strictly before an exclusive target-release date for each reference month.
+[`test_census_vintages.py`](../../tests/unit/test_census_vintages.py)
+checks revisions, same-day leakage rejection, missing-month preservation,
+malformed metadata and deterministic receipt behavior. It consumes invented
+records only, validates digest syntax rather than source bytes, and keeps
+ingestion/forecast authorization false. The [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md)
+is not a Census or ALFRED file/API parser; source rights, archive completeness,
+target cross-checks and evaluation remain open under B-01/B-02.

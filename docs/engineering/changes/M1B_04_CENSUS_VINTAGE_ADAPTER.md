@@ -1,0 +1,135 @@
+# Change request — prepare a synthetic aggregate vintage selector
+
+## 1. Goal in plain language
+
+**Current behavior:** The repository contains the owner-approved Census/ALFRED
+research protocol, but no Census vintage adapter in `src/` or tests. The UCI
+pilot in `uci_event_time.py` deliberately uses event dates and cannot model
+publication-time revisions.
+
+**Desired behavior:** Add a pure, bounded local adapter over normalized
+aggregate vintage records. Given one series and an exclusive target-release
+date, select the latest record for each reference month published strictly
+before that date. Preserve the source release ID, release kind and snapshot
+digest for replay. Same-day ambiguity, duplicate records and invalid metadata
+must fail closed. Empty history remains empty; it is never zero-filled.
+
+**Why:** The second approved research lane needs a testable point-in-time
+selection rule before any Census/ALFRED bytes are reviewed or acquired. A
+synthetic adapter can prove the date and revision contract without making a
+source-rights, completeness or forecasting claim.
+
+**Out of scope:** Network requests, Census or FRED/ALFRED file/API parsing,
+credentials, real-data access, rights authorization, forecast scoring,
+baseline comparison, HTTP exposure, capability promotion and WorldKernel.
+
+## Capability status change
+
+- Previous and proposed status: no public capability is added or promoted.
+- Production behavior versus interface/experiment-only: pure local
+  experimental selection over caller-supplied synthetic records only.
+- Tests: `tests/unit/test_census_vintages.py` covers the exclusive cutoff,
+  revisions, abstention, duplicate/conflicting metadata and receipt limits.
+- `GET /v1/capabilities` remains unchanged; no route or public capability is
+  added.
+
+## 2. Acceptance criteria
+
+- [x] Immutable versioned records represent one aggregate series, a month
+  reference period, published date, release kind/ID, Decimal value and
+  64-digit source snapshot digest.
+- [x] The selector uses only `published_on < target_release_on`; a same-day
+  observation is not treated as available when timestamp precision is only a
+  date.
+- [x] The latest eligible revision is selected independently for each
+  reference month, with its release ID/kind/digest preserved.
+- [x] Missing months remain missing; no zeros or synthetic releases are
+  invented.
+- [x] Invalid values, unsupported release kinds, ambiguous duplicate period
+  dates, conflicting release metadata, mixed series and over-limit inputs are
+  rejected.
+- [x] The result marks source provenance unverified and both
+  `ingestion_authorized` and `forecast_eligible` false.
+- [x] Automated tests use only generated records; the adapter performs no
+  filesystem/network access and does not read a credential.
+- [x] Technical/learning docs, synthetic fixture card, architecture and atlas
+  links explain the exact behavior, limitations and reproduction steps.
+- [ ] The six-check exact-head local gate passes with the optional reviewed
+  WorldKernel pin installed; no test is skipped.
+
+## 3. Impact map
+
+| Layer | Relevant file/symbol | Change? | Evidence / tests |
+| --- | --- | --- | --- |
+| Entrypoint | None | No | No CLI/API surface |
+| Core implementation | `domains/retail/census_vintages.py::select_census_vintage_as_of` | Yes | Pure unit regressions in `tests/unit/test_census_vintages.py` |
+| State / persistence / API | None | No | No writes, route, file read or network client |
+| Calling components | Future aggregate evaluation only | No caller yet | Current tests invoke the function directly |
+| Downstream consumers | Synthetic research protocol and backlog | Docs only | No forecast consumer or capability promotion |
+| External project/contracts | Census/ALFRED source formats | No | Normalized MirrorMind contract only; source-specific parser remains gated |
+
+## Data, modeling and decision review
+
+- Dataset card: added synthetic Census-vintage fixture card; it contains only
+  invented values. Real source bytes, rights and retention are not reviewed.
+- Forecast model card: not applicable; this change selects vintages and does
+  not forecast or score outcomes.
+- Decision trace: no recommendation or operational action is produced.
+- WorldKernel compatibility gate: not applicable.
+- Temporal leakage: same-day and after-cutoff publications are excluded;
+  records carry publication date separately from reference month. Tests mutate
+  the release order and preserve later revisions as unavailable.
+
+## 4. Constraints and risks
+
+The input is a normalized in-memory contract, not an official Census or ALFRED
+parser. A 64-character digest is syntax-checked but source bytes are not
+available to verify it. Date-only publication metadata cannot order two
+releases on the same day, so ambiguous entries reject instead of guessing.
+The returned source state is caller-supplied and remains explicitly
+unverified; this is not an authorization boundary. Only synthetic fixtures
+are used until B-01/B-02 approvals and the exact source archive are reviewed.
+
+## 5. Implementation plan
+
+1. Trace the Census protocol, UCI event-time adapter, retail release contracts
+   and existing test conventions.
+2. Add failing tests for same-day leakage, revision selection, missing history
+   and invalid/ambiguous metadata.
+3. Implement the smallest pure bounded selector and immutable result type.
+4. Add a synthetic dataset card and source walkthrough with sequence diagram,
+   typed contract, examples, tests, privacy boundary, diagnostics and exercises.
+5. Update system map, learning, debugging, task backlog, evidence map and
+   repository atlas; regenerate the symbol catalog from source.
+6. Run the focused suite and exact-clean-head six-check local gate with the
+   reviewed WorldKernel pin installed. Report local evidence separately from
+   GitHub Actions.
+
+## 6. Evidence after implementation
+
+- Commit / PR: local branch `codex/m1-census-vintage-adapter`, stacked on
+  reviewed PR #62 head `777c2d2`; not pushed and no PR opened.
+- Modified symbols and files: `CensusVintageRecord`, `CensusVintageView`,
+  `_validate_record` and `select_census_vintage_as_of` in
+  `src/mirrormind/domains/retail/census_vintages.py`.
+- Tests executed, result, environment: focused suite passed (11 tests) on
+  Python 3.13.5 before final documentation/catalog changes; full exact-head
+  gate pending.
+- Claim IDs and cited test path/function: `MM-CEN-001` cites
+  `tests/unit/test_census_vintages.py::test_selects_latest_revision_per_month_strictly_before_target_release`;
+  `MM-CEN-002` cites
+  `tests/unit/test_census_vintages.py::test_same_day_first_estimate_is_excluded_and_receipt_is_unverified`.
+- Evidence/provenance/cutoff and uncertainty: synthetic records only;
+  publication dates are day-granular and source bytes are unavailable.
+- Scope of human review and approval: synthetic pilot preparation only; no
+  real source acquisition/processing permission.
+- New or changed contracts: `mirrormind.census.aggregate_vintage_view.v1`.
+- Docs updated: adapter guide, synthetic dataset card, change request,
+  protocol, system map, debugging, learning, evidence map, semantic map,
+  repository atlas, backlog, project status and handoff.
+- Known limitations / follow-up: source-specific adapter, rights, privacy,
+  retention, historical archive completeness, target cross-checks and temporal
+  evaluation remain gated by B-01/B-02.
+- Independent explanation: the tests prove local selection and rejection
+  semantics for normalized generated records. They do not prove a source parser,
+  source-byte digest, rights, completeness or forecast quality.

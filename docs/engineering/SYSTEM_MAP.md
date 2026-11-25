@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-25 against the corrected integrated candidate combining PR #57's synthetic UCI event-time evaluator with M1F-02 and M1E-02/M1E-04. Bounded CSV/XLSX staging, retrospective UCI evaluation, the paired policy test double, the synthetic decision workflow and exact-pin local engine adapters are experimental. UCI output is event-time retrospective with unverified publication availability. The decision trace result schema remains interface-only as a general capability; its M1F-02 v2 producer is synthetic and non-authorizing. On the explicit WorldKernel CLI path, each outcome links the selected engine result and a separate parity-oracle execution record. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-25 against consolidated PR #62 and local M1B-04 follow-on work. PR #62 combines PR #52–#59 and its exact integrated local gate passed 832 tests with the reviewed WorldKernel pin; the Census vintage selector below is a separate local synthetic branch, not part of that PR. Bounded CSV/XLSX staging, retrospective UCI evaluation, the paired policy test double, the synthetic decision workflow, exact-pin local engine adapters and normalized Census vintage selection are experimental. UCI output is event-time retrospective with unverified publication availability. The decision trace result schema remains interface-only as a general capability; its M1F-02 v2 producer is synthetic and non-authorizing. On the explicit WorldKernel CLI path, each outcome links the selected engine result and a separate parity-oracle execution record. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
@@ -40,6 +40,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover v1 input/reference bounds and review chronology; M1F-02 uses v2 outcome-linked selected-engine and parity evidence; no authenticated producer, trusted engine attestation, API or action execution |
 | Evaluate UCI-shaped product-day observations | [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md) | [`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) and [`test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) exercise synthetic coverage, cohort, holdout, metrics and redaction; no real source rights, snapshot completeness or point-in-time availability |
+| Select an aggregate Census vintage before a target release | [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md), [research protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py) exercises the strict date cutoff, per-month revision choice, ambiguity rejection, missing-period preservation and unverified receipt using generated records; no source parser, bytes, rights, completeness or forecast scoring |
 | Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API/default CLI test double plus explicit CLI WorldKernel engine regression with linked selected output and parity records; no source authorization, empirical forecast, authenticated review, public transport controls or writes |
 | Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py) cover revalidation of mutable scenarios and the lower scenario/operator run ceiling; no engine import or execution |
 | Execute the M1 policy comparison in WorldKernel | [`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py), [`worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py), [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) | Synthetic mapper/state/parity regressions plus exact-pin engine and CLI integration tests; no real data, forecast validity, hostile-code isolation or HTTP execution |
@@ -136,6 +137,24 @@ but are not forwarded to the retail projection.
 Event date is still not proven publication
 date, so no direct historical forecast
 or WorldKernel scenario input is authorized.
+
+## Aggregate monthly vintage selection (synthetic preparation only)
+
+Caller-supplied normalized records ->
+`select_census_vintage_as_of(records, series_id, target_release_on)` ->
+strict metadata validation -> exclude records where
+`published_on >= target_release_on` -> choose the latest remaining record
+per `reference_month` -> `CensusVintageView` with release IDs and digest
+strings. Empty months remain absent. A date-only same-day publication is
+ambiguous and rejected; the selector never uses row order to resolve it.
+
+This is a pure in-memory adapter against fictional records. It checks digest
+syntax but cannot read source bytes, verify a Census/ALFRED manifest, authorize
+ingestion or score a forecast. The original source file parser, retained
+vintage archive and baseline evaluation remain blocked by B-01/B-02. See the
+[adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md),
+[synthetic fixture card](datasets/SYNTHETIC_CENSUS_VINTAGES.md) and
+[protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 
 ## Offline combined-head fence — experimental, no authority service
 

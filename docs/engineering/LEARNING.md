@@ -672,3 +672,21 @@ declaration. Mutate a holdout value and verify validation metrics stay fixed.
 Finally locate where `InvoiceDate` becomes an event day and explain why a
 verified publication vintage requires a distinct source contract. Do not use
 real UCI rows in this exercise.
+
+## Guided exercise — select an aggregate vintage without lookahead
+
+Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md),
+[synthetic adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md),
+[fixture card](datasets/SYNTHETIC_CENSUS_VINTAGES.md) and
+[`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py).
+Run `python -m pytest -q tests/unit/test_census_vintages.py`. Draw the
+reference month, first-estimate publication date, monthly revision date and
+target-release cutoff for the first regression. Predict which `Decimal` is
+selected, then move the revision to the cutoff date and explain why it is
+excluded. Add two same-day records for one month; explain why input order
+cannot safely break the tie. Remove one reference month and verify it remains
+absent rather than becoming zero. Finally mutate a record's value without
+changing its digest string and identify the missing byte-verification layer.
+Explain why this normalized synthetic selector proves neither a real source
+vintage nor permission, and why UCI `InvoiceDate` cannot supply
+`published_on`.

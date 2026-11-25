@@ -58,9 +58,34 @@ flowchart LR
 
 ## Reproducibility, failure and controls
 
-No remote request is part of tests. A future adapter should accept already selected local aggregate snapshots and an explicit reviewed manifest, verify every digest and schema before building a vintage map, reject duplicate/conflicting IDs, and return only aggregate counts and sanitized status. Keep the connector separate from the parser so unit tests can use synthetic release records and no live account is required.
+No remote request is part of tests. The current preparation implementation is
+the pure normalized-record selector in
+[`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py).
+It accepts a bounded in-memory tuple, selects the latest record per reference
+month strictly before a target release date, preserves selected release IDs
+and digest strings, and rejects same-day ambiguity. It performs no file or
+network access. Its 64-character digest validation checks syntax and release
+metadata consistency only; it cannot verify source bytes or an approved
+manifest. See the
+[adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md) and
+[synthetic fixture card](datasets/SYNTHETIC_CENSUS_VINTAGES.md).
 
-Adverse tests must cover absent months, duplicate release IDs, changed bytes, missing timezone, same-day ambiguity, a revision arriving after origin, missing ALFRED vintage, disagreement with the Census original, all-abstained origins and zero metric denominator. A complete local check does not establish rights or official CI. No data adapter should call FRED until free account/API access, each series' terms and the owner-approved retention manifest are in place.
+A future source-specific file adapter must accept an explicit reviewed
+manifest, verify exact source bytes and schema before building normalized
+records, and keep raw artifacts outside Git. Keep any network connector
+separate from parsing so unit tests can use generated records and no live
+account is required. The current selector's receipt always marks source
+provenance unverified and ingestion/forecast flags false.
+
+The normalized-selector tests cover absent months, conflicting release
+metadata, malformed digest syntax, same-day ambiguity, revisions after the
+cutoff and deterministic abstention. Future source-parser/evaluator tests must
+cover changed bytes, missing release-boundary metadata, missing ALFRED
+vintages, disagreement with original Census releases, all-abstained origins
+and zero metric denominators. A complete local check does not establish
+rights or official CI. No data adapter should call FRED until free
+account/API access, each series' terms and the owner-approved retention
+manifest are in place.
 
 ## Current primary references checked 2026-11-25
 

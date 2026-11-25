@@ -38,6 +38,15 @@ candidate contains the synthetic M1 workflow, pinned local WorldKernel runner
 and policy world, plus the UCI event-time evaluator and aggregate Census
 protocol. No real source bytes were acquired.
 
+An independent local follow-on branch, `codex/m1-census-vintage-adapter`, is
+stacked on the PR #62 documentation head `777c2d2e3598f1eb06e2ae3b972428adfc7e718e`.
+It adds a pure in-memory selector over normalized synthetic aggregate-vintage
+records, a privacy-limited receipt, regression tests and a learning guide.
+This branch is not pushed and has no PR; it does not alter PR #62's review head
+or the separate #60/#61 branches. The selector is not a Census/ALFRED parser,
+does not read files or make network calls, and cannot satisfy B-01/B-02.
+Record its final commit and exact local gate below after validation.
+
 PR #59 review comment
 [7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
 identified an engine-contract mismatch and ambiguous parity invocation in the

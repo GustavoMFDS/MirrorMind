@@ -142,6 +142,20 @@ Static imports (including inside functions): `__future__`, `bisect`, `dataclasse
 | `DeclaredCalendarCoverage.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Keep the unverified calendar and unknown publisher availability explicit. | [L29](../../../src/mirrormind/domains/retail/calendar_coverage.py#L29) |
 | `summarize_declared_calendar_coverage` | function | `def summarize_declared_calendar_coverage(projection: UciRetailProjection, declared_days: tuple[date, ...]) -> DeclaredCalendarCoverage` | Count only absent *declared* dates between observed positive product-days. | [L44](../../../src/mirrormind/domains/retail/calendar_coverage.py#L44) |
 
+## `mirrormind.domains.retail.census_vintages`
+
+Source: [`src/mirrormind/domains/retail/census_vintages.py`](../../../src/mirrormind/domains/retail/census_vintages.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `decimal`, `re`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `CensusVintageRecord` | class | `class CensusVintageRecord` | One normalized aggregate value from one immutable release artifact. | [L23](../../../src/mirrormind/domains/retail/census_vintages.py#L23) |
+| `CensusVintageView` | class | `class CensusVintageView` | Selected values available before a target release date, not source proof. | [L36](../../../src/mirrormind/domains/retail/census_vintages.py#L36) |
+| `CensusVintageView.receipt` | method | `def receipt(self) -> dict[str, object]` | Return sanitized selection provenance without value-level observations. | [L43](../../../src/mirrormind/domains/retail/census_vintages.py#L43) |
+| `_validate_record` | function | `def _validate_record(record: CensusVintageRecord, *, series_id: str) -> None` | Reject malformed normalized metadata before applying time selection. | [L66](../../../src/mirrormind/domains/retail/census_vintages.py#L66) |
+| `select_census_vintage_as_of` | function | `def select_census_vintage_as_of(records: tuple[CensusVintageRecord, ...], *, series_id: str, target_release_on: date) -> CensusVintageView` | Select latest per-month records published strictly before target release. | [L90](../../../src/mirrormind/domains/retail/census_vintages.py#L90) |
+
 ## `mirrormind.domains.retail.coverage`
 
 Source: [`src/mirrormind/domains/retail/coverage.py`](../../../src/mirrormind/domains/retail/coverage.py)
