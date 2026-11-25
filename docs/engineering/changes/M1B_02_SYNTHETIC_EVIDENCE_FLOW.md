@@ -24,6 +24,8 @@
 - [x] Given a bounded generated UCI-shaped workbook, caller-declared calendar and explicit releases, the workbook path composes projection, calendar coverage and release audit; late and future product-days are withheld/count-only at the origin.
 - [x] Digest mismatch, declaration/source mismatch, missing calendar dates and missing release declarations fail closed through existing validators; the underlying helpers retain duplicate/invalid release validation.
 - [x] Receipts contain aggregate counts and digest/status metadata only; they exclude source references, series/product identifiers, invoice/customer data and raw values.
+- [x] Composite CSV and UCI receipts preserve the exact child source-review, quality, projection, calendar and release receipts; integration assertions compare each nested value to its source component.
+- [x] Python API CI explicitly installs `dev`, `uci` and `review` extras; direct imports ensure missing `openpyxl` or `cryptography` fail the test job rather than skip coverage.
 - [x] Capability ledger, registered API handler, evidence map, repository atlas, generated symbol catalog and human-written engineering/learning/debugging docs agree structurally; documentation guards and a direct registered-handler/ledger parity check passed locally.
 - [ ] The full API integration suite and exact-commit local quality gate pass. The current Windows execution blocked before application code in `tests/integration/test_api.py::test_health`; see B-07. Official Actions is separately blocked by B-08.
 - [x] Existing public contracts and helper semantics remain unchanged; no network, disk persistence or authorization behavior is added.
@@ -35,7 +37,8 @@
 | Entrypoint | `mirrormind.domains.retail.evidence_flow` | Add local composition functions | New integration tests for CSV and XLSX flows |
 | Core implementation | `snapshots.read_staged_csv`, `available_as_of`, `snapshot_quality_summary`; `prepare_source_review_packet`; `read_uci_workbook`; `summarize_declared_calendar_coverage`; `audit_declared_releases_as_of` | Reuse only | Existing focused tests plus new composition tests |
 | State / persistence / API | `GET /v1/capabilities`, `CAPABILITY_LEDGER.json` | Declare one experimental library capability only | `test_capabilities_match_reviewed_ledger`; capability guard |
-| Calling components | None; library caller supplies streams and declarations | No change | Integration tests call the public composition functions |
+| Calling components | None; library caller supplies streams and declarations | No change | Integration tests call public composition functions and compare aggregate receipts to child receipts |
+| CI dependencies | `.github/workflows/ci.yml` | Install explicit `dev`, `uci` and `review` extras | Existing full suite imports `openpyxl`/`cryptography` directly; no optional dependency test skip |
 | Downstream consumers | M1C offline evaluation is a future consumer | No consumer wired in this slice | Returned typed staged data; no forecast runs here |
 | External project/contracts | None | No change | No external adapter or network access |
 
@@ -54,7 +57,7 @@ The helpers already bound bytes, rows, groups, workbook archive members and date
 ## 5. Implementation plan
 
 1. Reuse the existing staging, review, calendar/release and as-of functions without duplicating their validation algorithms.
-2. Add deterministic integration coverage for normal paths, abstention, malformed declarations and receipt minimization.
+2. Add deterministic integration coverage for normal paths, abstention, malformed declarations, receipt minimization and aggregate-to-child receipt parity.
 3. Add one experimental capability and keep API/ledger parity.
 4. Explain architecture, data flow, contracts, safety boundaries, diagnostics, tests and follow-up in the engineering hub, system map, debugging notes, learning notes, atlas and evidence map.
 5. Regenerate the symbol catalog and run focused tests, full local quality gates and documentation guards on the exact final commit. Report local evidence separately from remote CI.

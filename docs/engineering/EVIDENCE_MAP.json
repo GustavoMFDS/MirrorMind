@@ -823,7 +823,7 @@
     "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
     "test": "tests/integration/test_retail_evidence_flow.py",
     "function": "test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing",
-    "limitation": "A generated local fixture composes the CSV helpers, filters by caller-declared event/publication dates and omits identifiers/references from the receipt. It does not authenticate permissions, provenance or actual source availability."
+    "limitation": "A generated local fixture composes the CSV helpers, filters by caller-declared event/publication dates, and asserts that aggregate review and quality receipts equal their child receipts while omitting identifiers/references. It does not authenticate permissions, provenance or actual source availability."
   },
   {
     "id": "MM-FLOW-002",
@@ -837,7 +837,7 @@
     "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
     "test": "tests/integration/test_retail_evidence_flow.py",
     "function": "test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers",
-    "limitation": "A generated workbook, caller calendar and caller release tuple compose into aggregate cutoff counts with no raw identifiers in the receipt. The calendar and release dates remain unverified and InvoiceDate is not publication evidence."
+    "limitation": "A generated workbook, caller calendar and caller release tuple compose into aggregate cutoff counts; the test asserts exact equality with each child receipt and omits raw identifiers. The calendar and release dates remain unverified and InvoiceDate is not publication evidence."
   },
   {
     "id": "MM-FLOW-004",
