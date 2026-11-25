@@ -211,10 +211,11 @@ gated by B-04.
 
 ### Latest M1F-02 review reconciliation — 2026-11-24
 
-The current branch `codex/m1f-02-synthetic-decision-workflow` starts from PR
-#59 head `a5951e49a78796908ecd1975c65052b5a2548cd7`. It is being reconciled
-with the corrected #58 state by a normal merge; #56 was already an ancestor,
-and the #54/#55 review fixes remain in the merged stack. The #59 identity
+The current branch `codex/m1f-02-synthetic-decision-workflow` started from PR
+#59 head `a5951e49a78796908ecd1975c65052b5a2548cd7` and now publishes
+`bde8625b90bc7a9bdfe27558514a37c6dcc386e0`. It was reconciled with the
+corrected #58 state by a normal merge; #56 was already an ancestor, and the
+#54/#55 review fixes remain in the merged stack. The #59 identity
 collision, trace-only digest scope and missing propagation of #58's policy
 caveat were reproduced with focused red regressions. The working-tree
 correction now hashes the validated request with versioned artifact digests,
@@ -223,17 +224,28 @@ policy caveat as a typed trace assumption linked to the affected outcome.
 Focused unit, CLI and API checks passed 16 tests, with one existing
 Starlette/httpx deprecation warning, and focused Ruff passed. Normal merge
 commit `ffbeb637517f18490571554a1cfa8a3ab9434bb7` has PR #59 head `a5951e4`
-and latest PR #58 head `46b07a0` as parents. Its exact full local gate passed
-790 tests plus Ruff, symbol catalog, atlas, evidence and capability checks;
-the receipt is `C:\Users\gusta\AppData\Local\Temp\mirrormind-ffbeb637-quality.json`.
+and latest PR #58 head `46b07a0` as parents. The integrated code and the
+published documentation head `bde8625` each passed the exact full local gate
+with 790 tests plus Ruff, symbol catalog, atlas, evidence and capability
+checks. Receipts:
+`C:\Users\gusta\AppData\Local\Temp\mirrormind-ffbeb637-quality.json` and
+`C:\Users\gusta\AppData\Local\Temp\mirrormind-bde8625b-quality.json`.
 The older 766-test receipt on the original #59 head does not cover these fixes.
 
 The workflow remains experimental and fictional. Its route has no
 authentication, explicit HTTP body-size limit, rate limit or concurrency
 control; neither trace nor workflow hashes authenticate the producer. PR #59's
-older Actions runs stopped before repository steps and no recoverable
-annotation was available for those runs, so their cause is not attributed to
-B-08. See [B-08](BLOCKERS.md) for the separate evidence on #58.
+latest Actions checks on exact head `bde8625` are `test`
+[run 45528710417](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528710417)
+and `symbol-catalog`
+[run 45528710354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528710354),
+with duplicate dispatches [45528704274](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528704274)
+and [45528704303](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528704303).
+All four check-run details report the account payment-or-spending-limit
+annotation, zero workflow steps and no logs; this is evidence of a pre-job
+account gate, not of which specific account condition applies. No remote test
+ran. See [B-08](BLOCKERS.md) for the exact diagnostics and self-hosted runner
+assessment.
 
 ## Architecture and actual execution boundaries
 

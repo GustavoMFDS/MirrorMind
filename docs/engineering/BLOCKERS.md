@@ -16,7 +16,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Exact clean integrated SHAs `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8`, `fd72b76` and `b292db0` passed the complete local gate outside the restricted sandbox: 756 tests and all six stages. Corrected #58 integration head `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` passed 768 tests and all six stages. The PR #59 integration merge `ffbeb637517f18490571554a1cfa8a3ab9434bb7` passed the exact full gate with 790 tests and all six stages. The earlier PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` remains historical and was not rerun. | For later integrated heads, run the exact clean SHA through the complete gate; do not skip API tests | Codex execution environment / project maintainer | All listed integrated SHAs passed pytest, Ruff, catalog, atlas, evidence and capability checks outside the restricted sandbox with one existing Starlette/httpx deprecation warning. The #54-only docs head `2794abf` separately passed all six gate stages with 728 tests. The restricted timeout is recorded, not hidden; no application code or verifier was changed to avoid it. |
-| B-08 | The latest inspected #54 head is `2794abf`, #55 is `b292db0`, and #58 is `46b07a0`. Both required checks on the current #58 head failed before repository steps with GitHub's explicit annotation that recent account payments failed or the spending limit needs to be increased. The old published PR #59 head `a5951e4` also had checks fail before steps without a recoverable annotation. The corrected local #59 merge `ffbeb637517f18490571554a1cfa8a3ab9434bb7` has not yet been pushed or checked by Actions. This proves a pre-job account gate for #58, but not which setting caused it or whether a self-hosted runner would be eligible. | Account owner inspects GitHub Billing & plans; then rerun checks on corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. A self-hosted runner is technically possible but is not evidenced as a workaround for this start gate; see the security, admin and cost assessment below. |
+| B-08 | On exact PR #59 head `bde8625b90bc7a9bdfe27558514a37c6dcc386e0`, both required checks failed before starting a repository step. Four check-run records across two duplicate workflow dispatches carry GitHub's annotation that recent account payments failed or the spending limit needs to be increased. The diagnostics expose no steps or logs. This confirms a pre-job account gate for that head, but neither identifies which account condition applies nor establishes self-hosted runner eligibility. | Account owner inspects GitHub Billing & plans; then rerun checks on corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. A self-hosted runner is technically possible but is not evidenced as a workaround for this start gate; see the security, admin and cost assessment below. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
@@ -26,14 +26,13 @@ the named real integration, not a prohibition on design and tests.
 ## B-08 exact diagnostics and runner assessment — 2026-11-24
 
 This is a point-in-time diagnostic snapshot: #54 was at head `2794abf`, #55
-at integrated published head `b292db0`, and #58 at integrated published head
-`46b07a0` when their latest checks below were inspected. The exact `b292db0`
-and `46b07a0` states passed the full local gate; their Actions checks still
-failed before repository steps. Both required workflows carry an
-annotation that the job was not started because recent account payments
-failed or the spending limit needs to be increased. These runs provide no
-result for repository code. The annotation states the start-gate category but
-does not distinguish a payment failure from a spending cap.
+at integrated published head `b292db0`, #58 at integrated published head
+`46b07a0`, and #59 at published head `bde8625` when their checks below were
+inspected. The exact `b292db0`, `46b07a0` and `bde8625` states passed the full
+local gate; their Actions checks still failed before repository steps. The
+annotated runs below provide no result for repository code. The annotation
+states the start-gate category but does not distinguish a payment failure
+from a spending limit.
 
 | PR | Published head | `test` run | `symbol-catalog` run |
 | --- | --- | --- | --- |
@@ -44,15 +43,22 @@ does not distinguish a payment failure from a spending cap.
 | #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
 | #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
 | #58 | `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` | [45522840258](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522840258) (prior [45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099)) | [45522840335](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522840335) (prior [45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076)) |
-| #59 | `a5951e49a78796908ecd1975c65052b5a2548cd7` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) |
+| #59 (previous head) | `a5951e49a78796908ecd1975c65052b5a2548cd7` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) |
+| #59 (reviewed head) | `bde8625b90bc7a9bdfe27558514a37c6dcc386e0` | [45528710417](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528710417) (repeat [45528704274](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528704274)) | [45528710354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528710354) (repeat [45528704303](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528704303)) |
 | #60 | `6374f0bb9a981271cb9340a190dcdebec6263cc9` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) |
 | #61 | `288021f25e24efc26591b064eafa1d8b4e287ac8` | [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331) | [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221) |
 
-The PR #55 details for all four listed run IDs and both PR #58 check pairs
-returned zero workflow steps and the same explicit annotation. PR #61 diagnostics also
-showed zero workflow steps; previous #52–#60 checks carried the same
-annotation. No repository workflow log or test execution can be inferred
-from these statuses.
+The PR #55 details for all four listed run IDs, both PR #58 check pairs, and
+all four check-run records for PR #59 head `bde8625` returned zero workflow
+steps and the same explicit annotation. The annotation text is: “The job was
+not started because recent account payments have failed or your spending
+limit needs to be increased. Please check the 'Billing & plans' section in
+your settings”. PR #61 diagnostics showed zero workflow steps but no
+recoverable annotation; PR #59's previous head also had no recoverable
+annotation. PR #57's description records an annotation for its own earlier
+runs. Do not generalize that evidence to other heads: no repository workflow
+log or test execution can be inferred from a failed check without a started
+job.
 
 ### Self-hosted runner option
 

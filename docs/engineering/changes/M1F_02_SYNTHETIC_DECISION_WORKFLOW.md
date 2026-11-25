@@ -156,7 +156,7 @@ independent blockers.
 - Known limitations: actual WorldKernel, authorized data, empirical forecasts,
   uncertainty calibration, human identity/review, persistence and writes remain
   absent.
-- Official CI: PR #59 test run [45457848087](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457848087) and symbol-catalog run [45457847930](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457847930) failed before steps. Step summaries were empty and log downloads returned 404 `BlobNotFound`; exact cause is unavailable for these runs. Earlier PR #58 diagnostics identify B-08 billing/spending-limit annotation.
+- Official CI: the first inspected PR #59 test run [45457848087](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457848087) and symbol-catalog run [45457847930](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45457847930) failed before steps; those historical runs had empty step summaries and log downloads returned 404 `BlobNotFound`. On reviewed PR #59 head `bde8625b90bc7a9bdfe27558514a37c6dcc386e0`, `test` runs [45528710417](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528710417) and [45528704274](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528704274), plus `symbol-catalog` runs [45528710354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528710354) and [45528704303](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45528704303), all failed before any repository step. Their check-run details include the account payment-or-spending-limit annotation; it does not establish which specific account condition applies. No remote test ran. See [B-08](../BLOCKERS.md).
 - Independent explanation: start with the [M1F-02 walkthrough](../M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), replay the CLI command there, then compare its JSON fields to the trace schema and cited test functions.
 
 ## Independent review correction — decision identity and complete result binding
@@ -257,7 +257,11 @@ the latest PR #58 head. Its exact integrated local gate passed 790 tests and
 all six stages; receipt: `C:\Users\gusta\AppData\Local\Temp\mirrormind-ffbeb637-quality.json`.
 The earlier 766-test receipt on published PR #59
 head `a5951e49a78796908ecd1975c65052b5a2548cd7` predates these corrections and
-does not validate them. The older remote Actions runs failed before steps
-without a recoverable annotation, so no more specific cause than “job did not
-start” is claimed for those runs. Record the exact merge commit, gate receipt
-and post-push Actions outcome here before considering the correction complete.
+does not validate them. The documentation follow-up head `bde8625b90bc7a9bdfe27558514a37c6dcc386e0`
+also passed the exact full local gate with 790 tests and all six stages; its
+receipt is `C:\Users\gusta\AppData\Local\Temp\mirrormind-bde8625b-quality.json`.
+The current Actions runs are recorded above and in [B-08](../BLOCKERS.md):
+they failed before repository steps with an account payment-or-spending-limit
+annotation. The annotation does not identify the specific account condition,
+and no remote test executed. Official CI remains unresolved; do not treat the
+passing local gate as a substitute.
