@@ -105,27 +105,40 @@ missing values with zero.
 ## 6. Evidence after implementation
 
 Branch `codex/m1d-01-disjoint-residual-calibration`, implementation commit
-`10fe58fc3aca45c27288dcc6055ac5d84ab035af`, latest docs commit
+`10fe58fc3aca45c27288dcc6055ac5d84ab035af`, previously tested docs commit
 `0c2e789256e381c2790c49a14c2acc7802d11b9d`, draft [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56)
 stacked on draft PR #53. Focused residual-envelope tests: 81 passed;
 dependent eligibility/value/selection consumer tests: 94 passed. The canonical
-local gate passed on the docs head: 700 tests including the API module, Ruff,
-symbol catalog, atlas, evidence and capability guards. Pytest reported one
-existing Starlette/httpx deprecation warning. The standalone API health test
-also passed outside the restricted sandbox. Capability
-`local_retail_prequential_residual_envelope` remains experimental.
+local gate passed on the previous docs head: 700 tests including the API
+module, Ruff, symbol catalog, atlas, evidence and capability guards. Pytest
+reported one existing Starlette/httpx deprecation warning. The standalone API
+health test also passed outside the restricted sandbox.
+
+Merge commit `b9bb86df73c698588a3e2e5b818a31f4002d5d25` integrates the reviewed
+PR #53 receipt-parity regressions into #56 without changing M1D behavior. Its
+exact-head canonical gate passed 700 tests plus Ruff, catalog, atlas, evidence
+and capability checks at 2026-11-25 04:52:39 UTC. The same existing
+Starlette/httpx deprecation warning remains. Capability
+`local_retail_prequential_residual_envelope` remains experimental; a green
+local gate does not establish empirical calibration or official CI success.
 
 Reproduce locally from the repository root:
 
 ```bash
-python scripts/local_quality_gate.py --expected-head 0c2e789256e381c2790c49a14c2acc7802d11b9d
+uv run --no-sync --extra dev,uci,review python scripts/local_quality_gate.py --expected-head b9bb86df73c698588a3e2e5b818a31f4002d5d25
 ```
 
-The exact PR #52 SHA associated with B-07 was not rerun. On the current PR #56
-stack, both `test_health` and the canonical full gate passed outside the
-restricted sandbox, so B-07 is resolved for this stack. The tested docs-head
-official [test run 45336376803](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45336376803)
-and [symbol-catalog run 45336376776](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45336376776)
-failed before job steps with the B-08 annotation that recent account payments
-failed or the spending limit needed to be increased. Do not
-claim calibrated or nominal coverage or official CI success.
+The exact PR #52 SHA associated with the historical B-07 timeout was not
+rerun. The current integrated PR #56 stack, including PR #53 review regressions,
+passed `test_health` in the prior run and the canonical full gate at the exact
+merge commit above. B-07 is resolved for this tested stack; the old SHA remains
+historical evidence. Published PR #56 docs head
+`55427f3c8a1ac62fa143922decb531b6133919ce` passed the canonical gate again at
+2026-11-25 04:55:54 UTC. Its latest Actions [test
+45550139210](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139210)
+and [symbol-catalog
+45550139208](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550139208)
+failed before job steps. The exact annotation says the job was not started
+because recent account payments failed or the spending limit needs to be
+increased; it does not identify which condition applies. Do not claim
+calibrated or nominal coverage or official CI success.

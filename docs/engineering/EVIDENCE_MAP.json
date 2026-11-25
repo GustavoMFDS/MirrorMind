@@ -424,7 +424,7 @@
     "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
     "test": "tests/integration/test_retail_evidence_flow.py",
     "function": "test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing",
-    "limitation": "A generated local fixture composes the CSV helpers, filters by caller-declared event/publication dates and omits identifiers/references from the receipt. It does not authenticate permissions, provenance or actual source availability."
+    "limitation": "A generated local fixture composes the CSV helpers, filters by caller-declared event/publication dates, and asserts that aggregate review and quality receipts equal their child receipts while omitting identifiers/references. It does not authenticate permissions, provenance or actual source availability."
   },
   {
     "id": "MM-FLOW-002",
@@ -438,7 +438,7 @@
     "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
     "test": "tests/integration/test_retail_evidence_flow.py",
     "function": "test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers",
-    "limitation": "A generated workbook, caller calendar and caller release tuple compose into aggregate cutoff counts with no raw identifiers in the receipt. The calendar and release dates remain unverified and InvoiceDate is not publication evidence."
+    "limitation": "A generated workbook, caller calendar and caller release tuple compose into aggregate cutoff counts; the test asserts exact equality with each child receipt and omits raw identifiers. The calendar and release dates remain unverified and InvoiceDate is not publication evidence."
   },
   {
     "id": "MM-FLOW-004",
@@ -732,28 +732,28 @@
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_fixed_split_predicts_each_distinct_target_once",
-    "limitation": "The fixed synthetic split visits each distinct target once; this structural call count is not a latency benchmark, source-availability proof or calibration guarantee."
+    "limitation": "An instrumented count on a fictional disjoint 21-day calibration and seven-day holdout demonstrates one forecast per distinct date in that split; it does not measure optimization speed, authenticate source availability or calibrate uncertainty."
   },
   {
     "id": "MM-RENV-003",
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_fixed_split_matches_independent_oracle_under_adversarial_publication_schedules",
-    "limitation": "The quadratic test-only oracle checks fictional release eligibility and origin audits; it does not establish source rights, true demand, empirical accuracy or calibrated coverage."
+    "limitation": "Fictional adversarial reports match a separately written test-only quadratic eligibility oracle; this does not independently validate forecast quality, publisher provenance, source rights, true demand or calibrated coverage."
   },
   {
     "id": "MM-RENV-004",
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_disjoint_calibration_exactly_matches_naive_reference",
-    "limitation": "The deterministic quadratic oracle checks fixed-window eligibility and abstention outputs on fictional data; it does not validate publisher rights, the true demand process, calibration guarantees or runtime speed."
+    "limitation": "A deterministic, test-only quadratic oracle detects code-level fixed-window eligibility differences on generated histories; it cannot validate publisher rights, the true demand process, calibration guarantees or runtime speed."
   },
   {
     "id": "MM-RENV-005",
     "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
     "test": "tests/unit/test_retail_residual_envelope.py",
     "function": "test_holdout_targets_never_enter_later_calibration_windows",
-    "limitation": "A delayed synthetic calibration release does not allow holdout labels to enter the fixed calibration interval; it does not establish authenticated availability, source rights or empirical calibration."
+    "limitation": "The generated fixture proves date-label disjointness and caller-declared release eligibility only; it does not prove unit/source provenance, calibrated uncertainty or empirical coverage."
   },
   {
     "id": "MM-REVAL-001",

@@ -193,3 +193,24 @@ failed before repository steps under B-08. The reconciled merge
 `fd72b76` has a full local pass but is not yet published. None of this
 verifies WorldKernel execution, server resource enforcement, or official CI
 success.
+
+## 8. PR #54 dependency synchronization — 2026-11-25
+
+Merge commit `b9eba02` synchronizes PR #55 with published PR #54 head
+`4d220066c3e9ab83a321ac9517bbabc8fc22e293`. It preserves the original review
+fix ancestry and carries PR #53's nested-receipt regressions without
+cherry-picking duplicate commits. Shared blocker, status and backlog records
+were reconciled; the WorldKernel mapping behavior and its acceptance boundary
+remain unchanged.
+
+The complete local quality gate passed on merge commit
+`b9eba02eb9dab228215ef2f731e693ae086d5751` and documentation follow-up
+`cc9bdb4739507baa55cb857579ef70f7c92430d8`. On exact head `cc9bdb4` at
+2026-11-25 04:37:00 UTC, 756 pytest tests, Ruff, symbol catalog, repository
+atlas, evidence map and capability checks passed. The API suite ran; one
+existing Starlette/httpx TestClient deprecation warning appeared. This is
+local evidence, not official CI. The
+latest published PR #55 pre-sync head `b292db0` had failed Actions before
+repository steps under B-08; checks on the synchronized head remain pending
+publication. B-04 still blocks actual WorldKernel execution and result
+validation.

@@ -80,10 +80,6 @@ The calculation must be pure, bounded, deterministic and free of network, filesy
 
 ## Independent review correction — arrival-day demand caveat
 
-- [x] Both emitted modeling caveats remain visible in the comparison and are
-  represented as typed trace assumptions by the M1F-02 consumer; the affected
-  profile-aware outcomes reference them without changing the toy policy rule.
-
 Review of PR #58 identified that the profile-aware policy sums expected demand
 over `[day + 1, arrival_day)`. The existing boundary test confirmed this is
 the documented toy rule, rather than an accidental discrepancy, but the
@@ -107,7 +103,7 @@ decision trace, with a focused integration test.
 - Conservation: `tests/unit/test_retail_policy_simulation.py::test_inventory_mass_balance_holds_for_every_policy_replication` checks initial stock plus procurement equals fulfilled demand, ending stock and pending orders when the fixture uses a unit procurement coefficient of one.
 - Consumer contract: `tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison` asserts the caveat is present and does not call the rule standard or optimized.
 - Focused validation: `python -m pytest -q tests/unit/test_retail_policy_simulation.py tests/integration/test_retail_policy_simulation_cli.py` passed 12 tests; focused Ruff passed.
-- Integrated validation: merge commit `2f4822eafb768f289d03b10b6581c1e87c57bc4d` reconciles the corrected #55 dependency into #58 and carries the review correction. Exact integrated heads `b7d226f41d17f4db3f1b220b417309cc0872b614`, `624fd5a8f01b9063da739c4f6e3864336978ad95` and latest published #58 head `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` passed the complete local gate: 768 tests, Ruff, symbol catalog, atlas, evidence and capability checks. The 46b receipt is recorded in the local temporary directory. One existing Starlette/httpx deprecation warning appeared. On the latest published #58 head, Actions `test` [run 45522840258](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522840258) and `symbol-catalog` [run 45522840335](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522840335) failed before job steps with the explicit B-08 account payment/spending-limit annotation. Earlier pair 45522497099/45522497076 showed the same annotation. No remote code-test result exists.
+- Integrated validation: merge commit `2f4822eafb768f289d03b10b6581c1e87c57bc4d` reconciles the corrected #55 dependency into #58 and carries the review correction. Exact integrated heads `b7d226f41d17f4db3f1b220b417309cc0872b614` and `624fd5a8f01b9063da739c4f6e3864336978ad95` passed the complete local gate: 768 tests, Ruff, symbol catalog, atlas, evidence and capability checks. The final receipt is `mirrormind-624fd5a8f01b-quality.json` under the local temporary directory. One existing Starlette/httpx deprecation warning appeared. The published #58 head's Actions `test` [run 45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099) and `symbol-catalog` [run 45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076) failed before job steps with the explicit B-08 account payment/spending-limit annotation. They provide no remote code-test result.
 - Limitations: no algorithm semantics changed; this does not make the policy a conventional order-up-to method or establish inventory quality. The local test double still does not invoke WorldKernel. Actual execution remains gated by B-04.
 
 Learning exercise: reproduce the zero-stock/one-day case, inspect the result
@@ -115,6 +111,32 @@ metadata, and trace it through `_order_quantity`. Then explain why preserving
 the implementation boundary is different from claiming the boundary is a
 retail standard. A future protection-period policy would require a separately
 reviewed change request and distinct acceptance tests.
+
+## PR #55 dependency synchronization and exact-head gate — 2026-11-25
+
+Merge `5544bc0c2116d825a37d49a3ec75960e9896dd23` synchronizes PR #58 with
+the published PR #55 head `56aa92a6920a429b83458380231642fe59feaf08`. This
+retains PR #55's mutation-safe `ScenarioSpec` validation and effective minimum
+run ceiling, with no duplicate cherry-picks. It also retains the PR #53 nested
+receipt authority regressions. The exact merge head passed the complete local
+gate at 2026-11-25 05:12:21 UTC: 768 tests, Ruff, symbol catalog, atlas,
+evidence and capability checks. One existing Starlette/httpx deprecation
+warning appeared. This is local evidence, not official Actions.
+
+The review caveat remains visible in `test_profile_aware_target_stops_before_arrival_day`
+and `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`; conservation
+and paired-stream behavior remain checked by
+`test_inventory_mass_balance_holds_for_every_policy_replication`,
+`test_three_policies_share_each_reproducible_demand_stream`, and
+`test_sensitivity_reuses_the_same_paired_streams`. The one-day rule is still a
+toy heuristic, not an optimized or conventional inventory policy. The latest
+published PR #58 head before this sync was `46b07a0`; its Actions test
+[45522848614](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848614)
+and symbol-catalog
+[45522848658](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848658)
+checks failed before job steps with an annotation listing alternative account
+conditions. It did not identify the cause and ran no repository tests. Actual
+WorldKernel execution remains blocked by B-04.
 
 ### Cross-PR trace preservation in PR #59
 
