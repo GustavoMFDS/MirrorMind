@@ -221,9 +221,12 @@ correction now hashes the validated request with versioned artifact digests,
 separately binds the complete workflow envelope, and exposes the profile-aware
 policy caveat as a typed trace assumption linked to the affected outcome.
 Focused unit, CLI and API checks passed 16 tests, with one existing
-Starlette/httpx deprecation warning, and focused Ruff passed. The integrated
-merge is not yet committed and its exact full local gate remains pending; the
-older 766-test receipt on the original #59 head does not cover these fixes.
+Starlette/httpx deprecation warning, and focused Ruff passed. Normal merge
+commit `ffbeb637517f18490571554a1cfa8a3ab9434bb7` has PR #59 head `a5951e4`
+and latest PR #58 head `46b07a0` as parents. Its exact full local gate passed
+790 tests plus Ruff, symbol catalog, atlas, evidence and capability checks;
+the receipt is `C:\Users\gusta\AppData\Local\Temp\mirrormind-ffbeb637-quality.json`.
+The older 766-test receipt on the original #59 head does not cover these fixes.
 
 The workflow remains experimental and fictional. Its route has no
 authentication, explicit HTTP body-size limit, rate limit or concurrency

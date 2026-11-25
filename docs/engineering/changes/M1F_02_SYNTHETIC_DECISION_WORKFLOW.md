@@ -48,39 +48,39 @@ B-04 and M1E-02.
 
 ## 2. Acceptance criteria
 
-- [ ] CLI and `POST /v1/decision-workflows/retail/synthetic` produce the same
+- [x] CLI and `POST /v1/decision-workflows/retail/synthetic` produce the same
   canonical `mirrormind.synthetic_retail_decision_workflow.v1` result for the
   same bounded request; no result or source bytes are persisted.
-- [ ] The workflow builds on the declared release audit at the requested
+- [x] The workflow builds on the declared release audit at the requested
   cutoff. It requires seven distinct consecutive calendar days with positive
   projected units and `available_on <= cutoff`; missing, late or unpublished
   history yields a structured abstention with no forecasts, outcomes or
   policy-simulator invocation. It never substitutes zero for a missing day.
-- [ ] The successful path predeclares `seasonal_naive_lag7` and produces 28
+- [x] The successful path predeclares `seasonal_naive_lag7` and produces 28
   integer-unit steps by repeating the last seven eligible values. Model choice
   is not selected from the returned holdout scores. Every trace forecast points
   to its seven observed facts and the versioned synthetic model card.
-- [ ] The result includes the existing matched-origin evaluation and the
+- [x] The result includes the existing matched-origin evaluation and the
   M1D-01 disjoint residual diagnostic. It labels the diagnostic
   `heuristic_envelope_not_prediction_interval`, has no nominal/calibrated
   interval claim, and does not attach a guarantee to the 28-day forecast.
-- [ ] The existing M1E-03 three-policy test double receives the predeclared
+- [x] The existing M1E-03 three-policy test double receives the predeclared
   profile and bounded inventory/cost assumptions, retains shared stream digests
   across policies and lead-time sensitivities, and emits no ranking. The trace
   represents these outputs as conditional outcomes with references to the
   forecast and all relevant assumptions; human review stays `not_requested`.
-- [ ] The result and trace identify unauthenticated synthetic evidence,
+- [x] The result and trace identify unauthenticated synthetic evidence,
   unavailable real compute/engine costs, missing source-rights and empirical
   validation evidence, `worldkernel_not_invoked`, and no action authorization.
-- [ ] Request validation rejects unknown fields, booleans where integers are
+- [x] Request validation rejects unknown fields, booleans where integers are
   required, invalid cutoffs, out-of-range seed/replication budgets, and malformed
   assumptions before work starts. The endpoint cannot accept arbitrary files,
   URLs, commands or user-defined tools.
-- [ ] Tests prove byte-stable CLI replay, API/service parity, valid trace
+- [x] Tests prove byte-stable CLI replay, API/service parity, valid trace
   references/cutoffs, late/missing/unpublished abstentions with zero simulation
   calls, and that changing a post-cutoff synthetic value does not change the
   forecast profile or conditional policy metrics.
-- [ ] Technical walkthrough, model card, source map, debugging/learning guides,
+- [x] Technical walkthrough, model card, source map, debugging/learning guides,
   status/backlog, capability/evidence records, atlas and generated symbol
   catalog are updated; required catalog, atlas, evidence and capability guards
   pass. M1F-02 remains `partial` until actual-engine acceptance is available.
@@ -92,7 +92,7 @@ B-04 and M1E-02.
 | Entrypoint | `examples/m1_retail_decision_workflow.py::main` | Add deterministic local CLI | CLI integration replay and error cases |
 | Core workflow | `src/mirrormind/domains/retail/synthetic_decision_workflow.py::run_synthetic_decision_workflow` | Compose evidence, evaluation, uncertainty, fixed baseline, simulation and trace | Service unit tests |
 | Fixture / shared baseline | `examples/m1_retail_synthetic_evaluation.py`; `src/mirrormind/domains/retail/synthetic_fixtures.py`; `src/mirrormind/modules/forecasting/baselines.py` | Extract fixture for package/API reuse; expose bounded lag-7 profile projection without changing one-step behavior | Existing retail evaluation regressions and new profile tests |
-| API | `src/mirrormind/api/routes/decisions.py`; `src/mirrormind/api/app.py`; `src/mirrormind/api/routes/system.py` | Add strict local-only experimental route and truthful capability | `tests/integration/test_api.py` |
+| API | `src/mirrormind/api/routes/decisions.py`; `src/mirrormind/api/app.py`; `src/mirrormind/api/routes/system.py` | Add bounded-request experimental route and truthful capability; no public-exposure controls are provided | `tests/integration/test_api.py` |
 | Existing dependencies | `evidence_flow.py`, `evaluation_flow.py`, `residual_envelope.py`, `policy_simulation.py`, `core/decision_trace.py` | Reuse; no duplicate evaluator, residual, policy or trace contract | Dependency tests plus producer assertions |
 | State / persistence | None | No files, database, external service or business state | API/CLI tests and architecture walkthrough |
 | Downstream consumers | `GET /v1/capabilities`; `CAPABILITY_LEDGER.json`; `EVIDENCE_MAP.json` | Advertise only experimental behavior and bind evidence | Capability/API and evidence guards |
@@ -197,24 +197,24 @@ controls is outside this correction and remains an explicit exposure gate.
 
 ### Acceptance criteria
 
-- [ ] Same request and generated artifacts replay to the same trace ID,
+- [x] Same request and generated artifacts replay to the same trace ID,
   decision reference, revision and trace digest.
-- [ ] Changing `replications` while keeping `as_of` and `seed` fixed changes
+- [x] Changing `replications` while keeping `as_of` and `seed` fixed changes
   both trace identity and the result digest; all outcome-affecting result
   artifacts are included in the canonical identity input.
-- [ ] The response declares a schema version and SHA-256 digest for each
+- [x] The response declares a schema version and SHA-256 digest for each
   evaluation, uncertainty, forecast-evidence, forecast and simulation artifact.
-- [ ] `trace_sha256` independently recomputes from only the serialized
+- [x] `trace_sha256` independently recomputes from only the serialized
   `DecisionTrace`; `workflow_result_sha256` independently recomputes from the
   complete successful response excluding only its self-referential digest.
-- [ ] Both policy-model caveats from #58 appear as trace assumptions and
+- [x] Both policy-model caveats from #58 appear as trace assumptions and
   are referenced by profile-aware conditional outcomes. The existing trace
   schema, API route, non-authorization flags and `not_requested` review state
   remain compatible.
-- [ ] Tests reproduce an identity collision between different replication
+- [x] Tests reproduce an identity collision between different replication
   counts, verify exact replay, mutate a bound nested artifact, and confirm the
   profile-aware caveat is preserved in trace assumptions/references.
-- [ ] Technical, debugging and learning walkthroughs explain both digests,
+- [x] Technical, debugging and learning walkthroughs explain both digests,
   identity semantics, output artifact versions, deployment limits and tests;
   the evidence map, atlas, generated catalog and full local gate pass.
 
@@ -251,8 +251,11 @@ limits or authorization would be a separate reviewed change.
 caveat propagation were reproduced by focused red regressions before the
 service correction. The corrected workflow unit, CLI and API tests then passed
 16 tests, and focused Ruff passed; pytest reported one existing
-Starlette/httpx deprecation warning. The exact integrated merge has not yet
-run the full local gate. The earlier 766-test receipt on published PR #59
+Starlette/httpx deprecation warning. Normal merge commit
+`ffbeb637517f18490571554a1cfa8a3ab9434bb7` includes PR #59's prior head and
+the latest PR #58 head. Its exact integrated local gate passed 790 tests and
+all six stages; receipt: `C:\Users\gusta\AppData\Local\Temp\mirrormind-ffbeb637-quality.json`.
+The earlier 766-test receipt on published PR #59
 head `a5951e49a78796908ecd1975c65052b5a2548cd7` predates these corrections and
 does not validate them. The older remote Actions runs failed before steps
 without a recoverable annotation, so no more specific cause than “job did not

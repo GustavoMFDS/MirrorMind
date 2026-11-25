@@ -107,7 +107,7 @@ decision trace, with a focused integration test.
 - Conservation: `tests/unit/test_retail_policy_simulation.py::test_inventory_mass_balance_holds_for_every_policy_replication` checks initial stock plus procurement equals fulfilled demand, ending stock and pending orders when the fixture uses a unit procurement coefficient of one.
 - Consumer contract: `tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison` asserts the caveat is present and does not call the rule standard or optimized.
 - Focused validation: `python -m pytest -q tests/unit/test_retail_policy_simulation.py tests/integration/test_retail_policy_simulation_cli.py` passed 12 tests; focused Ruff passed.
-- Integrated validation: merge commit `2f4822eafb768f289d03b10b6581c1e87c57bc4d` reconciles the corrected #55 dependency into #58 and carries the review correction. Exact integrated heads `b7d226f41d17f4db3f1b220b417309cc0872b614` and `624fd5a8f01b9063da739c4f6e3864336978ad95` passed the complete local gate: 768 tests, Ruff, symbol catalog, atlas, evidence and capability checks. The final receipt is `mirrormind-624fd5a8f01b-quality.json` under the local temporary directory. One existing Starlette/httpx deprecation warning appeared. The published #58 head's Actions `test` [run 45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099) and `symbol-catalog` [run 45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076) failed before job steps with the explicit B-08 account payment/spending-limit annotation. They provide no remote code-test result.
+- Integrated validation: merge commit `2f4822eafb768f289d03b10b6581c1e87c57bc4d` reconciles the corrected #55 dependency into #58 and carries the review correction. Exact integrated heads `b7d226f41d17f4db3f1b220b417309cc0872b614`, `624fd5a8f01b9063da739c4f6e3864336978ad95` and latest published #58 head `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` passed the complete local gate: 768 tests, Ruff, symbol catalog, atlas, evidence and capability checks. The 46b receipt is recorded in the local temporary directory. One existing Starlette/httpx deprecation warning appeared. On the latest published #58 head, Actions `test` [run 45522840258](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522840258) and `symbol-catalog` [run 45522840335](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522840335) failed before job steps with the explicit B-08 account payment/spending-limit annotation. Earlier pair 45522497099/45522497076 showed the same annotation. No remote code-test result exists.
 - Limitations: no algorithm semantics changed; this does not make the policy a conventional order-up-to method or establish inventory quality. The local test double still does not invoke WorldKernel. Actual execution remains gated by B-04.
 
 Learning exercise: reproduce the zero-stock/one-day case, inspect the result
@@ -126,6 +126,10 @@ checks the exact caveat set and those outcome references. This preserves the
 fixed-day comparison boundary and does not rename the policy as a conventional
 or optimized order-up-to algorithm. Focused workflow unit, CLI and API checks
 passed 16 tests with one existing Starlette/httpx deprecation warning, and
-focused Ruff passed. The exact integrated #59 merge is still awaiting its full
-local gate; see the [M1F-02 change request](M1F_02_SYNTHETIC_DECISION_WORKFLOW.md)
-for the final commit and receipt.
+focused Ruff passed. Normal merge commit
+`ffbeb637517f18490571554a1cfa8a3ab9434bb7` includes latest PR #58 head
+`46b07a0337bbf449d2fd72a90ba240d0e9c9a063` and passed the exact integrated
+local gate: 790 tests plus Ruff, catalog, atlas, evidence and capability checks.
+The receipt is `C:\Users\gusta\AppData\Local\Temp\mirrormind-ffbeb637-quality.json`.
+See the [M1F-02 change request](M1F_02_SYNTHETIC_DECISION_WORKFLOW.md) for the
+full test-to-identity and caveat trace.
