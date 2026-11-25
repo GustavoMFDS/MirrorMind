@@ -15,13 +15,51 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | PR #52 full local suite on `c51ab30370db47e9f7105c97f870008e4fc442c5`: the commit-bound gate timed out at its 900-second pytest limit. Verbose replay collected 696 tests and stopped at `tests/integration/test_api.py::test_health`; a standalone loop creation reproduced blocking in `socket.accept` inside Python's `_fallback_socketpair` on Python 3.13.5, and loop creation also blocked under the installed Python 3.12. This happens before the application handler; a sandbox/host loopback restriction is a hypothesis, not a proven root cause. | Run the exact SHA in an environment where asyncio can create its local socket pair; complete the canonical gate without skipping the API tests | Codex execution environment / project maintainer | Five M1B-02 tests passed; 690 tests passed excluding `tests/integration/test_api.py`; direct registered capability-handler/ledger parity passed; Ruff and docs guards passed. Do not call the full suite green or change application behavior to hide the host issue. |
-| B-08 | Official GitHub Actions jobs for PR #52 and stacked PR #53 did not start. On PR #53 head `10ee6866f3340c679e0bfe3bfee11e199a32b56a`, `test` run [45322594833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594833) and `symbol-catalog` run [45322594817](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594817) each have an annotation stating recent account payments failed or the spending limit needs to be increased. PR #52 runs [45318084072](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084072) and [45318084108](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084108) show the same pre-job block. | Repository/account owner resolves GitHub billing or spending limit, then reruns checks for the reviewed heads | GitHub account owner / billing administrator | Keep draft PRs and local evidence current; do not claim remote CI passed or alter protections |
+| B-07 | The historical restricted-run timeout on `c51ab30370db47e9f7105c97f870008e4fc442c5` is resolved for the integrated PR #52 head `b431d11bf0ac841ff30353a06263d23fb901307c`: its full local exact-head gate passed at 2026-11-25 03:51:25 UTC, including all 696 tests and five additional checks. The earlier run stopped at `tests/integration/test_api.py::test_health` after 900 seconds; a standalone asyncio socket-pair reproduction blocked before application code on Python 3.12 and 3.13.5. Its cause was never established, so the host/sandbox explanation remains a hypothesis and historical evidence only. | Reopen only if a new exact-head gate reproduces a failure; preserve all API tests and the original result | Codex / project maintainer | Keep the exact-head receipt and historical timeout distinct. Do not skip API tests or change application behavior to mask an environment failure. |
+| B-08 | PR #52 latest published head `b431d11bf0ac841ff30353a06263d23fb901307c` has failed `test` [45542863564](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863564) and `symbol-catalog` [45542863839](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863839) runs; job summaries expose no steps or logs, so no remote tests are evidenced. On prior head `e3aedaf`, exact annotations for [45541148002](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45541148002) and [45541148078](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45541148078) stated recent account payments failed **or** the spending limit needed to be increased. That text did not establish which condition applies; the current head's specific cause is not recovered. Historical PR #53 runs [45322594833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594833) and [45322594817](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594817) were also documented as pre-job failures, not code test results. | Account owner inspects the exact account state named by check diagnostics and restores normal check execution; rerun required checks on reviewed heads | GitHub account owner / repository administrator | Keep local exact-head receipts current, preserve required checks and protections, and report Actions as failed until repository jobs execute |
+
+### B-01/B-02 source decision proposal
+
+The owner-facing [source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
+compares UCI #352 (retrospective only), aggregate Census MARTS/MRTS release
+files, FRED/ALFRED `RSAFS` vintages and deferring external sources. No source
+was acquired. For Census/ALFRED, review publication terms, FRED API terms and
+series-owner restrictions, attribution, retention and a hash-verified
+snapshot before any use. The proposed as-of evaluation keeps reference month
+separate from publication time and uses only complete releases available
+before each forecast origin. UCI #352 lacks row-level publication vintages and
+cannot satisfy point-in-time forecast acceptance by itself. B-01/B-02 remain
+open pending the owner's choice and approval.
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for
 the named real integration, not a prohibition on design and tests.
+
+### B-08 — self-hosted runner assessment
+
+GitHub documents self-hosted runner use as free of its per-minute Actions
+charge. The owner still pays for compute, clean images, isolation, monitoring,
+log retention and teardown. A self-hosted runner is not established as a fix
+for the observed B-08 gate: the annotation says the job was not started due to
+one of two account conditions, and no evidence shows that changing runner type
+bypasses that pre-job check. Do not change workflows or required-check
+protections on this evidence.
+
+If the owner later authorizes a bounded pilot, use a dedicated disposable VM
+created from a clean image for each job, registered as an ephemeral
+just-in-time (JIT) runner that accepts at most one job. Give it no repository
+secrets, set workflow token permissions to the minimum, block private-network
+and cloud-metadata access, assign no cross-repository runner group, forward
+only scrubbed diagnostics and destroy the VM and disk afterward. A persistent
+shared runner is unsuitable because untrusted pull-request code can compromise
+its environment; reusing hardware can also leave state between JIT jobs. This
+is a design assessment, not a deployed runner or a verified B-08 workaround.
+
+Sources: GitHub [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
+and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
 
 ## Source references and precise restrictions
 

@@ -80,9 +80,12 @@ zero demand.
 The output cannot go directly into the
 generic as-of staging/forecasting pipeline:
 UCI `InvoiceDate` is **event time**, not
-verified first availability. A separate licensed,
-reviewed source-adapter and publication policy
-are required. See [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
+verified first availability. The source review
+compares UCI #352 retrospective use with
+Census/ALFRED aggregate release vintages and
+requires owner review of rights, privacy,
+retention and snapshot scope before any acquisition.
+See [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
 
 ## Optional UCI-shaped workbook edge (not an API endpoint)
 

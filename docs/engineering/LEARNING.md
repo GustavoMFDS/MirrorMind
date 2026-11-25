@@ -276,6 +276,17 @@ deduplication policy and real-data signoff are required
 before such data could be used for a historical
 forecast or WorldKernel scenario?
 
+Then compare the proposed [UCI, Census and ALFRED source paths](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
+For one monthly Census vintage, distinguish the reference
+month, release date, retrieval time and snapshot hash. Sketch
+an as-of selector that excludes same-day releases when the
+official timestamp is unavailable. Explain why aggregate
+`RSAFS` can validate revision-aware backtesting but cannot
+establish SKU-level demand or inventory policy. List the
+required late-release, revision-boundary, missing-vintage and
+hash-mismatch regressions; do not claim they ran until an
+approved adapter and tests exist.
+
 ## Guided exercise 22 — inspect a workbook without claiming source approval
 
 Read the [UCI-shaped XLSX guide](UCI_WORKBOOK_READER.md)

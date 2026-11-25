@@ -316,12 +316,12 @@ The public `/v1/capabilities` register declares
 trained forecasting service or WorldKernel execution
 is provided by these primitives.
 
-## 15. Permission-sensitive candidates: M5 and UCI (no data acquired)
+## 15. Permission-sensitive candidates: M5, UCI and Census/ALFRED proposals (no data acquired)
 
 | File | Review responsibility |
 | --- | --- |
 | [`docs/engineering/datasets/M5_ACCESS_REVIEW.md`](datasets/M5_ACCESS_REVIEW.md) | **Proposed/not approved** M5 source access; reconcile the official competition rules, mirror, permitted research/commercial usage and original data rights before any download |
-| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md`](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) | UCI Online Retail ID 352 has a published CC BY 4.0 statement, but no approved use, privacy review, source snapshot or historical first-availability evidence; do not infer authorization from the license alone |
+| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md`](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) | Compares UCI #352 retrospective use with aggregate Census/ALFRED vintage options; no source permission, privacy approval, acquisition, snapshot or evaluation result is established |
 
 An accessible Kaggle or Zenodo page is not a
 license attestation for underlying M5 data. UCI's
@@ -398,7 +398,7 @@ access permission is established here.**
 
 | Tracked review | What it establishes — and what it does not |
 | --- | --- |
-| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md`](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) | Official UCI dataset 352 page states CC BY 4.0, with DOI, attribution and privacy checks; **not** approved data acquisition, verified row availability, model skill or a production connector |
+| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md`](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) | UCI #352 licensing and privacy review plus Census/ALFRED aggregate vintage proposals; **not** approved data acquisition, verified UCI row availability, model skill or a production connector |
 
 This source is distinct from the blocked
 [M5 review](datasets/M5_ACCESS_REVIEW.md).
