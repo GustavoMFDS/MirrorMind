@@ -86,9 +86,11 @@ not a signature; all source/model/engine references remain caller assertions.
 The task remains interface-only and has no authenticated producer, storage,
 decision ranking, execution permission or real engine evidence. The source
 walkthrough is in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). PR #54
-remains a draft stacked on #53. Its prior head's GitHub checks failed before
-job start with B-08; no official check has yet been inspected for this new
-commit.
+remains a draft stacked on #53. Merge commit `e493b4c` synchronizes the local
+branch with published PR #53 head `79d3679`, retaining both histories and the
+nested-receipt regressions. The full exact-head gate on this integrated
+candidate remains pending. Its prior head's GitHub checks failed before job
+start; no official check has yet been inspected for this new commit.
 
 ## Architecture and actual execution boundaries
 
