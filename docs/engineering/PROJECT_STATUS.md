@@ -49,6 +49,21 @@ UCI #352 alone cannot satisfy point-in-time availability because
 B-01/B-02 remain blocked pending the owner's scope, terms, privacy, retention
 and dataset-card decisions.
 
+The published documentation-only PR #57 head is now
+`25fb95ee84e1e431e206716355acab70448a5a54`, normally merged with its latest
+PR #53 base `79d3679013576c6a209bed9fa031b7f0fabd0d8d`. GitHub reports the PR
+open, mergeable and draft. Its exact-head local gate passed 700 tests, Ruff,
+symbol-catalog, atlas coverage, evidence and capability checks. Official
+`test` and `symbol-catalog` runs
+[45623569731](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45623569731)
+and [45623569774](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45623569774)
+failed before any job steps; each check exposes one annotation, but the
+annotation payload and job logs were unavailable. Cause is unknown; no billing
+or code-failure attribution is supported. See [B-08](BLOCKERS.md). The source
+proposal is decision-ready documentation, not source approval, acquisition or
+an empirical evaluation. Keep PR #57 in draft for the separate owner/review
+decision.
+
 ## Active branch evidence — 2026-11-25
 
 The composed synthetic evidence flow is implemented in the history beginning
