@@ -68,8 +68,8 @@ The existing `evidence_and_rag` capability stays planned; a narrow
 - [x] The capability ledger, live `/v1/capabilities` parity test, evidence map,
   atlas, symbol catalog, system map, API capability docs, debugging notes,
   learning exercise and source walkthrough describe the implemented boundary.
-- [ ] Full local quality gate passes on the final integrated committed SHA.
-  No real dataset or provider evidence is claimed.
+- [x] The exact integrated PR #54 + #60 correction state passes the full
+  local quality gate. No real dataset or provider evidence is claimed.
 
 ## 3. Impact map (confirmed before implementation)
 
@@ -181,8 +181,18 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   declared rather than authenticated RBAC; duplicate IDs remain a trusted
   build-time invariant.
 - Focused verification after the fix: `tests/unit/test_evidence_retrieval.py`
-  passed all 9 tests. The full gate on the final merged PR #54 + #60 state is
-  pending; record the exact commit and receipt before treating the correction
-  as complete.
+  passed all 9 tests.
+- Integrated verification: merge commit `708171f` brought the latest PR #54
+  corrections into this branch without cherry-picking duplicates. Exact
+  integrated implementation/documentation SHA
+  `73c191050865b0865e582f31a78859cc24262efb` passed
+  `scripts/local_quality_gate.py --expected-head` at
+  `2026-11-25T02:31:16.177471+00:00`: 738 pytest tests, Ruff, catalog, atlas,
+  evidence and capability checks all passed. The sole warning is the existing
+  Starlette/httpx `TestClient` deprecation. The sandboxed attempt stalled
+  without test output and was interrupted; the same unchanged gate then passed
+  in the approved execution environment. This is local evidence, not official
+  GitHub Actions CI. The later status-documentation commit receives its own
+  exact-head gate before publication.
 - New evidence selectors: `MM-RETR-007` and `MM-RETR-008` in
   `docs/engineering/EVIDENCE_MAP.json` identify the regressions and limitations.
