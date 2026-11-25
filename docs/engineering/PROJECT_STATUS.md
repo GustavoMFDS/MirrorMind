@@ -51,9 +51,11 @@ fast-forward-pushed; published heads `2794abf` and `3f9bbb8` both received
 account annotation recorded in [B-08](BLOCKERS.md). No remote test ran.
 Review responses were posted on [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54#issuecomment-7148444643)
 and [PR #55](https://github.com/GustavoMFDS/MirrorMind/pull/55#issuecomment-7148445794).
-The newer #54 docs commit is being reconciled into #55; its resulting
-integrated state still needs a fresh full local gate. No Actions success is
-inferred from local receipts.
+The newer #54 docs commit `2794abf` is reconciled into #55 at merge
+`fd72b76`; that exact integrated head passed a fresh full local gate: 756
+tests and all five other stages. It has not yet been pushed, so its official
+Actions result remains unknown at this record. No Actions success is inferred
+from local receipts.
 
 The #54 and #55 branch-specific gate statements below describe evidence at
 their then-current commits. Wording that says the corrected integrated gate

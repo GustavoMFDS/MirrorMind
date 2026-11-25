@@ -15,7 +15,7 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Exact clean SHAs `07c405b`, `4d1d5b9` and `970843e` passed the complete local gate outside the restricted sandbox: 756 tests and all six stages. The earlier PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` remains historical and was not rerun. | For later integrated heads, run the exact clean SHA through the complete gate; do not skip API tests | Codex execution environment / project maintainer | All three checked SHAs passed pytest, Ruff, catalog, atlas, evidence and capability checks outside the sandbox with one existing Starlette/httpx deprecation warning. The restricted timeout is recorded, not hidden; no application code or verifier was changed to avoid it. |
+| B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Exact clean integrated SHAs `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and merge `fd72b76` passed the complete local gate outside the restricted sandbox: 756 tests and all six stages. The earlier PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` remains historical and was not rerun. | For later integrated heads, run the exact clean SHA through the complete gate; do not skip API tests | Codex execution environment / project maintainer | All listed integrated SHAs passed pytest, Ruff, catalog, atlas, evidence and capability checks outside the sandbox with one existing Starlette/httpx deprecation warning. The #54-only docs head `2794abf` separately passed all six gate stages with 728 tests. The restricted timeout is recorded, not hidden; no application code or verifier was changed to avoid it. |
 | B-08 | The #54 and #55 correction branches were fast-forward-pushed; their new exact heads are in the diagnostics table below. Both `test` and `symbol-catalog` checks failed before repository steps with an explicit annotation for recent account payments or spending-limit settings. This explains why those jobs did not start; it is not a test failure and does not reveal which account setting needs action. | Account owner inspects GitHub billing/plan state; then rerun checks on corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. Evaluate, but do not configure, a hardened ephemeral self-hosted runner unless its trust, admin and cost requirements are accepted. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
@@ -26,9 +26,11 @@ the named real integration, not a prohibition on design and tests.
 ## B-08 exact diagnostics and runner assessment — 2026-11-24
 
 This is a point-in-time diagnostic snapshot: #54 was at head `2794abf` and #55
-at head `3f9bbb8` when their latest checks below were inspected. The #55 head
-was checked before syncing the newer #54 documentation commit; inspect checks
-again after publishing that reconciliation. Both required workflows carry an
+at pre-sync head `3f9bbb8` when their latest checks below were inspected. The
+newer #54 documentation commit has since been merged locally into #55 at
+`fd72b76`; that integrated head has passed the local gate but was not yet
+published at this snapshot. Inspect its Actions checks after publication.
+Both required workflows carry an
 annotation that the job was not started because recent account payments
 failed or the spending limit needs to be increased. These runs provide no
 result for repository code. The annotation states the start-gate category but

@@ -208,7 +208,9 @@ do not replace HTTP body-size, rate or concurrency controls.
   gate with the same source state. The #54-only documentation follow-up
   `2794abff855665fb65f32af655415c52dde68872` passed the full local gate on its
   exact clean SHA: 728 tests plus Ruff, catalog, atlas, evidence and capability
-  checks, with the same existing deprecation warning.
+  checks, with the same existing deprecation warning. The reconciled #54 → #55
+  merge `fd72b76e5e93dadc6175cd9244cf45bf17420116` also passed the complete
+  gate with 756 tests and all five other stages.
 - Publication / official CI: the correction branch was fast-forward-pushed at
   `9113d861affc2f4a6480f188a093f534196a0766`. On that exact published head,
   Actions [test run 45517352710](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352710)
