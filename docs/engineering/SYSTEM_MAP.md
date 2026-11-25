@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the current G-01 branch. Main contains the API/contracts, simulation gateway interface and local CSV staging. Draft PRs #52–#59 add experimental synthetic evidence/evaluation/decision slices but are not merged. G-01 adds an in-process challenged-head responder but no deployed service. No authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-25 against merged main PR #51 (`e4f05a1`) and the current G-01 review-correction branch. Main contains the API/contracts, simulation gateway interface and local CSV staging. Draft PRs #52–#60 add experimental synthetic evidence/evaluation/decision slices but are not merged. G-01 adds an in-process challenged-head responder with typed operational clock/store errors but no deployed service. No authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
@@ -13,7 +13,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
-| Respond to a challenged remote head request (G-01) | [`modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py), [service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md) | [generated-key round-trip and adverse tests](../../tests/unit/test_atomic_governed_publisher.py); in-process only, no HTTP route, persistent store or independent authority |
+| Respond to a challenged remote head request (G-01) | [`modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py), [service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md) | [generated-key round-trip, typed clock/store failure and programming-error propagation tests](../../tests/unit/test_atomic_governed_publisher.py); in-process only, no HTTP route, persistent store or independent authority |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
 | Prepare a source review packet (not approval) | [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [guide](SOURCE_INTAKE_REVIEW.md) | [synthetic unit tests](../../tests/unit/test_source_intake_review.py); binds staged byte digest and opaque review references; never grants ingestion |

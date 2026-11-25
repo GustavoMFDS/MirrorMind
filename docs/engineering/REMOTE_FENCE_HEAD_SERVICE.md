@@ -98,11 +98,13 @@ After validation, the responder calls
 `RemoteFenceHeadStore.read_current(packet_sha256)`. `None` means no record and
 returns 404. A record for another packet violates the store contract and also
 returns 404 to avoid revealing scope. A
-`RemoteFenceHeadStoreError`, malformed head, or invalid returned clock fails
-with a generic bodyless 503. Store adapters should translate expected storage
-outages into that typed error; unrelated programming exceptions propagate,
-since this is an in-process boundary and no HTTP adapter is present to own
-global exception mapping.
+`RemoteFenceHeadStoreError`, `RemoteFenceHeadClockError`, malformed head, or
+invalid returned clock fails with a generic bodyless 503. Store and clock
+adapters must translate expected operational failures into their respective
+typed errors; unrelated programming exceptions propagate so this in-process
+boundary does not conceal defects. A future HTTP adapter must preserve these
+typed outcomes while mapping its own unexpected failures to a generic
+transport-level 5xx response.
 
 ### Canonical response and client verification
 
@@ -133,12 +135,12 @@ independent, and the local equality check does not grant authority.
 | Request method/path | Exact `GET` and `/v1/integrated-fence/head` |
 | Accept | Exact `application/json`; otherwise 406 |
 | Query | Exactly `nonce` then `packet_sha256`, each 64 lowercase hex characters |
-| Store lookup | `read_current(packet_sha256) -> CurrentRemoteFenceHead \| None`; `RemoteFenceHeadStoreError` means an unavailable/unsafe read |
+| Store lookup | `read_current(packet_sha256) -> CurrentRemoteFenceHead \| None`; translate expected unavailable/unsafe reads to `RemoteFenceHeadStoreError` |
 | Sequence/digests | Sequence is an integer 1–1,000,000,000; digests are lowercase SHA-256 strings; booleans are not accepted as integers |
-| Time | Injected aware UTC clock; output uses exact `YYYY-MM-DDTHH:MM:SSZ` seconds |
+| Time | Injected aware UTC clock; translate expected clock-service failures to `RemoteFenceHeadClockError`; output uses exact `YYYY-MM-DDTHH:MM:SSZ` seconds |
 | Lifetime | Integer 1–120 seconds; the default is 60 seconds |
 | Success response | 200, canonical JSON, no-store, maximum 4096 bytes |
-| Failure response | 400 malformed input, 404 unknown path/scope, 405 wrong method, 406 wrong media type, 503 typed store failure or invalid stored record; empty body |
+| Failure response | 400 malformed input, 404 unknown path/scope, 405 wrong method, 406 wrong media type, 503 typed store/clock failure, malformed stored record or invalid returned clock; empty body |
 | Authorization | None. Receipt flags from the client remain false for publication, ingestion and forecast eligibility. |
 
 Compatibility-sensitive fields and signatures are owned by the shared
@@ -216,9 +218,12 @@ The integrated generated-key round trip is verified by the tests below.
 - An invalid store record returns an empty 503 without including record or
   exception contents. A missing/mismatched packet scope returns empty 404.
 - A clock callback that returns a naive/non-UTC value returns empty 503. An
-  exception raised directly by the callback or an unexpected signing error
-  propagates to the in-process caller; a future HTTP adapter must map it to a
-  generic server error without logging key or source material.
+  expected operational clock failure must be translated to
+  `RemoteFenceHeadClockError`, which the responder maps to the same empty 503
+  as `RemoteFenceHeadStoreError`. Unexpected callback, store or signing
+  programming errors propagate to the in-process caller; a future HTTP
+  adapter must map them to a generic server error without logging key or
+  source material.
 - The protected key roster, clock and store are caller-configured. Tests do
   not establish production key custody, clock quality, DNS ownership, source
   rights, persistence durability or operational independence.
@@ -237,6 +242,8 @@ network call.
 | MM-RHEAD-009 — `tests/unit/test_atomic_governed_publisher.py::test_remote_head_service_rejects_bad_wire_scope_and_store_failure` | Malformed query/method/path/Accept, wrong packet, missing/corrupt record and typed store outage fail closed with empty bodies. | Does not exercise request parsing in a web framework or a production database adapter. |
 | MM-RHEAD-010 — `tests/unit/test_atomic_governed_publisher.py::test_remote_head_service_binds_nonce_and_snapshot_scope` | A response for a different nonce or snapshot is rejected by the existing client verifier. | A malicious service with a fresh challenge can still sign a stale claim; independent freshness is not proven. |
 | MM-RHEAD-011 — `tests/unit/test_atomic_governed_publisher.py::test_remote_head_service_enforces_distinct_keys_and_bounded_clock` | Service signer cannot reuse a configured non-service ID/key; lifetime and invalid clock return/refuse bounded values. | Only the supplied key roster is checked; custody, completeness and clock trust are not established. |
+| MM-RHEAD-012 — `tests/unit/test_atomic_governed_publisher.py::test_remote_head_service_translates_typed_clock_failure_without_leaking` | A typed operational clock-adapter failure returns the same empty 503 as the typed store failure, without exposing adapter details. | Uses an injected in-process fake clock; does not test a real clock service, HTTP mapping or trusted time. |
+| MM-RHEAD-013 — `tests/unit/test_atomic_governed_publisher.py::test_remote_head_service_propagates_unexpected_adapter_programming_errors` | Unexpected clock/store `RuntimeError`s still propagate, preventing a broad catch from masking programming defects. | In-process exception behavior only; no future transport or production adapter is present. |
 
 Reproduce the focused tests and existing client regressions:
 
@@ -248,6 +255,11 @@ Run the exact-head local gate before review; see
 [local quality gate](LOCAL_QUALITY_GATE.md). A passing test proves behavior
 only for the executed local environment and the named fixtures. It is not
 official CI, TLS interoperability, a live service or deployment evidence.
+
+Run all six `test_remote_head_service_*` tests after changing the adapter error
+contract. The typed clock and store tests must return empty 503 responses;
+unexpected Python programming exceptions must still propagate from this
+in-process boundary.
 
 ## Learning exercise
 

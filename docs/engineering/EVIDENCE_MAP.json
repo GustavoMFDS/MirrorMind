@@ -845,5 +845,19 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_remote_head_service_enforces_distinct_keys_and_bounded_clock",
     "limitation": "Construction checks the supplied non-service key roster and lifetime, and a naive test clock fails closed. Roster completeness, custody and real clock trust are not established."
+  },
+  {
+    "id": "MM-RHEAD-012",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_translates_typed_clock_failure_without_leaking",
+    "limitation": "A typed error from an injected in-process clock maps to an empty 503; no real clock adapter, trusted time source or HTTP transport is tested."
+  },
+  {
+    "id": "MM-RHEAD-013",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_propagates_unexpected_adapter_programming_errors",
+    "limitation": "In-process fake clock/store RuntimeErrors remain visible; no production adapter or future transport-level exception policy is tested."
   }
 ]

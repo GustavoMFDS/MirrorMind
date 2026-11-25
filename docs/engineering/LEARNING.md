@@ -455,10 +455,15 @@ Read the [G-01 service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md), the
 the [responder](../../src/mirrormind/modules/evidence/remote_fence_head_service.py)
 and
 [`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
-Run the four `test_remote_head_service_*` selectors. Trace the request nonce
+Run all six `test_remote_head_service_*` selectors. Trace the request nonce
 from the raw query into `SignedRemoteFenceHead`, the canonical signing
 message and the existing client verifier. Change one query field and predict
 whether the responder calls the store. Then reuse a protected public key as
 the service signer and explain why initialization fails. Finally, list the
 transport, durable storage and operational evidence that these tests do not
-provide.
+provide. Make a fake clock raise `RemoteFenceHeadClockError` and verify the
+bodyless 503. Then make the clock and store raise `RuntimeError`; explain why
+those programming failures propagate rather than being mislabeled as routine
+service outages. Describe how a future HTTP adapter can map an unexpected
+exception at its transport boundary without broad catches inside the typed
+responder.

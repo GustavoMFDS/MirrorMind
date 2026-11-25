@@ -44,12 +44,18 @@ class RemoteFenceHeadStoreError(Exception):
     """A store adapter cannot safely provide the requested current record."""
 
 
+class RemoteFenceHeadClockError(Exception):
+    """A clock adapter cannot safely provide the requested UTC instant."""
+
+
 class RemoteFenceHeadStore(Protocol):
     """Read contract for a future separately implemented current-head store.
 
     Implementations must return the current record for the exact packet digest
     or ``None`` when no record exists. This Protocol has no persistence,
     transaction, authentication or independent-administration guarantee.
+    Expected operational read failures must be translated to
+    ``RemoteFenceHeadStoreError``; programming errors should remain visible.
     """
 
     def read_current(self, packet_sha256: str) -> CurrentRemoteFenceHead | None:
@@ -79,7 +85,12 @@ class RemoteFenceHeadResponse:
 
 
 class RemoteFenceHeadResponder:
-    """Sign one fixed-path nonce challenge from a typed current-head store."""
+    """Sign one fixed-path nonce challenge from a typed current-head store.
+
+    The injected clock translates expected operational failures to
+    ``RemoteFenceHeadClockError``. Other adapter exceptions propagate to the
+    in-process caller rather than being hidden by a broad exception handler.
+    """
 
     __slots__ = (
         "_clock",
@@ -191,7 +202,11 @@ class RemoteFenceHeadResponder:
             # A store that returns a different scope violates its read contract.
             return _empty_response(404)
 
-        now = self._clock()
+        try:
+            now = self._clock()
+        except RemoteFenceHeadClockError:
+            # Keep expected adapter details behind the generic wire failure.
+            return _empty_response(503)
         if type(now) is not datetime:
             return _empty_response(503)
         try:

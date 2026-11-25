@@ -61,6 +61,7 @@ from mirrormind.modules.evidence.operator_governance import (
 )
 from mirrormind.modules.evidence.remote_fence_head_service import (
     CurrentRemoteFenceHead,
+    RemoteFenceHeadClockError,
     RemoteFenceHeadRequest,
     RemoteFenceHeadResponder,
     RemoteFenceHeadResponse,
@@ -1753,6 +1754,53 @@ def test_remote_head_service_enforces_distinct_keys_and_bounded_clock(tmp_path):
     bad_clock = remote_head_responder(bundle, store, clock=lambda: datetime.now())
     assert bad_clock.respond(remote_head_request(bundle)).status_code == 503
     assert authority_key != bundle["service_roster"][REMOTE_FENCE_KEY_ID]
+
+
+def test_remote_head_service_translates_typed_clock_failure_without_leaking(tmp_path):
+    bundle = prepared_remote_registry(tmp_path)
+    private_detail = "private clock adapter detail"
+
+    def failed_clock():
+        raise RemoteFenceHeadClockError(private_detail)
+
+    responder = remote_head_responder(
+        bundle,
+        _InMemoryRemoteHeadStore(remote_head_record(bundle)),
+        clock=failed_clock,
+    )
+
+    response = responder.respond(remote_head_request(bundle))
+
+    assert response.status_code == 503
+    assert response.body == b""
+    assert response.headers["Content-Length"] == "0"
+    assert private_detail.encode() not in response.body
+
+
+def test_remote_head_service_propagates_unexpected_adapter_programming_errors(
+    tmp_path,
+):
+    bundle = prepared_remote_registry(tmp_path)
+
+    def broken_clock():
+        raise RuntimeError("clock programming bug")
+
+    unexpected_clock = remote_head_responder(
+        bundle,
+        _InMemoryRemoteHeadStore(remote_head_record(bundle)),
+        clock=broken_clock,
+    )
+    with pytest.raises(RuntimeError, match="clock programming bug"):
+        unexpected_clock.respond(remote_head_request(bundle))
+
+    unexpected_store = remote_head_responder(
+        bundle,
+        _InMemoryRemoteHeadStore(
+            failure=RuntimeError("store programming bug")
+        ),
+    )
+    with pytest.raises(RuntimeError, match="store programming bug"):
+        unexpected_store.respond(remote_head_request(bundle))
 
 
 def test_remote_challenged_head_matches_signed_local_heads_without_permissions(tmp_path):

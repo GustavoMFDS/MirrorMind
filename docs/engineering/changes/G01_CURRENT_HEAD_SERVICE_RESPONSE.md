@@ -55,6 +55,9 @@ in-memory implementation.
   invalid configuration, malformed request, wrong nonce and wrong packet or
   snapshot scope have regression coverage. Service failure bodies do not leak
   store exceptions or request contents.
+- [ ] Expected operational clock and store adapter failures have explicit
+  typed error contracts and return the same generic bodyless 503; unrelated
+  programming exceptions continue to propagate to the in-process caller.
 - [x] The existing client verifies a response produced by the responder, and
   its resulting receipt still grants no publication, ingestion or forecast
   permission.
@@ -71,7 +74,7 @@ in-memory implementation.
 | --- | --- | --- | --- |
 | Entrypoint | New `RemoteFenceHeadResponder.respond` in the service module | Add an in-process call only | `test_remote_head_service_*` selectors in `tests/unit/test_atomic_governed_publisher.py` |
 | Protocol | [`remote_fence_head_protocol.py`](../../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py); existing client exports | Extract canonical type/helpers without changing bytes | Existing `test_remote_*` client tests and service/client round-trip |
-| Core implementation | New immutable head record, storage `Protocol`, request/response contracts | Add; no persistent store | Normal, malformed, outage and scope regressions |
+| Core implementation | New immutable head record, storage `Protocol`, typed clock/store operational errors, request/response contracts | Add; no persistent store | Normal, malformed, typed outage and scope regressions; unrelated runtime errors remain visible |
 | Local generated-artifact hygiene | [`.gitignore`](../../../.gitignore) | Ignore local Graphify products so generated caches remain local and do not enter tracked-file coverage | Atlas/catalog/evidence/capability checks |
 | State / persistence / API | None | No change | Capability parity remains unchanged |
 | Calling components | Current outbound client | Preserve | Existing client tests and service-produced response verification |
@@ -111,7 +114,8 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
 2. Add the request/response, current-head and read-only store contracts plus a
    pure fail-closed responder.
 3. Add generated-key/fake-store tests for valid client verification, request
-   rejection, scope/nonce mismatch, signer separation and store failure.
+   rejection, scope/nonce mismatch, signer separation, typed store/clock
+   failures and propagation of unrelated programming errors.
 4. Document the call flow, exact contracts, reproduction, limits, debugging
    and a learner exercise; update references and evidence selectors.
 5. Run focused tests, Ruff and all local documentation checks, then the
@@ -127,6 +131,7 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   `main`. The exact-head local gate passed on `9897a76d955233c35fe89d87e2df574d6e6659ce`.
 - Modified symbols: `SignedRemoteFenceHead`, `_canonical_remote_message`,
   `_signed_wire`, `_parse_signed_response`, `RemoteFenceHeadStore`,
+  `RemoteFenceHeadStoreError`, `RemoteFenceHeadClockError`,
   `CurrentRemoteFenceHead`, `RemoteFenceHeadRequest`,
   `RemoteFenceHeadResponse`, `RemoteFenceHeadResponder.__init__` and
   `RemoteFenceHeadResponder.respond`.
@@ -138,7 +143,7 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   under ignored `graphify-out/`; the script explicitly reports that this is
   not official GitHub Actions. The focused service/client selector had also
   passed 11 tests on the original implementation commit before rebase.
-- Evidence claim IDs: MM-RHEAD-008 through MM-RHEAD-011, backed by the four
+- Evidence claim IDs: MM-RHEAD-008 through MM-RHEAD-013, backed by the
   `test_remote_head_service_*` selectors in
   `tests/unit/test_atomic_governed_publisher.py`.
 - Contract change: new in-process responder and storage read protocol; existing
@@ -153,3 +158,26 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
 - Reproduction: `.venv\Scripts\python.exe scripts/local_quality_gate.py
   --expected-head 9897a76d955233c35fe89d87e2df574d6e6659ce --receipt
   graphify-out\docs-engineering-refresh-20261124\g01-pr-quality.json`.
+
+## Independent review correction — typed clock failure boundary
+
+- Finding: `respond` caught `RemoteFenceHeadStoreError`, but invoked the clock
+  outside a typed adapter-failure boundary. A clock outage therefore escaped
+  instead of producing the documented generic response. Store adapters also
+  needed an explicit rule that only expected operational failures are
+  translated; broad exception catches would hide programming defects.
+- Reproduction: after defining `RemoteFenceHeadClockError` and adding
+  `test_remote_head_service_translates_typed_clock_failure_without_leaking`,
+  the focused regression failed before the handler fix because the exception
+  escaped from `respond`.
+- Resolution: the injected clock contract uses `RemoteFenceHeadClockError`;
+  expected store outages use the existing `RemoteFenceHeadStoreError`. Both
+  return the generic bodyless 503. Other clock/store `RuntimeError`s propagate,
+  as verified by `test_remote_head_service_propagates_unexpected_adapter_programming_errors`.
+- Focused verification after the fix: all six `test_remote_head_service_*`
+  tests passed. The full exact-head gate and publication evidence are pending.
+- Scope: no HTTP adapter, persistence, CAS, authentication, nonce tracking or
+  independent custody was added. A future transport must map exceptions at
+  its own boundary without changing the typed responder contract.
+- New evidence selectors: `MM-RHEAD-012` and `MM-RHEAD-013` in
+  `docs/engineering/EVIDENCE_MAP.json`.
