@@ -152,7 +152,7 @@ the complete JSON output, including the normalized fixture digest.
 
 | Test | What it proves | What it does not prove |
 | --- | --- | --- |
-| `test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts` | Full generated-workbook-to-evaluation CLI runs twice with identical JSON; split, seven statuses, matched output shape, redaction and false authorization flags | Stable fictional bytes and exact fixture arithmetic are not source authenticity, empirical skill or a complete demand calendar |
+| `test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts` | Full generated-workbook-to-evaluation CLI runs twice with identical JSON; split, seven statuses, matched output shape, redaction, unverified source status, and false authorization/forecast-eligibility flags at both result and nested evidence-receipt levels | Stable fictional bytes and exact fixture arithmetic are not source authenticity, empirical skill or a complete demand calendar |
 | `test_evaluation_rejects_mismatched_release_audit_cutoff` | A preflight audited at another cutoff cannot be relabeled during evaluation | Matching caller-declared dates does not authenticate them |
 | `test_unpublished_target_mutation_does_not_change_scores_or_origin_receipts` | Changing the final target that is unavailable by the cutoff leaves scored metrics and status receipts unchanged, while the evidence digest changes | No general causal or real-source leakage guarantee follows beyond this fixture and code path |
 | `test_unpublished_holdout_abstains_without_metrics_or_winner` | With every declaration after cutoff, no metric or winner is fabricated; missing and unpublished targets remain distinct | No accuracy or uncertainty evidence |
@@ -163,9 +163,12 @@ Curated claim **MM-REVAL-001** maps to
 
 The live capability list is covered by
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`.
-The exact PR #53 head `210f0f382938a67e518df688cc4e19c03d3d7af6` passed this
-HTTP test within the canonical 700-test gate. An earlier restricted-sandbox
-attempt stalled before the endpoint ran; see [B-07](BLOCKERS.md).
+An earlier restricted exact-head run timed out before this endpoint test
+because asyncio socket-pair creation blocked. The full exact-head gate on
+published PR #53 head `79d3679013576c6a209bed9fa031b7f0fabd0d8d` later ran this
+API test module successfully as part of 700 passing tests. That is local
+integration evidence, not a deployed or production API. A direct registered-
+handler/ledger check is not equivalent to an HTTP runtime test.
 
 ## Safety, failures and maintenance
 
@@ -200,7 +203,10 @@ attempt stalled before the endpoint ran; see [B-07](BLOCKERS.md).
    remain identical.
 4. Set `all_unpublished=True`. Explain why all six present targets are
    withheld and the missing seventh target is not counted as a zero.
-5. Explain why a zero synthetic MAE does not justify selecting seasonal naive
+5. Inspect `source_status`, `evidence_receipt.status`, and the nested
+   `ingestion_authorized`/`forecast_eligible` flags. Explain why a scored
+   synthetic comparison remains unverified and cannot authorize data use.
+6. Explain why a zero synthetic MAE does not justify selecting seasonal naive
    for any real retailer. Identify the dataset rights, publisher vintages,
    complete calendar, untouched empirical holdout and uncertainty evidence
    still needed.
