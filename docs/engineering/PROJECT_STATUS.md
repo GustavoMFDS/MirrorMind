@@ -27,15 +27,17 @@ not a production-ready AI platform.
 
 ## Current local M1 integration candidate — 2026-11-25
 
-The local branch `codex/m1-integrated-worldkernel-local` now combines the
-PR #59 workflow, PR #55's pinned local runner, the M1E-04 policy world and the
-PR #57 synthetic UCI event-time evaluator plus aggregate Census protocol.
-The PR #57 branch head `1cff92c1345ab20c0533281809502a33025cff10` passed its
-own exact-head gate (712 tests and five additional checks), but that receipt
-does not cover this merged tree. The pre-#57 WorldKernel focused suite passed
-22 tests and `ruff check src tests` passed. Run the exact clean-head six-check
-gate on this combined candidate before recording integrated evidence. These
-are local observations only; no GitHub Actions success is claimed.
+The local branch `codex/m1-integrated-worldkernel-local` at
+`42560e441f5020a5b4319a0f7b56474ef0485681` combines the PR #52–#59 M1 stack,
+PR #55's pinned local runner, M1E-04's policy world and PR #57's synthetic UCI
+event-time evaluator plus aggregate Census protocol. The exact clean-head
+six-check local gate passed: 828 tests in 28.32 seconds, Ruff, catalog, atlas,
+evidence and capability checks. One existing Starlette/httpx deprecation
+warning appeared. Receipt:
+`%TEMP%\mirrormind-integrated-42560e441f50-local-gate.json`. This is local
+candidate evidence, not GitHub Actions, PR approval or merge evidence; all PRs
+remain separate drafts and `main` was not changed. Later documentation-only
+changes must receive their own exact-head gate.
 
 ## Active branch evidence — 2026-11-25
 

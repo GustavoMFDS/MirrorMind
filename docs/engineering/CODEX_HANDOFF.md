@@ -41,6 +41,16 @@ execution guidance and does not broaden the agent's permissions.
   optional dependency and project boundary intact. No changes to WorldKernel
   or production deployment are authorized.
 
+The self-hosted option was checked against current official GitHub
+documentation: runner usage itself is free, but that does not prove it bypasses
+the observed pre-start account gate or eliminate the cost of its host. GitHub
+recommends ephemeral runners for autoscaling and warns that workflow code can
+compromise a self-hosted machine. No dedicated, clean, zero-cost ephemeral host
+is approved; do not use the shared workstation, register a runner or change
+workflow labels. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
+and [secure use](https://docs.github.com/en/actions/reference/security/secure-use).
+
 The latest owner-recovered PR #57 comment records that the test and
 symbol-catalog job records on published head 678755e had no steps and
 runner_id=0; the exact annotations remain unavailable, so do not infer their
@@ -175,20 +185,23 @@ The later PR #57 update on exact head `1cff92c` reports a complete six-check
 local gate: 712 pytest tests, Ruff, catalog, atlas, evidence and capability
 checks passed; Actions failed before repository steps with the same
 payment-or-spending-limit alternative. The independent retest at `1bf178b`
-passed 700 tests and the same six local checks. These comments do not provide
-the final integrated candidate's receipt; that must be generated separately.
-See comment
+passed 700 tests and the same six local checks. The integrated candidate at
+`42560e441f5020a5b4319a0f7b56474ef0485681` subsequently passed its own exact
+six-check gate with 828 tests; receipt and limitations are in
+[`LOCAL_QUALITY_GATE.md`](LOCAL_QUALITY_GATE.md). This remains local evidence,
+not CI. See comment
 [7169397485](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7169397485).
 
-The active local M1 integration candidate combines the PR #59 synthetic
-workflow with the PR #55 optional runner and a new M1E-04 MirrorMind-owned
-policy world. The package remains SHA-pinned and optional; API startup and
-HTTP workflow remain independent. The inventory demo's `demo-1` registry
-label is not artifact attestation. The code-owned policy world must preserve
-the M1E-03 shared transition and demonstrate exact parity on synthetic inputs.
-Do not edit WorldKernel, claim real demand or calibrated outcomes, or describe
-the subprocess as a hostile-code sandbox. Run a new six-check exact-head gate
-on the final integrated commit; prior branch receipts are separate evidence.
+The local M1 candidate now combines the PR #59 workflow with PR #55's optional
+runner, M1E-04's MirrorMind-owned policy world, and PR #57's synthetic UCI
+event-time evaluator. The exact integrated gate passed on the SHA above. The
+package remains SHA-pinned and optional; API startup and HTTP workflow remain
+independent. The inventory demo's `demo-1` registry label is not artifact
+attestation. The policy world preserves the M1E-03 transition and exact parity
+on synthetic inputs. Do not edit WorldKernel, claim real demand or calibrated
+outcomes, or describe the subprocess as a hostile-code sandbox. A later
+tracked change requires a new exact-head gate. PRs remain drafts for separate
+review/integration decisions; no remote branch or `main` was changed.
 
 ## 4. Mandatory documentation standard
 

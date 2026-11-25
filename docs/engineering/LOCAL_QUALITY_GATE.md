@@ -101,3 +101,23 @@ stacked or topologically integrated candidate:
 
 Do not label a per-branch gate as the final integrated-candidate gate. Record
 both sets of evidence separately in the backlog and change report.
+
+### Integrated M1 candidate receipt — 2026-11-25
+
+The local candidate that combines PR #57 with the M1F/M1E stack passed the
+exact clean-head gate on `42560e441f5020a5b4319a0f7b56474ef0485681`:
+
+- Pytest: 828 passed in 28.32 seconds.
+- Ruff, source catalog, repository atlas, curated evidence and capability
+  checks: all passed.
+- One existing Starlette/httpx `TestClient` deprecation warning appeared.
+- Receipt: `%TEMP%\mirrormind-integrated-42560e441f50-local-gate.json`.
+- Status: `local_gate_passed_not_official_ci`; the script explicitly records
+  `official_github_actions_status=not_checked_by_this_script`.
+
+This exact receipt covers the combined tree, including the synthetic UCI
+evaluator and both exact-pin WorldKernel paths. It does not cover later
+documentation commits, GitHub Actions, independent approval of the combined
+diff, real-source rights, point-in-time availability, forecast calibration,
+or production isolation. Rerun the same command after any subsequent tracked
+change; do not reuse this receipt as evidence for a later SHA.
