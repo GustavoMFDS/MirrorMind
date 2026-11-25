@@ -156,10 +156,11 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   catalog.
 - Known limitations / follow-up: real identity and source authorization,
   durable index, retrieval evaluation and agent/tool consumers remain open.
-  Historical PR #60 checks on head `6374f0bb9a981271cb9340a190dcdebec6263cc9`
-  failed before job steps; diagnostics returned no annotation or logs, so the
-  cause is unestablished and is not attributed to billing. Human review and
-  integration remain pending.
+  Historical PR #60 head `6374f0bb9a981271cb9340a190dcdebec6263cc9` failed
+  before repository steps; check-run metadata records one annotation per
+  check, but its text was not recovered and logs were unavailable. Do not call
+  this head unannotated or infer a cause from another revision. Human review
+  and integration remain pending.
 - Independent explanation: the learning exercise traces scope filtering before
   tokenization, verifies excerpt offsets and digest bytes, and distinguishes
   the fixed demo scope from authentication. Independent human review remains
@@ -192,12 +193,23 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   Starlette/httpx `TestClient` deprecation. The sandboxed attempt stalled
   without test output and was interrupted; the same unchanged gate then passed
   in the approved execution environment. This is local evidence, not official
-  GitHub Actions CI. The later status-documentation commit receives its own
-  exact-head gate before publication.
+  GitHub Actions CI. Later documentation head `cad28d8c1e38dfd1cf8007c1b50853132d719ee3`
+  also passed the exact six-stage local gate at `2026-11-25T02:37:37.528550+00:00`
+  with 738 tests and the same existing deprecation warning.
 - Official checks for integrated/docs SHA `cd9542156d8ab3cec2876ab07f3aa1c22dd00c37`
   were `test` run `45534005860` and `symbol-catalog` run `45534005856`.
-  Both failed before any step, returned no steps, and had no retrievable logs
-  (`BlobNotFound`) or cause annotation. B-08 therefore remains unexplained for
-  this head; no billing attribution or remote test result is made.
+  Both failed before any step and logs were unavailable (`BlobNotFound`). The
+  check-run API reports one annotation per check, but its text was not
+  recovered for that historical head; do not call it unannotated or infer its
+  cause from another revision.
+- Exact diagnostics for final published head
+  `cad28d8c1e38dfd1cf8007c1b50853132d719ee3` show test runs `45534347123` and
+  `45534341307`, plus `symbol-catalog` runs `45534347132` and `45534341412`.
+  All four annotations state that the job was not started because recent
+  account payments failed or the spending limit needs to be increased, and
+  direct the account owner to Billing & plans. This confirms a pre-job
+  account-level gate for this exact head but does not identify which condition
+  applies. No repository steps ran and the latest pair's logs were unavailable;
+  these are not remote test results.
 - New evidence selectors: `MM-RETR-007` and `MM-RETR-008` in
   `docs/engineering/EVIDENCE_MAP.json` identify the regressions and limitations.
