@@ -38,6 +38,22 @@ class _DemandStream(TypedDict):
     demand_stream_sha256: str
 
 
+class RetailPolicySimulationState(TypedDict):
+    """JSON-safe inventory state shared by the reference and engine worlds."""
+
+    on_hand_units: int
+    pending_by_day: dict[str, int]
+    pending_units: int
+    fulfilled_units: int
+    unmet_units: int
+    total_demand_units: int
+    stockout_days: int
+    order_count: int
+    ordered_units: int
+    procurement_cost_units: int
+    holding_cost_units: int
+
+
 class RetailPolicyAssumptions(BaseModel):
     """Explicit units, inventory controls and abstract synthetic costs."""
 
@@ -96,8 +112,7 @@ def _build_demand_streams(
         stream_seed = request.seed + replication
         generator = random.Random(stream_seed)
         demand = tuple(
-            (expected * _DEMAND_MULTIPLIERS_PERCENT[generator.randrange(3)] + 50)
-            // 100
+            sample_demand_units(expected, generator.randrange(3))
             for expected in request.demand_profile_units
         )
         payload = {
@@ -117,6 +132,19 @@ def _build_demand_streams(
             }
         )
     return tuple(streams)
+
+
+def sample_demand_units(expected_units: int, multiplier_index: int) -> int:
+    """Apply the fixed 75/100/125 percent synthetic multiplier with integer rounding."""
+    if type(expected_units) is not int or expected_units < 0:
+        raise ValueError("expected demand must be a non-negative integer")
+    if type(multiplier_index) is not int or not 0 <= multiplier_index < len(
+        _DEMAND_MULTIPLIERS_PERCENT
+    ):
+        raise ValueError("multiplier index must select one of the three fixed values")
+    return (
+        expected_units * _DEMAND_MULTIPLIERS_PERCENT[multiplier_index] + 50
+    ) // 100
 
 
 def _order_quantity(
@@ -150,6 +178,150 @@ def _order_quantity(
     raise ValueError("unsupported synthetic retail policy")
 
 
+def create_retail_policy_state(
+    assumptions: RetailPolicyAssumptions,
+) -> RetailPolicySimulationState:
+    """Create a fresh, JSON-safe state with the declared starting inventory."""
+    if not isinstance(assumptions, RetailPolicyAssumptions):
+        raise TypeError("assumptions must be validated RetailPolicyAssumptions")
+    return {
+        "on_hand_units": assumptions.initial_stock_units,
+        "pending_by_day": {},
+        "pending_units": 0,
+        "fulfilled_units": 0,
+        "unmet_units": 0,
+        "total_demand_units": 0,
+        "stockout_days": 0,
+        "order_count": 0,
+        "ordered_units": 0,
+        "procurement_cost_units": 0,
+        "holding_cost_units": 0,
+    }
+
+
+def advance_retail_policy_day(
+    state: RetailPolicySimulationState,
+    *,
+    policy_id: str,
+    day_index: int,
+    demand_units: int,
+    demand_profile_units: tuple[int, ...],
+    lead_time_days: int,
+    assumptions: RetailPolicyAssumptions,
+) -> RetailPolicySimulationState:
+    """Apply one day boundary: receive, fulfill, cost, then place a new order."""
+    if type(day_index) is not int or not 0 <= day_index < HORIZON_DAYS:
+        raise ValueError("day_index must be within the fixed 28-day horizon")
+    if type(demand_units) is not int or demand_units < 0:
+        raise ValueError("demand_units must be a non-negative integer")
+    if not isinstance(assumptions, RetailPolicyAssumptions):
+        raise TypeError("assumptions must be validated RetailPolicyAssumptions")
+    if type(state) is not dict or set(state) != set(create_retail_policy_state(assumptions)):
+        raise ValueError("policy state fields do not match the reviewed contract")
+    if any(type(value) is not int or value < 0 for key, value in state.items() if key != "pending_by_day"):
+        raise ValueError("policy state counters must be non-negative integers")
+    pending_by_day = state["pending_by_day"]
+    if type(pending_by_day) is not dict or any(
+        type(day) is not str
+        or not day.isdecimal()
+        or type(quantity) is not int
+        or quantity < 0
+        for day, quantity in pending_by_day.items()
+    ):
+        raise ValueError("pending orders must use non-negative string day keys")
+
+    next_state: RetailPolicySimulationState = {
+        **state,
+        "pending_by_day": dict(pending_by_day),
+    }
+    received = next_state["pending_by_day"].pop(str(day_index), 0)
+    next_state["on_hand_units"] += received
+    next_state["pending_units"] -= received
+    if next_state["pending_units"] < 0:
+        raise ValueError("pending order balance cannot become negative")
+
+    next_state["total_demand_units"] += demand_units
+    fulfilled = min(next_state["on_hand_units"], demand_units)
+    next_state["on_hand_units"] -= fulfilled
+    unmet = demand_units - fulfilled
+    next_state["fulfilled_units"] += fulfilled
+    next_state["unmet_units"] += unmet
+    next_state["stockout_days"] += int(unmet > 0)
+    next_state["holding_cost_units"] += (
+        next_state["on_hand_units"] * assumptions.holding_cost_per_unit_day
+    )
+
+    inventory_position = next_state["on_hand_units"] + next_state["pending_units"]
+    quantity = _order_quantity(
+        policy_id=policy_id,
+        day_index=day_index,
+        inventory_position_units=inventory_position,
+        demand_profile_units=demand_profile_units,
+        lead_time_days=lead_time_days,
+        assumptions=assumptions,
+    )
+    if quantity:
+        next_state["order_count"] += 1
+        next_state["ordered_units"] += quantity
+        next_state["procurement_cost_units"] += (
+            quantity * assumptions.procurement_cost_per_unit
+        )
+        arrival_day = day_index + lead_time_days
+        if arrival_day < HORIZON_DAYS:
+            arrival_key = str(arrival_day)
+            next_state["pending_by_day"][arrival_key] = (
+                next_state["pending_by_day"].get(arrival_key, 0) + quantity
+            )
+        next_state["pending_units"] += quantity
+    return next_state
+
+
+def finalize_retail_policy_metrics(
+    state: RetailPolicySimulationState,
+    assumptions: RetailPolicyAssumptions,
+) -> dict[str, int]:
+    """Derive the public cost and service metrics from a completed state."""
+    if type(state) is not dict or set(state) != set(create_retail_policy_state(assumptions)):
+        raise ValueError("policy state fields do not match the reviewed contract")
+    if any(type(value) is not int or value < 0 for key, value in state.items() if key != "pending_by_day"):
+        raise ValueError("policy state counters must be non-negative integers")
+    pending_by_day = state["pending_by_day"]
+    if type(pending_by_day) is not dict or any(
+        type(day) is not str
+        or not day.isdecimal()
+        or type(quantity) is not int
+        or quantity < 0
+        for day, quantity in pending_by_day.items()
+    ):
+        raise ValueError("pending orders must use non-negative string day keys")
+    if sum(pending_by_day.values()) > state["pending_units"]:
+        raise ValueError("scheduled pending orders exceed the pending order balance")
+    if (
+        assumptions.initial_stock_units + state["ordered_units"]
+        != state["fulfilled_units"]
+        + state["on_hand_units"]
+        + state["pending_units"]
+    ):
+        raise ValueError("policy state violates item inventory balance")
+    order_cost = state["order_count"] * assumptions.fixed_order_cost
+    unmet_cost = state["unmet_units"] * assumptions.unmet_demand_penalty_per_unit
+    total_cost = state["procurement_cost_units"] + state["holding_cost_units"] + order_cost + unmet_cost
+    return {
+        "total_demand_units": state["total_demand_units"],
+        "fulfilled_units": state["fulfilled_units"],
+        "unmet_units": state["unmet_units"],
+        "stockout_days": state["stockout_days"],
+        "ending_on_hand_units": state["on_hand_units"],
+        "pending_order_units": state["pending_units"],
+        "order_count": state["order_count"],
+        "procurement_cost_units": state["procurement_cost_units"],
+        "holding_cost_units": state["holding_cost_units"],
+        "fixed_order_cost_units": order_cost,
+        "unmet_demand_cost_units": unmet_cost,
+        "total_cost_units": total_cost,
+    }
+
+
 def _simulate_replication(
     *,
     policy_id: str,
@@ -159,74 +331,18 @@ def _simulate_replication(
     assumptions: RetailPolicyAssumptions,
 ) -> dict[str, int]:
     """Run one policy against one fixed demand stream using day-boundary rules."""
-    on_hand = assumptions.initial_stock_units
-    pending_by_day: dict[int, int] = {}
-    pending_units = 0
-    fulfilled_units = 0
-    unmet_units = 0
-    total_demand_units = 0
-    stockout_days = 0
-    order_count = 0
-    procurement_cost_units = 0
-    holding_cost_units = 0
-
+    state = create_retail_policy_state(assumptions)
     for day_index, demand in enumerate(demand_units):
-        received = pending_by_day.pop(day_index, 0)
-        on_hand += received
-        pending_units -= received
-
-        total_demand_units += demand
-        fulfilled = min(on_hand, demand)
-        on_hand -= fulfilled
-        unmet = demand - fulfilled
-        fulfilled_units += fulfilled
-        unmet_units += unmet
-        stockout_days += int(unmet > 0)
-        holding_cost_units += on_hand * assumptions.holding_cost_per_unit_day
-
-        inventory_position = on_hand + pending_units
-        quantity = _order_quantity(
+        state = advance_retail_policy_day(
+            state,
             policy_id=policy_id,
             day_index=day_index,
-            inventory_position_units=inventory_position,
+            demand_units=demand,
             demand_profile_units=demand_profile_units,
             lead_time_days=lead_time_days,
             assumptions=assumptions,
         )
-        if quantity:
-            order_count += 1
-            procurement_cost_units += quantity * assumptions.procurement_cost_per_unit
-            arrival_day = day_index + lead_time_days
-            if arrival_day < HORIZON_DAYS:
-                pending_by_day[arrival_day] = (
-                    pending_by_day.get(arrival_day, 0) + quantity
-                )
-            pending_units += quantity
-
-    fixed_order_cost_units = order_count * assumptions.fixed_order_cost
-    unmet_demand_cost_units = (
-        unmet_units * assumptions.unmet_demand_penalty_per_unit
-    )
-    total_cost_units = (
-        procurement_cost_units
-        + holding_cost_units
-        + fixed_order_cost_units
-        + unmet_demand_cost_units
-    )
-    return {
-        "total_demand_units": total_demand_units,
-        "fulfilled_units": fulfilled_units,
-        "unmet_units": unmet_units,
-        "stockout_days": stockout_days,
-        "ending_on_hand_units": on_hand,
-        "pending_order_units": pending_units,
-        "order_count": order_count,
-        "procurement_cost_units": procurement_cost_units,
-        "holding_cost_units": holding_cost_units,
-        "fixed_order_cost_units": fixed_order_cost_units,
-        "unmet_demand_cost_units": unmet_demand_cost_units,
-        "total_cost_units": total_cost_units,
-    }
+    return finalize_retail_policy_metrics(state, assumptions)
 
 
 def _basis_points(numerator: int, denominator: int) -> int | None:
@@ -235,36 +351,24 @@ def _basis_points(numerator: int, denominator: int) -> int | None:
     return min(10_000, (numerator * 10_000 + denominator // 2) // denominator)
 
 
-def _aggregate_policy(
-    *,
+def summarize_retail_policy_runs(
     policy_id: str,
-    demand_streams: tuple[_DemandStream, ...],
-    demand_profile_units: tuple[int, ...],
-    lead_time_days: int,
-    assumptions: RetailPolicyAssumptions,
+    replication_results: list[dict[str, object]],
 ) -> dict[str, object]:
-    replication_results: list[dict[str, object]] = []
+    """Aggregate already computed replication rows without changing their source."""
     totals: dict[str, int] = {}
-    for stream in demand_streams:
-        metrics = _simulate_replication(
-            policy_id=policy_id,
-            demand_units=stream["demand_units"],
-            demand_profile_units=demand_profile_units,
-            lead_time_days=lead_time_days,
-            assumptions=assumptions,
-        )
+    for replication in replication_results:
+        metrics = replication.get("metrics")
+        if type(metrics) is not dict or any(
+            type(value) is not int or value < 0 for value in metrics.values()
+        ):
+            raise ValueError("replication metrics must be non-negative integers")
         for key, value in metrics.items():
             totals[key] = totals.get(key, 0) + value
-        replication_results.append(
-            {
-                "replication": stream["replication"],
-                "seed": stream["seed"],
-                "demand_stream_sha256": stream["demand_stream_sha256"],
-                "metrics": metrics,
-            }
-        )
 
     count = len(replication_results)
+    if count == 0:
+        raise ValueError("at least one replication is required")
     aggregate_metrics: dict[str, int | None] = dict(totals)
     aggregate_metrics["fill_rate_basis_points"] = _basis_points(
         totals["fulfilled_units"], totals["total_demand_units"]
@@ -285,6 +389,32 @@ def _aggregate_policy(
         "aggregate_metrics_across_replications": aggregate_metrics,
         "mean_metrics_per_replication": mean_metrics,
     }
+
+
+def _aggregate_policy(
+    *,
+    policy_id: str,
+    demand_streams: tuple[_DemandStream, ...],
+    demand_profile_units: tuple[int, ...],
+    lead_time_days: int,
+    assumptions: RetailPolicyAssumptions,
+) -> dict[str, object]:
+    replication_results = [
+        {
+            "replication": stream["replication"],
+            "seed": stream["seed"],
+            "demand_stream_sha256": stream["demand_stream_sha256"],
+            "metrics": _simulate_replication(
+                policy_id=policy_id,
+                demand_units=stream["demand_units"],
+                demand_profile_units=demand_profile_units,
+                lead_time_days=lead_time_days,
+                assumptions=assumptions,
+            ),
+        }
+        for stream in demand_streams
+    ]
+    return summarize_retail_policy_runs(policy_id, replication_results)
 
 
 def _lead_time_scenarios(base_lead_time_days: int) -> tuple[int, ...]:

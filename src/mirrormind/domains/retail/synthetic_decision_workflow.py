@@ -1,13 +1,15 @@
 """Compose the bounded fictional retail path into one reviewable result.
 
-This local workflow joins the existing evidence, evaluation, residual,
-policy-test-double and decision-trace contracts. It does not authorize data,
-claim forecast validity, call WorldKernel, rank policies or write business state.
+This local workflow joins existing evidence, evaluation, residual, policy and
+decision-trace contracts. A trusted local caller may inject an opt-in WorldKernel
+comparator; the HTTP route never does. The workflow does not authorize data,
+claim forecast validity, rank policies or write business state.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Callable
 from datetime import UTC, date, datetime, time, timedelta
 from typing import Any
 
@@ -407,7 +409,7 @@ def _build_trace(
     )
     outcome_refs = tuple(item.outcome_id for item in outcomes)
 
-    gaps = (
+    gaps: tuple[MissingEvidence, ...] = (
         MissingEvidence(
             gap_id="gap-source-rights-and-vintages",
             description=(
@@ -432,15 +434,18 @@ def _build_trace(
             ),
             blocks_refs=forecast_refs + outcome_refs,
         ),
-        MissingEvidence(
+    )
+    if comparison.get("engine_execution") != "worldkernel_invoked":
+        gaps += (
+            MissingEvidence(
             gap_id="gap-worldkernel-execution",
             description=(
                 "WorldKernel was not invoked; the policy outcomes come from the "
                 "local experimental Python test double."
             ),
             blocks_refs=outcome_refs,
-        ),
-    )
+            ),
+        )
     return DecisionTrace(
         trace_id=f"trace-retail-synthetic-{identity_sha256}",
         decision_ref=f"decision-retail-synthetic-{identity_sha256}",
@@ -481,11 +486,16 @@ def run_synthetic_decision_workflow(
     *,
     future_units: int = 9,
     all_unpublished: bool = False,
+    policy_comparator: Callable[
+        [RetailPolicyComparisonRequest], dict[str, object]
+    ]
+    | None = None,
 ) -> dict[str, object]:
     """Run one deterministic, non-persisting synthetic decision comparison.
 
-    ``future_units`` and ``all_unpublished`` are fixture-only test seams. They
-    are intentionally absent from the HTTP request model.
+    ``future_units`` and ``all_unpublished`` are fixture-only test seams. The
+    optional ``policy_comparator`` is a trusted local composition seam for an
+    explicitly selected CLI gateway; it is absent from the HTTP request model.
     """
     if type(request) is not SyntheticDecisionWorkflowRequest:
         raise TypeError("request must be a validated SyntheticDecisionWorkflowRequest")
@@ -620,9 +630,19 @@ def run_synthetic_decision_workflow(
         replications=request.replications,
         seed=request.seed,
     )
-    comparison = compare_synthetic_retail_policies(comparison_request)
+    comparison = (
+        compare_synthetic_retail_policies(comparison_request)
+        if policy_comparator is None
+        else policy_comparator(comparison_request)
+    )
+    if type(comparison) is not dict:
+        raise TypeError("policy comparator must return a comparison object")
+    engine_execution = comparison.get("engine_execution", "worldkernel_not_invoked")
+    if engine_execution not in {"worldkernel_not_invoked", "worldkernel_invoked"}:
+        raise ValueError("policy comparator returned an unsupported engine status")
     result.update(
         {
+            "worldkernel_execution": engine_execution,
             "forecast": {
                 "status": "experimental_synthetic_profile_not_empirically_validated",
                 "model": "seasonal_naive_lag7",
@@ -637,7 +657,8 @@ def run_synthetic_decision_workflow(
             },
             "simulation": {
                 "status": comparison["simulation_status"],
-                "policy_test_double_invoked": True,
+                "policy_test_double_invoked": engine_execution
+                != "worldkernel_invoked",
                 "result": comparison,
             },
         }

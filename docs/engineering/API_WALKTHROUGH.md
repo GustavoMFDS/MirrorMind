@@ -13,9 +13,9 @@ plus the [shared contracts](CONTRACT_WALKTHROUGH.md).
 | --- | --- | --- |
 | `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system, scenario and decision routers | Running a worker, starting an agent, retrieving documents or creating a database |
 | `system.health()` | `GET /health`, HTTP 200 and `{"status":"ok","service":"mirrormind-api"}` | Readiness of a future datastore/forecast/WorldKernel engine |
-| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including evidence, evaluation and policy test-double slices) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
+| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including the optional pinned WorldKernel adapter) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
 | `scenarios.validate_scenario(spec)` | `POST /v1/scenarios/validate`; Pydantic validates v0.1 `ScenarioSpec`, returns a summary with `validated_not_executed` | Forecast, RAG, simulation, approval, audit or budget enforcement |
-| `decisions.compare_synthetic_retail_decisions(request)` | `POST /v1/decision-workflows/retail/synthetic`; invokes one bounded in-memory fictional evidence-to-comparison service and returns an experimental trace or explicit abstention | Real data, source authorization, empirical forecast, calibrated interval, WorldKernel call, policy ranking, persistence, human approval or operational writes |
+| `decisions.compare_synthetic_retail_decisions(request)` | `POST /v1/decision-workflows/retail/synthetic`; invokes one bounded in-memory fictional evidence-to-comparison service with the policy test double and returns an experimental trace or explicit abstention | Real data, source authorization, empirical forecast, calibrated interval, WorldKernel call, policy ranking, persistence, human approval or operational writes |
 
 `mirrormind.api:app` is the stable import expected by uvicorn.
 The API layer contains no statistical model or domain-specific
@@ -41,9 +41,11 @@ curl -X POST http://127.0.0.1:8000/v1/decision-workflows/retail/synthetic \
 ```
 
 The scenario route returns `validated_not_executed` deliberately. The
-synthetic decision route is different: it executes the local Python test double
-on generated fixture bytes, emits a typed trace and remains explicitly
-experimental. It never invokes WorldKernel or writes business state.
+synthetic decision route executes the local Python policy test double on
+generated fixture bytes, emits a typed trace and remains explicitly
+experimental. HTTP composition never injects the trusted local comparator and
+cannot start a WorldKernel worker; only the local CLI has an explicit
+`--engine worldkernel` option. Neither path writes business state.
 
 FastAPI generates HTTP 422 for invalid Pydantic body
 validation. The scaffold does not currently add a durable
@@ -56,7 +58,7 @@ source-validation layer.
 | Claim ID | Test and observed behavior | Limitation |
 | --- | --- | --- |
 | **MM-API-001** | `tests/integration/test_api.py::test_scenario_validation_only` confirms a valid JSON request returns `validated_not_executed` | It does not prove execution or successful decision support |
-| **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies the scaffold lists the WorldKernel adapter under `planned` | This test alone does not verify all future capability claims |
+| **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies the scaffold lists the pinned local WorldKernel adapter under `experimental`, not `planned` | This test alone does not verify all future capability claims or the engine execution path |
 | **MM-API-003** | `tests/integration/test_api.py::test_runs_cannot_exceed_budget` returns HTTP 422 for excess declared run count | A rejected request is not evidence of enforced runtime quotas |
 | **MM-API-004** | `tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result` matches the HTTP response to the local service result | Only the generated fixture and local policy test double execute; it is not a real decision or an authorized forecast |
 
@@ -78,6 +80,17 @@ module. An earlier restricted execution timed out before the handler; its
 root cause was not established. Local test-client evidence is not a deployed
 service or production-readiness claim.
 
+The experimental `worldkernel_adapter` capability is an optional local
+subprocess path pinned to WorldKernel source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. M1E-02 executes the upstream
+synthetic inventory demo; M1E-04 registers one fixed MirrorMind policy handler
+to preserve the existing synthetic policy contract. Both validate
+`worldkernel.result.v1`. The HTTP route remains on the test double and does not
+accept an engine choice. See the [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md)
+for the handler flow and actual-engine regressions. Exact pin, bounded output
+and timeout do not provide hostile-code isolation, source permission,
+CPU/memory quotas or production readiness.
+
 ```bash
 python -m pytest -q tests/integration/test_api.py
 python -m ruff check src tests
@@ -93,19 +106,23 @@ readiness.
 
 [`modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py)
 declares `SimulationSummary` and a `SimulationGateway` Protocol with
-`execute(ScenarioSpec) -> SimulationSummary`. It does not instantiate
-WorldKernel or persist results. The independent
+`execute(ScenarioSpec) -> SimulationSummary`. The generic M1E-02 implementation
+executes one mapped inventory scenario; the separate M1E-04 retail gateway
+executes the strict M1 synthetic policy request. Neither is used by the HTTP
+route or persists results. The independent
 [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py)
 module constructs a strict request for one world/revision when explicit units,
 state, parameters and operator limits are supplied. It rejects unsupported
 interventions and unresolved evidence/forecast references. Its limits are
 request preflight values, not server-enforced quotas; it does not send a
 request or validate a response. The [local synthetic retail policy
-comparison](M1_RETAIL_POLICY_SIMULATION.md) runs through a Python library call
-and example CLI only; it does not implement this protocol or produce a
-WorldKernel result. A later pinned SDK adapter must preserve the one-way
-dependency MirrorMind -> WorldKernel and test actual registered-world
-execution, result validation and runtime failure behavior.
+comparison](M1_RETAIL_POLICY_SIMULATION.md) remains available as the default
+in-process test double. The M1E-04 engine uses the code-owned revision
+`mm-retail-policy-v1`; the handler is shipped by MirrorMind and cannot be
+selected by request JSON. Its parent checks every demand stream, inventory
+state and policy outcome against the reference implementation, failing closed
+on drift. Both adapters preserve the one-way dependency MirrorMind ->
+WorldKernel.
 
 ## 5. Synthetic route data flow and boundary
 

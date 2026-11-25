@@ -19,7 +19,8 @@ The service returns one versioned result containing:
 3. A 28-day `seasonal_naive_lag7` profile from seven consecutive published
    fictional product-days before the requested `as_of` date.
 4. Three conditional policy outcomes over paired synthetic demand streams and
-   the existing lead-time sensitivity cases.
+   the existing lead-time sensitivity cases, using the test double by default
+   or the explicit local WorldKernel option.
 5. An M1F-01 `DecisionTrace` linking facts, profile forecasts, assumptions,
    conditional outcomes, evidence gaps and unavailable runtime costs.
 
@@ -38,8 +39,11 @@ flowchart TD
   I -->|requested as_of| A{Seven consecutive published days?}
   A -->|No| X[Structured abstention; no simulation]
   A -->|Yes| B[Existing seasonal-naive one-step rule projected 28 days]
-  B --> P[Existing paired policy test double]
-  P --> H[Versioned artifact and content-identity digests]
+  B --> P{Selected local policy engine}
+  P -->|Default CLI and API| D[Paired policy test double]
+  P -->|Explicit CLI option| W[Exact-pin WorldKernel policy world]
+  D --> H[Versioned artifact and content-identity digests]
+  W --> H
   H --> T[Existing DecisionTrace v1 models]
   E --> O[Versioned response]
   U --> O
@@ -55,8 +59,10 @@ flowchart TD
 | `evaluation_flow.py` | Reuse the fixed release-aware backtest for a historical diagnostic | The evaluation is not an empirical skill claim and is not used to select the forecast method |
 | `residual_envelope.py` | Reuse the disjoint fixed calibration/holdout diagnostic | Output remains `heuristic_envelope_not_prediction_interval`; no interval is attached to the forecast |
 | `baselines.py::project_seasonal_naive_lag7` | Repeatedly invoke the existing one-step seasonal-naive rule to form 28 integer steps | Seven complete published fixture values are mandatory; this does not fit or validate a predictive model |
-| `policy_simulation.py` | Run three policy rules against shared seeded streams and bounded assumptions | Local test double only; costs are synthetic units; no WorldKernel call or ranking |
-| `synthetic_decision_workflow.py` | Orchestrate cutoffs, abstention, comparison, trace construction and deterministic result digests | In-memory only; rejects missing history before invoking simulation; hashes provide no authentication or authorization |
+| `policy_simulation.py` | Define strict inputs, shared day transitions and aggregation for three rules | Synthetic inputs and costs; no source evidence or policy ranking |
+| `worldkernel_policy_world.py` | Register a fixed trusted handler that applies one demand draw to policy and lead-time states | Code-owned name/version; no user-provided handler code |
+| `worldkernel_policy_mapping.py` and `worldkernel_policy_gateway.py` | Map the policy request, execute through the pinned worker, and verify all results against the reference rules | Explicit local opt-in only; not exposed to HTTP |
+| `synthetic_decision_workflow.py` | Orchestrate cutoffs, abstention, selected comparator, trace construction and deterministic result digests | Comparator injection is trusted local composition and absent from HTTP; hashes provide no authentication or authorization |
 | `api/routes/decisions.py` | Expose one bounded local route calling the same service | No file upload, URL fetch, database, writes, tool selection or action authority |
 | `examples/m1_retail_decision_workflow.py` | Provide a deterministic command-line entrypoint | Uses generated fixture data only |
 
@@ -120,10 +126,13 @@ select a model from holdout results, impute missing days, or produce intervals.
 ### 3.4 Paired conditional policy outcomes
 
 The service builds `RetailPolicyComparisonRequest` with the profile and the
-same explicit fixture assumptions documented in the M1E-03 guide. The existing
+same explicit fixture assumptions documented in the M1E-03 guide. By default,
 `compare_synthetic_retail_policies` creates one seeded demand stream per
 replication and reuses that stream for all three policies and lead-time
-scenarios. The service limits replications to 198 because
+scenarios. `--engine worldkernel` instead injects the trusted local gateway;
+the gateway executes the fixed registered handler and checks all engine states
+against the test double as a parity oracle. Returned metrics come from engine
+states. The service limits replications to 198 because
 `28 days × 3 policies × 3 lead-time cases × replications` must remain within
 the existing 50,000-transition budget.
 
@@ -135,8 +144,10 @@ the full assumption register. The policy comparator also reports explicit
 because the caveat describes how that forecast is consumed. In particular, its
 one-day-lead target interval excludes arrival-day demand. The result therefore
 does not establish a standard or optimized replenishment rule. The trace and
-response preserve `ranking=None` and `worldkernel_not_invoked`. Synthetic cost
-units are not currency or measured operating costs.
+response preserve `ranking=None` and record the selected `engine_execution`:
+`worldkernel_not_invoked` on the default API/CLI path or `worldkernel_invoked`
+on the explicit local CLI path. Synthetic cost units are not currency or
+measured operating costs.
 
 ### 3.5 Decision trace
 
@@ -145,8 +156,11 @@ product-day becomes an `EvidenceReference` and `ObservedFact`; each future
 profile step becomes a `ForecastEstimate` with references to the exact seven
 history facts and the model-card path. Nine conditional outcomes cover three
 policies over three lead-time values. `MissingEvidence` identifies absent
-source rights/vintages, empirical model validation, calibrated uncertainty and
-actual engine output. Compute and WorldKernel costs are explicitly unavailable.
+source rights/vintages, empirical model validation and calibrated uncertainty.
+The default test-double trace also has a WorldKernel-execution gap; the
+explicit engine trace omits that gap after the gateway validates the pinned
+result. Compute and WorldKernel costs remain explicitly unavailable because
+this slice does not measure them.
 
 `result_sha256` binds the canonical `DecisionTrace` result fields but is not a
 signature or review identity. The outer workflow separately computes
@@ -206,11 +220,13 @@ policy result.
 
 `mirrormind.synthetic_retail_decision_workflow.v1` contains `status`, `as_of`,
 `evaluation`, `uncertainty`, `forecast_evidence_receipt`, `forecast`,
-`simulation`, `artifact_digests`, `decision_identity_sha256`, `trace`,
+`simulation`, `worldkernel_execution`, `artifact_digests`,
+`decision_identity_sha256`, `trace`,
 `trace_sha256`, `workflow_result_sha256`, `human_review`, `action_authorized`,
 and `writes_performed`. On a successful fixture, status is
 `synthetic_comparison_ready_experimental`. An incomplete history returns
-`abstained_required_history_unavailable`, `trace=null`, and
+`abstained_required_history_unavailable`, `trace=null`,
+`worldkernel_execution=worldkernel_not_invoked`, and
 `simulation.policy_test_double_invoked=false`.
 
 The response includes synthetic replication-level outputs for teaching and
@@ -228,7 +244,8 @@ contract for real-data ingestion.
 | Invalid date, boolean seed/count, excessive count or unknown request key | Pydantic/route HTTP 422; CLI exits 2 with a generic message | Strict typed bounds run before simulation |
 | No eligible forecast history | No forecasts, outcomes, trace, or policy invocation | Prevents an unsupported synthetic comparison |
 | Local trace reference/cutoff inconsistency | Trace model validation fails; no successful result is emitted | Contract rejects dangling references and post-cutoff evidence |
-| WorldKernel absent or unavailable | It is not called; result and trace state this explicitly | No actual engine acceptance exists under B-04 |
+| Default test-double mode | `engine_execution=worldkernel_not_invoked` | No optional runtime is needed; this remains the API default |
+| WorldKernel absent, mismatched or failing after explicit opt-in | CLI exits with a sanitized error and emits no comparison result | Never fall back silently; see the [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) |
 
 The route is experimental and currently belongs to an API scaffold without
 authentication, identity or tenant authorization. It has no explicit request
@@ -238,8 +255,9 @@ or shared service capacity. It uses only a fixed generated fixture, no
 persistence and no business writes. It is not safe to expose as a public or
 production endpoint. Source licensing, original availability, privacy
 approval, real-data evaluation, forecast skill, uncertainty calibration,
-realistic cost assumptions, WorldKernel execution, durable jobs, identity and
-human action authorization remain outside this slice.
+realistic costs, production isolation, durable jobs, identity and human action
+authorization remain outside this slice. Optional local WorldKernel execution
+does not close those product gates.
 
 ## 6. Tests and what they prove
 
@@ -275,6 +293,12 @@ human action authorization remain outside this slice.
   verifies unknown input is rejected.
 - `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
   checks the experimental capability set matches the reviewed ledger.
+- `tests/integration/test_worldkernel_policy_world_engine.py::test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data`
+  exercises the exact-pin engine option, the conditional trace gap and the
+  trace-bearing workflow response; it skips if the reviewed package is absent.
+- `tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result`
+  confirms the HTTP route uses the default comparator and cannot select the
+  local engine.
 
 Curated claims: **MM-MF-001** successful trace separation;
 **MM-MF-002** safe abstention before policy execution;
@@ -286,7 +310,8 @@ Curated claims: **MM-MF-001** successful trace separation;
 [evidence map](EVIDENCE_MAP.json) for exact test selectors and limitations.
 
 All of these are local synthetic checks. They do not satisfy M1B-03,
-M1C-03, M1D-02 or M1E-02 and do not by themselves establish M1 completion.
+M1C-03, M1D-02 or the broader M1E-04 service/security gate and do not by
+themselves establish M1 completion.
 
 ## 7. Debugging and maintenance
 
@@ -302,15 +327,18 @@ trace digest with `DecisionTrace.result_sha256`, compare it with the artifact
 digest map and recompute `workflow_result_sha256` after excluding only that
 field. Do not treat any digest as a signature. For identity collisions,
 compare the validated request and schema-versioned artifact digests before
-tracing `_decision_identity_sha256`.
+tracing `_decision_identity_sha256`. For explicit engine runs, follow the
+[WorldKernel policy-world guide](WORLDKERNEL_POLICY_WORLD.md), verify the
+engine result digest and compare every policy row with the pinned run.
 
 When changing a fixture release date, update the release-aware regressions and
 explain how it affects both the historical diagnostic window and the current
 forecast feature window. When changing horizon or policies, update the
 transition bound, model card, trace outcome builder, tests and public
-capability description together. A future engine path must pass the
-[versioned WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) and emit a
-validated engine receipt; never relabel this local test double as execution.
+capability description together. Preserve the explicit
+`worldkernel_not_invoked` label on the default path; never relabel a
+test-double result as WorldKernel execution. Changes to the engine path must
+pass the [versioned WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md).
 
 ## 8. Learning exercises
 

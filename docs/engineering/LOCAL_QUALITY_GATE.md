@@ -35,6 +35,39 @@ The fixed checks are:
 5. Curated evidence reference `--check`.
 6. Capability ledger `--check`.
 
+### Restricted Windows sandbox note
+
+`TestClient` may create a Windows asyncio event loop whose self-pipe uses a
+local TCP socket pair. In a sandbox that blocks loopback sockets, the
+`test_health` request can wait in `socket.accept` before application code
+runs. A faulthandler stack in `_fallback_socketpair` and a bounded
+`asyncio.new_event_loop()` child-process reproduction identify this as an
+executor limitation for that run, not proof of a route defect. Do not skip
+the test or alter its timeout to obtain a pass. Preserve the failed receipt,
+then run the same exact clean SHA and all six checks in an already authorized
+local environment where loopback is permitted. A passing local receipt still
+does not stand in for GitHub Actions.
+
+### Preserved PR #57 evidence
+
+The owner-reported exact-head retest of `1bf178b5c4b31bcd68072b69748a14249c6c2649`
+ran `tests/integration/test_api.py::test_health` successfully in 1.07 seconds,
+then passed the complete six-check gate with 700 tests in 23.18 seconds on an
+isolated checkout. A later exact-head gate on
+`1cff92c1345ab20c0533281809502a33025cff10` passed 712 tests and all five
+remaining checks in 22.68 seconds. Both receipts are explicitly
+`local_gate_passed_not_official_ci`; neither resolves the cause of the older
+`8f906b8` timeout. The current restricted execution separately reproduced a
+stack wait during Windows asyncio fallback socket-pair setup; it is recorded
+as executor-specific evidence and does not replace the independent pass.
+
+The owner's PR #57 comments `7164856818`, `7164895449`, `7167002881` and
+`7169397485` are the source for these decisions and exact results. GitHub
+Actions remains unavailable within the approved free budget. Do not make
+repeated workflow runs, paid usage, limit increases or runner/workflow changes
+to obtain a remote green check. Keep all required check definitions and
+repository protections unchanged.
+
 Reviewers must inspect the relevant code, tests, assumptions, and source
 rights separately. This local gate cannot validate cloud-specific runner
 behavior or missing Linux-only integration details, substitute for
@@ -47,3 +80,24 @@ verify fail-closed SHA checking, dirty-tree refusal, ordered manifest,
 failure/timeouts, and honesty of the receipt. The source
 [`scripts/local_quality_gate.py`](../../scripts/local_quality_gate.py)
 is standalone and performs no remote calls or repository mutations.
+
+## Stacked PR and final integration candidate
+
+A passing gate on each PR head does not verify the combined tree. For a
+stacked or topologically integrated candidate:
+
+1. Preserve and review each branch head and its exact local receipt.
+2. Integrate reviewed commits in dependency order on a separate candidate
+   branch/worktree without force-pushing or discarding branch history.
+3. Check conflicts, contracts, generated references, API capability parity
+   and the final diff on the combined tree.
+4. Run the six-check gate again on the exact clean integrated SHA and record a
+   new receipt. Never reuse a child branch's receipt as evidence for the
+   combined commit.
+5. Obtain the required independent code/review evidence. If an official
+   required check cannot run, leave the PR in review state and report the
+   specific unavailable check. A local pass is not a remote check and cannot
+   be used to bypass or weaken repository rules.
+
+Do not label a per-branch gate as the final integrated-candidate gate. Record
+both sets of evidence separately in the backlog and change report.

@@ -70,7 +70,7 @@ and tests before changing a contract.
 | G / M1b governance | Bounded checkpoint service experiment with actual client integration | Synthetic signatures, authenticated update tests, recovery | Scoped service acceptance; external trust separately reviewed |
 | M1a-b | Validated evidence and authorized acquisition | Synthetic composition, source due diligence, adapter tests | Reviewed actual permission/provenance/availability before real ingestion |
 | M1c-d | Evaluated forecasting and uncertainty | Deterministic synthetic baselines, empirical evaluation design | Approved data and predeclared temporal holdout |
-| M1e-f | Executable decision workflow | Version mapping, synthetic scenario runner and decision trace | Actual engine execution and truthful model/data assumptions |
+| M1e-f | Executable decision workflow | Version mapping, exact-pin local runner for the synthetic inventory demo and one code-owned synthetic policy world, plus the decision trace | Authorized temporal/data evidence, empirical forecast evaluation and any separately required service authentication/isolation |
 | M2 | Grounded retrieval, orchestration and usable workflow | Contracts, fake-provider tests, safety controls | End-to-end evaluated RAG/tool workflow and human review |
 | M3 | Operational readiness | Isolation, budget, durable job and recovery design/tests | Measured operational and security gates |
 | M4 | Generalization | Domain-neutral boundary tests, candidate domain analysis | Second complete reference workflow and optional engine compatibility |
@@ -91,8 +91,12 @@ concrete acceptance criterion it advances.
 2. Two evaluated baseline/model choices and honest uncertainty,
    including missing/late-data abstention.
 3. Three conditional replenishment strategies through a verified
-   simulation adapter (or a clearly labeled test double until the real
-   adapter is available).
+   simulation model that represents the declared synthetic inventory/lead-time
+   assumptions. The upstream `retail.inventory.demo` proves local SDK
+   compatibility only. The M1E-04 MirrorMind-owned handler runs the reviewed
+   paired policy rules through the same pinned engine and must exactly match
+   the reference transition implementation; it remains experimental and
+   does not validate real policies.
 4. A decision trace showing observations versus forecasts versus
    simulations, exact assumptions, seeds, versions, cost and review.
 5. A simple CLI/API/UI demonstration as appropriate, reproducible by

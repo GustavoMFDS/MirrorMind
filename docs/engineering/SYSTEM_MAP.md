@@ -1,18 +1,20 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`), stacked PRs #52–#59 and the M1E-03/M1F-02 local workflow. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, retail evidence evaluation, the paired policy test double and the synthetic decision workflow are experimental. The decision trace result schema remains interface-only as a general capability; its one M1F-02 producer is synthetic and non-authorizing. The WorldKernel request mapper is a pure, fail-closed translation only; no actual engine call, authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-25 against the M1F-02 integrated candidate and the local M1E-02/M1E-04 WorldKernel continuation. Bounded CSV/XLSX staging, retail evaluation, the paired policy test double, the synthetic decision workflow and exact-pin local engine adapters are experimental. The decision trace result schema remains interface-only as a general capability; its M1F-02 producer is synthetic and non-authorizing. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
-HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. Separately, a trusted local caller can pass `ScenarioSpec`, explicit units and operator limits to `modules/simulation/worldkernel_mapping.py` to construct a WorldKernel v1 request. The `modules/simulation/gateway.py` interface still has no executor and the mapper does **not** execute WorldKernel simulations.
+HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py`, `api/routes/scenarios.py` or `api/routes/decisions.py` → validation and service composition → response. The decision route uses generated fixture bytes and the in-process test double. Separately, trusted local CLI composition can send either an explicitly mapped `ScenarioSpec` through M1E-02 or an M1E-03 policy request through M1E-04 to the fixed, optional WorldKernel worker. These paths are not reachable from HTTP.
 
-The local retail policy test double remains a library/CLI path: a caller
-supplies a strict 28-day profile and inventory/cost assumptions to
-`domains/retail/policy_simulation.py`; the module generates paired demand
-streams, compares three rules and reports an explicit lead-time sensitivity
-sweep. The separate M1F-02 synthetic workflow composes this test double with
-generated evidence and exposes the shared service through an experimental
-HTTP route. Neither path executes WorldKernel or grants decision authority.
+The local retail policy test double remains the default library/CLI path: a
+caller supplies a strict 28-day profile and inventory/cost assumptions to
+`domains/retail/policy_simulation.py`; the shared transition generates paired
+demand streams, compares three rules and reports lead-time sensitivity. M1E-04
+reuses that transition inside a fixed WorldKernel handler, then validates all
+engine states and metrics against the in-process reference. M1F-02 composes
+generated evidence and the test double through the experimental HTTP route;
+only the CLI can explicitly select WorldKernel. No path grants decision
+authority.
 
 Current supported routes: `GET /health`, `GET /v1/capabilities`,
 `POST /v1/scenarios/validate`, and the experimental
@@ -29,8 +31,9 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover bounded references/records, evidence-ID lookup, review chronology and context-independent Decimal digests; no authenticated producer, API or action execution |
-| Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API and CLI reuse one service; no source authorization, empirical forecast, WorldKernel execution, authenticated review, public transport controls or writes |
+| Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API/default CLI test double plus explicit CLI WorldKernel engine regression; no source authorization, empirical forecast, authenticated review, public transport controls or writes |
 | Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py) cover revalidation of mutable scenarios and the lower scenario/operator run ceiling; no engine import or execution |
+| Execute the M1 policy comparison in WorldKernel | [`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py), [`worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py), [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) | Synthetic mapper/state/parity regressions plus exact-pin engine and CLI integration tests; no real data, forecast validity, hostile-code isolation or HTTP execution |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |

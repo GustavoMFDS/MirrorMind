@@ -117,8 +117,10 @@ weaken guards to unblock a PR.
 - [WorldKernel gateway acceptance](WORLDKERNEL_GATEWAY_GATE.md):
   explicit allowlisted mapping, version compatibility, validated
   units/state, reject unsupported fields/references and independently
-  enforced compute limits. Actual registered engine and result
-  validation; boot works without optional dependency.
+  enforced local timeout/output bounds. The exact optional engine is
+  actually registered and its result is validated; API boot works without
+  the optional dependency. These local bounds do not provide CPU/memory
+  isolation or qualify the current demo as a lead-time inventory model.
 - At least three inventory policies over the declared 28-day reference
   horizon, paired random streams where appropriate, repeatable seeds,
   risk/cost/stock/service metrics and assumption sensitivity.

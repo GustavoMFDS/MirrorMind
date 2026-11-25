@@ -92,6 +92,64 @@ perform destructive operations or relax gates. Ask the owner for
 only the decision or permission needed. Do not manufacture approvals
 or official CI results.
 
+### Current owner decisions — 2026-11-25
+
+Owner comments on [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
+approve preparing two independent research lanes in sequence: A, the narrow
+UCI Online Retail #352 event-time retrospective, then B, aggregate Census
+release-vintage evaluation. This approves preparation of adapters, protocols,
+dataset/privacy documentation and synthetic tests; it does **not** authorize
+acquiring or processing the real workbook or Census vintages. Before UCI bytes
+are handled, verify original terms, attribution/change notice, minimized fields
+(product/day/positive quantity after cancellation classification), secure
+local storage, retention/deletion and a source manifest. Do not put raw or
+identifying rows in Git, CI, logs, prompts or external services. Never infer
+publication availability from `InvoiceDate`; retain
+`event_time_retrospective_unverified_availability`. For Census, prefer free
+official archived releases; use ALFRED only if access is free/authorized and
+series terms plus historical-vintage evidence suffice. Do not claim SKU-level
+demand or inventory validation. M5 remains NO-GO; B-01/B-02 remain open.
+
+Owner confirms GitHub Actions allowance is exhausted, with no paid usage or
+spending-limit increase authorized. Follow
+[`LOCAL_QUALITY_GATE.md`](LOCAL_QUALITY_GATE.md) on a clean exact head; report
+all six local checks as local evidence, not CI. Require independent review and
+a separate final gate on the integrated candidate before any integration
+decision. The owner's exact-head retest at `1bf178b` passed; the older
+`8f906b8` timeout cause remains unknown. On the separate M1E-02 commit
+`ac52ec9`, a restricted Windows sandbox reproduced a `test_health` wait in
+asyncio loopback socket-pair creation; a five-second event-loop probe
+reproduced the wait, and the same test plus full six-check gate passed outside
+that socket restriction. Do not generalize this diagnosis to the older
+`8f906b8` event. The latest `678755e` owner-recovered job records show
+`steps=[]` and `runner_id=0` for the `test` and `symbol-catalog` jobs, but the
+exact annotation remains unavailable; do not infer its per-check cause. Do
+not disable checks, change protections, or start a self-hosted runner without
+separate zero-cost isolated infrastructure approval. See comments
+[7164856818](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818),
+[7164870326](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164870326),
+[7164895449](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164895449)
+and [7167002881](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881).
+
+The later PR #57 update on exact head `1cff92c` reports a complete six-check
+local gate: 712 pytest tests, Ruff, catalog, atlas, evidence and capability
+checks passed; Actions failed before repository steps with the same
+payment-or-spending-limit alternative. The independent retest at `1bf178b`
+passed 700 tests and the same six local checks. These comments do not provide
+the final integrated candidate's receipt; that must be generated separately.
+See comment
+[7169397485](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7169397485).
+
+The active local M1 integration candidate combines the PR #59 synthetic
+workflow with the PR #55 optional runner and a new M1E-04 MirrorMind-owned
+policy world. The package remains SHA-pinned and optional; API startup and
+HTTP workflow remain independent. The inventory demo's `demo-1` registry
+label is not artifact attestation. The code-owned policy world must preserve
+the M1E-03 shared transition and demonstrate exact parity on synthetic inputs.
+Do not edit WorldKernel, claim real demand or calibrated outcomes, or describe
+the subprocess as a hostile-code sandbox. Run a new six-check exact-head gate
+on the final integrated commit; prior branch receipts are separate evidence.
+
 ## 4. Mandatory documentation standard
 
 MirrorMind documentation is both **engineering knowledge and a

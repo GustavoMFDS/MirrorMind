@@ -12,7 +12,8 @@ def test_health():
 def test_capabilities_do_not_overstate_implementation():
     payload = client.get("/v1/capabilities").json()
     assert payload["status"] == "scaffold"
-    assert "worldkernel_adapter" in payload["planned"]
+    assert "worldkernel_adapter" in payload["experimental"]
+    assert "worldkernel_adapter" not in payload["planned"]
     assert "local_retail_policy_test_double" in payload["experimental"]
     assert "synthetic_retail_decision_workflow" in payload["experimental"]
 

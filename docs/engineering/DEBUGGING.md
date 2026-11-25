@@ -244,3 +244,47 @@ and `test_inventory_mass_balance_holds_for_every_policy_replication` before
 changing that behavior. A mismatch is a local deterministic behavior change,
 not evidence about actual retail stock or costs. Never pass this result to the
 WorldKernel mapper as if it were an engine receipt.
+
+## WorldKernel policy-world execution fails or differs from the reference
+
+Reproduce only with the generated fixture and explicit local opt-in:
+
+```powershell
+python -m examples.m1_retail_decision_workflow --as-of 2011-01-26 --replications 2 --seed 317 --engine worldkernel
+python -m pytest -q tests/unit/test_worldkernel_policy_world.py tests/integration/test_worldkernel_policy_world_engine.py
+```
+
+Trace `LocalWorldKernelRetailPolicyGateway.compare` through the strict policy
+mapper, fixed `worldkernel_worker.py`, `_validate_exchange_result_envelope`
+and `_validate_policy_world_state`. Confirm the installed distribution's
+`worldkernel` version, PEP 610 repository and commit; this checks declared
+metadata, not installed-file integrity. A missing or mismatched package must
+fail with a sanitized error, never fall back to the test double. For an
+operator rejection, inspect the 28-day horizon, replication count and
+fan-out-adjusted transition ceiling before looking at subprocess output.
+
+For a seed mismatch, compare the WorldKernel run index rule `seed + run_index`
+and verify that exactly one random demand draw is shared across all nine
+policy/lead-time states each day. For an inventory mismatch, recompute the
+state balance and verify every demand value against `_build_demand_streams`.
+Then compare all returned policy metrics with the reference result. The
+gateway rejects drift; do not patch the returned result from reference
+values. Check `worldkernel_execution.result_sha256` only as a content digest,
+not as a signature. Timeouts and output overflow remain local process limits,
+not CPU/memory isolation. The API route is expected to use the test double
+and must not launch this worker.
+
+## API `test_health` hangs before application code
+
+First record the exact interpreter, dependency versions, head, command and
+whether the failure is a timeout or a stack-backed wait. Never increase the
+test timeout, skip the health test or change application code based only on a
+stalled test. In the 2026-11-25 restricted Windows execution, Python 3.13.5's
+faulthandler stack stopped in `socket.accept` while AnyIO/Starlette created
+the asyncio fallback self-pipe. This supports a loopback-socket restriction
+in that execution context, not an application diagnosis and not a proven
+cause for the older `8f906b8` timeout. PR #57's independent exact-head
+checkout passed `test_health` and the complete local gate; preserve both
+observations. Use the owner-approved exact-clean-head gate in an already
+authorized local environment and report its full commit. Do not call a local
+pass GitHub Actions success.

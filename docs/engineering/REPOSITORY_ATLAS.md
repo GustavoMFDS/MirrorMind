@@ -852,11 +852,30 @@ The capability remains `interface_only`; `decision_evaluation` remains
 | [`docs/engineering/changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md`](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md) | M1E-01 scope, explicit acceptance, impact map and evidence |
 | [`docs/engineering/CHANGE_REQUEST_TEMPLATE.md`](CHANGE_REQUEST_TEMPLATE.md) | Reusable required-scope template referenced by the engineering workflow |
 
-The mapper does not execute the request, prove `demo-1` identifies immutable
-code, or expose a runtime capability. `worldkernel_adapter` remains planned.
+The mapper itself does not execute the request or prove `demo-1` identifies
+immutable code. The following local runtime is a separate experimental path.
+
+## 54. Optional pinned local WorldKernel execution (experimental)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py) | `LocalWorldKernelGateway`, `run_worldkernel_scenario`; revalidate/map, enforce local timeout and bounded output, validate exact result/inventory balance and form a provenance-bound summary |
+| [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py) | One-shot optional worker; verifies distribution version and exact VCS origin, registers upstream built-ins plus one fixed code-owned policy world and calls strict registered-revision execution |
+| [`pyproject.toml`](../../pyproject.toml) | Optional `worldkernel` extra pinned to one reviewed full source commit; no core dependency |
+| [`examples/m1e_02_worldkernel_local_runner.py`](../../examples/m1e_02_worldkernel_local_runner.py) | Reproducible fictional scenario; prints a local conditional summary and performs no input-file or network access |
+| [`tests/unit/test_worldkernel_runner.py`](../../tests/unit/test_worldkernel_runner.py) | Synthetic fake-worker protocol, pin metadata, result/balance, timeout, output and missing-runtime regressions |
+| [`tests/integration/test_worldkernel_runner_engine.py`](../../tests/integration/test_worldkernel_runner_engine.py) | Executes the actual optional engine only when exact package metadata pin is installed; otherwise skips |
+| [`docs/engineering/WORLDKERNEL_GATEWAY_GATE.md`](WORLDKERNEL_GATEWAY_GATE.md) | Runtime architecture, contracts, installation, security boundaries, reproduction and residual acceptance gates |
+| [`docs/engineering/changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md`](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md) | Scoped M1E-02 change request, impact map and exact-head evidence |
+
+The M1E-02 local path executes the upstream `retail.inventory.demo@demo-1`
+example at the exact WorldKernel source pin. M1E-04's separate code-owned
+policy handler is described below. Neither is an HTTP capability, hostile-code
+sandbox or production service. The API remains bootable with the optional
+package absent.
 
 
-## 54. Synthetic retail policy comparison (test double only)
+## 55. Synthetic retail policy comparison (test double only)
 
 | Tracked path | Function / review boundary |
 | --- | --- |
@@ -870,14 +889,33 @@ code, or expose a runtime capability. `worldkernel_adapter` remains planned.
 `local_retail_policy_test_double` is experimental. It does not satisfy the
 M1E-02 actual WorldKernel engine gate or produce an operational decision.
 
+## 56. WorldKernel-backed synthetic policy world (experimental, local CLI only)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py) | Fixed registered handler; one shared random demand draw advances all policies and lead-time cases through the common M1E-03 transition |
+| [`src/mirrormind/modules/simulation/worldkernel_policy_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_mapping.py) | Strict policy contract mapping with exact world/version and operator fan-out bounds before launch |
+| [`src/mirrormind/modules/simulation/worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py) | Validates engine final states, paired streams and metrics against the synthetic reference before returning engine-derived outcomes |
+| [`tests/unit/test_worldkernel_policy_world.py`](../../tests/unit/test_worldkernel_policy_world.py) | Synthetic contract, limit-before-launch, handler parity, fixed registration and malformed result regressions |
+| [`tests/integration/test_worldkernel_policy_world_engine.py`](../../tests/integration/test_worldkernel_policy_world_engine.py) | Exact-pin engine parity and end-to-end explicit CLI execution; skips if the reviewed optional package is absent |
+| [`docs/engineering/WORLDKERNEL_POLICY_WORLD.md`](WORLDKERNEL_POLICY_WORLD.md) | Architecture, state transition, contract, security, failure modes, reproductions, tests and learning exercises |
+| [`docs/engineering/changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md`](changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md) | M1E-04 scope, acceptance criteria, impact map and exact-head evidence |
+| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_EVENT_TIME_CARD.md`](datasets/UCI_ONLINE_RETAIL_EVENT_TIME_CARD.md) | Proposed UCI research dataset card and pre-acquisition privacy/permission gate; no source bytes acquired |
+| [`docs/engineering/datasets/CENSUS_MARTS_RELEASE_VINTAGE_PROTOCOL.md`](datasets/CENSUS_MARTS_RELEASE_VINTAGE_PROTOCOL.md) | Proposed aggregate Census temporal protocol and archive/privacy controls; no source data acquired |
+
+The experimental handler is available only through explicit local CLI
+composition. The API and default CLI remain on the in-process test double.
+Exact parity on fictional input is not evidence of real forecasts, source
+permission, policy optimality, hostile-code isolation or production safety.
+
 ## 55. Synthetic retail decision workflow (experimental, no action authority)
 
 | Tracked path | Function / review boundary |
 | --- | --- |
 | [`src/mirrormind/api/routes/decisions.py`](../../src/mirrormind/api/routes/decisions.py) | Exposes one bounded synthetic workflow request and the same service result; no authentication, upload, persistence or business write |
 | [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../src/mirrormind/domains/retail/synthetic_fixtures.py) | Builds deterministic fictional workbook bytes and declared releases while preserving M1C-01 fixture defaults |
-| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | Applies strict request bounds and release checks, composes existing evaluation/diagnostics, fixed seasonal profile, policy test double and M1F-01 trace |
-| [`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py) | Runs the same service locally with bounded date, seed and replication options; output is fictional and reproducible |
+| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | Applies strict request bounds and release checks, composes existing evaluation/diagnostics, fixed seasonal profile, trusted local comparator and M1F-01 trace; API omits the comparator |
+| [`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py) | Runs the same fictional service with bounded date, seed, replication and explicit engine options; the default is the policy test double |
 | [`tests/unit/test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py) | Proves trace references/gaps, post-cutoff noninfluence, missing/late abstention before simulation and strict request bounds |
 | [`tests/integration/test_retail_synthetic_decision_workflow_cli.py`](../../tests/integration/test_retail_synthetic_decision_workflow_cli.py) | Replays CLI output byte-for-byte and checks the no-action result contract |
 | [`docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md`](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | Source walkthrough, sequence diagram, contracts, cutoffs, examples, tests, limits, diagnostics and exercises |

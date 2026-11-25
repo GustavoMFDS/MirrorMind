@@ -25,6 +25,26 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
+## Current local M1 integration candidate — 2026-11-25
+
+The working branch `codex/m1-integrated-worldkernel-local` is reconciling the
+PR #59 synthetic workflow with the PR #55 pinned local runner. This checkout
+also contains the M1E-04 code-owned policy-world implementation: the focused
+policy/reference plus exact-pin engine/CLI suite passed 22 tests, and
+`ruff check src tests` passed. The complete exact-clean-head six-check gate
+has not yet run on this integrated state. These are local observations only;
+no GitHub Actions success is claimed.
+
+The independent PR #57 source-review branch is currently at exact head
+`1cff92c1345ab20c0533281809502a33025cff10`. Its owner-reported six-check local
+gate passed 712 tests plus Ruff, catalog, atlas, evidence and capability
+checks. That branch contains the synthetic UCI event-time evaluator and
+aggregate Census protocol but is not yet integrated into this checkout. The
+next integration step is to reconcile it with this M1 candidate without
+dropping the existing policy, decision-trace or WorldKernel behavior. Use the
+owner comments referenced in [B-08](BLOCKERS.md); local receipts are not
+official CI.
+
 ## Active branch evidence — 2026-11-25
 
 The composed synthetic evidence flow is implemented in the history beginning

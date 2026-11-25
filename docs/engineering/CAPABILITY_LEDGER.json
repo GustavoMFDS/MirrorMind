@@ -45,10 +45,10 @@
     },
     {
       "id": "worldkernel_adapter",
-      "status": "planned",
-      "source": null,
-      "test": null,
-      "notes": "WorldKernel is independent; no versioned adapter translating and executing scenarios."
+      "status": "experimental",
+      "source": "src/mirrormind/modules/simulation/worldkernel_runner.py",
+      "test": "tests/integration/test_worldkernel_policy_world_engine.py::test_pinned_engine_policy_gateway_matches_synthetic_reference",
+      "notes": "Optional local subprocess adapter verifies WorldKernel version and PEP 610 source commit 9b133ef873f2b6a7206c9c5742d40df4fccdb04a. The fixed worker supports the trusted retail.inventory.demo@demo-1 example and one code-owned mirrormind.retail.policy_comparison@mm-retail-policy-v1 handler. The M1E-04 gateway enforces policy transition limits and validates exchange envelopes, paired demand streams, item balance and exact parity with the synthetic reference. It is exposed only through an explicit local CLI option; HTTP remains test-double-only. PEP 610 is not installed-file attestation. No authorized source data, empirical forecast, arbitrary-world registration, hostile-code/CPU/memory sandbox, policy optimality or production deployment. The original M1E-02 exact-engine test remains tests/integration/test_worldkernel_runner_engine.py::test_pinned_local_runner_executes_synthetic_inventory_world_deterministically."
     },
     {
       "id": "decision_trace_result_contract",
@@ -62,7 +62,7 @@
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/synthetic_decision_workflow.py",
       "test": "tests/unit/test_synthetic_decision_workflow.py::test_successful_workflow_produces_valid_trace_and_explicit_gaps",
-      "notes": "Bounded local CLI/API composition of generated UCI-shaped evidence, historical fixed baselines, an uncalibrated disjoint residual diagnostic, a predeclared 28-day seasonal-naive profile, the paired M1E-03 test double and DecisionTrace v1. Missing or late seven-day history abstains before simulation. No source rights, real data, empirical forecast/uncertainty, WorldKernel execution, ranking, persistence or action authorization."
+      "notes": "Bounded local CLI/API composition of generated UCI-shaped evidence, historical fixed baselines, an uncalibrated disjoint residual diagnostic, a predeclared 28-day seasonal-naive profile, paired policy outcomes and DecisionTrace v1. API and default CLI use the M1E-03 test double; explicit local CLI opt-in runs the code-owned WorldKernel policy world and validates engine parity. Missing or late seven-day history abstains before simulation. No source rights, real data, empirical forecast/uncertainty, API engine execution, ranking, persistence or action authorization."
     },
     {
       "id": "decision_evaluation",

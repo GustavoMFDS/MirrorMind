@@ -987,6 +987,69 @@
     "limitation": "Checks the request's declared max_runs against two local ceilings; it does not prove that an external WorldKernel executor enforces the declaration or the other scenario budgets."
   },
   {
+    "id": "MM-WKR-001",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_bounds_worker_output",
+    "limitation": "The synthetic fake worker proves the parent retains bounded output; it does not provide CPU/memory isolation or contain arbitrary child processes."
+  },
+  {
+    "id": "MM-WKR-002",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/integration/test_worldkernel_runner_engine.py",
+    "function": "test_pinned_local_runner_executes_synthetic_inventory_world_deterministically",
+    "limitation": "Executes the exact reviewed package pin with fictional inputs only; it does not establish lead-time semantics, source rights, production isolation or business validity."
+  },
+  {
+    "id": "MM-WKR-003",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_worker_accepts_exact_pep610_repository_and_commit",
+    "limitation": "Verifies local metadata comparison logic, not installed-file integrity, trusted distribution, source license or runtime behavior."
+  },
+  {
+    "id": "MM-WKR-004",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_rejects_inventory_result_that_breaks_balance",
+    "limitation": "Rejects an invented inconsistent inventory result; it does not prove that the modeled world represents a retailer or real replenishment process."
+  },
+  {
+    "id": "MM-WKPW-001",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/unit/test_worldkernel_policy_world.py",
+    "function": "test_policy_mapper_targets_fixed_world_and_bounds_all_policy_transitions",
+    "limitation": "Proves only local synthetic request construction and fan-out limits; exchange JSON limits are not independent server quotas and the test does not invoke WorldKernel."
+  },
+  {
+    "id": "MM-WKPW-002",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/unit/test_worldkernel_policy_world.py",
+    "function": "test_registered_handler_matches_reference_policy_metrics_and_shared_stream",
+    "limitation": "Runs the code-owned handler with Python's seeded random source and synthetic inputs; it does not prove compatibility with an installed WorldKernel package, model realism or policy quality."
+  },
+  {
+    "id": "MM-WKPW-003",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/integration/test_worldkernel_policy_world_engine.py",
+    "function": "test_pinned_engine_policy_gateway_matches_synthetic_reference",
+    "limitation": "Executes only the reviewed local package pin on fictional inputs and verifies parity with the reviewed reference rules; it does not establish source rights, a forecast, optimal policy, hostile-code isolation or production suitability."
+  },
+  {
+    "id": "MM-WKPW-004",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/integration/test_worldkernel_policy_world_engine.py",
+    "function": "test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data",
+    "limitation": "Exercises the explicit local CLI and checks engine selection in the synthetic trace; it does not exercise the HTTP route, deployment, authenticated review or business writes."
+  },
+  {
+    "id": "MM-WKPW-005",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/unit/test_worldkernel_policy_world.py",
+    "function": "test_policy_gateway_rejects_malformed_world_state_from_worker",
+    "limitation": "Rejects one synthetic malformed fake-worker state at the parent boundary; it does not exhaustively verify third-party runtime behavior or sandbox an untrusted handler."
+  },
+  {
     "id": "MM-XLSX-001",
     "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
     "test": "tests/unit/test_uci_workbook.py",

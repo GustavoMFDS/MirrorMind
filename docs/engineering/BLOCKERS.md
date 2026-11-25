@@ -9,14 +9,14 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | Real source rights: M5 unresolved; UCI Online Retail II shows CC BY 4.0, which is not project-use or privacy approval. UCI and aggregate Census/ALFRED options are documented for owner decision; no data was downloaded. | Original license/terms, intended research or commercial use, attribution, privacy/minimization, retention, accepted dataset card and explicit source approval | Project owner / appropriate rights reviewer | Keep synthetic fixtures; choose/reject the no-download aggregate method pilot and decide separately on UCI handling |
-| B-02 | Historical availability and empirical evaluation: event time is not first availability. A concrete Census/ALFRED release-vintage protocol is proposed; retained first-release values remain unverified. | Verified source vintages/revisions, immutable snapshot, locked chronological split and approved data; never substitute transaction/event timestamp for first availability | Project owner with evidence/model reviewer | Implement synthetic delay, missingness, leakage and holdout regressions; prepare exact source manifest only after decision |
+| B-01 | Real source rights and privacy remain open. The owner selected UCI Online Retail #352 as a research-only event-time pilot followed by an independent aggregate Census pilot; this authorizes preparation, not workbook acquisition, processing, commercial use or a blanket data grant. M5 remains NO-GO. | Recheck original UCI terms and attribution/change notice for the exact snapshot; approve minimal projection, cancellation classification, secure local storage, retention/deletion, manifest and dataset card before any bytes are acquired or processed. For Census, approve the exact aggregate series, geography, archive and terms. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine the two protocols and permission controls without retrieving real source bytes |
+| B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census first-release archives and revision histories have not been acquired or verified. | For UCI, retain the declared event-time split and never derive `available_on` from `InvoiceDate`; any point-in-time claim needs external publication evidence. For Census, preserve actual first-release/revision bytes and conservative release timestamps, then freeze chronological origins/holdout and matched baselines. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; prepare manifests and protocol without fabricating vintages |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
-| B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
+| B-04 | The narrow local M1 runtime is implemented against the reviewed WorldKernel commit: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. The API remains independent. Broader service acceptance is open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Exact clean integrated gate, source-level review at the pinned engine commit, synthetic parity and failure tests. Any future HTTP/service execution needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Continue local synthetic tests, strict request/result validation and documentation; keep the dependency optional and the policy world code-owned |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | Exact integrated base `35ecc83936a6115cadf1f4c854d27fca6f7404ac` passed all six local-gate stages with 768 tests outside the restricted sandbox; combined PR #59 head `c000ebd3484e1d9a83f1a440a12369361f4a52b1` passed all six with 790 tests. On base `eb6601d`, the restricted run collected 768 tests but did not progress beyond the first test; isolated `tests/integration/test_api.py::test_health` also failed to return before the tool interrupted it. This difference supports an environment/loopback hypothesis but no stack trace or root cause was established. No test, application behavior or verifier was changed. | Keep exact unconfined gate receipts separate from restricted-run interruptions; investigate only if this affects a supported execution environment; never skip API tests | Codex execution environment / project maintainer | Treat `35ecc83` and `c000ebd` as locally gated only for their unconfined runs; preserve the restriction as environmental evidence and rerun the exact gate if the runner changes. |
-| B-08 | Multiple prior published heads in PRs #52–#61 failed before repository steps with annotations listing recent account payment failure **or** a spending-limit increase as alternatives; those messages do not distinguish the condition. On exact integrated PR #59 code commit `c000ebd`, both checks failed before repository steps and each check-run record has one annotation, but its text was not available through the connector. No remote repository tests ran on that commit, and its cause remains unknown. | Account/repository owner inspects the exact GitHub account and Actions state named by a recoverable diagnostic, then verifies required runs on reviewed heads | GitHub account owner / repository administrator | Preserve required checks and protections. Keep local gate evidence separate; assess a hardened ephemeral runner without treating it as a proven workaround. |
+| B-07 | The older `8f906b8` timeout remains unexplained. Exact-head isolated retest of PR #57 `1bf178b` passed `test_health` and all six local checks; the owner reports a separate clean checkout passed the same health test and 700-test gate. In this restricted execution, Python 3.13.5 produced a faulthandler stack in Windows asyncio `_fallback_socketpair` while creating `TestClient`, consistent with the sandbox loopback restriction; this is evidence about this executor only, not the older timeout or application correctness. | Run the complete six-check gate on the exact clean integrated SHA in the authorized local environment; preserve restricted failures and historical timeout without skipping or changing tests | Codex execution environment / project maintainer | Run unaffected focused suites here; perform the final full gate in the already authorized local environment and record its exact commit and receipt |
+| B-08 | The owner reports the Actions allowance is exhausted and disallows paid usage or a higher spending limit. Read-only #57 diagnostics on `1bf178b` and `1cff92c` include the exact pre-job payment/spending-limit alternative annotation; the wording does not identify which account condition applies. These jobs had no repository steps/logs. No manual rerun is authorized or planned. | Actions must become available within the existing budget before official required workflows can run; independently verify any future exact-head run. If repository rules require a remote check, preserve the candidate and report that specific gate. | GitHub account owner / repository administrator | Use only the owner-approved exact-clean-head local six-check procedure and independent review. Preserve checks/protections. Do not use paid usage, raise limits, bypass, impersonate or weaken checks. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
@@ -25,7 +25,7 @@ the named real integration, not a prohibition on design and tests.
 
 ## B-08 exact diagnostics and runner assessment — 2026-11-25
 
-This point-in-time table records the latest inspected published heads for
+This point-in-time table records the inspected published heads for
 #52–#61 before the local PR #58 sync. Detail calls for both required checks on
 each head returned the same pre-job annotation and no job or log records. The
 message says recent account payments failed **or** the spending limit needs to
@@ -106,6 +106,35 @@ gate. See [billing and usage](https://docs.github.com/en/actions/concepts/billin
 [self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
 and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
 No self-hosted runner or workflow change was made.
+
+### PR #57 owner continuation and exact-head evidence
+
+The owner’s current decision is to stay within the existing free allowance
+and use the repository's temporary local gate. PR #57 comment
+[7164856818](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818)
+records the UCI #352 event-time protocol followed by an independent aggregate
+Census release-vintage protocol. Follow-up comments
+[7167002881](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881)
+and [7169397485](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7169397485)
+report synthetic-only implementation and the latest local gate. On exact
+head `1cff92c1345ab20c0533281809502a33025cff10`, all 712 tests and five
+documentation/style checks passed; receipt status was
+`local_gate_passed_not_official_ci`. The four latest recorded check IDs were
+`139378962637`, `139378898990`, `139378961707` and `139378900784`; their
+annotations say the job was not started because recent payments failed or a
+spending limit needs to increase. The wording does not identify which
+alternative applies. No paid usage, manual rerun or workflow/protection change
+was made. The exact earlier checks at `1bf178b` and the independently passing
+head-specific gate are recorded in the same comments; the older `8f906b8`
+timeout cause remains unknown.
+
+The owner-controlled GitHub CLI diagnostic recorded in comment
+[7164870326](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164870326)
+found the repository unprotected and no applicable branch rules at that
+inspection time. No protection was changed. Do not infer that the repository
+has required checks configured; verify current rules before any future
+integration request. The owner has separately directed that existing
+protections must be preserved and no required check bypassed.
 
 ## Source references and precise restrictions
 

@@ -2,8 +2,9 @@
 
 Usage: ``python -m examples.m1_retail_decision_workflow --as-of 2011-01-26``
 
-Only generated in-memory evidence is used. Successful output remains
-experimental, conditional, non-authorizing and separate from WorldKernel.
+Only generated in-memory evidence is used. The default uses the policy test
+double; ``--engine worldkernel`` opts into the pinned local handler. Successful
+output remains experimental, conditional and non-authorizing.
 """
 from __future__ import annotations
 
@@ -25,6 +26,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--as-of", default=DEFAULT_AS_OF.isoformat())
     parser.add_argument("--replications", type=int, default=12)
     parser.add_argument("--seed", type=int, default=317)
+    parser.add_argument(
+        "--engine",
+        choices=("test-double", "worldkernel"),
+        default="test-double",
+        help="select the default test double or the optional local WorldKernel runtime",
+    )
     args = parser.parse_args(argv)
     try:
         as_of = date.fromisoformat(args.as_of)
@@ -35,7 +42,34 @@ def main(argv: list[str] | None = None) -> int:
             replications=args.replications,
             seed=args.seed,
         )
-        result = run_synthetic_decision_workflow(request)
+        policy_comparator = None
+        if args.engine == "worldkernel":
+            from mirrormind.modules.simulation.worldkernel_mapping import (
+                WorldKernelOperatorLimits,
+            )
+            from mirrormind.modules.simulation.worldkernel_policy_gateway import (
+                LocalWorldKernelRetailPolicyGateway,
+            )
+
+            policy_comparator = LocalWorldKernelRetailPolicyGateway(
+                operator_limits=WorldKernelOperatorLimits(
+                    max_steps=28,
+                    max_runs=250,
+                    max_total_transitions=50_000,
+                )
+            ).compare
+        result = run_synthetic_decision_workflow(
+            request,
+            policy_comparator=policy_comparator,
+        )
+    except RuntimeError as exc:
+        from mirrormind.modules.simulation.worldkernel_runner import (
+            WorldKernelRunnerError,
+        )
+
+        if isinstance(exc, WorldKernelRunnerError):
+            parser.exit(2, f"Local WorldKernel execution unavailable: {exc}\n")
+        raise
     except (OSError, TypeError, ValueError):
         parser.exit(2, "Invalid synthetic retail decision workflow configuration.\n")
     print(json.dumps(result, ensure_ascii=False, allow_nan=False,

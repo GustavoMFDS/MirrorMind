@@ -4,13 +4,16 @@
 decision workflow while keeping MirrorMind domain-neutral.
 An accepted architecture is not equivalent to implemented AI.
 
-Current state: API scaffold and ScenarioSpec validation are
-implemented; bounded synthetic preflights, review-only staging,
-offline retail baselines, release-aware evaluation, a pure WorldKernel
-request mapper and a local three-policy test double exist as
-**experimental or interface-only slices**. Authorized evidence ingestion,
-empirical forecasting/uncertainty, actual WorldKernel execution and the
-integrated human-reviewed decision workflow remain unimplemented.
+Current state (2026-11-25): the M1 synthetic CLI/API path composes generated
+evidence, fixed historical diagnostics, a 28-day profile, the paired policy
+comparison and a versioned trace. The API and default CLI use the test double;
+an explicit local CLI option can run the same policy rules through a
+MirrorMind-owned registered WorldKernel handler at the reviewed exact pin.
+These remain experimental. Real-source permission, publication-time evidence,
+empirical forecast/uncertainty, authenticated human review, persistent results
+and production service controls remain open. See the current [blockers](BLOCKERS.md)
+and [task claims](TASK_BACKLOG.md) rather than the dated historical entries
+below.
 
 ## 1. Dependency-ordered milestones
 
@@ -23,7 +26,16 @@ integrated human-reviewed decision workflow remain unimplemented.
 | **M1e — first simulation gateway** | Concrete, optional WorldKernel adapter over explicit version mapping and trusted worlds | SDK contract tests, unsupported input rejections, server-owned budgets, real fixture E2E without fabricating stock | `worldkernel_adapter` may become experimental after tests |
 | **M1f — reviewable decision comparison** | Trace observations, forecasts and conditional scenario outcomes without automatic business writes | Decision trace, approval gates, cost budgets and independent replay | No agentic automation or operational promise until implemented |
 
-## Current synthetic M1 path — 2026-11-24
+## Current synthetic M1 path — 2026-11-25
+
+The owner-approved research sequence is A then B: prepare the UCI Online
+Retail #352 event-time retrospective and then an independent aggregate Census
+release-vintage pilot. The UCI card and Census protocol are decision-ready
+proposals only; no source bytes or credentials were acquired. Keep both
+B-01/B-02 open, preserve synthetic-only automation, and retain M5 NO-GO. The
+owner also authorized use of the exact-clean-head local six-check gate while
+Actions remains unavailable under the no-paid-spend decision; this does not
+stand in for CI.
 
 The M1B-02 [evidence flow](M1_SYNTHETIC_EVIDENCE_FLOW.md) composes local
 CSV/XLSX staging, review-only metadata, declared calendar/release checks and
@@ -61,14 +73,13 @@ on B-04 for a pinned compatible engine and actual SDK execution; no simulation
 capability is promoted. The current docs head passed the canonical local gate
 with 737 tests, including API; official checks remain blocked by B-08.
 
-M1E-03 has a local synthetic policy test double in the current continuation.
-It compares fixed-cycle, reorder-point and profile-aware rules over 28 days,
-using a shared seeded demand stream for each replication and lead-time
-sensitivity case. It reports stock/service/order and abstract cost metrics
-without ranking the policies. The detailed [walkthrough](M1_RETAIL_POLICY_SIMULATION.md)
-and [change request](changes/M1E_03_SYNTHETIC_POLICY_TEST_DOUBLE.md) mark
-this slice partial: no forecast is consumed, no actual WorldKernel result is
-present, and M1E-02 still depends on B-04.
+M1E-03 retains the local synthetic policy test double. M1E-04 adds a separate
+exact-pin execution path for the same policies through one code-owned
+WorldKernel handler. The [policy-world guide](WORLDKERNEL_POLICY_WORLD.md)
+explains the common transition function, strict mapping, deterministic shared
+demand draw, result checks, test-double parity oracle, explicit local CLI opt-in
+and API boundary. This demonstrates local engine compatibility on fictional
+inputs; it does not validate policy quality or resolve source/forecast gates.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not

@@ -1,6 +1,4 @@
 """Pure tests for the strict, optional WorldKernel request boundary."""
-import builtins
-import importlib
 import os
 import subprocess
 import sys
@@ -8,7 +6,6 @@ from pathlib import Path
 
 import pytest
 
-import mirrormind.modules.simulation.worldkernel_mapping as mapping_module
 from mirrormind.core.contracts import ScenarioSpec
 from mirrormind.modules.simulation.worldkernel_mapping import (
     InventoryWorldUnitContext,
@@ -227,16 +224,37 @@ def test_operator_limit_configuration_has_hard_contract_bounds(
         )
 
 
-def test_mapping_module_imports_without_worldkernel_package(monkeypatch: pytest.MonkeyPatch) -> None:
-    original_import = builtins.__import__
-
-    def reject_worldkernel(name: str, *args: object, **kwargs: object) -> object:
-        if name == "worldkernel" or name.startswith("worldkernel."):
-            raise AssertionError("mapping must not import WorldKernel")
-        return original_import(name, *args, **kwargs)
-
-    monkeypatch.setattr(builtins, "__import__", reject_worldkernel)
-    importlib.reload(mapping_module)
+def test_mapping_and_runner_import_without_worldkernel_package() -> None:
+    repository_root = Path(__file__).resolve().parents[2]
+    script = """
+import builtins
+original_import = builtins.__import__
+def reject_worldkernel(name, *args, **kwargs):
+    if name == "worldkernel" or name.startswith("worldkernel."):
+        raise AssertionError("MirrorMind imported optional WorldKernel")
+    return original_import(name, *args, **kwargs)
+builtins.__import__ = reject_worldkernel
+from mirrormind.modules.simulation.worldkernel_mapping import build_worldkernel_exchange_request
+from mirrormind.modules.simulation.worldkernel_runner import run_worldkernel_scenario
+assert build_worldkernel_exchange_request is not None
+assert run_worldkernel_scenario is not None
+"""
+    environment = dict(os.environ)
+    source_path = str(repository_root / "src")
+    existing_path = environment.get("PYTHONPATH")
+    environment["PYTHONPATH"] = (
+        source_path + os.pathsep + existing_path if existing_path else source_path
+    )
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        cwd=repository_root,
+        env=environment,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_api_app_imports_without_worldkernel_package() -> None:

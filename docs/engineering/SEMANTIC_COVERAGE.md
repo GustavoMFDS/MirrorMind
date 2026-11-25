@@ -34,7 +34,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/declared_releases.py`](../../src/mirrormind/domains/retail/declared_releases.py) | G | Hypothetical source-unverified per-product release declarations at retrospective cutoff; [guide](DECLARED_RETAIL_RELEASES.md) |
 | [`src/mirrormind/domains/retail/release_backtest.py`](../../src/mirrormind/domains/retail/release_backtest.py) | G | Fictional positive-line baseline comparison with per-origin abstention and caller-declared releases; [method](RETAIL_RELEASE_BACKTEST.md) |
 | [`src/mirrormind/domains/retail/evaluation_flow.py`](../../src/mirrormind/domains/retail/evaluation_flow.py) | G | Compose a prepared retail evidence flow with fixed matched-origin baselines; [M1 evaluation guide](M1_RETAIL_SYNTHETIC_EVALUATION.md), experimental and source-unverified |
-| [`src/mirrormind/domains/retail/policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py) | G | Compare three inventory rules over 28 days using paired seeded caller-declared demand and explicit abstract costs; [M1 test-double guide](M1_RETAIL_POLICY_SIMULATION.md), no forecast or engine claim |
+| [`src/mirrormind/domains/retail/policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py) | G | Own strict synthetic request/assumption contracts, shared day transition and paired seeded comparison for three policies; [M1 guide](M1_RETAIL_POLICY_SIMULATION.md), no forecast, ranking or engine import |
 | [`src/mirrormind/domains/retail/coverage_gate.py`](../../src/mirrormind/domains/retail/coverage_gate.py) | G | Gate conditional fictional model ranking on exact scored-origin coverage; no calibrated uncertainty; [guide](RETAIL_COVERAGE_GATE.md) |
 | [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | G | Retrospective maximum-absolute-residual heuristic with a fixed pre-holdout calibration target interval, disjoint holdout labels, origin-specific release checks and an independent quadratic oracle; no calibration guarantee; [guide](RETAIL_RESIDUAL_ENVELOPE.md) |
 | [`src/mirrormind/domains/retail/eligibility_drift.py`](../../src/mirrormind/domains/retail/eligibility_drift.py) | G | Adjacent-window eligible-origin and abstention counts at distinct cutoffs; source-unverified; [guide](RETAIL_ELIGIBILITY_DRIFT.md) |
@@ -46,7 +46,8 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
 | [`src/mirrormind/domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py) | G | Experimental composition of bounded CSV/XLSX readers, review-only packets, declared calendar/release checks and CSV as-of selection; [M1 flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), no authorization or forecast eligibility |
 | [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../src/mirrormind/domains/retail/synthetic_fixtures.py) | G | Canonical in-memory fictional workbook and release dates reused by examples/API; no external data or publisher proof |
-| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | G | Compose historical evaluation/uncertainty diagnostics, release-gated 28-day baseline profile, policy test double and DecisionTrace; [M1F-02 guide](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), no real forecast or engine result |
+| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | G | Compose synthetic evidence, diagnostics, release-gated profile, default policy test double or trusted local comparator, and DecisionTrace; [M1F-02 guide](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md), API remains test-double-only |
+| [`src/mirrormind/domains/retail/worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py) | G | Fixed code-owned `mm-retail-policy-v1` handler reuses the tested daily transition across paired policy and lead-time states; [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md), no request-supplied code or real-data claim |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
 | [`src/mirrormind/modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py) | G | Experimental new shared SQLite file, atomic current policy admission and signed publication CAS; [guide](ATOMIC_GOVERNED_PUBLISHER.md); no external authority or source grant |
@@ -64,6 +65,10 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
 | [`src/mirrormind/modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py) | R | `SimulationGateway` Protocol and `SimulationSummary` model, **no live adapter**; [API guide](API_WALKTHROUGH.md) |
 | [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | G | Pure allowlisted `ScenarioSpec` to WorldKernel v1 request construction with explicit units and operator limits; no execution; [walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) |
+| [`src/mirrormind/modules/simulation/worldkernel_policy_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_mapping.py) | G | Strict revalidation and fixed exchange-v1 mapping for the M1 synthetic policy world; enforces step/run/fan-out limits before launch; [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) |
+| [`src/mirrormind/modules/simulation/worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py) | G | Optional local policy executor; validates WorldKernel states/demand streams and compares engine-derived metrics with the synthetic reference; [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md), CLI opt-in only |
+| [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py) | G | Fixed pinned worker launch with timeout/output bounds and strict exchange result validation; [runtime guide](WORLDKERNEL_MAPPING_WALKTHROUGH.md), not a hostile-code sandbox |
+| [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py) | G | Verifies optional package metadata then registers only fixed trusted worlds; never accepts modules or registration values from request JSON |
 
 ## Capability readiness — do not confuse existence with deployment
 
@@ -72,10 +77,10 @@ sources without relying on a manually maintained file-count assertion.
 | Health endpoint | Implemented in scaffold | Actual endpoint regression; not a dependency readiness probe |
 | Scenario contract shape and two cross-field rules | Implemented validation only | Pydantic unit and API tests; still no authorization or execution |
 | Local retail synthetic evidence flow | Experimental composition only | Generated fixture tests; no real-source rights, publisher provenance, authorized ingestion or API execution |
-| Synthetic retail decision workflow | Experimental local CLI/API composition | Trace/reference, cutoff, abstention, leakage, paired-stream and API parity tests; real-data, empirical uncertainty and WorldKernel gates remain open |
+| Synthetic retail decision workflow | Experimental local CLI/API composition | Trace/reference, cutoff, abstention, leakage, paired-stream and API parity tests; default API and CLI use test double, explicit local CLI engine path has separate parity evidence; source and empirical gates remain open |
 | SimulationGateway Protocol | Interface only | A concrete executor and validated engine result; pure request translation now has separate unit evidence |
 | WorldKernel request mapping | Pure local translation only | A pinned optional SDK adapter, registered-world execution, result validation and runtime failure evidence |
-| WorldKernel execution | Planned | Optional pinned adapter, trusted world registry, budgets, actual results |
+| WorldKernel execution | Experimental local-only | Exact pin, fixed inventory demo and M1 policy worlds, bounded worker, validated results, synthetic parity and local CLI integration; no HTTP, arbitrary handler, CPU/memory sandbox or production claim |
 | Evidence ingestion/RAG | Planned | Permission checks, provenance, retention, source-specific tests |
 | Forecasting | Planned | Temporal holdout, leakage prevention, baselines, uncertainty evaluation |
 | Agentic workflow | Planned | Tool privilege boundaries, approval and cost limits, audit |
@@ -83,8 +88,8 @@ sources without relying on a manually maintained file-count assertion.
 | Tenant isolation/production auth | Planned | Threat model, authorization tests, audit and security review |
 
 **No function in the repository currently provides** live forecasting,
-retrieval, data connectors, autonomous actions, verified business
-provenance, budgeted simulation execution or production-grade security.
+retrieval, authorized source connectors, autonomous actions, verified business
+provenance, service-enforced shared quotas or production-grade security.
 A typed reference does not imply its target exists.
 
 ## Independent teaching goals
