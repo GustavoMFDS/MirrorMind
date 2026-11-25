@@ -103,18 +103,21 @@ M1D-01 is implemented in `10fe58fc3aca45c27288dcc6055ac5d84ab035af` on
 [PR #56](https://github.com/GustavoMFDS/MirrorMind/pull/56), based on PR #53.
 It uses fixed pre-holdout calibration dates and explicit disjoint-window
 metadata; the late-release regression proves a published earlier holdout
-target cannot refill calibration. On tested docs head `0c2e789`, 81 focused
-residual tests, 94 dependent consumer tests and the canonical full gate passed:
-700 tests including API, Ruff, catalog, atlas, evidence and capability checks.
-The current published pre-sync head is `c33bd7d`; its test run
+target cannot refill calibration. On prior tested docs head `0c2e789`, 81
+focused residual tests, 94 dependent consumer tests and the canonical full gate
+passed. Merge commit `b9bb86d` integrates PR #53's receipt-parity regressions
+and passed the exact-head canonical gate: 700 tests including API, Ruff,
+catalog, atlas, evidence and capability checks at 2026-11-25 04:52:39 UTC.
+Pytest reported one existing Starlette/httpx deprecation warning. The latest
+published pre-sync head remains `c33bd7d`; its test run
 [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246)
 and symbol-catalog run
 [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153)
 failed. Diagnostics on the test check report that recent account payments
 failed or the spending limit needs to be increased, without distinguishing the
 condition; no repository tests ran remotely. This remains experimental and
-does not establish empirical calibration. PR #56 is now synchronizing with
-published PR #53 head `79d3679`; the exact integrated gate remains pending.
+does not establish empirical calibration. Official checks for the newly
+integrated head remain pending publication and inspection.
 See [TASK_BACKLOG](TASK_BACKLOG.md) and the
 [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
 

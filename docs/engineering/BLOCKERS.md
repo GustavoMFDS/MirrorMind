@@ -39,10 +39,11 @@ self-hosted runner bypasses the account gate.
 | #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
 
 The previous exact local gate for #56 was on docs head `0c2e789` and passed
-700 tests plus Ruff, catalog, atlas, evidence and capability checks. The
-current local #56 candidate is syncing with PR #53 head `79d3679`; it needs a
-new exact-head gate. The table does not represent checks on that unpublished
-candidate.
+700 tests plus Ruff, catalog, atlas, evidence and capability checks. The new
+local merge commit `b9bb86df73c698588a3e2e5b818a31f4002d5d25`, which integrates
+PR #53 head `79d3679`, passed the same complete gate at 2026-11-25 04:52:39
+UTC. The table still records Actions for the published pre-sync #56 head
+`c33bd7d`; no remote checks are yet verified for the local merge commit.
 
 GitHub's billing guide states that self-hosted runners do not incur its
 per-minute Actions charge; the operator still pays for compute, isolation,
