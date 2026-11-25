@@ -68,13 +68,17 @@ still a draft and remains unmerged. The feature composes the staged synthetic
 evidence flow with release-aware matched-origin baselines and a deterministic
 fictional evaluation CLI. It is experimental and does not add real-data
 ingestion, an HTTP forecast endpoint or predictive-skill evidence. The four
-integration tests and six existing retail-backtest unit tests passed in the
-working tree based on the synchronized state; new assertions check unverified
-source status and false authorization/eligibility flags at outer and nested
-receipt levels. The complete exact-head gate remains pending on the final review
-follow-up. B-01/B-02 still gate real data and empirical evaluation; B-08 blocks
-official CI. The earlier B-07 timeout on #52 was resolved by later full local
-passes and is not evidence that this integrated #53 head fails.
+integration tests and six existing retail-backtest unit tests passed, including
+new assertions for the unverified source status and false authorization and
+eligibility flags at outer and nested receipt levels. The exact-head local gate
+passed on `1addb7791da42939166c34a2e410737ca97a177b` at 2026-11-25 04:06:26 UTC:
+700 tests, Ruff, catalog, atlas, evidence and capability checks. The API tests
+ran; one existing Starlette/httpx `TestClient` deprecation warning was emitted.
+This is local evidence only. B-01/B-02 still gate real data and empirical
+evaluation; B-08 blocks official CI. The earlier B-07 timeout on #52 was
+resolved by later full local passes and is not evidence that this integrated
+#53 head fails. The synchronized #53 head has not yet been published at this
+evidence snapshot.
 
 ## Architecture and actual execution boundaries
 
