@@ -503,8 +503,27 @@ builds the index. Run
 `python -m pytest -q tests/unit/test_evidence_retrieval.py` and explain what
 the denied-record test would observe if tokenization moved before filtering.
 For one emitted result, verify that the cited Python string slice equals the
-excerpt and recompute SHA-256 over UTF-8 bytes. Inspect the injection-like
-fixture and explain why retrieval marks it `untrusted_evidence` without
-creating an instruction or tool call. Finally, change the fixed demo scope in
-a practice branch and explain why that is a local test input, not an identity
-or authorization mechanism.
+excerpt and recompute SHA-256 over UTF-8 bytes. Run
+`test_contract_rejects_same_length_excerpt_tampering` and
+`test_contract_rejects_wrong_well_formed_excerpt_digest`; explain why the
+contract catches an excerpt/digest mismatch but cannot authenticate a source
+when both values are replaced. Inspect the injection-like fixture and explain
+why retrieval marks it `untrusted_evidence` without creating an instruction
+or tool call. Finally, change the fixed demo scope in a practice branch and
+explain why that is a local test input, not an identity or authorization
+mechanism.
+
+## Guided exercise — trace chronology, canonical cost digests and resource bounds
+
+Read [the result contract walkthrough](DECISION_TRACE_RESULT.md) and follow
+`DecisionTrace.check_trace_references_and_cutoff` into the evidence-ID map and
+review-time comparison. Run `tests/unit/test_decision_trace.py`, then inspect
+`test_terminal_review_cannot_precede_trace_creation`,
+`test_terminal_review_accepts_creation_boundary_and_equivalent_timezone`,
+`test_result_digest_is_lossless_and_independent_of_decimal_context`, and the
+collection-bound tests. Explain why a reviewer timestamp is compared as an
+instant, why `Decimal.normalize()` can round under the active context, and why
+the bounds on records/references do not enforce a transport request-size or
+rate limit. Reproduce a same-length, valid-looking payload that stays below
+every bound and identify which independent data-provenance checks are still
+missing.

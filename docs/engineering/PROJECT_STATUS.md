@@ -59,6 +59,16 @@ actual compatible WorldKernel runtime (B-04) remain open. The existing PR
 stack delivers substantial synthetic and contract slices, but those slices
 must not be presented as an approved-data or real-engine decision workflow.
 
+PR #54's independent review corrections are now included in the dependency
+branch at `2794abff855665fb65f32af655415c52dde68872`. Commit
+`f02459d977fd263b03ddf60264b9069ae08b189b` rejects terminal reviews dated
+before trace creation, uses context-independent lossless Decimal hashing, and
+bounds record sections and references. Its exact-head local gate passed 728
+tests and all six stages. Tests and digest checks remain local contract
+evidence only: references and reviewer identity are caller assertions, and no
+producer, storage, action execution or authenticated approval is provided.
+PR #54 remains draft; official CI is tracked separately under B-08.
+
 ## Architecture and actual execution boundaries
 
 | Area | Verified implementation / status | Missing product gate |

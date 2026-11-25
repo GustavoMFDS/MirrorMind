@@ -908,5 +908,61 @@
     "test": "tests/unit/test_evidence_retrieval.py",
     "function": "test_contracts_reject_extra_fields_coercion_oversized_text_invalid_refs_and_mutation",
     "limitation": "The local strict Pydantic models reject malformed fixture requests and mutation. This does not secure an HTTP boundary, validate external source references or authenticate caller scope."
+  },
+  {
+    "id": "MM-RETR-007",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_contract_rejects_same_length_excerpt_tampering",
+    "limitation": "Deserialization rejects same-length excerpt alteration when the prior digest is retained. It cannot authenticate the source or resolve absolute offsets without original source bytes."
+  },
+  {
+    "id": "MM-RETR-008",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_contract_rejects_wrong_well_formed_excerpt_digest",
+    "limitation": "Deserialization rejects a shape-valid digest that does not match the exact UTF-8 excerpt. An envelope with both excerpt and digest replaced remains unauthenticated."
+  },
+  {
+    "id": "MM-DTRACE-002",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_terminal_review_cannot_precede_trace_creation",
+    "limitation": "Checks chronology for caller-supplied timestamps; it does not authenticate reviewers or establish trusted clocks."
+  },
+  {
+    "id": "MM-DTRACE-003",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_result_digest_is_lossless_and_independent_of_decimal_context",
+    "limitation": "Checks deterministic Python Decimal canonicalization for local fixtures; it does not establish cross-language canonicalization or external provenance."
+  },
+  {
+    "id": "MM-DTRACE-004",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_total_trace_records_are_bounded_across_sections",
+    "limitation": "Enforces an aggregate record bound in the trace schema; it does not enforce HTTP body size, rate, memory budgets or concurrent request limits."
+  },
+  {
+    "id": "MM-DTRACE-005",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_terminal_review_accepts_creation_boundary_and_equivalent_timezone",
+    "limitation": "Checks equal-instant and timezone-offset handling for synthetic review payloads; it does not establish trusted time or reviewer identity."
+  },
+  {
+    "id": "MM-DTRACE-006",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_trace_record_sections_have_a_maximum_size",
+    "limitation": "Checks a per-section schema bound; it does not impose transport or concurrent-work limits."
+  },
+  {
+    "id": "MM-DTRACE-007",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_trace_reference_lists_have_a_maximum_size",
+    "limitation": "Checks a per-record reference bound; it does not authenticate referenced records or enforce a request-size limit."
   }
 ]

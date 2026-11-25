@@ -12,7 +12,10 @@ reviewable decision trace. Require evidence references for observations,
 model-card and observation references for forecasts, forecast and assumption
 references for simulated outcomes, explicit missing-evidence entries,
 measurement state for costs, and a human-review state tied to the exact result
-digest when a decision is recorded.
+digest when a decision is recorded. Terminal review time must not precede
+trace creation; the canonical cost digest must be independent of Decimal
+context; and collections must have explicit field, aggregate and reference
+bounds before this contract is consumed by another M1 component.
 
 **Why:** M1F-01 is a ready P0 prerequisite for the eventual end-to-end M1
 comparison. A stable result shape lets later forecasting, simulation and review
@@ -52,10 +55,19 @@ ranking, recommendations and external business writes.
   amounts cannot be represented as zero.
 - [x] Approved or rejected human reviews require reviewer reference, timestamp
   and the SHA-256 digest of the result excluding the review section. A changed
-  result cannot retain an approval for its old digest.
+  result cannot retain an approval for its old digest, and a terminal review
+  cannot predate trace creation.
+- [x] Decimal hashing uses lossless context-independent fixed-point text with
+  explicit zero/trailing-zero semantics while preserving the v1 digest for
+  ordinary cost values.
+- [x] Per-section, aggregate record and per-record reference/metric bounds are
+  enforced; fact-to-evidence validation uses a prebuilt evidence-ID map.
+- [x] The reviewed evidence map cites each new regression by file and
+  top-level test function, with explicit verification limits.
 - [x] A deterministic synthetic fixture validates. Adverse tests reject bad
   references, duplicate IDs, invalid temporal ordering, invalid cost states,
-  incomplete approvals and mismatched review digests.
+  incomplete approvals, mismatched digests, pre-creation review, Decimal
+  context collisions and oversized collections.
 - [x] Existing `ScenarioSpec` input behavior and public API responses remain
   unchanged. No recommendation, permission grant or external action is
   inferred from an approval state.
@@ -96,15 +108,17 @@ providers are not loaded. A result may contain business-sensitive scalar
 values or free text, so callers must minimize and protect payloads. The
 canonical result digest must use stable JSON serialization and exclude only
 the human-review object, otherwise review metadata would create a circular
-digest dependency.
+digest dependency. Contract collection bounds constrain one parsed object but
+do not replace HTTP body-size, rate or concurrency controls.
 
 ## 5. Implementation plan
 
 1. Confirm `ScenarioSpec`, API capability behavior, and current review/data
    templates; keep the result contract separate from scenario input.
-2. Write failing tests for one complete synthetic trace and for references,
-   temporal cutoffs, cost status and approval digest violations.
-3. Implement the smallest strict Pydantic v1 schema and canonical digest.
+2. Write failing tests for references, temporal cutoffs and review chronology,
+   cost status and digest violations, Decimal contexts and collection bounds.
+3. Implement the strict Pydantic v1 schema, bounded reference map and canonical
+   context-independent digest.
 4. Add the engineer walkthrough and learner exercises, then update all
    reviewed maps and capability/evidence records.
 5. Regenerate the Python catalog, run focused tests, relevant suite and docs
@@ -150,8 +164,48 @@ digest dependency.
   observed test failure; no remote test result is inferred.
 - Known limitations / follow-up: M1F-02 must produce and replay an actual
   synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
-  remain separate. The exact local gate passed on current PR head
-  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029`; B-08 still blocks official
-  CI from starting on affected PR heads. Human review remains pending.
-- Independent explanation: the guide includes a learner exercise; independent
-  human review of the contract remains pending.
+  remain separate. B-07/B-08 still block the exact full gate/official CI
+  evidence for the stacked branch.
+- Independent explanation: completed in `DECISION_TRACE_RESULT.md` and its
+  linked source walkthrough and learning exercises.
+
+## Review correction evidence — 2026-11-24
+
+- Commit: `f02459d977fd263b03ddf60264b9069ae08b189b` on
+  `codex/m1f-01-decision-trace-contract`, PR #54.
+- Reproduced before correction: an approved/rejected review one second before
+  trace creation validated; two distinct amounts hashed identically at Decimal
+  precision 3; each record section and a reference list accepted values beyond
+  the requested bounds. The corrected red run reported 11 failing assertions
+  after fixture timestamps were aligned with existing cutoff data.
+- Resolution: compare review timestamps by instant, canonicalize costs with
+  context-independent fixed-point formatting, cap each section at 1,000, the
+  full trace at 1,000 records, and nested reference/metric tuples at 100;
+  resolve evidence IDs through one map. The v1 fixture digest remains
+  `fccf54eccb7971ea4731e08df4baae8755a394688d47d19d2c54d8ebe1f5b4ec`.
+- Verification on the correction commit: `tests/unit/test_decision_trace.py`
+  passed 28 tests; `ruff check src tests`, catalog check, atlas, evidence and
+  capability guards passed. The atlas used a temporary local Git excludes file
+  for existing untracked Graphify output directories; no guard, project ignore
+  rule or artifact was changed.
+- Integrated verification: merge commit
+  `07c405b0d49ab05611413acce61af1123111fb48` retains both correction commits
+  as ancestry and passed the complete local gate on its exact clean SHA:
+  756 tests plus Ruff, catalog, atlas, evidence and capability checks. The
+  restricted replay timed out at 900 seconds; the full pass ran outside that
+  sandbox. One existing Starlette/httpx deprecation warning appeared.
+  Documentation follow-up `4d1d5b92e990f6d771209097fde1622c3c88958f` and
+  current integrated head `970843edd260d0c794e7959150ab7c76af146ae4` also
+  passed the full gate with the same source state.
+- Publication / official CI: the correction branch was fast-forward-pushed at
+  `9113d861affc2f4a6480f188a093f534196a0766`. On that exact published head,
+  Actions [test run 45517352710](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352710)
+  and [symbol-catalog run 45517352734](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352734)
+  failed before repository steps with the account payment/spending-limit
+  annotation. No remote test ran. A PR follow-up with commits, regressions and
+  local gate evidence was posted at
+  [issue comment 7148444643](https://github.com/GustavoMFDS/MirrorMind/pull/54#issuecomment-7148444643).
+  B-08 remains open; local gate evidence does not substitute for official CI.
+- Limits: the local contract does not authenticate reviewer/reference claims,
+  trust timestamps, cap HTTP request size or concurrency, or execute a
+  decision. `decision_trace_result_contract` remains `interface_only`.
