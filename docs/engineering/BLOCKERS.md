@@ -15,33 +15,29 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Exact clean integrated SHAs `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and merge `fd72b76` passed the complete local gate outside the restricted sandbox: 756 tests and all six stages. The earlier PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` remains historical and was not rerun. | For later integrated heads, run the exact clean SHA through the complete gate; do not skip API tests | Codex execution environment / project maintainer | All listed integrated SHAs passed pytest, Ruff, catalog, atlas, evidence and capability checks outside the sandbox with one existing Starlette/httpx deprecation warning. The #54-only docs head `2794abf` separately passed all six gate stages with 728 tests. The restricted timeout is recorded, not hidden; no application code or verifier was changed to avoid it. |
-| B-08 | The #54 and #55 correction branches were fast-forward-pushed; their new exact heads are in the diagnostics table below. Both `test` and `symbol-catalog` checks failed before repository steps with an explicit annotation for recent account payments or spending-limit settings. This explains why those jobs did not start; it is not a test failure and does not reveal which account setting needs action. | Account owner inspects GitHub billing/plan state; then rerun checks on corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. Evaluate, but do not configure, a hardened ephemeral self-hosted runner unless its trust, admin and cost requirements are accepted. |
+| B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Later exact clean integrated heads `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and `fd72b76` passed all six local-gate stages with 756 tests; PR #54 head `4d22006` passed with 728 tests. PR #52 `b431d11` and PR #53 `79d3679` also passed their complete gates. This branch's new post-sync candidate is still pending its own exact-head gate. The timeout remains historical; no application code or test verifier was weakened. | Run the exact new integrated head through the full gate; do not skip API tests | Codex execution environment / project maintainer | Preserve the restricted timeout and exact-head receipts as separate evidence; keep API tests enabled and rerun outside the restricted environment if the timeout recurs. |
+| B-08 | Latest published PR #52 head `b431d11` and #53 head `79d3679` each have failed `test`/`symbol-catalog` runs without repository logs. Latest #54 head `4d22006` and #55 head `b292db0` also have failed checks. The exact annotation on #54/#55 says recent account payments failed **or** the spending limit needs to be increased; it does not identify which condition applies. No repository test steps ran. See the head-bound run table below. This does not establish a billing root cause or whether a runner change bypasses the pre-job gate. | Repository/account owner checks the GitHub Billing & plans state named by the diagnostic, identifies the actual condition and restores normal check execution; then verify required runs on reviewed heads | GitHub account owner / repository administrator | Preserve required checks and protections. Keep local gate evidence separate; assess a hardened ephemeral runner without treating it as a proven workaround. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for
 the named real integration, not a prohibition on design and tests.
 
-## B-08 exact diagnostics and runner assessment — 2026-11-24
+## B-08 exact diagnostics and runner assessment — 2026-11-25
 
-This is a point-in-time diagnostic snapshot: #54 was at head `2794abf` and #55
-at pre-sync head `3f9bbb8` when their latest checks below were inspected. The
-newer #54 documentation commit has since been merged locally into #55 at
-`fd72b76`; that integrated head has passed the local gate but was not yet
-published at this snapshot. Inspect its Actions checks after publication.
-Both required workflows carry an
-annotation that the job was not started because recent account payments
-failed or the spending limit needs to be increased. These runs provide no
-result for repository code. The annotation states the start-gate category but
-does not distinguish a payment failure from a spending cap.
+This table records the latest inspected published heads for #52–#55 and the
+last inspected heads for #56–#61. For #54 and #55, diagnostics confirm the
+failed runs did not start repository steps; the annotation says recent account
+payments failed **or** the spending limit needs to be increased. It explicitly
+directs the account owner to Billing & plans but does not distinguish the two
+conditions. No code-test result or specific billing cause is inferred.
 
 | PR | Published head | `test` run | `symbol-catalog` run |
 | --- | --- | --- | --- |
-| #52 | `5c307e426c43aee4179e3257d7d367214e8c3a63` | [45319452833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452833) | [45319452852](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45319452852) |
-| #53 | `210f0f382938a67e518df688cc4e19c03d3d7af6` | [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471) | [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864) |
-| #54 | `2794abff855665fb65f32af655415c52dde68872` | [45518440891](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440891) | [45518440963](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440963) |
-| #55 | `3f9bbb876336334aac9abe289f9f9c0161d42b72` | [45518147296](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147296) | [45518147363](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518147363) |
+| #52 | `b431d11bf0ac841ff30353a06263d23fb901307c` | [45542863564](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863564) | [45542863839](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863839) |
+| #53 | `79d3679013576c6a209bed9fa031b7f0fabd0d8d` | [45544705354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705354) | [45544705397](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705397) |
+| #54 | `4d220066c3e9ab83a321ac9517bbabc8fc22e293` | [45546742718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742718) | [45546742695](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742695) |
+| #55 | `b292db0231d00f307eb4b0694b8e73014bdb9211` | [45519636625](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636625) | [45519636706](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636706) |
 | #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
 | #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
 | #58 | `465a2f2c46fb6484aa2f0abea7920953ca4f0d00` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) |
@@ -49,10 +45,9 @@ does not distinguish a payment failure from a spending cap.
 | #60 | `6374f0bb9a981271cb9340a190dcdebec6263cc9` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) |
 | #61 | `288021f25e24efc26591b064eafa1d8b4e287ac8` | [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331) | [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221) |
 
-The PR #61 detail diagnostics additionally showed zero workflow steps and
-the same annotation on both checks; the same annotation was read from the
-latest `test` and `symbol-catalog` check runs for #52–#60. No repository
-workflow log or check execution can be inferred from these statuses.
+Earlier diagnostics for the listed #56–#61 heads also showed failed checks
+before repository steps. No repository workflow test pass can be inferred
+from any of these statuses.
 
 ### Self-hosted runner option
 
@@ -78,7 +73,13 @@ workflows; retain an auditable image, egress and teardown record. A clean
 single-use VM is a proposed containment boundary, not a demonstrated security
 guarantee or a confirmed way to clear the current account-level start gate.
 Cloud runner costs, repository-admin setup, fork policy and billing behavior
-remain unverified. No self-hosted runner or workflow change was made.
+remain unverified. GitHub documents that self-hosted runners do not incur its
+per-minute Actions charge, but the owner still pays for compute and operation.
+No evidence shows that changing runner type clears the observed pre-job account
+gate. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
+and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
+No self-hosted runner or workflow change was made.
 
 ## Source references and precise restrictions
 
