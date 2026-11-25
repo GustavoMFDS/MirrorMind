@@ -40,14 +40,17 @@ validated forecasts/assumptions and a human-reviewed decision trace.
 The [M1F-02 workflow](engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md)
 joins generated workbook evidence, publication checks, a release-aware
 evaluation, an explicitly uncalibrated residual diagnostic, a repeated lag-7
-profile and the policy test double into one reproducible `DecisionTrace`.
+profile and policy outcomes into one reproducible `DecisionTraceV2`.
 `POST /v1/decision-workflows/retail/synthetic` and
 `examples/m1_retail_decision_workflow.py` accept only bounded local options.
 This is an experimental fictional demonstration; it is not the retail MVP.
-The trace has no source authority, empirical forecast quality, calibrated
-uncertainty, WorldKernel result, reviewer identity, persistence or business
-write. M1 remains incomplete until its independent data, forecast, engine and
-human-review acceptance gates pass.
+The default HTTP/CLI result uses the test double; the explicit local CLI can
+run the pinned WorldKernel policy world and records it as the selected engine
+with a separate Python parity oracle. The trace has no source authority,
+empirical forecast quality, calibrated uncertainty, reviewer identity,
+persistence or business write. M1 remains incomplete until its independent
+data, forecast, broader engine-security and human-review acceptance gates
+pass.
 
 ## Synthetic-only preflight while M1 remains incomplete
 

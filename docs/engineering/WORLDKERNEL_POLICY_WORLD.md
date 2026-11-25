@@ -168,16 +168,26 @@ fields with:
 
 - `simulation_status=experimental_local_worldkernel_policy_world`;
 - `engine_execution=worldkernel_invoked`;
+- `selected_result_source=worldkernel_policy_world` and
+  `engine_contract_ref=mirrormind.worldkernel.retail_policy_comparison.v1`;
 - policy metrics derived from the engine final states after parity checks;
+- `reference_parity` recording that the Python test double ran as an oracle,
+  reported `exact_match` and produced a digest equal to selected metrics;
 - `worldkernel_execution` containing package version, source commit, result
   schema, fixed world/revision and SHA-256 of the exact worker result bytes.
 
-The M1F workflow sets `policy_test_double_invoked=false` for this selected
-simulation result. It does still run the reference test double inside the
-gateway strictly as a parity oracle; no oracle value is substituted for the
-engine-returned state. The outer response and decision-trace digests include
-the selected simulation artifact. A digest detects content changes when
-recomputed; it is not a signature, provenance proof or reviewer identity.
+The M1F workflow records `policy_test_double_invoked=true` because the gateway
+actually calls the reference simulator. It separately records
+`policy_test_double_result_selected=false` and
+`selected_result_source=worldkernel_policy_world`, so the oracle's execution
+cannot be confused with the source of the returned metrics. DecisionTrace v2
+links every outcome to a selected-output execution record and a parity-oracle
+record. The selected record binds the engine contract, exact source commit,
+registered world/revision, result schema, selected metrics digest and raw
+worker-result digest. The parity record carries the test-double metrics digest.
+Those two result digests must match. The trace hash includes both records. A
+digest detects content changes when recomputed; it is not a signature,
+independent scientific validation, source attestation or reviewer identity.
 
 Default synthetic workflow:
 
@@ -225,8 +235,9 @@ python -m ruff check src tests
   the reference for all replications and cases. It skips when that exact
   optional package is absent; a skip is not engine evidence.
 - `tests/integration/test_worldkernel_policy_world_engine.py::test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data`
-  invokes the actual CLI option, parses the trace-bearing response and checks
-  that the engine was selected.
+  invokes the actual CLI option twice, parses the v2 trace and checks the
+  selected engine contract, separate parity-oracle record, exact pin provenance
+  and deterministic replay.
 - `tests/integration/test_api.py` continues to verify capability parity and
   the default API path. The HTTP route does not accept an engine selector or
   invoke the subprocess.
@@ -240,7 +251,9 @@ The curated evidence map links `MM-WKPW-001` to strict mapping and transition
 limits, `MM-WKPW-002` to deterministic shared-stream handler parity,
 `MM-WKPW-003` to actual execution at the pinned WorldKernel package,
 `MM-WKPW-004` to the opt-in M1 CLI trace, and `MM-WKPW-005` to malformed
-worker-state rejection. Read each limitation before extending the claim.
+worker-state rejection. **MM-WKPW-006** uses the same opt-in CLI test to check
+selected-output versus parity-oracle roles, exact engine provenance and
+replay. Read each limitation before extending the claim.
 
 ## 7. Failure diagnosis and security
 

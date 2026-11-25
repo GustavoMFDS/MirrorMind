@@ -229,8 +229,12 @@ controls is outside this correction and remains an explicit exposure gate.
 | Documentation | M1F-02 walkthrough, trace guide, system map, debugging, learning, CR, evidence/backlog | Explain identity, digest scope, limitations and reproducibility | Documentation guards and exact-head gate |
 | Persistence/authority | None | No storage, authentication, signature, approval or write added | Existing non-authorization assertions |
 
-Keep the response schema label at v1 because these are additive result
-metadata fields and existing required fields retain their meaning. Do not
+That response-v1 decision described the M1F-02 envelope before engine
+provenance was added. M1F-03 later versions the current workflow envelope to
+v2 and adds `DecisionTraceV2`, while preserving accepted `DecisionTrace` v1
+payloads; see the [provenance change request](M1F_03_ENGINE_EXECUTION_PROVENANCE.md).
+At the M1F-02 boundary, keep the response schema label at v1 because these are
+additive result metadata fields and existing required fields retain their meaning. Do not
 interpret `revision=1` as a server-issued history, or either SHA-256 value as
 trust in an asserted source, model, policy or human identity. Fixing transport
 limits or authorization would be a separate reviewed change.

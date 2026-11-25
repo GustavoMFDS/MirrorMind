@@ -138,6 +138,14 @@ trace digest covers the typed trace; a separate whole-workflow digest covers
 the response envelope. Neither digest authenticates the producer or adds
 request transport protections.
 
+The workflow emits schema v2 and a `DecisionTraceV2`. The HTTP route and
+default CLI identify the Python test double as the selected result source. The
+explicit WorldKernel CLI result uses the WorldKernel contract for every
+outcome and links each outcome to a selected-engine record plus a separate
+test-double parity record. Their result digests must match. The trace digest
+binds both records, while the whole-workflow digest also covers the versioned
+simulation artifact. These local digests do not authenticate either producer.
+
 ## 6. Independent exercise
 
 Draw the actual HTTP request graph. For each route

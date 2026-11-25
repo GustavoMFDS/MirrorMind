@@ -20,6 +20,8 @@ POLICY_WORLD_NAME = "mirrormind.retail.policy_comparison"
 POLICY_WORLD_VERSION = "mm-retail-policy-v1"
 POLICY_WORLD_STATE_SCHEMA = "mirrormind.retail.policy_world_state.v1"
 POLICY_WORLD_PARAMETERS_SCHEMA = "mirrormind.retail.policy_world_parameters.v1"
+POLICY_TEST_DOUBLE_CONTRACT_REF = "mirrormind.local.retail_policy_test_double.v1"
+POLICY_WORLD_ENGINE_CONTRACT_REF = "mirrormind.worldkernel.retail_policy_comparison.v1"
 
 _PARAMETER_FIELDS = frozenset(
     {

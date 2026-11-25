@@ -80,12 +80,16 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   lead-time sensitivity. It is not a WorldKernel adapter, forecast,
   recommendation or measured retail result. M1E-02 remains blocked on B-04.
 
-- **MM-M1F-02 — Synthetic decision workflow (partial continuation, 2026-11-24):**
+- **MM-M1F-02 — Synthetic decision workflow (experimental integrated slice, 2026-11-25):**
   a bounded local service and API/CLI now join fictional release-aware
   evidence, a repeated lag-7 profile, residual diagnostics, the M1E-03 test
-  double and an M1F-01 decision trace. This does not complete M1 or its
-  authorized-source, empirical-forecast, actual-engine or human-review gates.
-  See the [workflow walkthrough](engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
+  double and an M1F-01 decision trace. The opt-in local CLI can execute the
+  pinned WorldKernel policy world; v2 trace evidence distinguishes its
+  selected metrics from the Python parity oracle. The synthetic route remains
+  experimental and lacks authentication and request/concurrency controls.
+  This does not complete M1 or its authorized-source, empirical-forecast,
+  broader engine-security or human-review gates. See the
+  [workflow walkthrough](engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
 
 - **MM-M1c-exp — Synthetic one-step baseline experiment (not full MM-M1c):**
   reviewed [rolling-origin benchmark](engineering/M1_TEMPORAL_BACKTEST.md)

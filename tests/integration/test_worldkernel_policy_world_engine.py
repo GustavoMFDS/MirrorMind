@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 
 import pytest
 
+from mirrormind.core.decision_trace import DecisionTraceV2
 from mirrormind.domains.retail.policy_simulation import (
     RetailPolicyComparisonRequest,
     compare_synthetic_retail_policies,
@@ -92,8 +93,17 @@ def test_pinned_engine_policy_gateway_matches_synthetic_reference() -> None:
     expected = compare_synthetic_retail_policies(request)
 
     assert actual["engine_execution"] == "worldkernel_invoked"
+    assert actual["selected_result_source"] == "worldkernel_policy_world"
+    assert actual["engine_contract_ref"] == (
+        "mirrormind.worldkernel.retail_policy_comparison.v1"
+    )
     assert actual["simulation_status"] == "experimental_local_worldkernel_policy_world"
     assert actual["lead_time_sensitivity"] == expected["lead_time_sensitivity"]
+    assert actual["reference_parity"]["reference_simulator_invoked"] is True
+    assert actual["reference_parity"]["status"] == "exact_match"
+    assert actual["reference_parity"]["result_sha256"] == actual[
+        "worldkernel_execution"
+    ]["selected_result_sha256"]
     assert actual["worldkernel_execution"]["source_commit"] == WORLDKERNEL_SOURCE_COMMIT
     assert len(actual["worldkernel_execution"]["result_sha256"]) == 64
 
@@ -106,8 +116,7 @@ def test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data() -> None
     environment["PYTHONPATH"] = (
         source_path + os.pathsep + existing_path if existing_path else source_path
     )
-    process = subprocess.run(
-        [
+    command = [
             sys.executable,
             "-m",
             "examples.m1_retail_decision_workflow",
@@ -119,25 +128,75 @@ def test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data() -> None
             "317",
             "--engine",
             "worldkernel",
-        ],
-        cwd=repository_root,
-        env=environment,
-        capture_output=True,
-        text=True,
-        timeout=60,
-        check=False,
-    )
+        ]
+
+    def run_cli() -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            command,
+            cwd=repository_root,
+            env=environment,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+
+    process = run_cli()
+    replay_process = run_cli()
 
     assert process.returncode == 0, process.stderr
+    assert replay_process.returncode == 0, replay_process.stderr
     result = json.loads(process.stdout)
+    replay = json.loads(replay_process.stdout)
     assert result["status"] == "synthetic_comparison_ready_experimental"
     assert result["worldkernel_execution"] == "worldkernel_invoked"
-    assert result["simulation"]["policy_test_double_invoked"] is False
+    assert result["simulation"]["selected_result_source"] == "worldkernel_policy_world"
+    assert result["simulation"]["policy_test_double_invoked"] is True
+    assert result["simulation"]["policy_test_double_result_selected"] is False
+    assert result["simulation"]["reference_parity"]["reference_simulator_invoked"] is True
+    assert result["simulation"]["reference_parity"]["status"] == "exact_match"
     policy_result = result["simulation"]["result"]
     assert policy_result["engine_execution"] == "worldkernel_invoked"
+    assert policy_result["selected_result_source"] == "worldkernel_policy_world"
+    assert policy_result["reference_parity"]["reference_simulator_invoked"] is True
     assert policy_result["lead_time_sensitivity"]
     assert len(result["trace_sha256"]) == 64
     assert all(
         gap["gap_id"] != "gap-worldkernel-execution"
         for gap in result["trace"]["missing_evidence"]
     )
+    trace = DecisionTraceV2.model_validate(result["trace"])
+    replay_trace = DecisionTraceV2.model_validate(replay["trace"])
+    assert all(
+        outcome.engine_contract_ref
+        == "mirrormind.worldkernel.retail_policy_comparison.v1"
+        for outcome in trace.outcomes
+    )
+    assert len(trace.execution_evidence) == 2
+    selected = next(
+        item for item in trace.execution_evidence if item.role == "selected_output"
+    )
+    parity = next(
+        item for item in trace.execution_evidence if item.role == "parity_oracle"
+    )
+    assert selected.engine_contract_ref == "mirrormind.worldkernel.retail_policy_comparison.v1"
+    assert parity.engine_contract_ref == "mirrormind.local.retail_policy_test_double.v1"
+    assert selected.result_sha256 == parity.result_sha256
+    assert selected.result_sha256 == policy_result["worldkernel_execution"][
+        "selected_result_sha256"
+    ]
+    assert parity.result_sha256 == policy_result["reference_parity"]["result_sha256"]
+    assert selected.produced_at == parity.produced_at == trace.created_at
+    assert all(
+        set(outcome.execution_evidence_refs) == {selected.execution_id, parity.execution_id}
+        for outcome in trace.outcomes
+    )
+    engine_receipt = policy_result["worldkernel_execution"]
+    assert f"commit={WORLDKERNEL_SOURCE_COMMIT}" in selected.provenance_ref
+    assert f"world={engine_receipt['world']}" in selected.provenance_ref
+    assert f"rev={engine_receipt['registered_world_version']}" in selected.provenance_ref
+    assert f"schema={engine_receipt['result_schema']}" in selected.provenance_ref
+    assert f"raw={engine_receipt['result_sha256']}" in selected.provenance_ref
+    assert result["trace_sha256"] == replay["trace_sha256"]
+    assert result["workflow_result_sha256"] == replay["workflow_result_sha256"]
+    assert trace.execution_evidence == replay_trace.execution_evidence

@@ -16,10 +16,11 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
 
 from mirrormind.core.decision_trace import (
-    ConditionalOutcome,
+    ConditionalOutcomeV2,
     CostMeasurement,
-    DecisionTrace,
+    DecisionTraceV2,
     EvidenceReference,
+    ExecutionEvidence,
     ForecastEstimate,
     MissingEvidence,
     ModelingAssumption,
@@ -45,6 +46,12 @@ from mirrormind.domains.retail.synthetic_fixtures import (
     SYNTHETIC_STOCK_CODE,
     build_synthetic_evidence_flow,
 )
+from mirrormind.domains.retail.worldkernel_policy_world import (
+    POLICY_TEST_DOUBLE_CONTRACT_REF,
+    POLICY_WORLD_ENGINE_CONTRACT_REF,
+    POLICY_WORLD_NAME,
+    POLICY_WORLD_VERSION,
+)
 from mirrormind.modules.forecasting.baselines import project_seasonal_naive_lag7
 
 DEFAULT_AS_OF = START + timedelta(days=25)
@@ -57,8 +64,8 @@ _MAX_SEED = (1 << 32) - 1 - MAX_REPLICATIONS
 MODEL_CARD_REF = (
     "docs/engineering/model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md"
 )
-LOCAL_ENGINE_CONTRACT_REF = "mirrormind.local.retail_policy_test_double.v1"
-WORKFLOW_SCHEMA_VERSION = "mirrormind.synthetic_retail_decision_workflow.v1"
+LOCAL_ENGINE_CONTRACT_REF = POLICY_TEST_DOUBLE_CONTRACT_REF
+WORKFLOW_SCHEMA_VERSION = "mirrormind.synthetic_retail_decision_workflow.v2"
 DECISION_IDENTITY_SCHEMA_VERSION = "mirrormind.synthetic_retail_decision_identity.v1"
 _ARTIFACT_SCHEMA_VERSIONS = {
     "evaluation": "mirrormind.synthetic_retail_evaluation_artifact.v1",
@@ -67,7 +74,7 @@ _ARTIFACT_SCHEMA_VERSIONS = {
         "mirrormind.synthetic_retail_forecast_evidence_receipt.v1"
     ),
     "forecast": "mirrormind.synthetic_retail_forecast_profile.v1",
-    "simulation": "mirrormind.synthetic_retail_policy_simulation_artifact.v1",
+    "simulation": "mirrormind.synthetic_retail_policy_simulation_artifact.v2",
 }
 _UTC = UTC
 
@@ -196,11 +203,139 @@ def _requested_history_window(as_of: date) -> tuple[date, ...]:
     return tuple(as_of - timedelta(days=offset) for offset in range(6, -1, -1))
 
 
+def _execution_evidence_records(
+    comparison: dict[str, object], *, produced_at: datetime
+) -> tuple[tuple[ExecutionEvidence, ...], tuple[str, ...], str, str, dict[str, object]]:
+    """Validate selected-engine metadata and create replayable trace records."""
+    selected_source = comparison.get("selected_result_source")
+    engine_contract_ref = comparison.get("engine_contract_ref")
+    engine_execution = comparison.get("engine_execution")
+    parity = comparison.get("reference_parity")
+    if type(parity) is not dict:
+        raise ValueError("policy comparison is missing reference-parity metadata")
+
+    selected_digest = _canonical_json_sha256(comparison["lead_time_sensitivity"])
+    records: list[ExecutionEvidence] = []
+    if selected_source == "policy_test_double":
+        if (
+            engine_execution != "worldkernel_not_invoked"
+            or engine_contract_ref != LOCAL_ENGINE_CONTRACT_REF
+            or parity.get("reference_simulator_invoked") is not False
+            or parity.get("status") != "not_run"
+            or parity.get("result_sha256") is not None
+        ):
+            raise ValueError("test-double result has inconsistent engine provenance")
+        records.append(
+            ExecutionEvidence(
+                execution_id="execution-selected-policy-result",
+                engine_contract_ref=LOCAL_ENGINE_CONTRACT_REF,
+                role="selected_output",
+                result_sha256=selected_digest,
+                provenance_ref=(
+                    "python:function="
+                    "mirrormind.domains.retail.policy_simulation."
+                    "compare_synthetic_retail_policies"
+                ),
+                produced_at=produced_at,
+            )
+        )
+        return (
+            tuple(records),
+            (records[0].execution_id,),
+            selected_source,
+            LOCAL_ENGINE_CONTRACT_REF,
+            parity,
+        )
+
+    if selected_source != "worldkernel_policy_world":
+        raise ValueError("policy comparison selected an unsupported result source")
+    if (
+        engine_execution != "worldkernel_invoked"
+        or engine_contract_ref != POLICY_WORLD_ENGINE_CONTRACT_REF
+        or parity.get("reference_simulator_invoked") is not True
+        or parity.get("reference_engine_contract_ref") != LOCAL_ENGINE_CONTRACT_REF
+        or parity.get("status") != "exact_match"
+        or parity.get("result_sha256") != selected_digest
+    ):
+        raise ValueError("WorldKernel result has inconsistent parity metadata")
+
+    engine = comparison.get("worldkernel_execution")
+    if type(engine) is not dict:
+        raise ValueError("WorldKernel result is missing its execution receipt")
+    required_engine_fields = {
+        "package_version",
+        "source_commit",
+        "result_schema",
+        "world",
+        "registered_world_version",
+        "result_sha256",
+        "selected_result_sha256",
+    }
+    if set(engine) != required_engine_fields or any(
+        type(engine[key]) is not str or not engine[key]
+        for key in required_engine_fields
+    ):
+        raise ValueError("WorldKernel execution receipt fields are invalid")
+    if (
+        engine["world"] != POLICY_WORLD_NAME
+        or engine["registered_world_version"] != POLICY_WORLD_VERSION
+        or engine["result_schema"] != "worldkernel.result.v1"
+        or engine["selected_result_sha256"] != selected_digest
+        or len(engine["source_commit"]) != 40
+        or any(char not in "0123456789abcdef" for char in engine["source_commit"])
+        or len(engine["result_sha256"]) != 64
+        or any(char not in "0123456789abcdef" for char in engine["result_sha256"])
+    ):
+        raise ValueError("WorldKernel execution receipt does not match its policy contract")
+
+    provenance_ref = (
+        f"wk:pkg={engine['package_version']}"
+        f";commit={engine['source_commit']}"
+        f";world={engine['world']}"
+        f";rev={engine['registered_world_version']}"
+        f";schema={engine['result_schema']}"
+        f";raw={engine['result_sha256']}"
+    )
+    if len(provenance_ref) > 256:
+        raise ValueError("WorldKernel provenance reference exceeds the trace limit")
+    selected = ExecutionEvidence(
+        execution_id="execution-selected-policy-result",
+        engine_contract_ref=POLICY_WORLD_ENGINE_CONTRACT_REF,
+        role="selected_output",
+        result_sha256=selected_digest,
+        provenance_ref=provenance_ref,
+        produced_at=produced_at,
+    )
+    oracle = ExecutionEvidence(
+        execution_id="execution-policy-test-double-parity",
+        engine_contract_ref=LOCAL_ENGINE_CONTRACT_REF,
+        role="parity_oracle",
+        result_sha256=parity["result_sha256"],
+        provenance_ref=(
+            "python:parity_oracle="
+            "mirrormind.domains.retail.policy_simulation."
+            "compare_synthetic_retail_policies"
+        ),
+        produced_at=produced_at,
+    )
+    return (
+        (selected, oracle),
+        (selected.execution_id, oracle.execution_id),
+        selected_source,
+        POLICY_WORLD_ENGINE_CONTRACT_REF,
+        parity,
+    )
+
+
 def _policy_outcomes(
-    comparison: dict[str, object], *, forecast_refs: tuple[str, ...],
-    assumption_refs: tuple[str, ...], policy_caveat_refs: tuple[str, ...],
-) -> tuple[ConditionalOutcome, ...]:
-    outcomes: list[ConditionalOutcome] = []
+    comparison: dict[str, object], *,
+    engine_contract_ref: str,
+    execution_evidence_refs: tuple[str, ...],
+    forecast_refs: tuple[str, ...],
+    assumption_refs: tuple[str, ...],
+    policy_caveat_refs: tuple[str, ...],
+) -> tuple[ConditionalOutcomeV2, ...]:
+    outcomes: list[ConditionalOutcomeV2] = []
     scenarios = comparison["lead_time_sensitivity"]
     if not isinstance(scenarios, list):
         raise TypeError("policy comparison returned an invalid sensitivity result")
@@ -252,14 +387,15 @@ def _policy_outcomes(
                 ),
             )
             outcomes.append(
-                ConditionalOutcome(
+                ConditionalOutcomeV2(
                     outcome_id=(
                         f"outcome-{policy_id}-lead-{lead_time_days}"
                     ),
                     alternative_ref=(
                         f"retail_policy:{policy_id}:lead_time_{lead_time_days}"
                     ),
-                    engine_contract_ref=LOCAL_ENGINE_CONTRACT_REF,
+                    engine_contract_ref=engine_contract_ref,
+                    execution_evidence_refs=execution_evidence_refs,
                     forecast_refs=forecast_refs,
                     assumption_refs=policy_assumption_refs,
                     metrics=metrics,
@@ -279,8 +415,12 @@ def _build_trace(
     history: tuple[tuple[date, int, date], ...],
     forecast_profile: tuple[int, ...],
     comparison: dict[str, object],
-) -> DecisionTrace:
+    engine_contract_ref: str,
+    execution_evidence: tuple[ExecutionEvidence, ...],
+    execution_evidence_refs: tuple[str, ...],
+) -> DecisionTraceV2:
     cutoff_at = _cutoff_timestamp(as_of)
+    created_at = cutoff_at + timedelta(microseconds=1)
     evidence: list[EvidenceReference] = []
     facts: list[ObservedFact] = []
     fact_id_by_date: dict[date, str] = {}
@@ -403,6 +543,8 @@ def _build_trace(
     )
     outcomes = _policy_outcomes(
         comparison,
+        engine_contract_ref=engine_contract_ref,
+        execution_evidence_refs=execution_evidence_refs,
         forecast_refs=forecast_refs,
         assumption_refs=tuple(item.assumption_id for item in base_assumptions),
         policy_caveat_refs=policy_caveat_refs,
@@ -446,7 +588,7 @@ def _build_trace(
             blocks_refs=outcome_refs,
             ),
         )
-    return DecisionTrace(
+    return DecisionTraceV2(
         trace_id=f"trace-retail-synthetic-{identity_sha256}",
         decision_ref=f"decision-retail-synthetic-{identity_sha256}",
         revision=1,
@@ -457,12 +599,13 @@ def _build_trace(
         cutoff_at=cutoff_at,
         # This fixture timestamp is deterministic logical metadata, not a
         # wall-clock audit timestamp or proof of when a user ran the workflow.
-        created_at=cutoff_at + timedelta(microseconds=1),
+        created_at=created_at,
         evidence=tuple(evidence),
         observations=tuple(facts),
         forecasts=forecasts,
         assumptions=assumptions,
         outcomes=outcomes,
+        execution_evidence=execution_evidence,
         missing_evidence=gaps,
         costs=(
             CostMeasurement(
@@ -606,6 +749,13 @@ def run_synthetic_decision_workflow(
                 "simulation": {
                     "status": "not_run_due_to_forecast_abstention",
                     "policy_test_double_invoked": False,
+                    "policy_test_double_result_selected": False,
+                    "selected_result_source": None,
+                    "reference_parity": {
+                        "reference_simulator_invoked": False,
+                        "status": "not_run",
+                        "result_sha256": None,
+                    },
                 },
                 "trace": None,
                 "trace_sha256": None,
@@ -631,7 +781,16 @@ def run_synthetic_decision_workflow(
         seed=request.seed,
     )
     comparison = (
-        compare_synthetic_retail_policies(comparison_request)
+        {
+            **compare_synthetic_retail_policies(comparison_request),
+            "selected_result_source": "policy_test_double",
+            "engine_contract_ref": LOCAL_ENGINE_CONTRACT_REF,
+            "reference_parity": {
+                "reference_simulator_invoked": False,
+                "status": "not_run",
+                "result_sha256": None,
+            },
+        }
         if policy_comparator is None
         else policy_comparator(comparison_request)
     )
@@ -640,6 +799,13 @@ def run_synthetic_decision_workflow(
     engine_execution = comparison.get("engine_execution", "worldkernel_not_invoked")
     if engine_execution not in {"worldkernel_not_invoked", "worldkernel_invoked"}:
         raise ValueError("policy comparator returned an unsupported engine status")
+    execution_evidence, execution_evidence_refs, selected_source, engine_contract_ref, parity = (
+        _execution_evidence_records(
+            comparison,
+            produced_at=_cutoff_timestamp(request.as_of)
+            + timedelta(microseconds=1),
+        )
+    )
     result.update(
         {
             "worldkernel_execution": engine_execution,
@@ -657,8 +823,15 @@ def run_synthetic_decision_workflow(
             },
             "simulation": {
                 "status": comparison["simulation_status"],
-                "policy_test_double_invoked": engine_execution
-                != "worldkernel_invoked",
+                "policy_test_double_invoked": (
+                    selected_source == "policy_test_double"
+                    or parity["reference_simulator_invoked"] is True
+                ),
+                "policy_test_double_result_selected": (
+                    selected_source == "policy_test_double"
+                ),
+                "selected_result_source": selected_source,
+                "reference_parity": parity,
                 "result": comparison,
             },
         }
@@ -673,6 +846,9 @@ def run_synthetic_decision_workflow(
         history=history,
         forecast_profile=profile,
         comparison=comparison,
+        engine_contract_ref=engine_contract_ref,
+        execution_evidence=execution_evidence,
+        execution_evidence_refs=execution_evidence_refs,
     )
     result.update(
         {

@@ -637,6 +637,26 @@ verify that HTTP cannot inject this local comparator. A passing exact-engine
 test still does not establish source rights, policy optimality, hostile-code
 isolation, CPU/memory quotas or production safety.
 
+## Guided exercise — trace the selected engine and parity evidence
+
+Read the [v2 decision-trace contract](DECISION_TRACE_RESULT.md),
+[M1F-03 change request](changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md),
+[synthetic workflow walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md)
+and [`test_worldkernel_policy_world_engine.py`](../../tests/integration/test_worldkernel_policy_world_engine.py).
+Run the default command and then the explicit `--engine worldkernel` command
+from the walkthrough. In each JSON result, explain the selected source,
+`policy_test_double_invoked` and `policy_test_double_result_selected`. In the
+engine run, follow each outcome's execution references to the selected-output
+record and parity-oracle record. Confirm their contract references, equal
+metric digests and the WorldKernel package, commit, world, revision, result
+schema and raw worker digest in the selected provenance reference. Run
+`test_trace_rejects_execution_evidence_from_a_different_engine_contract`,
+`test_trace_rejects_dangling_execution_evidence_references` and
+`test_trace_rejects_parity_evidence_with_a_different_selected_result_digest`.
+Explain why the v1 example still validates as v1, why v2 records are separate
+from historical input evidence and why exact parity against shared rules is
+not independent scientific validation.
+
 ## Guided exercise — understand the UCI event-time boundary (35 minutes)
 
 Read [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py),

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -18,7 +19,11 @@ from ...domains.retail.policy_simulation import (
     finalize_retail_policy_metrics,
     summarize_retail_policy_runs,
 )
-from ...domains.retail.worldkernel_policy_world import POLICY_WORLD_STATE_SCHEMA
+from ...domains.retail.worldkernel_policy_world import (
+    POLICY_TEST_DOUBLE_CONTRACT_REF,
+    POLICY_WORLD_ENGINE_CONTRACT_REF,
+    POLICY_WORLD_STATE_SCHEMA,
+)
 from .worldkernel_mapping import WorldKernelMappingError, WorldKernelOperatorLimits
 from .worldkernel_policy_mapping import build_worldkernel_policy_exchange_request
 from .worldkernel_runner import (
@@ -87,12 +92,23 @@ class LocalWorldKernelRetailPolicyGateway:
             raise WorldKernelRunnerError(
                 "WorldKernel policy outcomes differ from the reviewed reference rules"
             )
+        selected_result_sha256 = _canonical_json_sha256(engine_scenarios)
 
         return {
             **reference,
             "simulation_status": "experimental_local_worldkernel_policy_world",
             "engine_execution": "worldkernel_invoked",
+            "selected_result_source": "worldkernel_policy_world",
+            "engine_contract_ref": POLICY_WORLD_ENGINE_CONTRACT_REF,
             "lead_time_sensitivity": engine_scenarios,
+            "reference_parity": {
+                "reference_simulator_invoked": True,
+                "reference_engine_contract_ref": POLICY_TEST_DOUBLE_CONTRACT_REF,
+                "status": "exact_match",
+                "result_sha256": _canonical_json_sha256(
+                    reference["lead_time_sensitivity"]
+                ),
+            },
             "worldkernel_execution": {
                 "package_version": WORLDKERNEL_PACKAGE_VERSION,
                 "source_commit": WORLDKERNEL_SOURCE_COMMIT,
@@ -100,8 +116,20 @@ class LocalWorldKernelRetailPolicyGateway:
                 "world": result["world"],
                 "registered_world_version": result["registered_world_version"],
                 "result_sha256": hashlib.sha256(raw_result).hexdigest(),
+                "selected_result_sha256": selected_result_sha256,
             },
         }
+
+
+def _canonical_json_sha256(value: object) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def _validate_policy_world_state(

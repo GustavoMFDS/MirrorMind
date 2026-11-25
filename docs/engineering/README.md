@@ -22,7 +22,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Repository atlas](REPOSITORY_ATLAS.md) — human-reviewed links to **every tracked code, test, config and document file**; a CI guard fails on missing files/links.
 - [Semantic learning map](SEMANTIC_COVERAGE.md) — current implemented, interface-only and planned capability boundaries, source by source.
 - [Contracts walkthrough](CONTRACT_WALKTHROUGH.md) — stepwise Pydantic validation and its limits: input shape is not authorized evidence or simulation.
-- [Decision trace result contract](DECISION_TRACE_RESULT.md) — versioned result envelope; M1F-02 produces a trace only for the generated synthetic comparison, with no real-source or action authority.
+- [Decision trace result contract](DECISION_TRACE_RESULT.md) — v1 general result envelope plus v2 selected-engine and parity execution evidence for the M1F-02 synthetic workflow; no real-source or action authority.
 - [M1 synthetic retail decision workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) — joins release-aware evidence, historical baseline/uncertainty diagnostics, a fixed 28-day profile, either the default policy test double or an explicit local WorldKernel policy handler, and a referenced trace through the same service.
 - [M1E-04 WorldKernel policy world](WORLDKERNEL_POLICY_WORLD.md) — explains the code-owned fixed handler, versioned mapping, paired demand stream, local worker, parent validation, parity tests and limits.
 - [Synthetic forecast model card](model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md) — fixed seasonal-naive profile, split dates, baselines, uncertainty limits and upgrade gates.
@@ -61,6 +61,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [M1E-02 local runtime change request](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md) — scoped acceptance, impact map, compatibility review and exact-head evidence record.
 - [M1E-04 policy-world change request](changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md) — fixed registered handler scope, acceptance, impact map, compatibility review and local evidence.
 - [WorldKernel policy-world walkthrough](WORLDKERNEL_POLICY_WORLD.md) — handler architecture, state transition, versioned contract, parity oracle, failure behavior, exact-pin tests and remaining isolation limits.
+- [M1F-03 engine-provenance change request](changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md) — versioned trace behavior, selected-output and parity evidence, regressions, impact map and exact-pin validation.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — required scope, acceptance and impact-map structure for meaningful engineering changes.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.

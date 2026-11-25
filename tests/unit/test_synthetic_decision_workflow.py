@@ -4,12 +4,13 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 from types import SimpleNamespace
 
 import pytest
+from pydantic import ValidationError
 
-from mirrormind.core.decision_trace import DecisionTrace
+from mirrormind.core.decision_trace import DecisionTraceV2
 from mirrormind.domains.retail.declared_releases import DeclaredProductRelease
 from mirrormind.domains.retail.synthetic_decision_workflow import (
     SyntheticDecisionWorkflowRequest,
@@ -24,7 +25,7 @@ def test_successful_workflow_produces_valid_trace_and_explicit_gaps():
     request = SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=2, seed=17)
     result = run_synthetic_decision_workflow(request)
 
-    assert result["schema_version"] == "mirrormind.synthetic_retail_decision_workflow.v1"
+    assert result["schema_version"] == "mirrormind.synthetic_retail_decision_workflow.v2"
     assert result["status"] == "synthetic_comparison_ready_experimental"
     assert result["source_status"] == "fictional_fixture_not_authenticated_or_authorized"
     assert result["decision_status"] == "comparison_only_no_policy_selection_or_authorization"
@@ -53,12 +54,26 @@ def test_successful_workflow_produces_valid_trace_and_explicit_gaps():
     assert len(forecast["history_fact_refs"]) == 7
     assert forecast["profile_units"] == forecast["profile_units"][:7] * 4
 
-    trace = DecisionTrace.model_validate(result["trace"])
+    trace = DecisionTraceV2.model_validate(result["trace"])
     assert trace.result_sha256 == result["trace_sha256"]
     assert trace.cutoff_at.date() == AS_OF
     assert len(trace.observations) == 26
     assert len(trace.forecasts) == 28
     assert len(trace.outcomes) == 9
+    assert trace.schema_version == "mirrormind.decision_trace.v2"
+    assert len(trace.execution_evidence) == 1
+    selected_execution = trace.execution_evidence[0]
+    assert selected_execution.role == "selected_output"
+    assert selected_execution.engine_contract_ref == (
+        "mirrormind.local.retail_policy_test_double.v1"
+    )
+    assert selected_execution.produced_at == trace.created_at
+    assert trace.created_at == trace.cutoff_at + timedelta(microseconds=1)
+    assert all(
+        outcome.engine_contract_ref == selected_execution.engine_contract_ref
+        and outcome.execution_evidence_refs == (selected_execution.execution_id,)
+        for outcome in trace.outcomes
+    )
     assert trace.human_review.status == "not_requested"
     assert all(item.evidence_refs for item in trace.observations)
     assert all(item.available_at <= trace.cutoff_at for item in trace.evidence)
@@ -90,6 +105,10 @@ def test_successful_workflow_produces_valid_trace_and_explicit_gaps():
     simulation = result["simulation"]
     assert simulation["status"] == "experimental_local_test_double_only"
     assert simulation["policy_test_double_invoked"] is True
+    assert simulation["policy_test_double_result_selected"] is True
+    assert simulation["selected_result_source"] == "policy_test_double"
+    assert simulation["reference_parity"]["reference_simulator_invoked"] is False
+    assert simulation["reference_parity"]["status"] == "not_run"
     assert len(simulation["result"]["lead_time_sensitivity"]) == 3
     assert all(
         policy["ranking"] is None and policy["ranking_status"] == "not_computed"
@@ -120,9 +139,9 @@ def test_trace_identity_includes_replications_and_exact_replay_is_stable():
         SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=2, seed=17)
     )
 
-    first_trace = DecisionTrace.model_validate(first["trace"])
-    replay_trace = DecisionTrace.model_validate(replay["trace"])
-    changed_trace = DecisionTrace.model_validate(changed_replications["trace"])
+    first_trace = DecisionTraceV2.model_validate(first["trace"])
+    replay_trace = DecisionTraceV2.model_validate(replay["trace"])
+    changed_trace = DecisionTraceV2.model_validate(changed_replications["trace"])
 
     assert first_trace.trace_id == replay_trace.trace_id
     assert first_trace.decision_ref == replay_trace.decision_ref
@@ -131,6 +150,10 @@ def test_trace_identity_includes_replications_and_exact_replay_is_stable():
     assert first_trace.trace_id != changed_trace.trace_id
     assert first_trace.decision_ref != changed_trace.decision_ref
     assert first["trace_sha256"] != changed_replications["trace_sha256"]
+    assert first_trace.outcomes[0].engine_contract_ref == (
+        "mirrormind.local.retail_policy_test_double.v1"
+    )
+    assert first_trace.execution_evidence == replay_trace.execution_evidence
 
 
 def test_versioned_artifact_and_workflow_digests_bind_the_complete_response():
@@ -180,7 +203,7 @@ def test_profile_aware_policy_modeling_caveats_are_bound_into_trace():
     result = run_synthetic_decision_workflow(
         SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
     )
-    trace = DecisionTrace.model_validate(result["trace"])
+    trace = DecisionTraceV2.model_validate(result["trace"])
     caveats = result["simulation"]["result"]["modeling_caveats"]
     caveat_assumptions = {
         assumption.assumption_id: assumption.statement
@@ -208,6 +231,75 @@ def test_profile_aware_policy_modeling_caveats_are_bound_into_trace():
     caveat_refs = set(caveat_assumptions)
     assert all(caveat_refs <= set(outcome.assumption_refs) for outcome in profile_aware)
     assert all(not caveat_refs.intersection(outcome.assumption_refs) for outcome in other_policies)
+
+
+def test_trace_rejects_execution_evidence_from_a_different_engine_contract():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    payload["outcomes"][0]["engine_contract_ref"] = "mirrormind.other_engine.v1"
+
+    with pytest.raises(ValidationError, match="does not match its selected execution"):
+        DecisionTraceV2.model_validate(payload)
+
+
+def test_trace_rejects_dangling_execution_evidence_references():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    payload["outcomes"][0]["execution_evidence_refs"] = ["execution-missing"]
+
+    with pytest.raises(ValidationError, match="unknown execution evidence reference"):
+        DecisionTraceV2.model_validate(payload)
+
+
+def test_trace_rejects_unreferenced_execution_evidence_records():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    selected = payload["execution_evidence"][0]
+    payload["execution_evidence"].append(
+        {
+            "execution_id": "execution-unreferenced-parity",
+            "engine_contract_ref": "mirrormind.local.retail_policy_test_double.v1",
+            "role": "parity_oracle",
+            "result_sha256": selected["result_sha256"],
+            "provenance_ref": "python:parity_oracle=test-double",
+            "produced_at": selected["produced_at"],
+        }
+    )
+
+    with pytest.raises(ValidationError, match="unreferenced execution evidence"):
+        DecisionTraceV2.model_validate(payload)
+
+
+def test_trace_rejects_parity_evidence_with_a_different_selected_result_digest():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    payload["execution_evidence"].append(
+        {
+            "execution_id": "execution-policy-test-double-parity",
+            "engine_contract_ref": "mirrormind.local.retail_policy_test_double.v1",
+            "role": "parity_oracle",
+            "result_sha256": "f" * 64,
+            "provenance_ref": "python:parity_oracle=test-double",
+            "produced_at": datetime(
+                2011, 1, 26, 23, 59, 59, 1, tzinfo=UTC
+            ).isoformat(),
+        }
+    )
+    for outcome in payload["outcomes"]:
+        outcome["execution_evidence_refs"].append(
+            "execution-policy-test-double-parity"
+        )
+
+    with pytest.raises(ValidationError, match="does not match selected execution result"):
+        DecisionTraceV2.model_validate(payload)
 
 
 @pytest.mark.parametrize("case", ["missing", "late", "unpublished"])
@@ -276,6 +368,13 @@ def test_incomplete_or_late_history_abstains_without_running_policy_test_double(
     assert result["simulation"] == {
         "status": "not_run_due_to_forecast_abstention",
         "policy_test_double_invoked": False,
+        "policy_test_double_result_selected": False,
+        "selected_result_source": None,
+        "reference_parity": {
+            "reference_simulator_invoked": False,
+            "status": "not_run",
+            "result_sha256": None,
+        },
     }
     assert result["trace"] is None
     assert result["trace_sha256"] is None

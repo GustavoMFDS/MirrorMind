@@ -920,6 +920,7 @@ permission, policy optimality, hostile-code isolation or production safety.
 | [`docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md`](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | Source walkthrough, sequence diagram, contracts, cutoffs, examples, tests, limits, diagnostics and exercises |
 | [`docs/engineering/model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md`](model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md) | Records the synthetic baseline and evaluation scope; explicitly does not establish predictive performance or calibrated uncertainty |
 | [`docs/engineering/changes/M1F_02_SYNTHETIC_DECISION_WORKFLOW.md`](changes/M1F_02_SYNTHETIC_DECISION_WORKFLOW.md) | Change request, acceptance criteria, impact map, compatibility and implementation evidence |
+| [`docs/engineering/changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md`](changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md) | Versioned trace change request, selected-engine/parity contract, exact-pin regressions and gate evidence |
 
 `synthetic_retail_decision_workflow` is experimental. The generated fixture
 is not authorized data; the seasonal profile is not an empirical forecast;

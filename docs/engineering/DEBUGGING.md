@@ -226,6 +226,17 @@ arrival-day demand exclusion. The HTTP route is experimental and has no
 authentication, request body-size limit, rate limit or concurrency control;
 do not expose it publicly. A digest is not a signature.
 
+For an explicit WorldKernel run, check `simulation.selected_result_source`,
+`simulation.policy_test_double_invoked` and
+`simulation.policy_test_double_result_selected` independently. The expected
+values are `worldkernel_policy_world`, `true` and `false`. In `trace`, find one
+`selected_output` and one `parity_oracle` record. Every outcome must reference
+both, name the selected engine contract and preserve equal result digests. The
+selected record's provenance reference includes the package version, exact
+source commit, registered world/revision, result schema and raw worker digest.
+If these values disagree, reject the response and inspect the gateway metadata
+before changing either engine.
+
 ## Synthetic retail policy comparison differs from its expected fixture
 
 Reproduce with

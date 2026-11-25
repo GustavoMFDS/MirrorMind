@@ -55,14 +55,14 @@
       "status": "interface_only",
       "source": "src/mirrormind/core/decision_trace.py",
       "test": "tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate",
-      "notes": "Immutable local v1 result schema validates typed sections, local references, declared cutoff rules and review digest binding. M1F-02 uses it for one experimental synthetic producer, but the schema does not authenticate source evidence, forecast quality, engine results, reviewer identity or action authority."
+      "notes": "General v1 result schema remains interface-only and validates typed sections, local references, cutoff rules and review-digest binding. The experimental M1F-02 producer emits a versioned v2 trace with outcome-linked selected-output and optional parity execution evidence. Neither version authenticates source evidence, forecast quality, engine provenance, reviewer identity or action authority."
     },
     {
       "id": "synthetic_retail_decision_workflow",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/synthetic_decision_workflow.py",
       "test": "tests/unit/test_synthetic_decision_workflow.py::test_successful_workflow_produces_valid_trace_and_explicit_gaps",
-      "notes": "Bounded local CLI/API composition of generated UCI-shaped evidence, historical fixed baselines, an uncalibrated disjoint residual diagnostic, a predeclared 28-day seasonal-naive profile, paired policy outcomes and DecisionTrace v1. API and default CLI use the M1E-03 test double; explicit local CLI opt-in runs the code-owned WorldKernel policy world and validates engine parity. Missing or late seven-day history abstains before simulation. No source rights, real data, empirical forecast/uncertainty, API engine execution, ranking, persistence or action authorization."
+      "notes": "Bounded local CLI/API composition of generated UCI-shaped evidence, historical fixed baselines, an uncalibrated disjoint residual diagnostic, a predeclared 28-day seasonal-naive profile, paired policy outcomes and DecisionTrace v2. API/default CLI select the Python test double. Explicit local CLI opt-in selects the code-owned WorldKernel policy world and binds its exact engine contract/provenance plus a separate test-double parity record into the trace. These local references and hashes do not authenticate engine provenance. Missing or late seven-day history abstains before simulation. No source rights, real data, empirical forecast/uncertainty, API engine execution, ranking, persistence or action authorization."
     },
     {
       "id": "decision_evaluation",

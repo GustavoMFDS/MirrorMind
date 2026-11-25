@@ -21,8 +21,9 @@ The service returns one versioned result containing:
 4. Three conditional policy outcomes over paired synthetic demand streams and
    the existing lead-time sensitivity cases, using the test double by default
    or the explicit local WorldKernel option.
-5. An M1F-01 `DecisionTrace` linking facts, profile forecasts, assumptions,
-   conditional outcomes, evidence gaps and unavailable runtime costs.
+5. A v2 M1F-01 `DecisionTrace` linking facts, profile forecasts, assumptions,
+   conditional outcomes, input evidence, execution evidence and unavailable
+   runtime costs. The v1 contract remains available to existing callers.
 
 If any required day is missing or its declared release date is after `as_of`,
 the result is an abstention. It contains no forecast or trace and does not call
@@ -44,7 +45,7 @@ flowchart TD
   P -->|Explicit CLI option| W[Exact-pin WorldKernel policy world]
   D --> H[Versioned artifact and content-identity digests]
   W --> H
-  H --> T[Existing DecisionTrace v1 models]
+  H --> T[DecisionTrace v2 with selected output and optional parity evidence]
   E --> O[Versioned response]
   U --> O
   A --> O
@@ -132,11 +133,14 @@ replication and reuses that stream for all three policies and lead-time
 scenarios. `--engine worldkernel` instead injects the trusted local gateway;
 the gateway executes the fixed registered handler and checks all engine states
 against the test double as a parity oracle. Returned metrics come from engine
-states. The service limits replications to 198 because
+states. `selected_result_source` records which engine supplied those metrics.
+`policy_test_double_invoked` records the actual call separately. In WorldKernel
+mode the test double ran only as a parity oracle. The service limits
+replications to 198 because
 `28 days × 3 policies × 3 lead-time cases × replications` must remain within
 the existing 50,000-transition budget.
 
-Each base and sensitivity result becomes a `ConditionalOutcome`. Its forecast
+Each base and sensitivity result becomes a `ConditionalOutcomeV2`. Its forecast
 references point to all 28 profile records; its assumption references point to
 the full assumption register. The policy comparator also reports explicit
 `modeling_caveats`. `_build_trace` turns each caveat into a typed
@@ -151,18 +155,29 @@ measured operating costs.
 
 ### 3.5 Decision trace
 
-`_build_trace` creates the existing immutable `DecisionTrace` v1. Each selected
-product-day becomes an `EvidenceReference` and `ObservedFact`; each future
+`_build_trace` creates an immutable `DecisionTrace` v2. Each selected
+product-day becomes an input `EvidenceReference` and `ObservedFact`; each future
 profile step becomes a `ForecastEstimate` with references to the exact seven
 history facts and the model-card path. Nine conditional outcomes cover three
-policies over three lead-time values. `MissingEvidence` identifies absent
-source rights/vintages, empirical model validation and calibrated uncertainty.
+policies over three lead-time values. Every outcome links to exactly one
+`selected_output` execution record whose engine contract must match
+`engine_contract_ref`. In WorldKernel mode, each outcome also links a
+`parity_oracle` record for the reference simulator. The two records must bind
+the same selected-metric digest. The WorldKernel provenance reference contains
+its package version, source commit, registered world/revision, result schema
+and raw worker-result digest. The `execution_evidence` section records outputs
+produced after the input cutoff without describing them as historical source
+evidence. `DecisionTrace` v1 and its example remain unchanged.
+
+`MissingEvidence` identifies absent source rights/vintages, empirical model
+validation and calibrated uncertainty.
 The default test-double trace also has a WorldKernel-execution gap; the
 explicit engine trace omits that gap after the gateway validates the pinned
 result. Compute and WorldKernel costs remain explicitly unavailable because
 this slice does not measure them.
 
-`result_sha256` binds the canonical `DecisionTrace` result fields but is not a
+`result_sha256` binds the canonical v2 `DecisionTrace` result fields, including
+selected-engine and parity records, but is not a
 signature or review identity. The outer workflow separately computes
 `artifact_digests` for the versioned evaluation, uncertainty, evidence receipt,
 forecast and simulation values. `decision_identity_sha256` hashes the workflow
@@ -218,7 +233,7 @@ policy result.
 
 ### Result envelope
 
-`mirrormind.synthetic_retail_decision_workflow.v1` contains `status`, `as_of`,
+`mirrormind.synthetic_retail_decision_workflow.v2` contains `status`, `as_of`,
 `evaluation`, `uncertainty`, `forecast_evidence_receipt`, `forecast`,
 `simulation`, `worldkernel_execution`, `artifact_digests`,
 `decision_identity_sha256`, `trace`,
@@ -227,7 +242,19 @@ and `writes_performed`. On a successful fixture, status is
 `synthetic_comparison_ready_experimental`. An incomplete history returns
 `abstained_required_history_unavailable`, `trace=null`,
 `worldkernel_execution=worldkernel_not_invoked`, and
-`simulation.policy_test_double_invoked=false`.
+`simulation.policy_test_double_invoked=false`,
+`policy_test_double_result_selected=false`, no selected source and parity
+status `not_run`.
+
+On a successful default path, `simulation.selected_result_source` is
+`policy_test_double`, `policy_test_double_invoked=true`,
+`policy_test_double_result_selected=true`, and parity status is `not_run`. With
+the explicit WorldKernel CLI option, the selected source is
+`worldkernel_policy_world`; `policy_test_double_invoked=true` records the
+reference call, while `policy_test_double_result_selected=false` records that
+its metrics were not selected. `reference_parity.status=exact_match` and the
+trace links both execution records to each outcome. Workflow schema v2 marks
+the new fields. The v1 `DecisionTrace` contract and example remain compatible.
 
 The response includes synthetic replication-level outputs for teaching and
 replay, versioned digests for each major artifact, a decision identity for a
@@ -282,6 +309,14 @@ does not close those product gates.
 - `tests/unit/test_synthetic_decision_workflow.py::test_profile_aware_policy_modeling_caveats_are_bound_into_trace`
   checks that the comparator's profile-aware modeling caveat is represented in
   the trace and linked to the affected outcome.
+- `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_execution_evidence_from_a_different_engine_contract`
+  rejects an outcome whose contract does not match its selected execution.
+- `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_dangling_execution_evidence_references`
+  rejects outcome references to absent execution records.
+- `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_unreferenced_execution_evidence_records`
+  rejects execution receipts that no conditional outcome uses.
+- `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_parity_evidence_with_a_different_selected_result_digest`
+  rejects parity metadata that does not describe the selected result.
 - `tests/unit/test_synthetic_decision_workflow.py::test_incomplete_or_late_history_abstains_without_running_policy_test_double`
   covers missing, late and unpublished cases while making a policy call fail
   the test immediately.
@@ -294,8 +329,9 @@ does not close those product gates.
 - `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
   checks the experimental capability set matches the reviewed ledger.
 - `tests/integration/test_worldkernel_policy_world_engine.py::test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data`
-  exercises the exact-pin engine option, the conditional trace gap and the
-  trace-bearing workflow response; it skips if the reviewed package is absent.
+  exercises the exact-pin engine option twice and checks engine-contract
+  provenance, selected-output/parity roles and deterministic trace replay; it
+  skips if the reviewed package is absent.
 - `tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result`
   confirms the HTTP route uses the default comparator and cannot select the
   local engine.
@@ -308,6 +344,8 @@ Curated claims: **MM-MF-001** successful trace separation;
 **MM-MF-006** complete result digest binding; and
 **MM-MF-007** trace-bound policy-modeling caveats. See the reviewed
 [evidence map](EVIDENCE_MAP.json) for exact test selectors and limitations.
+The `MM-WKPW-004` claim additionally covers the selected-engine and parity
+execution records.
 
 All of these are local synthetic checks. They do not satisfy M1B-03,
 M1C-03, M1D-02 or the broader M1E-04 service/security gate and do not by
@@ -321,9 +359,12 @@ missing and unpublished dates distinct. Check the source fixture and release
 declarations before touching policy arithmetic. For a successful run, trace
 `_eligible_observation_rows` into `project_seasonal_naive_lag7`, then compare
 the profile and seed to `compare_synthetic_retail_policies`. Check one
-`ConditionalOutcome` at a time against its `lead_time_days`, `policy_id`,
-`seed`, `runs`, forecast references and assumption references. Recompute the
-trace digest with `DecisionTrace.result_sha256`, compare it with the artifact
+`ConditionalOutcomeV2` at a time against its `lead_time_days`, `policy_id`,
+`seed`, `runs`, forecast and assumption references, engine contract and
+execution evidence references. For WorldKernel mode, compare the selected
+output and parity-oracle digests, then inspect the package, commit, world,
+revision and raw result digest in the selected provenance reference. Recompute
+the trace digest with `DecisionTraceV2.result_sha256`, compare it with the artifact
 digest map and recompute `workflow_result_sha256` after excluding only that
 field. Do not treat any digest as a signature. For identity collisions,
 compare the validated request and schema-versioned artifact digests before
