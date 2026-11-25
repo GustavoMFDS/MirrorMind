@@ -218,12 +218,19 @@ do not replace HTTP body-size, rate or concurrency controls.
   and M1C change-request records were reconciled by preserving both PRs'
   evidence. The M1C regression for child receipt authority flags remains in
   `tests/integration/test_retail_synthetic_evaluation.py`.
-- Complete local quality gate passed on integrated candidate
-  `57ae948b978540daddf33616d1d9712cddc8972f` at 2026-11-25 04:19:04 UTC:
+- Complete local quality gate passed on published integrated head
+  `1ecd3acbbebe0473f9d03ac0ee6688a0e4a95401` at 2026-11-25 04:21:50 UTC:
   728 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and
   capability checks. The API integration suite ran. One existing
   Starlette/httpx TestClient deprecation warning appeared. This is local
   evidence, not official CI.
-- The earlier PR #54 head's Actions runs failed before repository steps. The
-  synchronized candidate has not yet been published at this evidence
-  snapshot; inspect its required checks after publication. B-08 remains open.
+- On exact head `1ecd3ac`, Actions test runs
+  [45546319379](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546319379)
+  and [45546314259](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546314259)
+  and symbol-catalog runs
+  [45546319380](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546319380)
+  and [45546314591](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546314591)
+  failed before repository steps. Their annotation states recent account
+  payments failed or the spending limit needs to be increased, without
+  distinguishing the condition. No code tests ran remotely. This is B-08;
+  do not infer a billing root cause or self-hosted runner workaround from it.

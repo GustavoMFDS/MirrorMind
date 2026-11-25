@@ -80,8 +80,8 @@ unit suite passes 28 tests. Ruff, source catalog, atlas, evidence and
 capability checks pass locally, as does `git diff --check`. For the atlas
 check, only the existing untracked Graphify output was excluded via
 a temporary local Git exclude file; no source guard or project ignore rule was
-changed. The integrated candidate `57ae948b978540daddf33616d1d9712cddc8972f`
-passed the complete local gate at 2026-11-25 04:19:04 UTC: 728 tests, Ruff,
+changed. The published integrated candidate `1ecd3acbbebe0473f9d03ac0ee6688a0e4a95401`
+passed the complete local gate at 2026-11-25 04:21:50 UTC: 728 tests, Ruff,
 catalog, atlas, evidence and capability checks. One existing
 Starlette/httpx deprecation warning appeared. HTTP runtime was not tested and
 no new route was added. The result digest remains a recomputable content hash,
@@ -92,8 +92,14 @@ walkthrough is in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). PR #54
 remains a draft stacked on #53. Merge commit `e493b4c` synchronizes the local
 branch with published PR #53 head `79d3679`, retaining both histories and the
 nested-receipt regressions. The complete local gate passed on this integrated
-candidate as recorded above. Its prior head's GitHub checks failed before job
-start; no official check has yet been inspected for this new commit.
+candidate as recorded above. On published head `1ecd3ac`, Actions test runs
+[45546319379](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546319379)
+and [45546314259](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546314259)
+and symbol-catalog runs [45546319380](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546319380)
+and [45546314591](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546314591)
+failed before repository steps. Their annotation names failed recent account
+payments or a spending limit increase as alternatives; it does not identify
+which applies. No code tests ran remotely. See [B-08](BLOCKERS.md).
 
 ## Architecture and actual execution boundaries
 
