@@ -1,4 +1,4 @@
-# Architecture Decision Log — 2026-11-17
+# Architecture Decision Log — 2026-11-25
 
 Status: **Accepted**, **Proposed**, **Deferred**. Accepted describes design intent, not a completed feature.
 
@@ -15,3 +15,6 @@ Status: **Accepted**, **Proposed**, **Deferred**. Accepted describes design inte
 | MM-009 | Deferred | Production claims, licensing, hosting and real-company integrations. | Require evidence, tests and owner decisions. |
 | MM-010 | Accepted | Starting demonstration: replenishment-policy comparison under forecast uncertainty. | Measurable without pretending to estimate price-promotion causality. |
 | MM-011 | Accepted | Source uses one installable Python package: thin HTTP routes in `api/`, shared contracts in `core/`, independent feature modules in `modules/`, and tests split by unit/integration boundary. | Keep the modular monolith extensible without premature microservices or empty feature trees. |
+| MM-012 | Accepted | Research sequence is A then B: prepare a privacy-minimized, local UCI Online Retail #352 event-time retrospective pilot, then an independent aggregate Census release-vintage pilot; ALFRED is conditional on free authorized access, series terms and adequate archive evidence. | UCI has no row-level publication vintages, while aggregate published releases can support a separate, explicitly scoped temporal study. This authorizes preparation only, not acquisition or processing of either source. |
+| MM-013 | Accepted | While GitHub Actions quota is exhausted and no paid usage or limit increase is authorized, use the exact-head six-check local gate as temporary evidence. Keep official CI status distinct and preserve repository settings and checks. | Continue independent work without presenting local results as CI or changing protection and verification policy. |
+| MM-014 | Accepted | Keep UCI Online Retail evaluation explicitly event-time retrospective: freeze cohort and splits, compare fixed baselines on matched pairs, and abstain when date coverage is unverified. Census release-vintage research remains a separate protocol and dataset. | `InvoiceDate` does not establish historical availability. The two source classes have different targets and temporal evidence; neither may stand in for the other. |

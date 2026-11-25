@@ -233,6 +233,21 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L30](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L30) |
 | `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L50](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L50) |
 
+## `mirrormind.domains.retail.uci_event_time`
+
+Source: [`src/mirrormind/domains/retail/uci_event_time.py`](../../../src/mirrormind/domains/retail/uci_event_time.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `datetime`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.forecasting.baselines`, `re`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `UciEventTimeEvaluationError` | class | `class UciEventTimeEvaluationError` | A snapshot, coverage contract or fixed split is not representable. | [L39](../../../src/mirrormind/domains/retail/uci_event_time.py#L39) |
+| `_date_range` | function | `def _date_range(start: date, end: date) -> tuple[date, ...]` | — | [L43](../../../src/mirrormind/domains/retail/uci_event_time.py#L43) |
+| `_snapshot_counts` | function | `def _snapshot_counts(snapshot: UciWorkbookReadResult) -> dict[tuple[str, date], int]` | — | [L47](../../../src/mirrormind/domains/retail/uci_event_time.py#L47) |
+| `_coverage_dates` | function | `def _coverage_dates(values: Iterable[date]) -> frozenset[date]` | — | [L75](../../../src/mirrormind/domains/retail/uci_event_time.py#L75) |
+| `_metrics` | function | `def _metrics(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None] \| None` | — | [L95](../../../src/mirrormind/domains/retail/uci_event_time.py#L95) |
+| `evaluate_uci_event_time` | function | `def evaluate_uci_event_time(snapshot: UciWorkbookReadResult, *, complete_event_dates: Iterable[date], split: Literal['validation', 'holdout']) -> dict[str, object]` | Compare fixed one-day baselines on one frozen UCI event-time split. | [L104](../../../src/mirrormind/domains/retail/uci_event_time.py#L104) |
+
 ## `mirrormind.domains.retail.uci_transactions`
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
@@ -241,12 +256,12 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L22](../../../src/mirrormind/domains/retail/uci_transactions.py#L22) |
-| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L31](../../../src/mirrormind/domains/retail/uci_transactions.py#L31) |
-| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L41](../../../src/mirrormind/domains/retail/uci_transactions.py#L41) |
-| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L55](../../../src/mirrormind/domains/retail/uci_transactions.py#L55) |
-| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L64](../../../src/mirrormind/domains/retail/uci_transactions.py#L64) |
-| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L71](../../../src/mirrormind/domains/retail/uci_transactions.py#L71) |
+| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L24](../../../src/mirrormind/domains/retail/uci_transactions.py#L24) |
+| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L33](../../../src/mirrormind/domains/retail/uci_transactions.py#L33) |
+| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L43](../../../src/mirrormind/domains/retail/uci_transactions.py#L43) |
+| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L57](../../../src/mirrormind/domains/retail/uci_transactions.py#L57) |
+| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L66](../../../src/mirrormind/domains/retail/uci_transactions.py#L66) |
+| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L73](../../../src/mirrormind/domains/retail/uci_transactions.py#L73) |
 
 ## `mirrormind.domains.retail.uci_workbook`
 
@@ -256,11 +271,11 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `hashl
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `UciWorkbookReadResult` | class | `class UciWorkbookReadResult` | Local digest-coupled product-day projection without source approval. | [L41](../../../src/mirrormind/domains/retail/uci_workbook.py#L41) |
-| `UciWorkbookReadResult.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Summarize input identity and exclusions, not raw customer or invoice data. | [L47](../../../src/mirrormind/domains/retail/uci_workbook.py#L47) |
-| `_bounded_read` | function | `def _bounded_read(stream: BinaryIO) -> bytes` | Consume at most one sentinel byte over the compressed workbook limit. | [L56](../../../src/mirrormind/domains/retail/uci_workbook.py#L56) |
-| `_check_zip_members` | function | `def _check_zip_members(raw: bytes) -> None` | Reject excessive/active archive entries before workbook XML processing. | [L81](../../../src/mirrormind/domains/retail/uci_workbook.py#L81) |
-| `read_uci_workbook` | function | `def read_uci_workbook(stream: BinaryIO, *, expected_sha256: str, sheet_name: str='Online Retail', max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciWorkbookReadResult` | Project a small, already-authorized local workbook through strict UCI schema. | [L112](../../../src/mirrormind/domains/retail/uci_workbook.py#L112) |
+| `UciWorkbookReadResult` | class | `class UciWorkbookReadResult` | Local digest-coupled product-day projection without source approval. | [L43](../../../src/mirrormind/domains/retail/uci_workbook.py#L43) |
+| `UciWorkbookReadResult.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Summarize input identity and exclusions, not raw customer or invoice data. | [L49](../../../src/mirrormind/domains/retail/uci_workbook.py#L49) |
+| `_bounded_read` | function | `def _bounded_read(stream: BinaryIO) -> bytes` | Consume at most one sentinel byte over the compressed workbook limit. | [L58](../../../src/mirrormind/domains/retail/uci_workbook.py#L58) |
+| `_check_zip_members` | function | `def _check_zip_members(raw: bytes) -> None` | Reject excessive/active archive entries before workbook XML processing. | [L83](../../../src/mirrormind/domains/retail/uci_workbook.py#L83) |
+| `read_uci_workbook` | function | `def read_uci_workbook(stream: BinaryIO, *, expected_sha256: str, sheet_name: str='Online Retail', max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciWorkbookReadResult` | Project a small, already-authorized local workbook through strict UCI schema. | [L114](../../../src/mirrormind/domains/retail/uci_workbook.py#L114) |
 
 ## `mirrormind.modules.__init__`
 

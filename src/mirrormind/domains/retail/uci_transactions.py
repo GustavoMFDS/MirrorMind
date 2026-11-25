@@ -13,6 +13,8 @@ from datetime import date, datetime
 
 MAX_ROWS = 10_000
 MAX_GROUPS = 2_000
+MAX_SUPPORTED_ROWS = 600_000
+MAX_SUPPORTED_GROUPS = 100_000
 MAX_LINE_UNITS = 1_000_000_000
 MAX_TOTAL_UNITS = 1_000_000_000
 REQUIRED_FIELDS = frozenset({"InvoiceNo", "StockCode", "Quantity", "InvoiceDate"})
@@ -80,10 +82,14 @@ def project_uci_retail_rows(
     UnitPrice) are neither accessed nor returned. Nothing is persisted or
     logged. Cancellation/negative/zero rows are reported, not imputed.
     """
-    if type(max_rows) is not int or not 1 <= max_rows <= MAX_ROWS:
-        raise ValueError("max_rows must be an exact integer in 1..10000")
-    if type(max_groups) is not int or not 1 <= max_groups <= MAX_GROUPS:
-        raise ValueError("max_groups must be an exact integer in 1..2000")
+    if type(max_rows) is not int or not 1 <= max_rows <= MAX_SUPPORTED_ROWS:
+        raise ValueError(
+            f"max_rows must be an exact integer in 1..{MAX_SUPPORTED_ROWS}"
+        )
+    if type(max_groups) is not int or not 1 <= max_groups <= MAX_SUPPORTED_GROUPS:
+        raise ValueError(
+            f"max_groups must be an exact integer in 1..{MAX_SUPPORTED_GROUPS}"
+        )
     try:
         iterator = iter(rows)
     except TypeError as exc:

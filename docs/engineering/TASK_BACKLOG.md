@@ -7,7 +7,25 @@ of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
-already underway.
+already underway. The rows below retain the PR #51 baseline; current
+branch evidence and owner decisions are recorded separately below.
+
+## Current reconciliation — 2026-11-25
+
+- PRs #52–#61 remain an open stacked queue; none is treated as merged to
+  `main` by the reviewed state. Preserve their existing commit ancestry and
+  resolve shared-file conflicts by normal merges before any integrated gate.
+- PR #57 is at `1bf178b5c4b31bcd68072b69748a14249c6c2649`, based on PR #53.
+  The owner has accepted A+B research preparation, not source acquisition or
+  processing. Independent exact-head evidence records 700 tests and all six
+  local checks passing; B-07's earlier timeout remains unexplained. GitHub
+  Actions on that head failed before workflow steps under B-08.
+- The owner selected the documented temporary exact-head local gate while
+  Actions quota is unavailable. No paid quota, self-hosted compute, protection
+  change or fabricated CI result is authorized.
+- Continue the M1 source protocol and optional local WorldKernel runtime as
+  named M1 backlog work. Reuse the existing UCI projection, synthetic
+  evaluation, and PR #55 mapping; do not create parallel versions of them.
 
 ## Reconciled state at the PR #51 baseline
 
@@ -62,7 +80,7 @@ the vertical product path.
 
 | ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M1B-01 | P0 | ready | None | Audit candidate M5/UCI or alternate source permission/provenance, privacy, snapshot and original availability-time evidence; prepare decision-ready review without downloading restricted data. |
+| M1B-01 | P0 | in_progress | None | Prepare the accepted A+B sequence: UCI #352 event-time retrospective adapter/data/privacy manifest, then an independent aggregate Census vintage manifest/protocol. Keep all tests synthetic and actual source acquisition gated by B-01/B-02. |
 | M1B-02 | P0 | partial | None | Compose bounded CSV/workbook staging, review metadata, calendar/release checks and as-of selection into a reusable synthetic evidence flow; deterministic fixture, rejection and abstention tests. |
 | M1B-03 | P0 | blocked | M1B-01, M1B-02, B-01, B-02 | Approved real-source adapter with reviewed dataset card, actual source snapshot, permission enforcement, data minimization and provenance; verify temporal availability rather than inventing it. |
 | M1C-01 | P0 | partial | M1B-02 | Reuse offline baselines and retail release backtests; build a reproducible synthetic evaluation entrypoint with aligned eligible targets, fixed splits and per-origin receipts. |
@@ -71,7 +89,7 @@ the vertical product path.
 | M1D-01 | P1 | partial | M1C-01 | Reuse residual envelope, drift and sensitivity code; formalize uncertainty semantics, disjoint calibration/holdout strategy, missing/late data and coverage tests. |
 | M1D-02 | P1 | planned | M1C-03, M1D-01 | Evaluate uncertainty on approved held-out observations, document empirical coverage or explicitly uncalibrated limits and sensitivity. |
 | M1E-01 | P0 | ready | None | Inspect versioned gateway and actual WorldKernel contract; define strict allowlisted mapping, reject unrepresentable state/interventions/refs, enforce server-owned budgets; test disabled adapter without hard dependency. |
-| M1E-02 | P0 | planned | M1E-01, B-04 | Implement optional compatible adapter and execute actual registered test world using pinned compatible engine; deterministic seeds, result validation and missing-engine/failure tests. |
+| M1E-02 | P0 | in_progress | M1E-01, B-04 | Complete a version-pinned optional local runner for the existing strict request mapper; execute the actual registered synthetic world, enforce local timeout/operator caps, validate `worldkernel.result.v1`, and test absent runtime, version mismatch, malformed output and process failure. No server deployment or real retail claim. |
 | M1E-03 | P0 | planned | M1E-02, M1C-01 | Three 28-day synthetic policies, paired exogenous streams, explicit units/stock/lead-time/cost assumptions and sensitivity. Do not present synthetic inputs as measured facts. |
 | M1F-01 | P0 | ready | None | Versioned decision trace/result contract separating facts, forecasts, simulated outcomes, assumptions, missing evidence, costs and human approval; fixture and invalid-reference tests. |
 | M1F-02 | P0 | planned | M1B-02, M1C-01, M1D-01, M1E-03, M1F-01 | Runnable synthetic end-to-end CLI/API with real optional engine when configured; reproducible comparison, no automatic writes, transparent unavailable/abstention outcomes. A test double is explicitly partial. |
@@ -138,7 +156,7 @@ not automatically resolve real-source, deployment or product gates.
 
 | ID | Status | Owner / branch | Surfaces | PR / commit | Evidence and next action | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
-| M1B-01 | in_progress (proposal complete; validation outstanding) | Codex / `codex/m1b-01-source-review` | Source rights, privacy/minimization, snapshots and temporal-provenance decision proposal | [PR #57 draft](https://github.com/GustavoMFDS/MirrorMind/pull/57), proposal commit `25fb95ee84e1e431e206716355acab70448a5a54`, later documented head `fa1307b8e8a6dd8fc0f3fe54a072a1a4d5582da7`, base #53 `79d3679013576c6a209bed9fa031b7f0fabd0d8d` | Normal merge reconciled docs conflicts with latest #53. The source note contains a narrow UCI event-time retrospective protocol and a separate Census/ALFRED vintage proposal; no data or credentials acquired. The source parent passed 700 tests plus five checks. Follow-up `8f906b8c0735bb04434c2c0a40efc2c3297df93b` timed out in pytest at 900s (B-07); a focused `test_health` diagnostic also remained pending. Four GitHub Actions runs on `fa1307b` failed before steps with unreadable annotations (B-08). PR stays draft; no owner source decision or review readiness claimed. | B-01/B-02 still block acquisition and empirical evaluation; B-07 blocks current full-gate evidence; B-08 blocks official check evidence |
+| M1B-01 | in_progress (A+B preparation approved; source processing gated) | Codex / `codex/m1b-01-source-review` | Source-specific UCI event-time adapter/privacy manifest and aggregate Census vintage protocol, synthetic-only evidence | [PR #57 draft](https://github.com/GustavoMFDS/MirrorMind/pull/57), current published head `1bf178b5c4b31bcd68072b69748a14249c6c2649`, base #53 `79d3679013576c6a209bed9fa031b7f0fabd0d8d` | Owner approved A then B preparation only. No original source bytes or credentials were acquired. Independent exact-head review passed 700 tests and all six local checks; focused `test_health` passed. The `8f906b8` timeout did not reproduce, but its cause remains unknown. Four exact-head GitHub checks failed before steps with the recovered account annotation; B-08 records the owner-confirmed quota constraint. | B-01/B-02 still block source acquisition, real-source processing and point-in-time/empirical acceptance; B-08 blocks official CI evidence |
 | DOC-01 | review | Codex / `codex/m1b-02-synthetic-evidence-flow` | Baseline reconciliation, semantic map, source/learning/docs navigation | [PR #52 draft](https://github.com/GustavoMFDS/MirrorMind/pull/52) | PR #51 remains the merged baseline; latest published PR #52 head `b431d11` has exact local gate evidence and the review response is recorded. | No separate docs blocker; official Actions remains unresolved under B-08 |
 | M1B-02 | in_progress | Codex / `codex/m1b-02-synthetic-evidence-flow` | CSV/XLSX local composition, review packet, calendar/release/as-of checks, tests and docs | [PR #52 draft](https://github.com/GustavoMFDS/MirrorMind/pull/52), exact tested commit `b431d11bf0ac841ff30353a06263d23fb901307c` | All five flow integration tests passed, including aggregate-to-child receipt equality and rejection/abstention cases. Full exact-head local gate passed 696 tests plus Ruff, catalog, atlas, evidence and capability checks at 2026-11-25 03:51:25 UTC. The earlier `c51ab30` restricted-run timeout is historical; current Actions are blocked before repository steps. Keep experimental status and do not call the PR delivered. | B-01/B-02 still block real-source rights and availability; B-08 blocks official check evidence; review/integration decision remains open |
 | M1C-01 | in_progress | Codex / `codex/m1c-01-synthetic-retail-evaluation` | Prepared UCI-shaped evidence flow, fixed matched-origin baselines, deterministic fictional CLI, per-origin receipts and model/data docs | [PR #53 draft](https://github.com/GustavoMFDS/MirrorMind/pull/53), synchronized merge `e922b03` plus tested review commit `1addb7791da42939166c34a2e410737ca97a177b` | Full exact-head local gate passed at 2026-11-25 04:06:26 UTC: 700 tests, Ruff, catalog, atlas, evidence and capability checks; focused regressions verify cutoff agreement, target abstention and nested receipt authority flags. The synchronized head has not yet been published; no remote result is claimed. | Depends on M1B-02 in draft PR #52; B-01/B-02 block real-source claims and B-08 blocks official check evidence |

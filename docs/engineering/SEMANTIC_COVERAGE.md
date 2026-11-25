@@ -41,6 +41,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/domains/retail/coverage.py`](../../src/mirrormind/domains/retail/coverage.py) | G | Internal positive-line product-day calendar gaps, aggregate-only and no imputation; [reviewed guide](RETAIL_COVERAGE.md) |
 | [`src/mirrormind/domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py) | G | Bounded transaction-to-day positive-unit projection on fictional mappings; [source walkthrough](UCI_RETAIL_PROJECTION.md) |
 | [`src/mirrormind/domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py) | G | Optional bounded local UCI-shaped XLSX reader; [source guide](UCI_WORKBOOK_READER.md), **not authorized real-file ingestion** |
+| [`src/mirrormind/domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py) | G | Fixed event-time retrospective over caller-declared synthetic complete dates; [research guide](M1_UCI_EVENT_TIME_RESEARCH.md); no historical publication or point-in-time claim |
 | [`src/mirrormind/domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py) | G | Experimental composition of bounded CSV/XLSX readers, review-only packets, declared calendar/release checks and CSV as-of selection; [M1 flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), no authorization or forecast eligibility |
 | [`src/mirrormind/modules/__init__.py`](../../src/mirrormind/modules/__init__.py) | I | Feature module namespace |
 | [`src/mirrormind/modules/evidence/__init__.py`](../../src/mirrormind/modules/evidence/__init__.py) | I | Evidence package marker; no connectors or authorization |
@@ -196,10 +197,26 @@ into the preexisting projection.
 Read [method guide](UCI_WORKBOOK_READER.md),
 [fictional data card](datasets/SYNTHETIC_UCI_XLSX_CARD.md)
 and [unit security cases](../../tests/unit/test_uci_workbook.py).
-The full official file has many more rows
-than this reader's cap, and privacy,
-attribution and original source identity are
-not approved. This feature remains
+The reader defaults remain deliberately small;
+explicit caps can represent the catalog's 541,909 rows,
+but original bytes have not been tested. Privacy,
+attribution and source identity are not approved. This remains
 `local_uci_xlsx_reader` **experimental**;
 authorized ingestion and genuine forecasting
 stay planned.
+
+## Synthetic UCI event-time retrospective
+
+[`domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py)
+compares two fixed one-day baselines on a frozen
+fit-period product cohort. Matched target eligibility,
+declared-date abstention, MAE/RMSE and zero-safe WAPE
+are exercised by
+[`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py)
+and the
+[`synthetic CLI test`](../../tests/integration/test_uci_event_time_cli.py).
+This capability is experimental and event-time-only:
+`InvoiceDate` does not establish source publication,
+and no original UCI records were processed. See the
+[dataset card](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md)
+and [model card](model_cards/SYNTHETIC_UCI_EVENT_TIME.md).

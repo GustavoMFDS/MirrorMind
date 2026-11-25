@@ -41,6 +41,36 @@ proof of current stock, stockouts or true latent demand.
 Lead time and inventory starting points require separately
 sourced evidence or explicit synthetic assumptions.
 
+## Owner-approved research and local-engine sequence — 2026-11-25
+
+The source sequence is approved for **preparation** as UCI Online Retail #352
+event-time retrospective (A), followed by an independent aggregate Census
+release-vintage evaluation (B). Automated tests remain synthetic. A
+source-specific reviewer must verify rights, attribution/change notice,
+privacy minimization, private storage, retention/deletion and the exact
+snapshot manifest before the actual UCI workbook can be acquired or
+processed. The UCI pilot cannot satisfy point-in-time acceptance because
+`InvoiceDate` does not prove historical publication. The Census pilot must use
+verified original releases and explicit vintage gaps; ALFRED is conditional on
+free authorized access and adequate archive evidence. M5 remains NO-GO.
+
+The A preparation now includes a bounded local reader/evaluator, fixed
+event-time validation/holdout protocol, synthetic-only CLI regressions and
+data/model cards. All such results remain experimental and
+`event_time_retrospective_unverified_availability`; the source terms,
+privacy/storage manifest and original-file compatibility gates remain open.
+The B protocol names official Census archives as preferred and `RSAFS`/ALFRED
+as a conditional alternative, with date-granular vintages handled
+conservatively. No Census or ALFRED data or key has been acquired.
+
+In parallel, complete the optional local WorldKernel adapter after the
+existing M1E-01 strict request mapper: pin a reviewed engine commit, invoke
+only its registered synthetic world through local exchange v1, enforce
+MirrorMind's operator limits and timeout, validate result v1, and test
+unavailable/runtime failure paths. This does not authorize an HTTP service,
+untrusted code, production deployment or a real retail recommendation. See
+B-04 and the M1E-02 backlog criteria.
+
 ## 2. Risk and quality gates that cannot be skipped
 
 **Data:** source rights, privacy, immutable snapshot identity,

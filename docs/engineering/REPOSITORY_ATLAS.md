@@ -829,6 +829,23 @@ does not verify data rights, source identity or actual publisher availability.
 The experimental result is not an empirical forecast or recommendation;
 release dates and positive-line units remain unverified proxies.
 
+## 52. Synthetic UCI event-time retrospective (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py) | Frozen fit cohort, fixed validation/holdout dates, shared eligibility, missing-date abstention, privacy-minimized product ordinals and zero-safe metrics |
+| [`examples/m1_uci_event_time_research.py`](../../examples/m1_uci_event_time_research.py) | Deterministic fictional XLSX in memory; parser-to-evaluator CLI with no remote source or persistent file |
+| [`tests/unit/test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) | Cohort, calendar coverage, zero-denominator, holdout mutation, invalid inputs and result redaction regressions |
+| [`tests/integration/test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) | Repeated CLI output, parser integration, cancellation/negative/zero classification and sanitized limitations |
+| [`docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md`](M1_UCI_EVENT_TIME_RESEARCH.md) | Source walkthrough, protocol, contracts, metrics, safety, reproduction, tests and learning exercises |
+| [`docs/engineering/changes/M1B_01_UCI_EVENT_TIME_PILOT.md`](changes/M1B_01_UCI_EVENT_TIME_PILOT.md) | Scoped M1B-01 change request, acceptance, impact map, evidence and unapproved real-source gates |
+| [`docs/engineering/datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md`](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md) | Generated rows, fixture provenance, data minimization and evidence limits |
+| [`docs/engineering/model_cards/SYNTHETIC_UCI_EVENT_TIME.md`](model_cards/SYNTHETIC_UCI_EVENT_TIME.md) | Fixed baselines, temporal split, metric contract and no-uncertainty boundary |
+| [`docs/engineering/CENSUS_ALFRED_VINTAGE_PROTOCOL.md`](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | Separate, aggregate-only second-stage proposal; no Census/ALFRED data or API key acquired |
+
+The capability remains `experimental`. `InvoiceDate` is event time,
+not verified publication time; no original UCI workbook was processed.
+
 
 ## Continuous engineering handoff and execution register
 

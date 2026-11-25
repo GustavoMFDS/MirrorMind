@@ -1,13 +1,15 @@
 # UCI Online Retail (352) — licensed-source candidate, not approved ingestion
 
 **Review date:** 2026-11-25.
-**Status:** `license-published / privacy-and-use-review-pending`.
-**Operational decision:** **NO-GO** for unattended source downloads,
-commit of transaction records, model training, customer-level
-analytics or a claim of historically available forecasts until
-the applicable attribution, privacy and provenance review is
-signed off. This document records source information and
-risk boundaries; it is not a legal opinion or access authorization.
+**Status:** `license-published / scoped-research-preparation-approved / source-processing-gate-pending`.
+**Operational decision:** The owner approved preparing a bounded,
+local-only event-time research adapter, dataset card, privacy plan and
+synthetic protocol. **NO-GO** remains in force for acquiring or processing
+the original workbook, committing transaction records, customer-level
+analytics, model training on real records, or claiming historically available
+forecasts until the source-specific terms, attribution/change notice, privacy,
+storage, retention/deletion and snapshot gates below are reviewed. This is not
+a legal opinion or a data-use authorization.
 
 ## 1. Original evidence (not a third-party mirror)
 
@@ -17,7 +19,7 @@ risk boundaries; it is not a legal opinion or access authorization.
 | Citation / DOI | Chen, D. (2015). *Online Retail* [Dataset]. UCI Machine Learning Repository. [doi:10.24432/C5BW33](https://doi.org/10.24432/C5BW33) |
 | License shown by UCI | [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) — UCI's official page explicitly labels **this dataset** CC BY 4.0 |
 | Published license scope | CC BY 4.0 allows copying/adaptation, including commercial use, **provided its attribution, license link and change notice obligations are respected**; it does not waive unrelated privacy, publicity, contract, database or security obligations |
-| File | UCI lists `Online Retail.xlsx`, about 22.6 MB; this is **larger** than the 1 MiB MirrorMind local parser budget |
+| File | UCI lists `Online Retail.xlsx`, about 22.6 MB. It exceeds the 1 MiB CSV staging limit; the separate experimental XLSX reader currently permits 32 MiB compressed but is capped at 10,000 rows and 2,000 product-day groups |
 | Rows and period | UCI reports 541,909 transactions, dated 2010-12-01 through 2011-12-09, for a UK non-store retailer |
 | Source fields | `InvoiceNo`, `StockCode`, `Description`, `Quantity`, `InvoiceDate`, `UnitPrice`, `CustomerID`, `Country` |
 
@@ -62,12 +64,13 @@ The visible UCI metadata describes transaction event time, not row-level
 first availability or historical release revisions. Do not synthesize those
 fields from `InvoiceDate`.
 
-**Interim candidate recommendation:** retain UCI Online Retail ID 352 as the
-preferred source for a future, narrowly scoped permission decision because
-its original UCI record states the license. This is a review recommendation,
-not permission to acquire, retain, transform or use the records. M5 remains
-NO-GO pending its original terms. M1B-01 due diligence is complete; B-01 and
-B-02 still gate any real-source adapter or empirical evaluation.
+**Owner-approved preparation direction:** UCI Online Retail ID 352 is the
+first source for a narrowly scoped event-time retrospective pilot. The choice
+permits preparing a source-specific adapter, dataset card, privacy plan and
+synthetic-only regressions. It does not permit acquiring or processing the
+workbook until each source-specific gate is verified. M5 remains NO-GO pending
+its original terms. B-01 and B-02 still gate real-source use and
+point-in-time evaluation.
 
 An alternative, longer version is
 [UCI Online Retail II (ID 502)](https://archive.ics.uci.edu/dataset/502/online+retail)
@@ -83,7 +86,7 @@ project, and no data-use permission is inferred from public access.
 
 | Candidate | Intended use | Permission and handling gate | Temporal evidence and limitation |
 | --- | --- | --- | --- |
-| UCI Online Retail (ID 352) | Product-level *retrospective* research if the owner accepts the customer-data and use limits | UCI states CC BY 4.0. Before acquisition, an accountable owner must approve the research/commercial scope, attribution and change notice, privacy review, minimal field projection, retention/deletion and a dataset card. The workbook exceeds the current parser limit; an approved source-specific streaming adapter and snapshot manifest would be a separate change. | The catalog donation date and `InvoiceDate` do not provide row-level first-availability vintages. This source cannot support a claim that historical predictions used only information known at each origin. Keep results explicitly retrospective; do not fabricate `available_on`. |
+| UCI Online Retail (ID 352) | Product-level *retrospective* research if the owner accepts the customer-data and use limits | UCI states CC BY 4.0. Before acquisition, an accountable owner must approve the research/commercial scope, attribution/change notice, privacy review, minimal field projection, retention/deletion and an exact source manifest. A bounded synthetic-tested reader/evaluator is now prepared; its explicit 600,000-row / 100,000-group ceilings and 32 MiB compressed cap have not been tested against the original workbook. | The catalog donation date and `InvoiceDate` do not provide row-level first-availability vintages. This source cannot support a claim that historical predictions used only information known at each origin. Keep results explicitly retrospective; do not fabricate `available_on`. |
 | U.S. Census Bureau Monthly Retail Trade releases (MARTS/MRTS) | Aggregate retail series to test release-aware evaluation behavior, not item-level demand or inventory policy | Review the applicable Census publication terms, attribution, retention and redistribution with the project owner. Use aggregate published tables only; no confidential microdata. Record each accepted release URL, retrieval time, original bytes and SHA-256 in a reviewed manifest; keep raw files out of Git, prompts and CI. | The Census release schedule identifies reference month and publication date. Its methodology describes an advance estimate followed by a revision from the larger monthly survey. Treat every published release as a separate immutable vintage; verify historical archive completeness before choosing evaluation dates. |
 | FRED/ALFRED `RSAFS` (Census-sourced monthly retail sales series) | Alternative machine-readable check of vintage reconstruction for the aggregate retail method | The FRED API terms and series owner's restrictions both apply. FRED states that its API availability does not override third-party data rights; check the series notes and contact the owner before non-personal use. An API key is required for API requests and must not be placed in Git or a fixture. | ALFRED real-time periods and vintage-date endpoints can identify what series values were recorded for historical periods. Confirm that the chosen series has complete vintages and align each vintage date with the official Census release calendar; the FRED date boundary is date-granular, so use a conservative post-release cutoff rather than inventing an intraday timestamp. |
 
@@ -199,16 +202,33 @@ and parity against a simple independent as-of selector. These are acceptance
 requirements for a future adapter; no such adapter or data-backed test ran in
 this documentation proposal.
 
-### Owner decision requested
+### Owner decision — A then B, preparation only (2026-11-25)
 
-Choose one path for a separately scoped, reviewed change: (A) a
-privacy-minimized UCI #352 retrospective research pilot, with no point-in-time
-forecast claim; (B) the aggregate Census/ALFRED release-vintage pilot, with no
-SKU-level or inventory-policy claim; or (C) defer both sources and continue
-using fictional fixtures. Any choice leaves M5 at NO-GO until its original
-terms and redistribution rights are independently verified.
+The owner accepted two sequential, independent research pilots. **A** is a
+privacy-minimized, local UCI #352 event-time retrospective by product using
+the predeclared cohort/splits, matched eligible targets, MAE/RMSE/zero-safe
+WAPE, coverage and abstention. Every result must be labeled
+`event_time_retrospective_unverified_availability`; `InvoiceDate` must not be
+converted into a publication timestamp. This direction authorizes preparing
+the adapter, dataset card, source manifest and privacy controls. Before the
+original workbook is acquired or processed, verify the applicable original
+terms and attribution/change notice; retain only product, event day and
+positive units after cancellation classification; approve secure local-only
+storage, retention/deletion and an exact hash-bound source manifest. Raw or
+identifying records must not enter Git, CI, logs, prompts or external services.
 
-## 2. Required human review before source adapter operation
+**B** follows as a separate aggregate Census release-vintage study. Prefer
+free official historical release files. ALFRED is an alternative only when
+access is free and authorized, series terms are acceptable, and archive
+evidence is adequate. Prepare an explicit source/snapshot/vintage manifest and
+temporal protocol. Verify each original release and its conservative as-of
+boundary; retain gaps as gaps. Do not use current revised time-series exports
+as historical vintages, fabricate releases, or claim SKU-level demand,
+inventory validity or causal outcomes. B-01 remains conditional on each
+source's handling and permission review; B-02 remains conditional on actual
+temporal evidence. M5 stays NO-GO.
+
+## 2. Required source-specific review before original-workbook processing
 
 - [ ] Verify the original UCI dataset page and linked CC BY 4.0
   license are still applicable to the exact downloaded file.
@@ -254,33 +274,59 @@ series_id,observed_on,available_on,units
 ```
 
 The official UCI source is an approximately 22.6 MB
-Excel workbook, not this daily CSV contract.
-It contains transaction records including customer
-and invoice identifiers. A future source-specific
-adapter must be a **separate, opt-in and tested**
-component that:
+Excel workbook, not this daily CSV contract. It
+contains transaction records including customer and
+invoice identifiers. The separate optional
+`read_uci_workbook` adapter now performs bounded
+in-memory parsing and forwards only `InvoiceNo`,
+`StockCode`, `Quantity` and `InvoiceDate` to the
+existing projection. Synthetic tests exercise the
+parser-to-evaluator path but do not use original bytes
+or establish source approval. An explicit caller
+budget can be as high as 600,000 transaction rows and
+100,000 product-day groups; defaults remain 10,000
+and 2,000. These catalog-sized ceilings do not verify
+original-file compatibility. Read the
+[XLSX reader guide](../UCI_WORKBOOK_READER.md)
+before changing the parser.
 
-1. Opens a locally reviewed, approved, size-bounded
-   workbook using a streaming parser and a
-   snapshot hash from a trusted reviewed manifest.
-2. Drops customer-level fields **before any output**
-   and explains cancellation, quantity and aggregation
-   semantics; it must not fabricate inventory or
-   customer-level facts.
-3. Records publication-time uncertainty explicitly.
+Before the adapter is called with an original source,
+the trusted operator still needs:
+
+1. Independently review applicable source terms,
+   approved use, attribution/change notice and an
+   exact hash-bound source manifest. The parser checks a
+   caller-provided digest but does not authenticate its
+   origin or enforce permission.
+2. Use private local storage and a written
+   retention/deletion plan. The implementation does not
+   persist the workbook, but does not enforce storage or
+   deletion policy.
+3. Preserve cancellation, quantity and aggregation
+   semantics; do not fabricate inventory or
+   customer-level facts. The parser selects only four
+   fields for projection, but openpyxl still parses a
+   workbook that may contain personal data.
+4. Record publication-time uncertainty explicitly.
    The event date is **not** documentary proof that
    the same value was knowable by a forecaster then.
-4. Emits a deliberately bounded normalized daily
+5. Emit a deliberately bounded normalized daily
    subset with tracked transformations and a
    reviewed data card. Never invent or backfill
    missing dates to make the forecast work.
-5. Keeps all real raw data **out of Git, example
+6. Keep all real raw data **out of Git, example
    fixtures, model prompts and CI** unless a separate
    scoped data/privacy review explicitly approves
    the handling.
-6. Marks results as **retrospective research under
+7. Mark results as **retrospective research under
    stated assumptions**, not production forecasts or
    policy-grade inventory decisions.
+
+The event-time evaluator is independent of the generic
+`available_on` evidence contract. See the
+[M1 event-time walkthrough](../M1_UCI_EVENT_TIME_RESEARCH.md)
+for fixed dates, matched metrics, abstentions and
+synthetic-only execution.
 
 ## 4. Scientific interpretation / no-go assumptions
 
@@ -297,20 +343,22 @@ A legally usable snapshot can still be
 scientifically unsuitable for a particular
 forecasting claim.
 
-## Next action
+## Current result and next action
 
-An accountable human reviewer should select the
-specific intended research/commercial task and
-approve the license attribution and data-minimization
-plan. Then a separate source adapter PR can consume
-only that approved local source, with negative tests
-for mixed datasets, cancellations, time assumptions,
-privacy fields, size limits and reproducible output.
+The local reader/evaluator, fixed event-time protocol and synthetic
+regressions are prepared. They check a caller-supplied digest, avoid
+persistent writes and return aggregate receipts; they do not require a
+trusted source manifest or enforce human permission. No original workbook
+was downloaded or processed. The separate
+[Census/ALFRED vintage protocol](../CENSUS_ALFRED_VINTAGE_PROTOCOL.md)
+is prepared for aggregate data only; no release artifact or API key was
+acquired. Continue with synthetic-only tests and documentation until the
+source-specific human gates are reviewed.
 
-**Current result:** a better-documented source
-candidate with an official license statement.
-**Not yet delivered:** downloaded/verified original
-bytes, source-specific adapter, customer-data
-review, real historical publication times,
-held-out real-data predictive results,
-calibrated uncertainty or WorldKernel integration.
+**Current result:** owner-approved A-then-B preparation, synthetic-only
+adapter/protocol work and official source-page evidence, with real-source
+handling still gated.
+**Not yet delivered:** acquired/verified original bytes, source-specific
+permission and privacy sign-off, actual-source processing, historical UCI
+availability, verified Census vintage completeness, empirical holdout scores,
+calibrated uncertainty or live WorldKernel integration.

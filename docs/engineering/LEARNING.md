@@ -502,3 +502,19 @@ cutoff and explain why no metrics or winner is returned. Finally explain why
 the fixture's zero seasonal-naive MAE is not evidence of real predictive
 skill, and list the publisher, calendar, holdout and uncertainty evidence
 needed before an empirical claim.
+
+## Guided exercise — understand the UCI event-time boundary (35 minutes)
+
+Read [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py),
+the [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md),
+the [synthetic dataset card](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md),
+the [model card](model_cards/SYNTHETIC_UCI_EVENT_TIME.md), and
+[`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py).
+Run the generated CLI twice and compare JSON. Trace how fit dates freeze a
+product cohort, then predict how a missing declared date affects target and
+history abstentions. Change a product-day value on a declared complete date;
+contrast the resulting zero assumption with removing that date from the
+coverage declaration. Mutate a holdout value and verify validation metrics
+stay fixed. Finally locate where `InvoiceDate` becomes an event day and
+explain why a verified publication vintage would require a distinct source
+contract. Do not use real UCI rows in this exercise.

@@ -1,4 +1,4 @@
-# Project status — reviewed baseline, not live status
+# Project status — merged baseline and branch evidence
 
 **Baseline:** 2026-11-23 (Brazil local date); main
 `e4f05a152aefcf68fa8ec22f3baa3b61adb8519d` (PR #51 merge commit).
@@ -25,7 +25,50 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
-## M1B-01 source and temporal-evaluation decision proposal
+## Current owner decision and PR #57 evidence — 2026-11-25
+
+The owner selected research direction A then B: prepare the local,
+privacy-minimized UCI Online Retail #352 event-time retrospective pilot first,
+then a separate aggregate Census release-vintage study. ALFRED remains
+conditional on free authorized access, acceptable series terms and adequate
+archive evidence. This authorizes preparing adapters, protocols, dataset
+cards and privacy controls only. No original UCI or Census data or credentials
+were acquired. UCI processing remains blocked until the source-specific
+attribution/change notice, minimal projection, private local storage,
+retention/deletion and hash-bound manifest are reviewed. UCI outputs must be
+labeled `event_time_retrospective_unverified_availability`; `InvoiceDate` is
+not a publication timestamp. M5 remains NO-GO.
+
+PR #57 is still an open draft at
+`1bf178b5c4b31bcd68072b69748a14249c6c2649`, based on PR #53. The owner-approved
+temporary local gate ran independently in `D:\MirrorMind-review-57`: focused
+`tests/integration/test_api.py::test_health` passed (1.07 s), and the exact-head
+gate passed 700 tests plus all six checks (23.18 s) on Python 3.13.5. One
+existing Starlette/httpx warning was emitted. This is local evidence only.
+The earlier full gate on `8f906b8` timed out after 900 seconds; it did not
+reproduce on `1bf178b`, but no cause or fix has been established. See B-07.
+
+At the same `1bf178b` head, four GitHub Actions checks failed before workflow
+steps with the recovered annotation “The job was not started because recent
+account payments have failed or your spending limit needs to be increased.”
+The owner confirms quota exhaustion and no paid usage authorization; the
+annotation does not identify its exact account subcondition. The owner reports
+the protection API returned `Branch not protected` and rules `[]`; no settings
+were changed. No CI tests ran or passed. Use the exact-head temporary local
+gate, do not buy quota, and preserve checks/settings. See [B-08](BLOCKERS.md).
+
+The existing PR #55 stack already contains the strict M1E-01 request mapper,
+but no actual MirrorMind-to-WorldKernel execution has been verified. Current
+WorldKernel `main` exposes local JSON exchange v1 and a trusted synthetic
+inventory world; M1E-02 remains open until a specific source revision is
+pinned and the actual result is validated locally. No WorldKernel source was
+modified.
+
+## Archived M1B-01 state before owner direction (superseded)
+
+The following record is retained for audit history through commit `8f906b8`.
+It predates the owner decisions and independent exact-head verification
+recorded above, so its draft/code status and blocker wording are not current.
 
 Draft PR #57 remains documentation-only. Its [source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
 now gives three explicit choices: (A) UCI Online Retail #352 for

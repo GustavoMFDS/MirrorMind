@@ -121,6 +121,13 @@
       "notes": "Bounded optional read-only local XLSX parser on invented UCI-shaped workbooks only; not authorized original source ingestion, full official dataset processing, hostile workbook isolation or verified publication history."
     },
     {
+      "id": "local_uci_event_time_research",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/uci_event_time.py",
+      "test": "tests/integration/test_uci_event_time_cli.py::test_synthetic_cli_is_reproducible_and_keeps_event_time_limitations",
+      "notes": "Fixed local validation/holdout comparison of two one-day baselines on a generated workbook and caller-declared complete event dates. No original UCI data, permission, source completeness, publication vintages, point-in-time forecast, empirical accuracy or uncertainty calibration."
+    },
+    {
       "id": "local_retail_synthetic_evidence_flow",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/evidence_flow.py",

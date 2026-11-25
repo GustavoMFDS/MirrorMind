@@ -3,7 +3,8 @@
 The repository owner authorized a **temporary** alternative to GitHub Actions
 while the monthly quota is unavailable. This is **not** a claim that the
 official workflows ran or passed. All PRs retain clear evidence of the
-specific reviewed revision and local environment.
+specific reviewed revision and local environment. No Actions spend, quota
+increase, workflow edit or protection change is authorized by this procedure.
 
 ## Run on the exact intended PR head
 
@@ -39,11 +40,31 @@ Reviewers must inspect the relevant code, tests, assumptions, and source
 rights separately. This local gate cannot validate cloud-specific runner
 behavior or missing Linux-only integration details, substitute for
 authenticated publisher vintages, or establish forecast calibration.
-When quota is available, rerun both official workflows against the exact
-integrated changes and investigate any discrepancy.
+For a stack, validate each exact PR head as needed, independently review its
+diff, reconcile the full dependency stack without duplicate commits, and run
+the same six checks again on the exact clean integrated candidate. Preserve
+that receipt separately from branch receipts. Do not infer required-check or
+branch-protection status from a local pass. When ordinary official Actions
+execution is available again, check both workflows on the exact integrated
+revision and investigate any discrepancy; until then, report official CI as
+failed or not executed according to the actual remote check state.
+
+B-08 also records the no-cost self-hosted runner assessment. No runner is
+registered by this procedure. GitHub documents that self-hosted execution is
+not charged against included compute, but running pull request code requires
+an isolated disposable host and does not prove the current pre-start account
+annotation would be bypassed. Keep using this local procedure until a
+separately reviewed host and runner path are selected.
 
 The [local-gate regressions](../../tests/unit/test_local_quality_gate.py)
 verify fail-closed SHA checking, dirty-tree refusal, ordered manifest,
 failure/timeouts, and honesty of the receipt. The source
 [`scripts/local_quality_gate.py`](../../scripts/local_quality_gate.py)
 is standalone and performs no remote calls or repository mutations.
+
+On Windows, API tests may create local socket pairs while starting the
+asyncio Proactor event loop. B-07 records a restricted execution where this
+blocked in `socket.accept`, while the exact selector passed in the authorized
+local process. If reproduced, capture a bounded faulthandler stack and run the
+same exact-head gate in an environment that permits local socket creation;
+do not skip tests or change their timeout to hide the environment failure.
