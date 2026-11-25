@@ -39,6 +39,7 @@
 | State / persistence / API | `GET /v1/capabilities`, `CAPABILITY_LEDGER.json` | Declare one experimental library capability only | `test_capabilities_match_reviewed_ledger`; capability guard |
 | Calling components | None; library caller supplies streams and declarations | No change | Integration tests call public composition functions and compare aggregate receipts to child receipts |
 | CI dependencies | `.github/workflows/ci.yml` | Install explicit `dev`, `uci` and `review` extras | Existing full suite imports `openpyxl`/`cryptography` directly; no optional dependency test skip |
+| Local generated products | `.gitignore` | Ignore root and engineering Graphify output directories | Preserve local graph products without misclassifying them as tracked project files in the atlas coverage guard |
 | Downstream consumers | M1C offline evaluation is a future consumer | No consumer wired in this slice | Returned typed staged data; no forecast runs here |
 | External project/contracts | None | No change | No external adapter or network access |
 
