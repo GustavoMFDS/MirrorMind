@@ -69,6 +69,12 @@ proposal is decision-ready documentation, not source approval, acquisition or
 an empirical evaluation. Keep PR #57 in draft for the separate owner/review
 decision.
 
+The later published documentation head `fa1307b8e8a6dd8fc0f3fe54a072a1a4d5582da7`
+also failed both `push` and `pull_request` Actions events: `test` and
+`symbol-catalog` jobs have no steps or logs, and the single advertised
+annotation per check could not be read. The recorded runs are in [B-08](BLOCKERS.md).
+This second head provides no new evidence for a billing or code-failure cause.
+
 The documentation-only follow-up commit `8f906b8c0735bb04434c2c0a40efc2c3297df93b`
 records the latest B-08 evidence. Its exact-head full local gate returned
 pytest exit code 124 after the configured 900-second timeout; Ruff and the

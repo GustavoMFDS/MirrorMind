@@ -29,6 +29,19 @@ cause are therefore unavailable. No repository tests or catalog steps are
 evidenced on this head; do not attribute these failures to billing, spending
 limits or source code without the missing annotation or job evidence.
 
+The later published head `fa1307b8e8a6dd8fc0f3fe54a072a1a4d5582da7` produced
+failed `push` runs for `test` [45629175027](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45629175027)
+and `symbol-catalog` [45629175149](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45629175149),
+and failed `pull_request` runs for `symbol-catalog`
+[45629185787](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45629185787)
+and `test` [45629185886](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45629185886).
+All four jobs expose zero steps and null log URLs; download attempts returned
+`BlobNotFound`. Each check advertises one annotation, but the configured
+connector rejects the annotations endpoint. Exact causes remain unavailable;
+these observations do not establish billing, spending-limit or source-code
+failures. This records the verified `fa1307b` runs, not a claim about later
+heads.
+
 ### B-01/B-02 source decision proposal
 
 The owner-facing [source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
@@ -53,11 +66,12 @@ GitHub documents self-hosted runner use as free of its per-minute Actions
 charge. The owner still pays for compute, clean images, isolation, monitoring,
 log retention and teardown. A historical annotation on a different PR #52 head
 listed failed account payments or a spending-limit increase as alternatives;
-it did not identify which applied and says nothing conclusive about PR #57's
-current failure. No available evidence shows whether changing runner type
-would bypass the current pre-job failure. A dedicated ephemeral runner remains
-a conditional experiment, not a verified fix. Do not change workflows or
-required-check protections on this evidence.
+it did not identify which applied. PR #57's later `fa1307b` runs also contain
+no job steps/logs and unreadable annotations, so their cause remains unknown.
+No available evidence shows whether changing runner type would bypass these
+pre-job failures. A dedicated ephemeral runner remains a conditional
+experiment, not a verified fix. Do not change workflows or required-check
+protections on this evidence.
 
 If the owner later authorizes a bounded pilot, use a dedicated disposable VM
 created from a clean image for each job, registered as an ephemeral
