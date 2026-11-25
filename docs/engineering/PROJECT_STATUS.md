@@ -197,8 +197,11 @@ positive expected demand. This is documented as a toy heuristic, not a
 standard or optimized policy. The correction adds explicit `modeling_caveats`
 to comparison output, regressions for that edge case and per-run item
 conservation, plus walkthrough/debugging/learning updates. Focused simulation
-and CLI tests passed 12/12 with focused Ruff. Full exact-head gate and PR #59
-trace propagation remain pending. Actual engine use remains gated by B-04.
+and CLI tests passed 12/12 with focused Ruff. The exact integrated head
+`b7d226f41d17f4db3f1b220b417309cc0872b614` passed 768 tests, Ruff, catalog,
+atlas, evidence and capability checks; the local receipt is recorded in the
+M1E-03 change request. PR #59 trace propagation and official checks on the
+updated PR #58 head remain pending. Actual engine use remains gated by B-04.
 
 ## Architecture and actual execution boundaries
 
