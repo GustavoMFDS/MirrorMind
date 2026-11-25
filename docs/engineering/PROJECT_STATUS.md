@@ -25,34 +25,43 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
-## Active branch evidence — 2026-11-24
+## Active branch evidence — 2026-11-25
 
-The composed synthetic evidence flow is implemented at
-`c51ab30370db47e9f7105c97f870008e4fc442c5` on
-`codex/m1b-02-synthetic-evidence-flow` and is proposed in draft
+The composed synthetic evidence flow is implemented in the history beginning
+at `c51ab30370db47e9f7105c97f870008e4fc442c5`; the latest committed local
+PR #52 follow-up is `c093ba668f3bca204e4140a10fdde449d4b48b72` on
+`codex/m1b-02-synthetic-evidence-flow`, proposed in draft
 [PR #52](https://github.com/GustavoMFDS/MirrorMind/pull/52). The PR is
 unmerged. Its one new capability is experimental and uses only bounded
 local fixtures and caller-declared dates.
 
-Local evidence on that implementation commit: all five focused M1B-02
-integration tests passed; 690 tests passed when the entire API integration
-module was excluded; and a direct call to the registered capability handler
-matched the ledger's implemented, experimental and planned IDs. Ruff and
-the catalog, atlas, evidence and capability guards passed. The exact-commit
-gate did not pass: pytest exited 124 at its 900-second timeout, before the
-other gate stages. Verbose pytest stopped at `test_health`; the request
-blocked while asyncio created its local socket pair, before the API handler
-ran. The same socket-pair block reproduced with Python 3.12 and 3.13.5. A
-host/sandbox loopback restriction is a hypothesis; the root cause is not
-confirmed. See [B-07](BLOCKERS.md).
+The full local quality gate passed on exact head `c093ba668f3bca204e4140a10fdde449d4b48b72`
+at 2026-11-25 03:48:38 UTC: all 696 tests, Ruff, symbol catalog, repository
+atlas, evidence map and capability checks passed. The focused M1B-02 tests
+also passed, including child-to-aggregate receipt equality, missing and late
+availability abstention, calendar/release rejection, and digest/declaration
+mismatch rejection. This is local evidence on the exact branch head; it is
+not official CI or merge evidence.
 
-GitHub Actions has no test result for this SHA. Both `test` and
-`symbol-catalog` checks failed before their jobs started, with annotations
-stating that recent account payments failed or the spending limit needs to
-be increased. See [B-08](BLOCKERS.md), [test run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084072)
-and [symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084108).
-Do not treat the green local subset as a substitute for the complete gate
-or official CI.
+The prior published head `e3aedaf` also passed the complete gate at
+2026-11-25 03:35:40 UTC. An earlier restricted exact-gate run on
+implementation commit `c51ab30`
+timed out at 900 seconds while `tests/integration/test_api.py::test_health`
+waited during asyncio socket-pair creation before application code. The
+standalone reproduction occurred on Python 3.12 and 3.13.5. A host/sandbox
+loopback cause was proposed but never established. The subsequent full gate
+pass on the current head resolves that timeout as an active blocker for this
+PR; retain the failure as historical evidence only. See [B-07](BLOCKERS.md).
+
+The latest observed GitHub Actions for the prior published head `e3aedaf`
+have no repository test result. Its `test` and `symbol-catalog` runs failed
+before repository steps. Their exact annotation lists failed recent account
+payments or an increased spending limit as alternatives; it does not identify
+which condition applies, and the job summaries expose no steps or logs. The
+documentation-only local follow-up `c093ba6` had not yet been pushed at this
+snapshot. See [B-08](BLOCKERS.md), [test run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45541148002)
+and [symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45541148078).
+The local pass does not substitute for official CI.
 
 The next stacked slice is on `codex/m1c-01-synthetic-retail-evaluation`
 at `10ee6866f3340c679e0bfe3bfee11e199a32b56a` and is proposed as draft
