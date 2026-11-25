@@ -202,7 +202,12 @@ scenarios for independent replay.
 
 Curated claim `MM-SIM-001` cites
 `tests/unit/test_retail_policy_simulation.py::test_three_policies_share_each_reproducible_demand_stream`.
-The capability ledger separately cites the end-to-end CLI integration test.
+`MM-SIM-002` cites
+`test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`, and
+`MM-SIM-003` cites
+`test_inventory_mass_balance_holds_for_every_policy_replication` in the same
+unit test file. The capability ledger separately cites the end-to-end CLI
+integration test.
 
 ## Safety, failures and limitations
 
