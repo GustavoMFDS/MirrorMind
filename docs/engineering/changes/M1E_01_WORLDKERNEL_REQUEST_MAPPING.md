@@ -202,11 +202,13 @@ cherry-picking duplicate commits. Shared blocker, status and backlog records
 were reconciled; the WorldKernel mapping behavior and its acceptance boundary
 remain unchanged.
 
-The complete local quality gate passed on exact integrated SHA
-`b9eba02eb9dab228215ef2f731e693ae086d5751` at 2026-11-25 04:35:17 UTC:
-756 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and
-capability checks. The API suite ran; one existing Starlette/httpx TestClient
-deprecation warning appeared. This is local evidence, not official CI. The
+The complete local quality gate passed on merge commit
+`b9eba02eb9dab228215ef2f731e693ae086d5751` and documentation follow-up
+`cc9bdb4739507baa55cb857579ef70f7c92430d8`. On exact head `cc9bdb4` at
+2026-11-25 04:37:00 UTC, 756 pytest tests, Ruff, symbol catalog, repository
+atlas, evidence map and capability checks passed. The API suite ran; one
+existing Starlette/httpx TestClient deprecation warning appeared. This is
+local evidence, not official CI. The
 latest published PR #55 pre-sync head `b292db0` had failed Actions before
 repository steps under B-08; checks on the synchronized head remain pending
 publication. B-04 still blocks actual WorldKernel execution and result

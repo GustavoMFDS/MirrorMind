@@ -114,9 +114,11 @@ B-04 remains open.
 The prior integrated #52–#55 candidate `fd72b76` passed 756 tests plus all
 five non-pytest gate checks. Merge commit `b9eba02` synchronizes PR #55 with
 published PR #54 head `4d22006`, preserving both histories and PR #53's
-nested-receipt regressions. This exact integrated head passed the full local
-gate at 2026-11-25 04:35:17 UTC: 756 tests, Ruff, catalog, atlas, evidence and
-capability checks, with one existing Starlette/httpx deprecation warning.
+nested-receipt regressions. Merge commit `b9eba02` and documentation head
+`cc9bdb4739507baa55cb857579ef70f7c92430d8` both passed the full local gate.
+On exact head `cc9bdb4` at 2026-11-25 04:37:00 UTC, all 756 tests, Ruff,
+catalog, atlas, evidence and capability checks passed, with one existing
+Starlette/httpx deprecation warning.
 PR #55's prior published pre-sync head `b292db0231d00f307eb4b0694b8e73014bdb9211`
 had failed test and symbol-catalog checks before repository steps under B-08.
 The synchronized candidate is local and has no official Actions result yet.
