@@ -46,7 +46,7 @@ a domain-specific source-validation layer.
 | Claim ID | Test and observed behavior | Limitation |
 | --- | --- | --- |
 | **MM-API-001** | `tests/integration/test_api.py::test_scenario_validation_only` confirms a valid JSON request returns `validated_not_executed` | It does not prove execution or successful decision support |
-| **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies the scaffold lists the WorldKernel adapter under `planned` | This test alone does not verify all future capability claims |
+| **MM-API-002** | `tests/integration/test_api.py::test_capabilities_do_not_overstate_implementation` verifies `worldkernel_adapter` is listed as `experimental` and omitted from `planned` | API/ledger parity does not verify local engine execution; the separate pinned-engine integration test does that for one fictional demo only |
 | **MM-API-003** | `tests/integration/test_api.py::test_runs_cannot_exceed_budget` returns HTTP 422 for excess declared run count | A rejected request is not evidence of enforced runtime quotas |
 
 The `local_retail_synthetic_evidence_flow` and
@@ -56,9 +56,11 @@ execution is exposed by an HTTP route. The parity regression
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`
 checks that the API's implemented/experimental/planned lists match the
 reviewed ledger; matching labels do not establish the semantic truth of a
-capability claim. The Windows `TestClient` test currently cannot create its
-asyncio socket pair in this execution environment; a direct handler check
-does not substitute for HTTP runtime verification (see [B-07](BLOCKERS.md)).
+capability claim. An earlier restricted 900-second pytest timeout remains
+historical: the owner-reported isolated exact-head retest passed
+`tests/integration/test_api.py::test_health` and the six-check local gate on
+`1bf178b`. The cause remains undetermined; this is local verification, not
+official Actions or a general Windows runtime guarantee (see B-07 and B-08).
 
 ```bash
 python -m pytest -q tests/integration/test_api.py
@@ -66,10 +68,11 @@ python -m ruff check src tests
 python scripts/docs/evidence.py --check
 ```
 
-These are reproduction instructions, **not claims of local execution**
-for this docs-only change.
+These are reproduction instructions. Record the exact tested commit and local
+environment in the project status/change request; none of these commands
+represents official GitHub Actions evidence.
 
-## 4. Gateway interface and pure request mapping are not execution
+## 4. Gateway mapping, local worker and HTTP API are distinct
 
 [`modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py)
 declares `SimulationSummary` and a `SimulationGateway` Protocol with
@@ -80,9 +83,12 @@ module constructs a strict request for one world/revision when explicit units,
 state, parameters and operator limits are supplied. It rejects unsupported
 interventions and unresolved evidence/forecast references. Its limits are
 request preflight values, not server-enforced quotas; it does not send a
-request or validate a response. A later pinned SDK adapter must preserve the
-one-way dependency MirrorMind -> WorldKernel and test actual registered-world
-execution, result validation and runtime failure behavior.
+request or validate a response. A separate optional local adapter now runs
+one exact-SHA-pinned registered demo, applies local timeout/output bounds and
+validates the result. It is not invoked by an HTTP route. The implementation
+preserves the one-way dependency MirrorMind -> WorldKernel; see the
+[runtime gate](WORLDKERNEL_GATEWAY_GATE.md) for its source/test walkthrough and
+the remaining lack of hostile-code isolation and lead-time modeling.
 
 ## 5. Independent exercise
 
@@ -94,4 +100,5 @@ negative regression before adding a future simulation
 route. State which existing source modules would change,
 which must remain independent, and what evidence would
 be required before `worldkernel_adapter` can be moved
-from `planned` to `implemented`.
+from `experimental` to `implemented`, and explain which additional tests,
+authorization and operational controls that promotion would require.

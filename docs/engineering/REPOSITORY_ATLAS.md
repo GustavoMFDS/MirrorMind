@@ -849,8 +849,26 @@ The capability remains `interface_only`; `decision_evaluation` remains
 | [`docs/engineering/changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md`](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md) | M1E-01 scope, explicit acceptance, impact map and evidence |
 | [`docs/engineering/CHANGE_REQUEST_TEMPLATE.md`](CHANGE_REQUEST_TEMPLATE.md) | Reusable required-scope template referenced by the engineering workflow |
 
-The mapper does not execute the request, prove `demo-1` identifies immutable
-code, or expose a runtime capability. `worldkernel_adapter` remains planned.
+The mapper itself does not execute the request or prove `demo-1` identifies
+immutable code. The following local runtime is a separate experimental path.
+
+## 54. Optional pinned local WorldKernel execution (experimental)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py) | `LocalWorldKernelGateway`, `run_worldkernel_scenario`; revalidate/map, enforce local timeout and bounded output, validate exact result/inventory balance and form a provenance-bound summary |
+| [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py) | One-shot optional worker; verifies distribution version and exact VCS origin, registers only upstream built-ins and calls strict registered-revision execution |
+| [`pyproject.toml`](../../pyproject.toml) | Optional `worldkernel` extra pinned to one reviewed full source commit; no core dependency |
+| [`examples/m1e_02_worldkernel_local_runner.py`](../../examples/m1e_02_worldkernel_local_runner.py) | Reproducible fictional scenario; prints a local conditional summary and performs no input-file or network access |
+| [`tests/unit/test_worldkernel_runner.py`](../../tests/unit/test_worldkernel_runner.py) | Synthetic fake-worker protocol, pin metadata, result/balance, timeout, output and missing-runtime regressions |
+| [`tests/integration/test_worldkernel_runner_engine.py`](../../tests/integration/test_worldkernel_runner_engine.py) | Executes the actual optional engine only when exact package metadata pin is installed; otherwise skips |
+| [`docs/engineering/WORLDKERNEL_GATEWAY_GATE.md`](WORLDKERNEL_GATEWAY_GATE.md) | Runtime architecture, contracts, installation, security boundaries, reproduction and residual acceptance gates |
+| [`docs/engineering/changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md`](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md) | Scoped M1E-02 change request, impact map and exact-head evidence |
+
+The local path executes only `retail.inventory.demo@demo-1` at the exact
+WorldKernel source pin. It is not an HTTP capability, hostile-code sandbox,
+real inventory model, lead-time simulation or production service. The API
+remains bootable with the optional package absent.
 
 
 ## Continuous engineering handoff and execution register

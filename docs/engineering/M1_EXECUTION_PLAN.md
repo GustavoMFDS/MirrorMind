@@ -7,9 +7,10 @@ An accepted architecture is not equivalent to implemented AI.
 Current state: API scaffold and ScenarioSpec validation are
 implemented; bounded synthetic preflights, review-only staging,
 offline retail baselines and release-aware evaluation exist as
-**experimental local slices**. Authorized evidence ingestion,
-empirical forecasting, decision evaluation and WorldKernel SDK
-execution adapter remain unimplemented.
+**experimental local slices**. An optional exact-pin WorldKernel adapter now
+executes one synthetic registered demo locally as an experimental capability.
+Authorized evidence ingestion, empirical forecasting, a lead-time simulation
+model and the end-to-end decision workflow remain unimplemented.
 
 ## 1. Dependency-ordered milestones
 
@@ -19,7 +20,7 @@ execution adapter remain unimplemented.
 | **M1b — authorized observation input** | Read a bounded, approved dataset snapshot with explicit entity/time/units, license, provenance, availability date and no silent imputation | Data card, permission evidence, duplicate/late publication/leakage tests, deterministic sanitized fixture | Do not call it `implemented` until tested and reviewed |
 | **M1c — forecast baselines** | Seasonal-naive benchmark and a second honest baseline, both with fixed temporal splits | Rolling-origin test, documented MAE/RMSE and zero-safe metrics, comparison on the same holdout, model cards | Experimental forecasts **only** with scope and empirical backtest |
 | **M1d — uncertainty and sensitivity** | Calibrated or explicitly uncalibrated interval procedure and robustness across missing days/lead times | Interval-coverage tests, drift/abstention cases, forecast card update | Do not present intervals as guaranteed |
-| **M1e — first simulation gateway** | Concrete, optional WorldKernel adapter over explicit version mapping and trusted worlds | SDK contract tests, unsupported input rejections, server-owned budgets, real fixture E2E without fabricating stock | `worldkernel_adapter` may become experimental after tests |
+| **M1e — first simulation gateway** | Concrete optional adapter over explicit version mapping and one trusted synthetic WorldKernel world | Exact package pin, strict registration check, unsupported-input/result rejection, local scenario/operator/time/output bounds and actual synthetic engine integration; service isolation is a separate gate | `worldkernel_adapter` experimental for one local demo only |
 | **M1f — reviewable decision comparison** | Trace observations, forecasts and conditional scenario outcomes without automatic business writes | Decision trace, approval gates, cost budgets and independent replay | No agentic automation or operational promise until implemented |
 
 ## Current synthetic M1 path — 2026-11-24
@@ -40,21 +41,23 @@ calibrated uncertainty requirements.
 M1F-01 adds a versioned local decision-result contract on the current
 stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,
 gaps, costs and human review separate, with local reference/cutoff checks and
-an exact-result digest. Its docs head passed the canonical local gate with
-712 tests, including API; official checks remain blocked by B-08. It is
-interface-only: no producer, ranking, API, storage, actual engine output or
-action permission exists. M1F-02 remains the first runnable end-to-end
-decision comparison and still depends on an actual compatible simulation
-path and the named M1 predecessors.
+an exact-result digest. It remains interface-only: no producer, ranking, API,
+storage, forecast or action permission exists. M1F-02 remains the first
+runnable end-to-end decision comparison and still depends on M1E-03's
+appropriate lead-time model plus the named evidence and evaluation
+predecessors; the `retail.inventory.demo` handler is not that model.
 
 M1E-01 now has a pure, fail-closed request mapping for the inspected
 `retail.inventory` `0.1` to WorldKernel `retail.inventory.demo` `demo-1`
 contract. It requires explicit item/day/order units and operator-configured
 limits, and rejects unresolved evidence/forecast refs, interventions and
-unknown state or parameters. It constructs JSON only. M1E-02 remains blocked
-on B-04 for a pinned compatible engine and actual SDK execution; no simulation
-capability is promoted. The current docs head passed the canonical local gate
-with 737 tests, including API; official checks remain blocked by B-08.
+unknown state or parameters. M1E-02 adds an optional exact-SHA subprocess
+worker, package-origin check, registered-revision execution, strict result
+validation and local timeout/output caps. It executes only synthetic
+`retail.inventory.demo@demo-1`; API startup remains independent and no HTTP
+simulation route exists. The capability is experimental. Broader B-04 service
+isolation and a lead-time model remain open. See the local M1E-02 change record
+for exact-head evidence; official Actions remain unavailable under B-08.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not

@@ -45,10 +45,10 @@
     },
     {
       "id": "worldkernel_adapter",
-      "status": "planned",
-      "source": null,
-      "test": null,
-      "notes": "WorldKernel is independent; no versioned adapter translating and executing scenarios."
+      "status": "experimental",
+      "source": "src/mirrormind/modules/simulation/worldkernel_runner.py",
+      "test": "tests/integration/test_worldkernel_runner_engine.py::test_pinned_local_runner_executes_synthetic_inventory_world_deterministically",
+      "notes": "Optional local subprocess adapter verifies WorldKernel version and PEP 610 source commit 9b133ef873f2b6a7206c9c5742d40df4fccdb04a, uses trusted retail.inventory.demo demo-1 registration, and validates exact worldkernel.result.v1 shape, counts, nonnegative states and immediate-order stock balance. It enforces local timeout and bounded stdout/stderr. PEP 610 is not installed-file attestation. No HTTP execution route, source data, forecast, arbitrary-world registration, CPU/memory sandbox, lead-time model or production deployment."
     },
     {
       "id": "decision_trace_result_contract",

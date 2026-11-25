@@ -129,44 +129,52 @@ forecasting claim.
 
 ## Next action
 
-An accountable human reviewer should select the
-specific intended research/commercial task and
-approve the license attribution and data-minimization
-plan. Then a separate source adapter PR can consume
-only that approved local source, with negative tests
-for mixed datasets, cancellations, time assumptions,
-privacy fields, size limits and reproducible output.
+Owner approved preparing a narrow, local research adapter and a separate
+aggregate temporal-method protocol. This is not approval to acquire or process
+the real workbook. Before any source bytes are handled, complete the exact
+terms, attribution/change notice, field-minimization, secure storage,
+retention/deletion and manifest checks above and obtain source-specific
+approval. Automated tests remain synthetic-only.
 
-**Current result:** a better-documented source
-candidate with an official license statement.
-**Not yet delivered:** downloaded/verified original
-bytes, source-specific adapter, customer-data
-review, real historical publication times,
-held-out real-data predictive results,
-calibrated uncertainty or WorldKernel integration.
+**Current source state:** the UCI event-time evaluator is proposed and
+implemented on draft PR #57; no real file was acquired. The local 1 MiB XLSX
+reader still cannot process UCI's complete 22.6 MB workbook, so a separately
+reviewed bounded streaming path would be required before full-file use.
+Unverified publication time, empirical performance and source permission are
+not delivered.
 
-## 5. Decision-ready alternatives for B-01 / B-02
+## 5. Owner-approved preparation plan for B-01 / B-02
 
 This section prepares a source and temporal-method decision. It grants no
 permission to download data or make a real-source capability claim.
 
-### Option A — UCI Online Retail II for retrospective transaction research
+### A — UCI Online Retail #352 event-time retrospective
 
-UCI's current [Online Retail II record](https://archive.ics.uci.edu/dataset/502/online+retail)
-states CC BY 4.0, 1,067,371 transactions, and event dates from 2009-12-01
-through 2011-12-09. It also lists customer and invoice identifiers. The page
-records a 2019-09-20 donation date, which is not evidence of when each row was
-first available to a forecaster. A legal license statement does not resolve
-privacy, intended use, retention, or historical-availability questions.
+The selected source is UCI [Online Retail #352](https://archive.ics.uci.edu/dataset/352/online-retail),
+not Online Retail II #502. Its `InvoiceDate` is transaction event time; no
+row-level publication timestamp is supplied. The owner approved preparation
+of research-only event-time evaluation, not real workbook acquisition or
+commercial use. Removing `CustomerID` and `InvoiceNo` is minimization, not
+proof of anonymization.
 
-**Permitted research scope if the owner approves:** one exact source snapshot,
-attribution and change notice, local-only controlled processing, reviewed
-data card, minimal aggregation, no raw rows in Git/CI/prompts, and explicitly
-retrospective event-time analysis. Do not call it leakage-free point-in-time
-backtesting, live demand, inventory optimization, or M1C-03 empirical
-validation unless independent release-time evidence is obtained. Removing
-`CustomerID` and `InvoiceNo` is a minimization step, not proof of
-anonymization.
+**Predeclared protocol:** freeze product cohort from fit history only. Fit and
+cohort end 2011-08-30; validation origins run 2011-08-31 through 2011-09-30;
+locked one-day-ahead holdout origins run 2011-10-01 through 2011-12-08 with
+targets through catalog end 2011-12-09. Compare same-weekday lag-7 and
+trailing-seven-calendar-day baselines on identical eligible product/origin
+pairs. Report MAE, RMSE, zero-safe WAPE, coverage and abstentions. A zero target
+may be materialized only after a reviewed snapshot proves date coverage and
+source completeness; otherwise abstain. Restrict output to aggregate metrics
+and ordinal-only product summaries. Label all results
+`event_time_retrospective_unverified_availability`; never create
+`available_on` from `InvoiceDate`.
+
+The adapter and regression tests on draft [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
+operate on synthetic fixtures. The official workbook exceeds the existing
+parser's row/group bounds and would require a separately reviewed bounded
+streaming adapter. A synthetic test proves projection/evaluation behavior,
+not rights, source completeness, actual workbook compatibility or real-data
+predictive skill.
 
 ### Option B — Census MARTS release-vintage method pilot
 
@@ -189,7 +197,7 @@ reconstruct them from today's revised series. [ALFRED real-time periods](https:/
 describe retrieval by historical knowledge period and may be evaluated as an
 alternative vintage source; no API key, access or download is assumed here.
 
-### Proposed temporal protocol (owner decision required)
+### B — aggregate Census temporal protocol
 
 1. Select one aggregate series and geography, one to three monthly forecast
    horizons, and first-release or revised-final target semantics before
@@ -205,23 +213,32 @@ alternative vintage source; no API key, access or download is assumed here.
    defined, coverage, excluded origins, and target vintage. Freeze the split
    and baseline before model tuning; report uncertainty separately and do
    not infer inventory-policy quality from aggregate sales.
-5. Store an immutable vintage manifest and dataset card before any run. A
-   reviewer must approve rights, terms, retention, cost/access requirements
-   and the exact research-only scope before retrieval.
+5. Store an immutable vintage manifest and dataset card before any run. Use
+   free official archived releases first. ALFRED remains conditional on free
+   authorized access, series terms and adequate historical-vintage evidence;
+   no paid credentials or service are assumed. Retrieve only after a reviewer
+   approves rights, terms, retention and exact research-only scope.
 
-### Decision requested from the project owner
+### Decision recorded and remaining permission gates
 
-- Approve or reject a **no-download, design-only** Census/ALFRED method pilot
-  and its aggregate-only scope.
-- If approved, choose Census first releases or an ALFRED series after an
-  availability and terms check; set geography and horizon. Data retrieval
-  still waits for a reviewed dataset card and access approval.
-- Decide separately whether UCI transaction research is in scope, including
-  attribution, commercial/research purpose, privacy review, minimization,
-  retention and local storage boundary.
-- Keep B-01/B-02 open for SKU-level retail evidence until an approved source
-  supplies defensible point-in-time availability and a locked empirical
-  holdout.
+- **Accepted:** prepare A followed by independent B; keep Census aggregate-only
+  and UCI event-time retrospective. Synthetic tests remain mandatory and no
+  source bytes or credentials are in scope.
+- **Still required before UCI processing:** verify original terms and
+  attribution/change notice, approve exact field projection and cancellation
+  classification, secure local storage, retention/deletion, exact snapshot
+  manifest and dataset card. No raw/identifying data in Git, CI, logs, prompts
+  or external services.
+- **Still required before Census retrieval:** select exact aggregate series,
+  release archive and geography; verify rights, source bytes, first-release
+  versus revised-vintage semantics, availability timestamps and an immutable
+  manifest. Do not reconstruct missing historical vintages from today's
+  revised series.
+- B-01/B-02 remain open for source authorization and point-in-time acceptance.
+  M5 remains NO-GO. No SKU-level demand or inventory-policy validation follows
+  from an aggregate Census series.
 
-**Current status:** options and protocol are prepared for owner decision;
-neither source was downloaded, and no approval or empirical result is claimed.
+Owner direction is recorded in [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818).
+**Current status:** A's synthetic evaluator is present on the draft PR branch;
+B's protocol is prepared. Neither source was downloaded, no source-specific
+processing approval was granted and no empirical result is claimed.

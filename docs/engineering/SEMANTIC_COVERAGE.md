@@ -58,8 +58,10 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/forecasting/__init__.py`](../../src/mirrormind/modules/forecasting/__init__.py) | I | Offline forecast module marker, no model registry |
 | [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step staged rolling origin baselines and abstentions; [method guide](M1_STAGED_ROLLING_BASELINES.md) |
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
-| [`src/mirrormind/modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py) | R | `SimulationGateway` Protocol and `SimulationSummary` model, **no live adapter**; [API guide](API_WALKTHROUGH.md) |
+| [`src/mirrormind/modules/simulation/gateway.py`](../../src/mirrormind/modules/simulation/gateway.py) | R | Engine-neutral `SimulationGateway` Protocol and `SimulationSummary`; local implementation is separate/optional; [API guide](API_WALKTHROUGH.md) |
 | [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | G | Pure allowlisted `ScenarioSpec` to WorldKernel v1 request construction with explicit units and operator limits; no execution; [walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) |
+| [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py) | G | Experimental local gateway; revalidates/maps, launches fixed optional worker, bounds timeout/output and validates result; [runtime gate](WORLDKERNEL_GATEWAY_GATE.md) |
+| [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py) | G | One-shot worker verifies exact VCS package metadata and invokes only registered built-ins with strict revision check; not a hostile-code sandbox; [runtime gate](WORLDKERNEL_GATEWAY_GATE.md) |
 
 ## Capability readiness — do not confuse existence with deployment
 
@@ -68,9 +70,9 @@ sources without relying on a manually maintained file-count assertion.
 | Health endpoint | Implemented in scaffold | Actual endpoint regression; not a dependency readiness probe |
 | Scenario contract shape and two cross-field rules | Implemented validation only | Pydantic unit and API tests; still no authorization or execution |
 | Local retail synthetic evidence flow | Experimental composition only | Generated fixture tests; no real-source rights, publisher provenance, authorized ingestion or API execution |
-| SimulationGateway Protocol | Interface only | A concrete executor and validated engine result; pure request translation now has separate unit evidence |
-| WorldKernel request mapping | Pure local translation only | A pinned optional SDK adapter, registered-world execution, result validation and runtime failure evidence |
-| WorldKernel execution | Planned | Optional pinned adapter, trusted world registry, budgets, actual results |
+| SimulationGateway Protocol | Interface only | Protocol does not execute; the optional adapter is separately classified |
+| WorldKernel request mapping | Pure local translation only | Mapping tests; runtime behavior is covered by separate runner tests |
+| WorldKernel local execution | Experimental, one synthetic registered world at one exact pin | Actual-engine test covers local compatibility; no HTTP route, arbitrary worlds, CPU/memory isolation or lead-time model |
 | Evidence ingestion/RAG | Planned | Permission checks, provenance, retention, source-specific tests |
 | Forecasting | Planned | Temporal holdout, leakage prevention, baselines, uncertainty evaluation |
 | Agentic workflow | Planned | Tool privilege boundaries, approval and cost limits, audit |
@@ -78,8 +80,8 @@ sources without relying on a manually maintained file-count assertion.
 | Tenant isolation/production auth | Planned | Threat model, authorization tests, audit and security review |
 
 **No function in the repository currently provides** live forecasting,
-retrieval, data connectors, autonomous actions, verified business
-provenance, budgeted simulation execution or production-grade security.
+retrieval, authorized data connectors, autonomous actions, verified business
+provenance, hostile-code-isolated simulation or production-grade security.
 A typed reference does not imply its target exists.
 
 ## Independent teaching goals
@@ -188,7 +190,9 @@ the deliberately missing publication timestamp.
 The capability is `local_uci_transaction_projection`
 **experimental** only. Actual authorized ingestion,
 historically proven release vintages, deployed
-forecasting and simulation remain **planned**.
+forecasting and generalized/service simulation remain **planned**. One local
+synthetic WorldKernel demo is separately **experimental**; see the runtime
+gate for its limits.
 
 ## Experimental optional XLSX parser is not the entire UCI source pipeline
 

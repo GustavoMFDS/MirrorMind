@@ -49,8 +49,9 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Signed source review and revocation](SIGNED_SOURCE_REVIEW.md) — experimental Ed25519 metadata check with permanent same-packet revocation and external trust-root dependency; [change request](changes/M1B_SIGNED_REVIEW_REVOCATION.md). No legal authorization or ingestion.
 - [Source intake review packet](SOURCE_INTAKE_REVIEW.md) — binds previously staged CSV/XLSX digests to sanitized caller-declared rights/privacy/retention metadata without granting ingestion or verifying historical availability; [change record](changes/M1B_SOURCE_REVIEW_PACKET.md).
 - [UCI-shaped local XLSX reader](UCI_WORKBOOK_READER.md) — optional, **bounded and offline**, tested only on [generated Excel fixtures](datasets/SYNTHETIC_UCI_XLSX_CARD.md). Refuses unreviewed schemas and does not establish rights or full official UCI source support.
-- [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — strict pure request mapping is implemented; pinned engine execution remains pending.
-- [WorldKernel mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) — strict pure translation, operator ceilings, unit assertions, failure cases, tests and current execution boundary.
+- [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md) — strict mapping plus experimental exact-pin local execution for one synthetic registered world; no HTTP simulation route or hostile-code sandbox.
+- [WorldKernel mapping and runtime walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) — mapping, subprocess protocol, version checks, result validation, resource bounds, tests, learning exercises and limits.
+- [M1E-02 local runtime change request](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md) — scoped acceptance, impact map, compatibility review and exact-head evidence record.
 - [Change request template](CHANGE_REQUEST_TEMPLATE.md) — required scope, acceptance and impact-map structure for meaningful engineering changes.
 - [Debugging playbook](DEBUGGING.md) — reproduce a failure, trace behavior, identify evidence, patch and add regression tests.
 - [Learning guide](LEARNING.md) — guided source reading and independent practice.

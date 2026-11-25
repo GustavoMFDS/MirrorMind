@@ -107,9 +107,9 @@ revalidates the mutable `ScenarioSpec` at the mapping boundary and enforces
 the effective minimum of scenario and operator `max_runs`. Regression tests
 are `test_mapping_revalidates_mutated_scenario_before_budget_mapping` and
 `test_mapping_preserves_lower_scenario_or_operator_run_ceiling`. The walkthrough
-explains why unrepresentable scenario timeouts/model/output budgets must be
-rejected or enforced by a future adapter. No engine is imported or executed;
-B-04 remains open.
+explains why unrepresentable model/output budgets must be rejected or enforced
+outside exchange v1. PR #55 itself only maps requests; separate local M1E-02
+work below adds optional execution.
 
 The prior integrated #52–#55 candidate `fd72b76` passed 756 tests plus all
 five non-pytest gate checks. Merge commit `b9eba02` synchronizes PR #55 with
@@ -122,8 +122,58 @@ Starlette/httpx deprecation warning.
 PR #55's prior published pre-sync head `b292db0231d00f307eb4b0694b8e73014bdb9211`
 had failed test and symbol-catalog checks before repository steps under B-08.
 The synchronized candidate is local and has no official Actions result yet.
-The mapper remains request construction only; no WorldKernel import or
-execution is claimed.
+The mapper remains request construction only. Separate local M1E-02 work below
+adds the first exact-pin synthetic engine execution; official Actions remain
+blocked by B-08.
+
+## Local M1E-02 candidate — experimental and unsubmitted
+
+Branch `codex/m1e-02-worldkernel-local-runtime` starts from PR #55 head
+`56aa92a6920a429b83458380231642fe59feaf08` and adds optional local execution
+at WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. The worker
+verifies package version and PEP 610 source metadata, registers only upstream
+built-ins, and requires the exact `demo-1` registration. The parent reuses the
+strict mapper, applies scenario/operator ceilings, enforces its scenario-capped
+wall timeout and bounded stdout/stderr, validates exact `worldkernel.result.v1`
+fields, and forms a deterministic `SimulationSummary` with hashes. A synthetic
+integration test executes the actual optional engine; unit tests also use
+synthetic fake workers to exercise malformed results, wrong revisions,
+timeouts, output overflow, missing runtime and API import independence.
+
+The capability is experimental and local. It is not connected to an HTTP
+route and does not establish CPU/memory isolation, hostile-code safety, source
+rights, forecast quality, lead-time modeling or production use. The upstream
+repository remains untouched; its inspected pin has no root `LICENSE` file,
+so no redistribution claim is made. Local M1E-02 gate evidence and final SHA
+are recorded in the change request after the exact-head gate completes; no PR
+has been opened for this branch.
+
+## PR #57 owner direction and current remote evidence
+
+The draft source-review branch `codex/m1b-01-source-review` is based on PR #53
+and currently publishes `678755e2569939e66358ec482955defca7abf6b8`. It adds the
+UCI #352 local event-time evaluator and a separate aggregate Census
+release-vintage protocol. On that exact head, the six-check temporary local
+gate passed 712 tests in 18.19 seconds, with one existing Starlette/httpx
+warning; receipt status is `local_gate_passed_not_official_ci`. This is not
+official Actions evidence. Four checks currently fail with empty step lists
+and unavailable logs/annotation text, so this head's individual cause remains
+unknown.
+
+Owner direction accepts preparing A then B only: A is a privacy-minimized,
+research-only UCI event-time retrospective; B is aggregate Census release
+history, with ALFRED conditional on free authorized access, terms and adequate
+archive evidence. No real dataset bytes, credentials or vintage snapshots were
+acquired. No raw/identifying data may enter Git, CI, logs, prompts or external
+services. UCI output remains
+`event_time_retrospective_unverified_availability`; M5 remains NO-GO. B-01 and
+B-02 remain open pending source-specific permissions and actual temporal
+evidence. The PR remains draft for separate review/integration decisions.
+
+At earlier exact head `1bf178b5c4b31bcd68072b69748a14249c6c2649`, an independent
+fresh-worktree retest passed the health test and all six local-gate checks
+(700 tests); the older restricted timeout did not reproduce, but its cause
+remains undetermined. See [B-07/B-08](BLOCKERS.md) for exact evidence.
 
 ## Architecture and actual execution boundaries
 
@@ -133,7 +183,7 @@ execution is claimed.
 | Evidence and retail staging | [CSV snapshots](../../src/mirrormind/modules/evidence/snapshots.py), [UCI-shaped workbook](../../src/mirrormind/domains/retail/uci_workbook.py), [intake packet](../../src/mirrormind/modules/evidence/intake_review.py), [composite retail preflight](../../src/mirrormind/domains/retail/evidence_flow.py), synthetic coverage/release diagnostics | Real permission, original snapshot/provenance, availability and authorized ingestion |
 | Forecasting | [Offline baselines](../../src/mirrormind/modules/forecasting/baselines.py), [retail release backtest](../../src/mirrormind/domains/retail/release_backtest.py), [residual envelope](../../src/mirrormind/domains/retail/residual_envelope.py), selection/drift/sensitivity diagnostics | Locked empirical holdout, evaluated models, calibrated or explicitly limited uncertainty, real inference |
 | Governance | [Signed review history](SIGNED_SOURCE_REVIEW.md), [atomic governed publisher](ATOMIC_GOVERNED_PUBLISHER.md), [signed fence](INTEGRATED_HEAD_FENCE.md), [two-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md), [separate local registry](LOCAL_INTEGRATED_FENCE_REGISTRY.md), [HTTPS reader](REMOTE_FENCE_HEAD_CLIENT.md) | Server-side implementation and operational independence/custody, real source authorization |
-| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py) protocol and strict pure [WorldKernel request mapping](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Actual compatible optional engine adapter, execution, result validation and budgets |
+| Simulation | [SimulationGateway](../../src/mirrormind/modules/simulation/gateway.py), strict [WorldKernel mapper](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), experimental [pinned local runner](../../src/mirrormind/modules/simulation/worldkernel_runner.py) and fixed worker | No HTTP execution, arbitrary-world support, hostile-code CPU/memory isolation, lead-time retail model or production operation |
 | Decision, orchestration and UI | Design and review templates | Executable comparison, agent/RAG workflow, review interface |
 | Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |
 

@@ -180,8 +180,30 @@ and `test_mapping_preserves_lower_scenario_or_operator_run_ceiling` when a
 budget-related failure appears. Interventions and evidence/forecast references
 are intentionally unsupported. The existing `examples/retail-scenario.json`
 fails mapping because it has an intervention and omits daily demand; do not
-add hidden defaults to make it pass. This module only constructs a request.
-It does not verify remote package identity, run the simulation, enforce
-`timeout_seconds`, model-call/output-token limits, worker quotas, wall-clock
-or memory limits, or validate result payloads. A future adapter must enforce
-budgets absent from exchange v1 or reject before execution.
+add hidden defaults to make it pass. The mapper only constructs a request.
+For the separate experimental local execution path, continue with the runbook
+below; do not infer a working HTTP simulation route.
+
+## WorldKernel local execution fails or times out
+
+Read [the runtime gate](WORLDKERNEL_GATEWAY_GATE.md), then run the exact
+synthetic example with the pinned optional package. Keep the test environment
+and source SHA visible; never add a real workbook or customer rows to
+diagnostics.
+
+| Symptom | Check | Safe response |
+| --- | --- | --- |
+| `pinned WorldKernel package is not installed` | `python -m pip show worldkernel`; inspect installed distribution metadata and optional extra | Install `.[worldkernel]` only in the local development environment; do not make the dependency mandatory. |
+| Installed package does not match reviewed pin | Compare `worldkernel` version and `direct_url.json` VCS URL/commit with `WORLDKERNEL_SOURCE_COMMIT` | Reinstall the exact SHA-pinned extra. Do not accept a tag or `demo-1` registry label as package identity. |
+| `WorldKernel worker exceeded local timeout` | Compare `ScenarioSpec.budget.timeout_seconds` and trusted `WorldKernelRuntimeConfig.max_timeout_seconds`; effective timeout is the lower | Reproduce with the synthetic fixture, inspect bounded worker behavior and adjust only operator-approved local limits within 300 seconds. Never skip the timeout regression. |
+| Worker output exceeded local limit | Check whether stdout exceeded configured cap or stderr exceeded 4 KiB; inspect only fixed sanitized errors | Keep output bounded. Do not dump worker logs or scenario content. Large results require a reviewed contract change. |
+| Result schema or revision mismatch | Inspect fake-worker test and exact upstream exchange/result source at the pinned SHA | Reject the result. Update mapping only with a separately reviewed compatible pin and regression tests. |
+| Process works but API lacks simulation | Expected: no route invokes `LocalWorldKernelGateway` | Call the local adapter explicitly from a trusted local caller. Do not change API capability to imply a service. |
+| Simulation returns surprising inventory values | Compare exact fictional input, seed, steps, package SHA and `demo-1` revision | Treat output as conditional. The demo has random daily demand variation and immediate replenishment; it has no lead-time model. Do not interpret as real inventory or forecast evidence. |
+
+`tests/unit/test_worldkernel_runner.py` reproduces parent-protocol faults with
+synthetic fake workers. `tests/integration/test_worldkernel_runner_engine.py`
+must execute the exact installed package to prove local engine compatibility;
+a skipped test is not evidence. The local process timeout and output cap do
+not isolate CPU/memory or arbitrary code. For other runtime or service claims,
+require a separate acceptance scope and operational review.

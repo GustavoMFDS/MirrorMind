@@ -929,5 +929,33 @@
     "test": "tests/unit/test_decision_trace.py",
     "function": "test_trace_reference_lists_have_a_maximum_size",
     "limitation": "Checks a per-record reference bound; it does not authenticate referenced records or enforce a request-size limit."
+  },
+  {
+    "id": "MM-WKR-001",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_bounds_worker_output",
+    "limitation": "A synthetic fake worker proves that the parent detects stdout overflow and retains bounded output. Separate tests cover stderr, timeouts and invalid results. These tests do not execute WorldKernel or provide CPU/memory isolation."
+  },
+  {
+    "id": "MM-WKR-002",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/integration/test_worldkernel_runner_engine.py",
+    "function": "test_pinned_local_runner_executes_synthetic_inventory_world_deterministically",
+    "limitation": "Executes one exact SHA-pinned WorldKernel built-in using fictional inputs and verifies repeated local summaries. It does not establish source rights, demand validity, lead-time behavior, forecast quality, hostile-code isolation or production suitability. The test skips when the exact optional package is absent."
+  },
+  {
+    "id": "MM-WKR-003",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_worker_accepts_exact_pep610_repository_and_commit",
+    "limitation": "Mocked distribution metadata proves the worker compares expected repository, version and VCS commit correctly. It does not attest installed package files, verify external signature trust or execute the engine."
+  },
+  {
+    "id": "MM-WKR-004",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_rejects_inventory_result_that_breaks_balance",
+    "limitation": "A fake result with fictional inventory counts proves the parent rejects one inconsistent state under the pinned demo's immediate-order conservation equation. It does not validate every upstream transition, business meaning, lead time or the inventory model's predictive quality."
   }
 ]

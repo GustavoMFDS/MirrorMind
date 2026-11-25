@@ -9,28 +9,31 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | Real source rights: M5 unresolved; UCI Online Retail II shows CC BY 4.0, which is not project-use or privacy approval. UCI and aggregate Census/ALFRED options are documented for owner decision; no data was downloaded. | Original license/terms, intended research or commercial use, attribution, privacy/minimization, retention, accepted dataset card and explicit source approval | Project owner / appropriate rights reviewer | Keep synthetic fixtures; choose/reject the no-download aggregate method pilot and decide separately on UCI handling |
-| B-02 | Historical availability and empirical evaluation: event time is not first availability. A concrete Census/ALFRED release-vintage protocol is proposed; retained first-release values remain unverified. | Verified source vintages/revisions, immutable snapshot, locked chronological split and approved data; never substitute transaction/event timestamp for first availability | Project owner with evidence/model reviewer | Implement synthetic delay, missingness, leakage and holdout regressions; prepare exact source manifest only after decision |
+| B-01 | M5 remains NO-GO. Owner approved preparation of sequential UCI Online Retail #352 and aggregate Census pilots, not source acquisition or general use. UCI is a local event-time study; Census is aggregate-only. No source bytes were acquired. | Verify original source terms, attribution/change notice, purpose, privacy/minimization, retention/deletion, exact snapshot manifest and accepted dataset card; obtain source-specific approval before processing any real file | Project owner / appropriate rights reviewer | Keep automated tests synthetic; prepare the narrow adapter, permission/privacy plan and aggregate protocol without acquiring source data |
+| B-02 | Historical availability remains unverified. Owner approved preparing UCI event-time retrospective evaluation followed by a separate aggregate Census release-vintage study. Event time is not publication time; no vintage was fabricated or materialized. | Verify official first-release/revision vintages and conservative as-of availability; freeze source snapshot and chronological split only after approval; never substitute transaction time for release evidence | Project owner with evidence/model reviewer | Add synthetic delay, missingness, leakage and holdout regressions; prepare source/vintage manifests without downloading or claiming temporal acceptance |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
-| B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
+| B-04 | Narrow local M1E-02 compatibility is now exercised experimentally against exact WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a` with a fictional registered demo, result validation, timeout and bounded output. Broader service/hostile-code isolation, artifact attestation, licensing for redistribution and a lead-time world remain unresolved. | Reviewed separate service/security design, CPU/memory and process-tree isolation evidence, source licensing decision for any redistribution, and a separately reviewed lead-time model before M1E-03/product claims | Project owner / engine maintainer | Preserve local optional SHA pin and synthetic integration; keep API independent and WorldKernel repo read-only; do not describe demo as demand or lead-time model |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Later exact clean integrated heads `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and `fd72b76` passed all six local-gate stages with 756 tests; PR #54 head `4d22006` passed with 728 tests. PR #55 sync merge `b9eba02` and its documentation follow-up `cc9bdb4` each passed the complete exact-head gate with 756 tests and all five other stages. The timeout remains historical; no application code or test verifier was weakened. | Reopen only if a later exact-head gate reproduces a failure; do not skip API tests | Codex execution environment / project maintainer | Preserve the restricted timeout and exact-head receipts as separate evidence; keep API tests enabled and rerun outside the restricted environment if the timeout recurs. |
-| B-08 | Published PR #52 head `b431d11` and #53 head `79d3679` each have failed `test`/`symbol-catalog` runs without repository logs. Published PR #54 head `4d22006` and PR #55 pre-sync head `b292db0` also have failed checks. The exact annotation on #54/#55 says recent account payments failed **or** the spending limit needs to be increased; it does not identify which condition applies. No repository test steps ran. The newly synchronized PR #55 candidate is local at `b9eba02`; its official checks have not been inspected yet. See the head-bound run table below. This does not establish a billing root cause or whether a runner change bypasses the pre-job gate. | Repository/account owner checks the GitHub Billing & plans state named by the diagnostic, identifies the actual condition and restores normal check execution; then verify required runs on reviewed heads | GitHub account owner / repository administrator | Preserve required checks and protections. Keep local gate evidence separate; assess a hardened ephemeral runner without treating it as a proven workaround. |
+| B-07 | Restricted candidate `07c405b0d49ab05611413acce61af1123111fb48` historically timed out at 900s. Later exact integrated heads through PR #55 passed six local checks. Independent owner-run isolation at PR #57 head `1bf178b5c4b31bcd68072b69748a14249c6c2649` passed `test_health` (1.07s) and the full gate (700 tests, 23.18s); the prior timeout did not reproduce. Its cause remains unknown; no verifier was weakened. | Reopen only if a later exact-head local gate reproduces a failure; do not skip API tests | Codex execution environment / project maintainer | Preserve historical timeout and isolated retest as separate evidence; keep all API tests enabled. |
+| B-08 | Owner confirms GitHub Actions allowance is exhausted and authorizes no paid usage/limit increase. On PR #57 head `678755e`, four checks fail with one annotation each; `steps=[]` and job-log fetches return 404. The connector does not expose those annotation texts, so individual cause for `678755e` remains unknown. Exact annotations on head `1bf178b` separately state recent account payments failed **or** spending limit must increase; that text does not identify which account condition applies. No repository test steps ran. | No paid resource or spending-limit change is authorized. Resume official checks only when allowance is available through the owner's existing account decision; verify checks on exact candidate heads. | GitHub account owner / repository administrator | Use authorized exact-head local six-check gate; retain draft PRs and required check definitions; do not disable checks, merge around them, or start a self-hosted runner without separately approved zero-cost isolated infrastructure. |
 
-B-04 and B-05 may be resolved if an already authorized compatible
-runtime or provider is available; do not claim they are unavailable
-without checking the relevant evidence. They are prerequisites for
-the named real integration, not a prohibition on design and tests.
+Blockers are scoped. M1E-02's narrow local synthetic-execution slice has
+compatible pin and engine evidence; that does not resolve B-04 for a service,
+hostile-code isolation, redistributed package or lead-time model. B-05 remains
+about authorized provider use/spend. Neither blocker suspends independent
+synthetic design and testing.
 
 ## B-08 exact diagnostics and runner assessment — 2026-11-25
 
-This table records the latest inspected published heads for #52–#55 and the
-last inspected heads for #56–#61. For #54 and #55, diagnostics confirm the
-failed runs did not start repository steps; the annotation says recent account
-payments failed **or** the spending limit needs to be increased. It explicitly
-directs the account owner to Billing & plans but does not distinguish the two
-conditions. No code-test result or specific billing cause is inferred.
+This table preserves historical inspected heads. A separate current-head
+record below covers PR #57 at `678755e`. Diagnostics for PR #54/#55 and the
+owner-recovered PR #57 head `1bf178b` show pre-step failures with the annotation
+that recent account payments failed **or** the spending limit needs to be
+increased. That annotation does not distinguish those two conditions. The
+owner separately confirms the Actions allowance is exhausted and no paid usage
+or limit increase is approved. No code-test result or per-head cause is inferred
+for checks whose annotation is unavailable.
 
 | PR | Published head | `test` run | `symbol-catalog` run |
 | --- | --- | --- | --- |
@@ -39,7 +42,7 @@ conditions. No code-test result or specific billing cause is inferred.
 | #54 | `4d220066c3e9ab83a321ac9517bbabc8fc22e293` | [45546742718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742718) | [45546742695](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45546742695) |
 | #55 | `b292db0231d00f307eb4b0694b8e73014bdb9211` | [45519636625](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636625) | [45519636706](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636706) |
 | #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
-| #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
+| #57 (historical) | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
 | #58 | `465a2f2c46fb6484aa2f0abea7920953ca4f0d00` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) |
 | #59 | `a5951e49a78796908ecd1975c65052b5a2548cd7` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) |
 | #60 | `6374f0bb9a981271cb9340a190dcdebec6263cc9` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) |
@@ -48,6 +51,40 @@ conditions. No code-test result or specific billing cause is inferred.
 Earlier diagnostics for the listed #56–#61 heads also showed failed checks
 before repository steps. No repository workflow test pass can be inferred
 from any of these statuses.
+
+### Current PR #57 head evidence
+
+On published head `678755e2569939e66358ec482955defca7abf6b8`, the connected
+diagnostics returned four failed check runs: test `139317243001` and
+`139317187304`; symbol-catalog `139317241892` and `139317186508`. Their
+associated Actions runs are [45646056893](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45646056893),
+[45646041083](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45646041083),
+[45646056856](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45646056856)
+and [45646041272](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45646041272).
+Each check advertises one annotation, but title, summary, text and annotation
+content are empty in the connected diagnostics. All four step queries return
+`steps=[]`; bounded log fetches return 404 `BlobNotFound`. The particular
+annotation text and exact per-run cause therefore remain unavailable through
+this connector. These observations prove no repository test step ran; they do
+not independently assign the failures to billing or source code.
+
+The owner-recovered annotations on prior #57 head
+`1bf178b5c4b31bcd68072b69748a14249c6c2649` were check IDs
+`139259693576`, `139259693712`, `139259664116`, and `139259664989`. Each states:
+“The job was not started because recent account payments have failed or your
+spending limit needs to be increased. Please check the 'Billing & plans'
+section in your settings”. The owner confirms allowance exhaustion, but the
+annotation itself does not identify which account condition applied.
+
+An independent owner-run exact-head retest at `1bf178b` in fresh detached
+worktree `D:\MirrorMind-review-57` passed
+`tests/integration/test_api.py::test_health` (1 passed in 1.07s), then the
+complete local gate (700 passed in 23.18s; six checks; one existing
+Starlette/httpx warning). Receipt status was
+`local_gate_passed_not_official_ci`. The earlier `8f906b8` timeout did not
+reproduce in that isolated environment; its cause remains unknown and is not
+declared fixed. On `678755e`, a later local full gate passed 712 tests and all
+six checks; that evidence is distinct from the failed official workflows.
 
 ### Self-hosted runner option
 
@@ -60,7 +97,12 @@ its security guide does not treat a private repository as an isolated trust
 boundary. See [GitHub's secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use)
 and [runner setup guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners).
 
-If the account owner chooses this path, the candidate design is one
+This is a design-only option. The owner has not approved new paid compute,
+runner installation, credentials or workflow changes. The current allowance
+decision and no-step check failures provide no evidence that a self-hosted
+runner would clear the account-level start condition. Do not create a runner
+or alter workflows now. If a separately authorized zero-cost isolated host is
+available later, the candidate design is one
 just-in-time runner in a disposable VM per check, destroyed after the job;
 no persistent workstation or shared runner. Keep the existing job IDs,
 commands, test selection and required-check names. Restrict assignment to this
@@ -79,7 +121,11 @@ No evidence shows that changing runner type clears the observed pre-job account
 gate. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
 [self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
 and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
-No self-hosted runner or workflow change was made.
+No self-hosted runner or workflow change was made. Owner's prior read-only
+repository API check reported `Branch not protected` and no applicable branch
+rules; no protection was changed. Keep the user's instruction to preserve
+existing settings, and never merge or bypass checks as a substitute for an
+unavailable official run.
 
 ## Source references and precise restrictions
 
@@ -87,9 +133,10 @@ No self-hosted runner or workflow change was made.
   permission grant. Public accessibility is not permission.
 - [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
   records the official license statement and unresolved privacy,
-  historical availability, scope and source snapshot issues. Its B-01/B-02
-  section compares UCI retrospective research with a no-download
-  Census/ALFRED temporal-method proposal; owner approval remains pending.
+  historical availability, scope and source snapshot issues. Owner approved
+  preparing the privacy-minimized UCI event-time pilot followed by a separate
+  aggregate Census vintage protocol; source-specific permissions and actual
+  vintage evidence remain pending. No real source bytes are in tests or Git.
 - [Data card](DATASET_CARD_TEMPLATE.md) and [model card](FORECAST_MODEL_CARD_TEMPLATE.md)
   require evidence before empirical or licensed-ingestion claims.
 - [Remote head reader](REMOTE_FENCE_HEAD_CLIENT.md) authenticates a

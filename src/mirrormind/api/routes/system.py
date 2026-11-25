@@ -48,12 +48,12 @@ def capabilities() -> dict[str, object]:
             "local_retail_eligible_value_comparison",
             "local_retail_excluded_target_sensitivity",
             "local_retail_excluded_target_sensitivity_sweep",
+            "worldkernel_adapter",
         ],
         "planned": [
             "evidence_and_rag",
             "forecasting",
             "agentic_orchestration",
-            "worldkernel_adapter",
             "decision_evaluation",
             "cost_governance_enforcement",
         ],

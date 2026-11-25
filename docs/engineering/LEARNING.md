@@ -505,9 +505,31 @@ mutable Pydantic object is revalidated and how the lower run ceiling is chosen.
 Explain why the explicit unit object is still an assertion rather than
 provenance, why the generated v1 limits are not an independently enforced
 server quota, and why a deterministic request is not a simulation result.
-Finally, identify where M1E-02 must enforce timeout/model-call/output-token
-budgets missing from exchange v1 and propose package/result checks without
-importing WorldKernel into MirrorMind's core.
+Then trace the implemented M1E-02 worker boundary in the same walkthrough:
+identify which budgets are enforced outside exchange v1 and which unsupported
+budgets reject before process launch.
+
+## Guided exercise — execute one pinned local simulation (40 minutes)
+
+Read the [WorldKernel runtime gate](WORLDKERNEL_GATEWAY_GATE.md),
+[`worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py),
+[`worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py),
+and [M1E-02 change request](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md).
+Install only the optional SHA-pinned extra, then run
+`python -m examples.m1e_02_worldkernel_local_runner`. Explain how
+`LocalWorldKernelGateway.execute` reaches the strict mapper, why the worker
+checks PEP 610 package metadata separately from the `demo-1` world revision,
+and how the parent rejects a malformed result before creating a summary.
+
+Run `tests/unit/test_worldkernel_runner.py` and the actual-engine integration
+test. Change a fake result's revision, unknown-field set, stdout size and
+stderr size; predict the typed failure before running each test. Compare the
+fake-worker tests with
+`tests/integration/test_worldkernel_runner_engine.py::test_pinned_local_runner_executes_synthetic_inventory_world_deterministically`.
+State why only the latter proves execution of the pinned engine. Finally list
+what remains unproved: CPU/memory isolation, hostile-code safety, HTTP
+execution, source rights, true demand, lead-time behavior, forecast quality
+and production suitability.
 
 ## Guided exercise — trace chronology, canonical cost digests and resource bounds
 

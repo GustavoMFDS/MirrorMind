@@ -47,3 +47,24 @@ verify fail-closed SHA checking, dirty-tree refusal, ordered manifest,
 failure/timeouts, and honesty of the receipt. The source
 [`scripts/local_quality_gate.py`](../../scripts/local_quality_gate.py)
 is standalone and performs no remote calls or repository mutations.
+
+## Stacked PR and final integration candidate
+
+A passing gate on each PR head does not verify the combined tree. For a
+stacked or topologically integrated candidate:
+
+1. Preserve and review each branch head and its exact local receipt.
+2. Integrate reviewed commits in dependency order on a separate candidate
+   branch/worktree without force-pushing or discarding branch history.
+3. Check conflicts, contracts, generated references, API capability parity
+   and the final diff on the combined tree.
+4. Run the six-check gate again on the exact clean integrated SHA and record a
+   new receipt. Never reuse a child branch's receipt as evidence for the
+   combined commit.
+5. Obtain the required independent code/review evidence. If an official
+   required check cannot run, leave the PR in review state and report the
+   specific unavailable check. A local pass is not a remote check and cannot
+   be used to bypass or weaken repository rules.
+
+Do not label a per-branch gate as the final integrated-candidate gate. Record
+both sets of evidence separately in the backlog and change report.

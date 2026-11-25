@@ -628,3 +628,43 @@ Static imports (including inside functions): `...core.contracts`, `collections.a
 | `_nonnegative_integer_object` | function | `def _nonnegative_integer_object(values: object, *, name: str, allowed_fields: frozenset[str], required_fields: frozenset[str]) -> dict[str, int]` | — | [L85](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L85) |
 | `_validate_units` | function | `def _validate_units(unit_context: InventoryWorldUnitContext) -> None` | — | [L115](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L115) |
 | `build_worldkernel_exchange_request` | function | `def build_worldkernel_exchange_request(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext) -> dict[str, object]` | Build a strict WorldKernel v1 request without executing it. | [L130](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L130) |
+
+## `mirrormind.modules.simulation.worldkernel_runner`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../../src/mirrormind/modules/simulation/worldkernel_runner.py)
+
+Static imports (including inside functions): `...core.contracts`, `.gateway`, `.worldkernel_mapping`, `__future__`, `dataclasses`, `hashlib`, `json`, `os`, `pathlib`, `pydantic`, `subprocess`, `sys`, `tempfile`, `threading`, `time`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `WorldKernelRunnerError` | class | `class WorldKernelRunnerError` | A local WorldKernel execution could not produce an accepted result. | [L57](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L57) |
+| `WorldKernelRuntimeUnavailable` | class | `class WorldKernelRuntimeUnavailable` | The optional pinned runtime is absent or does not match its source pin. | [L61](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L61) |
+| `WorldKernelExecutionTimeout` | class | `class WorldKernelExecutionTimeout` | The local worker exceeded its effective wall-clock budget. | [L65](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L65) |
+| `WorldKernelOutputLimitExceeded` | class | `class WorldKernelOutputLimitExceeded` | The local worker exceeded a bounded stdout or stderr size. | [L69](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L69) |
+| `WorldKernelRuntimeConfig` | class | `class WorldKernelRuntimeConfig` | Trusted local-process settings, supplied by the application operator. | [L74](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L74) |
+| `WorldKernelRuntimeConfig.__post_init__` | method | `def __post_init__(self) -> None` | — | [L81](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L81) |
+| `LocalWorldKernelGateway` | class | `class LocalWorldKernelGateway` | Optional local implementation of the engine-neutral simulation gateway. | [L97](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L97) |
+| `LocalWorldKernelGateway.execute` | method | `def execute(self, scenario: ScenarioSpec) -> SimulationSummary` | Execute one preconfigured scenario through the pinned local worker. | [L104](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L104) |
+| `_scenario_snapshot` | function | `def _scenario_snapshot(scenario: ScenarioSpec) -> ScenarioSpec` | — | [L114](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L114) |
+| `_worker_environment` | function | `def _worker_environment() -> dict[str, str]` | Pass OS-required variables only; omit arbitrary secrets and Python path overrides. | [L123](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L123) |
+| `_read_bounded_stream` | function | `def _read_bounded_stream(stream: Any, *, limit: int, output: bytearray, exceeded: threading.Event) -> None` | Drain a child pipe while retaining at most limit + 1 bytes. | [L129](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L129) |
+| `_terminate` | function | `def _terminate(process: subprocess.Popen[bytes]) -> None` | — | [L152](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L152) |
+| `_read_limited` | function | `def _read_limited(handle: Any, limit: int) -> bytes` | — | [L169](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L169) |
+| `_run_worker` | function | `def _run_worker(request_bytes: bytes, *, python_executable: str, timeout_seconds: float, max_output_bytes: int) -> bytes` | — | [L176](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L176) |
+| `_reject_json_constant` | function | `def _reject_json_constant(value: str) -> None` | — | [L292](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L292) |
+| `_parse_result` | function | `def _parse_result(raw: bytes) -> dict[str, object]` | — | [L296](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L296) |
+| `_validate_result` | function | `def _validate_result(result: dict[str, object], request: dict[str, object]) -> tuple[list[dict[str, int]], list[str]]` | — | [L308](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L308) |
+| `run_worldkernel_scenario` | function | `def run_worldkernel_scenario(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext, runtime: WorldKernelRuntimeConfig \| None=None) -> SimulationSummary` | Execute one strictly mapped scenario using the pinned local runtime. | [L366](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L366) |
+
+## `mirrormind.modules.simulation.worldkernel_worker`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../../src/mirrormind/modules/simulation/worldkernel_worker.py)
+
+Static imports (including inside functions): `__future__`, `argparse`, `importlib`, `json`, `re`, `sys`, `urllib.parse`, `worldkernel.adapters.exchange`, `worldkernel.examples.bootstrap`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_RuntimeMissing` | class | `class _RuntimeMissing` | — | [L20](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L20) |
+| `_RuntimePinMismatch` | class | `class _RuntimePinMismatch` | — | [L24](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L24) |
+| `_verify_installed_runtime` | function | `def _verify_installed_runtime(expected_commit: str) -> None` | — | [L28](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L28) |
+| `main` | function | `def main() -> int` | — | [L58](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L58) |
