@@ -150,6 +150,53 @@ before repository steps under B-08, with no job steps or logs. No policy
 optimization or WorldKernel execution is claimed; actual engine acceptance
 remains B-04.
 
+## PR #57 source-review proposal
+
+Draft PR #57 (`codex/m1b-01-source-review`, published head
+`646e4db6991b1769c922cf87a0b85630039915da`) records UCI Online Retail II as a
+candidate for narrowly scoped retrospective research and compares a no-download
+Census/ALFRED release-vintage method. It distinguishes event time from first
+availability, does not derive publication dates from `InvoiceDate`, and adds
+no dataset bytes. The review task is decision-ready only as a proposal: source
+rights, privacy/minimization, retention, exact scope and temporal-vintage
+evidence still require owner/reviewer decisions under B-01/B-02. PR #57 remains
+draft and must sync with current PR #53 before its documentation gate.
+
+## PR #59 end-to-end synthetic workflow
+
+The corrected PR #59 code integration commit is
+`c000ebd3484e1d9a83f1a440a12369361f4a52b1`, with normal merge commit
+`c000ebd` bringing in dependency base `35ecc83` and current PR #56/#58 work.
+The review fixes include request-sensitive deterministic identity, versioned
+artifact digests, a separate whole-response digest, and propagation of #58's
+modeling caveats to affected trace outcomes. The exact integrated head passed
+the full local gate: 790 tests, Ruff, symbol catalog, atlas, evidence and
+capability checks. One existing Starlette/httpx deprecation warning appeared.
+Actions runs [45616226536](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45616226536)
+and [45616226367](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45616226367)
+failed before repository steps; the connector exposed no steps/logs and did not
+return the annotation text. This is not remote test evidence. The route remains
+experimental, unauthenticated and without body-size/rate/concurrency controls;
+WorldKernel execution and real-source claims remain blocked.
+
+## PR #60 and #61 review state
+
+PR #60's excerpt-integrity correction is published at
+`59deef2a780d7802d8b8d29b66dd0189e96365ea`; same-length excerpt tampering and
+wrong well-formed digest regressions are present, and its prior exact-head gate
+passed 738 tests plus all five other checks. It is based on PR #54 and currently
+reports a base conflict; sync to published #54 head `4d22006` and re-gate before
+review follow-up. Scope filtering remains caller-declared, not authenticated
+RBAC.
+
+PR #61's typed clock-failure correction is published at
+`8101bc78dfa6a0f96bdfabe3dd8c9dc46d19a93e`; expected clock errors produce the
+generic bodyless 503 while unexpected programming errors remain visible. The
+two regressions distinguish those cases, and the exact-head gate passed 697
+tests plus all five other checks. Its current branch is independent of M1 and
+reported mergeable; it remains draft for separate review. No HTTP adapter,
+persistence, authentication or authority is claimed.
+
 The local M1F dependency stack now integrates published PR #56 head `e993391`
 and PR #58 head `37737c2` without cherry-picking their commits. Its merge
 candidate `eb6601ddfec7f021a8377b32abda8934fed02640` passed the complete local
