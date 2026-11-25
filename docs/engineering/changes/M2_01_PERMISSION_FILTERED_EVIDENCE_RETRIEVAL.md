@@ -211,5 +211,14 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   account-level gate for this exact head but does not identify which condition
   applies. No repository steps ran and the latest pair's logs were unavailable;
   these are not remote test results.
+- Follow-up docs head `cb4745635be7d57994d8766b59b40312a6b1702e` passed the exact
+  local six-stage gate at `2026-11-25T03:11:16.792135+00:00`: 738 tests, Ruff,
+  catalog, atlas, evidence and capabilities, with one existing
+  Starlette/httpx `TestClient` deprecation warning. Its four Actions runs are
+  `45538255051`/`45538248713` (`test`) and
+  `45538255077`/`45538248727` (`symbol-catalog`). Exact check diagnostics
+  return the same payment-or-spending-limit pre-job message for all four;
+  repository steps did not run and logs were unavailable. This is not remote
+  test evidence.
 - New evidence selectors: `MM-RETR-007` and `MM-RETR-008` in
   `docs/engineering/EVIDENCE_MAP.json` identify the regressions and limitations.
