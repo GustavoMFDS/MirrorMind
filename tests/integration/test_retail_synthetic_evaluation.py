@@ -30,8 +30,19 @@ def test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts():
     assert first.stdout == second.stdout
     assert result["schema_version"] == "mirrormind.retail.evidence_evaluation.v1"
     assert result["status"] == "local_retail_evidence_evaluation_unverified"
+    assert result["source_status"] == (
+        "caller_declared_release_not_authenticated_or_authorized"
+    )
     assert result["forecast_eligible"] is False
     assert result["ingestion_authorized"] is False
+    assert result["evidence_receipt"]["status"] == (
+        "local_retail_uci_evidence_flow_not_authorized"
+    )
+    assert result["evidence_receipt"]["forecast_eligible"] is False
+    assert result["evidence_receipt"]["ingestion_authorized"] is False
+    assert result["baseline_evaluation"]["status"] == (
+        "declared_retail_evaluation_unverified"
+    )
     assert result["split"] == {
         "method": "fixed_last_n_calendar_days",
         "first_target_on": "2011-01-29",
