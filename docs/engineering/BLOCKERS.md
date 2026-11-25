@@ -12,7 +12,7 @@ that has not actually been granted.
 | B-01 | Source-specific rights and handling remain conditional. Owner accepted A+B preparation: UCI #352 event-time research first, then aggregate Census releases; no real source has been acquired or approved for processing. The current PR #57 work adds only a synthetic UCI evaluator and source/privacy plan. M5 remains NO-GO. | Before UCI acquisition/processing: recheck original terms; record attribution/change notice, exact source manifest, minimal projection, local-only storage, retention/deletion and privacy review. Census needs its own terms, attribution, snapshot and handling review. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; improve offline adapters, cards, manifests and privacy controls. No data in Git, CI, logs, prompts or external services. |
 | B-02 | UCI `InvoiceDate` is event time, not historical availability. The prepared UCI evaluator cannot make a point-in-time claim. Census point-in-time evaluation is not evidenced by reviewed, complete original release vintages; a protocol exists, but no vintage data was acquired. | For UCI, keep `event_time_retrospective_unverified_availability`; point-in-time remains blocked. For Census/conditional ALFRED, verify release dates, original bytes, vintage completeness, revision boundaries and a locked temporal protocol before scoring. | Evidence/model reviewer | Synthetic cutoffs, leakage and abstention regressions; use the prepared UCI and Census protocols. Do not infer availability or fabricate missing vintages. |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
-| B-04 | Optional WorldKernel runtime acceptance. A strict request mapper already exists in PR #55; no MirrorMind-to-engine execution is verified. | Pin the reviewed WorldKernel commit; run its local versioned exchange with a registered synthetic inventory world; enforce timeout and MirrorMind operator caps; validate `worldkernel.result.v1` and test missing/runtime-error paths. Cross-repository source changes remain out of scope. | Project owner / engine maintainer | Continue compatibility inspection and local optional-adapter work against a read-only upstream checkout. No hard dependency, service deployment, real forecast or invented result. |
+| B-04 | A narrow local M1E-02 compatibility slice is exercised experimentally at pinned WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a` with a fictional registered demo, result validation, timeout and bounded output. Broader service/hostile-code isolation, artifact attestation, redistribution licensing and a lead-time world remain unresolved. | Separate service/security design, CPU/memory and process-tree isolation evidence, source-license decision before redistribution, and a separately reviewed lead-time model before M1E-03 or product claims. Cross-repository edits remain out of scope. | Project owner / engine maintainer | Keep the optional exact-SHA local runner and synthetic test; keep API independent and WorldKernel read-only; do not describe the demo as demand or a lead-time model. |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | Historical full gate on `8f906b8c0735bb04434c2c0a40efc2c3297df93b` timed out after 900 seconds; its cause remains unknown. Independent exact head `1bf178b` passed 700 tests and all six checks. Current PR #57 implementation commit `a42c3e13f73e9499dd505560d2809573fd1a7005` passed 712 tests and all six checks locally. A focused API capability test under the restricted sandbox produced a faulthandler stack at Windows Proactor `_fallback_socketpair` / `socket.accept`; the same selector passed in an elevated local process. This supports an environment-specific socket-creation hypothesis for that reproduction only; it does not explain the historical timeout. | Keep the historical timeout and its unknown cause. If a new exact-head gate hangs where local socketpair creation is permitted, capture bounded diagnostics on that interpreter/dependency set without skipping or extending tests. | Codex / project maintainer | Use the documented exact-head gate; do not infer a product-code cause from the restricted-sandbox stack or claim the historical timeout was fixed. |
@@ -52,6 +52,16 @@ they are not test or catalog results. The owner-controlled branch-protection
 API reported `Branch not protected` and applicable rules `[]`; no settings
 were changed. See the owner's
 [diagnostic note](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164870326).
+
+### Current PR #57 head — 678755e
+
+The owner's [follow-up comment](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881)
+reports that the test and symbol-catalog job records for head
+678755e2569939e66358ec482955defca7abf6b8 each had steps=[] and runner_id=0.
+The exact annotation remained unavailable, so the individual start cause is
+not established. The exact clean-head local gate passed 712 tests and all six
+checks in 18.19 seconds. This remains local evidence, not official Actions.
+No manual rerun or settings change was made.
 
 ### B-01/B-02 accepted research direction; source gates remain open
 
@@ -96,6 +106,16 @@ local gate on exact clean commit
 `local_gate_passed_not_official_ci`. This closes current local verification
 for that commit, not the historical timeout cause or official CI. See the
 [independent verification note](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164895449).
+
+On the separate, unsubmitted M1E-02 branch, exact code commit
+ac52ec90aba6f25bdb5e036a76c8bae2995cf340 first timed out in the restricted
+Windows sandbox after the gate's 900-second pytest limit. The faulthandler
+stack showed Windows asyncio waiting in socket.accept while creating its
+fallback socket pair; a bounded child process also timed out creating an event
+loop after five seconds. Outside that socket restriction, test_health passed
+in 0.59 seconds and the full gate passed on the same SHA: 772 tests and all
+six checks in 19.08 seconds. This identifies the current executor restriction,
+not the cause of the historical 8f906b8 timeout.
 
 ### B-08 — local gate; self-hosted runner assessed, not selected
 

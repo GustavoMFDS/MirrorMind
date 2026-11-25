@@ -36,6 +36,19 @@ The fixed checks are:
 5. Curated evidence reference `--check`.
 6. Capability ledger `--check`.
 
+### Restricted Windows sandbox note
+
+TestClient may create a Windows asyncio event loop whose self-pipe uses a
+local TCP socket pair. In a sandbox that blocks loopback sockets, the
+test_health request can wait in socket.accept before application code runs.
+A faulthandler stack in the Windows fallback socket-pair setup plus a bounded
+event-loop child-process reproduction identify an executor limitation for
+that run, not proof of a route defect. Do not skip the test or alter its
+timeout to obtain a pass. Preserve the failed receipt, then run the same exact
+clean SHA and all six checks in an already authorized local environment where
+loopback is permitted. A passing local receipt still does not stand in for
+GitHub Actions.
+
 Reviewers must inspect the relevant code, tests, assumptions, and source
 rights separately. This local gate cannot validate cloud-specific runner
 behavior or missing Linux-only integration details, substitute for

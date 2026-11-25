@@ -64,15 +64,32 @@ Census/ALFRED source-vintage protocol. Implementation commit
 that exact clean SHA at 2026-11-25 15:24:49 UTC: 712 tests, Ruff, symbol
 catalog, atlas, evidence and capability checks. One existing Starlette/httpx
 deprecation warning appeared. This is local evidence, not official CI. No UCI
-or Census data, API key or credentials were acquired. PR #57 remains draft;
-review and integration decisions are separate from this local gate evidence.
+or Census data, API key or credentials were acquired. On the same PR #57 head
+678755e2569939e66358ec482955defca7abf6b8, the latest owner-recovered records
+show the test and symbol-catalog jobs with no steps and runner_id=0; the exact
+annotations remain unavailable. Do not attribute those individual check
+failures to a cause. PR #57 remains draft; review and integration decisions
+are separate from this local gate evidence.
 
-The existing PR #55 stack already contains the strict M1E-01 request mapper,
-but no actual MirrorMind-to-WorldKernel execution has been verified. Current
-WorldKernel `main` exposes local JSON exchange v1 and a trusted synthetic
-inventory world; M1E-02 remains open until a specific source revision is
-pinned and the actual result is validated locally. No WorldKernel source was
-modified.
+The strict mapper in PR #55 remains request construction only. A separate,
+unsubmitted local branch codex/m1e-02-worldkernel-local-runtime starts from
+PR #55 head 56aa92a and adds optional execution at the exact WorldKernel
+source commit 9b133ef873f2b6a7206c9c5742d40df4fccdb04a. It ran only the
+registered synthetic retail.inventory.demo and validated the versioned
+result. Code commit ac52ec90aba6f25bdb5e036a76c8bae2995cf340 passed the exact
+clean-head six-check gate: 772 tests in 19.08 seconds plus Ruff, catalog,
+atlas, evidence and capability checks. The docs-only follow-up head
+f503fcc801d733e6f088ec147cef4d479a4e3ad3 also passed the six checks: 772
+tests in 24.19 seconds. Both receipts are local, not official Actions.
+
+The restricted-sandbox attempt on ac52ec9 timed out in test_health. A
+faulthandler stack showed Windows asyncio waiting in socket.accept while
+creating a fallback socket pair, and a bounded child event-loop probe timed
+out after five seconds. Outside that restriction, test_health passed in 0.59
+seconds and the complete gate passed on the same clean SHA. This diagnoses
+the current executor restriction, not the cause of the historical 8f906b8
+timeout. No WorldKernel source was modified; broad isolation, lead-time
+modeling and independent review/integration decisions remain open.
 
 ## Archived M1B-01 state before owner direction (superseded)
 
