@@ -1,6 +1,6 @@
 # Change request — M1B-01 UCI event-time retrospective pilot
 
-**Status:** implementation prepared against synthetic data; exact-head full local gate and independent review of this diff remain pending.
+**Status:** implementation prepared against synthetic data; exact-head local gate passed; independent review of this diff remains pending.
 
 ## 1. Goal in plain language
 
@@ -30,7 +30,7 @@
 - [x] Synthetic XLSX example exercises parser and evaluator deterministically.
 - [x] Existing small default limits remain; any larger explicit caps remain finite and are not represented as verified original-file support.
 - [x] Source review and dataset/model cards make permission and availability limits explicit.
-- [ ] Exact clean-commit local quality gate passes all six checks.
+- [x] Exact clean-commit local quality gate passes all six checks (`a42c3e13f73e9499dd505560d2809573fd1a7005`, 712 tests, 2026-11-25 15:24:49 UTC; local only).
 - [ ] Independent reviewer inspects the committed diff and exact-head receipt.
 - [ ] External reviewer/owner determines separately whether PR #57 is ready; this request does not mark it ready or merge it.
 
@@ -62,13 +62,13 @@ The module remains local and opt-in. Public defaults stay at 10,000 input rows a
 
 Implementation summary: add the evaluator and synthetic example, add normal/adverse regressions, update source-review wording to reflect existing parser capability, write learning/data/model/change documentation, update maps/ledger/atlas/evidence and regenerate the source catalog.
 
-The focused regression set passed in the current working tree: 87 tests, including UCI projection, workbook, event-time, CLI and API capability parity. This is pre-commit focused evidence, not the six-check exact-head gate. GitHub Actions remains unavailable under B-08; no local result is described as CI. No real UCI or Census rows were acquired or processed.
+The focused regression set passed in the current working tree: 87 tests, including UCI projection, workbook, event-time, CLI and API capability parity. The exact-head gate then passed on clean commit `a42c3e13f73e9499dd505560d2809573fd1a7005`: 712 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and capability ledger; total 19.32 seconds and one existing Starlette/httpx warning. This is local validation, not GitHub Actions or independent review of the new diff. No real UCI or Census rows were acquired or processed.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: pending exact-head commit; PR #57 remains a draft until separate review.
+- Commit / PR: implementation `a42c3e13f73e9499dd505560d2809573fd1a7005`; PR #57 remains a draft, with review and integration decisions separate.
 - Modified symbols and files: `uci_transactions`, `uci_workbook`, new `uci_event_time`, synthetic example and associated tests/docs.
-- Tests and environment: pending final focused and full local runs; report exact Python version and SHA.
+- Tests and environment: Python 3.13.5; 87 focused tests and exact-head full gate of 712 tests plus all five non-test checks passed; official CI not checked by the script.
 - Claim IDs: `MM-UCI-EVAL-001` through `MM-UCI-EVAL-003`, with named functions and limitations in `EVIDENCE_MAP.json`.
 - Contracts: experimental JSON result `mirrormind.uci.event_time_evaluation.v1`; no HTTP contract or API data route.
 - Known limitations: no source acquisition, owner-verified permission, genuine data, intraday publication time, demand truth, interval calibration or runtime sandbox.

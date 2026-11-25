@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-25 against merged main PR #51 (`e4f05a1`) and current stacked PR #57 head (`1bf178b`). The API/contracts and simulation gateway interface exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight, fixed-split retail baseline evaluation and synthetic UCI event-time comparison are experimental. No authorized ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-25 against merged main PR #51 (`e4f05a1`) and PR #57 implementation commit `a42c3e1` (local gate passed; PR remains draft). The API/contracts and simulation gateway interface exist; bounded CSV/XLSX staging, review-only source metadata, a composable local retail evidence preflight, fixed-split retail baseline evaluation and synthetic UCI event-time comparison are experimental. No authorized ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 

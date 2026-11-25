@@ -39,8 +39,8 @@ retention/deletion and hash-bound manifest are reviewed. UCI outputs must be
 labeled `event_time_retrospective_unverified_availability`; `InvoiceDate` is
 not a publication timestamp. M5 remains NO-GO.
 
-PR #57 is still an open draft at
-`1bf178b5c4b31bcd68072b69748a14249c6c2649`, based on PR #53. The owner-approved
+At the previously published PR #57 head
+`1bf178b5c4b31bcd68072b69748a14249c6c2649`, the open draft was based on PR #53. The owner-approved
 temporary local gate ran independently in `D:\MirrorMind-review-57`: focused
 `tests/integration/test_api.py::test_health` passed (1.07 s), and the exact-head
 gate passed 700 tests plus all six checks (23.18 s) on Python 3.13.5. One
@@ -56,6 +56,16 @@ annotation does not identify its exact account subcondition. The owner reports
 the protection API returned `Branch not protected` and rules `[]`; no settings
 were changed. No CI tests ran or passed. Use the exact-head temporary local
 gate, do not buy quota, and preserve checks/settings. See [B-08](BLOCKERS.md).
+
+The current PR #57 continuation adds a synthetic-only event-time evaluator,
+deterministic in-memory XLSX example, regression coverage, and the separate
+Census/ALFRED source-vintage protocol. Implementation commit
+`a42c3e13f73e9499dd505560d2809573fd1a7005` passed the complete local gate on
+that exact clean SHA at 2026-11-25 15:24:49 UTC: 712 tests, Ruff, symbol
+catalog, atlas, evidence and capability checks. One existing Starlette/httpx
+deprecation warning appeared. This is local evidence, not official CI. No UCI
+or Census data, API key or credentials were acquired. PR #57 remains draft;
+review and integration decisions are separate from this local gate evidence.
 
 The existing PR #55 stack already contains the strict M1E-01 request mapper,
 but no actual MirrorMind-to-WorldKernel execution has been verified. Current
