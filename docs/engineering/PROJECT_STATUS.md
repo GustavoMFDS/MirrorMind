@@ -44,10 +44,15 @@ completeness review, a locked final 24 monthly origins, 1/3/6-month horizons,
 seasonal-naive and trailing-mean baselines, matched eligible origins, MAE,
 RMSE, zero-safe WAPE, coverage/abstention, and separate first-release versus
 final-revision reporting. This is a proposal, not a completed evaluation.
-UCI #352 alone cannot satisfy point-in-time availability because
-`InvoiceDate` is event time and the catalog record has no row-level vintages.
-B-01/B-02 remain blocked pending the owner's scope, terms, privacy, retention
-and dataset-card decisions.
+The UCI proposal now specifies an event-time-only one-day product-day study:
+fit/cohort through 2011-08-30, validation origins 2011-08-31 through 2011-09-30,
+and locked holdout origins 2011-10-01 through 2011-12-08, with frozen product
+cohort, same-weekday and trailing-seven-day baselines, identical target pairs,
+and explicit missing-target abstention. The output remains positive invoice
+units, not latent demand. Because `InvoiceDate` is event time and the catalog
+has no row-level first-publication vintages, this retrospective protocol still
+cannot satisfy B-02 point-in-time acceptance. B-01/B-02 remain blocked pending
+the owner's scope, terms, privacy, retention and dataset-card decisions.
 
 The published documentation-only PR #57 head is now
 `25fb95ee84e1e431e206716355acab70448a5a54`, normally merged with its latest
@@ -63,6 +68,18 @@ or code-failure attribution is supported. See [B-08](BLOCKERS.md). The source
 proposal is decision-ready documentation, not source approval, acquisition or
 an empirical evaluation. Keep PR #57 in draft for the separate owner/review
 decision.
+
+The documentation-only follow-up commit `8f906b8c0735bb04434c2c0a40efc2c3297df93b`
+records the latest B-08 evidence. Its exact-head full local gate returned
+pytest exit code 124 after the configured 900-second timeout; Ruff and the
+documentation checks did not run. The `src/` and `tests/` trees are unchanged
+from `25fb95e`, whose exact-head gate passed 700 tests and the five other
+checks. A separate verbose diagnostic reached
+`tests/integration/test_api.py::test_health` and remained pending for 30
+seconds before manual interruption; no stack or cause was established. Treat
+this as a current B-07 verification blocker for the follow-up, separate from
+the earlier #52 timeout and pass. Do not infer a code regression or a host/
+sandbox cause from the timeout alone.
 
 ## Active branch evidence — 2026-11-25
 

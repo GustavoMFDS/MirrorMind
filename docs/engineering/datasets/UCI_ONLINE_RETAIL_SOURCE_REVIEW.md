@@ -115,9 +115,51 @@ and final revised values in separate tables; revisions must not leak back into
 the as-of inputs. No interval-calibration or inventory-policy claim follows
 from this aggregate pilot.
 
-For UCI #352, use a predeclared chronological retrospective holdout only and
-label its availability-time limitation in every result. It cannot pass B-02's
-point-in-time acceptance without independent source-vintage evidence.
+#### UCI #352: narrow retrospective pilot (event-time only)
+
+If an accountable owner later approves this source, keep the first study to a
+one-day-ahead product-day comparison of positive invoice-line units. Reuse the
+same cancellation, negative-quantity and zero-quantity handling as
+[`project_uci_retail_rows`](../../../src/mirrormind/domains/retail/uci_transactions.py):
+exclude those rows from the target and report their counts. The target is
+**positive invoice-line units**, not net sales, latent demand, or inventory
+need. Exclude customer, invoice, description, price and country fields from
+all model inputs and receipts.
+
+Freeze this event-date split before inspecting any score:
+
+| Slice | Event-time rule | Purpose |
+| --- | --- | --- |
+| Fit/cohort: 2010-12-01 through 2011-08-30 | Build product history and freeze the product cohort to stock codes with at least one positive event in this interval | Define eligible products without looking into validation or holdout |
+| Validation origins: 2011-08-31 through 2011-09-30 | At end of each origin day `t`, forecast next calendar day `t + 1`; targets run 2011-09-01 through 2011-10-01 | Check the fixed evaluation implementation and report validation metrics; do not tune on the locked holdout |
+| Locked holdout origins: 2011-10-01 through 2011-12-08 | Same rolling one-day-ahead rule; targets run 2011-10-02 through the catalog's final event date, 2011-12-09 | Report the predeclared final comparison once; later holdout origins may use earlier event dates from the holdout period as rolling history |
+
+Compare two fixed baselines on identical product/origin/target pairs:
+
+1. `same_weekday_last_week`: use the target date's value from seven calendar
+   days earlier.
+2. `trailing_7_calendar_day_mean`: average the seven complete event dates up
+   to and including origin `t`.
+
+Use MAE, RMSE and zero-safe WAPE; report pooled and per-product summaries,
+eligible pair counts, missing-target abstentions and excluded product counts.
+Freeze the cohort from the fit period. A stock code first seen after the fit
+period is excluded from the primary score and counted separately. Materialize
+an absent product-day as zero only after the approved snapshot proves complete
+coverage for that date; otherwise keep it missing and abstain for that target.
+The final 2011-12-09 target needs that completeness check as well.
+
+This is an **event-time chronological retrospective**, not a point-in-time
+backtest. `InvoiceDate` is when a transaction is recorded as occurring; the
+source supplies no row-level first-publication time, correction history or
+availability vintage. Using prior event dates at origin `t` therefore does
+not prove that those rows were observable by a real forecaster at `t`. Label
+every result `event_time_retrospective_unverified_availability`; do not map
+`InvoiceDate` into `available_on` or claim B-02 point-in-time acceptance.
+Because the official workbook has 541,909 rows and the existing local
+projection is bounded at 10,000 rows/2,000 groups, running this study would
+also require a separately reviewed streaming adapter and approved snapshot.
+Neither is implemented or authorized by this proposal.
 
 ### Proposed vintage contract and flow
 

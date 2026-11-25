@@ -276,16 +276,28 @@ deduplication policy and real-data signoff are required
 before such data could be used for a historical
 forecast or WorldKernel scenario?
 
-Then compare the proposed [UCI, Census and ALFRED source paths](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
-For one monthly Census vintage, distinguish the reference
-month, release date, retrieval time and snapshot hash. Sketch
-an as-of selector that excludes same-day releases when the
-official timestamp is unavailable. Explain why aggregate
-`RSAFS` can validate revision-aware backtesting but cannot
-establish SKU-level demand or inventory policy. List the
-required late-release, revision-boundary, missing-vintage and
-hash-mismatch regressions; do not claim they ran until an
-approved adapter and tests exist.
+Then read the [UCI, Census and ALFRED source proposal](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md).
+For UCI #352, write the fit/cohort, validation-origin and locked-holdout date
+ranges on paper. For one origin `t`, calculate the next-day target and the two
+fixed baselines; explain why a complete no-row product-day may be zero units
+only after source-date coverage is established. Trace the existing
+`project_uci_retail_rows` function and its
+[`test_positive_rows_aggregate_by_product_calendar_day_without_raw_ids`](../../tests/unit/test_uci_retail_projection.py)
+regression. Identify which source fields are dropped, how cancellations and
+negative/zero quantities are counted, and why the output still means positive
+invoice units rather than latent demand.
+
+Then compare `InvoiceDate` (transaction event time) with a first-publication
+timestamp. Explain why an event-time cutoff cannot prove that earlier rows
+were actually available at that forecast origin, and why the proposed UCI
+result must be labeled `event_time_retrospective_unverified_availability`.
+For one monthly Census vintage, distinguish reference month, release date,
+retrieval time and snapshot hash. Sketch an as-of selector that excludes
+same-day releases when the official timestamp is unavailable. Explain why
+aggregate `RSAFS` can validate revision-aware backtesting but cannot establish
+SKU-level demand or inventory policy. List the required late-release,
+revision-boundary, missing-vintage and hash-mismatch regressions; do not claim
+they ran until an approved adapter and tests exist.
 
 ## Guided exercise 22 — inspect a workbook without claiming source approval
 
