@@ -55,7 +55,7 @@ in-memory implementation.
   invalid configuration, malformed request, wrong nonce and wrong packet or
   snapshot scope have regression coverage. Service failure bodies do not leak
   store exceptions or request contents.
-- [ ] Expected operational clock and store adapter failures have explicit
+- [x] Expected operational clock and store adapter failures have explicit
   typed error contracts and return the same generic bodyless 503; unrelated
   programming exceptions continue to propagate to the in-process caller.
 - [x] The existing client verifies a response produced by the responder, and
@@ -65,7 +65,7 @@ in-memory implementation.
   symbol catalog, evidence map, hub and task/status record; preserve the
   capability ledger/API parity because the responder is not externally
   exposed.
-- [ ] Focused tests and the repository's exact-head local quality gate pass;
+- [x] Focused tests and the repository's exact-head local quality gate pass;
   official CI is reported separately.
 
 ## 3. Impact map
@@ -175,7 +175,15 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   return the generic bodyless 503. Other clock/store `RuntimeError`s propagate,
   as verified by `test_remote_head_service_propagates_unexpected_adapter_programming_errors`.
 - Focused verification after the fix: all six `test_remote_head_service_*`
-  tests passed. The full exact-head gate and publication evidence are pending.
+  tests passed.
+- Exact integrated verification: commit
+  `1847e8102a47a5ab7b0d1c66c9aa6512b7cdbf54` passed
+  `scripts/local_quality_gate.py --expected-head` at
+  `2026-11-25T02:50:34.876565+00:00`: 697 pytest tests, Ruff, catalog, atlas,
+  evidence and capability checks all passed. The only warning is the existing
+  Starlette/httpx `TestClient` deprecation. This is local evidence, not
+  official Actions CI; publication and exact corrected-head Actions evidence
+  are recorded separately.
 - Scope: no HTTP adapter, persistence, CAS, authentication, nonce tracking or
   independent custody was added. A future transport must map exceptions at
   its own boundary without changing the typed responder contract.
