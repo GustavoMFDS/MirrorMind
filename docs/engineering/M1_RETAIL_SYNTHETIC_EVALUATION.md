@@ -164,11 +164,11 @@ Curated claim **MM-REVAL-001** maps to
 The live capability list is covered by
 `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger`.
 An earlier restricted exact-head run timed out before this endpoint test
-because asyncio socket-pair creation blocked. The full exact-head gate on
-published PR #53 head `79d3679013576c6a209bed9fa031b7f0fabd0d8d` later ran this
-API test module successfully as part of 700 passing tests. That is local
-integration evidence, not a deployed or production API. A direct registered-
-handler/ledger check is not equivalent to an HTTP runtime test.
+because asyncio socket-pair creation blocked; later exact gates on PR #52 ran
+the full API test module successfully. Treat the old timeout as historical,
+and run the full gate again on the synchronized PR #53 candidate before
+claiming its exact-head result. A direct registered-handler/ledger check is
+not equivalent to an HTTP runtime test.
 
 ## Safety, failures and maintenance
 
