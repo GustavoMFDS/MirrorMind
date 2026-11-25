@@ -137,7 +137,7 @@ and symbol-catalog [45550857276](https://github.com/GustavoMFDS/MirrorMind/actio
 checks failed before job steps with an annotation listing alternative account
 conditions; no remote tests ran. This remains experimental and does not prove
 empirical calibration. The latest change and exact-head gate are recorded in
-the [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
+the [M1D-01 change request on PR #56](https://github.com/GustavoMFDS/MirrorMind/blob/e993391a61a99d63008bc970cb19af673be4c18c/docs/engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md).
 
 ## PR #58 synthetic policy comparison
 
