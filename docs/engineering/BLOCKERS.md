@@ -15,7 +15,7 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-08 | The 2026-11-24 21:48 UTC snapshot of PR-triggered `test` and `symbol-catalog` runs for open drafts #52–#61 shows both workflows failed on every pinned head; run IDs are in the snapshot table below. PR #57's description records a verified billing/spending-limit annotation on its own earlier runs. Shared billing remains only a hypothesis for runs without that annotation. Later exact #60 head `cad28d8` and #61 correction head `4931e04` also failed before steps, with empty step lists and unavailable logs; neither exposed a cause annotation. | Successful required workflows on the exact reviewed head, or inspectable diagnostics and a verified resolution; local gates are not a substitute | Project owner / repository or Actions administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PRs draft and report Actions status as failed |
+| B-08 | The 2026-11-24 21:48 UTC snapshot of PR-triggered `test` and `symbol-catalog` runs for open drafts #52–#61 shows both workflows failed on every pinned head; run IDs are in the snapshot table below. PR #57's description records a verified billing/spending-limit annotation on its own earlier runs. Shared billing remains only a hypothesis for runs without that annotation. Later exact #60 head `cad28d8` and #61 final documented head `411546a` also failed before steps, with empty step lists and unavailable logs; neither exposed a cause annotation. | Successful required workflows on the exact reviewed head, or inspectable diagnostics and a verified resolution; local gates are not a substitute | Project owner / repository or Actions administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PRs draft and report Actions status as failed |
 | B-09 | Integration of the current review queue: PRs #52–#61 are open drafts and unmerged as of 2026-11-24. Dependent tasks cannot be promoted based on local implementation or tests alone. PR #60 also has the separate failed-workflow evidence in B-08. | Human review and integration decisions for prerequisite PRs; independently inspect required Actions outcomes where workflows run; then reconcile task dependencies against merged heads | Project owner / repository reviewers | Continue genuinely independent ready work, preserve the draft branches and evidence, and do not duplicate slices or assume dependency completion |
 
 B-04 and B-05 may be resolved if an already authorized compatible
@@ -73,6 +73,14 @@ root-cause annotation.
   failed before steps. Both jobs returned empty step lists and log retrieval
   returned `BlobNotFound`; no cause annotation was exposed. This remains
   unexplained for the corrected head and does not establish billing.
+- The final documented PR #61 head at this snapshot,
+  `411546a9915ef82e81a5ed6723ce7292d85c3a57`, has test run
+  [45536284392](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536284392)
+  and catalog run
+  [45536284438](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536284438)
+  failed before steps. Both job step lists are empty; logs returned
+  `BlobNotFound`, and no cause annotation was exposed. No repository test or
+  catalog check execution can be inferred.
 
 ## Source references and precise restrictions
 

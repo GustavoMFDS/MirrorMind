@@ -190,6 +190,13 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   lists, log retrieval returned `BlobNotFound`, and neither exposed a cause
   annotation. This B-08 failure remains unexplained and is not attributed to
   billing; it is not a remote test result.
+- The final documentation snapshot `411546a9915ef82e81a5ed6723ce7292d85c3a57`
+  also passed the exact local gate at `2026-11-25T02:54:32.328327+00:00` with
+  697 tests and all six stages. Its test run `45536284392` and symbol-catalog
+  run `45536284438` failed before steps; both step lists were empty, log
+  retrieval returned `BlobNotFound`, and no cause annotation was exposed.
+  B-08 remains unexplained; no billing attribution or remote test result is
+  made.
 - Scope: no HTTP adapter, persistence, CAS, authentication, nonce tracking or
   independent custody was added. A future transport must map exceptions at
   its own boundary without changing the typed responder contract.
