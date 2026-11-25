@@ -141,14 +141,25 @@ the [M1D-01 change request on PR #56](https://github.com/GustavoMFDS/MirrorMind/
 
 ## PR #58 synthetic policy comparison
 
-PR #58's current local dependency sync is merge `5544bc0c2116d825a37d49a3ec75960e9896dd23`,
-which brings published PR #55 head `56aa92a` into the simulation branch without
-duplicate cherry-picks. The exact merged head passed 768 tests plus Ruff,
-catalog, atlas, evidence and capability checks at 2026-11-25 05:12:21 UTC.
-The arrival-day/one-day behavior stays an explicit toy-policy caveat; paired
-streams and item mass balance remain tested. The previous published #58 head
-`46b07a0` had pre-job Actions failures under B-08. No policy optimization or
-WorldKernel execution is claimed; actual engine acceptance remains B-04.
+PR #58's published head is `37737c2ab329309fffb7dc3c8d8cdc6eee6c89a8`.
+It includes merge `5544bc0` with PR #55 head `56aa92a` and passed its exact
+local gate with 768 tests plus Ruff, catalog, atlas, evidence and capability
+checks. The arrival-day/one-day behavior stays an explicit toy-policy caveat;
+paired streams and item mass balance remain tested. Actions on `37737c2` failed
+before repository steps under B-08, with no job steps or logs. No policy
+optimization or WorldKernel execution is claimed; actual engine acceptance
+remains B-04.
+
+The local M1F dependency stack now integrates published PR #56 head `e993391`
+and PR #58 head `37737c2` without cherry-picking their commits. Its merge
+candidate `eb6601ddfec7f021a8377b32abda8934fed02640` passed the complete local
+gate outside the restricted sandbox: 768 tests, Ruff, symbol catalog, atlas,
+evidence and capability checks. This candidate validates the #56 calibration
+consumer alongside #58's policy result, but PR #59's workflow consumer still
+needs to be merged and gated before the #56 review follow-up is complete. See
+[B-07](BLOCKERS.md) for the restricted-run limitation and [B-08](BLOCKERS.md)
+for official Actions diagnostics. PRs remain drafts pending separate review
+and integration decisions.
 
 ## Architecture and actual execution boundaries
 

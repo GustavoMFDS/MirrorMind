@@ -15,7 +15,7 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Later exact clean integrated heads `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8` and `fd72b76` passed all six local-gate stages with 756 tests; PR #54 head `4d22006` passed with 728 tests. PR #55 sync merge `b9eba02` and its documentation follow-up `cc9bdb4` each passed the complete exact-head gate with 756 tests and all five other stages. The timeout remains historical; no application code or test verifier was weakened. | Reopen only if a later exact-head gate reproduces a failure; do not skip API tests | Codex execution environment / project maintainer | Preserve the restricted timeout and exact-head receipts as separate evidence; keep API tests enabled and rerun outside the restricted environment if the timeout recurs. |
+| B-07 | Exact integrated candidate `eb6601ddfec7f021a8377b32abda8934fed02640` passed all six local-gate stages with 768 tests when run outside the restricted sandbox. The same checkout's restricted run collected 768 tests but did not progress beyond the first test; isolated `tests/integration/test_api.py::test_health` also failed to return before the tool interrupted it. This difference supports an environment/loopback hypothesis but no stack trace or root cause was established. No test, application behavior or verifier was changed. | Keep the exact unconfined gate receipt separate from the restricted-run interruption; investigate only if it affects a supported execution environment; never skip API tests | Codex execution environment / project maintainer | Treat `eb6601d` as locally gated only for the unconfined run; preserve the restriction as environmental evidence and rerun the exact gate if the runner changes. |
 | B-08 | The latest inspected `test` and `symbol-catalog` checks for published PR heads #52–#61 all failed before repository steps. Their exact annotations list recent account payment failure **or** a spending-limit increase as alternatives; the message does not identify the actual condition or underlying root cause. No repository test steps or logs were returned. See the head-bound table below. This is evidence of a pre-job block, not proof that account billing is the root cause or that a runner change will bypass it. | Account/repository owner inspects the exact GitHub account and Actions state named by the diagnostic, restores normal check execution, then verifies required runs on reviewed heads | GitHub account owner / repository administrator | Preserve required checks and protections. Keep local gate evidence separate; assess a hardened ephemeral runner without treating it as a proven workaround. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
@@ -40,7 +40,7 @@ the alternatives. No code-test result or specific account cause is inferred.
 | #55 | `56aa92a6920a429b83458380231642fe59feaf08` | [45548299466](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45548299466) | [45548299391](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45548299391) |
 | #56 | `e993391a61a99d63008bc970cb19af673be4c18c` | [45550857405](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857405) | [45550857276](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45550857276) |
 | #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
-| #58 | `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` | [45522848614](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848614) | [45522848658](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848658) |
+| #58 | `46b07a0337bbf449d2fd72a90ba240d0e9c9a063` (pre-sync snapshot) | [45522848614](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848614) | [45522848658](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522848658) |
 | #59 | `afce53a8ebc24261ea33ab705394eecb86459781` | [45529860767](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529860767) | [45529860606](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529860606) |
 | #60 | `59deef2a780d7802d8b8d29b66dd0189e96365ea` | [45538613621](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45538613621) | [45538613716](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45538613716) |
 | #61 | `8101bc78dfa6a0f96bdfabe3dd8c9dc46d19a93e` | [45539810679](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45539810679) | [45539810723](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45539810723) |
@@ -51,6 +51,18 @@ tests plus Ruff, catalog, atlas, evidence and capability checks. That candidate
 was not yet published when the diagnostics above were collected, so its
 official checks remain unobserved here. None of the listed failures is a
 repository test result.
+
+After PR #58 published exact head `37737c2ab329309fffb7dc3c8d8cdc6eee6c89a8`,
+its test run [45552758621](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45552758621)
+and symbol-catalog run
+[45552758221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45552758221)
+failed before repository steps. The exact diagnostics list recent account
+payment failure **or** a spending-limit increase as alternatives; detail calls
+show a completed failed job with no steps or logs. The condition is unresolved.
+The PR #56/#58 integration-base merge
+`eb6601ddfec7f021a8377b32abda8934fed02640` separately passed the full local gate
+outside the restricted sandbox: 768 tests plus Ruff, catalog, atlas, evidence
+and capability checks. These local checks do not count as official Actions.
 
 ### Self-hosted runner option
 
