@@ -15,8 +15,8 @@ that has not actually been granted.
 | B-04 | Optional WorldKernel runtime acceptance | Pinned supported version, actual engine/result schema, approved world mapping, trusted local fixture and resource caps; separate repo owner approval for cross-repo changes | Project owner / engine maintainer | Strict pure mapping, fake gateway tests and disabled-engine paths; no hard dependency or invented engine result |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-08 | The 2026-11-24 21:48 UTC snapshot of PR-triggered `test` and `symbol-catalog` runs for open drafts #52–#61 shows both workflows failed on every pinned head; run IDs are in the snapshot table below. PR #57's description records a verified billing/spending-limit annotation on its own earlier runs. Shared billing remains only a hypothesis for runs without that annotation. Later exact #60 head `cad28d8` and #61 final documented head `411546a` also failed before steps, with empty step lists and unavailable logs; neither exposed a cause annotation. | Successful required workflows on the exact reviewed head, or inspectable diagnostics and a verified resolution; local gates are not a substitute | Project owner / repository or Actions administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PRs draft and report Actions status as failed |
-| B-09 | Integration of the current review queue: PRs #52–#61 are open drafts and unmerged as of 2026-11-24. Dependent tasks cannot be promoted based on local implementation or tests alone. PR #60 also has the separate failed-workflow evidence in B-08. | Human review and integration decisions for prerequisite PRs; independently inspect required Actions outcomes where workflows run; then reconcile task dependencies against merged heads | Project owner / repository reviewers | Continue genuinely independent ready work, preserve the draft branches and evidence, and do not duplicate slices or assume dependency completion |
+| B-08 | Exact check-run diagnostics on #54 `2794abf`, #59 `afce53a`, #60 `59deef2` and #61 `b9a8151` carry the message that jobs were not started because recent account payments failed or the spending limit needs to be increased. This confirms the stated account-level pre-job gate for those exact heads, but not which account condition applies. Several older #60/#61 heads have one annotation in check-run metadata while their annotation text was not recovered; do not call those heads unannotated or infer the same cause. | Account owner inspects the settings named by the exact annotations; then rerun required checks on reviewed heads without changing workflows or protections | GitHub account owner / repository administrator | Preserve local exact-head receipts, continue tests and documentation gates, keep PRs draft and report Actions status as failed |
+| B-09 | Integration of the current review queue: PRs #52–#61 are open drafts and unmerged as of 2026-11-25. Dependent tasks cannot be promoted based on local implementation or tests alone. | Human review and integration decisions for prerequisite PRs; independently inspect required Actions outcomes where workflows run; then reconcile task dependencies against merged heads | Project owner / repository reviewers | Continue genuinely independent ready work, preserve the draft branches and evidence, and do not duplicate slices or assume dependency completion |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
@@ -42,45 +42,92 @@ local quality-gate receipts; later commits may have additional runs.
 | [#60](https://github.com/GustavoMFDS/MirrorMind/pull/60), `6374f0b` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) failed | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) failed |
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61), `df7b90c` | [45494754309](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45494754309) failed | [45494754332](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45494754332) failed |
 
-PR #57's body records a verified billing/spending-limit annotation for its
-own listed runs and says repository CI steps did not execute. Treat shared
-billing as a hypothesis for other PRs: #61 also failed on prior heads
-`78a4e5e`, `4c7300f`, `040d160`, `0eebfe3` and `7d9282d`. On head `df7b90c`,
-jobs expose no steps, log downloads return `404 BlobNotFound`, and
-artifact/combined-status queries are empty. The connector could not expose a
-root-cause annotation.
+PR #57's body records the same payment-or-spending-limit message on its listed
+runs. Exact diagnostics now recover that message for the pinned #54, #59, #60
+and #61 heads named in B-08, confirming the message only for those exact
+revisions. It does not distinguish the specific account condition. On older
+heads, missing annotation text or unavailable logs are insufficient to label
+a run unannotated or infer its cause.
 
 ### Exact-head follow-up (2026-11-25)
 
-- PR #60 final documented head `cad28d8c1e38dfd1cf8007c1b50853132d719ee3`
+- PR #60 earlier documented head `cad28d8c1e38dfd1cf8007c1b50853132d719ee3`
   has test run
   [45534347123](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45534347123)
   and symbol-catalog run
   [45534347132](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45534347132)
-  failed before steps. Both jobs have empty step lists; log downloads returned
-  `BlobNotFound`, and there is no cause annotation. Do not attribute these
-  failures to billing or infer that repository tests ran.
+  failed before steps. Exact check diagnostics carry the payment-or-spending-
+  limit pre-job message. This establishes the reported account gate on this
+  exact revision, not the specific account condition; no repository tests ran.
 - PR #61 prior head `288021f` had runs
   [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331)
   (`test`) and
   [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221)
-  (`symbol-catalog`) likewise had empty steps and unavailable logs without a
-  cause annotation. The corrected branch head
+  (`symbol-catalog`) likewise had empty steps and unavailable logs. Check-run
+  metadata records one annotation per check, but the text was not recovered.
+  The corrected branch head
   `4931e049dcf03a7b3843bb4c12a54ea4d26b533a` has test run
   [45536001576](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536001576)
   and catalog run
   [45536001585](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536001585)
   failed before steps. Both jobs returned empty step lists and log retrieval
-  returned `BlobNotFound`; no cause annotation was exposed. This remains
-  unexplained for the corrected head and does not establish billing.
+  returned `BlobNotFound`. Check-run metadata records one annotation per
+  check, but its text was not recovered. Do not call this head unannotated or
+  infer a cause from other revisions.
 - The final documented PR #61 head at this snapshot,
   `411546a9915ef82e81a5ed6723ce7292d85c3a57`, has test run
   [45536284392](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536284392)
   and catalog run
   [45536284438](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536284438)
   failed before steps. Both job step lists are empty; logs returned
-  `BlobNotFound`, and no cause annotation was exposed. No repository test or
-  catalog check execution can be inferred.
+  `BlobNotFound`. Check-run metadata records one annotation per check, but its
+  text was not recovered; do not call the head unannotated or infer a cause.
+- PR #60 latest documented head
+  `59deef2a780d7802d8b8d29b66dd0189e96365ea` has test run
+  [45538605875](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45538605875)
+  and symbol-catalog run
+  [45538605893](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45538605893).
+  Exact diagnostics show the same account-level pre-job message on both
+  checks; no repository steps ran and logs were unavailable.
+- PR #61 reviewed head before this documentation correction
+  `b9a8151269287b7264dc1eed0da7ed02a50202f2` has test runs
+  [45536692432](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536692432)
+  and [45536687429](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536687429),
+  and symbol-catalog runs
+  [45536692334](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536692334)
+  and [45536687419](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45536687419).
+  All four exact annotations report the same payment-or-spending-limit
+  pre-job message. No repository steps ran; logs were unavailable. The
+  message does not identify which account condition applies or demonstrate
+  remote test execution.
+
+### Self-hosted runner assessment
+
+GitHub currently lists self-hosted runner usage as free of its per-minute
+Actions charge, while the owner still pays for VM compute, clean images,
+network isolation, monitoring, log retention and teardown. A self-hosted runner
+is **not established as a fix for this B-08 gate**: the observed message says
+the job was not started because of account payments or spending limit, and no
+evidence shows that changing runner type bypasses this pre-job account check.
+Do not change workflows or required-check protections on this evidence.
+
+If the owner later authorizes a bounded pilot, use a dedicated disposable VM
+created from a clean image for each job, registered as an ephemeral
+just-in-time (JIT) runner that accepts at most one job. Give it no repository
+secrets, keep its short-lived JIT registration config out of disk and logs, set
+the workflow `GITHUB_TOKEN` to minimum read-only permissions, block access to
+private networks and cloud metadata, and assign no cross-repository runner
+group. Destroy the VM and disk afterward, forward only scrubbed diagnostic
+logs, and verify the exact required checks on a harmless test revision. A
+persistent shared runner is unsuitable:
+GitHub warns that untrusted pull-request code can compromise self-hosted runner
+environments, including in private repositories. Reusing hardware can also
+leave state between JIT jobs; a clean disposable VM is part of this proposal.
+
+Sources: GitHub [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
+and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
 
 ## Source references and precise restrictions
 
@@ -97,8 +144,9 @@ root-cause annotation.
   operational review are distinct from local code acceptance.
 - [PR #60](https://github.com/GustavoMFDS/MirrorMind/pull/60) and
   [PR #61](https://github.com/GustavoMFDS/MirrorMind/pull/61) remain drafts;
-  see the pinned B-08 run table. Current #61 diagnostics do not prove an
-  account-level cause or a source-code failure.
+  see the pinned B-08 run table. Latest exact-head annotations establish the
+  stated account payment-or-spending-limit start gate for those revisions,
+  not the specific account condition; they do not show source-code tests ran.
 - [Gateway gate](WORLDKERNEL_GATEWAY_GATE.md) rejects unrepresentable
   fields; a simulated result must actually come from the named engine.
 - [Security expectations](../SECURITY.md) and [decision log](../DECISIONS.md)

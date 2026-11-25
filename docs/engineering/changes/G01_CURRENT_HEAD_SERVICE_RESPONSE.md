@@ -187,16 +187,26 @@ consume nonces or prevent a dishonest store from freshly signing a stale head.
   the full gate at `2026-11-25T02:52:00.508060+00:00`: 697 tests and all six
   stages. Corrected-head Actions runs `45536001576` (`test`) and
   `45536001585` (`symbol-catalog`) failed before steps; both had empty step
-  lists, log retrieval returned `BlobNotFound`, and neither exposed a cause
-  annotation. This B-08 failure remains unexplained and is not attributed to
-  billing; it is not a remote test result.
-- The final documentation snapshot `411546a9915ef82e81a5ed6723ce7292d85c3a57`
-  also passed the exact local gate at `2026-11-25T02:54:32.328327+00:00` with
-  697 tests and all six stages. Its test run `45536284392` and symbol-catalog
-  run `45536284438` failed before steps; both step lists were empty, log
-  retrieval returned `BlobNotFound`, and no cause annotation was exposed.
-  B-08 remains unexplained; no billing attribution or remote test result is
-  made.
+  lists and logs returned `BlobNotFound`. Check-run metadata records one
+  annotation per check, but its text was not recovered. Do not call this head
+  unannotated or infer a cause from another revision.
+- The documentation snapshot `411546a9915ef82e81a5ed6723ce7292d85c3a57`
+  passed the exact local gate at `2026-11-25T02:54:32.328327+00:00` with 697
+  tests and all six stages. Its test run `45536284392` and symbol-catalog run
+  `45536284438` failed before steps; both step lists were empty and logs
+  returned `BlobNotFound`. Check-run metadata records one annotation per
+  check, but its text was not recovered. No cause is inferred.
+- Previously published review head `b9a8151269287b7264dc1eed0da7ed02a50202f2` passed the
+  exact local gate at `2026-11-25T02:58:12.913401+00:00`: 697 tests, Ruff,
+  catalog, atlas, evidence and capabilities. Receipt:
+  `%TEMP%\mirrormind-pr61-final-b9a8151-quality.json`. The four Actions runs
+  are `45536692432`/`45536687429` (`test`) and
+  `45536692334`/`45536687419` (`symbol-catalog`). Exact annotations state
+  that jobs were not started because recent account payments failed or the
+  spending limit needed to be increased. This confirms the account-level
+  pre-job gate on this exact head but not which condition applies; no
+  repository steps ran, logs were unavailable, and no remote test result is
+  claimed.
 - Scope: no HTTP adapter, persistence, CAS, authentication, nonce tracking or
   independent custody was added. A future transport must map exceptions at
   its own boundary without changing the typed responder contract.
