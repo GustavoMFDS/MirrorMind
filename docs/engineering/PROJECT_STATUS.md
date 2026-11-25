@@ -54,6 +54,15 @@ Starlette/httpx TestClient deprecation warning appeared. Its receipt is
 the final evidence-doc follow-up has a separate exact-head gate receipt. These
 are local results and do not establish GitHub Actions status.
 
+The same local branch now carries a scoped M1C-04 follow-on:
+`evaluate_census_vintage_backtest` selects each origin's visible aggregate
+vintage, compares fixed lag-12 and trailing-12 baselines at horizons 1, 3 and
+6, and scores later first-estimate labels only. The example has disjoint
+fictional validation and holdout origins. The focused evaluator, selector and
+CLI suite passed 28 tests; the exact-head integrated gate for this follow-on
+remains pending. This work changes neither PR #62 nor #60/#61 and does not
+acquire real source data.
+
 PR #59 review comment
 [7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
 identified an engine-contract mismatch and ambiguous parity invocation in the

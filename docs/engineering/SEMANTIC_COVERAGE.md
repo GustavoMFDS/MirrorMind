@@ -72,6 +72,12 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py) | G | Fixed pinned worker launch with timeout/output bounds and strict exchange result validation; [runtime guide](WORLDKERNEL_MAPPING_WALKTHROUGH.md), not a hostile-code sandbox |
 | [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py) | G | Verifies optional package metadata then registers only fixed trusted worlds; never accepts modules or registration values from request JSON |
 
+## Synthetic Census vintage evaluation
+
+| Source module | Level | Current behavior and learning guide |
+| --- | :---: | --- |
+| [census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py) | G | Fixed lag-12 and trailing-12 monthly baselines on date-selected fictional vintages; [evaluation guide](CENSUS_VINTAGE_EVALUATION.md); no real-source or empirical forecast claim |
+
 ## Capability readiness — do not confuse existence with deployment
 
 | Capability | Current status | Evidence needed before promotion |
@@ -246,4 +252,13 @@ malformed metadata and deterministic receipt behavior. It consumes invented
 records only, validates digest syntax rather than source bytes, and keeps
 ingestion/forecast authorization false. The [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md)
 is not a Census or ALFRED file/API parser; source rights, archive completeness,
-target cross-checks and evaluation remain open under B-01/B-02.
+source-specific parsing, rights, archive completeness, target cross-checks and
+empirical evaluation remain open under B-01/B-02.
+
+The separate census_evaluation.py consumes these selected vintages at fixed
+synthetic origins, uses lag-12 and trailing-12 baselines at horizons 1, 3 and
+6, and scores only later first-estimate labels. [Unit tests](../../tests/unit/test_census_vintage_evaluation.py)
+cover revisions, same-day exclusion, matched metrics, zero-safe WAPE, split
+abstention and no-leakage behavior. The [source walkthrough](CENSUS_VINTAGE_EVALUATION.md)
+and [model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) explain
+that all scores are fixture arithmetic, not empirical forecasting evidence.

@@ -25,7 +25,7 @@ flowchart LR
   D -->|yes| C[Filter published_on strictly before target release]
   C --> G[Choose latest eligible record per reference month]
   G --> R[CensusVintageView + sanitized receipt]
-  R --> A[Future evaluator after source and rights gates]
+  R --> A[Offline synthetic evaluator; empirical use remains approval-gated]
 ```
 
 | Component | Responsibility | Boundary |
@@ -35,8 +35,10 @@ flowchart LR
 | `CensusVintageView` | Holds selected typed records and emits a count/digest/release-ID receipt | Receipt does not contain values and never sets authorization/forecast flags true |
 | `tests/unit/test_census_vintages.py` | Reproduces cutoff, revision, abstention and malformed-input behavior | All records are constructed in memory and fictional |
 
-The selected view is a prep layer, not an end-to-end Census evaluation. No
-forecast consumer calls this module yet.
+The selected view is a prep layer. The experimental
+[census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py)
+reuses it for synthetic fixed-baseline evaluation; no user-facing product or
+API calls the selector.
 
 ## Contract and algorithm
 

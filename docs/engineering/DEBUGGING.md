@@ -302,3 +302,16 @@ checkout passed `test_health` and the complete local gate; preserve both
 observations. Use the owner-approved exact-clean-head gate in an already
 authorized local environment and report its full commit. Do not call a local
 pass GitHub Actions success.
+
+## Synthetic Census vintage evaluation abstains or rejects an origin
+
+Inspect the normalized selector, the evaluation walkthrough and
+tests/unit/test_census_vintage_evaluation.py. Check that each origin's own
+first estimate was published before issued_on, each target first estimate
+follows the issue date, and all 12 consecutive reference months are present in
+the as-of view. A missing month is an abstention, never a zero. An unrelated
+future reference month is a contract error; a target already published by
+issue is not a future outcome. Compare the per-origin vintage fingerprint and
+sanitized selector receipt before assuming a later revision affected a score.
+The normalized-input fingerprint is not a publisher-byte digest, and no
+diagnosis resolves source rights, archive completeness or empirical validity.

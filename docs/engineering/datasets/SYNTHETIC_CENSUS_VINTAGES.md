@@ -16,6 +16,12 @@ release IDs, `Decimal` values, publication dates, release kinds and fixed
 revision. The fixture is created inline in unit tests, so no data file is
 persisted and no network or filesystem read is required.
 
+The runnable baseline example separately generates 21 monthly first estimates
+from January 2020 through September 2021 and one fictional November revision.
+Validation and holdout origins are disjoint, and every date/value is invented.
+The example evaluates three fixed horizons using publication-date selection;
+it is only a deterministic mechanism demonstration.
+
 The adapter's normalized record contract separates:
 
 - `reference_month`: month described by an observation;
@@ -48,10 +54,12 @@ read by this fixture or stored in tests.
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q tests/unit/test_census_vintages.py
+.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_census_vintage_evaluation.py tests/integration/test_census_vintage_evaluation_cli.py
+.\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split validation
 ```
 
-The test proves only deterministic selection and fail-closed validation over
-the constructed records. It does not prove Census/ALFRED archive coverage,
+These commands prove only deterministic selection and fixed-baseline arithmetic
+over constructed records. They do not prove Census/ALFRED archive coverage,
 real publication timestamps, source rights, forecast skill, revision quality,
-or production readiness. A source-specific parser and empirical evaluator
+or production readiness. A source-specific parser and empirical evaluation
 remain separate, approval-gated work.

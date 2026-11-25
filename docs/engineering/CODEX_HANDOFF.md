@@ -226,6 +226,16 @@ source parsing, downloads, credentials, real values, permissions and forecasts
 remain outside this slice. The selector's evidence must never be presented as
 resolution of B-01/B-02.
 
+The same local Census pilot branch now also contains an experimental fixed
+baseline evaluator and generated validation/holdout example. It uses the
+normalized selector, records an exact input fingerprint, keeps first-estimate
+targets separate from later revisions, and abstains on incomplete history.
+The focused evaluator, selector and CLI suite passed 28 tests. Documentation
+is complete; the exact-head six-check gate and local receipt remain pending.
+This branch is still unpushed and separate from PR #62 and cannot resolve
+real-source blockers. Reconcile its head and receipt before claiming the slice
+is review-ready.
+
 ## 4. Mandatory documentation standard
 
 MirrorMind documentation is both **engineering knowledge and a

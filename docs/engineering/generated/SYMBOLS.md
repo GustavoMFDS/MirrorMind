@@ -142,6 +142,23 @@ Static imports (including inside functions): `__future__`, `bisect`, `dataclasse
 | `DeclaredCalendarCoverage.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Keep the unverified calendar and unknown publisher availability explicit. | [L29](../../../src/mirrormind/domains/retail/calendar_coverage.py#L29) |
 | `summarize_declared_calendar_coverage` | function | `def summarize_declared_calendar_coverage(projection: UciRetailProjection, declared_days: tuple[date, ...]) -> DeclaredCalendarCoverage` | Count only absent *declared* dates between observed positive product-days. | [L44](../../../src/mirrormind/domains/retail/calendar_coverage.py#L44) |
 
+## `mirrormind.domains.retail.census_evaluation`
+
+Source: [`src/mirrormind/domains/retail/census_evaluation.py`](../../../src/mirrormind/domains/retail/census_evaluation.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `decimal`, `hashlib`, `json`, `math`, `mirrormind.domains.retail.census_vintages`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `CensusForecastOrigin` | class | `class CensusForecastOrigin` | One predeclared monthly reference period and date-only issue boundary. | [L33](../../../src/mirrormind/domains/retail/census_evaluation.py#L33) |
+| `_month_offset` | function | `def _month_offset(month: date, offset: int) -> date` | — | [L40](../../../src/mirrormind/domains/retail/census_evaluation.py#L40) |
+| `_record_payload` | function | `def _record_payload(record: CensusVintageRecord) -> dict[str, str]` | — | [L48](../../../src/mirrormind/domains/retail/census_evaluation.py#L48) |
+| `_manifest_sha256` | function | `def _manifest_sha256(records: tuple[CensusVintageRecord, ...]) -> str` | — | [L60](../../../src/mirrormind/domains/retail/census_evaluation.py#L60) |
+| `_selection_receipt` | function | `def _selection_receipt(view: CensusVintageView, manifest_sha256: str) -> dict[str, object]` | Summarize a selected vintage without repeating every release identifier. | [L79](../../../src/mirrormind/domains/retail/census_evaluation.py#L79) |
+| `_metric_values` | function | `def _metric_values(value: Decimal) -> float` | — | [L101](../../../src/mirrormind/domains/retail/census_evaluation.py#L101) |
+| `_metrics` | function | `def _metrics(forecasts: tuple[Decimal, ...], actuals: tuple[Decimal, ...]) -> dict[str, float \| None]` | — | [L108](../../../src/mirrormind/domains/retail/census_evaluation.py#L108) |
+| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L126](../../../src/mirrormind/domains/retail/census_evaluation.py#L126) |
+
 ## `mirrormind.domains.retail.census_vintages`
 
 Source: [`src/mirrormind/domains/retail/census_vintages.py`](../../../src/mirrormind/domains/retail/census_vintages.py)

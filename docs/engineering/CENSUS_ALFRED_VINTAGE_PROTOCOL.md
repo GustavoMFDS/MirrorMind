@@ -77,15 +77,26 @@ separate from parsing so unit tests can use generated records and no live
 account is required. The current selector's receipt always marks source
 provenance unverified and ingestion/forecast flags false.
 
+The synthetic evaluation implementation in
+[census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py)
+reuses the selector at each fixed date-only origin. It compares lag-12
+seasonal naive and trailing-12-month mean at horizons 1, 3 and 6 against
+later first-estimate labels, while preserving reason-specific abstention and
+per-origin lineage. The generated example has disjoint validation and holdout
+origins, but it is not an empirical locked holdout. See the
+[evaluation walkthrough](CENSUS_VINTAGE_EVALUATION.md) and
+[synthetic model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md).
+
 The normalized-selector tests cover absent months, conflicting release
 metadata, malformed digest syntax, same-day ambiguity, revisions after the
-cutoff and deterministic abstention. Future source-parser/evaluator tests must
-cover changed bytes, missing release-boundary metadata, missing ALFRED
-vintages, disagreement with original Census releases, all-abstained origins
-and zero metric denominators. A complete local check does not establish
-rights or official CI. No data adapter should call FRED until free
-account/API access, each series' terms and the owner-approved retention
-manifest are in place.
+cutoff and deterministic abstention. Synthetic evaluation tests additionally
+cover later-revision noninterference, target labels, matched baselines,
+missing history, zero metric denominators and split replay. Future
+source-parser/evaluator tests must cover changed bytes, missing release-boundary
+metadata, missing ALFRED vintages and disagreement with original Census
+releases. A complete local check does not establish rights or official CI. No
+data adapter should call FRED until free account/API access, each series'
+terms and the owner-approved retention manifest are in place.
 
 ## Current primary references checked 2026-11-25
 

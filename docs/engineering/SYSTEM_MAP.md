@@ -37,6 +37,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 ## Change-location guide
 | User request | Inspect first | Evidence |
 | --- | --- | --- |
+| Evaluate aggregate Census vintages | [census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py), [evaluation guide](CENSUS_VINTAGE_EVALUATION.md), [model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) | [unit regressions](../../tests/unit/test_census_vintage_evaluation.py) and [CLI integration](../../tests/integration/test_census_vintage_evaluation_cli.py) prove fixed horizons, as-of vintages, matched first-estimate metrics and synthetic split replay; no source rights, empirical skill or production use |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover v1 input/reference bounds and review chronology; M1F-02 uses v2 outcome-linked selected-engine and parity evidence; no authenticated producer, trusted engine attestation, API or action execution |
 | Evaluate UCI-shaped product-day observations | [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md) | [`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) and [`test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) exercise synthetic coverage, cohort, holdout, metrics and redaction; no real source rights, snapshot completeness or point-in-time availability |
@@ -148,13 +149,32 @@ per `reference_month` -> `CensusVintageView` with release IDs and digest
 strings. Empty months remain absent. A date-only same-day publication is
 ambiguous and rejected; the selector never uses row order to resolve it.
 
-This is a pure in-memory adapter against fictional records. It checks digest
-syntax but cannot read source bytes, verify a Census/ALFRED manifest, authorize
-ingestion or score a forecast. The original source file parser, retained
-vintage archive and baseline evaluation remain blocked by B-01/B-02. See the
+The selector is a pure in-memory adapter against fictional records. It checks
+digest syntax but cannot read source bytes, verify a Census/ALFRED manifest or
+authorize ingestion. The downstream synthetic evaluator is also local-only;
+real source parsing, vintage archive verification, rights and empirical
+evaluation remain blocked by B-01/B-02. See the
 [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md),
 [synthetic fixture card](datasets/SYNTHETIC_CENSUS_VINTAGES.md) and
 [protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+## Aggregate monthly vintage baseline evaluation (synthetic preparation only)
+
+The [Census vintage evaluator](../../src/mirrormind/domains/retail/census_evaluation.py)
+uses each predeclared date-only origin to select the latest visible monthly
+vintage, then scores the target first estimate one, three and six reference
+months ahead. It compares fixed lag-12 seasonal naive and trailing-12-month
+mean baselines on identical eligible targets. Incomplete history, missing
+labels and already-published targets abstain; no months are zero-filled.
+
+The validation/holdout example builds a fictional series in memory and emits
+metrics plus per-origin vintage fingerprints, publication dates, release IDs
+and source digest strings. It omits values and predictions, keeps
+authorization/forecast flags false, and cannot verify the caller-provided
+snapshot strings. See the [evaluation guide](CENSUS_VINTAGE_EVALUATION.md),
+[model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md),
+[synthetic example](../../examples/m1_census_vintage_evaluation.py) and
+[regressions](../../tests/unit/test_census_vintage_evaluation.py).
 
 ## Offline combined-head fence — experimental, no authority service
 

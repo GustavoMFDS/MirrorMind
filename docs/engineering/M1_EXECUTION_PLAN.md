@@ -109,6 +109,14 @@ The B protocol names official Census archives as preferred and `RSAFS`/ALFRED
 as a conditional alternative, with date-granular vintages handled
 conservatively. No Census or ALFRED data or key has been acquired.
 
+The local synthetic Census lane now includes an immutable normalized-vintage
+selector and fixed lag-12/trailing-12 evaluation at 1-, 3- and 6-month
+horizons. It uses disjoint fictional validation/holdout origins and first
+estimates, preserving later revisions as origin-specific history only when
+their publication dates precede the issue boundary. These checks exercise the
+method, not the empirical holdout or archive-coverage gates; B-01/B-02 remain
+open for source acquisition and scoring.
+
 In parallel, complete the optional local WorldKernel adapter after the
 existing M1E-01 strict request mapper: pin a reviewed engine commit, invoke
 only its registered synthetic world through local exchange v1, enforce

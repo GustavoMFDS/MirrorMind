@@ -1132,5 +1132,33 @@
     "test": "tests/unit/test_uci_event_time.py",
     "function": "test_validation_scores_do_not_depend_on_locked_holdout_values",
     "limitation": "This mutation regression establishes validation independence from later fixture values only. It does not test preprocessing leakage or revised source vintages."
+  },
+  {
+    "id": "MM-CEN-003",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_fixed_horizons_use_asof_vintages_and_matched_first_estimates",
+    "limitation": "Shows fixed monthly baselines and matched metrics over a generated normalized series. It does not authenticate publisher bytes or establish Census/ALFRED archive coverage or empirical forecast quality."
+  },
+  {
+    "id": "MM-CEN-004",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_later_revision_does_not_change_any_prior_origin_score",
+    "limitation": "Proves one later synthetic revision cannot rewrite fixed earlier origins. It does not validate a real release calendar or every source-specific revision rule."
+  },
+  {
+    "id": "MM-CEN-005",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_incomplete_trailing_history_abstains_without_filling_months",
+    "limitation": "A generated missing month causes synthetic abstention rather than zero filling. It does not prove real archive completeness or a valid zero observation."
+  },
+  {
+    "id": "MM-CEN-006",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_vintage_evaluation_cli.py",
+    "function": "test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint",
+    "limitation": "Confirms the generated CLI has deterministic output and disjoint fixture origins. It does not establish a blinded/locked empirical holdout or source authorization."
   }
 ]

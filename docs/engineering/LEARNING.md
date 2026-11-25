@@ -673,6 +673,28 @@ Finally locate where `InvoiceDate` becomes an event day and explain why a
 verified publication vintage requires a distinct source contract. Do not use
 real UCI rows in this exercise.
 
+## Guided exercise — evaluate aggregate Census vintages without lookahead
+
+Read the [synthetic evaluation walkthrough](CENSUS_VINTAGE_EVALUATION.md),
+[model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md),
+[aggregate-vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) and
+[implementation](../../src/mirrormind/domains/retail/census_evaluation.py).
+Run both CLI splits and the focused regressions:
+
+    .\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split validation
+    .\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split holdout
+    .\.venv\Scripts\python.exe -m pytest -q tests/unit/test_census_vintage_evaluation.py tests/integration/test_census_vintage_evaluation_cli.py
+
+Trace the December and January validation origins. For each, list the release
+dates admitted by the strict issue cutoff, the 12 complete history months, the
+lag-12 target and first-estimate label. Move a historical revision to the
+second origin's issue date and predict why it leaves the history fingerprint
+unchanged. Remove one month and identify the exact abstention count. Change a
+target first-estimate value and explain why metrics change while the output
+still omits that value and its forecast. Finally explain why a higher or lower
+fictional error is not evidence about Census accuracy, source permission,
+archive coverage or the proposed UCI product-level study.
+
 ## Guided exercise — select an aggregate vintage without lookahead
 
 Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md),
