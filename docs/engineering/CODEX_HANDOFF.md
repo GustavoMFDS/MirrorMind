@@ -115,22 +115,28 @@ spending-limit increase authorized. Follow
 [`LOCAL_QUALITY_GATE.md`](LOCAL_QUALITY_GATE.md) on a clean exact head; report
 all six local checks as local evidence, not CI. Require independent review and
 a separate final gate on the integrated candidate before any integration
-decision. The recovered `1bf178b` test
-timeout did not reproduce in an isolated environment, but its cause remains
-unknown. The newer `678755e` workflow checks have empty steps/logs and
-unavailable annotation text through the connected diagnostics; do not infer
-their per-check cause. Do not disable checks, change protections, or start a
-self-hosted runner without separate zero-cost isolated infrastructure
-approval. See comments [7164856818](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818),
-[7164870326](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164870326)
-and [7164895449](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164895449).
+decision. The owner's exact-head retest at `1bf178b` passed; the older
+`8f906b8` timeout cause remains unknown. On the separate M1E-02 commit
+`ac52ec9`, a restricted Windows sandbox reproduced a `test_health` wait in
+asyncio loopback socket-pair creation; a five-second event-loop probe
+reproduced the wait, and the same test plus full six-check gate passed outside
+that socket restriction. Do not generalize this diagnosis to the older
+`8f906b8` event. The latest `678755e` owner-recovered job records show
+`steps=[]` and `runner_id=0` for the `test` and `symbol-catalog` jobs, but the
+exact annotation remains unavailable; do not infer its per-check cause. Do
+not disable checks, change protections, or start a self-hosted runner without
+separate zero-cost isolated infrastructure approval. See comments
+[7164856818](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818),
+[7164870326](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164870326),
+[7164895449](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164895449)
+and [7167002881](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881).
 
 The M1E-02 candidate is a separate local branch based on PR #55. It uses an
 optional SHA-pinned WorldKernel package and one registered fictional demo;
 API startup stays independent. Do not edit WorldKernel, treat `demo-1` as
 artifact attestation, claim lead-time behavior, or describe the subprocess as
 a hostile-code sandbox. Keep this candidate separate until its exact-head
-local gate and the next review/integration decision.
+local gate (passed on `ac52ec9`) and the next review/integration decision.
 
 ## 4. Mandatory documentation standard
 

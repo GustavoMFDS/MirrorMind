@@ -144,9 +144,17 @@ The capability is experimental and local. It is not connected to an HTTP
 route and does not establish CPU/memory isolation, hostile-code safety, source
 rights, forecast quality, lead-time modeling or production use. The upstream
 repository remains untouched; its inspected pin has no root `LICENSE` file,
-so no redistribution claim is made. Local M1E-02 gate evidence and final SHA
-are recorded in the change request after the exact-head gate completes; no PR
-has been opened for this branch.
+so no redistribution claim is made. No PR has been opened for this branch.
+Commit `ac52ec90aba6f25bdb5e036a76c8bae2995cf340` passed the exact-head local
+six-check gate: 772 tests in 19.08s, Ruff, symbol catalog, atlas, evidence
+and capability checks, with one existing Starlette/httpx deprecation warning.
+Receipt status is `local_gate_passed_not_official_ci`; GitHub Actions was not
+checked. The first restricted run timed out in `test_health`; a faulthandler
+trace and bounded `asyncio.new_event_loop()` subprocess identified blocked
+Windows loopback socket-pair setup in that sandbox. The same test passed
+outside the restriction in 0.59s, followed by the full same-SHA gate. This
+explains this executor's timeout but does not retroactively explain the
+historical `8f906b8` timeout.
 
 ## PR #57 owner direction and current remote evidence
 
@@ -156,9 +164,11 @@ UCI #352 local event-time evaluator and a separate aggregate Census
 release-vintage protocol. On that exact head, the six-check temporary local
 gate passed 712 tests in 18.19 seconds, with one existing Starlette/httpx
 warning; receipt status is `local_gate_passed_not_official_ci`. This is not
-official Actions evidence. Four checks currently fail with empty step lists
-and unavailable logs/annotation text, so this head's individual cause remains
-unknown.
+official Actions evidence. Four check runs currently fail with empty step
+lists and unavailable logs/annotation text, so this head's individual cause
+remains unknown. The latest owner-recovered job metadata reports zero steps
+and `runner_id=0` for the `test` and `symbol-catalog` jobs; it still does not
+provide the exact annotation or account-level cause.
 
 Owner direction accepts preparing A then B only: A is a privacy-minimized,
 research-only UCI event-time retrospective; B is aggregate Census release
@@ -172,8 +182,9 @@ evidence. The PR remains draft for separate review/integration decisions.
 
 At earlier exact head `1bf178b5c4b31bcd68072b69748a14249c6c2649`, an independent
 fresh-worktree retest passed the health test and all six local-gate checks
-(700 tests); the older restricted timeout did not reproduce, but its cause
-remains undetermined. See [B-07/B-08](BLOCKERS.md) for exact evidence.
+(700 tests); that did not establish the cause of the older `8f906b8` timeout.
+See [B-07/B-08](BLOCKERS.md) for the distinct historical, sandbox and
+same-SHA evidence.
 
 ## Architecture and actual execution boundaries
 

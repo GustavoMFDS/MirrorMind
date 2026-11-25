@@ -16,7 +16,7 @@
 
 - Previous: `worldkernel_adapter` was `planned`; the capability ledger described a request mapper without execution.
 - Current: `experimental`, limited to an optional locally installed package at exact SHA `9b133ef873f2b6a7206c9c5742d40df4fccdb04a` and one trusted synthetic demo world. Missing or mismatched runtime is an explicit failure.
-- Evidence: focused parent-protocol regressions cover pin, limits, timeout, output and result validation; a separate integration test executes the pinned engine using fictional inputs. Exact local full-gate evidence is being recorded below.
+- Evidence: focused parent-protocol regressions cover pin, limits, timeout, output and result validation; a separate integration test executes the pinned engine using fictional inputs. The exact-head local six-check receipt is recorded below.
 - Limitation: no HTTP route, service-side admission, arbitrary-code sandbox, operational deployment, authentic forecast, approved data or business recommendation.
 - `GET /v1/capabilities` lists the local adapter as experimental; no simulation endpoint was added.
 
@@ -33,7 +33,7 @@
 - [x] Keep imports lazy and API bootable without the optional package; no HTTP route or import-time engine discovery.
 - [x] Add normal, adverse and actual-engine tests; all test inputs remain synthetic.
 - [x] Update change docs, source walkthrough, system map, atlas, symbols, evidence and capability ledger; explain run/debug/recovery steps.
-- [ ] Run the exact clean-head local six-check gate after commit; report local versus official CI separately.
+- [x] Run the exact clean-head local six-check gate after commit; report local versus official CI separately.
 
 ## 3. Impact map
 
@@ -70,13 +70,13 @@ The local timeout and output-file bounds do not provide a general CPU/memory san
 3. Added synthetic regressions for runtime absence/pin mismatch, result fields/balance, limits, timeout, process failure, output overflow and malformed envelopes.
 4. Implemented the pinned optional worker/runner pair; installed the optional dependency only in the local development environment and executed the synthetic engine scenario.
 5. Updated capability/evidence/maps, source walkthrough, learning/debugging documentation, atlas and generated symbol catalog.
-6. Focused tests and example passed. Exact clean-head full gate remains pending; do not call it GitHub Actions.
+6. Focused tests and example passed. The first restricted-sandbox full gate timed out because local asyncio socket-pair setup blocked before the health route. A bounded reproducer and faulthandler supported this environment diagnosis; the test and full exact-head gate passed outside that socket restriction. Record both attempts without calling the local gate GitHub Actions.
 
 ## 6. Evidence after implementation
 
 - Commit / PR: local branch `codex/m1e-02-worldkernel-local-runtime`, based on PR #55 head `56aa92a6920a429b83458380231642fe59feaf08`; no PR opened pending separate review/integration decision.
 - Modified symbols and files: `LocalWorldKernelGateway`, `WorldKernelRuntimeConfig`, `run_worldkernel_scenario`, worker `main`, `_verify_installed_runtime`, strict result parsing/validation, API capability status and synthetic tests.
-- Tests and environment: Python 3.13.5; focused mapping/runner/actual-engine suite passed 44 tests in 5.01s; pinned package `0.0.1` at `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; example exited 0 and produced 3 runs × 5 steps with seed 2026. Exact full gate pending.
+- Tests and environment: Python 3.13.5; focused mapping/runner/actual-engine suite passed 44 tests in 5.01s; pinned package `0.0.1` at `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; example exited 0 and produced 3 runs × 5 steps with seed 2026. On exact clean commit `ac52ec90aba6f25bdb5e036a76c8bae2995cf340`, the six-check local gate passed 772 tests in 19.08s plus Ruff, catalog, atlas, evidence and capability checks; one existing Starlette/httpx deprecation warning appeared. Receipt status: `local_gate_passed_not_official_ci`; Actions was not checked. A separate restricted-sandbox attempt timed out in `test_health`; a faulthandler trace pointed to Windows asyncio fallback socket-pair `accept`, and a bounded child event-loop probe reproduced it in 5 seconds. The same health test passed outside that restriction in 0.59s, followed by the full same-SHA gate. This diagnoses the current sandbox, not the older `8f906b8` event.
 - Claim IDs and limitations: `MM-WKR-001` bounded output protocol, `MM-WKR-002` actual pinned-engine integration, `MM-WKR-003` PEP 610 metadata check and `MM-WKR-004` inventory balance regression. None establishes installed-file attestation, source rights, a lead-time model, CPU/memory isolation or production safety.
 - Contract: MirrorMind `worldkernel.result.v1`-backed local `SimulationSummary`; no HTTP contract change.
 - Docs updated: decision log; source review; gateway gate and mapper/runtime walkthrough; system/semantic maps; capability gates/ledger; evidence map; atlas; debugging/learning/API walkthrough; local gate and handoff; definition of done; master/M1 plans; project status, backlog and blockers.
