@@ -202,8 +202,10 @@ do not replace HTTP body-size, rate or concurrency controls.
   756 tests plus Ruff, catalog, atlas, evidence and capability checks. The
   restricted replay timed out at 900 seconds; the full pass ran outside that
   sandbox. One existing Starlette/httpx deprecation warning appeared. The
-  correction branch has not yet been pushed, and no official CI result exists
-  for the corrected SHA. Published heads remain subject to B-08.
+  documentation follow-up `4d1d5b92e990f6d771209097fde1622c3c88958f` also
+  passed that complete gate with the same source state. The correction branch
+  has not yet been pushed, and no official CI result exists for the corrected
+  SHA. Published heads remain subject to B-08.
 - Limits: the local contract does not authenticate reviewer/reference claims,
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.

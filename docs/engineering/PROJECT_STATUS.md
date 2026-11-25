@@ -27,20 +27,22 @@ not a production-ready AI platform.
 
 ## Current review-correction candidate — 2026-11-24
 
-The active checkout is `codex/m1e-01-worldkernel-mapping` at integrated local
-SHA `07c405b0d49ab05611413acce61af1123111fb48`. Its merge commit includes
+At the recorded gate, checkout `codex/m1e-01-worldkernel-mapping` was at
+documentation follow-up SHA `4d1d5b92e990f6d771209097fde1622c3c88958f`, atop
+source integration merge `07c405b0d49ab05611413acce61af1123111fb48`. The merge includes
 the #54 correction commits `f02459d` and `9113d86` as ancestry, without
 cherry-picking or duplicating them, and reconciles #54/#55 documentation.
 Published #52 and #53 heads are ancestors of this candidate. The candidate
 therefore contains the published #52–#55 stack plus reproduced review fixes
 for #54 and #55. No merge to `main` has occurred.
 
-The complete local gate passed on that exact clean SHA outside the restricted
+The complete local gate passed on both exact clean SHAs outside the restricted
 sandbox: 756 pytest tests, Ruff, symbol catalog, repository atlas, evidence
-map, and capability checks. Pytest reported one existing Starlette/httpx
-deprecation warning. A restricted replay of the same SHA timed out at 900
-seconds in pytest and did not complete; see [B-07](BLOCKERS.md). No test was
-skipped in the passing gate. The candidate was not published when checked,
+map, and capability checks. The latest result is bound to `4d1d5b9`. Pytest
+reported one existing Starlette/httpx deprecation warning. A restricted replay
+of source integration `07c405b` timed out at 900 seconds in pytest and did not
+complete; see [B-07](BLOCKERS.md). No test was skipped in either passing gate.
+The latest candidate was not published when checked,
 so it has no official Actions result. Published PR heads #52–#61 have the
 separate B-08 pre-job account gate; see its exact run table and runner
 assessment in [BLOCKERS](BLOCKERS.md). No Actions success is inferred from
