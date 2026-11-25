@@ -217,10 +217,11 @@ No real UCI/Census bytes were accessed. PR #60/#61 remain separate, and no
 remote branch or `main` was changed.
 
 The separate local branch `codex/m1-census-vintage-adapter` prepares a pure
-synthetic aggregate-vintage selector on top of PR #62. Keep it separate from
-the consolidated candidate and do not publish it until its exact local gate,
-documentation checks and the candidate's review state support a reviewable
-follow-on. It consumes only caller-supplied normalized records in memory;
+synthetic aggregate-vintage selector on top of PR #62. Its source/docs commit
+passed the exact local gate with the reviewed WorldKernel pin installed; a
+documentation-only evidence follow-up is gated on its own exact head. Keep it
+separate from the consolidated candidate and do not publish it until the
+candidate's review state supports a reviewable follow-on. It consumes only caller-supplied normalized records in memory;
 source parsing, downloads, credentials, real values, permissions and forecasts
 remain outside this slice. The selector's evidence must never be presented as
 resolution of B-01/B-02.

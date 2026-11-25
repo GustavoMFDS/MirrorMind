@@ -54,7 +54,7 @@ baseline comparison, HTTP exposure, capability promotion and WorldKernel.
   filesystem/network access and does not read a credential.
 - [x] Technical/learning docs, synthetic fixture card, architecture and atlas
   links explain the exact behavior, limitations and reproduction steps.
-- [ ] The six-check exact-head local gate passes with the optional reviewed
+- [x] The six-check exact-head local gate passes with the optional reviewed
   WorldKernel pin installed; no test is skipped.
 
 ## 3. Impact map
@@ -108,13 +108,18 @@ are used until B-01/B-02 approvals and the exact source archive are reviewed.
 ## 6. Evidence after implementation
 
 - Commit / PR: local branch `codex/m1-census-vintage-adapter`, stacked on
-  reviewed PR #62 head `777c2d2`; not pushed and no PR opened.
+  reviewed PR #62 head `777c2d2`; source/docs commit `97fb0ff046a13fa0364324adf5936504f7b15cb1` is not pushed and has no PR.
 - Modified symbols and files: `CensusVintageRecord`, `CensusVintageView`,
   `_validate_record` and `select_census_vintage_as_of` in
   `src/mirrormind/domains/retail/census_vintages.py`.
-- Tests executed, result, environment: focused suite passed (11 tests) on
-  Python 3.13.5 before final documentation/catalog changes; full exact-head
-  gate pending.
+- Tests executed, result, environment: focused suite passed (11 tests), then
+  the complete exact-head gate passed on `97fb0ff046a13fa0364324adf5936504f7b15cb1`
+  with Python 3.13.5 and WorldKernel `0.0.1` installed from source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: 843 passed, zero skipped;
+  Ruff, catalog, atlas, evidence and capability checks passed. One existing
+  Starlette/httpx TestClient deprecation warning appeared. Receipt:
+  `results/local-quality-gate-97fb0ff046a13fa0364324adf5936504f7b15cb1.json`.
+  GitHub Actions was not checked by the local gate.
 - Claim IDs and cited test path/function: `MM-CEN-001` cites
   `tests/unit/test_census_vintages.py::test_selects_latest_revision_per_month_strictly_before_target_release`;
   `MM-CEN-002` cites
@@ -133,3 +138,7 @@ are used until B-01/B-02 approvals and the exact source archive are reviewed.
 - Independent explanation: the tests prove local selection and rejection
   semantics for normalized generated records. They do not prove a source parser,
   source-byte digest, rights, completeness or forecast quality.
+- Final documentation follow-up: the validation result above is bound to the
+  exact source/docs commit shown. A later documentation-only evidence update
+  requires its own exact-head receipt; the receipt itself is keyed by the tested
+  SHA so the tested tree is not edited after validation.

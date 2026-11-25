@@ -45,7 +45,14 @@ records, a privacy-limited receipt, regression tests and a learning guide.
 This branch is not pushed and has no PR; it does not alter PR #62's review head
 or the separate #60/#61 branches. The selector is not a Census/ALFRED parser,
 does not read files or make network calls, and cannot satisfy B-01/B-02.
-Record its final commit and exact local gate below after validation.
+Source/docs commit `97fb0ff046a13fa0364324adf5936504f7b15cb1` passed the
+exact six-check local gate with WorldKernel source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed: 843 tests, zero skips,
+Ruff, catalog, atlas, evidence and capability checks. One existing
+Starlette/httpx TestClient deprecation warning appeared. Its receipt is
+`results/local-quality-gate-97fb0ff046a13fa0364324adf5936504f7b15cb1.json`;
+the final evidence-doc follow-up has a separate exact-head gate receipt. These
+are local results and do not establish GitHub Actions status.
 
 PR #59 review comment
 [7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
