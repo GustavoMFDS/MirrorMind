@@ -13,5 +13,6 @@ build/
 data/
 results/
 *.sqlite
-# Local Graphify semantic cache and generated graph artifacts.
+# Local Graphify products and semantic-extraction cache are generated artifacts.
+/graphify-out/
 /docs/engineering/graphify-out/

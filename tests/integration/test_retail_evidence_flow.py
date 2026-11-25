@@ -96,9 +96,12 @@ def test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizi
 
     assert [row.units for row in flow.declared_as_of_observations] == [2, 0]
     assert flow.quality_summary["late_published_rows"] == 1
-    receipt = str(flow.receipt())
-    assert flow.receipt()["ingestion_authorized"] is False
-    assert flow.receipt()["forecast_eligible"] is False
+    aggregate = flow.receipt()
+    assert aggregate["source_review"] == flow.review_packet.receipt()
+    assert aggregate["snapshot_quality"] == dict(flow.quality_summary)
+    receipt = str(aggregate)
+    assert aggregate["ingestion_authorized"] is False
+    assert aggregate["forecast_eligible"] is False
     assert "item-A" not in receipt
     for reference in ("SRC-001", "LIC-001", "PERM-001", "PRIV-001", "AVAIL-001"):
         assert reference not in receipt
@@ -132,7 +135,12 @@ def test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identif
     assert flow.release_audit.available_product_days == 1
     assert flow.release_audit.withheld_unpublished_days == 1
     assert flow.release_audit.future_event_days == 1
-    receipt = str(flow.receipt())
+    aggregate = flow.receipt()
+    assert aggregate["source_review"] == flow.review_packet.receipt()
+    assert aggregate["projection"] == flow.workbook.receipt()
+    assert aggregate["calendar_coverage"] == flow.calendar_coverage.receipt()
+    assert aggregate["release_audit"] == flow.release_audit.receipt()
+    receipt = str(aggregate)
     assert "SECRET-SKU" not in receipt
     assert "PRIVATE DESCRIPTION" not in receipt
     assert "12345" not in receipt
