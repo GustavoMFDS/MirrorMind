@@ -80,7 +80,10 @@ unit suite passes 28 tests. Ruff, source catalog, atlas, evidence and
 capability checks pass locally, as does `git diff --check`. For the atlas
 check, only the existing untracked Graphify output was excluded via
 a temporary local Git exclude file; no source guard or project ignore rule was
-changed. The full integrated gate is pending. HTTP runtime was not tested and
+changed. The integrated candidate `57ae948b978540daddf33616d1d9712cddc8972f`
+passed the complete local gate at 2026-11-25 04:19:04 UTC: 728 tests, Ruff,
+catalog, atlas, evidence and capability checks. One existing
+Starlette/httpx deprecation warning appeared. HTTP runtime was not tested and
 no new route was added. The result digest remains a recomputable content hash,
 not a signature; all source/model/engine references remain caller assertions.
 The task remains interface-only and has no authenticated producer, storage,
@@ -88,8 +91,8 @@ decision ranking, execution permission or real engine evidence. The source
 walkthrough is in [DECISION_TRACE_RESULT](DECISION_TRACE_RESULT.md). PR #54
 remains a draft stacked on #53. Merge commit `e493b4c` synchronizes the local
 branch with published PR #53 head `79d3679`, retaining both histories and the
-nested-receipt regressions. The full exact-head gate on this integrated
-candidate remains pending. Its prior head's GitHub checks failed before job
+nested-receipt regressions. The complete local gate passed on this integrated
+candidate as recorded above. Its prior head's GitHub checks failed before job
 start; no official check has yet been inspected for this new commit.
 
 ## Architecture and actual execution boundaries

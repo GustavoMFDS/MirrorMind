@@ -210,3 +210,20 @@ do not replace HTTP body-size, rate or concurrency controls.
 - Limits: the local contract does not authenticate reviewer/reference claims,
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.
+
+## PR #53 dependency synchronization — 2026-11-25
+
+- Merge commit `e493b4c` synchronizes PR #54 with published PR #53 head
+  `79d3679013576c6a209bed9fa031b7f0fabd0d8d`. Shared blocker, status, backlog
+  and M1C change-request records were reconciled by preserving both PRs'
+  evidence. The M1C regression for child receipt authority flags remains in
+  `tests/integration/test_retail_synthetic_evaluation.py`.
+- Complete local quality gate passed on integrated candidate
+  `57ae948b978540daddf33616d1d9712cddc8972f` at 2026-11-25 04:19:04 UTC:
+  728 pytest tests, Ruff, symbol catalog, repository atlas, evidence map and
+  capability checks. The API integration suite ran. One existing
+  Starlette/httpx TestClient deprecation warning appeared. This is local
+  evidence, not official CI.
+- The earlier PR #54 head's Actions runs failed before repository steps. The
+  synchronized candidate has not yet been published at this evidence
+  snapshot; inspect its required checks after publication. B-08 remains open.
