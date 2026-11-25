@@ -14,6 +14,7 @@ from mirrormind.modules.retrieval.contracts import (
     EvidenceCitation,
     EvidenceDocument,
     EvidenceQuery,
+    RetrievedEvidence,
 )
 from mirrormind.modules.retrieval.fictional_fixture import (
     build_fictional_index,
@@ -149,6 +150,29 @@ def test_retrieval_citation_span_matches_source_and_digest():
         )
         assert hit.citation.source_ref == document.source_ref
         assert hit.citation.snapshot_ref == document.snapshot_ref
+
+
+def test_contract_rejects_same_length_excerpt_tampering():
+    hit = build_fictional_index().search(EvidenceQuery(text="availability")).hits[0]
+    payload = hit.model_dump(mode="json")
+    payload["excerpt"] = ("X" if payload["excerpt"][0] != "X" else "Y") + payload[
+        "excerpt"
+    ][1:]
+
+    assert len(payload["excerpt"]) == hit.citation.end_offset - hit.citation.start_offset
+    with pytest.raises(ValidationError, match="SHA-256"):
+        RetrievedEvidence.model_validate(payload)
+
+
+def test_contract_rejects_wrong_well_formed_excerpt_digest():
+    hit = build_fictional_index().search(EvidenceQuery(text="availability")).hits[0]
+    payload = hit.model_dump(mode="json")
+    payload["citation"]["excerpt_sha256"] = hashlib.sha256(
+        b"not the cited excerpt"
+    ).hexdigest()
+
+    with pytest.raises(ValidationError, match="SHA-256"):
+        RetrievedEvidence.model_validate(payload)
 
 
 def test_retrieved_instruction_like_fixture_remains_untrusted_evidence():

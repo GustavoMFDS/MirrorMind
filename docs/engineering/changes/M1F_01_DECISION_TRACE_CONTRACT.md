@@ -126,6 +126,10 @@ do not replace HTTP body-size, rate or concurrency controls.
 
 ## 6. Evidence after implementation
 
+The records in this section describe the initial implementation snapshot.
+The subsequent review-correction evidence below supersedes its original head
+and test count for current PR #54 status.
+
 - Commit / PR: source is at
   `27f1f1c9dec3886299077793a2d42a647313d7ae` on
   `codex/m1f-01-decision-trace-contract`; current PR head is
@@ -206,6 +210,17 @@ do not replace HTTP body-size, rate or concurrency controls.
   local gate evidence was posted at
   [issue comment 7148444643](https://github.com/GustavoMFDS/MirrorMind/pull/54#issuecomment-7148444643).
   B-08 remains open; local gate evidence does not substitute for official CI.
+- Current PR head and validation: head
+  `2794abff855665fb65f32af655415c52dde68872` passed the exact full local gate
+  with 728 tests and all six stages. On that same head, Actions `test` runs
+  [45518448875](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518448875)
+  and [45518440891](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440891),
+  plus `symbol-catalog` runs
+  [45518449130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518449130)
+  and [45518440963](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440963),
+  carry the account payment-or-spending-limit annotation and expose no steps
+  or logs. This establishes the pre-job gate category, not the specific
+  account condition; no remote tests ran.
 - Limits: the local contract does not authenticate reviewer/reference claims,
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.

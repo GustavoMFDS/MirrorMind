@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from hashlib import sha256
 from typing import Annotated, Literal
 
 from pydantic import (
@@ -128,9 +129,12 @@ class RetrievedEvidence(_RetrievalModel):
     trust_label: Literal["untrusted_evidence"]
 
     @model_validator(mode="after")
-    def require_exact_cited_excerpt_length(self) -> RetrievedEvidence:
+    def require_excerpt_integrity(self) -> RetrievedEvidence:
         if len(self.excerpt) != self.citation.end_offset - self.citation.start_offset:
             raise ValueError("citation offsets must exactly cover the excerpt")
+        expected_digest = sha256(self.excerpt.encode("utf-8")).hexdigest()
+        if self.citation.excerpt_sha256 != expected_digest:
+            raise ValueError("citation SHA-256 must match the exact excerpt UTF-8 bytes")
         return self
 
 

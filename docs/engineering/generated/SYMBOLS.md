@@ -606,25 +606,25 @@ No top-level classes or functions.
 
 Source: [`src/mirrormind/modules/retrieval/contracts.py`](../../../src/mirrormind/modules/retrieval/contracts.py)
 
-Static imports (including inside functions): `__future__`, `pydantic`, `typing`
+Static imports (including inside functions): `__future__`, `hashlib`, `pydantic`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `_RetrievalModel` | class | `class _RetrievalModel` | Share immutable, non-coercing validation across retrieval contracts. | [L31](../../../src/mirrormind/modules/retrieval/contracts.py#L31) |
-| `EvidenceDocument` | class | `class EvidenceDocument` | One bounded fictional document with caller-declared visibility scope. | [L37](../../../src/mirrormind/modules/retrieval/contracts.py#L37) |
-| `EvidenceDocument.reject_unsafe_controls` | method | `def reject_unsafe_controls(cls, value: str) -> str` | — | [L50](../../../src/mirrormind/modules/retrieval/contracts.py#L50) |
-| `EvidenceDocument.require_unique_principals` | method | `def require_unique_principals(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L57](../../../src/mirrormind/modules/retrieval/contracts.py#L57) |
-| `EvidenceAccessContext` | class | `class EvidenceAccessContext` | Trusted-caller scope; not an authenticated identity or permission grant. | [L63](../../../src/mirrormind/modules/retrieval/contracts.py#L63) |
-| `EvidenceAccessContext.require_unique_collections` | method | `def require_unique_collections(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L71](../../../src/mirrormind/modules/retrieval/contracts.py#L71) |
-| `EvidenceQuery` | class | `class EvidenceQuery` | Bounded lexical query and optional subset of caller-visible collections. | [L77](../../../src/mirrormind/modules/retrieval/contracts.py#L77) |
-| `EvidenceQuery.normalize_and_bound_text` | method | `def normalize_and_bound_text(cls, value: str) -> str` | — | [L86](../../../src/mirrormind/modules/retrieval/contracts.py#L86) |
-| `EvidenceQuery.require_unique_query_collections` | method | `def require_unique_query_collections(cls, value: tuple[str, ...] \| None) -> tuple[str, ...] \| None` | — | [L96](../../../src/mirrormind/modules/retrieval/contracts.py#L96) |
-| `EvidenceCitation` | class | `class EvidenceCitation` | Exact source pointer for one excerpt, using Python Unicode code-point offsets. | [L104](../../../src/mirrormind/modules/retrieval/contracts.py#L104) |
-| `EvidenceCitation.require_nonempty_span` | method | `def require_nonempty_span(self) -> EvidenceCitation` | — | [L116](../../../src/mirrormind/modules/retrieval/contracts.py#L116) |
-| `RetrievedEvidence` | class | `class RetrievedEvidence` | Retrieved text stays explicitly untrusted and carries a verifiable citation. | [L122](../../../src/mirrormind/modules/retrieval/contracts.py#L122) |
-| `RetrievedEvidence.require_exact_cited_excerpt_length` | method | `def require_exact_cited_excerpt_length(self) -> RetrievedEvidence` | — | [L131](../../../src/mirrormind/modules/retrieval/contracts.py#L131) |
-| `EvidenceRetrievalResult` | class | `class EvidenceRetrievalResult` | Versioned result envelope; query text and denied-record metadata are omitted. | [L137](../../../src/mirrormind/modules/retrieval/contracts.py#L137) |
-| `EvidenceRetrievalResult.match_status_to_hits` | method | `def match_status_to_hits(self) -> EvidenceRetrievalResult` | — | [L145](../../../src/mirrormind/modules/retrieval/contracts.py#L145) |
+| `_RetrievalModel` | class | `class _RetrievalModel` | Share immutable, non-coercing validation across retrieval contracts. | [L32](../../../src/mirrormind/modules/retrieval/contracts.py#L32) |
+| `EvidenceDocument` | class | `class EvidenceDocument` | One bounded fictional document with caller-declared visibility scope. | [L38](../../../src/mirrormind/modules/retrieval/contracts.py#L38) |
+| `EvidenceDocument.reject_unsafe_controls` | method | `def reject_unsafe_controls(cls, value: str) -> str` | — | [L51](../../../src/mirrormind/modules/retrieval/contracts.py#L51) |
+| `EvidenceDocument.require_unique_principals` | method | `def require_unique_principals(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L58](../../../src/mirrormind/modules/retrieval/contracts.py#L58) |
+| `EvidenceAccessContext` | class | `class EvidenceAccessContext` | Trusted-caller scope; not an authenticated identity or permission grant. | [L64](../../../src/mirrormind/modules/retrieval/contracts.py#L64) |
+| `EvidenceAccessContext.require_unique_collections` | method | `def require_unique_collections(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L72](../../../src/mirrormind/modules/retrieval/contracts.py#L72) |
+| `EvidenceQuery` | class | `class EvidenceQuery` | Bounded lexical query and optional subset of caller-visible collections. | [L78](../../../src/mirrormind/modules/retrieval/contracts.py#L78) |
+| `EvidenceQuery.normalize_and_bound_text` | method | `def normalize_and_bound_text(cls, value: str) -> str` | — | [L87](../../../src/mirrormind/modules/retrieval/contracts.py#L87) |
+| `EvidenceQuery.require_unique_query_collections` | method | `def require_unique_query_collections(cls, value: tuple[str, ...] \| None) -> tuple[str, ...] \| None` | — | [L97](../../../src/mirrormind/modules/retrieval/contracts.py#L97) |
+| `EvidenceCitation` | class | `class EvidenceCitation` | Exact source pointer for one excerpt, using Python Unicode code-point offsets. | [L105](../../../src/mirrormind/modules/retrieval/contracts.py#L105) |
+| `EvidenceCitation.require_nonempty_span` | method | `def require_nonempty_span(self) -> EvidenceCitation` | — | [L117](../../../src/mirrormind/modules/retrieval/contracts.py#L117) |
+| `RetrievedEvidence` | class | `class RetrievedEvidence` | Retrieved text stays explicitly untrusted and carries a verifiable citation. | [L123](../../../src/mirrormind/modules/retrieval/contracts.py#L123) |
+| `RetrievedEvidence.require_excerpt_integrity` | method | `def require_excerpt_integrity(self) -> RetrievedEvidence` | — | [L132](../../../src/mirrormind/modules/retrieval/contracts.py#L132) |
+| `EvidenceRetrievalResult` | class | `class EvidenceRetrievalResult` | Versioned result envelope; query text and denied-record metadata are omitted. | [L141](../../../src/mirrormind/modules/retrieval/contracts.py#L141) |
+| `EvidenceRetrievalResult.match_status_to_hits` | method | `def match_status_to_hits(self) -> EvidenceRetrievalResult` | — | [L149](../../../src/mirrormind/modules/retrieval/contracts.py#L149) |
 
 ## `mirrormind.modules.retrieval.fictional_fixture`
 

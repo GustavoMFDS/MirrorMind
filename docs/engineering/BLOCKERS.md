@@ -16,7 +16,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | Historical restricted-sandbox runs on PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` timed out at the 900-second pytest limit. Verbose replay stopped at `tests/integration/test_api.py::test_health`; a standalone loop creation blocked in `socket.accept` inside Python's `_fallback_socketpair` on Python 3.13.5 and also blocked on Python 3.12. The root cause remains unconfirmed. The canonical gate later passed on that exact implementation SHA (696 tests) and on M2-01 SHA `e151f9d9925d83d2b3e27fb88683672a93b48c30` (720 tests, including HTTP capability parity), both using the approved execution environment. B-07 no longer blocks those exact local validations; later docs-only heads still need their own applicable checks. | If a future canonical gate stalls, rerun the exact SHA in an environment where asyncio can create its local socket pair; preserve the failure and do not change app behavior to mask it | Codex execution environment / project maintainer | Use exact-HEAD gates. The M2-01 result is recorded in its change request; the sandbox symptom is historical, not evidence of an application defect. |
-| B-08 | GitHub Actions failed before job steps on PRs #52, #53, #54, #57 and #60. On PR #60 head `e151f9d9925d83d2b3e27fb88683672a93b48c30`, `symbol-catalog` run [45469182956](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45469182956) and `test` run [45469183025](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45469183025) each carry a verified annotation that recent account payments failed or the spending limit must be increased. No repository CI steps ran for these checks. Earlier verified failures on PRs #52–#54 and #57 are listed below. | Repository/account owner resolves GitHub billing or spending limit, then reruns checks for reviewed heads | GitHub account owner / billing administrator | Keep exact local evidence current; do not claim remote CI passed or alter protections |
+| B-08 | On exact heads #54 `2794abf` and #59 `afce53a`, check-run details explicitly report a pre-job account payment-or-spending-limit gate; neither says which specific account condition applies. The latest inspected #60 head `6374f0b` and #61 head `288021f` failed before steps with no recoverable annotation or logs, so those failures remain unexplained. Earlier #60 head `e151f9d` did carry the account annotation; that evidence does not establish the cause of later heads. | Account owner inspects the settings named by the exact annotations; then rerun checks on reviewed heads without changing required workflows or protections | GitHub account owner / repository administrator | Keep exact-head local validation separate from CI; do not generalize an annotation to an unannotated head or claim remote tests ran |
 
 
 Previously verified B-08 runs: PR #52 latest head `5c307e426c43aee4179e3257d7d367214e8c3a63`
@@ -31,6 +31,52 @@ PR #57 runs [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs
 [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950).
 Each was observed with the same account billing/spending-limit annotation.
 On 2026-11-24, an initial focused `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger` attempt in the restricted sandbox produced no output for 60 seconds and was interrupted. A later exact-HEAD canonical gate on M2-01 SHA `e151f9d9925d83d2b3e27fb88683672a93b48c30` passed all 720 tests, including that HTTP parity test. The earlier sandbox symptom does not establish an application failure; its root cause remains unknown.
+
+Latest exact-head diagnostics distinguish annotated from unannotated failures:
+
+- PR #54 head `2794abff855665fb65f32af655415c52dde68872`: `test` runs
+  [45518448875](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518448875)
+  and [45518440891](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440891),
+  and `symbol-catalog` runs
+  [45518449130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518449130)
+  and [45518440963](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440963)
+  each have the explicit account annotation, no workflow steps and no logs.
+- PR #59 head `afce53a8ebc24261ea33ab705394eecb86459781`: `test` runs
+  [45529860767](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529860767)
+  and [45529847764](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529847764),
+  and `symbol-catalog` runs
+  [45529860606](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529860606)
+  and [45529847784](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45529847784)
+  carry the same annotation and expose no repository steps or logs. The
+  annotation text is: “The job was not started because recent account payments
+  have failed or your spending limit needs to be increased. Please check the
+  'Billing & plans' section in your settings”. It does not distinguish those
+  account conditions.
+- PR #60's published head `6374f0bb9a981271cb9340a190dcdebec6263cc9` runs
+  [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796)
+  (`test`) and
+  [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736)
+  (`symbol-catalog`) failed without a recoverable annotation or logs. PR #61
+  head `288021f25e24efc26591b064eafa1d8b4e287ac8` runs
+  [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331)
+  and [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221)
+  likewise exposed no steps or recoverable annotation. No remote test result
+  can be inferred for either unannotated head.
+
+### Self-hosted runner assessment
+
+GitHub documents no per-minute GitHub runner charge for self-hosted runners;
+the owner still carries VM, isolation, monitoring and teardown costs. A private
+repository is not an isolated trust boundary for a persistent runner because
+read-access users may submit pull requests. See [secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[runner setup](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners)
+and [Actions billing](https://docs.github.com/en/actions/concepts/billing-and-usage).
+If chosen, the candidate is one just-in-time runner in a disposable VM per
+check, destroyed afterward; use existing workflow job names/commands, no
+secrets, read-only short-lived token, no host credentials or private-network
+access, and retain image/egress/teardown evidence. This design has not been
+implemented or security-tested, and there is no evidence it bypasses the
+account pre-job gate. No runner or workflow change was made.
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable

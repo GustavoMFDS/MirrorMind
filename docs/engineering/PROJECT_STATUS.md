@@ -69,6 +69,27 @@ evidence only: references and reviewer identity are caller assertions, and no
 producer, storage, action execution or authenticated approval is provided.
 PR #54 remains draft; official CI is tracked separately under B-08.
 
+## Current PR review reconciliation — 2026-11-25
+
+All ten independent review submissions for PRs #52–#61 were re-read. Each is
+a top-level `COMMENTED` review; no inline review thread was returned. All ten
+PRs remain open drafts. The table below distinguishes implemented corrections
+and local evidence from unresolved gates; no merge or ready-for-review action
+was taken.
+
+| PR | Review finding and state | Local evidence / remaining boundary |
+| --- | --- | --- |
+| [#52](https://github.com/GustavoMFDS/MirrorMind/pull/52) | Preserve aggregate-receipt mismatch, missing/late-history and no-authorization regressions; exercise optional extras. No review correction was requested. | Implementation SHA `c51ab30` passed 696 tests; latest docs head `5c307e4` still needs its own exact-head gate. B-01/B-02 block real ingestion. |
+| [#53](https://github.com/GustavoMFDS/MirrorMind/pull/53) | Preserve mismatched cutoffs, late feature/target releases, full abstention and provenance limits. | Exact head `210f0f3` passed 700 tests and all six local gate stages; results remain fictional. |
+| [#54](https://github.com/GustavoMFDS/MirrorMind/pull/54) | Correct terminal-review chronology, Decimal-context hashing and bounded records/references. | Current head `2794abf` passed 728 tests and all six stages. Its current Actions checks carry an explicit pre-job account annotation; no remote tests ran. Contract remains interface-only. |
+| [#55](https://github.com/GustavoMFDS/MirrorMind/pull/55) | Revalidate mutable scenario data and apply the lower scenario/operator run ceiling; retain unsupported-budget limits. | Integrated head `b292db0` passed 756 tests and the full local gate. Mapping is pure; B-04 still blocks actual WorldKernel execution. |
+| [#56](https://github.com/GustavoMFDS/MirrorMind/pull/56) | Preserve fixed disjoint calibration semantics, independent oracle, release, empty-calibration and holdout-perturbation tests. | Tested integrated head `0c2e789` passed 700 tests; later docs-only state has guards recorded in the PR. No empirical calibration claim. |
+| [#57](https://github.com/GustavoMFDS/MirrorMind/pull/57) | Keep UCI as a source candidate only; rights, privacy, vintages and owner scope remain unresolved. | Documentation review only; no dataset was downloaded or approved. B-01/B-02 remain open. |
+| [#58](https://github.com/GustavoMFDS/MirrorMind/pull/58) | Preserve the arrival-day/one-day toy-policy caveat and disclose it in downstream comparison/trace. | Boundary, mass-balance and paired-stream tests remain. #59 binds the caveat into typed trace assumptions; the #59 integrated gate covers this path. No optimized policy or engine result is claimed. |
+| [#59](https://github.com/GustavoMFDS/MirrorMind/pull/59) | Correct request-sensitive identity, full-result binding, #58 caveat propagation and explicit exposure limits. | Current head `afce53a` passed 790 tests and all six local stages. Its exact Actions checks fail before steps with the account payment-or-spending-limit annotation; the specific account condition is unknown. |
+| [#60](https://github.com/GustavoMFDS/MirrorMind/pull/60) | Reject deserialized excerpts whose exact UTF-8 SHA-256 does not match; preserve caller-declared scope and trusted build-time duplicate invariant. | Two regressions reproduced the defect; after the fix the focused retrieval suite passed 9 tests. Latest #54 base was merged normally. Full integrated gate and publication remain pending. |
+| [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | Convert typed operational clock/store failures to generic service failure while preserving programming errors. | Review correction and failing-clock regression remain pending on head `288021f`; no persistence or transport expansion is proposed. |
+
 ## Architecture and actual execution boundaries
 
 | Area | Verified implementation / status | Missing product gate |

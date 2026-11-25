@@ -176,6 +176,10 @@ changing ranking. For a scope regression, run
 and confirm filtering still precedes tokenization and score construction.
 For a citation mismatch, compare the exact source slice at the reported
 Python code-point offsets, then recompute SHA-256 over that excerpt's UTF-8
-bytes. Do not put denied IDs, hidden content or raw queries in logs. BM25
+bytes. `RetrievedEvidence.require_excerpt_integrity` rejects a same-length
+excerpt mutation when the prior digest is retained and rejects a different
+well-formed digest. If a caller changes both excerpt and digest, the contract
+cannot verify the source slice without original document bytes; the digest is
+not provenance. Do not put denied IDs, hidden content or raw queries in logs. BM25
 scores are ranking values, not relevance probabilities. The caller-supplied
 scope is not authentication, and every returned excerpt remains untrusted.

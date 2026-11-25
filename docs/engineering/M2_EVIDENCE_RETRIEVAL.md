@@ -61,8 +61,8 @@ All models are frozen, strict and reject extra fields.
 | `EvidenceDocument` | One generated source record | IDs are bounded; content is 1–12,000 characters; scope has at most 32 principals; source status is exactly `fictional_fixture` |
 | `EvidenceAccessContext` | Trusted-caller principal and allowed collections | At most 16 collections; an empty collection scope is valid and returns no hits |
 | `EvidenceQuery` | Query text, optional collection subset and `top_k` | Text is 1–512 characters; `top_k` is a strict integer from 1–10 |
-| `EvidenceCitation` | Source/snapshot refs and excerpt span | Nonempty Python Unicode code-point offsets and a 64-character excerpt SHA-256 |
-| `RetrievedEvidence` | Excerpt, lexical score and citation | At most 480 characters; span length must equal excerpt length; trust label is fixed to `untrusted_evidence` |
+| `EvidenceCitation` | Source/snapshot refs and excerpt span | Nonempty Python Unicode code-point offsets and a 64-character lowercase excerpt SHA-256 |
+| `RetrievedEvidence` | Excerpt, lexical score and citation | At most 480 characters; span length must equal excerpt length; every model validation recomputes SHA-256 over the exact excerpt's UTF-8 bytes; trust label is fixed to `untrusted_evidence` |
 | `EvidenceRetrievalResult` | Versioned search result | Algorithm is `bm25_lexical_v1`; status must agree with whether hits exist |
 
 `InMemoryEvidenceIndex.build(documents, access)` accepts at most 100 typed
@@ -102,8 +102,13 @@ ordering values, **not** calibrated relevance probabilities or confidence.
 For each result, `_make_hit` chooses the first matching token and returns a
 window of up to 480 characters around it. The citation offsets index the
 original Python string by Unicode code points, and `excerpt_sha256` is
-calculated over the excerpt's UTF-8 bytes. The hash checks excerpt equality;
-it does not prove source origin, publisher identity or permission.
+calculated over the excerpt's UTF-8 bytes. `RetrievedEvidence.require_excerpt_integrity`
+recomputes that digest during Pydantic validation, so a deserialized envelope
+with a same-length altered excerpt or a well-formed but unrelated digest is
+rejected. This catches internal excerpt/digest mismatch; it cannot authenticate
+the source, prove that offsets resolve against the original document, or prove
+publisher identity or permission. An attacker who can replace both excerpt
+and digest can still create a self-consistent but untrusted envelope.
 
 Search cost is bounded by the 100-document and 12,000-character limits.
 Indexing tokenizes only visible content; query scoring is proportional to
@@ -147,6 +152,10 @@ stderr and exits with code 2 without echoing an oversized query.
 - Citation spans and hashes establish a reproducible excerpt mapping only.
   They do not establish authenticity, rights, freshness, tenant isolation or
   truth.
+- `RetrievedEvidence` rejects a digest mismatch even when the excerpt length
+  and 64-character lowercase digest shape are valid. The contract has no source
+  document bytes, so it cannot independently resolve absolute offsets or
+  verify that a self-consistent excerpt came from the cited snapshot.
 - Pydantic validation errors stay inside the local process. The CLI emits a
   short generic error; there is no raw query/content logging.
 
@@ -161,11 +170,13 @@ stderr and exits with code 2 without echoing an oversized query.
 | — | `tests/unit/test_evidence_retrieval.py::test_query_document_and_corpus_bounds_fail_closed` | Query, document, scope and corpus limits reject unsafe bounds; empty scope returns no hits | CPU/memory limits for a persistent or multi-tenant service |
 | `MM-RETR-005` | `tests/unit/test_evidence_retrieval.py::test_duplicate_ids_are_rejected_before_permission_filtering` | A duplicate across visible and denied documents fails with a generic error and does not echo hidden content | Record authenticity or upstream identity |
 | `MM-RETR-006` | `tests/unit/test_evidence_retrieval.py::test_contracts_reject_extra_fields_coercion_oversized_text_invalid_refs_and_mutation` | Strict models reject unknown fields, coercion, oversized queries and invalid citation identifiers, and reject mutation | Correctness of future wire contracts or an authenticated authorization boundary |
+| `MM-RETR-007` | `tests/unit/test_evidence_retrieval.py::test_contract_rejects_same_length_excerpt_tampering` | Deserialization rejects an altered excerpt of the exact cited length when its prior digest is retained | Source authenticity, snapshot permission or absolute-offset verification without source bytes |
+| `MM-RETR-008` | `tests/unit/test_evidence_retrieval.py::test_contract_rejects_wrong_well_formed_excerpt_digest` | Deserialization rejects a shape-valid SHA-256 digest that does not hash the exact UTF-8 excerpt | Authentication of an external source or an envelope where an attacker replaces both excerpt and digest |
 | `MM-RETR-004` | `tests/integration/test_m2_evidence_retrieval_cli.py::test_evidence_retrieval_cli_replays_cited_results_and_rejects_oversized_query` | CLI output replays exactly, includes citations, omits query text and rejects oversized input generically | Deployment, authentication, external data or provider behavior |
 | — | `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger` | `/v1/capabilities` matches the reviewed capability statuses when the HTTP test runs | The semantics of retrieval or successful official CI |
 
 The test paths and limitations are also indexed as `MM-RETR-001` through
-`MM-RETR-006` in [`EVIDENCE_MAP.json`](EVIDENCE_MAP.json). Guards verify
+`MM-RETR-008` in [`EVIDENCE_MAP.json`](EVIDENCE_MAP.json). Guards verify
 references and structure; pytest execution is separate evidence.
 
 ## 8. Debugging and maintenance
@@ -175,8 +186,13 @@ matching token, then confirm that the caller context includes the fixture's
 collection and principal. Do not add denied-record IDs or hidden text to a
 debug log. For a citation mismatch, compare `content[start_offset:end_offset]`
 to `excerpt` and recompute SHA-256 over UTF-8 bytes; check Unicode code-point
-offsets rather than byte offsets. A changed lexical score should be traced to
-tokenization, corpus filtering, BM25 constants or the deterministic tie-break.
+offsets rather than byte offsets. `RetrievedEvidence` performs this digest
+comparison on construction/deserialization. When the reported source slice
+still differs, the local contract cannot prove source provenance because it
+does not carry source bytes; inspect the generated fixture or use a separately
+authorized source-verification layer. A changed lexical score should be
+traced to tokenization, corpus filtering, BM25 constants or the deterministic
+tie-break.
 
 Future real-source work must add reviewed rights/provenance and a source
 adapter before indexing. M2-02 should evaluate recall, abstention and citation
@@ -194,6 +210,10 @@ reviewed identity, tenant, retention, deletion and authorization contracts.
 3. Add a Unicode word before a matching token, update the citation test, and
    verify that offsets count Python characters while the digest counts UTF-8
    bytes.
-4. Write a test proving an empty collection scope cannot produce a hit. Keep
+4. Change one character of a serialized excerpt without changing its length;
+   verify Pydantic rejects the old digest. Then replace only the digest with
+   another valid 64-character SHA-256 and verify rejection again. Explain why
+   changing both excerpt and digest still does not authenticate a source.
+5. Write a test proving an empty collection scope cannot produce a hit. Keep
    `evidence_and_rag` planned until authenticated sources, retrieval evaluation
    and a real consumer pass their separate acceptance criteria.

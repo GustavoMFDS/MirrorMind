@@ -41,7 +41,8 @@ The existing `evidence_and_rag` capability stays planned; a narrow
 - Production behavior: no authenticated or externally served retrieval.
 - Test selectors: added after implementation; they must prove permission
   filtering before ranking, exact citation spans, deterministic ranking,
-  bounded query/index inputs, and untrusted-content labeling.
+  bounded query/index inputs, exact excerpt-digest validation after
+  deserialization, and untrusted-content labeling.
 - `GET /v1/capabilities`: add only the experimental local-library declaration;
   no retrieval route is proposed because the scaffold has no authentication.
 
@@ -55,8 +56,10 @@ The existing `evidence_and_rag` capability stays planned; a narrow
   scoring and top-k selection. Results reveal no denied document names,
   counts, snippets or citations.
 - [x] The fixed lexical algorithm is deterministic and returns citation
-  offsets whose excerpt equals the exact source substring; a SHA-256 digest
-  binds the cited excerpt bytes.
+  offsets whose excerpt equals the exact source substring; every
+  `RetrievedEvidence` validation recomputes SHA-256 over the exact UTF-8
+  excerpt and rejects a mismatched citation digest, including deserialized
+  results.
 - [x] Every hit labels source text `untrusted_evidence`. Injection-like fixture
   text remains quoted evidence and creates no instruction, role, tool call,
   network access or write.
@@ -65,15 +68,15 @@ The existing `evidence_and_rag` capability stays planned; a narrow
 - [x] The capability ledger, live `/v1/capabilities` parity test, evidence map,
   atlas, symbol catalog, system map, API capability docs, debugging notes,
   learning exercise and source walkthrough describe the implemented boundary.
-- [x] Full local quality gate passes on a committed SHA. No real dataset or
-  provider evidence is claimed.
+- [ ] Full local quality gate passes on the final integrated committed SHA.
+  No real dataset or provider evidence is claimed.
 
 ## 3. Impact map (confirmed before implementation)
 
 | Layer | Relevant file/symbol | Change? | Evidence / tests |
 | --- | --- | --- | --- |
 | Entrypoint | `examples/m2_evidence_retrieval.py` | New local demonstration; no HTTP route | New deterministic CLI integration test |
-| Core implementation | `src/mirrormind/modules/retrieval/contracts.py`, `index.py`, `fictional_fixture.py` | New strict contracts, in-memory permission-filtered index and fictional corpus | New unit tests for bounds, scope, ranking, citations and untrusted text |
+| Core implementation | `src/mirrormind/modules/retrieval/contracts.py::RetrievedEvidence.require_excerpt_integrity`, `index.py`, `fictional_fixture.py` | Revalidate exact span length and SHA-256 of the exact UTF-8 excerpt for every constructed or deserialized result | Regression tests reject same-length excerpt tampering and a different well-formed 64-character digest |
 | State / persistence / API | `src/mirrormind/api/routes/system.py`; no database or retrieval route | Add one experimental capability string; no identity, storage or public retrieval | Existing API capability parity test plus capability checker |
 | Calling components | No current retrieval callers; CLI will call the local retrieval service | New CLI caller only | CLI replay and error tests |
 | Downstream consumers | Future M2-02 retrieval evaluation and M2-03 tool registry | No consumer changes in this slice | Contracts expose evidence/citation refs; no agent consumes them yet |
@@ -153,10 +156,33 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   catalog.
 - Known limitations / follow-up: real identity and source authorization,
   durable index, retrieval evaluation and agent/tool consumers remain open.
-  GitHub Actions for PR #60 failed before job steps because the connected
-  account has a billing/spending-limit restriction (B-08); this is not a
-  repository test result. Human review and merge remain pending.
+  Historical PR #60 checks on head `6374f0bb9a981271cb9340a190dcdebec6263cc9`
+  failed before job steps; diagnostics returned no annotation or logs, so the
+  cause is unestablished and is not attributed to billing. Human review and
+  integration remain pending.
 - Independent explanation: the learning exercise traces scope filtering before
   tokenization, verifies excerpt offsets and digest bytes, and distinguishes
   the fixed demo scope from authentication. Independent human review remains
   pending with PR #60.
+
+## Independent review correction — excerpt digest binding
+
+- Finding: the original `RetrievedEvidence` validator compared excerpt length
+  with the citation span but accepted any syntactically valid 64-character
+  digest. `_make_hit` created correct digests, but a deserialized envelope
+  bypassed that producer and could carry altered text with the old digest.
+- Reproduction: both new tests failed before the fix with `DID NOT RAISE`:
+  `test_contract_rejects_same_length_excerpt_tampering` and
+  `test_contract_rejects_wrong_well_formed_excerpt_digest`.
+- Resolution: `RetrievedEvidence.require_excerpt_integrity` checks span length,
+  then recomputes SHA-256 over the exact UTF-8 excerpt bytes on every model
+  validation. This detects excerpt/digest mismatch, not source authenticity or
+  absolute-offset correctness without source bytes. Scope remains caller-
+  declared rather than authenticated RBAC; duplicate IDs remain a trusted
+  build-time invariant.
+- Focused verification after the fix: `tests/unit/test_evidence_retrieval.py`
+  passed all 9 tests. The full gate on the final merged PR #54 + #60 state is
+  pending; record the exact commit and receipt before treating the correction
+  as complete.
+- New evidence selectors: `MM-RETR-007` and `MM-RETR-008` in
+  `docs/engineering/EVIDENCE_MAP.json` identify the regressions and limitations.
