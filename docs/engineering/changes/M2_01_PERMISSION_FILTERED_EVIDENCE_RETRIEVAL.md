@@ -194,5 +194,10 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   in the approved execution environment. This is local evidence, not official
   GitHub Actions CI. The later status-documentation commit receives its own
   exact-head gate before publication.
+- Official checks for integrated/docs SHA `cd9542156d8ab3cec2876ab07f3aa1c22dd00c37`
+  were `test` run `45534005860` and `symbol-catalog` run `45534005856`.
+  Both failed before any step, returned no steps, and had no retrievable logs
+  (`BlobNotFound`) or cause annotation. B-08 therefore remains unexplained for
+  this head; no billing attribution or remote test result is made.
 - New evidence selectors: `MM-RETR-007` and `MM-RETR-008` in
   `docs/engineering/EVIDENCE_MAP.json` identify the regressions and limitations.

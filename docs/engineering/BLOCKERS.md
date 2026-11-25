@@ -62,6 +62,15 @@ Latest exact-head diagnostics distinguish annotated from unannotated failures:
   and [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221)
   likewise exposed no steps or recoverable annotation. No remote test result
   can be inferred for either unannotated head.
+- PR #60 review-correction head `cd9542156d8ab3cec2876ab07f3aa1c22dd00c37`
+  runs [45534005860](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45534005860)
+  (`test`) and
+  [45534005856](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45534005856)
+  (`symbol-catalog`) completed as failures before any job step. Both job
+  records have empty step lists; log retrieval returned `BlobNotFound`, and
+  neither check exposed a cause annotation. This exact-head failure remains
+  unexplained and is not evidence of a billing condition or of repository
+  tests running.
 
 ### Self-hosted runner assessment
 
