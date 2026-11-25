@@ -25,54 +25,49 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
-## Active branch evidence — 2026-11-24
+## Active branch evidence — 2026-11-25
 
-The composed synthetic evidence flow is implemented at
-`c51ab30370db47e9f7105c97f870008e4fc442c5` on
-`codex/m1b-02-synthetic-evidence-flow` and is proposed in draft
+The composed synthetic evidence flow is implemented in the history beginning
+at `c51ab30370db47e9f7105c97f870008e4fc442c5`; the latest published PR #52
+follow-up is `b431d11bf0ac841ff30353a06263d23fb901307c` on
+`codex/m1b-02-synthetic-evidence-flow`, proposed in draft
 [PR #52](https://github.com/GustavoMFDS/MirrorMind/pull/52). The PR is
 unmerged. Its one new capability is experimental and uses only bounded
 local fixtures and caller-declared dates.
 
-Local evidence on that implementation commit: all five focused M1B-02
-integration tests passed; 690 tests passed when the entire API integration
-module was excluded; and a direct call to the registered capability handler
-matched the ledger's implemented, experimental and planned IDs. Ruff and
-the catalog, atlas, evidence and capability guards passed. The exact-commit
-gate did not pass: pytest exited 124 at its 900-second timeout, before the
-other gate stages. Verbose pytest stopped at `test_health`; the request
-blocked while asyncio created its local socket pair, before the API handler
-ran. The same socket-pair block reproduced with Python 3.12 and 3.13.5. A
-host/sandbox loopback restriction is a hypothesis; the root cause is not
-confirmed. See [B-07](BLOCKERS.md).
+The full local quality gate passed on exact published head `b431d11bf0ac841ff30353a06263d23fb901307c`
+at 2026-11-25 03:51:25 UTC: all 696 tests, Ruff, symbol catalog, repository
+atlas, evidence map and capability checks passed. The focused M1B-02 tests
+also passed, including child-to-aggregate receipt equality, missing and late
+availability abstention, calendar/release rejection, and digest/declaration
+mismatch rejection. This is local evidence on the exact branch head; it is
+not official CI or merge evidence.
 
-GitHub Actions has no test result for this SHA. Both `test` and
-`symbol-catalog` checks failed before their jobs started, with annotations
-stating that recent account payments failed or the spending limit needs to
-be increased. See [B-08](BLOCKERS.md), [test run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084072)
-and [symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45318084108).
-Do not treat the green local subset as a substitute for the complete gate
-or official CI.
+The prior published heads `c093ba6` and `e3aedaf` also passed complete gates
+at 03:48:38 and 03:35:40 UTC. An earlier restricted exact-gate run on
+implementation commit `c51ab30`
+timed out at 900 seconds while `tests/integration/test_api.py::test_health`
+waited during asyncio socket-pair creation before application code. The
+standalone reproduction occurred on Python 3.12 and 3.13.5. A host/sandbox
+loopback cause was proposed but never established. The subsequent full gate
+pass on the current head resolves that timeout as an active blocker for PR #52;
+retain the failure as historical evidence only. See [B-07](BLOCKERS.md).
 
-The next stacked slice is on `codex/m1c-01-synthetic-retail-evaluation`
-at `10ee6866f3340c679e0bfe3bfee11e199a32b56a` and is proposed as draft
-[PR #53](https://github.com/GustavoMFDS/MirrorMind/pull/53), based on
-PR #52's branch. It composes the staged synthetic evidence flow with the
-existing release-aware baseline evaluator and exposes a deterministic
-fictional evaluation CLI. This is branch-local and experimental; it does
-not add real-data ingestion, an HTTP forecast endpoint or predictive-skill
-evidence. Four focused integration tests and six existing retail-backtest
-unit tests passed together; 694 tests passed when excluding
-`tests/integration/test_api.py`. Ruff for `src`, `tests` and the new example,
-the symbol catalog, atlas, evidence and capability guards passed locally.
-A direct registered capability-handler/ledger comparison passed, but HTTP
-runtime did not run. The full exact-head local gate was not completed due the
-previously reproduced B-07 host-side asyncio socket-pair hang. On its latest
-documentation head `210f0f382938a67e518df688cc4e19c03d3d7af6`, GitHub Actions
-`test` run [45323540471](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540471)
-and `symbol-catalog` run [45323540864](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45323540864)
-failed before job execution with the account payment/spending-limit
-annotation (B-08). Neither local nor remote full-gate success is claimed.
+PR #53 is on `codex/m1c-01-synthetic-retail-evaluation`, stacked on PR #52.
+Merge commit `e922b03` synchronizes it with PR #52 head `b431d11`; its current
+published head is `79d3679013576c6a209bed9fa031b7f0fabd0d8d`. The PR remains a
+draft and unmerged. It composes the staged synthetic evidence flow with
+release-aware matched-origin baselines and a deterministic fictional CLI; no
+real-data ingestion, HTTP forecast endpoint or predictive-skill evidence is
+added. Four integration tests plus six retail backtest unit tests pass, and
+the exact-head gate passed 700 tests plus Ruff, catalog, atlas, evidence and
+capability checks at 2026-11-25 04:08:00 UTC. API tests ran; one existing
+Starlette/httpx deprecation warning was emitted. This is local evidence only.
+Current Actions runs [45544705354](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705354)
+and [45544705397](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45544705397)
+failed with no steps/logs and no specific cause recovered. B-01/B-02 still gate
+real data and empirical evaluation; B-08 blocks official CI. The older B-07
+timeout on #52 is historical, not evidence of failure on #53.
 
 The active continuation branch `codex/m1f-01-decision-trace-contract`
 implements M1F-01 on top of the M1C-01 stack. The local result contract

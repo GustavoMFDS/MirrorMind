@@ -149,6 +149,19 @@ including generation of an in-memory workbook and release declarations, is
 reproduced by
 [`test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers`](../../tests/integration/test_retail_evidence_flow.py).
 
+The aggregate receipt copies child outputs through each component's
+`receipt()` method. Integration assertions compare the CSV source-review and
+quality entries, and the UCI source-review, projection, calendar-coverage and
+release-audit entries, to those child receipts exactly. This guards against a
+composite receipt silently drifting from the component evidence it summarizes.
+
+The Python API CI workflow installs `.[dev,uci,review]` explicitly. The suite
+imports `openpyxl` and `cryptography` directly; it does not use
+`pytest.importorskip` for those dependencies. A missing extra therefore fails
+test collection or execution instead of silently skipping the XLSX and review
+coverage. The workflow configuration documents intended coverage, but B-08
+currently prevents these jobs from reaching installation or test steps.
+
 Run the complete composition regressions from the repository root:
 
 ```powershell
@@ -180,9 +193,9 @@ Evidence is catalogued under `MM-FLOW-001` through `MM-FLOW-005` in
 
 | Claim ID | Test function | Narrow claim |
 | --- | --- | --- |
-| `MM-FLOW-001` | `test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing` | CSV functions compose, late publication is excluded, explicit zero is retained and receipt metadata omits IDs/references. |
+| `MM-FLOW-001` | `test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing` | CSV functions compose, late publication is excluded, explicit zero is retained, and aggregate review/quality receipts equal the child receipts while omitting IDs/references. |
 | `MM-FLOW-002` | `test_csv_flow_abstains_when_no_declared_observation_is_available_at_origin` | No eligible CSV row remains an empty selection and is reported as an abstention, not an imputed zero. |
-| `MM-FLOW-003` | `test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers` | Generated XLSX projection, declared calendar and explicit release counts compose; withheld and future days remain excluded from the audit's available count and raw IDs are absent from receipt. |
+| `MM-FLOW-003` | `test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers` | Generated XLSX projection, declared calendar and explicit release counts compose; the aggregate embeds exact child receipts, withheld and future days remain excluded from the available count, and raw IDs are absent. |
 | `MM-FLOW-004` | `test_uci_flow_rejects_missing_calendar_dates_and_release_declarations` | Calendar contradictions and incomplete release declarations fail closed. |
 | `MM-FLOW-005` | `test_csv_flow_rejects_digest_and_review_declaration_mismatch` | Byte mismatch and review-packet digest mismatch fail closed. |
 
@@ -209,6 +222,10 @@ receipt; neither is an official CI result.
 5. Run `tests/integration/test_retail_evidence_flow.py`, then read its five
    functions alongside the corresponding evidence-map claim. State exactly
    what they fail to prove about real data.
+6. Compare each nested UCI receipt with its component's `receipt()` output.
+   Temporarily change one aggregate field and rerun the composition test; trace
+   why the equality assertion catches a summary that no longer matches its
+   child component.
 
 ## Diagnostics and evolution
 
