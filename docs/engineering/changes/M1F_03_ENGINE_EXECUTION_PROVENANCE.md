@@ -44,22 +44,22 @@ authentication, hostile-code isolation and business writes.
 
 ## 2. Acceptance criteria
 
-- [ ] The v1 trace model and its accepted payloads remain unchanged.
-- [ ] The v2 trace adds bounded typed execution evidence and links every
+- [x] The v1 trace model and its accepted payloads remain unchanged.
+- [x] The v2 trace adds bounded typed execution evidence and links every
   conditional outcome to one selected-output record.
-- [ ] The selected execution record's engine contract equals the outcome's
+- [x] The selected execution record's engine contract equals the outcome's
   `engine_contract_ref`.
-- [ ] Every execution-evidence record is referenced by at least one outcome.
-- [ ] The test-double workflow records the test double as the selected result
+- [x] Every execution-evidence record is referenced by at least one outcome.
+- [x] The test-double workflow records the test double as the selected result
   source and exact replay preserves its trace and result digests.
-- [ ] The exact-pin WorldKernel workflow records engine-derived results as the
+- [x] The exact-pin WorldKernel workflow records engine-derived results as the
   selected source, binds its registered world and exact source commit, and
   records the test double separately as an invoked parity oracle.
-- [ ] A mismatch between selected and parity digests or a dangling/mismatched
+- [x] A mismatch between selected and parity digests or a dangling/mismatched
   execution reference is rejected.
-- [ ] The local six-check gate passes with the optional reviewed WorldKernel
+- [x] The local six-check gate passes with the optional reviewed WorldKernel
   pin installed and its integration tests do not skip.
-- [ ] Architecture, contract, walkthrough, learning, evidence and status docs
+- [x] Architecture, contract, walkthrough, learning, evidence and status docs
   explain how to reproduce and inspect both paths.
 
 ## 3. Impact map
@@ -109,15 +109,15 @@ report the observed call even when the call serves only as a parity oracle.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: pending.
-- Modified symbols and files: pending.
-- Tests executed, result, environment: pending.
-- Claim IDs and cited test path/function: pending.
-- Evidence/provenance/cutoff and uncertainty: pending.
+- Commit / PR: code commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85`, consolidated [PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62); resolves PR #59 review finding [7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947).
+- Modified symbols and files: `DecisionTraceV2`, `ConditionalOutcomeV2`, `ExecutionEvidence`; workflow `_policy_outcomes` and `_build_trace`; WorldKernel gateway result metadata; both-engine tests and architecture/learning/reference docs.
+- Tests executed, result, environment: full exact-head gate on `74330d8` passed 832 tests with no skips and all six checks, with WorldKernel `0.0.1` installed from source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. One pre-existing Starlette/httpx TestClient deprecation warning appeared. The final documentation head is gated separately; its JSON receipt is stored under ignored `results/local-quality-gate-<full-head-sha>.json`, and its exact SHA/result is linked from the PR #62 review discussion.
+- Claim IDs and cited test path/function: `MM-DTRACE-008` — `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_execution_evidence_from_a_different_engine_contract`; `MM-DTRACE-009` — `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_unreferenced_execution_evidence_records`; `MM-WKPW-006` — `tests/integration/test_worldkernel_policy_world_engine.py::test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data`; default-engine replay — `tests/unit/test_synthetic_decision_workflow.py::test_successful_workflow_produces_valid_trace_and_explicit_gaps`.
+- Evidence/provenance/cutoff and uncertainty: test inputs are generated and fictional. WorldKernel execution metadata binds package version, exact source commit, registered world/version, result schema and raw worker-result digest; selected metrics digest remains distinct. Same-rule parity checks are not independent validation, signatures or installed-file attestation.
 - Scope of human review and approval: exact-pin synthetic integration only.
 - New or changed contracts: `mirrormind.decision_trace.v2`; v1 remains.
-- Docs updated: pending.
+- Docs updated: decision trace contract, API and system walkthroughs, learning guide, system map, debugging guide, evidence map, capability/semantic references, repository atlas, project status, task backlog, blocker register, local gate procedure and handoff.
 - Known limitations / follow-up: real-source rights and temporal evidence,
   empirical forecast evaluation, production isolation, official Actions and
   final integration review remain open.
-- Independent explanation: pending.
+- Independent explanation: review comment `7174402947` reproduced the mismatch on predecessor `995f55d`; the corrected contract now rejects outcome/contract mismatch, dangling/orphan references and parity digest disagreement, and the exact-pin CLI regression proves WorldKernel is the selected source while the test double is separately recorded as the parity oracle.

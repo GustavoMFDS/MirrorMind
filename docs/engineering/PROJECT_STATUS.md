@@ -25,19 +25,39 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
-## Current local M1 integration candidate — 2026-11-25
+## Current consolidated M1 candidate — 2026-11-25
 
-The local branch `codex/m1-integrated-worldkernel-local` at
-`42560e441f5020a5b4319a0f7b56474ef0485681` combines the PR #52–#59 M1 stack,
-PR #55's pinned local runner, M1E-04's policy world and PR #57's synthetic UCI
-event-time evaluator plus aggregate Census protocol. The exact clean-head
-six-check local gate passed: 828 tests in 28.32 seconds, Ruff, catalog, atlas,
-evidence and capability checks. One existing Starlette/httpx deprecation
-warning appeared. Receipt:
-`%TEMP%\mirrormind-integrated-42560e441f50-local-gate.json`. This is local
-candidate evidence, not GitHub Actions, PR approval or merge evidence; all PRs
-remain separate drafts and `main` was not changed. Later documentation-only
-changes must receive their own exact-head gate.
+The review candidate is branch `codex/m1-engine-provenance`, published as
+[PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) against `main`.
+Code correction commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85` fixes the
+PR #59 provenance finding; the final review head is the exact revision shown
+in PR #62 and `results/local-quality-gate-<full-head-sha>.json`.
+Its history preserves all exact published heads of PRs #52–#59 as ancestors;
+#60 and #61 are excluded. GitHub reports the candidate as mergeable. The
+candidate contains the synthetic M1 workflow, pinned local WorldKernel runner
+and policy world, plus the UCI event-time evaluator and aggregate Census
+protocol. No real source bytes were acquired.
+
+PR #59 review comment
+[7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
+identified an engine-contract mismatch and ambiguous parity invocation in the
+prior `995f55d` candidate. Commit `74330d8` adds typed v2 execution evidence,
+binds every outcome to its selected-result engine, and represents the Python
+test double separately as a parity oracle when WorldKernel supplies selected
+metrics. It preserves trace v1. Regression coverage checks both engines,
+replay, mismatched/dangling provenance and parity-digest disagreement.
+
+The exact-clean-head six-check local gate passed on `74330d811145f10fcaaddadc56c3f95e7c8b7a85`
+with the optional WorldKernel package installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: 832 tests passed, no tests were
+skipped, and Ruff, catalog, atlas, evidence and capability checks passed. One
+existing Starlette/httpx `TestClient` deprecation warning appeared. This is
+local evidence, not Actions, independent approval or merge evidence. The
+final documentation-head receipt is stored at
+`results/local-quality-gate-<full-head-sha>.json`; the exact result is linked
+from PR #62. PR #62 is awaiting review; its local evidence does not constitute
+official CI or integration approval. `main` was not changed, and #60/#61
+remain separate.
 
 ## Active branch evidence — 2026-11-25
 

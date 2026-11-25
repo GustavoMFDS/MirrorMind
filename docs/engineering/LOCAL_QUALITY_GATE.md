@@ -121,3 +121,28 @@ documentation commits, GitHub Actions, independent approval of the combined
 diff, real-source rights, point-in-time availability, forecast calibration,
 or production isolation. Rerun the same command after any subsequent tracked
 change; do not reuse this receipt as evidence for a later SHA.
+
+### Corrected engine-provenance candidate — 2026-11-25
+
+The independent review of predecessor `995f55dd4ba039e9990ec7db9aaf2321fa44266a`
+found that the selected WorldKernel metrics still declared the test-double
+contract. Corrected commit
+`74330d811145f10fcaaddadc56c3f95e7c8b7a85` adds selected-engine execution
+records and a separately linked test-double parity-oracle record. With the
+optional `worldkernel==0.0.1` installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`, its exact-head six-check gate
+completed at `2026-11-25T21:43:47.564941+00:00`:
+
+- Pytest: 832 passed; no skipped tests.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- One existing Starlette/httpx `TestClient` deprecation warning appeared.
+- Status: `local_gate_passed_not_official_ci`; the script records Actions as
+  `not_checked_by_this_script`.
+
+This gate covers code commit `74330d8`; it does not attest to later status and
+handoff edits. After the consolidated PR documentation is committed, rerun the
+same exact-head command with `--receipt results/local-quality-gate-<head>.json`.
+`results/` is ignored local evidence: preserve it for inspection, but do not
+claim it as a repository artifact or official CI. Record the actual final
+head and outcome in the PR discussion.

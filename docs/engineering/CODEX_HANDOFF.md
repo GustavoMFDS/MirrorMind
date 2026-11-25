@@ -192,16 +192,29 @@ six-check gate with 828 tests; receipt and limitations are in
 not CI. See comment
 [7169397485](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7169397485).
 
-The local M1 candidate now combines the PR #59 workflow with PR #55's optional
-runner, M1E-04's MirrorMind-owned policy world, and PR #57's synthetic UCI
-event-time evaluator. The exact integrated gate passed on the SHA above. The
-package remains SHA-pinned and optional; API startup and HTTP workflow remain
-independent. The inventory demo's `demo-1` registry label is not artifact
-attestation. The policy world preserves the M1E-03 transition and exact parity
-on synthetic inputs. Do not edit WorldKernel, claim real demand or calibrated
-outcomes, or describe the subprocess as a hostile-code sandbox. A later
-tracked change requires a new exact-head gate. PRs remain drafts for separate
-review/integration decisions; no remote branch or `main` was changed.
+The consolidated candidate is `codex/m1-engine-provenance`, published as
+[PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) against
+`main`. Commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85` preserves the exact
+published ancestry of #52–#59; #60/#61 are excluded. It fixes PR #59 review
+comment
+[7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947):
+WorldKernel is named as the selected source when it supplies metrics, while
+the invoked Python test double is recorded separately as parity oracle. V1
+trace remains supported; composed workflow uses v2 typed execution evidence.
+The exact-head gate on `74330d8` passed 832 tests with no skips and all six
+checks, with WorldKernel source pin
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed. The final
+documentation-head receipt is stored under
+`results/local-quality-gate-<full-head-sha>.json` and linked from PR #62. It is
+local evidence, not official Actions or merge approval.
+
+The package remains SHA-pinned and optional; API startup and HTTP workflow
+remain independent. The inventory demo's `demo-1` registry label is not
+artifact attestation. The policy world preserves the M1E-03 transition and
+exact parity on synthetic inputs. Do not edit WorldKernel, claim real demand
+or calibrated outcomes, or describe the subprocess as a hostile-code sandbox.
+No real UCI/Census bytes were accessed. PR #60/#61 remain separate, and no
+remote branch or `main` was changed.
 
 ## 4. Mandatory documentation standard
 
