@@ -28,59 +28,53 @@ not a production-ready AI platform.
 ## Active branch evidence — 2026-11-25
 
 The composed synthetic evidence flow is implemented in the history beginning
-at `c51ab30370db47e9f7105c97f870008e4fc442c5`; the latest committed local
-PR #52 follow-up is `c093ba668f3bca204e4140a10fdde449d4b48b72` on
+at `c51ab30370db47e9f7105c97f870008e4fc442c5`; the latest published PR #52
+follow-up is `b431d11bf0ac841ff30353a06263d23fb901307c` on
 `codex/m1b-02-synthetic-evidence-flow`, proposed in draft
 [PR #52](https://github.com/GustavoMFDS/MirrorMind/pull/52). The PR is
 unmerged. Its one new capability is experimental and uses only bounded
 local fixtures and caller-declared dates.
 
-The full local quality gate passed on exact head `c093ba668f3bca204e4140a10fdde449d4b48b72`
-at 2026-11-25 03:48:38 UTC: all 696 tests, Ruff, symbol catalog, repository
+The full local quality gate passed on exact published head `b431d11bf0ac841ff30353a06263d23fb901307c`
+at 2026-11-25 03:51:25 UTC: all 696 tests, Ruff, symbol catalog, repository
 atlas, evidence map and capability checks passed. The focused M1B-02 tests
 also passed, including child-to-aggregate receipt equality, missing and late
 availability abstention, calendar/release rejection, and digest/declaration
 mismatch rejection. This is local evidence on the exact branch head; it is
 not official CI or merge evidence.
 
-The prior published head `e3aedaf` also passed the complete gate at
-2026-11-25 03:35:40 UTC. An earlier restricted exact-gate run on
+The prior published heads `c093ba6` and `e3aedaf` also passed complete gates
+at 03:48:38 and 03:35:40 UTC. An earlier restricted exact-gate run on
 implementation commit `c51ab30`
 timed out at 900 seconds while `tests/integration/test_api.py::test_health`
 waited during asyncio socket-pair creation before application code. The
 standalone reproduction occurred on Python 3.12 and 3.13.5. A host/sandbox
 loopback cause was proposed but never established. The subsequent full gate
-pass on the current head resolves that timeout as an active blocker for this
-PR; retain the failure as historical evidence only. See [B-07](BLOCKERS.md).
+pass on the current head resolves that timeout as an active blocker for PR #52;
+retain the failure as historical evidence only. See [B-07](BLOCKERS.md).
 
-The latest observed GitHub Actions for the prior published head `e3aedaf`
-have no repository test result. Its `test` and `symbol-catalog` runs failed
-before repository steps. Their exact annotation lists failed recent account
-payments or an increased spending limit as alternatives; it does not identify
-which condition applies, and the job summaries expose no steps or logs. The
-documentation-only local follow-up `c093ba6` had not yet been pushed at this
-snapshot. See [B-08](BLOCKERS.md), [test run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45541148002)
-and [symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45541148078).
+On current published head `b431d11`, the `test` and `symbol-catalog` Actions
+runs failed, but their job summaries expose no steps or logs and their specific
+cause was not recovered. On prior published head `e3aedaf`, an exact annotation
+listed failed recent account payments or an increased spending limit as
+alternatives without identifying which condition applied. See [B-08](BLOCKERS.md),
+[current test run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863564)
+and [current symbol-catalog run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45542863839).
 The local pass does not substitute for official CI.
 
-The next stacked slice is on `codex/m1c-01-synthetic-retail-evaluation`
-at `10ee6866f3340c679e0bfe3bfee11e199a32b56a` and is proposed as draft
-[PR #53](https://github.com/GustavoMFDS/MirrorMind/pull/53), based on
-PR #52's branch. It composes the staged synthetic evidence flow with the
-existing release-aware baseline evaluator and exposes a deterministic
-fictional evaluation CLI. This is branch-local and experimental; it does
-not add real-data ingestion, an HTTP forecast endpoint or predictive-skill
-evidence. Four focused integration tests and six existing retail-backtest
-unit tests passed together; 694 tests passed when excluding
-`tests/integration/test_api.py`. Ruff for `src`, `tests` and the new example,
-the symbol catalog, atlas, evidence and capability guards passed locally.
-A direct registered capability-handler/ledger comparison passed, but HTTP
-runtime did not run. The full exact-head local gate was not completed due the
-previously reproduced B-07 host-side asyncio socket-pair hang. On this exact
-SHA, GitHub Actions `test` run [45322594833](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594833)
-and `symbol-catalog` run [45322594817](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45322594817)
-failed before job execution with the account payment/spending-limit
-annotation (B-08). Neither local nor remote full-gate success is claimed.
+PR #53 is on `codex/m1c-01-synthetic-retail-evaluation`, stacked on PR #52.
+Merge commit `e922b03` synchronizes it with PR #52 head `b431d11`; the PR is
+still a draft and remains unmerged. The feature composes the staged synthetic
+evidence flow with release-aware matched-origin baselines and a deterministic
+fictional evaluation CLI. It is experimental and does not add real-data
+ingestion, an HTTP forecast endpoint or predictive-skill evidence. The four
+integration tests and six existing retail-backtest unit tests passed in the
+working tree based on the synchronized state; new assertions check unverified
+source status and false authorization/eligibility flags at outer and nested
+receipt levels. The complete exact-head gate remains pending on the final review
+follow-up. B-01/B-02 still gate real data and empirical evaluation; B-08 blocks
+official CI. The earlier B-07 timeout on #52 was resolved by later full local
+passes and is not evidence that this integrated #53 head fails.
 
 ## Architecture and actual execution boundaries
 
