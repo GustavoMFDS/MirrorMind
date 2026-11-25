@@ -230,11 +230,12 @@ The same local Census pilot branch now also contains an experimental fixed
 baseline evaluator and generated validation/holdout example. It uses the
 normalized selector, records an exact input fingerprint, keeps first-estimate
 targets separate from later revisions, and abstains on incomplete history.
-The focused evaluator, selector and CLI suite passed 28 tests. Documentation
-is complete; the exact-head six-check gate and local receipt remain pending.
-This branch is still unpushed and separate from PR #62 and cannot resolve
-real-source blockers. Reconcile its head and receipt before claiming the slice
-is review-ready.
+The focused evaluator, selector and CLI suite passed 28 tests. Implementation
+commit `ce446496616d20a782e0ebcb7e7b0f42cec49e83` passed the exact six-check
+local gate with 860 tests, zero skips and the reviewed WorldKernel pin
+installed; the receipt is recorded in the change request. This is not official
+Actions. The branch remains unpushed, separate from PR #62 and unable to
+resolve real-source blockers. Re-run the exact-head gate after later changes.
 
 ## 4. Mandatory documentation standard
 

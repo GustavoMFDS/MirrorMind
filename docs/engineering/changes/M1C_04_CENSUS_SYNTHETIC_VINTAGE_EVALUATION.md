@@ -59,7 +59,7 @@ capability promotion, HTTP/API exposure and operational decisions.
   ambiguity and metric edge cases.
 - [x] A source walkthrough, synthetic model card, dataset card, architecture,
   learning/debugging notes, atlas and evidence map explain the code and limits.
-- [ ] The six-check exact-head local gate passes with the reviewed WorldKernel
+- [x] The six-check exact-head local gate passes with the reviewed WorldKernel
   pin installed and no skipped tests; official Actions remain separate.
 
 ## 3. Impact map
@@ -111,7 +111,8 @@ cross-checks. Metrics on fictional values are arithmetic demonstrations only.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: local-only continuation on
+- Commit / PR: implementation commit
+  `ce446496616d20a782e0ebcb7e7b0f42cec49e83` on local-only branch
   `codex/m1-census-vintage-adapter`, based on consolidated PR #62 review head
   `777c2d2e3598f1eb06e2ae3b972428adfc7e718e`; no push or separate PR while the
   consolidated candidate awaits review.
@@ -120,8 +121,14 @@ cross-checks. Metrics on fictional values are arithmetic demonstrations only.
   `_manifest_sha256`, `_selection_receipt`, `_metric_values`, `_metrics`,
   `build_synthetic_records` and `run_synthetic_evaluation`.
 - Tests executed, result, environment: focused evaluator, selector and CLI
-  suite — 28 passed on the local Python 3.13.5 environment; the exact-head
-  six-check gate with pinned WorldKernel remains pending.
+  suite — 28 passed on Python 3.13.5. Exact-head local gate on the clean
+  implementation commit passed at 2026-11-25 23:16:44 UTC: 860 passed, no
+  skipped tests, and pytest, Ruff, catalog, atlas, evidence and capability
+  checks all passed. One existing Starlette/httpx TestClient deprecation
+  warning appeared. WorldKernel was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+  `results/local-quality-gate-ce446496616d20a782e0ebcb7e7b0f42cec49e83.json`.
+  This is local evidence, not official GitHub Actions.
 - Claim IDs and cited test path/function:
   - MM-CEN-003 —
     `tests/unit/test_census_vintage_evaluation.py::test_fixed_horizons_use_asof_vintages_and_matched_first_estimates`.
@@ -142,7 +149,8 @@ cross-checks. Metrics on fictional values are arithmetic demonstrations only.
   dataset and model cards, system/semantic maps, learning/debugging guides,
   atlas, evidence map, backlog, project status and handoff.
 - Known limitations / follow-up: Census/ALFRED parsing, rights, coverage,
-  real release verification, retention and empirical review remain blocked.
+  real release verification, retention and empirical review remain blocked;
+  GitHub Actions remains unavailable under B-08.
 - Independent explanation: trace `evaluate_census_vintage_backtest` from
   normalized-record validation through each origin's strict as-of view, target
   matching, abstention and aggregate metrics; reproduce both splits with the

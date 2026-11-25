@@ -59,9 +59,16 @@ The same local branch now carries a scoped M1C-04 follow-on:
 vintage, compares fixed lag-12 and trailing-12 baselines at horizons 1, 3 and
 6, and scores later first-estimate labels only. The example has disjoint
 fictional validation and holdout origins. The focused evaluator, selector and
-CLI suite passed 28 tests; the exact-head integrated gate for this follow-on
-remains pending. This work changes neither PR #62 nor #60/#61 and does not
-acquire real source data.
+CLI suite passed 28 tests. Clean implementation commit
+`ce446496616d20a782e0ebcb7e7b0f42cec49e83` passed the exact six-check local
+gate at 2026-11-25 23:16:44 UTC: 860 tests, zero skips, all six checks, with
+reviewed WorldKernel source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`
+installed. The gate reported one existing Starlette/httpx TestClient
+deprecation warning; its local receipt is
+`results/local-quality-gate-ce446496616d20a782e0ebcb7e7b0f42cec49e83.json`.
+This is not official Actions. Any later documentation-only follow-up receives
+its own exact-head gate. This work changes neither PR #62 nor #60/#61 and does
+not acquire real source data.
 
 PR #59 review comment
 [7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
