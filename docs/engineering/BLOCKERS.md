@@ -16,7 +16,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | A restricted run of integrated source candidate `07c405b0d49ab05611413acce61af1123111fb48` timed out in pytest at 900 seconds. Exact clean integrated SHAs `07c405b`, `4d1d5b9`, `970843e`, `3f9bbb8`, `fd72b76` and `b292db0` passed the complete local gate outside the restricted sandbox: 756 tests and all six stages. Corrected #58 integration head `b7d226f41d17f4db3f1b220b417309cc0872b614` passed 768 tests and the same five gate stages. The earlier PR #52 implementation SHA `c51ab30370db47e9f7105c97f870008e4fc442c5` remains historical and was not rerun. | For later integrated heads, run the exact clean SHA through the complete gate; do not skip API tests | Codex execution environment / project maintainer | All listed integrated SHAs passed pytest, Ruff, catalog, atlas, evidence and capability checks outside the restricted sandbox with one existing Starlette/httpx deprecation warning. The #54-only docs head `2794abf` separately passed all six gate stages with 728 tests. The restricted timeout is recorded, not hidden; no application code or verifier was changed to avoid it. |
-| B-08 | The latest inspected #54 head is `2794abf`; #55 is `b292db0`. On #55, both current required checks and a repeated check pair failed before repository steps with the explicit GitHub annotation that recent account payments failed or the spending limit needs to be increased. The annotation establishes a pre-job account start gate, but not which setting caused it. | Account owner inspects GitHub Billing & plans; then rerun checks on corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. Evaluate, but do not configure, a hardened ephemeral self-hosted runner unless its trust, admin and cost requirements are accepted. |
+| B-08 | The latest inspected #54 head is `2794abf`, #55 is `b292db0`, and #58 is `624fd5a`. Both required checks on the current #58 head failed before repository steps with GitHub's explicit annotation that recent account payments failed or the spending limit needs to be increased. This proves a pre-job account gate, but not which account setting caused it or whether a self-hosted runner would be eligible. | Account owner inspects GitHub Billing & plans; then rerun checks on corrected reviewed heads without changing required checks | GitHub account owner / billing administrator | Keep official CI separate from the passing local gate. A self-hosted runner is technically possible but is not evidenced as a workaround for this start gate; see the security, admin and cost assessment below. |
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
@@ -25,10 +25,11 @@ the named real integration, not a prohibition on design and tests.
 
 ## B-08 exact diagnostics and runner assessment — 2026-11-24
 
-This is a point-in-time diagnostic snapshot: #54 was at head `2794abf` and #55
-at integrated published head `b292db0` when its latest checks below were
-inspected. The exact `b292db0` integrated commit passed the full local gate;
-its Actions runs still failed before repository steps. Both required workflows carry an
+This is a point-in-time diagnostic snapshot: #54 was at head `2794abf`, #55
+at integrated published head `b292db0`, and #58 at integrated published head
+`624fd5a` when their latest checks below were inspected. The exact `b292db0`
+and `624fd5a` states passed the full local gate; their Actions checks still
+failed before repository steps. Both required workflows carry an
 annotation that the job was not started because recent account payments
 failed or the spending limit needs to be increased. These runs provide no
 result for repository code. The annotation states the start-gate category but
@@ -42,15 +43,16 @@ does not distinguish a payment failure from a spending cap.
 | #55 | `b292db0231d00f307eb4b0694b8e73014bdb9211` | [45519636625](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636625) (repeat [45519630165](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519630165)) | [45519636706](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519636706) (repeat [45519629914](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45519629914)) |
 | #56 | `c33bd7d480f0b5ebb73f21fb02c10e9a16083fe0` | [45337443246](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443246) | [45337443153](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45337443153) |
 | #57 | `646e4db6991b1769c922cf87a0b85630039915da` | [45339076005](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339076005) | [45339075950](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45339075950) |
-| #58 | `465a2f2c46fb6484aa2f0abea7920953ca4f0d00` | [45447930415](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930415) | [45447930394](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45447930394) |
+| #58 | `624fd5a8f01b9063da739c4f6e3864336978ad95` | [45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099) | [45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076) |
 | #59 | `a5951e49a78796908ecd1975c65052b5a2548cd7` | [45460098823](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098823) | [45460098802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45460098802) |
 | #60 | `6374f0bb9a981271cb9340a190dcdebec6263cc9` | [45476173796](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173796) | [45476173736](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45476173736) |
 | #61 | `288021f25e24efc26591b064eafa1d8b4e287ac8` | [45495329331](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329331) | [45495329221](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45495329221) |
 
-The PR #55 details for all four listed run IDs returned zero workflow steps
-and the same explicit annotation. PR #61 diagnostics also showed zero workflow
-steps; previous #52–#60 checks carried the same annotation. No repository
-workflow log or test execution can be inferred from these statuses.
+The PR #55 details for all four listed run IDs and both PR #58 checks returned
+zero workflow steps and the same explicit annotation. PR #61 diagnostics also
+showed zero workflow steps; previous #52–#60 checks carried the same
+annotation. No repository workflow log or test execution can be inferred
+from these statuses.
 
 ### Self-hosted runner option
 
@@ -61,7 +63,13 @@ persistent self-hosted runner, its workspace, secrets or token. GitHub
 recommends self-hosted runners for private repositories over public ones, but
 its security guide does not treat a private repository as an isolated trust
 boundary. See [GitHub's secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-and [runner setup guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners).
+and [runner setup guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners). GitHub's
+[Actions billing guide](https://docs.github.com/en/actions/concepts/billing-and-usage)
+states that self-hosted runner usage is free of GitHub per-minute runner
+charges; the [billing details](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+still make the owner responsible for applicable usage and budgets. That
+pricing fact does not establish that a job blocked by the current account
+annotation will start on a self-hosted runner.
 
 If the account owner chooses this path, the candidate design is one
 just-in-time runner in a disposable VM per check, destroyed after the job;
@@ -75,8 +83,10 @@ networks; allow only dependency/artifact endpoints required by the existing
 workflows; retain an auditable image, egress and teardown record. A clean
 single-use VM is a proposed containment boundary, not a demonstrated security
 guarantee or a confirmed way to clear the current account-level start gate.
-Cloud runner costs, repository-admin setup, fork policy and billing behavior
-remain unverified. No self-hosted runner or workflow change was made.
+Machine, isolation, monitoring and teardown costs, repository-owner/admin
+setup, fork policy and billing-gate behavior remain unverified. The option is
+therefore a candidate runner implementation, not a verified B-08 workaround.
+No self-hosted runner or workflow change was made.
 
 ## Source references and precise restrictions
 

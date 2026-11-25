@@ -201,7 +201,14 @@ and CLI tests passed 12/12 with focused Ruff. The exact integrated head
 `b7d226f41d17f4db3f1b220b417309cc0872b614` passed 768 tests, Ruff, catalog,
 atlas, evidence and capability checks; the local receipt is recorded in the
 M1E-03 change request. PR #59 trace propagation and official checks on the
-updated PR #58 head remain pending. Actual engine use remains gated by B-04.
+updated PR #58 head remain pending. On published head
+`624fd5a8f01b9063da739c4f6e3864336978ad95`, Actions `test`
+[run 45522497099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497099)
+and `symbol-catalog`
+[run 45522497076](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45522497076)
+failed before any workflow step with the explicit B-08 account payment or
+spending-limit annotation. No remote test ran. Actual engine use remains
+gated by B-04.
 
 ## Architecture and actual execution boundaries
 
