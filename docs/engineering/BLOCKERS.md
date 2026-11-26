@@ -16,7 +16,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 feature/status head `f76ec54aeb95efcffc645f7482909c6befa15761` (877) and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840). Each local receipt reports zero skips and six passing checks; none is official Actions. A docs-only PR #63 baseline refresh has its own exact-head gate; its final SHA/receipt are in the live PR body. Four #63 check runs on the earlier `42a9746` head failed before repository steps; their annotations state: “The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings.” This lists alternatives and does not identify which applies. No test or catalog steps ran; the combined status was empty and log artifacts were unavailable. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
+| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 feature/status head `f76ec54aeb95efcffc645f7482909c6befa15761` (877), PR #63 docs-only status head `3bc7162d54ad3ed8a9bdeb158abdb07ccb5b1f66` (877) and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840). Each local receipt reports zero skips and six passing checks; none is official Actions. Four #63 check runs on earlier head `42a9746` and four on docs-only head `3bc7162` failed before repository steps. Their annotations list recent payment failure or spending-limit increase as alternatives and do not identify which condition applies. No repository tests/catalog steps ran; job steps and logs are absent and combined status was empty. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
 
 ### PR #63 exact-head Actions diagnostics — 2026-11-26
 
@@ -32,6 +32,26 @@ status has no entries. This is direct evidence of an account-level pre-start
 gate, but it does not determine whether recent payments or the spending limit
 caused it. Do not claim that repository tests ran or assign one alternative as
 the specific cause. The exact-head local receipt is separate evidence.
+
+### PR #63 documentation-status head Actions diagnostics — 2026-11-26
+
+On exact head `3bc7162d54ad3ed8a9bdeb158abdb07ccb5b1f66`, GitHub reported two
+attempts for the `Python API CI` and `Engineering documentation catalog`
+workflows:
+[45849519063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849519063),
+[45849519064](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849519064),
+[45849506095](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849506095), and
+[45849506083](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849506083).
+The associated `test` and `symbol-catalog` check runs were `140011906243`,
+`140011905569`, `140011859186` and `140011859295`. All failed before job
+steps. Each annotation says: “The job was not started because recent account
+payments have failed or your spending limit needs to be increased. Please
+check the 'Billing & plans' section in your settings.” The records contain no
+executed steps, no retrievable logs and no combined status entries. This is
+direct evidence of an account-level pre-start gate, but it does not determine
+which stated alternative applies. The owner separately confirms quota
+exhaustion and zero paid budget; do not attribute these runs to a specific
+payment or spending-limit cause.
 
 Metadata-only review of the official Census archives on 2026-11-26 found a
 2022 annual-revision notice that its sales spreadsheet was updated at 12:45

@@ -28,11 +28,13 @@ execution guidance and does not broaden the agent's permissions.
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
 - Census remains separate as open PR #63. Feature/status head
   `f76ec54aeb95efcffc645f7482909c6befa15761` passed its exact-head local gate
-  with 877 tests, zero skips and all six checks. A follow-up docs-only commit
-  refreshes the project-status and B-08 baseline; gate its exact SHA before
-  review. The final current SHA and receipt are recorded in the live PR body.
-  Keep #63 separate from #60/#61/#64 pending independent review; no integration
-  decision is implied.
+  with 877 tests, zero skips and all six checks. The prior published docs-only
+  status head `3bc7162d54ad3ed8a9bdeb158abdb07ccb5b1f66` passed a separate
+  exact gate with 877 tests, zero skips and all six checks. Its receipt is in
+  the live PR body. Two Actions attempts on that
+  docs-only head failed pre-start; B-08 records run/job IDs and the
+  alternatives-only annotation. Keep #63 separate from #60/#61/#64 pending
+  independent review; no integration decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
