@@ -42,9 +42,10 @@ execution guidance and does not broaden the agent's permissions.
   exact-clean-head local gate, distinguish receipts from CI, and do not
   register a runner, modify workflows/protections or retry prior start failures.
 - ENG-02 tracks five existing Ruff findings under `examples/`; fix them only in
-  separate maintenance. After M2-01 (#60) review/integration and the Census
-  reconciliation settle, M2-02 retrieval evaluation is next. Do not add a new
-  feature PR while this review queue is unsettled.
+  separate maintenance. M2-02 retrieval evaluation follows M2-01 (#60)
+  review/integration and independent review of #61/#63. Census status
+  reconciliation is complete; do not add a feature PR while the review queue
+  remains unsettled.
 
 ## 1.1 Historical owner-approved continuation decisions — 2026-11-25
 
