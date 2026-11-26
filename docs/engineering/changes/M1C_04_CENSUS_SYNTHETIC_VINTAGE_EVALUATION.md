@@ -155,3 +155,53 @@ cross-checks. Metrics on fictional values are arithmetic demonstrations only.
   normalized-record validation through each origin's strict as-of view, target
   matching, abstention and aggregate metrics; reproduce both splits with the
   linked CLI commands in the source walkthrough.
+
+## 7. Independent review follow-up — numeric determinism and release chronology
+
+**Reproduced review findings:** On the same synthetic inputs and origin
+schedule, changing the ambient Decimal precision from its default to precision
+2 changes the trailing-mean metric despite an identical normalized-input
+fingerprint. A monthly revision whose publication date precedes the known
+first-estimate publication is currently accepted into the historical feature
+view. Finite values at extreme magnitudes can also make float metrics overflow
+to infinity or underflow a positive result to zero.
+
+**Correction scope:** Keep all Census changes on the local descendant branch,
+separate from consolidated PR #62. Use context-independent exact arithmetic
+for fixed means and aggregate metrics; bound Decimal coefficient precision and
+exponents; reject metric conversions that are non-finite or underflow a
+nonzero exact result. If a month has a first-estimate record, require each
+revision date to be strictly later because timestamps are date-only. If the
+first-estimate release is absent, treat that month's revisions as unanchored:
+exclude them from the evaluator's feature vintage, count the excluded records
+in the result and allow the resulting history gate to abstain. This does not
+authenticate an archive or assert that an incomplete source has no earlier
+publication.
+
+### Follow-up acceptance criteria
+
+- [ ] Replaying identical records and origins under low precision and alternate
+  Decimal rounding modes returns identical fingerprints and metrics.
+- [ ] A revision earlier than, or on the same date as, a known first estimate
+  is rejected; a later revision remains eligible under the date-only contract.
+- [ ] Revisions without a first-estimate anchor are excluded from forecast
+  features, counted in the result, and cannot prevent missing-history
+  abstention.
+- [ ] Public evaluator calls reject unsupported coefficient/exponent domains,
+  non-finite metric conversions and positive exact metrics that would underflow
+  to zero; output contains no `Infinity`, `NaN` or fabricated zero.
+- [ ] Public evaluation regressions reproduce the reviewed `1e150` / `1e-300`
+  WAPE overflow and tiny-positive metric underflow cases.
+- [ ] The Census guide, model card, learning exercise, debugging notes, system
+  map, atlas and evidence map explain the revised arithmetic and archival
+  boundaries.
+- [ ] Full exact-head local gate passes on the descendant with WorldKernel
+  pinned and no skipped tests; no official Actions claim is made.
+
+| Layer | Follow-up impact | Evidence |
+| --- | --- | --- |
+| Evaluator | Exact rational mean/metrics, numeric-domain validation and finite conversion | `tests/unit/test_census_vintage_evaluation.py` public-call regressions |
+| Vintage selection for evaluator | Validate first-estimate/revision chronology and omit unanchored revisions from the feature view | Earlier/same-day revision rejection and incomplete-anchor abstention tests |
+| CLI / serialized result | Add explicit unanchored-revision count; preserve schema safety and synthetic-only flags | CLI replay and JSON finite-number assertions |
+| API / capability ledger / source access | No change | Existing API and capability checks; no file/network or source ingestion |
+| Documentation | Explain exact arithmetic, numeric bounds, revision chronology, abstention and reproduction | Census source walkthrough, model card, learning/debugging, system/semantic maps and evidence selectors |
