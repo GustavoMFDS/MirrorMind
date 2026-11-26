@@ -73,8 +73,8 @@ credentials, or external services are involved.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: branch `codex/eng-02-examples-ruff`; final committed head,
-  local gate receipt and review URL are recorded in the PR description.
+- Commit / PR: PR #64 on `codex/eng-02-examples-ruff`; its description records
+  the final committed head, local gate receipt and validation limits.
 - Modified symbols and files: `_require_contiguous_days` and its caller in
   `examples/m1_asof_rolling_backtest.py`; import order in the two preflight /
   backtest examples; no public symbol or response changed.

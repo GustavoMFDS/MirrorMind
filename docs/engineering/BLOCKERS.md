@@ -75,6 +75,20 @@ through the current connector. Do not infer that these exact runs carry the
 same alternative account annotation recovered for earlier heads. No remote
 tests are evidenced for `c000ebd`.
 
+### PR #64 exact-head CI observation — 2026-11-26
+
+For head `aec18f6f8a21be7069fab3ed2409fe68540c45a0`, GitHub reported the
+`test` run [45768693223](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45768693223)
+and `symbol-catalog` run
+[45768693542](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45768693542)
+as failed. The job records `139735795282` and `139735795951` have no steps;
+the connector returned no log artifact (`BlobNotFound`). Therefore no
+repository tests or catalog check are evidenced remotely, and this observation
+does not establish a specific failure cause. The owner's separate quota
+decision remains in force, but it is not attributed as the cause of these
+exact runs. No workflow, required check, protection, runner or spending limit
+was changed.
+
 ### Self-hosted runner option
 
 The repository API reported this repository as private at the time of review.

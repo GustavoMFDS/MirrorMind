@@ -66,7 +66,7 @@ coordination.
 | G-03 | P0 | planned | G-01, G-02 | Actual client/server integration with fictional data, isolated test trust, outages, expiry and failure cases; verify signed remote head mismatch and no permission grants; audit recovery and supplied forks. |
 | G-04 | P1 | blocked | G-03, B-03 | Operational trust review: separately administered storage, key custody, identities, monitoring, authenticated access and restore evidence. Do not deploy or claim independence without approval. |
 | ENG-01 | P1 | ready | None | Keep canonical checkout clean; record exact gates, check remote CI and improve reproducibility without lowering protections. Review dependency and warning changes separately. |
-| ENG-02 | P2 | in_progress | None | Resolve five pre-existing Ruff findings in `examples/` as separate maintenance. Preserve behavior; review RUF007 semantics and add boundary regression coverage. Current implementation is on `codex/eng-02-examples-ruff`; exact-head gate and PR preparation remain. |
+| ENG-02 | P2 | review | None | Resolve five pre-existing Ruff findings in `examples/` as separate maintenance. Preserve behavior; review RUF007 semantics and add boundary regression coverage. PR #64 is open on `codex/eng-02-examples-ruff`; exact-head local gate passed and independent review remains. |
 
 Use the existing [publisher](ATOMIC_GOVERNED_PUBLISHER.md),
 [dual-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md),

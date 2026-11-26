@@ -16,13 +16,13 @@ execution guidance and does not broaden the agent's permissions.
 
 ## Current independent maintenance — 2026-11-26
 
-- ENG-02 is separate from the open product/review queue and is being handled
-  on `codex/eng-02-examples-ruff`, branched from the post-#62 `main` at
-  `a456034`. The five original `ruff check examples` findings were reproduced.
-  RUF007's `itertools.pairwise` suggestion is being applied only after tests
-  prove equivalence for the sorted `list[date]` input and Python 3.11 minimum;
-  no forecast or authorization behavior should change. Keep the change
-  synthetic-only and separate from #60/#61/#63.
+- ENG-02 is separate maintenance in [PR #64](https://github.com/GustavoMFDS/MirrorMind/pull/64),
+  branch `codex/eng-02-examples-ruff`, based on post-#62 `main` at `a456034`.
+  The five original `ruff check examples` findings were reproduced. RUF007's
+  `itertools.pairwise` correction has direct empty/singleton/consecutive/gap
+  regressions; no forecast or authorization behavior changed. Exact-head local
+  gate passed on the PR head; the PR records the pre-step Actions failures
+  without attributing a cause. Keep #64 separate from #60/#61/#63.
 
 ## 1.1 Owner-approved continuation decisions — 2026-11-25
 
