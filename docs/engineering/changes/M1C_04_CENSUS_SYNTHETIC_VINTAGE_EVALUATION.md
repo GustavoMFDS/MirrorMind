@@ -215,8 +215,11 @@ consumer of the unmerged v1 result. No external v1 compatibility is inferred.
   passed the exact clean-head six-check gate with WorldKernel pinned: 877 tests,
   zero skips, all checks passed and one existing TestClient deprecation warning.
   Receipt: `results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
-- [ ] Final exact clean-head gate passes after the status, backlog, handoff and
-  gate-documentation updates; no official Actions claim is made.
+- [x] Status/backlog/handoff/gate-documentation commit
+  `a6e3ed3355a1e52712542e6ae0d80d908885a82b` passed the exact clean-head local
+  gate after those updates: 877 tests, zero skips and all six checks passed.
+  Receipt: `results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+  This is not an official Actions claim.
 
 | Layer | Follow-up impact | Evidence |
 | --- | --- | --- |

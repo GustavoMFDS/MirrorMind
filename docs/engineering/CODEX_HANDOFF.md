@@ -88,9 +88,12 @@ WorldKernel `0.0.1` was installed from
 `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
 `results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
 One existing Starlette/httpx TestClient deprecation warning appeared. The
-status/backlog/handoff/gate-documentation edits require one more exact-clean-
-head local gate. Keep its receipt in ignored `results/` and report the SHA; do
-not claim Actions passed.
+status/backlog/handoff/gate-documentation commit
+`a6e3ed3355a1e52712542e6ae0d80d908885a82b` then passed that exact six-check
+gate with 877 tests and zero skips; receipt:
+`results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+Any later tracked change requires its own exact-clean-head gate. Do not claim
+Actions passed.
 
 Do not push or open a separate Census PR while #62 awaits final independent
 review. Preserve the zero-cost Actions decision and synthetic-only tests. B-01

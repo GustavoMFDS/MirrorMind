@@ -170,6 +170,18 @@ subsequent status, backlog, handoff and gate-documentation edits require a new
 exact clean-head gate. The branch is not pushed and has no separate PR while
 consolidated PR #62 remains open; these Census fixes are not part of PR #62.
 
+### Status-documentation-inclusive descendant — 2026-11-25
+
+After the status, backlog, handoff, change-request and gate-receipt updates,
+exact clean commit `a6e3ed3355a1e52712542e6ae0d80d908885a82b` passed all six
+checks with 877 tests and zero skips. WorldKernel `0.0.1` remained pinned to
+reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. One existing
+Starlette/httpx TestClient deprecation warning appeared. Receipt:
+`results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+Status is `local_gate_passed_not_official_ci`; Actions remains unchecked. This
+record does not include later edits to the gate record itself; gate any newer
+tracked head separately.
+
 ### DecisionTrace V2 chronology correction — 2026-11-25
 
 The independent PR #62 review reproduced acceptance of execution evidence

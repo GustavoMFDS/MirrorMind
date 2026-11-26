@@ -56,9 +56,13 @@ TestClient deprecation warning appeared. Receipt:
 `results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
 These synthetic results do not establish source rights, archive completeness
 or forecast quality. B-01/B-02 still gate real-source work, and B-08 keeps
-official Actions unavailable under the zero-cost decision. This gate predates
-the status, backlog, handoff and gate-documentation updates in this commit;
-run the six checks again on their final clean descendant head.
+official Actions unavailable under the zero-cost decision. The status,
+backlog, handoff and gate-documentation commit
+`a6e3ed3355a1e52712542e6ae0d80d908885a82b` then passed the exact six-check
+gate with 877 tests, zero skips and the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+This is local evidence only; any later tracked change needs a gate on its own
+exact clean SHA.
 
 ## Active branch evidence — 2026-11-25
 
