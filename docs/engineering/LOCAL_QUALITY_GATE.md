@@ -168,3 +168,28 @@ and gate-documentation update that records it. Rerun the six-check gate on the
 exact clean documentation-inclusive SHA before publishing the branch. Preserve
 that final SHA and receipt in the PR discussion; never treat either local
 receipt as official Actions or integration approval.
+
+### PR #62 merge and separate review branches — 2026-11-26
+
+Independent final review of PR #62 head `0bed1269613eb689e84ad971c7d8f1878767d6cf`
+passed the exact six-check local gate with WorldKernel pin
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: 835 tests, zero skips, one
+existing warning. The ancestry-preserving merge `a456034c55ed7634ad4768b26788fec09dab1d08`
+was independently compared to the reviewed head with no tree differences and
+passed 835 tests, zero skips, six checks. The post-merge receipt is
+`%TEMP%\mirrormind-independent-main-a456034c.json` at
+`2026-11-26T03:11:16.900697+00:00`.
+
+Exact published main-based review heads also have these complete local gates:
+
+| PR / head | Pytest | Other checks | Receipt / status |
+| --- | --- | --- | --- |
+| #60 `fafded...` | 845 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed. | `results/local-quality-gate-fafdedae3a76398e0450773065e40384c96d1ed7.json`; `local_gate_passed_not_official_ci`. |
+| #63 `b5e989314bcdcb566df479931794a5f56c07d477` | 877 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed with the exact WorldKernel pin installed. | `results/local-quality-gate-b5e989314bcdcb566df479931794a5f56c07d477.json`; `local_gate_passed_not_official_ci`. |
+| #61 merge head `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21` | 841 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed with the exact WorldKernel pin installed. | `results/local-quality-gate-66fc9fa001eaa6bd3adbc8f8d1606f3743239d21.json`; `local_gate_passed_not_official_ci`. |
+
+These receipts cover only the named exact revisions. A later documentation
+commit on PR #61 requires a fresh exact-head gate. GitHub Actions was not
+checked by these local runs. No runner, paid usage, workflow change or
+protection bypass was used. The independent #62 review also recommends keeping
+the Census changes separate and retaining #52–#59 as ancestors of the merge.

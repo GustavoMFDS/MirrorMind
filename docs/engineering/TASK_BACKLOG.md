@@ -1,13 +1,33 @@
 # Task backlog — prioritized execution register
 
-**Baseline:** PR #51 merge commit `e4f05a152aefcf68fa8ec22f3baa3b61adb8519d`,
-see [PROJECT_STATUS](PROJECT_STATUS.md). This is
-the maintained task register, not a duplicate roadmap or a promise
-of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
+**Current baseline:** main merge commit
+`a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62), see
+[PROJECT_STATUS](PROJECT_STATUS.md). This is the maintained task register,
+not a duplicate roadmap or promise of completion. Read
+[MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
-On resuming work, reconcile with actual branches, open PRs, merged
-commits and independently observed evidence. Do not duplicate work
-already underway.
+On resuming work, reconcile with actual branches, open PRs, merged commits and
+independently observed evidence. Do not duplicate work already underway.
+
+## Current queue reconciliation — 2026-11-26
+
+| Work | Current state | Evidence / next gate |
+| --- | --- | --- |
+| M1 synthetic vertical slice | Integrated experimentally in main `a456034`; PR #52–#59 are incorporated by #62 and their branches are retained. Independent merged-main gate: 835 tests, zero skips, six checks, exact WorldKernel pin. | M1 real-data, empirical forecast and production acceptance remain incomplete; do not close M1 overall. |
+| Census vintage evaluator | Separate PR #63, open/non-draft at `b5e989314bcdcb566df479931794a5f56c07d477`, based on main. Exact local gate: 877 tests, zero skips, six checks. | Await independent review. Synthetic only; no Census/ALFRED bytes or source authorization. |
+| M2-01 retrieval | PR #60, open/non-draft at `fafdedae3a76398e0450773065e40384c96d1ed7`, based on main. Exact local gate: 845 tests, zero skips, six checks. | Await independent review. Retrieval remains experimental and caller-scope is not authenticated authorization. |
+| G-01 responder | PR #61, draft at merge head `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`, now synchronized with main. Exact merge-head gate: 841 tests, zero skips, six checks. | Finish current-baseline documentation and exact-head gate, then prepare for independent review. No route or operational authority. |
+| M2-02 retrieval evaluation | Planned; depends on M2-01. | Start after M2-01 review/integration settles. Use fictional/authorized fixtures; measure citation support, lineage and abstention. |
+| ENG-02 examples lint maintenance | Ready as a separate maintenance item. `ruff check examples` on this branch reports five findings in three example files; none of these files differ from main. | Handle in a separate scoped PR; do not fold cleanup into #60/#61/#63. |
+| Real-source pilots | Preparation only under the approved UCI then aggregate Census/ALFRED sequence. | B-01/B-02 remain open; keep automated tests synthetic and wait for source-specific rights, privacy, snapshot and temporal evidence. |
+
+GitHub Actions remains unavailable under the zero-paid-budget decision. Use
+the exact-clean-head six-check local procedure; receipts are local evidence,
+never official CI. No required check, workflow or branch protection is
+weakened. The PR #62 final comments
+[7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141)
+are the review record for the incorporated M1 baseline and PR ordering.
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -19,7 +39,7 @@ already underway.
 | Pending by dependency | Remaining M1C/M1D/M1E/M1F, M2, M3 and M4 rows marked `planned`. | Start only when named predecessors and acceptance inputs exist. |
 | Blocked by external evidence or approval | M1B-03 and M1C-03 require B-01/B-02 real-source rights, original availability and empirical holdout evidence. G-04 and deployment-related scopes also require B-03/B-06. | Advance synthetic slices independently; preserve blockers and do not claim they are solved by generated fixtures. |
 
-## Current consolidated review candidate — 2026-11-25
+## Historical consolidated candidate before PR #62 merge — 2026-11-25
 
 `codex/m1-engine-provenance`, published as
 [PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) to `main`, contains
@@ -66,6 +86,7 @@ coordination.
 | G-03 | P0 | planned | G-01, G-02 | Actual client/server integration with fictional data, isolated test trust, outages, expiry and failure cases; verify signed remote head mismatch and no permission grants; audit recovery and supplied forks. |
 | G-04 | P1 | blocked | G-03, B-03 | Operational trust review: separately administered storage, key custody, identities, monitoring, authenticated access and restore evidence. Do not deploy or claim independence without approval. |
 | ENG-01 | P1 | ready | None | Keep canonical checkout clean; record exact gates, check remote CI and improve reproducibility without lowering protections. Review dependency and warning changes separately. |
+| ENG-02 | P2 | ready | None | Track the five pre-existing Ruff findings in `examples/m1_asof_rolling_backtest.py` (I001, RUF007), `examples/m1_observation_preflight.py` (I001), and `examples/m1_temporal_backtest.py` (I001, F401) as a separate maintenance PR. The examples are unchanged from main; avoid unsafe auto-fixes and do not bundle this cleanup into feature reviews. |
 
 Use the existing [publisher](ATOMIC_GOVERNED_PUBLISHER.md),
 [dual-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md),
@@ -153,7 +174,7 @@ If a gate fails, preserve the failure and choose the next safe
 independent slice. A blocker resolved for a synthetic fixture does
 not automatically resolve real-source, deployment or product gates.
 
-## Active claims
+## Historical active-claim snapshots — captured before PR #62 merge
 
 | ID | Status | Owner / branch | Surfaces | PR / commit | Evidence and next action | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
