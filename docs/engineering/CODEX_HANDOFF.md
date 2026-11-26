@@ -78,8 +78,10 @@ ancestry checks. Their remote branches remain intact; do not merge or delete
 them. PRs #60 and #61 stay separate. PR #60 now includes the new main via
 ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; its
 exact sync-head gate passed 845 tests, zero skips and all six checks with the
-reviewed WorldKernel pin. Rerun the gate after the final documentation update,
-then push and prepare it for independent review. #61 still needs its
+reviewed WorldKernel pin. Docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0`
+also passed 845 tests, zero skips and all six checks; its receipt is in
+`LOCAL_QUALITY_GATE.md`. Rerun the gate after this status refresh, then push
+and prepare #60 for independent review. #61 still needs its
 ancestry-preserving sync and exact gate. Report local evidence separately
 from Actions; keep required protections unchanged.
 

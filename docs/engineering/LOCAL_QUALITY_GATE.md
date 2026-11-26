@@ -75,6 +75,26 @@ authenticated publisher vintages, or establish forecast calibration.
 When quota is available, rerun both official workflows against the exact
 integrated changes and investigate any discrepancy.
 
+## PR #60 integration receipts — 2026-11-26
+
+The M2-01 branch was synchronized with PR #62's merged `main` using the
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`. The
+exact merge head passed 845 tests with zero skips, Ruff, source catalog,
+repository atlas, evidence and capability checks at
+`2026-11-26T03:43:45.974393+00:00`. WorldKernel was installed from reviewed
+source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-a5186a680b307c4ecd9d56321321a5b27048731d.json`.
+
+The docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0` passed the same
+exact-head gate at `2026-11-26T03:51:23.258821+00:00`: 845 tests, zero skips,
+all six checks, and one existing Starlette/httpx `TestClient` deprecation
+warning. Receipt:
+`results/local-quality-gate-26e45b4620e9e13e12a745db3c99ead196c656d0.json`.
+Both receipts say `local_gate_passed_not_official_ci`; Actions were not checked
+by these scripts. The installed WorldKernel source revision was
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Any subsequent tracked change
+requires another exact-head gate before publication or review.
+
 The [local-gate regressions](../../tests/unit/test_local_quality_gate.py)
 verify fail-closed SHA checking, dirty-tree refusal, ordered manifest,
 failure/timeouts, and honesty of the receipt. The source

@@ -20,9 +20,11 @@ as incorporated after exact-head ancestry checks; all branches remain
 available. #60 (M2-01 retrieval) and #61 (G-01 current
 head responder) remain separate. #60 now contains the new main through
 ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; the
-exact sync-head gate passed 845 tests with zero skips and all six checks. Its
-final docs-inclusive head needs a fresh exact gate before push and independent
-review. #61 still needs synchronization and an exact gate.
+exact sync-head gate passed 845 tests with zero skips and all six checks. The
+docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0` also passed the same
+gate; its receipt is recorded in `LOCAL_QUALITY_GATE.md`. The current status
+refresh still needs its exact gate before push and independent review. #61
+still needs synchronization and an exact gate.
 
 The merged M1 path is a complete **synthetic experimental** evidence-to-
 comparison flow: fixed retail evidence, evaluation, residual diagnostics,

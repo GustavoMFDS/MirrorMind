@@ -241,6 +241,13 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   Receipt: `results/local-quality-gate-a5186a680b307c4ecd9d56321321a5b27048731d.json`.
   Status is `local_gate_passed_not_official_ci`; Actions were not checked by
   this script. This receipt does not cover later documentation edits.
+- Documentation candidate `26e45b4620e9e13e12a745db3c99ead196c656d0`
+  passed the same six-check gate at `2026-11-26T03:51:23.258821+00:00`: 845
+  tests, zero skips and all checks passed. Receipt:
+  `results/local-quality-gate-26e45b4620e9e13e12a745db3c99ead196c656d0.json`.
+  The same existing TestClient deprecation warning appeared. This is local
+  validation, not official CI; Actions were not checked. The current status
+  evidence update requires one final exact-head gate before publication.
 - A separate scoped `ruff check examples` found five findings in unchanged
   example files: I001 in `m1_asof_rolling_backtest.py`,
   `m1_observation_preflight.py` and `m1_temporal_backtest.py`; RUF007 in
