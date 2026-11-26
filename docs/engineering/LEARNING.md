@@ -732,3 +732,7 @@ vintage nor permission, and why UCI `InvoiceDate` cannot supply
 Add an anchored revision dated before its first estimate and verify chronology
 rejection; set both dates equal and explain why the date-only ambiguity guard
 also rejects it.
+Move a first estimate's publication date into its reference month and run
+`test_evaluator_rejects_first_estimates_published_before_reference_month_closes`.
+Then move it to the first day of the following month and explain why the
+normalized boundary still does not authenticate the official release date.

@@ -246,14 +246,18 @@ and [model card](model_cards/SYNTHETIC_UCI_EVENT_TIME.md).
 [`domains/retail/census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py)
 validates normalized in-memory records and selects the latest publication
 strictly before an exclusive target-release date for each reference month.
+It rejects any release dated inside or before its reference month and verifies
+anchored revision chronology; the lower bound does not authenticate a real
+publisher schedule.
 [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py)
-checks revisions, same-day leakage rejection, missing-month preservation,
-malformed metadata and deterministic receipt behavior. It consumes invented
-records only, validates digest syntax rather than source bytes, and keeps
+checks revisions, same-day leakage rejection, period-close boundaries,
+missing-month preservation, malformed metadata and deterministic receipt
+behavior. It consumes invented records only, validates digest syntax rather
+than source bytes, and keeps
 ingestion/forecast authorization false. The [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md)
 is not a Census or ALFRED file/API parser; source rights, archive completeness,
-source-specific parsing, rights, archive completeness, target cross-checks and
-empirical evaluation remain open under B-01/B-02.
+source-specific parsing, target cross-checks and empirical evaluation remain
+open under B-01/B-02.
 
 The separate census_evaluation.py consumes these selected vintages at fixed
 synthetic origins, uses lag-12 and trailing-12 baselines at horizons 1, 3 and

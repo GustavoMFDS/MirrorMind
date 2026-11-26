@@ -52,7 +52,7 @@ wall-clock evidence.
 - For bounded local XLSX input failures: inspect [`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), [the workbook guide](UCI_WORKBOOK_READER.md) and [ZIP/schema tests](../../tests/unit/test_uci_workbook.py). Never paste original workbook bytes or customer fields in an issue.
 - For event-time UCI evaluation failures: inspect [`domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), the [fixed-protocol walkthrough](M1_UCI_EVENT_TIME_RESEARCH.md), and [synthetic regressions](../../tests/unit/test_uci_event_time.py). Separate target-date coverage from seven-day history coverage; only synthetic declared-complete dates may justify a zero in the fixture. The result is never point-in-time evidence.
 - For a point-in-time evaluation that selects a later source revision too early: compare `reference_month` with `published_at`, verify the immutable vintage manifest/hash, then check the official release schedule and the source review's ALFRED real-time boundary. Do not manufacture `available_on=InvoiceDate`; if a release timestamp or vintage is missing, abstain or exclude that origin.
-- For synthetic Census vintage-selection failures: inspect [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), the [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md) and [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py). Check strict `< target_release_on`, the `(reference_month, published_on)` ambiguity key and release-ID date/digest consistency. The adapter validates digest syntax only; it never verifies source bytes or grants rights.
+- For synthetic Census vintage-selection failures: inspect [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), the [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md) and [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py). Check strict `< target_release_on`, publication on or after the first day following `reference_month`, the `(reference_month, published_on)` ambiguity key and release-ID date/digest consistency. The period-close rule is only a lower bound; the adapter validates digest syntax but never verifies source bytes, the actual release schedule or rights.
 
 - For missing or mismatched review packets: inspect [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [the review guide](SOURCE_INTAKE_REVIEW.md) and [synthetic tests](../../tests/unit/test_source_intake_review.py). Share only sanitized refs/digests, never proof documents or raw rows in issues; references alone do not authorize use.
 
@@ -312,9 +312,12 @@ pass GitHub Actions success.
 
 Inspect the normalized selector, the evaluation walkthrough and
 tests/unit/test_census_vintage_evaluation.py. Check that each origin's own
-first estimate was published before issued_on, each target first estimate
-follows the issue date, and all 12 consecutive reference months are present in
-the as-of view. A missing month is an abstention, never a zero. An unrelated
+first estimate was published before issued_on and on or after the first day
+following its reference month; each target first estimate follows the issue
+date, and all 12 consecutive reference months are present in the as-of view. A
+publication dated inside its reference month is invalid chronology, even when
+the issue cutoff would otherwise make it visible. The lower bound does not
+verify an official release timestamp. A missing month is an abstention, never a zero. An unrelated
 future reference month is a contract error; a target already published by
 issue is not a future outcome. Compare the per-origin vintage fingerprint and
 sanitized selector receipt before assuming a later revision affected a score.

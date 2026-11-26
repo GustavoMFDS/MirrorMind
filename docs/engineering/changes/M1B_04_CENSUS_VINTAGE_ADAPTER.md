@@ -162,3 +162,44 @@ This is synthetic local evidence; Actions were not checked, and no source
 parser, real bytes, credential or permission is added. The current
 documentation-inclusive follow-up needs its own exact-head gate before a
 separate PR is published.
+
+## Independent review follow-up — publication cannot precede period close
+
+The normalized selector checks revision chronology against a known first
+estimate, but accepts a first-estimate publication dated inside its own
+reference month. A public evaluator reproduction scored such records as
+available observations. That is impossible for the approved Advance Monthly
+Retail Trade Series: the Census Bureau says its advance estimates are released
+about ten business days after the reference month closes. The selector must
+enforce the weaker, source-neutral calendar invariant that every normalized
+release date is on or after the first day following its reference month. It
+does not infer or authenticate the actual scheduled release day.
+
+### Acceptance criteria
+
+- [x] Reject first estimates and revisions with `published_on` before the
+  reference month closes; accept a release dated on the first day of the next
+  month as the lower-bound boundary case.
+- [x] Reproduce the false-scoring case through the public Census evaluator and
+  prove it fails through the shared selector validation.
+- [x] Keep the selector pure, bounded, date-only and synthetic; do not add
+  source calendars, file/network reads, authorization or empirical claims.
+- [x] Explain the invariant, its source-specific motivation, the exact tests,
+  and the limit that valid chronology does not authenticate a publisher.
+- [ ] Regenerate the catalog and pass the exact six-check local gate on the
+  final clean PR head with the reviewed optional WorldKernel pin.
+
+### Impact map
+
+| Layer | Relevant file/symbol | Change? | Evidence / tests |
+| --- | --- | --- | --- |
+| Core contract | `domains/retail/census_vintages.py::_validate_record` | Yes | Selector regressions reject in-month releases and accept next-month boundary |
+| Consumer | `domains/retail/census_evaluation.py::evaluate_census_vintage_backtest` | No algorithm change | Public evaluator regression reproduces prior false scoring and now rejects |
+| API, persistence, source access | None | No | No route, I/O, credential or authorization surface |
+| Documentation | Census adapter/evaluation/protocol, system map, debugging, learning and evidence map | Yes | Source guide and exact top-level pytest selector linked in the evidence ledger |
+| Compatibility | `mirrormind.census.aggregate_vintage_view.v1` | Validation tightened; result shape unchanged | The only in-repository consumers are the synthetic evaluator and tests; invalid pre-period records now fail closed |
+
+The Census methodology is linked in the protocol and guide as the reason for
+the invariant. The implementation accepts any date after the reference month
+as a valid normalized lower bound; the real MARTS schedule, release identity,
+source bytes and rights still require separate review.

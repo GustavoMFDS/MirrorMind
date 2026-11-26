@@ -77,6 +77,12 @@ published strictly after that first-estimate date. An earlier revision fails
 chronology validation; a same-day collision fails the existing date-only
 ambiguity rule. A revision with no first-estimate anchor is valid normalized
 input, but is unanchored and cannot enter this evaluator's feature view.
+Every release must also be published on or after the first day following its
+reference month. This rejects a first estimate or revision dated inside the
+period it describes. It is a calendar sanity bound, not authentication of the
+actual release schedule; the Census Bureau describes MARTS estimates as being
+released about ten business days after the reference month closes
+([methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)).
 Duplicate labels, mixed series, ambiguous `(reference_month, published_on)`
 records, invalid release metadata and any release published on the issue date
 are rejected or excluded by the selector.
@@ -183,7 +189,9 @@ of unanchored revisions; `MM-CEN-010` covers bounded decimal inputs;
 `MM-CEN-011` and `MM-CEN-012` cover overflow and underflow rejection; and
 `MM-CEN-014` verifies that the example CLI refuses non-finite JSON, and
 `MM-CEN-015` protects RMSE square-root scaling from an intermediate float
-underflow when the final metric remains representable.
+underflow when the final metric remains representable. `MM-CEN-016` covers the
+publication-after-period lower bound through both the selector and public
+evaluator.
 Each claim cites the real top-level test selector and states what the fixture
 cannot establish.
 
@@ -203,6 +211,7 @@ cannot establish.
 | tests/unit/test_census_vintage_evaluation.py::test_metric_range_rejects_values_that_cannot_be_scored_safely | Non-finite metric conversions are rejected | The numeric bound is not a source-unit contract |
 | tests/unit/test_census_vintage_evaluation.py::test_trailing_mean_and_metrics_ignore_ambient_decimal_context | Exact means and metrics replay identically under precision 2 with ROUND_DOWN and ROUND_UP | Tests two local Decimal contexts over generated values only |
 | tests/unit/test_census_vintage_evaluation.py::test_revision_cannot_precede_or_match_known_first_estimate | Earlier revisions fail chronology and same-day collisions fail the date-only ambiguity rule | Does not authenticate a publisher calendar |
+| tests/unit/test_census_vintage_evaluation.py::test_evaluator_rejects_first_estimates_published_before_reference_month_closes | The public evaluator rejects a synthetic release set that could otherwise score estimates published before their reference periods close | Generated dates prove the validation path only; the real Census schedule still needs independent verification |
 | tests/unit/test_census_vintage_evaluation.py::test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history | Missing first-estimate anchors remain missing, are counted and cannot become feature rows | One generated incomplete archive only |
 | tests/unit/test_census_vintage_evaluation.py::test_decimal_precision_and_exponent_domain_is_bounded | Excess coefficient digits and out-of-range exponents fail before metric serialization | Numeric bounds are not Census source units |
 | tests/unit/test_census_vintage_evaluation.py::test_non_finite_metric_overflow_is_rejected_by_public_evaluator | Public evaluation rejects WAPE overflow from finite extreme inputs | No claim about real source values or model performance |
@@ -245,12 +254,19 @@ local evidence, not GitHub Actions or independent scientific review.
    and explain why missing history still abstains. Try `1e150` / `1e-300` and
    `1e-400`; explain why overflow and positive-metric underflow reject the
    whole public evaluation rather than emit invalid JSON.
+9. Move an origin first estimate into its reference month and run the public
+   chronology regression. Then move the release to the first day of the next
+   month and explain why that satisfies only a lower bound, not a verified
+   publication schedule.
 
 ## Diagnosis, maintenance and evolution
 
 - origin_not_published_at_issue: move the issue boundary only when an
   independently reviewed release schedule supports it; never tune the date
   after seeing metrics.
+- publication date must follow the reference month: inspect the observation
+  period and normalized release date. Do not move dates to make an origin score;
+  the lower bound does not verify the publisher's actual release calendar.
 - target_not_future_at_origin: separate the already-observed release from the
   forecast target set; do not score the same public label as future.
 - required_monthly_history_unavailable: inspect the selected vintage receipt

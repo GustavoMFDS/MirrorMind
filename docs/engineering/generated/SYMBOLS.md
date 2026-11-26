@@ -173,7 +173,7 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `CensusVintageView` | class | `class CensusVintageView` | Selected values available before a target release date, not source proof. | [L36](../../../src/mirrormind/domains/retail/census_vintages.py#L36) |
 | `CensusVintageView.receipt` | method | `def receipt(self) -> dict[str, object]` | Return sanitized selection provenance without value-level observations. | [L43](../../../src/mirrormind/domains/retail/census_vintages.py#L43) |
 | `_validate_record` | function | `def _validate_record(record: CensusVintageRecord, *, series_id: str) -> None` | Reject malformed normalized metadata before applying time selection. | [L66](../../../src/mirrormind/domains/retail/census_vintages.py#L66) |
-| `select_census_vintage_as_of` | function | `def select_census_vintage_as_of(records: tuple[CensusVintageRecord, ...], *, series_id: str, target_release_on: date) -> CensusVintageView` | Select latest per-month records published strictly before target release. | [L90](../../../src/mirrormind/domains/retail/census_vintages.py#L90) |
+| `select_census_vintage_as_of` | function | `def select_census_vintage_as_of(records: tuple[CensusVintageRecord, ...], *, series_id: str, target_release_on: date) -> CensusVintageView` | Select latest per-month records published strictly before target release. | [L95](../../../src/mirrormind/domains/retail/census_vintages.py#L95) |
 
 ## `mirrormind.domains.retail.coverage`
 

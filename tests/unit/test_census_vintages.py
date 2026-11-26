@@ -93,6 +93,34 @@ def test_revision_before_known_first_estimate_is_rejected():
         )
 
 
+@pytest.mark.parametrize(
+    "release_kind", ("first_estimate", "monthly_revision", "annual_revision")
+)
+def test_release_cannot_precede_close_of_reference_month(release_kind):
+    record = _record(
+        date(2020, 4, 1), date(2020, 4, 30), "100", release_kind,
+        "release-before-period-close", "a" * 64,
+    )
+
+    with pytest.raises(ValueError, match="publication date must follow the reference month"):
+        select_census_vintage_as_of(
+            (record,), series_id="RSAFS", target_release_on=date(2020, 6, 1)
+        )
+
+
+def test_release_on_first_day_after_reference_month_is_valid_boundary():
+    record = _record(
+        date(2020, 4, 1), date(2020, 5, 1), "100", "first_estimate",
+        "release-after-period-close", "a" * 64,
+    )
+
+    view = select_census_vintage_as_of(
+        (record,), series_id="RSAFS", target_release_on=date(2020, 5, 2)
+    )
+
+    assert view.records == (record,)
+
+
 def test_missing_reference_months_remain_absent_and_replay_is_deterministic():
     records = (
         _record(date(2020, 1, 1), date(2020, 2, 14), "80", "first_estimate",

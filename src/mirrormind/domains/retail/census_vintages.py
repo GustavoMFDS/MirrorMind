@@ -75,6 +75,11 @@ def _validate_record(record: CensusVintageRecord, *, series_id: str) -> None:
         raise ValueError("reference_month must be the first day of a calendar month")
     if type(record.published_on) is not date:
         raise ValueError("published_on must be an exact calendar date")
+    if (record.published_on.year, record.published_on.month) <= (
+        record.reference_month.year,
+        record.reference_month.month,
+    ):
+        raise ValueError("publication date must follow the reference month")
     if type(record.value) is not Decimal or not record.value.is_finite() or record.value < 0:
         raise ValueError("value must be a finite non-negative Decimal")
     if type(record.release_kind) is not str or record.release_kind not in _RELEASE_KINDS:

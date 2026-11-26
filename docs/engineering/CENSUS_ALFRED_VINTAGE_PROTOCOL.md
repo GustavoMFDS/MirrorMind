@@ -45,6 +45,18 @@ Each release is immutable. Corrections create a new vintage record; they never o
 6. Evaluate horizons 1, 3 and 6 months from each origin, with lag-12 seasonal naive and trailing-12-month mean baselines. Both methods share matched targets per horizon. Use context-independent exact arithmetic for means and additive metrics; bound numeric precision/exponents and fail closed on float overflow, non-finite output or positive-metric underflow. Report per-horizon MAE, RMSE, zero-safe WAPE, coverage and separate abstention counts. Do not select a winner when fewer than two matched origins exist.
 7. A source timestamp that is only a date is treated conservatively: use the last verified vintage strictly before the release date and score the first release only after that release is independently recorded. Missing, ambiguous or contradictory vintage metadata means abstain.
 
+### Normalized period-close invariant
+
+The local normalized-record contract rejects any first estimate or revision
+whose date falls inside or before its `reference_month`; the earliest accepted
+date is the first day of the following month. This is a source-neutral lower
+bound that prevents incomplete-month values from entering a monthly vintage.
+The Census Bureau says MARTS estimates are released approximately ten business
+days after the reference month ends ([methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)). The local rule does not check
+that exact schedule or authenticate a timestamp. Before an empirical run,
+cross-check every publication date against the reviewed source artifact and
+official calendar; the selector must still abstain on uncertain same-day order.
+
 ```mermaid
 flowchart LR
   C[Census original release] --> M[Rights-reviewed manifest + SHA-256]
@@ -109,6 +121,11 @@ the stated gaps are before 1992. The separate [annual revision archive](https://
 lists sales tables from January 1992 through March 2025. These indexes make
 1992 onward a concrete candidate window, but they do not prove every original
 release file is available, consistent or complete for the selected series.
+The official [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)
+states that advance estimates are released about ten business days after the
+reference month closes and revised one month later. This supports the
+normalized period-close lower bound, but does not authenticate an archived
+file's exact publication timestamp or revision history.
 The [release schedule](https://www.census.gov/retail/release_schedule.html)
 publishes a time of day for scheduled release dates; the timezone and exact
 timestamp for each historical artifact still need source-level verification.
@@ -138,7 +155,7 @@ evaluation. This is not a pilot run and does not establish source approval.
 
 ## Current primary references checked 2026-11-26
 
-- U.S. Census [monthly retail data](https://www.census.gov/retail/data.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MRTS archive](https://www.census.gov/retail/marts/historic_releases.html), and [release schedule](https://www.census.gov/retail/release_schedule.html).
+- U.S. Census [monthly retail data](https://www.census.gov/retail/data.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html), [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html), and [release schedule](https://www.census.gov/retail/release_schedule.html).
 - St. Louis Fed [RSAFS series record](https://fred.stlouisfed.org/series/RSAFS), [free account description](https://fred.stlouisfed.org/help/account/fred-account-features/register), [API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html), [`series/vintagedates`](https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html), and [`series/observations`](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).
 
 These pages establish that archives/API features exist and describe their conditions. They do not establish the exact series license, a complete period for this study, a specific downloaded snapshot, or owner authorization. No API key, series value or Census release artifact was acquired for this proposal.

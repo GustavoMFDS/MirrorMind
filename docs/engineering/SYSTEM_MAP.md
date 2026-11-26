@@ -37,11 +37,11 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 ## Change-location guide
 | User request | Inspect first | Evidence |
 | --- | --- | --- |
-| Evaluate aggregate Census vintages | [census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py), [evaluation guide](CENSUS_VINTAGE_EVALUATION.md), [model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) | [unit regressions](../../tests/unit/test_census_vintage_evaluation.py) and [CLI integration](../../tests/integration/test_census_vintage_evaluation_cli.py) prove fixed horizons, context-independent exact arithmetic, release chronology, unanchored-revision abstention, bounded finite metric conversion and synthetic split replay; no source rights, empirical skill or production use |
+| Evaluate aggregate Census vintages | [census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py), [evaluation guide](CENSUS_VINTAGE_EVALUATION.md), [model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) | [unit regressions](../../tests/unit/test_census_vintage_evaluation.py) and [CLI integration](../../tests/integration/test_census_vintage_evaluation_cli.py) prove fixed horizons, period-close and revision chronology, context-independent exact arithmetic, unanchored-revision abstention, bounded finite metric conversion and synthetic split replay; no source rights, empirical skill or production use |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover v1 input/reference bounds and review chronology; M1F-02 v2 binds selected-engine/parity evidence and rejects production instants after trace creation; timestamps remain caller-declared logical metadata, with no authenticated producer, trusted engine attestation, public engine API or action execution |
 | Evaluate UCI-shaped product-day observations | [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md) | [`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) and [`test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) exercise synthetic coverage, cohort, holdout, metrics and redaction; no real source rights, snapshot completeness or point-in-time availability |
-| Select an aggregate Census vintage before a target release | [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md), [research protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py) exercises the strict date cutoff, first-estimate/revision chronology, per-month latest release, ambiguity rejection, missing-period preservation and unverified receipt using generated records; no source parser, bytes, rights, completeness or forecast scoring |
+| Select an aggregate Census vintage before a target release | [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md), [research protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py) exercises the strict date cutoff, publication-after-reference-month lower bound, first-estimate/revision chronology, per-month latest release, ambiguity rejection, missing-period preservation and unverified receipt using generated records; no source parser, bytes, rights, completeness or forecast scoring |
 | Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API/default CLI test double plus explicit CLI WorldKernel engine regression with linked selected output and parity records; no source authorization, empirical forecast, authenticated review, public transport controls or writes |
 | Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py) cover revalidation of mutable scenarios and the lower scenario/operator run ceiling; no engine import or execution |
 | Execute the M1 policy comparison in WorldKernel | [`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py), [`worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py), [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) | Synthetic mapper/state/parity regressions plus exact-pin engine and CLI integration tests; no real data, forecast validity, hostile-code isolation or HTTP execution |
@@ -143,15 +143,17 @@ or WorldKernel scenario input is authorized.
 
 Caller-supplied normalized records ->
 `select_census_vintage_as_of(records, series_id, target_release_on)` ->
-strict metadata validation -> exclude records where
+strict metadata and period-close validation -> reject releases dated inside
+or before their `reference_month` -> exclude records where
 `published_on >= target_release_on` -> choose the latest remaining record
 per `reference_month` -> `CensusVintageView` with release IDs and digest
 strings. Empty months remain absent. A date-only same-day publication is
 ambiguous and rejected; the selector never uses row order to resolve it.
 
 The selector is a pure in-memory adapter against fictional records. It checks
-digest syntax but cannot read source bytes, verify a Census/ALFRED manifest or
-authorize ingestion. The downstream synthetic evaluator is also local-only;
+digest syntax but cannot read source bytes, verify a Census/ALFRED manifest,
+authenticate the actual release schedule or authorize ingestion. The
+downstream synthetic evaluator is also local-only;
 real source parsing, vintage archive verification, rights and empirical
 evaluation remain blocked by B-01/B-02. See the
 [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md),

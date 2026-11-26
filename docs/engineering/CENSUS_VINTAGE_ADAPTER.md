@@ -63,6 +63,14 @@ be a finite, non-negative `Decimal`, appropriate to the aggregate retail
 amounts proposed by this pilot. The schema is versioned in receipts as
 `mirrormind.census.aggregate_vintage_view.v1`.
 
+`published_on` must be on or after the first day following its reference month.
+This calendar lower bound applies to first estimates and revisions: no monthly
+aggregate release can predate the close of the period it describes. The Census
+Bureau states that MARTS advance estimates are released about ten business days
+after the reference month closes ([methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)).
+The selector only rejects dates inside or before the reference month; it does
+not verify a particular release schedule, timestamp or publisher.
+
 `release_id` identifies an immutable publication artifact. Multiple monthly
 records may share one release ID and digest. Within one release ID, publication
 date and digest must remain consistent; the release kind belongs to the
@@ -82,11 +90,12 @@ select_census_vintage_as_of(
 
 The function first checks the exact tuple type and the 50,000-record bound,
 then validates every record. It rejects mixed series, malformed dates or
-digests, unsupported release kinds, non-finite/negative values, conflicting
-metadata for one release ID, and two records for the same reference month on
-the same publication date. Each month may have only one first-estimate record;
-when one exists, every monthly or annual revision must have a strictly later
-publication date. Earlier revisions fail chronology validation. A same-day
+digests, releases dated before their reference month closes,
+unsupported release kinds, non-finite/negative values, conflicting metadata
+for one release ID, and two records for the same reference month on the same
+publication date. Each month may have only one first-estimate record; when one
+exists, every monthly or annual revision must have a strictly later publication
+date. Earlier revisions fail chronology validation. A same-day
 first-estimate/revision pair fails the ambiguity guard because releases cannot
 be ordered within a day.
 
@@ -191,15 +200,17 @@ FRED/ALFRED is not an automatic substitute for the original Census release.
 
 Evidence-map claims for the primary temporal-selection and privacy boundary
 regressions are `MM-CEN-001` and `MM-CEN-002`, respectively. `MM-CEN-013`
-records the additional rule that an anchored revision must follow its first
-estimate. The machine-checked selectors below are the tests attached to those
-claims.
+records the rule that an anchored revision must follow its first estimate;
+`MM-CEN-016` records the period-close lower bound for any publication. The
+machine-checked selectors below are the tests attached to those claims.
 
 | Test selector | What it proves | What it does not prove |
 | --- | --- | --- |
 | `tests/unit/test_census_vintages.py::test_selects_latest_revision_per_month_strictly_before_target_release` | A later eligible revision replaces the first estimate; post-cutoff revisions are excluded; release metadata is preserved | The supplied dates or digest correspond to a real publication |
 | `tests/unit/test_census_vintages.py::test_same_day_first_estimate_is_excluded_and_receipt_is_unverified` | Date-only same-day records abstain; receipt remains unverified and unauthorized | Actual intraday release time or account-level permission |
 | `tests/unit/test_census_vintages.py::test_revision_before_known_first_estimate_is_rejected` | A revision cannot predate a known first-estimate release | Does not verify an authentic publisher schedule |
+| `tests/unit/test_census_vintages.py::test_release_cannot_precede_close_of_reference_month` | First estimates and revisions dated inside the reference month fail closed | Synthetic chronology only; does not verify the exact real release schedule |
+| `tests/unit/test_census_vintages.py::test_release_on_first_day_after_reference_month_is_valid_boundary` | The normalized calendar lower bound accepts the first date after month close | Does not imply that a real publisher released on that date |
 | `tests/unit/test_census_vintages.py::test_missing_reference_months_remain_absent_and_replay_is_deterministic` | Gaps remain missing and repeated selection returns equal records/receipts | Real archive completeness or metrics on a holdout |
 | `tests/unit/test_census_vintages.py::test_duplicate_period_and_publication_date_is_rejected_as_ambiguous` | Conflicting same-day values fail closed instead of relying on row order | That all ambiguity types in a real publisher archive are covered |
 | `tests/unit/test_census_vintages.py::test_release_id_cannot_bind_conflicting_publication_metadata` | One immutable release ID cannot silently change date or digest | Byte-level source integrity; adapter only validates digest syntax |
@@ -219,12 +230,19 @@ claims.
 5. Compare this adapter with `uci_event_time.py`. Trace why
    `InvoiceDate` cannot populate `published_on` and why UCI event-time scores
    cannot establish point-in-time Census behavior.
+6. Move a first estimate's `published_on` into its reference month, then set it
+   to the first day of the next month. Explain why the first input is rejected
+   and why the boundary value still does not prove the actual Census schedule.
 
 ## Diagnosis and evolution
 
 - `reference_month must be the first day`: normalize month identifiers in a
   source-specific parser only after confirming the source's convention; do
   not round arbitrary dates silently.
+- `publication date must follow the reference month`: reject records whose
+   publication date is within or before the measured month. A valid lower-bound
+   date is only a sanity check; independently verify the official release date
+   and the exact artifact before an empirical run.
 - `ambiguous publication date`: inspect the release artifacts and obtain a
   finer-grained verified timestamp or preserve the abstention. Do not infer
   ordering from an ALFRED date or row position.

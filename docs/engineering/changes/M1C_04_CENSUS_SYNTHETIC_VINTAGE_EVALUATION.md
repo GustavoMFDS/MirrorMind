@@ -42,6 +42,10 @@ capability promotion, HTTP/API exposure and operational decisions.
 - [x] Only the fixed horizons 1, 3 and 6 months are evaluated.
 - [x] Every origin uses records with `published_on < issued_on`; any selected
   reference month after the origin is rejected as contradictory future input.
+- [x] The shared selector rejects first estimates and revisions published
+  before their reference month closes; the public evaluator regression proves
+  such records cannot produce scores. The first day of the following month is
+  accepted only as a calendar lower bound.
 - [x] Forecast labels are the unique first-estimate record for each target
   month; missing labels and labels already published at issuance abstain.
 - [x] Seasonal naive reads the target's lag-12 month from the selected vintage;
@@ -67,7 +71,7 @@ capability promotion, HTTP/API exposure and operational decisions.
 | Layer | Relevant file/symbol | Change? | Evidence / tests |
 | --- | --- | --- | --- |
 | Entrypoint | examples/m1_census_vintage_evaluation.py | Example only | Integration tests run deterministic synthetic validation and holdout commands |
-| Core implementation | `domains/retail/census_evaluation.py::evaluate_census_vintage_backtest` | Yes | Unit tests compare fixed synthetic monthly origins |
+| Core implementation | `domains/retail/census_vintages.py::_validate_record`; `domains/retail/census_evaluation.py::evaluate_census_vintage_backtest` | Yes | Selector boundary tests and public evaluator rejection regression use generated monthly origins |
 | State / persistence / API | None | No | No filesystem, network, database or API access |
 | Calling components | `census_vintages.py::select_census_vintage_as_of` | Reuse only | Existing selector tests plus evaluation regressions |
 | Downstream consumers | Aggregate Census research protocol | Docs only | No consumer outside the offline evaluator |

@@ -239,13 +239,16 @@ def test_future_reference_rows_outside_requested_targets_fail_closed():
     impossible_future_row = replace(
         records[15],
         reference_month=date(2022, 1, 1),
-        published_on=date(2021, 1, 10),
+        published_on=date(2022, 2, 1),
         release_id="future-month-before-origin",
         snapshot_sha256="c" * 64,
     )
+    late_issue_origin = (
+        CensusForecastOrigin(date(2020, 12, 1), date(2022, 3, 1)),
+    )
 
     with pytest.raises(ValueError, match="future reference month"):
-        _evaluate((*records, impossible_future_row))
+        _evaluate((*records, impossible_future_row), late_issue_origin)
 
 
 def test_origins_must_be_unique_chronological_and_split_is_explicit():
@@ -309,6 +312,31 @@ def test_origin_first_estimate_must_be_available_before_issue():
 
     assert _horizon(result, 1)["scored_origins"] == 0
     assert _horizon(result, 1)["abstentions"]["origin_not_published_at_issue"] == 1
+
+
+def test_evaluator_rejects_first_estimates_published_before_reference_month_closes():
+    records = tuple(
+        replace(record, published_on=_next_month(record.reference_month))
+        for record in _records()
+    )
+    records = tuple(
+        replace(record, published_on=date(2020, 12, 2))
+        if record.reference_month == date(2020, 12, 1)
+        else replace(record, published_on=date(2021, 1, 4))
+        if record.reference_month == date(2021, 1, 1)
+        else record
+        for record in records
+    )
+    origins = (
+        CensusForecastOrigin(date(2020, 12, 1), date(2020, 12, 5)),
+        CensusForecastOrigin(date(2021, 1, 1), date(2021, 1, 5)),
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="publication date must follow the reference month",
+    ):
+        _evaluate(records, origins)
 
 
 @pytest.mark.parametrize("rounding", (ROUND_DOWN, ROUND_UP))
