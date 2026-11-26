@@ -237,6 +237,20 @@ gate at `2026-11-26T04:49:09.425850+00:00`:
 - Status: `local_gate_passed_not_official_ci`; the script records Actions as
   `not_checked_by_this_script`.
 
-The final status-only note is gated on its exact head before push; its final
-SHA and receipt are recorded on PR #63. No receipt is official CI, and no
-source bytes, credential or licensed-data permission is implied.
+The follow-up documentation head `941d72956d9d00f6fd281fd3a3039a1786777c70`
+passed the exact six-check gate at `2026-11-26T04:52:25.496219+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks all
+  passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-941d72956d9d00f6fd281fd3a3039a1786777c70.json`.
+- Status: `local_gate_passed_not_official_ci`; the script records Actions as
+  `not_checked_by_this_script`.
+
+The final baseline-documentation reconciliation is included in the published
+PR #63 head; its exact-head receipt is recorded in the PR body. No receipt is
+official CI, and no source bytes, credential or licensed-data permission is
+implied.

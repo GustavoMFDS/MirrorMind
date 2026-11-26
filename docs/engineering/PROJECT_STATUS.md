@@ -14,7 +14,7 @@ available.
 | --- | --- | --- |
 | PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
 | PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
-| PR #63 | Open, non-draft, separate Census branch. The published baseline `b5e989314bcdcb566df479931794a5f56c07d477` descends from merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9` whose second parent is `a456034`; the pilot-status reconciliation commit `162268ded05eb8ba291025b6cc98e5658ae2e0a1` also passed 877 tests, zero skips and all six checks. The final status-only commit will be gated before push; latest exact head/receipt will stay in the PR body. | Synthetic vintage evaluator; no Census/ALFRED bytes, source authorization or empirical results. |
+| PR #63 | Open, non-draft, separate Census branch. It preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. The post-merge documentation head `941d72956d9d00f6fd281fd3a3039a1786777c70` passed the exact local gate: 877 tests, zero skips and all six checks. The current published head and exact gate receipt are recorded in the live PR body. | Synthetic vintage evaluator; no Census/ALFRED bytes, source authorization or empirical results. |
 
 The synthetic M1 evidence-to-decision path is integrated; M1 remains
 incomplete. Approved pilot order is UCI #352 retrospective by event time,

@@ -26,13 +26,13 @@ execution guidance and does not broaden the agent's permissions.
   zero skips and six checks. PR #61 is separate and ready at
   `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; its gate passed 841 tests, zero
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
-- Census remains separate as PR #63. Its published head
-  `b5e989314bcdcb566df479931794a5f56c07d477` passed 877 tests, zero skips and
-  six checks. Pilot-status reconciliation commit
-  `162268ded05eb8ba291025b6cc98e5658ae2e0a1` also passed 877 tests, zero skips
-  and all six checks. The final status-only commit receives its own gate before
-  push; publish the latest exact SHA/receipt on PR #63. Keep the three PRs
-  separate; do not merge or broaden their contracts here.
+- Census remains separate as PR #63. Its published baseline
+  `b5e989314bcdcb566df479931794a5f56c07d477`, pilot-status reconciliation
+  `162268ded05eb8ba291025b6cc98e5658ae2e0a1`, and follow-up documentation head
+  `941d72956d9d00f6fd281fd3a3039a1786777c70` each passed 877 tests, zero skips
+  and all six checks. The current published head and exact gate receipt are in
+  PR #63; any later tracked edits require their own exact-head gate. Keep the
+  three PRs separate; do not merge or broaden their contracts here.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source bytes,
@@ -133,7 +133,7 @@ and B-02 still gate acquisition or processing of real UCI/Census records; B-08
 still gates official Actions evidence. Continue only no-cost work that directly
 advances the M1 acceptance path without duplicating this stack.
 
-## 1.3 Current resumed state — 2026-11-26
+## 1.3 Historical resumed state before #61 sync and PR #63 publication — 2026-11-26 (superseded)
 
 PR #62 is merged at `a456034c55ed7634ad4768b26788fec09dab1d08`. The exact
 published heads of #52–#59 are its ancestors; #53–#59 are closed as
