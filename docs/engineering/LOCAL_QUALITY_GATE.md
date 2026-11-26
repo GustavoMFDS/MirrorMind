@@ -147,6 +147,29 @@ same exact-head command with `--receipt results/local-quality-gate-<head>.json`.
 claim it as a repository artifact or official CI. Record the actual final
 head and outcome in the PR discussion.
 
+### Census review corrections — descendant implementation head — 2026-11-25
+
+Commit `3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6` is a Census-only follow-up
+on local descendant branch `codex/m1-census-vintage-adapter`. It contains the
+four reproduced review corrections: Decimal-context-independent metrics,
+first-estimate/revision chronology and unanchored-revision exclusion, plus
+fail-closed metric overflow/underflow. The test suite remains synthetic-only.
+With WorldKernel `0.0.1` installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`, its exact clean-head six-check gate
+passed at `2026-11-26T01:48:54Z`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- Receipt: `results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+- Status: `local_gate_passed_not_official_ci`; GitHub Actions was not checked.
+
+This receipt covers the implementation and feature-documentation commit. The
+subsequent status, backlog, handoff and gate-documentation edits require a new
+exact clean-head gate. The branch is not pushed and has no separate PR while
+consolidated PR #62 remains open; these Census fixes are not part of PR #62.
+
 ### DecisionTrace V2 chronology correction — 2026-11-25
 
 The independent PR #62 review reproduced acceptance of execution evidence

@@ -27,71 +27,38 @@ not a production-ready AI platform.
 
 ## Current consolidated M1 candidate — 2026-11-25
 
-The review candidate is branch `codex/m1-engine-provenance`, published as
-[PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) against `main`.
-Code correction commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85` fixes the
-PR #59 provenance finding; the final review head is the exact revision shown
-in PR #62 and `results/local-quality-gate-<full-head-sha>.json`.
-Its history preserves all exact published heads of PRs #52–#59 as ancestors;
-#60 and #61 are excluded. GitHub reports the candidate as mergeable. The
-candidate contains the synthetic M1 workflow, pinned local WorldKernel runner
-and policy world, plus the UCI event-time evaluator and aggregate Census
-protocol. No real source bytes were acquired.
+The published candidate is branch `codex/m1-engine-provenance`, PR #62 against
+`main`, at head `0bed1269613eb689e84ad971c7d8f1878767d6cf`. GitHub metadata
+verified on 2026-11-26 UTC reports it open and mergeable. Its history preserves
+the published ancestry of PRs #52–#59; #60 and #61 are excluded. Commit
+`74330d8` fixes selected-engine provenance, and `20e7b50` rejects DecisionTrace
+V2 execution evidence later than trace creation. The exact docs-inclusive #62
+head passed its six-check local gate with 835 tests, zero skips and the
+reviewed WorldKernel pin; receipt:
+`results/local-quality-gate-0bed1269613eb689e84ad971c7d8f1878767d6cf.json`.
+This is local evidence, not official Actions or merge approval. No real source
+bytes were acquired and `main` was not changed.
 
-An independent local follow-on branch, `codex/m1-census-vintage-adapter`, is
-stacked on the PR #62 documentation head `777c2d2e3598f1eb06e2ae3b972428adfc7e718e`.
-It adds a pure in-memory selector over normalized synthetic aggregate-vintage
-records, a privacy-limited receipt, regression tests and a learning guide.
-This branch is not pushed and has no PR; it does not alter PR #62's review head
-or the separate #60/#61 branches. The selector is not a Census/ALFRED parser,
-does not read files or make network calls, and cannot satisfy B-01/B-02.
-Source/docs commit `97fb0ff046a13fa0364324adf5936504f7b15cb1` passed the
-exact six-check local gate with WorldKernel source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed: 843 tests, zero skips,
-Ruff, catalog, atlas, evidence and capability checks. One existing
-Starlette/httpx TestClient deprecation warning appeared. Its receipt is
-`results/local-quality-gate-97fb0ff046a13fa0364324adf5936504f7b15cb1.json`;
-the final evidence-doc follow-up has a separate exact-head gate receipt. These
-are local results and do not establish GitHub Actions status.
-
-The same local branch now carries a scoped M1C-04 follow-on:
-`evaluate_census_vintage_backtest` selects each origin's visible aggregate
-vintage, compares fixed lag-12 and trailing-12 baselines at horizons 1, 3 and
-6, and scores later first-estimate labels only. The example has disjoint
-fictional validation and holdout origins. The focused evaluator, selector and
-CLI suite passed 28 tests. Clean implementation commit
-`ce446496616d20a782e0ebcb7e7b0f42cec49e83` passed the exact six-check local
-gate at 2026-11-25 23:16:44 UTC: 860 tests, zero skips, all six checks, with
-reviewed WorldKernel source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`
-installed. The gate reported one existing Starlette/httpx TestClient
-deprecation warning; its local receipt is
-`results/local-quality-gate-ce446496616d20a782e0ebcb7e7b0f42cec49e83.json`.
-This is not official Actions. Any later documentation-only follow-up receives
-its own exact-head gate. This work changes neither PR #62 nor #60/#61 and does
-not acquire real source data.
-
-PR #59 review comment
-[7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
-identified an engine-contract mismatch and ambiguous parity invocation in the
-prior `995f55d` candidate. Commit `74330d8` adds typed v2 execution evidence,
-binds every outcome to its selected-result engine, and represents the Python
-test double separately as a parity oracle when WorldKernel supplies selected
-metrics. It preserves trace v1. Regression coverage checks both engines,
-replay, mismatched/dangling provenance and parity-digest disagreement.
-
-The later independent review found that v2 accepted execution evidence dated
-after trace creation. Commit `20e7b50f88df046eaf3541c5ea706b2e3b051aad`
-adds UTC-instant chronology validation and regressions for later, earlier and
-timezone-equivalent equal timestamps. Its exact-clean-head six-check local
-gate passed 835 tests with zero skips, Ruff, catalog, atlas, evidence and
-capability checks, with WorldKernel `0.0.1` installed from reviewed commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. One existing Starlette/httpx
-`TestClient` deprecation warning appeared. Receipt:
-`results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
-This is local evidence, not Actions, independent approval or merge evidence.
-After this documentation update, the exact clean candidate head must pass the
-same six-check gate; its receipt and full SHA are reported on PR #62. PR #62
-remains awaiting review. `main` was not changed, and #60/#61 remain separate.
+The local branch `codex/m1-census-vintage-adapter` descends from the published
+#62 head through merge `8560ad6`. Its Census corrections remain outside PR #62
+and are not pushed as a separate PR while the consolidated candidate awaits
+review. Independent review comment
+[7179081819](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7179081819)
+reproduced Decimal-context drift, invalid release chronology, unanchored
+revisions entering features, and non-finite/underflowing metrics. Commit
+`3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6` fixes those cases, advances the
+experimental result envelope to `mirrormind.census.vintage_backtest.v2`, and
+adds public evaluator, selector and CLI regressions. The focused Census suite
+passed 42 tests. Its exact clean-head six-check local gate passed 877 tests,
+zero skips, with WorldKernel `0.0.1` installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing Starlette/httpx
+TestClient deprecation warning appeared. Receipt:
+`results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+These synthetic results do not establish source rights, archive completeness
+or forecast quality. B-01/B-02 still gate real-source work, and B-08 keeps
+official Actions unavailable under the zero-cost decision. This gate predates
+the status, backlog, handoff and gate-documentation updates in this commit;
+run the six checks again on their final clean descendant head.
 
 ## Active branch evidence — 2026-11-25
 

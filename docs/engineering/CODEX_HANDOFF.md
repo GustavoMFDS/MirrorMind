@@ -64,6 +64,40 @@ local asyncio socket-pair creation; the same test and full gate passed outside
 that restriction. This does not retroactively explain the historical 8f906b8
 timeout. Preserve both the scope and limits in the blocker register.
 
+## 1.2 Current resumed state — 2026-11-25
+
+GitHub review metadata confirms PR #62 remains open, mergeable and directed at
+`main`, at published head
+`0bed1269613eb689e84ad971c7d8f1878767d6cf`. The branch preserves published
+PR #52–#59 ancestry; #60/#61 remain excluded. The exact docs-inclusive head
+passed all six checks with 835 tests and zero skips under the reviewed optional
+WorldKernel pin. This is local validation, not GitHub Actions or integration
+approval.
+
+The independent branch `codex/m1-census-vintage-adapter` is a local descendant
+of that head via merge `8560ad6`. Independent review comment `7179081819`
+identified four defects across DecisionTrace V2 chronology and the separate
+Census evaluator. The DecisionTrace fix is already included in PR #62. Census
+fixes are kept outside that PR in commit
+`3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6`: exact Decimal-context-independent
+metrics, first-estimate/revision chronology, exclusion and counting of
+unanchored revisions, and fail-closed overflow/underflow. Public regressions
+and technical/learning documentation are included. Its exact clean
+implementation-head gate passed 877 tests with zero skips and all six checks;
+WorldKernel `0.0.1` was installed from
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+One existing Starlette/httpx TestClient deprecation warning appeared. The
+status/backlog/handoff/gate-documentation edits require one more exact-clean-
+head local gate. Keep its receipt in ignored `results/` and report the SHA; do
+not claim Actions passed.
+
+Do not push or open a separate Census PR while #62 awaits final independent
+review. Preserve the zero-cost Actions decision and synthetic-only tests. B-01
+and B-02 still gate acquisition or processing of real UCI/Census records; B-08
+still gates official Actions evidence. Continue only no-cost work that directly
+advances the M1 acceptance path without duplicating this stack.
+
 Read in order:
 
 1. [Master plan](MASTER_EXECUTION_PLAN.md) — desired architecture,

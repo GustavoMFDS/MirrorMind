@@ -211,13 +211,17 @@ consumer of the unmerged v1 result. No external v1 compatibility is inferred.
 - [x] The Census guide, model card, learning exercise, debugging notes, system
   map, atlas and evidence map explain the revised arithmetic and archival
   boundaries.
-- [ ] Full exact-head local gate passes on the descendant with WorldKernel
-  pinned and no skipped tests; no official Actions claim is made.
+- [x] Code correction commit `3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6`
+  passed the exact clean-head six-check gate with WorldKernel pinned: 877 tests,
+  zero skips, all checks passed and one existing TestClient deprecation warning.
+  Receipt: `results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+- [ ] Final exact clean-head gate passes after the status, backlog, handoff and
+  gate-documentation updates; no official Actions claim is made.
 
 | Layer | Follow-up impact | Evidence |
 | --- | --- | --- |
-| Evaluator | Exact rational mean/metrics, numeric-domain validation, scaled RMSE conversion and v2 result with unanchored count | `tests/unit/test_census_vintage_evaluation.py` public-call regressions |
-| Vintage selection for evaluator | Validate first-estimate/revision chronology and omit unanchored revisions from the feature view | `test_revision_before_known_first_estimate_is_rejected`, evaluator chronology and incomplete-anchor abstention tests |
+| Evaluator | Exact rational mean/metrics, numeric-domain validation, scaled RMSE conversion and v2 result with unanchored count | `test_trailing_mean_and_metrics_ignore_ambient_decimal_context`, `test_non_finite_metric_overflow_is_rejected_by_public_evaluator`, `test_positive_metric_underflow_is_rejected_by_public_evaluator`, `test_representable_rmse_does_not_underflow_while_scaling_mean_square` |
+| Vintage selection for evaluator | Validate first-estimate/revision chronology and omit unanchored revisions from the feature view | `test_revision_before_known_first_estimate_is_rejected`, `test_revision_cannot_precede_or_match_known_first_estimate`, `test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history` |
 | CLI / serialized result | Add explicit unanchored-revision count; preserve schema safety and synthetic-only flags | CLI replay, v2/count assertions and non-finite JSON rejection |
 | API / capability ledger / source access | No change | Existing API and capability checks; no file/network or source ingestion |
 | Documentation | Explain exact arithmetic, numeric bounds, revision chronology, abstention and reproduction | Census source walkthrough, model card, learning/debugging, system/semantic maps and evidence selectors |
