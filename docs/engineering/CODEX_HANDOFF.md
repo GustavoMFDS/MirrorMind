@@ -75,16 +75,25 @@ unavailable under the owner's zero-paid-use decision.
 The exact published heads of PRs #52–#59 are ancestors of `a456034`. PR #52
 was already merged, and #53–#59 were closed as incorporated after those
 ancestry checks. Their remote branches remain intact; do not merge or delete
-them. PRs #60 and #61 stay separate. Synchronize each with the new main using
-ancestry-preserving merges, gate the exact clean head and report local checks
-separately from Actions. Keep required protections unchanged.
+them. PRs #60 and #61 stay separate. PR #60 now includes the new main via
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; its
+exact sync-head gate passed 845 tests, zero skips and all six checks with the
+reviewed WorldKernel pin. Rerun the gate after the final documentation update,
+then push and prepare it for independent review. #61 still needs its
+ancestry-preserving sync and exact gate. Report local evidence separately
+from Actions; keep required protections unchanged.
 
 The local Census branch passed its pre-sync gate at `da540a2` (877 tests,
-zero skips and six checks, plus 64 focused tests). It has now merged `a456034`
-without discarding Census history. Re-run the exact local gate on that
-reconciled state, publish it as a separate PR, and do not add it to #60 or #61.
-The #60 merge must preserve the retrieval regressions and newer M1 contracts;
-#61 remains an independent G-01 slice.
+zero skips and six checks, plus 64 focused tests). Merge commit `55e91f7`
+includes `a456034` without discarding Census history. Re-run the exact local
+gate on that reconciled state, publish it as a separate PR, and do not add it
+to #60 or #61. #60's sync preserved its excerpt-integrity regressions and the
+newer M1 contracts; #61 remains an independent G-01 slice.
+
+The local `ruff check examples` inspection found five existing findings in
+three M1 example files. ENG-02 tracks that cleanup separately; do not silently
+fold it into the queued PRs or apply Ruff's unsafe RUF007 fix without semantic
+review.
 
 The approved A+B pilot order permits preparation only: UCI #352 retrospective
 by event time, then aggregate Census publication-vintage evaluation. No real

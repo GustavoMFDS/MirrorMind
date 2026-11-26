@@ -18,8 +18,11 @@ merges; ancestry checks confirm each published head is an ancestor of
 `a456034`. PR #52 is already closed as merged. PRs #53–#59 have been closed
 as incorporated after exact-head ancestry checks; all branches remain
 available. #60 (M2-01 retrieval) and #61 (G-01 current
-head responder) remain separate and must target the new main after their
-ancestry-preserving synchronization and exact local gates.
+head responder) remain separate. #60 now contains the new main through
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; the
+exact sync-head gate passed 845 tests with zero skips and all six checks. Its
+final docs-inclusive head needs a fresh exact gate before push and independent
+review. #61 still needs synchronization and an exact gate.
 
 The merged M1 path is a complete **synthetic experimental** evidence-to-
 comparison flow: fixed retail evidence, evaluation, residual diagnostics,
@@ -32,9 +35,18 @@ acceptance. M1 remains incomplete.
 The local Census descendant `codex/m1-census-vintage-adapter` contains the
 separate synthetic vintage selector/evaluator and four review corrections.
 Published candidate `da540a2` passed 877 tests, zero skips and all six local
-checks, plus 64 focused tests, with the reviewed WorldKernel pin. It must be
-merged with `a456034`, gated on the reconciled exact head, and published as a
-separate PR. Its fixtures do not resolve B-01/B-02 or authorize acquisition.
+checks, plus 64 focused tests, with the reviewed WorldKernel pin. Merge
+`55e91f7` preserves its ancestry while including `a456034`; the reconciled
+exact head still needs the full gate before publication as a separate PR. Its
+fixtures do not resolve B-01/B-02 or authorize acquisition.
+
+The separate `ruff check examples` inspection found five pre-existing
+diagnostics in three tracked M1 example files: three import-order findings
+(I001), one unused import (F401), and one `zip`/`pairwise` recommendation
+(RUF007) flagged as unsafe to auto-fix. The integrated gate's Ruff check
+targets `src` and `tests`; these examples were not changed in the integration
+branch. Tracked as ENG-02 maintenance after PR consolidation, not as a gate
+failure.
 
 The approved pilot order remains A (UCI #352 event-time retrospective), then B
 (aggregate Census/ALFRED publication-vintage evaluation). Preparation is

@@ -31,9 +31,11 @@ checks with the reviewed WorldKernel pin. This is not official Actions.
 The synthetic M1 evidence-to-decision flow is integrated. M1 remains incomplete
 because real-source permission, temporal provenance, empirical evaluation,
 broader engine isolation and authenticated human review are open. PRs #60
-(M2-01) and #61 (G-01) remain separate; refresh each against `main` and gate
-the combined tree before independent review. The Census selector/evaluator is
-a separate descendant and must remain in its own PR.
+(M2-01) and #61 (G-01) remain separate. #60 now contains `main` through
+ancestry-preserving merge `a5186a6`; its first integrated local gate passed,
+and the documentation-inclusive head still needs its exact gate before push
+and review. #61 still needs the same sync-and-gate sequence. The Census
+selector/evaluator remains a separate descendant and PR.
 
 ## Conventions
 
@@ -65,6 +67,7 @@ coordination.
 | G-03 | P0 | planned | G-01, G-02 | Actual client/server integration with fictional data, isolated test trust, outages, expiry and failure cases; verify signed remote head mismatch and no permission grants; audit recovery and supplied forks. |
 | G-04 | P1 | blocked | G-03, B-03 | Operational trust review: separately administered storage, key custody, identities, monitoring, authenticated access and restore evidence. Do not deploy or claim independence without approval. |
 | ENG-01 | P1 | ready | None | Keep canonical checkout clean; record exact gates, check remote CI and improve reproducibility without lowering protections. Review dependency and warning changes separately. |
+| ENG-02 | P2 | planned | None | Track and fix the five pre-existing Ruff findings in `examples/` as a separate maintenance change. Preserve behavior; `RUF007` is marked unsafe and requires an explicit semantic review and regression coverage. Do not fold this cleanup into the integration PRs. |
 
 Use the existing [publisher](ATOMIC_GOVERNED_PUBLISHER.md),
 [dual-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md),
@@ -158,11 +161,12 @@ not automatically resolve real-source, deployment or product gates.
 | --- | --- | --- | --- |
 | M1B-02 / M1C-01 / M1D-01 / M1E-01–04 / M1F-01–02 | integrated, synthetic scope | PR #62 merged the end-to-end experimental M1 workflow at `a456034`; this completes the synthetic integration slice, not the licensed/empirical M1 acceptance. | B-01, B-02, B-04, B-08 |
 | M1B-01 / M1C-03 | partial / blocked for real evidence | A+B pilot protocols and adapters are prepared; UCI remains event-time retrospective and Census is vintage-based. Do not acquire/process bytes until the source-specific license, privacy, retention and temporal evidence are approved. | B-01, B-02 |
-| M1B-04 / M1C-04 | in_progress | Census descendant `codex/m1-census-vintage-adapter` passed its pre-sync gate at `da540a2`; it now includes `a456034` via merge commit `55e91f7`. Re-run the full local gate on the reconciled head, then publish a separate PR. | B-01, B-02, B-08 |
-| M2-01 | in_progress | PR #60 branch `codex/m2-01-permission-filtered-retrieval` is being ancestry-preservingly synchronized with `main`; preserve the retrieval tampering regressions, include newer M1 contracts and gate the exact head before updating/retargeting the PR. | B-08 |
-| G-01 | ready for sync | PR #61 remains independent; merge the new `main`, resolve overlaps without losing typed clock failures, then run the exact local gate and update its PR base to `main`. | B-08 |
+| M1B-04 / M1C-04 | in_progress | Census descendant `codex/m1-census-vintage-adapter` passed its pre-sync gate at `da540a2`; merge commit `55e91f7` includes `a456034`. Re-run the complete gate on this exact reconciled head, then publish it as a separate PR. | B-01, B-02, B-08 |
+| M2-01 | review preparation | PR #60 branch `codex/m2-01-permission-filtered-retrieval` includes `main` via `a5186a680b307c4ecd9d56321321a5b27048731d`. Its exact sync-head local gate passed 845 tests, zero skips and all six checks with pinned WorldKernel. Record the final docs-inclusive receipt, push, retarget to `main`, and prepare independent review; keep caller-declared scope and fictional-only limits explicit. | B-08 |
+| G-01 | ready for sync | PR #61 remains independent on its prior base. Merge `a456034` preserving typed clock-failure behavior and M1 contracts, then run the exact full gate before retargeting and preparing independent review. | B-08 |
 | PR queue #52–#59 | reconciled | Exact published heads are ancestors of `a456034`; #52 is merged and #53–#59 are closed as incorporated. All branches are retained. | None for duplicate integration |
 | M2-02+ | planned | Start only after M2-01 review/integration; do not grow the feature queue while #60/#61 and Census remain under consolidation. | M2-01 |
+| ENG-02 | separately tracked | A scoped `ruff check examples` found 5 diagnostics in `m1_asof_rolling_backtest.py` (I001, RUF007), `m1_observation_preflight.py` (I001) and `m1_temporal_backtest.py` (I001, F401). They are outside the local gate's `src`/`tests` Ruff scope and are not failures of the integrated gate. Handle after PR consolidation in a distinct maintenance change. | None |
 
 The older row-level branch claims below are preserved as historical evidence;
 they are not live task ownership or current PR states.

@@ -222,3 +222,32 @@ future agent. Corpus, query, token and result sizes need explicit bounds.
   test evidence.
 - New evidence selectors: `MM-RETR-007` and `MM-RETR-008` in
   `docs/engineering/EVIDENCE_MAP.json` identify the regressions and limitations.
+
+## Main synchronization and integrated gate — 2026-11-26
+
+- PR #60 remains a separate change. Its branch was ancestry-preservingly
+  synchronized with PR #62's merged main at `a456034` by merge commit
+  `a5186a680b307c4ecd9d56321321a5b27048731d`; the first parent is the PR #60
+  head and the second parent is the exact new main. The resolved tree retains
+  the same-length excerpt-tampering and wrong-digest regressions, while also
+  including the merged M1 contracts and documentation. No duplicate commits
+  were cherry-picked.
+- On exact sync commit `a5186a680b307c4ecd9d56321321a5b27048731d`,
+  `scripts/local_quality_gate.py --expected-head ...` passed at
+  `2026-11-26T03:43:45.974393+00:00`: 845 tests, zero skips, Ruff, source
+  catalog, repository atlas, evidence and capability checks. The existing
+  TestClient deprecation warning remains. WorldKernel was installed from
+  reviewed source revision `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+  Receipt: `results/local-quality-gate-a5186a680b307c4ecd9d56321321a5b27048731d.json`.
+  Status is `local_gate_passed_not_official_ci`; Actions were not checked by
+  this script. This receipt does not cover later documentation edits.
+- A separate scoped `ruff check examples` found five findings in unchanged
+  example files: I001 in `m1_asof_rolling_backtest.py`,
+  `m1_observation_preflight.py` and `m1_temporal_backtest.py`; RUF007 in
+  `m1_asof_rolling_backtest.py`; and F401 in `m1_temporal_backtest.py`.
+  RUF007 is marked unsafe to auto-fix. These pre-existing findings are tracked
+  as ENG-02 maintenance, outside this PR and outside the `src`/`tests` Ruff
+  gate. No example code or verifier was changed to obtain the gate result.
+- Before publication/review, rerun the complete six-check gate on the exact
+  documentation-inclusive head and attach that receipt separately. Local
+  checks do not replace official Actions or change required protections.
