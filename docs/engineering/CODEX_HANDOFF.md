@@ -26,16 +26,13 @@ execution guidance and does not broaden the agent's permissions.
   zero skips and six checks. PR #61 is separate and ready at
   `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; its gate passed 841 tests, zero
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
-- Census remains separate as PR #63. Its published baseline
-  `b5e989314bcdcb566df479931794a5f56c07d477`, pilot-status reconciliation
-  `162268ded05eb8ba291025b6cc98e5658ae2e0a1`, and published heads
-  `941d72956d9d00f6fd281fd3a3039a1786777c70`, `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf`
-  and pre-documentation-follow-up head `42a9746d7925e023a97445a6fe6cd4db324173fa`
-  each passed 877 tests, zero skips and all six checks. This status refresh
-  requires its own exact-head gate; the live PR body records the final SHA and
-  receipt. Four prior-head Actions check runs failed before repository steps;
-  annotations list payment/spending-limit alternatives without identifying
-  which applies. Keep #60/#61/#63 separate; do not merge or broaden contracts.
+- Census remains separate as open PR #63. Feature/status head
+  `f76ec54aeb95efcffc645f7482909c6befa15761` passed its exact-head local gate
+  with 877 tests, zero skips and all six checks. A follow-up docs-only commit
+  refreshes the project-status and B-08 baseline; gate its exact SHA before
+  review. The final current SHA and receipt are recorded in the live PR body.
+  Keep #63 separate from #60/#61/#64 pending independent review; no integration
+  decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
