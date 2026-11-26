@@ -187,3 +187,21 @@ The code neither deploys an external service nor certifies its
 administrative independence, durable latest-state operation, key
 custody or honesty. This network read does not grant any access
 rights or alter publisher transactions.
+
+## Standalone M1 examples — adjacent-date invariant
+
+The [as-of rolling example](../../examples/m1_asof_rolling_backtest.py)
+parses and sorts event dates before evaluating rolling origins. Its private
+`_require_contiguous_days` helper checks ordered neighbors with
+`itertools.pairwise`; a calendar gap raises the existing fail-closed error
+before any forecasts are scored. The helper does not synthesize a date or
+count. Python 3.11 is the declared minimum, and `pairwise` preserves the
+previous `zip(days, days[1:])` boundaries for empty, singleton and longer
+lists. The standalone observation preflight and earlier rolling baseline
+remain unchanged apart from import cleanup. Unit and CLI references are
+listed in the [repository atlas](REPOSITORY_ATLAS.md); see the [as-of method
+guide](M1_ASOF_ROLLING_EVALUATION.md) for evaluation semantics.
+
+This is a local synthetic example, not an API path or source adapter. A
+contiguous sequence of declared dates proves neither original publication
+availability nor source permission.

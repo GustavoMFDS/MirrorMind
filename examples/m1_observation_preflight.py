@@ -6,10 +6,10 @@ source authorization, customer ingestion, forecasting or simulation.
 from __future__ import annotations
 
 import argparse
-from datetime import date
 import json
-from pathlib import Path
 import re
+from datetime import date
+from pathlib import Path
 
 SCHEMA = "mirrormind.synthetic_observations.v1"
 MAX_INPUT_BYTES = 1_048_576

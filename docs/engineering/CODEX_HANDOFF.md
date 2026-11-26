@@ -14,6 +14,16 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
+## Current independent maintenance — 2026-11-26
+
+- ENG-02 is separate from the open product/review queue and is being handled
+  on `codex/eng-02-examples-ruff`, branched from the post-#62 `main` at
+  `a456034`. The five original `ruff check examples` findings were reproduced.
+  RUF007's `itertools.pairwise` suggestion is being applied only after tests
+  prove equivalence for the sorted `list[date]` input and Python 3.11 minimum;
+  no forecast or authorization behavior should change. Keep the change
+  synthetic-only and separate from #60/#61/#63.
+
 ## 1.1 Owner-approved continuation decisions — 2026-11-25
 
 - Research preparation proceeds A then B: UCI Online Retail #352 event-time

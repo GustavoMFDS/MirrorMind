@@ -676,3 +676,20 @@ declaration. Mutate a holdout value and verify validation metrics stay fixed.
 Finally locate where `InvoiceDate` becomes an event day and explain why a
 verified publication vintage requires a distinct source contract. Do not use
 real UCI rows in this exercise.
+
+## Guided exercise — adjacent-date validation and safe lint changes
+
+Read the [as-of rolling guide](M1_ASOF_ROLLING_EVALUATION.md),
+`_require_contiguous_days` in
+[`m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py),
+and the tests `test_contiguous_day_guard_preserves_pairwise_boundary_semantics`,
+`test_contiguous_day_guard_rejects_a_gap_without_imputing_a_day` and
+`test_missing_event_day_not_imputed_even_with_publication_metadata`.
+Predict the number of adjacent pairs for an empty list, one date, and three
+dates. Compare that with `itertools.pairwise` and the former
+`zip(days, days[1:])` expression. Explain why the Ruff RUF007 autofix is
+marked unsafe in general, why it is equivalent for this sorted `list[date]`
+input and Python 3.11 minimum, and why a missing day must raise instead of
+being represented as zero demand. Re-run the three regressions and
+`ruff check examples`; confirm imports and lint cleanup did not change any
+forecast, output or authorization contract.

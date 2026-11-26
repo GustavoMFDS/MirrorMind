@@ -43,6 +43,7 @@ value with zero or with a later revision.
 | Symbol | Observable behavior | Boundary |
 | --- | --- | --- |
 | `backtest_asof(payload, holdout_days=7, min_train_days=14)` | Validates declared as-of schema and synthetic labels; sorts and checks contiguous event dates, then scores a common subset of one-step origins | Rejects impossible metadata, released-after-evaluation targets, invalid cutoffs and missing event dates; it does not authenticate publication |
+| `_require_contiguous_days(days)` | Checks every ordered neighboring date with `itertools.pairwise` | Empty and singleton inputs produce no pairs; any gap raises the same fail-closed error; dates are not inserted or imputed |
 | `_predict(past)` from the earlier backtest | Uses the exact seven published observations before the target | No direct access to target or later values; history completeness is checked first |
 | `_score(predictions, actual)` from the earlier backtest | MAE, RMSE, signed bias and WAPE on identical scored targets | Returns WAPE `null` for all-zero observed denominator; no uncertainty calibration |
 | `main()` | 1 MiB input cap, duplicate-key rejection, synthetic JSON summary | Generic exit 2 on invalid input; no raw fixture or path echoed |
@@ -54,6 +55,15 @@ checks **availability at each past origin**, not just at the
 final extraction cutoff. The full dataset can be
 35 days long while some prior origins lack a
 complete seven-day available history.
+
+Before scoring, `backtest_asof` sorts parsed dates and calls
+`_require_contiguous_days`. `itertools.pairwise(days)` yields exactly the
+same adjacent ordered pairs as the former `zip(days, days[1:])` expression:
+`n - 1` pairs for `n >= 1`, and no pairs for an empty or singleton list.
+Python 3.11 is the project minimum, so `pairwise` is available. This form
+states the adjacent-pair operation directly and avoids an unsafe Ruff
+autofix changing the intended sequence semantics. The helper preserves the
+existing gap error and never fabricates a missing date or zero count.
 
 ## 3. Hand-worked result
 
@@ -99,6 +109,13 @@ missing forecast.
 
 The [CLI regression](../../tests/integration/test_m1_asof_rolling_backtest_cli.py)
 also checks bounded input and sanitized failures.
+
+`test_contiguous_day_guard_preserves_pairwise_boundary_semantics` checks
+empty, singleton and consecutive sequences;
+`test_contiguous_day_guard_rejects_a_gap_without_imputing_a_day` checks a
+missing calendar day. The public
+`test_missing_event_day_not_imputed_even_with_publication_metadata` regression
+confirms that the backtest still rejects a gapped series end to end.
 
 ```bash
 python -m examples.m1_asof_rolling_backtest examples/synthetic-asof-weekly-sales.json

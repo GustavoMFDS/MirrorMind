@@ -258,6 +258,7 @@ unavailable history.
 | [`docs/engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md`](datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md) | Dataset generated for testing known-as-of history; no real permission |
 | [`docs/engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md`](model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md) | Evaluation scores on only four synthetic origins, with abstention caveats |
 | [`docs/engineering/changes/MM-M1C-asof-rolling-abstention.md`](changes/MM-M1C-asof-rolling-abstention.md) | Scope, risk and regression acceptance for the experimental slice |
+| [`docs/engineering/changes/ENG_02_EXAMPLES_RUFF_MAINTENANCE.md`](changes/ENG_02_EXAMPLES_RUFF_MAINTENANCE.md) | Impact map, behavior-preserving lint correction, and sequence-boundary regressions |
 
 `synthetic_asof_rolling_backtest` is reported only
 as an **experimental** local program. The real

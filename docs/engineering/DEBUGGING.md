@@ -166,6 +166,18 @@ rules. Do not log the typed projection or identifiers while debugging. A
 stable fixture digest and matching cutoff still do not verify publisher
 availability, source rights or demand completeness.
 
+For a synthetic as-of backtest rejected for a calendar gap, inspect
+`_require_contiguous_days` in
+[`m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py).
+It checks successive parsed dates with `itertools.pairwise`; missing dates
+must keep producing `ValueError("missing event-date record; do not impute demand")`.
+Run `python -m pytest -q tests/unit/test_m1_asof_rolling_backtest.py` and
+compare the empty/singleton/consecutive helper cases with the public
+`test_missing_event_day_not_imputed_even_with_publication_metadata` case.
+Do not repair a fixture by filling an absent date with zero: zero is an
+observed count, while a gap means no record. This synthetic check proves
+calendar labels only, not source availability or authorization.
+
 ## WorldKernel request mapping rejects a retail scenario
 
 Read the [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
