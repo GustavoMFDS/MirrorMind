@@ -28,15 +28,14 @@ cross-field constraints. It does **not** mean executing
 WorldKernel, authorizing `EvidenceRef`, calculating
 forecasts or enforcing runtime budgets.
 
-At the initial baseline the status is `scaffold`.
-The only publicly implemented claims are `health` and
-`scenario_contract_validation`; the
-`simulation_gateway_protocol` is `interface_only`
-and must not appear in the implemented set. The new
-`synthetic_observation_preflight` is a standalone
-**experimental local fixture**, exposed under a separate
-`experimental` list; it is not authorized ingestion,
-forecasting or a production endpoint.
+At the scaffold baseline, the only implemented claims were `health` and
+`scenario_contract_validation`. Current ledger status also includes
+`worldkernel_adapter` as **experimental**: an optional exact-pin local process
+can execute one registered synthetic demo. The
+`simulation_gateway_protocol` remains `interface_only`; it must not appear in
+the implemented set. `synthetic_observation_preflight` is likewise an
+experimental local fixture, not authorized ingestion, forecasting or a
+production endpoint.
 
 ## 2. Change gate for any future externally visible capability
 
@@ -60,13 +59,23 @@ forecasting or a production endpoint.
    limitations. Only mark a capability implemented
    **at the scope that those tests establish**.
 
+### Decision trace result schema is interface-only
+
+[`DecisionTrace`](DECISION_TRACE_RESULT.md) is a strict local result shape
+for later M1 components. Its synthetic tests prove internal references,
+declared time rules and approval-digest consistency. The schema cannot verify
+that an evidence, model-card or engine reference is real, permitted or
+authenticated. `decision_evaluation` therefore remains `planned`, and the
+schema is not listed by the HTTP capability route as executable behavior.
+
 For forecasting: rolling temporal holdouts and a documented
 baseline are necessary before making performance claims.
 For retrieval: permission filtering, source lineage and
 prompt-injection boundaries matter. For agents: denied tools,
 explicit human approval and cost controls need adverse tests.
-For simulations: valid WorldKernel contract mapping and bounded
-execution do not imply causal or predictive accuracy.
+For simulations: valid WorldKernel contract mapping and bounded local process
+execution do not imply causal or predictive accuracy, arbitrary-code
+containment or a production service.
 
 ## 3. How the integrity checks differ
 
@@ -100,13 +109,13 @@ Follow
 `src/mirrormind/api/routes/system.py:capabilities` and
 `tests/integration/test_api.py::
 test_live_api_claims_equal_reviewed_capability_ledger`.
-If the system reports `worldkernel_adapter` as implemented
-without a concrete adapter, the test should fail because
-the ledger still classifies it as planned. If someone
-changes the ledger alone to classify it as implemented,
-the structural guard requires real source and a declared
-test, but even then human review must verify that the
-test exercises a real simulation.
+The API and ledger currently report `worldkernel_adapter` as experimental.
+The optional pinned local worker executes the upstream inventory demo and a
+fixed MirrorMind-owned synthetic policy world. Changing the ledger alone to
+implemented must fail review: these paths do not establish endpoint
+execution, service authorization, hostile-code isolation, model validity or
+production operation. Human review must distinguish actual engine tests from
+fake-worker protocol tests.
 
 **Independent exercise:** choose forecasting or evidence
 retrieval. Draft an acceptance case for one small

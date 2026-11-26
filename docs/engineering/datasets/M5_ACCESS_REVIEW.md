@@ -1,6 +1,6 @@
 # M5 source due diligence — candidate only, NOT approved ingestion
 
-**Review date:** 2026-11-18.
+**Review history:** initial review 2026-11-18; rechecked 2026-11-24.
 **Status:** `proposed / permission-unverified`, **no real dataset ingested**.
 **Decision:** **NO-GO for automated download, committed mirrors or production
 data use until a human reviewer independently verifies the actual
@@ -9,12 +9,33 @@ discovery checkpoint, not legal advice or a legal approval.
 
 ## Source paths reviewed
 
-| Candidate source | What was visible | Authorization still needed |
+| Candidate source | What was visible in the initial 2026-11-18 review | Authorization still needed |
 | --- | --- | --- |
 | [Official M5 Forecasting — Accuracy data page](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data) | Original competition data location, with dataset description and license section | Confirm the exact dataset license, competition-specific rules, accepted Kaggle account terms and whether separate research/product/commercial use is permitted |
 | [Official M5 competition rules](https://www.kaggle.com/competitions/m5-forecasting-accuracy/rules) | Rules page exists, but the complete relevant text was not independently retrievable in this review | Read and retain the currently applicable data-access, non-commercial/research, redistribution and downstream model terms |
 | [Zenodo record 10.5281/zenodo.12636070](https://zenodo.org/records/12636070) | Open deposit created 2024-07-03, listing a 48 MB archive and describing the dataset as taken from Kaggle | Establish whether the depositor had redistribution rights and whether the license applies to the **underlying Walmart/M5 data**, not just metadata or repository wrapper |
 | [Kaggle general terms](https://www.kaggle.com/terms) | General platform terms exist | These **do not by themselves replace** the competition-specific dataset use grant |
+
+## Recheck on 2026-11-24
+
+The official Kaggle data page, competition rules and general terms remain the
+required source references. The non-interactive recheck could not retrieve
+readable body text from those pages, so it does not verify their current
+license, account acceptance or competition restrictions. This is a retrieval
+limit, not evidence that permission is granted or denied; a human reviewer
+must inspect the currently displayed terms directly.
+
+The [Zenodo record](https://zenodo.org/records/12636070) currently describes
+its archive as taken over from Kaggle and lists a 48 MB ZIP. Its visible Rights
+section does not show a license value. Neither the mirror nor its availability
+establishes the depositor's rights to redistribute the underlying Walmart/M5
+data. No archive was downloaded, no source bytes or checksum were verified,
+and no raw data entered the repository.
+
+The M5 decision therefore remains **NO-GO** for automated download, committed
+mirrors or project data use. A human rights reviewer must inspect the actual
+account-visible competition terms and record the permitted scope before any
+source-specific adapter or dataset card can be approved.
 
 **Critical distinction:** an open download, a file digest,
 a research paper with a Creative Commons license, or

@@ -9,6 +9,10 @@ UCI-shaped product-day projections and separate **unverified, caller-declared**
 release dates. An eligible day must have a positive observation, seven
 historically available feature days, and enough previously released
 residuals for the [prequential envelope diagnostic](RETAIL_RESIDUAL_ENVELOPE.md).
+That diagnostic uses a fixed calibration target interval strictly before
+each evaluated holdout window. Holdout labels remain excluded from later
+calibration origins, even after publication; late or missing calibration
+evidence can therefore reduce eligible-day counts.
 
 Each window is evaluated with its own date cutoff. This prevents the
 later cutoff from retroactively selecting newly published targets in

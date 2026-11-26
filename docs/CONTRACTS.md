@@ -5,7 +5,14 @@ Current implemented **Pydantic validation only**: `ScenarioSpec` with `world_typ
 `EvidenceRef` fields: source ID, snapshot ID, observation cutoff and provenance. The service does not yet fetch data.
 `ForecastRef` fields: ID, model version and forecast horizon. The service does not yet forecast.
 `ExecutionBudget`: max simulation runs, model calls, output tokens, timeout. Current API rejects run-count over declaration; execution quotas are not yet implemented.
-`SimulationGateway` Protocol: `execute(ScenarioSpec) -> SimulationSummary`. A versioned WorldKernel adapter will implement this in a later milestone.
+`SimulationGateway` Protocol: `execute(ScenarioSpec) -> SimulationSummary`. A
+strict, pure WorldKernel v1 request mapper now translates one exact retail
+world/version when units, state and parameters are explicit; it does not
+execute the request. See the [source walkthrough](engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md).
+The separate [retail policy test double](engineering/M1_RETAIL_POLICY_SIMULATION.md)
+accepts an explicit synthetic 28-day profile and item/day/cost assumptions;
+it does not implement `SimulationGateway`, consume `ScenarioSpec`, or call
+WorldKernel.
 
 ## Example
 ```bash

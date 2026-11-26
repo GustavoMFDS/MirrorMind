@@ -45,10 +45,24 @@
     },
     {
       "id": "worldkernel_adapter",
-      "status": "planned",
-      "source": null,
-      "test": null,
-      "notes": "WorldKernel is independent; no versioned adapter translating and executing scenarios."
+      "status": "experimental",
+      "source": "src/mirrormind/modules/simulation/worldkernel_runner.py",
+      "test": "tests/integration/test_worldkernel_policy_world_engine.py::test_pinned_engine_policy_gateway_matches_synthetic_reference",
+      "notes": "Optional local subprocess adapter verifies WorldKernel version and PEP 610 source commit 9b133ef873f2b6a7206c9c5742d40df4fccdb04a. The fixed worker supports the trusted retail.inventory.demo@demo-1 example and one code-owned mirrormind.retail.policy_comparison@mm-retail-policy-v1 handler. The M1E-04 gateway enforces policy transition limits and validates exchange envelopes, paired demand streams, item balance and exact parity with the synthetic reference. It is exposed only through an explicit local CLI option; HTTP remains test-double-only. PEP 610 is not installed-file attestation. No authorized source data, empirical forecast, arbitrary-world registration, hostile-code/CPU/memory sandbox, policy optimality or production deployment. The original M1E-02 exact-engine test remains tests/integration/test_worldkernel_runner_engine.py::test_pinned_local_runner_executes_synthetic_inventory_world_deterministically."
+    },
+    {
+      "id": "decision_trace_result_contract",
+      "status": "interface_only",
+      "source": "src/mirrormind/core/decision_trace.py",
+      "test": "tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate",
+      "notes": "General v1 result schema remains interface-only and validates typed sections, local references, cutoff rules and review-digest binding. The experimental M1F-02 producer emits a versioned v2 trace with outcome-linked selected-output and optional parity execution evidence. Neither version authenticates source evidence, forecast quality, engine provenance, reviewer identity or action authority."
+    },
+    {
+      "id": "synthetic_retail_decision_workflow",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/synthetic_decision_workflow.py",
+      "test": "tests/unit/test_synthetic_decision_workflow.py::test_successful_workflow_produces_valid_trace_and_explicit_gaps",
+      "notes": "Bounded local CLI/API composition of generated UCI-shaped evidence, historical fixed baselines, an uncalibrated disjoint residual diagnostic, a predeclared 28-day seasonal-naive profile, paired policy outcomes and DecisionTrace v2. API/default CLI select the Python test double. Explicit local CLI opt-in selects the code-owned WorldKernel policy world and binds its exact engine contract/provenance plus a separate test-double parity record into the trace. These local references and hashes do not authenticate engine provenance. Missing or late seven-day history abstains before simulation. No source rights, real data, empirical forecast/uncertainty, API engine execution, ranking, persistence or action authorization."
     },
     {
       "id": "decision_evaluation",
@@ -121,6 +135,20 @@
       "notes": "Bounded optional read-only local XLSX parser on invented UCI-shaped workbooks only; not authorized original source ingestion, full official dataset processing, hostile workbook isolation or verified publication history."
     },
     {
+      "id": "local_uci_event_time_research",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/uci_event_time.py",
+      "test": "tests/integration/test_uci_event_time_cli.py::test_synthetic_cli_is_reproducible_and_keeps_event_time_limitations",
+      "notes": "Fixed local validation/holdout comparison of two one-day baselines on a generated workbook and caller-declared complete event dates. No original UCI data, permission, source completeness, publication vintages, point-in-time forecast, empirical accuracy or uncertainty calibration."
+    },
+    {
+      "id": "local_retail_synthetic_evidence_flow",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/evidence_flow.py",
+      "test": "tests/integration/test_retail_evidence_flow.py::test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing",
+      "notes": "Composes bounded local CSV/XLSX staging, review-only metadata and caller-declared calendar/release/as-of checks on synthetic fixtures. No source authorization, authenticated publisher availability, persistence, API data path, forecasting or decision execution."
+    },
+    {
       "id": "local_retail_coverage_diagnostics",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/coverage.py",
@@ -149,6 +177,20 @@
       "notes": "Fixed one-day baseline comparison on fictional positive invoice-line records with caller-declared, unverified releases. No authenticated publisher data, complete demand calendar, empirical forecast skill, production inference or WorldKernel."
     },
     {
+      "id": "local_retail_evidence_evaluation",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/evaluation_flow.py",
+      "test": "tests/integration/test_retail_synthetic_evaluation.py::test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts",
+      "notes": "Local composition of the reviewed retail evidence flow with fixed matched-origin release-aware baseline evaluation. It does not authenticate source rights or release dates, establish complete demand, train a model, calibrate uncertainty, expose an evaluation HTTP endpoint or justify real forecasts/recommendations."
+    },
+    {
+      "id": "local_retail_policy_test_double",
+      "status": "experimental",
+      "source": "src/mirrormind/domains/retail/policy_simulation.py",
+      "test": "tests/integration/test_retail_policy_simulation_cli.py::test_synthetic_policy_cli_replays_paired_comparison",
+      "notes": "Pure local comparison of three replenishment rules over caller-declared 28-day demand assumptions, with paired seeded demand streams and lead-time sensitivity. It does not authenticate inputs, forecast demand, execute WorldKernel, rank policies, validate business costs or authorize an operational action."
+    },
+    {
       "id": "local_retail_backtest_coverage_gate",
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/coverage_gate.py",
@@ -160,7 +202,7 @@
       "status": "experimental",
       "source": "src/mirrormind/domains/retail/residual_envelope.py",
       "test": "tests/unit/test_retail_residual_envelope.py::test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
-      "notes": "Fictional retrospective trailing maximum-absolute-residual heuristic restricted to releases available at each origin. Not calibrated, no nominal interval guarantee, no source permission or empirical forecasting. Historical seasonal-naive forecasts are cached by target date within one evaluation only; separate cutoffs never reuse a cache. A fictional 7x21 exercise checks 28 forecast calls rather than repeated 154, without a wall-clock speedup claim. Differential regressions now compare 18 fictional mixed-release and missingness histories against execution without memoization, including exact 154-to-28 prediction call reduction on the complete toy fixture. No empirical performance, source authenticity or calibration guarantee. A release-aware rolling residual activation/expiration window is proposed to replace repeated calibration scans; it is subject to local differential regression and never adds source authentication or calibrated uncertainty."
+      "notes": "Fictional retrospective maximum-absolute-residual heuristic using one fixed calibration target interval strictly before the holdout. At each one-day holdout origin, a candidate is admitted only when its declared target release is available by that origin and its seven feature dates were available at its own forecast origin. Holdout target labels never become calibration residuals, though released earlier holdout observations may be forecast features at later origins. Missing or unpublished targets remain missing; exact evaluated-origin numerator and denominator are reported. The 7x21 synthetic split visits 28 distinct target dates once by construction; the current implementation has no memoization or expiration heap and this count is not a speed or latency claim. The output remains experimental and uncalibrated, has no nominal interval guarantee, source permission, authenticated publisher vintages, empirical forecasting, true-demand evidence or future coverage guarantee. Historical 154-to-28 cache measurements describe superseded code only."
     },
     {
       "id": "local_retail_eligibility_drift_audit",
