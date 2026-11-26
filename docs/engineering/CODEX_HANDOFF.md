@@ -27,9 +27,11 @@ execution guidance and does not broaden the agent's permissions.
   PR #63. PR #60 is open/non-draft for independent review. PR #61 has been
   synchronized with main through ancestry-preserving merge
   `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`; its merge-head gate passed 841
-  tests, zero skips and six checks. Complete the current docs refresh, rerun
-  the exact clean-head local gate, update its evidence, and only then mark
-  #61 ready for independent review. Keep #60, #61 and #63 separate.
+  tests, zero skips and six checks. Documentation refresh commit
+  `47fdceb58a2c3802f8e66e5aea51318a698ffe62` also passed 841 tests, zero skips
+  and all six checks. Any final status-only commit must receive its own exact
+  clean-head gate before #61 is marked ready; publish that final SHA/receipt
+  in the PR discussion. Keep #60, #61 and #63 separate.
 - PR #62's final independent comments are
   [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
   and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).

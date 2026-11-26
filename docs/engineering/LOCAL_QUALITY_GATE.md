@@ -188,6 +188,15 @@ Exact published main-based review heads also have these complete local gates:
 | #63 `b5e989314bcdcb566df479931794a5f56c07d477` | 877 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed with the exact WorldKernel pin installed. | `results/local-quality-gate-b5e989314bcdcb566df479931794a5f56c07d477.json`; `local_gate_passed_not_official_ci`. |
 | #61 merge head `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21` | 841 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed with the exact WorldKernel pin installed. | `results/local-quality-gate-66fc9fa001eaa6bd3adbc8f8d1606f3743239d21.json`; `local_gate_passed_not_official_ci`. |
 
+PR #61 documentation refresh commit
+`47fdceb58a2c3802f8e66e5aea51318a698ffe62` passed its exact six-check gate
+at `2026-11-26T04:30:28.981947+00:00`: 841 tests, zero skips, Ruff, symbol
+catalog, atlas, evidence and capability checks. The one existing warning is
+the Starlette/httpx TestClient deprecation. WorldKernel `0.0.1` was installed
+from source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-47fdceb58a2c3802f8e66e5aea51318a698ffe62.json`;
+status `local_gate_passed_not_official_ci`.
+
 These receipts cover only the named exact revisions. A later documentation
 commit on PR #61 requires a fresh exact-head gate. GitHub Actions was not
 checked by these local runs. No runner, paid usage, workflow change or
