@@ -16,8 +16,12 @@ retailer would experience these outcomes.
 
 The capability is `local_retail_policy_test_double` with status
 `experimental`. `GET /v1/capabilities` advertises that local capability, but
-there is no simulation HTTP route. The general `worldkernel_adapter` remains
-`planned`; actual engine execution stays behind B-04 and the
+there is no simulation HTTP route. The separate `worldkernel_adapter` is
+`experimental` for the optional pinned local worker and its reviewed fixed
+handlers; it is not a general plugin or hostile-code runtime. This guide's
+test-double path remains WorldKernel-free. The distinct engine-backed M1E-04
+path is documented in the [policy-world walkthrough](WORLDKERNEL_POLICY_WORLD.md);
+broader isolation and deployment acceptance remain open under B-04 and the
 [WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md).
 
 ## Components and responsibilities
