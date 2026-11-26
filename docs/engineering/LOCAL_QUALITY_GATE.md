@@ -203,3 +203,27 @@ and gate-documentation update that records it. Rerun the six-check gate on the
 exact clean documentation-inclusive SHA before publishing the branch. Preserve
 that final SHA and receipt in the PR discussion; never treat either local
 receipt as official Actions or integration approval.
+
+## Census candidate after PR #62 merge — 2026-11-26
+
+The separate Census branch includes merged `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08` through ancestry-preserving merge
+`55e91f7d73c67867edaf1aa790242f6cdbc611b9` (main is the second parent). The
+exact merged candidate passed all six checks at
+`2026-11-26T03:58:32.075461+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks:
+  all passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-55e91f7d73c67867edaf1aa790242f6cdbc611b9.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions were not checked by the
+  local script.
+
+This receipt covers the exact candidate before the current baseline, backlog,
+handoff and change-request evidence update. Run the six checks on the final
+documentation-inclusive SHA before pushing or opening the separate Census PR.
+No receipt is official CI, and no source bytes, credential or licensed-data
+permission is implied.

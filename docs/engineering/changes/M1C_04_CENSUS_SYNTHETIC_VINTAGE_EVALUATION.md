@@ -228,3 +228,21 @@ consumer of the unmerged v1 result. No external v1 compatibility is inferred.
 | CLI / serialized result | Add explicit unanchored-revision count; preserve schema safety and synthetic-only flags | CLI replay, v2/count assertions and non-finite JSON rejection |
 | API / capability ledger / source access | No change | Existing API and capability checks; no file/network or source ingestion |
 | Documentation | Explain exact arithmetic, numeric bounds, revision chronology, abstention and reproduction | Census source walkthrough, model card, learning/debugging, system/semantic maps and evidence selectors |
+
+### Main synchronization and combined validation — 2026-11-26
+
+The Census branch now includes PR #62's merged main through
+`55e91f7d73c67867edaf1aa790242f6cdbc611b9`, preserving the candidate's
+pre-merge Census head as first parent and `a456034c55ed7634ad4768b26788fec09dab1d08`
+as second parent. The exact combined state passed the full local gate at
+`2026-11-26T03:58:32.075461+00:00`: 877 tests, zero skips and all six checks,
+with WorldKernel installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-55e91f7d73c67867edaf1aa790242f6cdbc611b9.json`.
+
+The earlier candidate `da540a2` passed 64 focused Census tests as separately
+reported by the owner; the exact merged full gate above revalidates all tests
+in the combined repository. All fixtures remain synthetic. No Census/ALFRED
+bytes were acquired and the adapter does not parse or authenticate official
+source archives. The documentation status update now in progress requires a
+new exact-head gate before publication as a separate PR.

@@ -1,6 +1,6 @@
 # Task backlog — prioritized execution register
 
-**Baseline:** PR #51 merge commit `e4f05a152aefcf68fa8ec22f3baa3b61adb8519d`,
+**Baseline:** PR #62 merge commit `a456034c55ed7634ad4768b26788fec09dab1d08`,
 see [PROJECT_STATUS](PROJECT_STATUS.md). This is
 the maintained task register, not a duplicate roadmap or a promise
 of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
@@ -19,7 +19,7 @@ already underway.
 | Pending by dependency | Remaining M1C/M1D/M1E/M1F, M2, M3 and M4 rows marked `planned`. | Start only when named predecessors and acceptance inputs exist. |
 | Blocked by external evidence or approval | M1B-03 and M1C-03 require B-01/B-02 real-source rights, original availability and empirical holdout evidence. G-04 and deployment-related scopes also require B-03/B-06. | Advance synthetic slices independently; preserve blockers and do not claim they are solved by generated fixtures. |
 
-## Current consolidated review candidate — 2026-11-25
+## Historical consolidated review candidate before PR #62 merge — 2026-11-25
 
 `codex/m1-engine-provenance`, published as
 [PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) to `main`, contains
@@ -37,6 +37,18 @@ are addressed in the published candidate. The separate Census descendant and
 its later fixes are not part of #62. No branch was merged and `main` was not
 changed. PR #60 remains a separate M2 draft; PR #61 remains a separate G-01
 draft.
+
+## Current queue — 2026-11-26
+
+| ID | Status | Current state / next action | Blockers |
+| --- | --- | --- | --- |
+| M1 synthetic flow | integrated, experimental | PR #62 is merged at `a456034`; published #52–#59 heads are ancestors. #53–#59 are closed as incorporated and their branches remain available. Synthetic end-to-end integration is complete; empirical/source and production acceptance are not. | B-01, B-02, B-04, B-08 |
+| M1B-01 / M1C-03 | prepared, real-data work blocked | A+B protocols and synthetic adapters exist. Continue rights, privacy, retention and temporal-provenance preparation; keep automated tests synthetic and do not acquire/process source bytes before exact source approval. | B-01, B-02 |
+| M1B-04 / M1C-04 | review preparation | Census branch `codex/m1-census-vintage-adapter` includes `a456034` through merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`. Its exact gate passed 877 tests, zero skips and all six checks; receipt is in `LOCAL_QUALITY_GATE.md`. Final status/receipt edits require another exact-head gate before publication as a separate PR. | B-01, B-02, B-08 |
+| M2-01 | ready for independent review | PR #60 is retargeted to `main`, mergeable and ready at `fafdedae3a76398e0450773065e40384c96d1ed7`; its exact local gate passed 845 tests, zero skips and all six checks. No official CI claim. Await independent review and required protections; do not merge locally. | B-08 |
+| G-01 | ready for sync | PR #61 remains independent on its previous base. Synchronize with `a456034`, preserve typed clock failures, and gate the exact final tree before independent review. | B-08 |
+| M2-02+ | planned | Start after M2-01 review/integration and consolidation of PR #61 and the separate Census review. Keep the active queue stable. | M2-01 |
+| ENG-02 | separately tracked | `ruff check examples` found five pre-existing findings: `m1_asof_rolling_backtest.py` (I001, RUF007), `m1_observation_preflight.py` (I001), `m1_temporal_backtest.py` (I001, F401). Fix only in separate maintenance; review RUF007 semantics and add regression coverage. | None |
 
 ## Conventions
 
@@ -68,6 +80,7 @@ coordination.
 | G-03 | P0 | planned | G-01, G-02 | Actual client/server integration with fictional data, isolated test trust, outages, expiry and failure cases; verify signed remote head mismatch and no permission grants; audit recovery and supplied forks. |
 | G-04 | P1 | blocked | G-03, B-03 | Operational trust review: separately administered storage, key custody, identities, monitoring, authenticated access and restore evidence. Do not deploy or claim independence without approval. |
 | ENG-01 | P1 | ready | None | Keep canonical checkout clean; record exact gates, check remote CI and improve reproducibility without lowering protections. Review dependency and warning changes separately. |
+| ENG-02 | P2 | planned | None | Fix five pre-existing Ruff findings in `examples/` in a separate maintenance change. Preserve behavior; review unsafe RUF007 recommendation semantically and add regression coverage. |
 
 Use the existing [publisher](ATOMIC_GOVERNED_PUBLISHER.md),
 [dual-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md),
@@ -157,7 +170,7 @@ If a gate fails, preserve the failure and choose the next safe
 independent slice. A blocker resolved for a synthetic fixture does
 not automatically resolve real-source, deployment or product gates.
 
-## Active claims
+## Historical active claims before PR #62 merge — 2026-11-25
 
 | ID | Status | Owner / branch | Surfaces | PR / commit | Evidence and next action | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |

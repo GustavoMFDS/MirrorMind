@@ -64,7 +64,7 @@ local asyncio socket-pair creation; the same test and full gate passed outside
 that restriction. This does not retroactively explain the historical 8f906b8
 timeout. Preserve both the scope and limits in the blocker register.
 
-## 1.2 Current resumed state — 2026-11-25
+## 1.2 Historical resumed state before PR #62 merge — 2026-11-25
 
 GitHub review metadata confirms PR #62 remains open, mergeable and directed at
 `main`, at published head
@@ -100,6 +100,44 @@ review. Preserve the zero-cost Actions decision and synthetic-only tests. B-01
 and B-02 still gate acquisition or processing of real UCI/Census records; B-08
 still gates official Actions evidence. Continue only no-cost work that directly
 advances the M1 acceptance path without duplicating this stack.
+
+## 1.3 Current resumed state — 2026-11-26
+
+PR #62 is merged at `a456034c55ed7634ad4768b26788fec09dab1d08`. The exact
+published heads of #52–#59 are its ancestors; #53–#59 are closed as
+incorporated and all branches remain available. Independent post-merge
+validation passed 835 tests, zero skips and six checks with the reviewed
+WorldKernel pin; this is local evidence, not Actions.
+
+PR #60 is now open against `main`, ready for review and mergeable at
+`fafdedae3a76398e0450773065e40384c96d1ed7`. Its ancestry-preserving merge
+includes the new main, and its exact local gate passed 845 tests, zero skips
+and all six checks. Receipt and review finding response are on PR #60 and in
+`LOCAL_QUALITY_GATE.md`. Keep it separate from Census and #61; do not merge or
+bypass required checks.
+
+The Census branch `codex/m1-census-vintage-adapter` includes `a456034` through
+merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`. Its exact reconciled gate
+passed 877 tests, zero skips and all six checks with reviewed WorldKernel;
+receipt is in `LOCAL_QUALITY_GATE.md`. The current status/receipt updates need
+their own exact gate before the branch is pushed as a separate PR (#63).
+
+PR #61 remains a separate G-01 slice on its prior base. Synchronize it with
+`a456034` using an ancestry-preserving merge, preserve clock/store failure
+contracts, review conflicts and gate its exact clean head before review. Do not
+fold it into PR #60 or the Census branch.
+
+The owner approved preparation for A+B pilots only: UCI #352 event-time
+retrospective, then aggregate Census publication-vintage evaluation. Do not
+acquire or process real bytes or credentials until exact source rights,
+privacy, retention and temporal evidence are approved under B-01/B-02. Keep
+automated tests synthetic. GitHub Actions is unavailable within the zero-paid
+budget (B-08); do not buy usage, change limits, register a runner or alter
+protections.
+
+ENG-02 tracks five pre-existing Ruff findings in three M1 examples separately
+from the review queue. Do not auto-apply the unsafe RUF007 suggestion.
+Consolidate #60, Census and #61 before expanding M2 beyond M2-01.
 
 Read in order:
 

@@ -105,7 +105,7 @@ are used until B-01/B-02 approvals and the exact source archive are reviewed.
    reviewed WorldKernel pin installed. Report local evidence separately from
    GitHub Actions.
 
-## 6. Evidence after implementation
+## 6. Historical initial implementation evidence
 
 - Commit / PR: local branch `codex/m1-census-vintage-adapter`, stacked on
   reviewed PR #62 head `777c2d2`; source/docs commit `97fb0ff046a13fa0364324adf5936504f7b15cb1` is not pushed and has no PR.
@@ -142,3 +142,23 @@ are used until B-01/B-02 approvals and the exact source archive are reviewed.
   exact source/docs commit shown. A later documentation-only evidence update
   requires its own exact-head receipt; the receipt itself is keyed by the tested
   SHA so the tested tree is not edited after validation.
+
+## Current main synchronization — 2026-11-26
+
+The candidate is now on `codex/m1-census-vintage-adapter`, descended from the
+merged PR #62 baseline. Merge commit
+`55e91f7d73c67867edaf1aa790242f6cdbc611b9` has the previous Census head
+`da540a2ba48c90107ba846da582a6561946abe9c` as first parent and exact main
+`a456034c55ed7634ad4768b26788fec09dab1d08` as second parent. This preserves
+both histories and does not cherry-pick duplicate work.
+
+The exact merged candidate passed the full local six-check gate at
+`2026-11-26T03:58:32.075461+00:00`: 877 tests, zero skips, Ruff, symbol
+catalog, atlas, evidence and capability checks. WorldKernel `0.0.1` was
+installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-55e91f7d73c67867edaf1aa790242f6cdbc611b9.json`.
+This is synthetic local evidence; Actions were not checked, and no source
+parser, real bytes, credential or permission is added. The current
+documentation-inclusive follow-up needs its own exact-head gate before a
+separate PR is published.
