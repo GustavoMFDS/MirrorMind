@@ -121,10 +121,13 @@ unchanged. `DecisionTraceV2` adds a separate `execution_evidence` section and
 from input `EvidenceReference` because a simulator output is produced after the
 input cutoff. Each record carries an execution ID, engine contract, role,
 selected-result SHA-256, provenance reference and timezone-aware production
-time. Roles are `selected_output` and `parity_oracle`.
+time. Roles are `selected_output` and `parity_oracle`. For v2, each declared
+production instant must be at or before trace `created_at`; timezone-aware
+comparison uses the represented instant, so equivalent offsets compare equal.
 
 The synthetic workflow stores deterministic logical metadata at
-`cutoff_at + 1 microsecond`; this is not wall-clock runtime evidence. The
+`cutoff_at + 1 microsecond` for both trace creation and execution production;
+this is not wall-clock runtime evidence. The
 selected source is also explicit in the workflow response:
 `policy_test_double` for the default path and `worldkernel_policy_world` for
 the opt-in engine path. `policy_test_double_invoked` means the Python
@@ -142,6 +145,13 @@ The v2 validator enforces these cross-record rules before hashing the trace:
 - Every execution record must be referenced by at least one outcome.
 - Execution IDs are unique across the trace and count toward the global record
   bound.
+- Execution `produced_at` cannot be later than trace `created_at`; equality is
+  valid and aware timezone offsets are compared by instant.
+
+This is an internal ordering check over caller-declared timestamps. It does
+not authenticate a clock or prove when a process ran. The deterministic
+workflow remains valid because its logical creation and production times are
+equal and later than the input cutoff.
 
 For the default synthetic path, the selected-output record identifies the
 Python test-double contract. For the WorldKernel path, the selected record
@@ -224,6 +234,7 @@ authorize any write.
 | Missing evidence reference or future availability | Validation error | Source permission, truthful publisher timestamp or data completeness |
 | Forecast/outcome points to missing facts, forecasts or assumptions | Validation error | Forecast quality or actual engine execution |
 | Naive timestamp, observation after cutoff or review before creation | Validation error | Correctness of caller-declared timestamps or reviewer identity |
+| V2 execution evidence produced after trace creation | `ValidationError` | Trusted wall-clock ordering, producer identity or authentic execution |
 | More than 1,000 records total, more than 1,000 in one section, or more than 100 references/metrics in one record | Validation error | A transport-level request-body or concurrency limit |
 | `unavailable` cost has a numeric amount | Validation error | That metered/declared costs are accurate or enforce a budget |
 | Approved/rejected review is incomplete or digest is stale | Validation error | Identity, signature, authorization or non-repudiation |
@@ -266,6 +277,14 @@ execution record; it does not authenticate the engine or record.
 The **MM-DTRACE-009** orphan-record regression maps to
 [`test_trace_rejects_unreferenced_execution_evidence_records`](../../tests/unit/test_synthetic_decision_workflow.py)
 and rejects execution records that no outcome uses.
+The **MM-DTRACE-010** chronology regression maps to
+[`test_trace_rejects_execution_evidence_after_trace_creation`](../../tests/unit/test_synthetic_decision_workflow.py).
+`MM-DTRACE-011` maps to
+[`test_trace_accepts_execution_evidence_before_trace_creation`](../../tests/unit/test_synthetic_decision_workflow.py),
+and `MM-DTRACE-012` maps to
+[`test_trace_accepts_execution_evidence_at_creation_with_equivalent_timezone`](../../tests/unit/test_synthetic_decision_workflow.py).
+Together they cover future, earlier and equal instants without claiming clock
+authenticity.
 
 The evidence map links `MM-DTRACE-001`, `MM-DTRACE-002`, `MM-DTRACE-003`,
   `MM-DTRACE-004`, `MM-DTRACE-005`, `MM-DTRACE-006` and `MM-DTRACE-007` to the synthetic
@@ -310,6 +329,10 @@ status.
    value and determine which digests become stale. Explain why none of them
    proves who created or approved the result, and why model collection bounds
    do not cap an HTTP request body or concurrent requests.
+9. Move one v2 `produced_at` to the next day and confirm validation fails; move
+   it one second earlier and confirm validation succeeds. Rewrite an equal
+   instant using a `-05:00` offset. Explain why it passes and why this ordering
+   check does not authenticate a wall clock.
 
 ## Diagnosis, maintenance and evolution
 

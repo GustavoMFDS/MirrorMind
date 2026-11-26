@@ -2,7 +2,7 @@
 
 import hashlib
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
 from typing import Annotated, Literal, TypeAlias
 
@@ -383,6 +383,12 @@ class DecisionTraceV2(DecisionTrace):
         execution_ids = [item.execution_id for item in self.execution_evidence]
         if len(execution_ids) != len(set(execution_ids)):
             raise ValueError("duplicate execution identifier in decision trace")
+        created_at_utc = self.created_at.astimezone(UTC)
+        if any(
+            item.produced_at.astimezone(UTC) > created_at_utc
+            for item in self.execution_evidence
+        ):
+            raise ValueError("execution evidence cannot be produced after trace creation")
 
         existing_ids = {
             self.trace_id,

@@ -79,17 +79,19 @@ test double separately as a parity oracle when WorldKernel supplies selected
 metrics. It preserves trace v1. Regression coverage checks both engines,
 replay, mismatched/dangling provenance and parity-digest disagreement.
 
-The exact-clean-head six-check local gate passed on `74330d811145f10fcaaddadc56c3f95e7c8b7a85`
-with the optional WorldKernel package installed from reviewed commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: 832 tests passed, no tests were
-skipped, and Ruff, catalog, atlas, evidence and capability checks passed. One
-existing Starlette/httpx `TestClient` deprecation warning appeared. This is
-local evidence, not Actions, independent approval or merge evidence. The
-final documentation-head receipt is stored at
-`results/local-quality-gate-<full-head-sha>.json`; the exact result is linked
-from PR #62. PR #62 is awaiting review; its local evidence does not constitute
-official CI or integration approval. `main` was not changed, and #60/#61
-remain separate.
+The later independent review found that v2 accepted execution evidence dated
+after trace creation. Commit `20e7b50f88df046eaf3541c5ea706b2e3b051aad`
+adds UTC-instant chronology validation and regressions for later, earlier and
+timezone-equivalent equal timestamps. Its exact-clean-head six-check local
+gate passed 835 tests with zero skips, Ruff, catalog, atlas, evidence and
+capability checks, with WorldKernel `0.0.1` installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. One existing Starlette/httpx
+`TestClient` deprecation warning appeared. Receipt:
+`results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
+This is local evidence, not Actions, independent approval or merge evidence.
+After this documentation update, the exact clean candidate head must pass the
+same six-check gate; its receipt and full SHA are reported on PR #62. PR #62
+remains awaiting review. `main` was not changed, and #60/#61 remain separate.
 
 ## Active branch evidence — 2026-11-25
 

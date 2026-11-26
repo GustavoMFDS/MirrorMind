@@ -315,6 +315,27 @@
     "limitation": "Rejects an orphan execution record in a synthetic v2 trace only. It does not prove that a linked execution actually occurred or authenticate its provenance."
   },
   {
+    "id": "MM-DTRACE-010",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_rejects_execution_evidence_after_trace_creation",
+    "limitation": "Rejects one caller-declared v2 execution timestamp later than trace creation. It does not authenticate clocks, producers or execution."
+  },
+  {
+    "id": "MM-DTRACE-011",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_accepts_execution_evidence_before_trace_creation",
+    "limitation": "Accepts an earlier synthetic execution instant only. It does not establish when any real process ran."
+  },
+  {
+    "id": "MM-DTRACE-012",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_accepts_execution_evidence_at_creation_with_equivalent_timezone",
+    "limitation": "Confirms equality for one synthetic instant written at two offsets. It does not verify timezone source or wall-clock accuracy."
+  },
+  {
     "id": "MM-EDRIFT-001",
     "guide": "docs/engineering/RETAIL_ELIGIBILITY_DRIFT.md",
     "test": "tests/unit/test_retail_eligibility_drift.py",
