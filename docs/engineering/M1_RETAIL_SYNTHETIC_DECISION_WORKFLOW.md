@@ -197,6 +197,12 @@ The trace has `human_review.status="not_requested"`. Its `created_at` is a
 deterministic **fixture logical timestamp** for replay; it is not a wall-clock
 execution audit.
 
+The v2 validator requires each execution record's timezone-aware
+`produced_at` instant to be no later than `created_at`. Equal instants compare
+equal even when their serialized offsets differ. The generated producer uses
+equal logical timestamps for its selected and parity records; passing this
+ordering check does not prove when the process ran.
+
 ## 4. Contracts and examples
 
 ### HTTP request
@@ -317,6 +323,10 @@ does not close those product gates.
   rejects execution receipts that no conditional outcome uses.
 - `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_parity_evidence_with_a_different_selected_result_digest`
   rejects parity metadata that does not describe the selected result.
+- `tests/unit/test_synthetic_decision_workflow.py::test_trace_rejects_execution_evidence_after_trace_creation`
+  rejects evidence later than trace creation. Companion regressions accept an
+  earlier instant and equal instants serialized with equivalent timezone
+  offsets; none authenticates the fixture clock.
 - `tests/unit/test_synthetic_decision_workflow.py::test_incomplete_or_late_history_abstains_without_running_policy_test_double`
   covers missing, late and unpublished cases while making a policy call fail
   the test immediately.
@@ -366,7 +376,9 @@ output and parity-oracle digests, then inspect the package, commit, world,
 revision and raw result digest in the selected provenance reference. Recompute
 the trace digest with `DecisionTraceV2.result_sha256`, compare it with the artifact
 digest map and recompute `workflow_result_sha256` after excluding only that
-field. Do not treat any digest as a signature. For identity collisions,
+field. Compare each execution `produced_at` with `created_at` as an absolute
+timezone-aware instant; reject a later value without claiming either timestamp
+is a trusted wall clock. Do not treat any digest as a signature. For identity collisions,
 compare the validated request and schema-versioned artifact digests before
 tracing `_decision_identity_sha256`. For explicit engine runs, follow the
 [WorldKernel policy-world guide](WORLDKERNEL_POLICY_WORLD.md), verify the
@@ -404,3 +416,7 @@ pass the [versioned WorldKernel gateway gate](WORLDKERNEL_GATEWAY_GATE.md).
    `workflow_result_sha256`. Compare it with `trace_sha256`; explain why a
    trace digest alone cannot bind the whole workflow envelope and why neither
    digest authenticates its producer.
+8. Copy a trace and move one execution `produced_at` after `created_at`, then
+   before it and to the same instant using a different timezone offset. Predict
+   validation for each case. Explain why this checks chronology but not the
+   fixture clock's authenticity.

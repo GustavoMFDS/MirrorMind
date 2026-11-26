@@ -651,8 +651,12 @@ record and parity-oracle record. Confirm their contract references, equal
 metric digests and the WorldKernel package, commit, world, revision, result
 schema and raw worker digest in the selected provenance reference. Run
 `test_trace_rejects_execution_evidence_from_a_different_engine_contract`,
-`test_trace_rejects_dangling_execution_evidence_references` and
-`test_trace_rejects_parity_evidence_with_a_different_selected_result_digest`.
+`test_trace_rejects_dangling_execution_evidence_references`,
+`test_trace_rejects_parity_evidence_with_a_different_selected_result_digest`
+and the execution chronology tests. Set `produced_at` after, before and equal
+to `created_at`; express equality with a second timezone offset. Explain why
+only a later instant fails and why these logical timestamps do not authenticate
+the machine clock.
 Explain why the v1 example still validates as v1, why v2 records are separate
 from historical input evidence and why exact parity against shared rules is
 not independent scientific validation.

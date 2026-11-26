@@ -4,7 +4,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta, timezone
 from types import SimpleNamespace
 
 import pytest
@@ -242,6 +242,53 @@ def test_trace_rejects_execution_evidence_from_a_different_engine_contract():
 
     with pytest.raises(ValidationError, match="does not match its selected execution"):
         DecisionTraceV2.model_validate(payload)
+
+
+def test_trace_rejects_execution_evidence_after_trace_creation():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    created_at = datetime.fromisoformat(payload["created_at"])
+    payload["execution_evidence"][0]["produced_at"] = (
+        created_at + timedelta(days=1)
+    ).isoformat()
+
+    with pytest.raises(
+        ValidationError,
+        match="execution evidence cannot be produced after trace creation",
+    ):
+        DecisionTraceV2.model_validate(payload)
+
+
+def test_trace_accepts_execution_evidence_before_trace_creation():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    created_at = datetime.fromisoformat(payload["created_at"])
+    payload["execution_evidence"][0]["produced_at"] = (
+        created_at - timedelta(seconds=1)
+    ).isoformat()
+
+    trace = DecisionTraceV2.model_validate(payload)
+
+    assert trace.execution_evidence[0].produced_at < trace.created_at
+
+
+def test_trace_accepts_execution_evidence_at_creation_with_equivalent_timezone():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    payload = copy.deepcopy(result["trace"])
+    created_at = datetime.fromisoformat(payload["created_at"])
+    payload["execution_evidence"][0]["produced_at"] = created_at.astimezone(
+        timezone(timedelta(hours=-5))
+    ).isoformat()
+
+    trace = DecisionTraceV2.model_validate(payload)
+
+    assert trace.execution_evidence[0].produced_at == trace.created_at
 
 
 def test_trace_rejects_dangling_execution_evidence_references():
