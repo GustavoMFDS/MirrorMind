@@ -75,7 +75,7 @@ through the current connector. Do not infer that these exact runs carry the
 same alternative account annotation recovered for earlier heads. No remote
 tests are evidenced for `c000ebd`.
 
-### PR #64 exact-head CI observation — 2026-11-26
+### PR #64 exact-head CI observations — 2026-11-26
 
 For head `aec18f6f8a21be7069fab3ed2409fe68540c45a0`, GitHub reported the
 `test` run [45768693223](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45768693223)
@@ -88,6 +88,14 @@ does not establish a specific failure cause. The owner's separate quota
 decision remains in force, but it is not attributed as the cause of these
 exact runs. No workflow, required check, protection, runner or spending limit
 was changed.
+
+The documentation-only head `271f01cae5aacf274d3fa9f9ff2ede34796471ef`
+also has a failed `Python API CI` run
+[45769344631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45769344631).
+Its `test` job `139737946303` returned no steps, and the log endpoint returned
+`BlobNotFound`; the combined commit status contained no status entries. This
+second observation likewise exposes no repository test output or specific
+cause. The exact-head local gate passed separately; it is not official CI.
 
 ### Self-hosted runner option
 

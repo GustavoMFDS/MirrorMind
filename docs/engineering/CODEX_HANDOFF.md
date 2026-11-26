@@ -21,8 +21,11 @@ execution guidance and does not broaden the agent's permissions.
   The five original `ruff check examples` findings were reproduced. RUF007's
   `itertools.pairwise` correction has direct empty/singleton/consecutive/gap
   regressions; no forecast or authorization behavior changed. Exact-head local
-  gate passed on the PR head; the PR records the pre-step Actions failures
-  without attributing a cause. Keep #64 separate from #60/#61/#63.
+  gate passed on `271f01cae5aacf274d3fa9f9ff2ede34796471ef` with 840 tests,
+  zero skips and six checks; receipt is
+  `results/local-quality-gate-271f01cae5aacf274d3fa9f9ff2ede34796471ef-venv.json`.
+  Actions run `45769344631` has no job steps or retrievable logs, so the cause
+  is unknown. Keep #64 separate from #60/#61/#63.
 
 ## 1.1 Owner-approved continuation decisions — 2026-11-25
 

@@ -73,14 +73,18 @@ credentials, or external services are involved.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: PR #64 on `codex/eng-02-examples-ruff`; its description records
-  the final committed head, local gate receipt and validation limits.
+- Commit / PR: PR #64 on `codex/eng-02-examples-ruff`; code commit
+  `aec18f6f8a21be7069fab3ed2409fe68540c45a0`, documentation evidence commit
+  `271f01cae5aacf274d3fa9f9ff2ede34796471ef`.
 - Modified symbols and files: `_require_contiguous_days` and its caller in
   `examples/m1_asof_rolling_backtest.py`; import order in the two preflight /
   backtest examples; no public symbol or response changed.
 - Tests executed before the committed-head gate: 49 focused unit tests and 11
   CLI tests passed; `ruff check examples` and the changed-test Ruff check
-  passed. Full exact-head gate evidence is published in the PR description.
+  passed. The exact-head gate on `271f01c` passed 840 tests, zero skips and
+  all six checks. Receipt:
+  `results/local-quality-gate-271f01cae5aacf274d3fa9f9ff2ede34796471ef-venv.json`.
+  It is local evidence, not official GitHub Actions.
 - Claim IDs and limitations: no new product or capability claim; existing
   MM-ASOF-001 covers public missing-day rejection. Direct helper tests cover
   pair boundaries and gap rejection.
