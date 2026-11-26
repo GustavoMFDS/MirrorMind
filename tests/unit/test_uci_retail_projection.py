@@ -6,6 +6,8 @@ import pytest
 
 from mirrormind.domains.retail.uci_transactions import (
     MAX_ROWS,
+    MAX_SUPPORTED_GROUPS,
+    MAX_SUPPORTED_ROWS,
     ProductDayUnits,
     project_uci_retail_rows,
 )
@@ -86,13 +88,13 @@ def test_retained_row_is_not_automatically_proof_of_merchandise_or_true_demand()
     assert result.receipt()["status"].endswith("not_authorized")
 
 
-@pytest.mark.parametrize("bad", [True, 0, -2, 10_001, 1.5, "10"])
+@pytest.mark.parametrize("bad", [True, 0, -2, MAX_SUPPORTED_ROWS + 1, 1.5, "10"])
 def test_invalid_row_budgets_fail_before_consuming_rows(bad):
     with pytest.raises(ValueError, match="max_rows"):
         project_uci_retail_rows([row()], max_rows=bad)
 
 
-@pytest.mark.parametrize("bad", [True, 0, -2, 2_001, 1.5, "10"])
+@pytest.mark.parametrize("bad", [True, 0, -2, MAX_SUPPORTED_GROUPS + 1, 1.5, "10"])
 def test_invalid_group_budgets_fail_before_consuming_rows(bad):
     with pytest.raises(ValueError, match="max_groups"):
         project_uci_retail_rows([row()], max_groups=bad)
@@ -109,6 +111,22 @@ def test_row_limit_is_enforced_on_iterator_without_materialization():
     with pytest.raises(ValueError, match="row count"):
         project_uci_retail_rows(stream(), max_rows=2)
     assert seen == [0, 1, 2]
+
+
+def test_explicit_source_bound_can_exceed_small_preflight_default():
+    row_count = MAX_ROWS + 1
+
+    def stream():
+        for _ in range(row_count):
+            yield row()
+
+    result = project_uci_retail_rows(
+        stream(), max_rows=row_count, max_groups=1
+    )
+
+    assert result.processed_rows == row_count
+    assert result.accepted_rows == row_count
+    assert len(result.days) == 1
 
 
 def test_new_product_day_group_budget_rejects_excess_without_partial_result():

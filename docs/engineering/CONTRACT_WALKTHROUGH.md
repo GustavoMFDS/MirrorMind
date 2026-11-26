@@ -7,6 +7,11 @@ are enforced during execution. Read
 [the API guide](API_WALKTHROUGH.md), [the version 0.1 contract](../CONTRACTS.md)
 and [the current security obligations](../SECURITY.md).
 
+This walkthrough covers an **input** contract. A separate immutable,
+interface-only [decision result contract](DECISION_TRACE_RESULT.md)
+demonstrates local trace shape and reference validation; it does not change
+this route or imply that a result has been produced.
+
 ## 1. Exact route from JSON to a validated object
 
 ```text

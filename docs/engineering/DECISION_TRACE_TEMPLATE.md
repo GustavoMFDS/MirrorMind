@@ -74,6 +74,10 @@ Use [DATASET_CARD_TEMPLATE](DATASET_CARD_TEMPLATE.md),
 [CAPABILITY_GATES](CAPABILITY_GATES.md), and
 [WorldKernel gateway acceptance](WORLDKERNEL_GATEWAY_GATE.md).
 
-**Current status:** MirrorMind does not yet create these traces
-automatically; this is an engineering specification and review tool,
-not an implemented Decision Engine.
+**Current status:** MirrorMind does not create traces automatically. A
+local immutable v1 schema exists in
+[`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py);
+it validates caller-declared structure and references only. See the
+[result contract walkthrough](DECISION_TRACE_RESULT.md). It is
+interface-only, not an implemented Decision Engine, source authenticator,
+forecast or simulation service.

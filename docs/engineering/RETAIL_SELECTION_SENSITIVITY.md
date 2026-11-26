@@ -14,6 +14,11 @@ reuses the prequential eligibility audit independently for two disjoint,
 adjacent windows, each evaluated at its **own** date cutoff.
 It never retrieves excluded values, including values present in a later
 snapshot but not declared published by that earlier cutoff.
+The residual audit behind these eligibility counts uses a fixed calibration
+target interval before each window and never reuses a holdout label as a
+later calibration residual. This can reduce eligibility when calibration
+releases or their own-origin features arrive late; it does not calibrate the
+counterfactual bounds.
 
 ## Mathematical scenario, not a data inference
 

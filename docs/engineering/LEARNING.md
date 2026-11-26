@@ -29,6 +29,7 @@ The catalog captures syntax; use official Python docs, implementation and tests 
 5. Draft a future evidence/forecast/simulation flow that keeps observed data, predictions and simulated results distinct, without claiming that it exists.
 
 You should be able to add a contract field, test a route and explain compatibility before agent-led feature work.
+
 ## Guided exercise 6 — input validation is not execution (30 minutes)
 
 Read [the contract walkthrough](CONTRACT_WALKTHROUGH.md) and follow
@@ -447,3 +448,231 @@ disagrees with the old local registry. Then freshly sign the old
 head with the new nonce and explain why a malicious remote signer
 still passes. Identify what a genuinely independent deployed
 authority and trusted key-custody process must add.
+
+## Guided exercise — compose local retail evidence without granting permission (35 minutes)
+
+Read [`evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py),
+the [M1 evidence-flow guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), and
+[`test_retail_evidence_flow.py`](../../tests/integration/test_retail_evidence_flow.py).
+Trace the CSV fixture through digest verification, the metadata-only review
+packet, quality summary and two-date as-of selection. Predict which rows are
+present at January 3 and January 5, then move the origin before the first row
+and verify the explicit abstention. Next inspect the generated XLSX test and
+explain why each positive product-day needs a separate release declaration.
+Remove one release and observe the fail-closed error. Finally compare the
+typed result with `receipt()`: identify the fields retained for a later local
+experiment, the fields omitted from receipts, and the still-false
+`ingestion_authorized` and `forecast_eligible` flags. The exercise uses only
+invented fixtures and does not establish a real source's rights or vintages.
+
+## Guided exercise — trace a fixed-split retail evaluation (40 minutes)
+
+Read [`evaluation_flow.py`](../../src/mirrormind/domains/retail/evaluation_flow.py),
+the [M1 evidence-to-evaluation guide](M1_RETAIL_SYNTHETIC_EVALUATION.md),
+the [synthetic fixture card](datasets/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md)
+and the [baseline model card](model_cards/SYNTHETIC_RETAIL_RELEASE_EVALUATION.md).
+Run the example CLI twice and compare the complete JSON. Before running the
+integration test, predict why the seven targets produce two scored origins,
+three unavailable-history statuses, one missing target and one unpublished
+target. Mutate the final unavailable target and verify the digest changes
+while metrics and origin receipts stay fixed. Then set all releases after the
+cutoff and explain why no metrics or winner is returned. Finally explain why
+the fixture's zero seasonal-naive MAE is not evidence of real predictive
+skill, and list the publisher, calendar, holdout and uncertainty evidence
+needed before an empirical claim.
+
+## Guided exercise — bind review to an exact result
+
+Read the [decision trace result walkthrough](DECISION_TRACE_RESULT.md) and
+[`DecisionTrace`](../../src/mirrormind/core/decision_trace.py). Run
+`python -m pytest -q tests/unit/test_decision_trace.py`. Before changing the
+fixture, predict which cross-reference validator runs and why an unavailable
+cost cannot be encoded as zero. Compute `result_sha256`, create an approved
+`HumanReview`, then change one forecast value without changing the digest and
+predict the rejection. Explain why this proves local content binding but
+does not authenticate a reviewer, data source or simulation.
+
+## Guided exercise — inspect a strict external mapping (35 minutes)
+
+Read the [WorldKernel mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md),
+then trace `build_worldkernel_exchange_request` through
+`tests/unit/test_worldkernel_mapping.py::test_supported_inventory_scenario_maps_to_exact_v1_request`.
+Predict the error for an unlisted world version, `lead_time_days`, a forecast
+reference and an operator transition cap below `horizon_days * runs`. Then run
+`test_mapping_revalidates_mutated_scenario_before_budget_mapping` and
+`test_mapping_preserves_lower_scenario_or_operator_run_ceiling`: trace how a
+mutable Pydantic object is revalidated and how the lower run ceiling is chosen.
+Explain why the explicit unit object is still an assertion rather than
+provenance, why the generated v1 limits are not an independently enforced
+server quota, and why a deterministic request is not a simulation result.
+Then trace the implemented M1E-02 worker boundary in the same walkthrough:
+identify which budgets are enforced outside exchange v1 and which unsupported
+budgets reject before process launch.
+
+## Guided exercise — execute one pinned local simulation (40 minutes)
+
+Read the [WorldKernel runtime gate](WORLDKERNEL_GATEWAY_GATE.md),
+[`worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py),
+[`worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py),
+and [M1E-02 change request](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md).
+Install only the optional SHA-pinned extra, then run
+`python -m examples.m1e_02_worldkernel_local_runner`. Explain how
+`LocalWorldKernelGateway.execute` reaches the strict mapper, why the worker
+checks PEP 610 package metadata separately from the `demo-1` world revision,
+and how the parent rejects a malformed result before creating a summary.
+
+Run `tests/unit/test_worldkernel_runner.py` and the actual-engine integration
+test. Change a fake result's revision, unknown-field set, stdout size and
+stderr size; predict the typed failure before running each test. Compare the
+fake-worker tests with
+`tests/integration/test_worldkernel_runner_engine.py::test_pinned_local_runner_executes_synthetic_inventory_world_deterministically`.
+State why only the latter proves execution of the pinned engine. Finally list
+what remains unproved: CPU/memory isolation, hostile-code safety, HTTP
+execution, source rights, true demand, lead-time behavior, forecast quality
+and production suitability.
+
+## Guided exercise — trace chronology, canonical cost digests and resource bounds
+
+Read [the result contract walkthrough](DECISION_TRACE_RESULT.md) and follow
+`DecisionTrace.check_trace_references_and_cutoff` into the evidence-ID map and
+review-time comparison. Run `tests/unit/test_decision_trace.py`, then inspect
+`test_terminal_review_cannot_precede_trace_creation`,
+`test_terminal_review_accepts_creation_boundary_and_equivalent_timezone`,
+`test_result_digest_is_lossless_and_independent_of_decimal_context`, and the
+collection-bound tests. Explain why a reviewer timestamp is compared as an
+instant, why `Decimal.normalize()` can round under the active context, and why
+the bounds on records/references do not enforce a transport request-size or
+rate limit. Reproduce a same-length, valid-looking payload that stays below
+every bound and identify which independent data-provenance checks are still
+missing.
+
+## Guided exercise 16 — compare synthetic inventory policies (35 minutes)
+
+Read the [M1 policy simulation walkthrough](M1_RETAIL_POLICY_SIMULATION.md),
+[`policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py),
+and its [unit tests](../../tests/unit/test_retail_policy_simulation.py) and
+[CLI integration tests](../../tests/integration/test_retail_policy_simulation_cli.py).
+Run `python -m examples.m1_retail_policy_test_double` twice and compare the
+JSON. Before inspecting metrics, predict how fixed-cycle, reorder-point and
+profile-aware rules differ when lead time changes. Verify each replication's
+demand digest matches across policy and sensitivity rows. Change one cost
+coefficient and trace the affected total-cost components. Then explain why the
+profile-aware rule and a lower synthetic cost establish neither a valid
+forecast nor a realistic or optimal business policy. Set initial stock and
+safety stock to zero with a one-day lead time, then inspect the positive
+arrival-day profile value and the emitted `modeling_caveats`. Trace the case
+through `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`, keep
+`test_profile_aware_target_stops_before_arrival_day` intact, and run
+`test_inventory_mass_balance_holds_for_every_policy_replication`. Explain why
+the caveat documents this implementation boundary without establishing that
+the rule is a conventional protection-period policy.
+
+## Guided exercise 17 — keep uncertainty calibration labels disjoint (40 minutes)
+
+Read [`evaluate_retail_residual_envelopes`](../../src/mirrormind/domains/retail/residual_envelope.py),
+the [uncertainty walkthrough](RETAIL_RESIDUAL_ENVELOPE.md), the scoped
+[M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md), and
+[`test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py).
+Start with `test_holdout_targets_never_enter_later_calibration_windows`:
+draw the two date sets for a two-day holdout, then mark day 59 unavailable
+until the second holdout origin. Predict whether the day-69 target may be
+used as a day-70 calibration residual. Run the focused test and explain why
+the answer is still no even though the earlier holdout result is now
+published. Trace `release_events`, `_predict_on`, the active residual count
+and the maximum-residual heap in the evaluator. Next inspect
+`_naive_calibration_oracle` and the adversarial parameterized tests; explain
+which implementation choices are independently recomputed and which remain
+shared assumptions. Finally identify the exact numerator and denominator,
+explain why their ratio is retrospective rather than nominal coverage, and
+name the provenance and untouched-holdout evidence still required for a
+scientific calibration claim. Reproduce with:
+
+```bash
+python -m pytest -q tests/unit/test_retail_residual_envelope.py
+```
+
+## Guided exercise — reconcile decision and workflow digest scopes
+
+Read the [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md),
+[`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py)
+and `tests/unit/test_synthetic_decision_workflow.py`. Run
+`python -m examples.m1_retail_decision_workflow --as-of 2011-01-26 --replications 12 --seed 317`.
+Before running, draw the diagnostic cutoff, historical holdout and last-seven
+forecast window. Predict why `--as-of 2011-01-27` abstains when day 27 is late,
+then follow `_eligible_observation_rows` to the release audit. On a successful
+run, trace one `ForecastEstimate` from its seven facts to the nine conditional
+outcomes. Change only the seed and confirm that the forecast remains fixed
+while paired demand-stream digests change. Then run
+`test_trace_identity_includes_replications_and_exact_replay_is_stable`, then
+compare identical date/seed requests with different replication counts. Trace
+the collision through `_decision_identity_sha256` and explain why the request
+and versioned artifact digests both contribute to content identity. Run
+`test_versioned_artifact_and_workflow_digests_bind_the_complete_response`;
+change a nested simulation value in a copy and recompute the outer digest.
+Distinguish that envelope digest from `DecisionTrace.result_sha256` and explain
+why neither establishes producer identity, source provenance, a stored
+revision history or human approval. Finally run
+`test_profile_aware_policy_modeling_caveats_are_bound_into_trace` and trace the
+arrival-day demand caveat to the affected outcome. Explain why an experimental
+HTTP route with no authentication, body-size limit, rate limit or concurrency
+control must not be exposed publicly even though its domain fields are
+bounded.
+
+## Guided exercise — inspect the WorldKernel policy world
+
+Read the [M1E-04 policy-world walkthrough](WORLDKERNEL_POLICY_WORLD.md),
+[`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py),
+the [strict policy mapper](../../src/mirrormind/modules/simulation/worldkernel_policy_mapping.py),
+and [`test_worldkernel_policy_world.py`](../../tests/unit/test_worldkernel_policy_world.py).
+Run the focused commands in that guide and then run
+`test_pinned_engine_policy_gateway_matches_synthetic_reference` with the exact
+optional WorldKernel commit installed. Trace one WorldKernel event: prove
+that the handler draws demand once, advances all three policies over each
+lead-time case, and preserves the shared M1E-03 day transition. Deliberately
+change the registered revision and one final inventory counter in fake-worker
+fixtures; identify the exact parent validation that rejects each. Explain
+why the in-process test double remains the parity oracle but its values are
+not substituted for returned engine state. Finally inspect the API route and
+verify that HTTP cannot inject this local comparator. A passing exact-engine
+test still does not establish source rights, policy optimality, hostile-code
+isolation, CPU/memory quotas or production safety.
+
+## Guided exercise — trace the selected engine and parity evidence
+
+Read the [v2 decision-trace contract](DECISION_TRACE_RESULT.md),
+[M1F-03 change request](changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md),
+[synthetic workflow walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md)
+and [`test_worldkernel_policy_world_engine.py`](../../tests/integration/test_worldkernel_policy_world_engine.py).
+Run the default command and then the explicit `--engine worldkernel` command
+from the walkthrough. In each JSON result, explain the selected source,
+`policy_test_double_invoked` and `policy_test_double_result_selected`. In the
+engine run, follow each outcome's execution references to the selected-output
+record and parity-oracle record. Confirm their contract references, equal
+metric digests and the WorldKernel package, commit, world, revision, result
+schema and raw worker digest in the selected provenance reference. Run
+`test_trace_rejects_execution_evidence_from_a_different_engine_contract`,
+`test_trace_rejects_dangling_execution_evidence_references`,
+`test_trace_rejects_parity_evidence_with_a_different_selected_result_digest`
+and the execution chronology tests. Set `produced_at` after, before and equal
+to `created_at`; express equality with a second timezone offset. Explain why
+only a later instant fails and why these logical timestamps do not authenticate
+the machine clock.
+Explain why the v1 example still validates as v1, why v2 records are separate
+from historical input evidence and why exact parity against shared rules is
+not independent scientific validation.
+
+## Guided exercise — understand the UCI event-time boundary (35 minutes)
+
+Read [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py),
+the [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md), the [synthetic
+dataset card](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md), the [model
+card](model_cards/SYNTHETIC_UCI_EVENT_TIME.md), and
+[`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py). Run the
+generated CLI twice and compare JSON. Trace how fit dates freeze the product
+cohort, then predict how a missing declared date affects target and history
+abstentions. Change a product-day value on a declared complete date; contrast
+the resulting zero assumption with removing that date from the coverage
+declaration. Mutate a holdout value and verify validation metrics stay fixed.
+Finally locate where `InvoiceDate` becomes an event day and explain why a
+verified publication vintage requires a distinct source contract. Do not use
+real UCI rows in this exercise.

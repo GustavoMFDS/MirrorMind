@@ -17,6 +17,7 @@ dependencies = [
 uci = ["openpyxl>=3.1,<4"]
 review = ["cryptography>=44,<47"]
 dev = ["httpx>=0.27", "pytest>=8", "ruff>=0.8", "openpyxl>=3.1,<4", "cryptography>=44,<47"]
+worldkernel = ["worldkernel @ git+https://github.com/GustavoMFDS/WorldKernel.git@9b133ef873f2b6a7206c9c5742d40df4fccdb04a"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

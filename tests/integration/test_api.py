@@ -12,7 +12,10 @@ def test_health():
 def test_capabilities_do_not_overstate_implementation():
     payload = client.get("/v1/capabilities").json()
     assert payload["status"] == "scaffold"
-    assert "worldkernel_adapter" in payload["planned"]
+    assert "worldkernel_adapter" in payload["experimental"]
+    assert "worldkernel_adapter" not in payload["planned"]
+    assert "local_retail_policy_test_double" in payload["experimental"]
+    assert "synthetic_retail_decision_workflow" in payload["experimental"]
 
 
 def test_scenario_validation_only():
@@ -26,6 +29,39 @@ def test_scenario_validation_only():
     response = client.post("/v1/scenarios/validate", json=spec)
     assert response.status_code == 200
     assert response.json()["status"] == "validated_not_executed"
+
+
+def test_synthetic_retail_decision_route_returns_the_shared_service_result():
+    import json
+    from datetime import date
+
+    from mirrormind.domains.retail.synthetic_decision_workflow import (
+        SyntheticDecisionWorkflowRequest,
+        run_synthetic_decision_workflow,
+    )
+
+    request = SyntheticDecisionWorkflowRequest(
+        as_of=date(2011, 1, 26), replications=1, seed=17
+    )
+    response = client.post(
+        "/v1/decision-workflows/retail/synthetic",
+        json={"as_of": "2011-01-26", "replications": 1, "seed": 17},
+    )
+
+    assert response.status_code == 200
+    expected = run_synthetic_decision_workflow(request)
+    assert response.json() == json.loads(json.dumps(expected, allow_nan=False))
+    assert response.json()["trace"]["human_review"]["status"] == "not_requested"
+    assert response.json()["writes_performed"] is False
+
+
+def test_synthetic_retail_decision_route_rejects_unbounded_request_fields():
+    response = client.post(
+        "/v1/decision-workflows/retail/synthetic",
+        json={"as_of": "2011-01-26", "replications": 1, "seed": 17,
+              "arbitrary_url": "https://invalid.example"},
+    )
+    assert response.status_code == 422
 
 
 def test_runs_cannot_exceed_budget():

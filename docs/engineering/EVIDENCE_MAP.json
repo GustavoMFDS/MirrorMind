@@ -1,24 +1,17 @@
 [
   {
-    "id": "MM-CON-001",
-    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
-    "test": "tests/unit/test_contracts.py",
-    "function": "test_exceeding_budget_rejected",
-    "limitation": "Checks declared run bounds at model construction; does not meter actual execution."
+    "id": "MM-ANCHOR-001",
+    "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
+    "test": "tests/unit/test_head_checkpoints.py",
+    "function": "test_restored_older_sqlite_is_rejected_against_newer_independent_signed_head",
+    "limitation": "An explicitly supplied newer signed head and sequence can reveal a restored SQLite file in synthetic tests; no externally authenticated current-head authority, monotonic sequence publication, trusted time, privacy/legal permission or actual source ingestion is provided."
   },
   {
-    "id": "MM-CON-002",
-    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
-    "test": "tests/unit/test_contracts.py",
-    "function": "test_forecast_coverage_rejected",
-    "limitation": "Checks reference horizon only; does not verify existence, backtesting or data cutoffs."
-  },
-  {
-    "id": "MM-CON-003",
-    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
-    "test": "tests/unit/test_contracts.py",
-    "function": "test_valid_scenario",
-    "limitation": "A passing Pydantic constructor does not execute a simulation or authenticate evidence."
+    "id": "MM-ANCHOR-002",
+    "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
+    "test": "tests/unit/test_head_checkpoints.py",
+    "function": "test_older_valid_checkpoint_replay_is_not_prevented_if_high_water_is_stale",
+    "limitation": "A valid older signed checkpoint and matching old SQLite database remain acceptable when the caller's minimum sequence is stale. Signatures alone do NOT establish log freshness, independent authority, anti-equivocation or current source permissions."
   },
   {
     "id": "MM-API-001",
@@ -42,74 +35,11 @@
     "limitation": "422 for excess declared runs is not server-side compute quota enforcement."
   },
   {
-    "id": "MM-DATA-001",
-    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
-    "test": "tests/unit/test_m1_observation_preflight.py",
-    "function": "test_synthetic_batch_is_bounded_and_reports_gaps_without_imputation",
-    "limitation": "Only checks deterministic synthetic counts and missing-date arithmetic; no real data source completeness."
-  },
-  {
-    "id": "MM-DATA-002",
-    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
-    "test": "tests/unit/test_m1_observation_preflight.py",
-    "function": "test_cutoff_rejects_future_dated_observation",
-    "limitation": "Declared calendar cutoff alone cannot prevent future-derived features or verify publication timestamps."
-  },
-  {
-    "id": "MM-DATA-003",
-    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
-    "test": "tests/integration/test_m1_observation_preflight_cli.py",
-    "function": "test_synthetic_preflight_cli_fails_without_echoing_sensitive_input",
-    "limitation": "Generic subprocess error does not prove user permissions, secure production logs or confidential data governance."
-  },
-  {
-    "id": "MM-FCST-001",
-    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
-    "test": "tests/unit/test_m1_temporal_backtest.py",
-    "function": "test_seasonal_naive_is_exact_on_weekly_fixture_and_mean_is_not",
-    "limitation": "Seasonal naive exactness is constructed by the synthetic weekly pattern, not evidence of empirical predictive performance."
-  },
-  {
-    "id": "MM-FCST-002",
-    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
-    "test": "tests/unit/test_m1_temporal_backtest.py",
-    "function": "test_each_one_step_prediction_receives_only_prior_observations",
-    "limitation": "Proves explicit algorithm prefixes, not source publication time, hidden future-derived features or untuned holdouts."
-  },
-  {
-    "id": "MM-FCST-003",
-    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
-    "test": "tests/unit/test_m1_temporal_backtest.py",
-    "function": "test_missing_day_abstains_instead_of_zero_imputation",
-    "limitation": "A contiguous synthetic series is not evidence of genuine data completeness or latent demand."
-  },
-  {
-    "id": "MM-FCST-004",
-    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
-    "test": "tests/unit/test_m1_temporal_backtest.py",
-    "function": "test_zero_denominator_wape_is_null_not_zero_percent",
-    "limitation": "Zero-safe WAPE arithmetic does not establish model reliability, predictive uncertainty or calibration."
-  },
-  {
-    "id": "MM-AVAIL-001",
-    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
-    "test": "tests/unit/test_m1_availability_preflight.py",
-    "function": "test_late_publication_is_excluded_even_when_event_date_precedes_cutoff",
-    "limitation": "As-of filtering on declared synthetic timestamps does not authenticate when a real source actually made data available."
-  },
-  {
-    "id": "MM-AVAIL-002",
-    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
-    "test": "tests/unit/test_m1_availability_preflight.py",
-    "function": "test_unavailable_value_change_cannot_change_eligible_aggregate",
-    "limitation": "Only synthetic value exclusion is established; other future-derived features and revised data may still leak in a real pipeline."
-  },
-  {
-    "id": "MM-AVAIL-003",
-    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
-    "test": "tests/unit/test_m1_availability_preflight.py",
-    "function": "test_published_before_observation_rejected",
-    "limitation": "Date order is a local input constraint rather than verified publication provenance or permission for data use."
+    "id": "MM-API-004",
+    "guide": "docs/engineering/API_WALKTHROUGH.md",
+    "test": "tests/integration/test_api.py",
+    "function": "test_synthetic_retail_decision_route_returns_the_shared_service_result",
+    "limitation": "An in-process HTTP call matches the same local service on generated fixture data. It does not prove deployed availability, source authorization, real forecast quality, WorldKernel execution, persistence or business writes."
   },
   {
     "id": "MM-ASOF-001",
@@ -131,454 +61,6 @@
     "test": "tests/unit/test_m1_asof_rolling_backtest.py",
     "function": "test_all_origins_can_abstain_without_fake_scores",
     "limitation": "Explicit null metrics on missing history do not provide independently evaluated forecast accuracy or decision readiness."
-  },
-  {
-    "id": "MM-SNAP-001",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_snapshots.py",
-    "function": "test_snapshot_content_hash_and_receipt_are_immutable_and_unverified",
-    "limitation": "Field immutability and digest matching do not prove source authenticity, authorization, tenant access or confidential processing."
-  },
-  {
-    "id": "MM-SNAP-002",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_snapshots.py",
-    "function": "test_asof_excludes_late_publication_but_keeps_real_zero",
-    "limitation": "Filters declared publication timestamps only; actual availability and licensed source ownership must be verified separately."
-  },
-  {
-    "id": "MM-SNAP-003",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_snapshots.py",
-    "function": "test_digest_mismatch_fails_before_interpreting_unverified_bytes",
-    "limitation": "The expected SHA-256 is caller supplied and is not an independently authenticated publisher signature or legal rights evidence."
-  },
-  {
-    "id": "MM-SNAP-004",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/integration/test_local_snapshot_flow.py",
-    "function": "test_local_example_receipt_and_historical_view_remain_unverified",
-    "limitation": "Integration on an invented CSV fixture does not exercise genuine data permissions, source revisions, privacy or retention."
-  },
-  {
-    "id": "MM-BL-001",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_staged_rolling_baselines_score_four_of_seven_after_late_publication",
-    "limitation": "Scoring four synthetic origins on invented weekly periodicity does not establish empirical predictive ability or source authenticity."
-  },
-  {
-    "id": "MM-BL-002",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_all_forecast_inputs_precede_origin_and_have_available_seven_day_window",
-    "limitation": "Historical windows use caller-declared publication dates, which need external verification against real revisions and releases."
-  },
-  {
-    "id": "MM-BL-003",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_all_origins_can_abstain_with_null_metrics_not_fake_winner",
-    "limitation": "Abstention avoids invented metrics but does not establish calibrated uncertainty, generalization or business benefit."
-  },
-  {
-    "id": "MM-BL-004",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/integration/test_staged_rolling_flow.py",
-    "function": "test_staged_csv_to_matched_rolling_backtest_without_runtime_io",
-    "limitation": "End-to-end local fixture flow lacks rights validation, encrypted persistence, tenant isolation and external forecast serving."
-  },
-  {
-    "id": "MM-AUD-001",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_every_requested_origin_has_one_reproducible_nonvalue_audit_record",
-    "limitation": "Per-date audit statuses on invented data do not prove source rights, publisher timestamps or tamper-evident storage."
-  },
-  {
-    "id": "MM-AUD-002",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_missing_target_is_not_conflated_with_unpublished_target",
-    "limitation": "Separating missing targets from unpublished targets does not correct source missingness or validate empirical predictions."
-  },
-  {
-    "id": "MM-AUD-003",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_all_abstained_audit_has_no_fabricated_scores",
-    "limitation": "Reporting all abstentions with null scores is not a guarantee of reliable forecasting or authorized access."
-  },
-  {
-    "id": "MM-HIST-001",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_min_history_counts_observations_not_one_ancient_row",
-    "limitation": "The negative sparse-history fixture establishes an event-row threshold, not source rights or authenticated publisher timestamps."
-  },
-  {
-    "id": "MM-HIST-002",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_earliest_supported_calendar_cutoff_fails_cleanly_not_overflow",
-    "limitation": "Guarding calendar boundaries is a local error-handling property, not evidence of production ingestion or statistical reliability."
-  },
-  {
-    "id": "MM-HIST-003",
-    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
-    "test": "tests/unit/test_staged_rolling_baselines.py",
-    "function": "test_custom_history_minimum_is_an_observation_count",
-    "limitation": "The parameter checks unique staged events before the holdout, not consecutive publication-complete days or genuine forecast performance."
-  },
-  {
-    "id": "MM-STRM-001",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_snapshots.py",
-    "function": "test_partial_stream_reads_continue_until_eof_and_do_not_accept_prefix_hash",
-    "limitation": "Full byte reads and mismatched prefix digest handling do not prove publisher authenticity or authorized use."
-  },
-  {
-    "id": "MM-STRM-002",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_snapshots.py",
-    "function": "test_bounded_reader_rejects_oversized_stream_before_full_read",
-    "limitation": "A byte ceiling bounds this function's cooperative stream consumption, not arbitrary upstream sources, transports or memory allocations."
-  },
-  {
-    "id": "MM-STRM-003",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_snapshots.py",
-    "function": "test_bounded_reader_sanitizes_read_failures",
-    "limitation": "Generic read-failure messages do not guarantee future application logs or customer privacy policies are safe."
-  },
-  {
-    "id": "MM-STRM-004",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/integration/test_local_snapshot_flow.py",
-    "function": "test_bounded_file_stream_stages_exactly_same_invented_fixture",
-    "limitation": "A checked-in synthetic fixture is not evidence of licensed real-data ingestion, source approval or publisher release timestamps."
-  },
-  {
-    "id": "MM-QUAL-001",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_quality.py",
-    "function": "test_quality_report_distinguishes_explicit_zero_from_absent_day",
-    "limitation": "A per-series gap count between recorded days is not proof of genuine missing sales or customer demand."
-  },
-  {
-    "id": "MM-QUAL-002",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_quality.py",
-    "function": "test_quality_publication_lag_is_declared_not_source_authenticated",
-    "limitation": "The apparent release delay comes from caller-supplied dates, not verified external publisher records."
-  },
-  {
-    "id": "MM-QUAL-003",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/unit/test_evidence_quality.py",
-    "function": "test_quality_does_not_echo_series_names_or_raw_count_values",
-    "limitation": "An aggregate synthetic summary alone cannot prove tenant isolation, privacy compliance or rights to customer records."
-  },
-  {
-    "id": "MM-QUAL-004",
-    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
-    "test": "tests/integration/test_local_snapshot_flow.py",
-    "function": "test_quality_summary_from_bounded_file_reader_remains_non_authorizing",
-    "limitation": "Staging an invented local fixture and summarizing it does not establish real-data provenance, authorization or model accuracy."
-  },
-  {
-    "id": "MM-UCI-001",
-    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
-    "test": "tests/unit/test_uci_retail_projection.py",
-    "function": "test_positive_rows_aggregate_by_product_calendar_day_without_raw_ids",
-    "limitation": "Aggregation and excluded-line counts on invented rows do not establish reconciled real sales, true demand, inventory or permissions."
-  },
-  {
-    "id": "MM-UCI-002",
-    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
-    "test": "tests/unit/test_uci_retail_projection.py",
-    "function": "test_customer_columns_are_not_accessed_or_serialized",
-    "limitation": "Output minimization cannot guarantee secure handling by upstream XLSX readers, callers, logs or privacy-governance policies."
-  },
-  {
-    "id": "MM-UCI-003",
-    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
-    "test": "tests/unit/test_uci_retail_projection.py",
-    "function": "test_row_limit_is_enforced_on_iterator_without_materialization",
-    "limitation": "Bounding in-memory row iteration does not cap unimplemented workbook decompression, overall input byte size or external source acquisition."
-  },
-  {
-    "id": "MM-UCI-004",
-    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
-    "test": "tests/integration/test_uci_retail_projection_flow.py",
-    "function": "test_retail_projection_preserves_unknown_release_time_and_cannot_be_staged_directly",
-    "limitation": "Refusing to invent historical publication timestamps is not independent evidence of true publisher release times or source data rights."
-  },
-  {
-    "id": "MM-XLSX-001",
-    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
-    "test": "tests/unit/test_uci_workbook.py",
-    "function": "test_xlsx_stage_projects_positive_units_and_never_copies_sensitive_values",
-    "limitation": "Fictional XLSX projection demonstrates selected output minimization, not authorized source rights, original publisher identity or customer privacy compliance."
-  },
-  {
-    "id": "MM-XLSX-002",
-    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
-    "test": "tests/unit/test_uci_workbook.py",
-    "function": "test_zip_compression_ratio_bomb_header_rejected",
-    "limitation": "An archive compression ratio guard cannot guarantee isolation against malicious XML, ZIP parser vulnerabilities, CPU exhaustion or untrusted file processing."
-  },
-  {
-    "id": "MM-XLSX-003",
-    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
-    "test": "tests/unit/test_uci_workbook.py",
-    "function": "test_bounded_row_and_group_limits_do_not_truncate",
-    "limitation": "Rejecting workbooks above a small row/group limit does not establish whole-dataset UCI source processing or historical data validity."
-  },
-  {
-    "id": "MM-XLSX-004",
-    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
-    "test": "tests/integration/test_uci_workbook_flow.py",
-    "function": "test_synthetic_local_xlsx_file_to_product_day_projection",
-    "limitation": "Fictional local XLSX test does not use real UCI records, independently proven first-availability dates, trained models or WorldKernel."
-  },
-  {
-    "id": "MM-RCOV-001",
-    "guide": "docs/engineering/RETAIL_COVERAGE.md",
-    "test": "tests/unit/test_retail_coverage.py",
-    "function": "test_internal_gaps_are_not_zero_or_imputed_and_receipt_has_no_identifiers",
-    "limitation": "Invented positive-invoice records do not prove shop opening calendars, authentic publication timing, true demand or source authorization."
-  },
-  {
-    "id": "MM-DCAL-001",
-    "guide": "docs/engineering/DECLARED_CALENDAR_COVERAGE.md",
-    "test": "tests/unit/test_declared_calendar_coverage.py",
-    "function": "test_closed_day_not_counted_as_missing_declared_observation",
-    "limitation": "The schedule is an invented caller assertion; internal gaps do not prove business opening, publication time, authorized real data or demand."
-  },
-  {
-    "id": "MM-REL-001",
-    "guide": "docs/engineering/DECLARED_RETAIL_RELEASES.md",
-    "test": "tests/unit/test_declared_retail_releases.py",
-    "function": "test_declared_asof_excludes_late_and_future_product_days_without_identifiers",
-    "limitation": "Fictional caller-asserted release dates do not attest to actual historical publisher availability, dataset rights, stock or true demand."
-  },
-  {
-    "id": "MM-RBT-001",
-    "guide": "docs/engineering/RETAIL_RELEASE_BACKTEST.md",
-    "test": "tests/unit/test_retail_release_backtest.py",
-    "function": "test_missing_late_and_unpublished_days_abstain_and_models_share_origins",
-    "limitation": "Fixed baselines on invented positive-line transactions and unauthenticated release assertions do not prove empirical model performance or true demand."
-  },
-  {
-    "id": "MM-RGATE-001",
-    "guide": "docs/engineering/RETAIL_COVERAGE_GATE.md",
-    "test": "tests/unit/test_retail_coverage_gate.py",
-    "function": "test_incomplete_declared_releases_suppress_model_ranking_and_report_exact_coverage",
-    "limitation": "Thresholded matches on fictional transaction proxies do not calibrate uncertainty or prove source rights, prediction quality or true demand."
-  },
-  {
-    "id": "MM-RENV-001",
-    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
-    "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
-    "limitation": "Synthetic publisher assertions and descriptive past-max-error envelopes do not constitute calibrated prediction intervals, authentic historical evidence or empirical future coverage."
-  },
-  {
-    "id": "MM-EDRIFT-001",
-    "guide": "docs/engineering/RETAIL_ELIGIBILITY_DRIFT.md",
-    "test": "tests/unit/test_retail_eligibility_drift.py",
-    "function": "test_future_release_change_cannot_rewrite_earlier_eligibility",
-    "limitation": "Unverified fictional release dates and eligible-origin counts cannot identify selection bias or changes in the true demand distribution."
-  },
-  {
-    "id": "MM-EVALUE-001",
-    "guide": "docs/engineering/RETAIL_ELIGIBLE_VALUES.md",
-    "test": "tests/unit/test_retail_eligible_values.py",
-    "function": "test_sparse_observed_and_late_targets_refuse_conditional_difference",
-    "limitation": "Descriptive means over fictional eligible positive lines do not identify true demand distribution drift, source legitimacy or bias among excluded targets."
-  },
-  {
-    "id": "MM-SEL-001",
-    "guide": "docs/engineering/RETAIL_SELECTION_SENSITIVITY.md",
-    "test": "tests/unit/test_retail_selection_sensitivity.py",
-    "function": "test_incomplete_windows_show_unknown_days_can_reverse_apparent_difference",
-    "limitation": "Caller-supplied hypothetical bounds on fictional excluded dates are not empirically established source values or identified selection effects."
-  },
-  {
-    "id": "MM-SWEEP-001",
-    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
-    "test": "tests/unit/test_retail_sensitivity_sweep.py",
-    "function": "test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases",
-    "limitation": "Mathematical counterfactual sweeps of fictional eligible date counts do not identify actual missing targets, selection bias or demand drift."
-  },
-  {
-    "id": "MM-SWEEP-002",
-    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
-    "test": "tests/unit/test_retail_sensitivity_sweep.py",
-    "function": "test_default_coverage_gate_hides_all_scenario_means_but_preserves_denominators",
-    "limitation": "An exact coverage gate suppresses conditional hypothetical means under sparse fictional eligibility; it cannot identify excluded true values or certify disclosure privacy."
-  },
-  {
-    "id": "MM-SWEEP-003",
-    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
-    "test": "tests/unit/test_retail_sensitivity_sweep.py",
-    "function": "test_eight_scenarios_run_exactly_two_historical_audits",
-    "limitation": "A mocked evaluator call count proves two invocations for synthetic history; it does not measure runtime speedups, certify publisher vintages, or establish demand drift."
-  },
-  {
-    "id": "MM-RENV-002",
-    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
-    "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_each_distinct_prequential_target_prediction_runs_once",
-    "limitation": "Instrumented forecast call counts on synthetic data demonstrate in-call work reuse, not elapsed-time speedup, authentic source availability or calibration of error envelopes."
-  },
-  {
-    "id": "MM-RENV-003",
-    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
-    "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_cached_and_uncached_history_agree_under_adversarial_publication_schedules",
-    "limitation": "Differential tests verify caching preserves fictional retrospective reports across release/missingness combinations; they do not independently validate the forecasting method, source rights, true demand, latency gains or calibrated coverage."
-  },
-  {
-    "id": "MM-RENV-004",
-    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
-    "test": "tests/unit/test_retail_residual_envelope.py",
-    "function": "test_incremental_calibration_exactly_matches_naive_reference",
-    "limitation": "A deterministic, test-only quadratic oracle can detect code-level calendar eligibility differences; it cannot validate historical publisher rights, the true demand process, calibration guarantees or a runtime speedup."
-  },
-  {
-    "id": "MM-INTAKE-001",
-    "guide": "docs/engineering/SOURCE_INTAKE_REVIEW.md",
-    "test": "tests/unit/test_source_intake_review.py",
-    "function": "test_staged_csv_packet_is_digest_bound_but_never_permission_approval",
-    "limitation": "Synthetic packet tests verify exact digest binding, identifier minimization and truthful nonauthorization only; they do not authenticate source rights, publisher identities, data usage terms or historical publication timestamps."
-  },
-  {
-    "id": "MM-REVIEW-001",
-    "guide": "docs/engineering/SIGNED_SOURCE_REVIEW.md",
-    "test": "tests/unit/test_signed_source_review.py",
-    "function": "test_valid_signature_is_review_metadata_not_permission_to_ingest",
-    "limitation": "Synthetic Ed25519 verification only proves possession of supplied public-key's paired private key, not trustworthy key provisioning, reviewer authority, legal source rights, independently fresh registry state or permission to ingest."
-  },
-  {
-    "id": "MM-REVIEW-002",
-    "guide": "docs/engineering/SIGNED_SOURCE_REVIEW.md",
-    "test": "tests/unit/test_signed_source_review.py",
-    "function": "test_signed_revocation_is_terminal_for_same_manifest_even_after_reapproval",
-    "limitation": "Local same-packet revocation only blocks when the entire supplied log is anchored to an independently trusted up-to-date head. No append-only registry, key management, operational authorization or production revocation enforcement is implemented."
-  },
-  {
-    "id": "MM-REGISTRY-001",
-    "guide": "docs/engineering/LOCAL_REVIEW_REGISTRY.md",
-    "test": "tests/unit/test_local_review_registry.py",
-    "function": "test_revocation_is_terminal_and_old_head_cannot_rewrite_current_state",
-    "limitation": "An in-memory revision/head comparison and same-packet revocation can block replay only within a live local instance; no durable append-only record, trusted fresh external head, authenticated reviewer authority, legal rights or real ingestion is provided."
-  },
-  {
-    "id": "MM-REGISTRY-002",
-    "guide": "docs/engineering/LOCAL_REVIEW_REGISTRY.md",
-    "test": "tests/unit/test_local_review_registry.py",
-    "function": "test_second_same_revision_writer_loses_atomic_compare_and_swap",
-    "limitation": "A two-thread CAS regression proves one local winner under a process lock; it does not prove cross-process coordination, crash recovery, persistent transactionality or production-safe authorization."
-  },
-  {
-    "id": "MM-DBREG-001",
-    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
-    "test": "tests/unit/test_sqlite_review_registry.py",
-    "function": "test_database_restart_preserves_signed_history_and_revocation",
-    "limitation": "SQLite restart/revocation preservation uses fictional signed records and a local database; it does not establish independently trusted head freshness, protected key custody, lawful source rights, privacy permission, or production ingestion."
-  },
-  {
-    "id": "MM-DBREG-002",
-    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
-    "test": "tests/unit/test_sqlite_review_registry.py",
-    "function": "test_separate_interpreters_contend_on_same_database_transaction",
-    "limitation": "A same-database two-interpreter transaction test demonstrates one winning writer under local SQLite locking, not crash-proof hardware durability, cross-machine transactions, active reviewer authorization or independently authenticated log heads."
-  },
-  {
-    "id": "MM-DBREG-003",
-    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
-    "test": "tests/unit/test_sqlite_review_registry.py",
-    "function": "test_transaction_rolls_back_packet_and_event_on_failed_final_update",
-    "limitation": "An injected SQLite statement abort demonstrates rollback of one local transaction; not evidence of physical power-loss durability, backup policy, tamper resistance, legal source permissions or real data use."
-  },
-  {
-    "id": "MM-ANCHOR-001",
-    "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
-    "test": "tests/unit/test_head_checkpoints.py",
-    "function": "test_restored_older_sqlite_is_rejected_against_newer_independent_signed_head",
-    "limitation": "An explicitly supplied newer signed head and sequence can reveal a restored SQLite file in synthetic tests; no externally authenticated current-head authority, monotonic sequence publication, trusted time, privacy/legal permission or actual source ingestion is provided."
-  },
-  {
-    "id": "MM-ANCHOR-002",
-    "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
-    "test": "tests/unit/test_head_checkpoints.py",
-    "function": "test_older_valid_checkpoint_replay_is_not_prevented_if_high_water_is_stale",
-    "limitation": "A valid older signed checkpoint and matching old SQLite database remain acceptable when the caller's minimum sequence is stale. Signatures alone do NOT establish log freshness, independent authority, anti-equivocation or current source permissions."
-  },
-  {
-    "id": "MM-AUTH-001",
-    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
-    "test": "tests/unit/test_authority_transcript.py",
-    "function": "test_contiguous_signed_authority_transcript_and_rotation_are_nonauthorizing",
-    "limitation": "Fictional linked receipt chain and dual signed key-handoff verification only, relying on externally supplied witness and checkpoint public keys and expected fences. Neither the independent authority nor actual key governance, external history freshness, global non-equivocation or legal use rights exist."
-  },
-  {
-    "id": "MM-AUTH-002",
-    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
-    "test": "tests/unit/test_authority_transcript.py",
-    "function": "test_outage_empty_or_incomplete_recovery_transcript_fails_closed",
-    "limitation": "A local missing-chain or gap refusal is not evidence of an operational network retry, durable replay log, live authority availability or disaster recovery across machines."
-  },
-  {
-    "id": "MM-AUTH-003",
-    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
-    "test": "tests/unit/test_authority_transcript.py",
-    "function": "test_valid_stale_transcript_with_caller_stale_fences_cannot_prove_freshness",
-    "limitation": "Old but internally consistent signed transcript and caller-furnished head fences remain acceptable within validity; this explicitly disproves standalone freshness or freedom from hidden forks. All permissions remain false."
-  },
-  {
-    "id": "MM-PUBLISH-001",
-    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
-    "test": "tests/unit/test_local_checkpoint_publisher.py",
-    "function": "test_publisher_reopens_verified_signed_head_and_never_grants_ingestion",
-    "limitation": "Local SQLite reopen and three-layer synthetic signatures demonstrate only verified fictional record continuity, NOT real operator identity, independently published currentness, trusted key custody, original data-use rights or any ingest grant."
-  },
-  {
-    "id": "MM-PUBLISH-002",
-    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
-    "test": "tests/unit/test_local_checkpoint_publisher.py",
-    "function": "test_competing_independent_connections_yield_only_one_winner",
-    "limitation": "SQLite BEGIN IMMEDIATE gives one winner on one local database, not across distributed hosts or under malicious filesystem restoration. No globally independent witness or production permission control."
-  },
-  {
-    "id": "MM-PUBLISH-003",
-    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
-    "test": "tests/unit/test_local_checkpoint_publisher.py",
-    "function": "test_old_coherent_publisher_db_is_not_independently_fresh",
-    "limitation": "Restored old but internally signed publisher SQLite remains valid without a genuinely independent newer head, showing this experimental local journal is NOT a globally monotonic authority or replay-proof permission gate."
-  },
-  {
-    "id": "MM-GOV-001",
-    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
-    "test": "tests/unit/test_operator_governance.py",
-    "function": "test_dual_admin_enrollment_survives_restart_but_never_authorizes",
-    "limitation": "Synthetic temporary-key verification and local SQLite restart demonstrate only signed metadata retention. No administrator identity, independent administrative authority, enforced publisher policy, legal dataset rights or production access is proven."
-  },
-  {
-    "id": "MM-GOV-002",
-    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
-    "test": "tests/unit/test_operator_governance.py",
-    "function": "test_revocation_is_terminal_and_replacement_needs_fresh_key_and_id",
-    "limitation": "Permanent same-database tombstones and fictional fresh operator key replacement do not revoke keys in the existing publisher, provide cross-database atomicity, genuine key-compromise recovery or global anti-rollback."
-  },
-  {
-    "id": "MM-GOV-003",
-    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
-    "test": "tests/unit/test_operator_governance.py",
-    "function": "test_coherent_old_backup_needs_independent_head_to_detect_revocation_rollback",
-    "limitation": "Restoring an old signed policy ledger leaves locally valid active keys until an independently newer head is supplied; this is an explicit counterexample to standalone revocation enforcement and source authorization."
   },
   {
     "id": "MM-ATOMIC-001",
@@ -609,74 +91,263 @@
     "limitation": "An older coherent combined SQLite copy may restore locally enrolled keys unless an independently newer head is supplied, so local signatures and SQL locking cannot independently establish anti-rollback or production authorization."
   },
   {
-    "id": "MM-PBOUND-001",
-    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_governed_signatures_are_domain_separated_from_legacy_and_fail_closed",
-    "limitation": "Bound v2 signature domain rejects a legacy v1 signature and incomplete policy binding in synthetic local metadata; does not authenticate a human operator or establish external policy freshness."
+    "id": "MM-AUD-001",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_every_requested_origin_has_one_reproducible_nonvalue_audit_record",
+    "limitation": "Per-date audit statuses on invented data do not prove source rights, publisher timestamps or tamper-evident storage."
   },
   {
-    "id": "MM-PBOUND-002",
-    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_unrevoked_operator_must_resign_after_independent_policy_change",
-    "limitation": "A second fictional key enrollment invalidates the previously signed policy epoch even without revocation; independently trusted current-head custody and cross-host governance remain absent."
+    "id": "MM-AUD-002",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_missing_target_is_not_conflated_with_unpublished_target",
+    "limitation": "Separating missing targets from unpublished targets does not correct source missingness or validate empirical predictions."
   },
   {
-    "id": "MM-PBOUND-003",
-    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_existing_valid_v1_integrated_history_replays_before_new_v2_publication",
-    "limitation": "Synthetic pre-upgrade v1 SQLite event replay preserves historical signature verification; newly written integrated v2 records do not automatically upgrade trust in old unbound records."
+    "id": "MM-AUD-003",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_all_abstained_audit_has_no_fabricated_scores",
+    "limitation": "Reporting all abstentions with null scores is not a guarantee of reliable forecasting or authorized access."
   },
   {
-    "id": "MM-PBOUND-004",
-    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_standalone_publisher_cannot_accept_policy_bound_v2_command",
-    "limitation": "The static-roster standalone publisher refuses a v2 command rather than falsely claiming policy enforcement; other standalone databases remain independently writable with v1 keys."
+    "id": "MM-AUTH-001",
+    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
+    "test": "tests/unit/test_authority_transcript.py",
+    "function": "test_contiguous_signed_authority_transcript_and_rotation_are_nonauthorizing",
+    "limitation": "Fictional linked receipt chain and dual signed key-handoff verification only, relying on externally supplied witness and checkpoint public keys and expected fences. Neither the independent authority nor actual key governance, external history freshness, global non-equivocation or legal use rights exist."
   },
   {
-    "id": "MM-PBOUND-005",
-    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_policy_binding_tampering_in_stored_v2_history_invalidates_signature",
-    "limitation": "Tampering with the signed policy-head value breaks local Ed25519 verification; restoring an internally valid older combined database remains undetectable without an external trusted current head."
+    "id": "MM-AUTH-002",
+    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
+    "test": "tests/unit/test_authority_transcript.py",
+    "function": "test_outage_empty_or_incomplete_recovery_transcript_fails_closed",
+    "limitation": "A local missing-chain or gap refusal is not evidence of an operational network retry, durable replay log, live authority availability or disaster recovery across machines."
   },
   {
-    "id": "MM-FENCE-001",
-    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_signed_integrated_fence_matches_verified_heads_without_authorizing",
-    "limitation": "Generated-key offline signed proof matches a synthetic local snapshot and reports no permissions. It does not validate real identity, key custody or independently current external authority."
+    "id": "MM-AUTH-003",
+    "guide": "docs/engineering/AUTHORITY_TRANSCRIPT.md",
+    "test": "tests/unit/test_authority_transcript.py",
+    "function": "test_valid_stale_transcript_with_caller_stale_fences_cannot_prove_freshness",
+    "limitation": "Old but internally consistent signed transcript and caller-furnished head fences remain acceptable within validity; this explicitly disproves standalone freshness or freedom from hidden forks. All permissions remain false."
   },
   {
-    "id": "MM-FENCE-002",
-    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_signed_fence_detects_coherent_old_database_only_given_new_current_fence",
-    "limitation": "An old coherent SQLite backup disagrees with a newer supplied signed state; it still matches the old signed state and old caller-provided expected pins. No unconditional anti-rollback is established."
+    "id": "MM-AVAIL-001",
+    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
+    "test": "tests/unit/test_m1_availability_preflight.py",
+    "function": "test_late_publication_is_excluded_even_when_event_date_precedes_cutoff",
+    "limitation": "As-of filtering on declared synthetic timestamps does not authenticate when a real source actually made data available."
   },
   {
-    "id": "MM-FENCE-003",
-    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_signed_fence_checks_publication_head_even_without_policy_change",
-    "limitation": "A publication-only state update invalidates the old supplied fence, provided the verifier is given the newer state. It is not a live publication admission lock."
+    "id": "MM-AVAIL-002",
+    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
+    "test": "tests/unit/test_m1_availability_preflight.py",
+    "function": "test_unavailable_value_change_cannot_change_eligible_aggregate",
+    "limitation": "Only synthetic value exclusion is established; other future-derived features and revised data may still leak in a real pipeline."
   },
   {
-    "id": "MM-FENCE-004",
-    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_signed_fence_wrong_scope_signer_tampering_and_equivocation_fail",
-    "limitation": "Synthetic signer forgery, changed source scope, altered signed head and inconsistent pinned digest fail. A malicious or stale independently supplied current-fence authority is not prevented."
+    "id": "MM-AVAIL-003",
+    "guide": "docs/engineering/M1_AVAILABILITY_PRECHECK.md",
+    "test": "tests/unit/test_m1_availability_preflight.py",
+    "function": "test_published_before_observation_rejected",
+    "limitation": "Date order is a local input constraint rather than verified publication provenance or permission for data use."
   },
   {
-    "id": "MM-FENCE-005",
-    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_signed_fence_bounds_expiry_bad_keys_and_type_confusion_fail",
-    "limitation": "Malformed key roster, stale and future dates, wrong signer and type confusion fail closed with a caller-supplied date. Clock trust and genuine signer independence are not attested."
+    "id": "MM-BL-001",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_staged_rolling_baselines_score_four_of_seven_after_late_publication",
+    "limitation": "Scoring four synthetic origins on invented weekly periodicity does not establish empirical predictive ability or source authenticity."
+  },
+  {
+    "id": "MM-BL-002",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_all_forecast_inputs_precede_origin_and_have_available_seven_day_window",
+    "limitation": "Historical windows use caller-declared publication dates, which need external verification against real revisions and releases."
+  },
+  {
+    "id": "MM-BL-003",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_all_origins_can_abstain_with_null_metrics_not_fake_winner",
+    "limitation": "Abstention avoids invented metrics but does not establish calibrated uncertainty, generalization or business benefit."
+  },
+  {
+    "id": "MM-BL-004",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/integration/test_staged_rolling_flow.py",
+    "function": "test_staged_csv_to_matched_rolling_backtest_without_runtime_io",
+    "limitation": "End-to-end local fixture flow lacks rights validation, encrypted persistence, tenant isolation and external forecast serving."
+  },
+  {
+    "id": "MM-CON-001",
+    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
+    "test": "tests/unit/test_contracts.py",
+    "function": "test_exceeding_budget_rejected",
+    "limitation": "Checks declared run bounds at model construction; does not meter actual execution."
+  },
+  {
+    "id": "MM-CON-002",
+    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
+    "test": "tests/unit/test_contracts.py",
+    "function": "test_forecast_coverage_rejected",
+    "limitation": "Checks reference horizon only; does not verify existence, backtesting or data cutoffs."
+  },
+  {
+    "id": "MM-CON-003",
+    "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
+    "test": "tests/unit/test_contracts.py",
+    "function": "test_valid_scenario",
+    "limitation": "A passing Pydantic constructor does not execute a simulation or authenticate evidence."
+  },
+  {
+    "id": "MM-DATA-001",
+    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
+    "test": "tests/unit/test_m1_observation_preflight.py",
+    "function": "test_synthetic_batch_is_bounded_and_reports_gaps_without_imputation",
+    "limitation": "Only checks deterministic synthetic counts and missing-date arithmetic; no real data source completeness."
+  },
+  {
+    "id": "MM-DATA-002",
+    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
+    "test": "tests/unit/test_m1_observation_preflight.py",
+    "function": "test_cutoff_rejects_future_dated_observation",
+    "limitation": "Declared calendar cutoff alone cannot prevent future-derived features or verify publication timestamps."
+  },
+  {
+    "id": "MM-DATA-003",
+    "guide": "docs/engineering/M1_DATA_PREFLIGHT.md",
+    "test": "tests/integration/test_m1_observation_preflight_cli.py",
+    "function": "test_synthetic_preflight_cli_fails_without_echoing_sensitive_input",
+    "limitation": "Generic subprocess error does not prove user permissions, secure production logs or confidential data governance."
+  },
+  {
+    "id": "MM-DBREG-001",
+    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_sqlite_review_registry.py",
+    "function": "test_database_restart_preserves_signed_history_and_revocation",
+    "limitation": "SQLite restart/revocation preservation uses fictional signed records and a local database; it does not establish independently trusted head freshness, protected key custody, lawful source rights, privacy permission, or production ingestion."
+  },
+  {
+    "id": "MM-DBREG-002",
+    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_sqlite_review_registry.py",
+    "function": "test_separate_interpreters_contend_on_same_database_transaction",
+    "limitation": "A same-database two-interpreter transaction test demonstrates one winning writer under local SQLite locking, not crash-proof hardware durability, cross-machine transactions, active reviewer authorization or independently authenticated log heads."
+  },
+  {
+    "id": "MM-DBREG-003",
+    "guide": "docs/engineering/SQLITE_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_sqlite_review_registry.py",
+    "function": "test_transaction_rolls_back_packet_and_event_on_failed_final_update",
+    "limitation": "An injected SQLite statement abort demonstrates rollback of one local transaction; not evidence of physical power-loss durability, backup policy, tamper resistance, legal source permissions or real data use."
+  },
+  {
+    "id": "MM-DCAL-001",
+    "guide": "docs/engineering/DECLARED_CALENDAR_COVERAGE.md",
+    "test": "tests/unit/test_declared_calendar_coverage.py",
+    "function": "test_closed_day_not_counted_as_missing_declared_observation",
+    "limitation": "The schedule is an invented caller assertion; internal gaps do not prove business opening, publication time, authorized real data or demand."
+  },
+  {
+    "id": "MM-DTRACE-001",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_valid_trace_keeps_decision_evidence_categories_separate",
+    "limitation": "Synthetic contract validation proves local type/reference/cutoff structure only. Caller references are unauthenticated; no evidence, forecast, simulation, reviewer identity, authorization or decision execution is verified."
+  },
+  {
+    "id": "MM-DTRACE-002",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_terminal_review_cannot_precede_trace_creation",
+    "limitation": "Checks chronology for caller-supplied timestamps; it does not authenticate reviewers or establish trusted clocks."
+  },
+  {
+    "id": "MM-DTRACE-003",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_result_digest_is_lossless_and_independent_of_decimal_context",
+    "limitation": "Checks deterministic Python Decimal canonicalization for local fixtures; it does not establish cross-language canonicalization or external provenance."
+  },
+  {
+    "id": "MM-DTRACE-004",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_total_trace_records_are_bounded_across_sections",
+    "limitation": "Enforces an aggregate record bound in the trace schema; it does not enforce HTTP body size, rate, memory budgets or concurrent request limits."
+  },
+  {
+    "id": "MM-DTRACE-005",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_terminal_review_accepts_creation_boundary_and_equivalent_timezone",
+    "limitation": "Checks equal-instant and timezone-offset handling for synthetic review payloads; it does not establish trusted time or reviewer identity."
+  },
+  {
+    "id": "MM-DTRACE-006",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_trace_record_sections_have_a_maximum_size",
+    "limitation": "Checks a per-section schema bound; it does not impose transport or concurrent-work limits."
+  },
+  {
+    "id": "MM-DTRACE-007",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_decision_trace.py",
+    "function": "test_trace_reference_lists_have_a_maximum_size",
+    "limitation": "Checks a per-record reference bound; it does not authenticate referenced records or enforce a request-size limit."
+  },
+  {
+    "id": "MM-DTRACE-008",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_rejects_execution_evidence_from_a_different_engine_contract",
+    "limitation": "The local v2 validator rejects an outcome/selected-engine contract mismatch in a synthetic trace. It does not authenticate the referenced engine or execution record."
+  },
+  {
+    "id": "MM-DTRACE-009",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_rejects_unreferenced_execution_evidence_records",
+    "limitation": "Rejects an orphan execution record in a synthetic v2 trace only. It does not prove that a linked execution actually occurred or authenticate its provenance."
+  },
+  {
+    "id": "MM-DTRACE-010",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_rejects_execution_evidence_after_trace_creation",
+    "limitation": "Rejects one caller-declared v2 execution timestamp later than trace creation. It does not authenticate clocks, producers or execution."
+  },
+  {
+    "id": "MM-DTRACE-011",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_accepts_execution_evidence_before_trace_creation",
+    "limitation": "Accepts an earlier synthetic execution instant only. It does not establish when any real process ran."
+  },
+  {
+    "id": "MM-DTRACE-012",
+    "guide": "docs/engineering/DECISION_TRACE_RESULT.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_accepts_execution_evidence_at_creation_with_equivalent_timezone",
+    "limitation": "Confirms equality for one synthetic instant written at two offsets. It does not verify timezone source or wall-clock accuracy."
+  },
+  {
+    "id": "MM-EDRIFT-001",
+    "guide": "docs/engineering/RETAIL_ELIGIBILITY_DRIFT.md",
+    "test": "tests/unit/test_retail_eligibility_drift.py",
+    "function": "test_future_release_change_cannot_rewrite_earlier_eligibility",
+    "limitation": "Unverified fictional release dates and eligible-origin counts cannot identify selection bias or changes in the true demand distribution."
+  },
+  {
+    "id": "MM-EVALUE-001",
+    "guide": "docs/engineering/RETAIL_ELIGIBLE_VALUES.md",
+    "test": "tests/unit/test_retail_eligible_values.py",
+    "function": "test_sparse_observed_and_late_targets_refuse_conditional_difference",
+    "limitation": "Descriptive means over fictional eligible positive lines do not identify true demand distribution drift, source legitimacy or bias among excluded targets."
   },
   {
     "id": "MM-FCHAIN-001",
@@ -719,6 +390,104 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_dual_fence_transcript_bounded_dates_types_and_local_expiry",
     "limitation": "Bounded tuple length, chronology and currently expired terminal fence are rejected using a caller-supplied day. Calendar and historical witness timestamps are not independently attested."
+  },
+  {
+    "id": "MM-FCST-001",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_seasonal_naive_is_exact_on_weekly_fixture_and_mean_is_not",
+    "limitation": "Seasonal naive exactness is constructed by the synthetic weekly pattern, not evidence of empirical predictive performance."
+  },
+  {
+    "id": "MM-FCST-002",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_each_one_step_prediction_receives_only_prior_observations",
+    "limitation": "Proves explicit algorithm prefixes, not source publication time, hidden future-derived features or untuned holdouts."
+  },
+  {
+    "id": "MM-FCST-003",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_missing_day_abstains_instead_of_zero_imputation",
+    "limitation": "A contiguous synthetic series is not evidence of genuine data completeness or latent demand."
+  },
+  {
+    "id": "MM-FCST-004",
+    "guide": "docs/engineering/M1_TEMPORAL_BACKTEST.md",
+    "test": "tests/unit/test_m1_temporal_backtest.py",
+    "function": "test_zero_denominator_wape_is_null_not_zero_percent",
+    "limitation": "Zero-safe WAPE arithmetic does not establish model reliability, predictive uncertainty or calibration."
+  },
+  {
+    "id": "MM-FENCE-001",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_integrated_fence_matches_verified_heads_without_authorizing",
+    "limitation": "Generated-key offline signed proof matches a synthetic local snapshot and reports no permissions. It does not validate real identity, key custody or independently current external authority."
+  },
+  {
+    "id": "MM-FENCE-002",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_detects_coherent_old_database_only_given_new_current_fence",
+    "limitation": "An old coherent SQLite backup disagrees with a newer supplied signed state; it still matches the old signed state and old caller-provided expected pins. No unconditional anti-rollback is established."
+  },
+  {
+    "id": "MM-FENCE-003",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_checks_publication_head_even_without_policy_change",
+    "limitation": "A publication-only state update invalidates the old supplied fence, provided the verifier is given the newer state. It is not a live publication admission lock."
+  },
+  {
+    "id": "MM-FENCE-004",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_wrong_scope_signer_tampering_and_equivocation_fail",
+    "limitation": "Synthetic signer forgery, changed source scope, altered signed head and inconsistent pinned digest fail. A malicious or stale independently supplied current-fence authority is not prevented."
+  },
+  {
+    "id": "MM-FENCE-005",
+    "guide": "docs/engineering/INTEGRATED_HEAD_FENCE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_signed_fence_bounds_expiry_bad_keys_and_type_confusion_fail",
+    "limitation": "Malformed key roster, stale and future dates, wrong signer and type confusion fail closed with a caller-supplied date. Clock trust and genuine signer independence are not attested."
+  },
+  {
+    "id": "MM-FLOW-001",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_csv_flow_binds_review_quality_and_declared_asof_slice_without_authorizing",
+    "limitation": "A generated local fixture composes the CSV helpers, filters by caller-declared event/publication dates, and asserts that aggregate review and quality receipts equal their child receipts while omitting identifiers/references. It does not authenticate permissions, provenance or actual source availability."
+  },
+  {
+    "id": "MM-FLOW-002",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_csv_flow_abstains_when_no_declared_observation_is_available_at_origin",
+    "limitation": "An empty as-of slice remains empty on the synthetic CSV fixture. This does not prove a real source is complete or that its declared publication dates are genuine."
+  },
+  {
+    "id": "MM-FLOW-003",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_uci_flow_composes_calendar_and_release_cutoff_without_returning_identifiers",
+    "limitation": "A generated workbook, caller calendar and caller release tuple compose into aggregate cutoff counts; the test asserts exact equality with each child receipt and omits raw identifiers. The calendar and release dates remain unverified and InvoiceDate is not publication evidence."
+  },
+  {
+    "id": "MM-FLOW-004",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_uci_flow_rejects_missing_calendar_dates_and_release_declarations",
+    "limitation": "The local workflow rejects an omitted projected date and incomplete release tuple. This is structural consistency only, not proof of a real business calendar or complete source history."
+  },
+  {
+    "id": "MM-FLOW-005",
+    "guide": "docs/engineering/M1_SYNTHETIC_EVIDENCE_FLOW.md",
+    "test": "tests/integration/test_retail_evidence_flow.py",
+    "function": "test_csv_flow_rejects_digest_and_review_declaration_mismatch",
+    "limitation": "Expected-byte and review-packet digest mismatches fail closed locally. A matching caller-provided digest is not a publisher signature, permission or provenance verification."
   },
   {
     "id": "MM-FREG-001",
@@ -770,6 +539,286 @@
     "limitation": "Registry-vs-publisher drift after a local revocation mismatches until a next doubly signed state is appended. Publication/registry update race is not eliminated by two separate SQLite transactions."
   },
   {
+    "id": "MM-GOV-001",
+    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
+    "test": "tests/unit/test_operator_governance.py",
+    "function": "test_dual_admin_enrollment_survives_restart_but_never_authorizes",
+    "limitation": "Synthetic temporary-key verification and local SQLite restart demonstrate only signed metadata retention. No administrator identity, independent administrative authority, enforced publisher policy, legal dataset rights or production access is proven."
+  },
+  {
+    "id": "MM-GOV-002",
+    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
+    "test": "tests/unit/test_operator_governance.py",
+    "function": "test_revocation_is_terminal_and_replacement_needs_fresh_key_and_id",
+    "limitation": "Permanent same-database tombstones and fictional fresh operator key replacement do not revoke keys in the existing publisher, provide cross-database atomicity, genuine key-compromise recovery or global anti-rollback."
+  },
+  {
+    "id": "MM-GOV-003",
+    "guide": "docs/engineering/OPERATOR_GOVERNANCE.md",
+    "test": "tests/unit/test_operator_governance.py",
+    "function": "test_coherent_old_backup_needs_independent_head_to_detect_revocation_rollback",
+    "limitation": "Restoring an old signed policy ledger leaves locally valid active keys until an independently newer head is supplied; this is an explicit counterexample to standalone revocation enforcement and source authorization."
+  },
+  {
+    "id": "MM-HIST-001",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_min_history_counts_observations_not_one_ancient_row",
+    "limitation": "The negative sparse-history fixture establishes an event-row threshold, not source rights or authenticated publisher timestamps."
+  },
+  {
+    "id": "MM-HIST-002",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_earliest_supported_calendar_cutoff_fails_cleanly_not_overflow",
+    "limitation": "Guarding calendar boundaries is a local error-handling property, not evidence of production ingestion or statistical reliability."
+  },
+  {
+    "id": "MM-HIST-003",
+    "guide": "docs/engineering/M1_STAGED_ROLLING_BASELINES.md",
+    "test": "tests/unit/test_staged_rolling_baselines.py",
+    "function": "test_custom_history_minimum_is_an_observation_count",
+    "limitation": "The parameter checks unique staged events before the holdout, not consecutive publication-complete days or genuine forecast performance."
+  },
+  {
+    "id": "MM-INTAKE-001",
+    "guide": "docs/engineering/SOURCE_INTAKE_REVIEW.md",
+    "test": "tests/unit/test_source_intake_review.py",
+    "function": "test_staged_csv_packet_is_digest_bound_but_never_permission_approval",
+    "limitation": "Synthetic packet tests verify exact digest binding, identifier minimization and truthful nonauthorization only; they do not authenticate source rights, publisher identities, data usage terms or historical publication timestamps."
+  },
+  {
+    "id": "MM-MF-001",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_successful_workflow_produces_valid_trace_and_explicit_gaps",
+    "limitation": "Validates local trace references, cutoff and declared gaps for a generated fictional fixture only; it does not authenticate observations, forecast skill, uncertainty or engine output."
+  },
+  {
+    "id": "MM-MF-002",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_incomplete_or_late_history_abstains_without_running_policy_test_double",
+    "limitation": "Proves missing, late and unpublished fixture cases return without calling the local policy function; it does not verify a real publisher's release schedule."
+  },
+  {
+    "id": "MM-MF-003",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_post_cutoff_fixture_mutation_does_not_change_forecast_or_comparison",
+    "limitation": "A controlled day-35 mutation leaves the default day-26 forecast and synthetic comparison unchanged while lineage changes; this does not prove leakage absence for any untested real source or later cutoff."
+  },
+  {
+    "id": "MM-MF-004",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/integration/test_retail_synthetic_decision_workflow_cli.py",
+    "function": "test_synthetic_decision_cli_replays_trace_and_paired_policy_comparison",
+    "limitation": "Byte-identical output and selected-output contract cover the default local Python test double with generated bytes only; they do not prove deterministic external execution, deployed API behavior or a real-data decision."
+  },
+  {
+    "id": "MM-MF-005",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_trace_identity_includes_replications_and_exact_replay_is_stable",
+    "limitation": "The generated fixture proves deterministic content identity distinguishes replication counts and repeats for exact replay; it does not provide persisted revision history, authentication, provenance or authorization."
+  },
+  {
+    "id": "MM-MF-006",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_versioned_artifact_and_workflow_digests_bind_the_complete_response",
+    "limitation": "The test recomputes local schema-versioned artifact and workflow hashes and detects a nested fixture mutation; it does not establish signatures, producer identity, tamper-proof storage or an HTTP transport limit."
+  },
+  {
+    "id": "MM-MF-007",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_profile_aware_policy_modeling_caveats_are_bound_into_trace",
+    "limitation": "The test binds the local comparator caveat to its profile-aware trace outcome; it does not establish that the half-open target interval is a standard or optimized inventory policy."
+  },
+  {
+    "id": "MM-PBOUND-001",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_governed_signatures_are_domain_separated_from_legacy_and_fail_closed",
+    "limitation": "Bound v2 signature domain rejects a legacy v1 signature and incomplete policy binding in synthetic local metadata; does not authenticate a human operator or establish external policy freshness."
+  },
+  {
+    "id": "MM-PBOUND-002",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_unrevoked_operator_must_resign_after_independent_policy_change",
+    "limitation": "A second fictional key enrollment invalidates the previously signed policy epoch even without revocation; independently trusted current-head custody and cross-host governance remain absent."
+  },
+  {
+    "id": "MM-PBOUND-003",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_existing_valid_v1_integrated_history_replays_before_new_v2_publication",
+    "limitation": "Synthetic pre-upgrade v1 SQLite event replay preserves historical signature verification; newly written integrated v2 records do not automatically upgrade trust in old unbound records."
+  },
+  {
+    "id": "MM-PBOUND-004",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_standalone_publisher_cannot_accept_policy_bound_v2_command",
+    "limitation": "The static-roster standalone publisher refuses a v2 command rather than falsely claiming policy enforcement; other standalone databases remain independently writable with v1 keys."
+  },
+  {
+    "id": "MM-PBOUND-005",
+    "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_policy_binding_tampering_in_stored_v2_history_invalidates_signature",
+    "limitation": "Tampering with the signed policy-head value breaks local Ed25519 verification; restoring an internally valid older combined database remains undetectable without an external trusted current head."
+  },
+  {
+    "id": "MM-PUBLISH-001",
+    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
+    "test": "tests/unit/test_local_checkpoint_publisher.py",
+    "function": "test_publisher_reopens_verified_signed_head_and_never_grants_ingestion",
+    "limitation": "Local SQLite reopen and three-layer synthetic signatures demonstrate only verified fictional record continuity, NOT real operator identity, independently published currentness, trusted key custody, original data-use rights or any ingest grant."
+  },
+  {
+    "id": "MM-PUBLISH-002",
+    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
+    "test": "tests/unit/test_local_checkpoint_publisher.py",
+    "function": "test_competing_independent_connections_yield_only_one_winner",
+    "limitation": "SQLite BEGIN IMMEDIATE gives one winner on one local database, not across distributed hosts or under malicious filesystem restoration. No globally independent witness or production permission control."
+  },
+  {
+    "id": "MM-PUBLISH-003",
+    "guide": "docs/engineering/LOCAL_CHECKPOINT_PUBLISHER.md",
+    "test": "tests/unit/test_local_checkpoint_publisher.py",
+    "function": "test_old_coherent_publisher_db_is_not_independently_fresh",
+    "limitation": "Restored old but internally signed publisher SQLite remains valid without a genuinely independent newer head, showing this experimental local journal is NOT a globally monotonic authority or replay-proof permission gate."
+  },
+  {
+    "id": "MM-QUAL-001",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_quality.py",
+    "function": "test_quality_report_distinguishes_explicit_zero_from_absent_day",
+    "limitation": "A per-series gap count between recorded days is not proof of genuine missing sales or customer demand."
+  },
+  {
+    "id": "MM-QUAL-002",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_quality.py",
+    "function": "test_quality_publication_lag_is_declared_not_source_authenticated",
+    "limitation": "The apparent release delay comes from caller-supplied dates, not verified external publisher records."
+  },
+  {
+    "id": "MM-QUAL-003",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_quality.py",
+    "function": "test_quality_does_not_echo_series_names_or_raw_count_values",
+    "limitation": "An aggregate synthetic summary alone cannot prove tenant isolation, privacy compliance or rights to customer records."
+  },
+  {
+    "id": "MM-QUAL-004",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/integration/test_local_snapshot_flow.py",
+    "function": "test_quality_summary_from_bounded_file_reader_remains_non_authorizing",
+    "limitation": "Staging an invented local fixture and summarizing it does not establish real-data provenance, authorization or model accuracy."
+  },
+  {
+    "id": "MM-RBT-001",
+    "guide": "docs/engineering/RETAIL_RELEASE_BACKTEST.md",
+    "test": "tests/unit/test_retail_release_backtest.py",
+    "function": "test_missing_late_and_unpublished_days_abstain_and_models_share_origins",
+    "limitation": "Fixed baselines on invented positive-line transactions and unauthenticated release assertions do not prove empirical model performance or true demand."
+  },
+  {
+    "id": "MM-RCOV-001",
+    "guide": "docs/engineering/RETAIL_COVERAGE.md",
+    "test": "tests/unit/test_retail_coverage.py",
+    "function": "test_internal_gaps_are_not_zero_or_imputed_and_receipt_has_no_identifiers",
+    "limitation": "Invented positive-invoice records do not prove shop opening calendars, authentic publication timing, true demand or source authorization."
+  },
+  {
+    "id": "MM-REGISTRY-001",
+    "guide": "docs/engineering/LOCAL_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_local_review_registry.py",
+    "function": "test_revocation_is_terminal_and_old_head_cannot_rewrite_current_state",
+    "limitation": "An in-memory revision/head comparison and same-packet revocation can block replay only within a live local instance; no durable append-only record, trusted fresh external head, authenticated reviewer authority, legal rights or real ingestion is provided."
+  },
+  {
+    "id": "MM-REGISTRY-002",
+    "guide": "docs/engineering/LOCAL_REVIEW_REGISTRY.md",
+    "test": "tests/unit/test_local_review_registry.py",
+    "function": "test_second_same_revision_writer_loses_atomic_compare_and_swap",
+    "limitation": "A two-thread CAS regression proves one local winner under a process lock; it does not prove cross-process coordination, crash recovery, persistent transactionality or production-safe authorization."
+  },
+  {
+    "id": "MM-REL-001",
+    "guide": "docs/engineering/DECLARED_RETAIL_RELEASES.md",
+    "test": "tests/unit/test_declared_retail_releases.py",
+    "function": "test_declared_asof_excludes_late_and_future_product_days_without_identifiers",
+    "limitation": "Fictional caller-asserted release dates do not attest to actual historical publisher availability, dataset rights, stock or true demand."
+  },
+  {
+    "id": "MM-RENV-001",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_delayed_historical_value_is_unavailable_for_forecast_and_calibration",
+    "limitation": "Synthetic publisher assertions and descriptive past-max-error envelopes do not constitute calibrated prediction intervals, authentic historical evidence or empirical future coverage."
+  },
+  {
+    "id": "MM-RENV-002",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_fixed_split_predicts_each_distinct_target_once",
+    "limitation": "An instrumented count on a fictional disjoint 21-day calibration and seven-day holdout demonstrates one forecast per distinct date in that split; it does not measure optimization speed, authenticate source availability or calibrate uncertainty."
+  },
+  {
+    "id": "MM-RENV-003",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_fixed_split_matches_independent_oracle_under_adversarial_publication_schedules",
+    "limitation": "Fictional adversarial reports match a separately written test-only quadratic eligibility oracle; this does not independently validate forecast quality, publisher provenance, source rights, true demand or calibrated coverage."
+  },
+  {
+    "id": "MM-RENV-004",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_disjoint_calibration_exactly_matches_naive_reference",
+    "limitation": "A deterministic, test-only quadratic oracle detects code-level fixed-window eligibility differences on generated histories; it cannot validate publisher rights, the true demand process, calibration guarantees or runtime speed."
+  },
+  {
+    "id": "MM-RENV-005",
+    "guide": "docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md",
+    "test": "tests/unit/test_retail_residual_envelope.py",
+    "function": "test_holdout_targets_never_enter_later_calibration_windows",
+    "limitation": "The generated fixture proves date-label disjointness and caller-declared release eligibility only; it does not prove unit/source provenance, calibrated uncertainty or empirical coverage."
+  },
+  {
+    "id": "MM-REVAL-001",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_EVALUATION.md",
+    "test": "tests/integration/test_retail_synthetic_evaluation.py",
+    "function": "test_synthetic_cli_is_reproducible_and_returns_sanitized_origin_receipts",
+    "limitation": "The generated fixture proves reproducibility, matched-origin accounting and output redaction for this local path only. Its declared releases are unauthenticated, positive invoice units are not complete demand, and the scores do not establish empirical forecasting skill or calibrated uncertainty."
+  },
+  {
+    "id": "MM-REVIEW-001",
+    "guide": "docs/engineering/SIGNED_SOURCE_REVIEW.md",
+    "test": "tests/unit/test_signed_source_review.py",
+    "function": "test_valid_signature_is_review_metadata_not_permission_to_ingest",
+    "limitation": "Synthetic Ed25519 verification only proves possession of supplied public-key's paired private key, not trustworthy key provisioning, reviewer authority, legal source rights, independently fresh registry state or permission to ingest."
+  },
+  {
+    "id": "MM-REVIEW-002",
+    "guide": "docs/engineering/SIGNED_SOURCE_REVIEW.md",
+    "test": "tests/unit/test_signed_source_review.py",
+    "function": "test_signed_revocation_is_terminal_for_same_manifest_even_after_reapproval",
+    "limitation": "Local same-packet revocation only blocks when the entire supplied log is anchored to an independently trusted up-to-date head. No append-only registry, key management, operational authorization or production revocation enforcement is implemented."
+  },
+  {
+    "id": "MM-RGATE-001",
+    "guide": "docs/engineering/RETAIL_COVERAGE_GATE.md",
+    "test": "tests/unit/test_retail_coverage_gate.py",
+    "function": "test_incomplete_declared_releases_suppress_model_ranking_and_report_exact_coverage",
+    "limitation": "Thresholded matches on fictional transaction proxies do not calibrate uncertainty or prove source rights, prediction quality or true demand."
+  },
+  {
     "id": "MM-RHEAD-001",
     "guide": "docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md",
     "test": "tests/unit/test_atomic_governed_publisher.py",
@@ -817,5 +866,278 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_remote_https_transport_enforces_timeout_mime_bytes_and_no_redirects",
     "limitation": "Fake HTTPS opener checks fixed request query, timeout, disabled proxy/redirect handlers, HTTP status, content type, maximum bytes and outage refusal. No real TLS interoperability or DNS failure recovery was tested."
+  },
+  {
+    "id": "MM-SEL-001",
+    "guide": "docs/engineering/RETAIL_SELECTION_SENSITIVITY.md",
+    "test": "tests/unit/test_retail_selection_sensitivity.py",
+    "function": "test_incomplete_windows_show_unknown_days_can_reverse_apparent_difference",
+    "limitation": "Caller-supplied hypothetical bounds on fictional excluded dates are not empirically established source values or identified selection effects."
+  },
+  {
+    "id": "MM-SIM-001",
+    "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
+    "test": "tests/unit/test_retail_policy_simulation.py",
+    "function": "test_three_policies_share_each_reproducible_demand_stream",
+    "limitation": "The test proves deterministic local mechanics and equal synthetic demand digests across three policies and lead-time scenarios. Inputs and cost coefficients are caller assertions; no real stock, demand, forecast, engine result, optimal policy or operational approval is verified."
+  },
+  {
+    "id": "MM-SIM-002",
+    "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
+    "test": "tests/unit/test_retail_policy_simulation.py",
+    "function": "test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat",
+    "limitation": "The test reproduces the local half-open target interval and checks its output caveat; it does not establish a standard or optimized policy, downstream trace persistence, or business quality."
+  },
+  {
+    "id": "MM-SIM-003",
+    "guide": "docs/engineering/M1_RETAIL_POLICY_SIMULATION.md",
+    "test": "tests/unit/test_retail_policy_simulation.py",
+    "function": "test_inventory_mass_balance_holds_for_every_policy_replication",
+    "limitation": "The test checks quantity conservation for local synthetic fixtures using a unit procurement coefficient; it is not evidence for actual purchasing, inventory operations, costs or service levels."
+  },
+  {
+    "id": "MM-SNAP-001",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_snapshot_content_hash_and_receipt_are_immutable_and_unverified",
+    "limitation": "Field immutability and digest matching do not prove source authenticity, authorization, tenant access or confidential processing."
+  },
+  {
+    "id": "MM-SNAP-002",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_asof_excludes_late_publication_but_keeps_real_zero",
+    "limitation": "Filters declared publication timestamps only; actual availability and licensed source ownership must be verified separately."
+  },
+  {
+    "id": "MM-SNAP-003",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_digest_mismatch_fails_before_interpreting_unverified_bytes",
+    "limitation": "The expected SHA-256 is caller supplied and is not an independently authenticated publisher signature or legal rights evidence."
+  },
+  {
+    "id": "MM-SNAP-004",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/integration/test_local_snapshot_flow.py",
+    "function": "test_local_example_receipt_and_historical_view_remain_unverified",
+    "limitation": "Integration on an invented CSV fixture does not exercise genuine data permissions, source revisions, privacy or retention."
+  },
+  {
+    "id": "MM-STRM-001",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_partial_stream_reads_continue_until_eof_and_do_not_accept_prefix_hash",
+    "limitation": "Full byte reads and mismatched prefix digest handling do not prove publisher authenticity or authorized use."
+  },
+  {
+    "id": "MM-STRM-002",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_bounded_reader_rejects_oversized_stream_before_full_read",
+    "limitation": "A byte ceiling bounds this function's cooperative stream consumption, not arbitrary upstream sources, transports or memory allocations."
+  },
+  {
+    "id": "MM-STRM-003",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/unit/test_evidence_snapshots.py",
+    "function": "test_bounded_reader_sanitizes_read_failures",
+    "limitation": "Generic read-failure messages do not guarantee future application logs or customer privacy policies are safe."
+  },
+  {
+    "id": "MM-STRM-004",
+    "guide": "docs/engineering/M1_LOCAL_CSV_STAGING.md",
+    "test": "tests/integration/test_local_snapshot_flow.py",
+    "function": "test_bounded_file_stream_stages_exactly_same_invented_fixture",
+    "limitation": "A checked-in synthetic fixture is not evidence of licensed real-data ingestion, source approval or publisher release timestamps."
+  },
+  {
+    "id": "MM-SWEEP-001",
+    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
+    "test": "tests/unit/test_retail_sensitivity_sweep.py",
+    "function": "test_incomplete_windows_can_lose_direction_robustness_as_ceiling_increases",
+    "limitation": "Mathematical counterfactual sweeps of fictional eligible date counts do not identify actual missing targets, selection bias or demand drift."
+  },
+  {
+    "id": "MM-SWEEP-002",
+    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
+    "test": "tests/unit/test_retail_sensitivity_sweep.py",
+    "function": "test_default_coverage_gate_hides_all_scenario_means_but_preserves_denominators",
+    "limitation": "An exact coverage gate suppresses conditional hypothetical means under sparse fictional eligibility; it cannot identify excluded true values or certify disclosure privacy."
+  },
+  {
+    "id": "MM-SWEEP-003",
+    "guide": "docs/engineering/RETAIL_SENSITIVITY_SWEEP.md",
+    "test": "tests/unit/test_retail_sensitivity_sweep.py",
+    "function": "test_eight_scenarios_run_exactly_two_historical_audits",
+    "limitation": "A mocked evaluator call count proves two invocations for synthetic history; it does not measure runtime speedups, certify publisher vintages, or establish demand drift."
+  },
+  {
+    "id": "MM-UCI-001",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_positive_rows_aggregate_by_product_calendar_day_without_raw_ids",
+    "limitation": "Aggregation and excluded-line counts on invented rows do not establish reconciled real sales, true demand, inventory or permissions."
+  },
+  {
+    "id": "MM-UCI-002",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_customer_columns_are_not_accessed_or_serialized",
+    "limitation": "Output minimization cannot guarantee secure handling by upstream XLSX readers, callers, logs or privacy-governance policies."
+  },
+  {
+    "id": "MM-UCI-003",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_row_limit_is_enforced_on_iterator_without_materialization",
+    "limitation": "Bounding in-memory row iteration does not cap unimplemented workbook decompression, overall input byte size or external source acquisition."
+  },
+  {
+    "id": "MM-UCI-004",
+    "guide": "docs/engineering/UCI_RETAIL_PROJECTION.md",
+    "test": "tests/integration/test_uci_retail_projection_flow.py",
+    "function": "test_retail_projection_preserves_unknown_release_time_and_cannot_be_staged_directly",
+    "limitation": "Refusing to invent historical publication timestamps is not independent evidence of true publisher release times or source data rights."
+  },
+  {
+    "id": "MM-WKMAP-001",
+    "guide": "docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md",
+    "test": "tests/unit/test_worldkernel_mapping.py",
+    "function": "test_supported_inventory_scenario_maps_to_exact_v1_request",
+    "limitation": "The synthetic case proves exact local request construction only. It does not verify unit provenance, source rights, a pinned engine package, SDK execution, server-enforced quotas, result validity or business policy quality."
+  },
+  {
+    "id": "MM-WKMAP-002",
+    "guide": "docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md",
+    "test": "tests/unit/test_worldkernel_mapping.py",
+    "function": "test_mapping_revalidates_mutated_scenario_before_budget_mapping",
+    "limitation": "Reconstructs and validates the current local scenario at request-mapping time only; it does not make the model immutable across later caller changes or enforce a worker/server runtime quota."
+  },
+  {
+    "id": "MM-WKMAP-003",
+    "guide": "docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md",
+    "test": "tests/unit/test_worldkernel_mapping.py",
+    "function": "test_mapping_preserves_lower_scenario_or_operator_run_ceiling",
+    "limitation": "Checks the request's declared max_runs against two local ceilings; it does not prove that an external WorldKernel executor enforces the declaration or the other scenario budgets."
+  },
+  {
+    "id": "MM-WKR-001",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_bounds_worker_output",
+    "limitation": "The synthetic fake worker proves the parent retains bounded output; it does not provide CPU/memory isolation or contain arbitrary child processes."
+  },
+  {
+    "id": "MM-WKR-002",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/integration/test_worldkernel_runner_engine.py",
+    "function": "test_pinned_local_runner_executes_synthetic_inventory_world_deterministically",
+    "limitation": "Executes the exact reviewed package pin with fictional inputs only; it does not establish lead-time semantics, source rights, production isolation or business validity."
+  },
+  {
+    "id": "MM-WKR-003",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_worker_accepts_exact_pep610_repository_and_commit",
+    "limitation": "Verifies local metadata comparison logic, not installed-file integrity, trusted distribution, source license or runtime behavior."
+  },
+  {
+    "id": "MM-WKR-004",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_rejects_inventory_result_that_breaks_balance",
+    "limitation": "Rejects an invented inconsistent inventory result; it does not prove that the modeled world represents a retailer or real replenishment process."
+  },
+  {
+    "id": "MM-WKPW-001",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/unit/test_worldkernel_policy_world.py",
+    "function": "test_policy_mapper_targets_fixed_world_and_bounds_all_policy_transitions",
+    "limitation": "Proves only local synthetic request construction and fan-out limits; exchange JSON limits are not independent server quotas and the test does not invoke WorldKernel."
+  },
+  {
+    "id": "MM-WKPW-002",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/unit/test_worldkernel_policy_world.py",
+    "function": "test_registered_handler_matches_reference_policy_metrics_and_shared_stream",
+    "limitation": "Runs the code-owned handler with Python's seeded random source and synthetic inputs; it does not prove compatibility with an installed WorldKernel package, model realism or policy quality."
+  },
+  {
+    "id": "MM-WKPW-003",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/integration/test_worldkernel_policy_world_engine.py",
+    "function": "test_pinned_engine_policy_gateway_matches_synthetic_reference",
+    "limitation": "Executes only the reviewed local package pin on fictional inputs and verifies parity with the reviewed reference rules; it does not establish source rights, a forecast, optimal policy, hostile-code isolation or production suitability."
+  },
+  {
+    "id": "MM-WKPW-004",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/integration/test_worldkernel_policy_world_engine.py",
+    "function": "test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data",
+    "limitation": "Exercises the explicit local CLI against the reviewed package pin and verifies the v2 trace binds WorldKernel as selected output, the Python test double as parity oracle, exact engine provenance and deterministic replay. It uses fictional inputs and does not establish source rights, independent scientific validation, HTTP execution, authenticated review or production isolation."
+  },
+  {
+    "id": "MM-WKPW-005",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/unit/test_worldkernel_policy_world.py",
+    "function": "test_policy_gateway_rejects_malformed_world_state_from_worker",
+    "limitation": "Rejects one synthetic malformed fake-worker state at the parent boundary; it does not exhaustively verify third-party runtime behavior or sandbox an untrusted handler."
+  },
+  {
+    "id": "MM-WKPW-006",
+    "guide": "docs/engineering/WORLDKERNEL_POLICY_WORLD.md",
+    "test": "tests/integration/test_worldkernel_policy_world_engine.py",
+    "function": "test_m1_cli_worldkernel_option_runs_end_to_end_with_synthetic_data",
+    "limitation": "The exact installed pin produces a deterministic synthetic trace with distinct selected-output and parity-oracle records and bound execution metadata. Shared-rule parity is not independent scientific validation, installed-file attestation, source authorization or production isolation."
+  },
+  {
+    "id": "MM-XLSX-001",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_xlsx_stage_projects_positive_units_and_never_copies_sensitive_values",
+    "limitation": "Fictional XLSX projection demonstrates selected output minimization, not authorized source rights, original publisher identity or customer privacy compliance."
+  },
+  {
+    "id": "MM-XLSX-002",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_zip_compression_ratio_bomb_header_rejected",
+    "limitation": "An archive compression ratio guard cannot guarantee isolation against malicious XML, ZIP parser vulnerabilities, CPU exhaustion or untrusted file processing."
+  },
+  {
+    "id": "MM-XLSX-003",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_bounded_row_and_group_limits_do_not_truncate",
+    "limitation": "Rejecting workbooks above a small row/group limit does not establish whole-dataset UCI source processing or historical data validity."
+  },
+  {
+    "id": "MM-XLSX-004",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/integration/test_uci_workbook_flow.py",
+    "function": "test_synthetic_local_xlsx_file_to_product_day_projection",
+    "limitation": "Fictional local XLSX test does not use real UCI records, independently proven first-availability dates, trained models or WorldKernel."
+  },
+  {
+    "id": "MM-UCIE-001",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/integration/test_uci_event_time_cli.py",
+    "function": "test_synthetic_cli_is_reproducible_and_keeps_event_time_limitations",
+    "limitation": "The integration is deterministic and identifier-minimized only for a generated workbook. It does not establish original source rights, real-workbook compatibility, actual date completeness or point-in-time publication history."
+  },
+  {
+    "id": "MM-UCIE-002",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_incomplete_target_day_abstains_instead_of_becoming_zero",
+    "limitation": "The evaluator abstains when a caller omits a synthetic date declaration. It cannot authenticate completeness claims for a real source."
+  },
+  {
+    "id": "MM-UCIE-003",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_validation_scores_do_not_depend_on_locked_holdout_values",
+    "limitation": "This mutation regression establishes validation independence from later fixture values only. It does not test preprocessing leakage or revised source vintages."
   }
 ]

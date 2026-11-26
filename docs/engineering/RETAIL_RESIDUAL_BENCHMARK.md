@@ -1,4 +1,8 @@
-# MM-M1c — synthetic retrospective performance comparison
+# Historical MM-M1c — synthetic retrospective performance comparison
+
+**Status:** historical PR #34/#35 comparison. The current residual evaluator
+uses a fixed disjoint calibration/holdout split, so these prior rolling-window
+timings and allocation measurements do not characterize current code.
 
 This is a **local engineering benchmark**, not a statistical backtest of
 actual sales, CI validation, source authentication or calibration of the

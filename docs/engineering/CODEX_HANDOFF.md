@@ -14,6 +14,56 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
+## 1.1 Owner-approved continuation decisions — 2026-11-25
+
+- Research preparation proceeds A then B: UCI Online Retail #352 event-time
+  retrospective first, then an aggregate Census release-vintage study.
+  ALFRED is conditional on free authorized access, acceptable series terms and
+  adequate archive evidence. This is not approval to acquire or process real
+  data. Keep raw data out of Git, CI, logs, prompts and external services;
+  automated tests remain synthetic.
+- Before processing the original UCI workbook, verify original terms,
+  attribution/change notice, minimal product/day/positive-quantity projection
+  after cancellation classification, private local storage,
+  retention/deletion and the exact source manifest. Do not derive availability
+  from `InvoiceDate`; preserve the event-time retrospective label.
+- GitHub Actions allowance is exhausted. No paid usage, paid runner or
+  spending-limit increase is approved. The no-cost self-hosted option is
+  evaluated in [B-08](BLOCKERS.md); no isolated ephemeral host is selected,
+  and existing job annotations do not prove that runner substitution would
+  bypass the pre-start account gate. Do not register a runner or change a
+  workflow. Use [the temporary local gate](LOCAL_QUALITY_GATE.md) on exact
+  clean heads, keep local and official evidence separate, and gate the exact
+  reconciled candidate. Do not retry identical pre-job failures.
+- Continue M1E-02 using the existing M1E-01 WorldKernel request mapper. Inspect
+  the separate WorldKernel repository read-only, pin a reviewed revision,
+  validate the actual local `worldkernel.result.v1` exchange, and keep the
+  optional dependency and project boundary intact. No changes to WorldKernel
+  or production deployment are authorized.
+
+The self-hosted option was checked against current official GitHub
+documentation: runner usage itself is free, but that does not prove it bypasses
+the observed pre-start account gate or eliminate the cost of its host. GitHub
+recommends ephemeral runners for autoscaling and warns that workflow code can
+compromise a self-hosted machine. No dedicated, clean, zero-cost ephemeral host
+is approved; do not use the shared workstation, register a runner or change
+workflow labels. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
+and [secure use](https://docs.github.com/en/actions/reference/security/secure-use).
+
+The latest owner-recovered PR #57 comment records that the test and
+symbol-catalog job records on published head 678755e had no steps and
+runner_id=0; the exact annotations remain unavailable, so do not infer their
+individual start cause. The exact-head local gate on that PR head passed 712
+tests and all six checks, which is not official CI. See
+[comment 7167002881](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881).
+
+The separate, unsubmitted M1E-02 branch has a pinned synthetic engine run and
+a passing exact-head local gate. Its restricted-sandbox timeout was traced to
+local asyncio socket-pair creation; the same test and full gate passed outside
+that restriction. This does not retroactively explain the historical 8f906b8
+timeout. Preserve both the scope and limits in the blocker register.
+
 Read in order:
 
 1. [Master plan](MASTER_EXECUTION_PLAN.md) — desired architecture,
@@ -91,6 +141,84 @@ or real datasets, modify other repos, change approved architecture,
 perform destructive operations or relax gates. Ask the owner for
 only the decision or permission needed. Do not manufacture approvals
 or official CI results.
+
+### Current owner decisions — 2026-11-25
+
+Owner comments on [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
+approve preparing two independent research lanes in sequence: A, the narrow
+UCI Online Retail #352 event-time retrospective, then B, aggregate Census
+release-vintage evaluation. This approves preparation of adapters, protocols,
+dataset/privacy documentation and synthetic tests; it does **not** authorize
+acquiring or processing the real workbook or Census vintages. Before UCI bytes
+are handled, verify original terms, attribution/change notice, minimized fields
+(product/day/positive quantity after cancellation classification), secure
+local storage, retention/deletion and a source manifest. Do not put raw or
+identifying rows in Git, CI, logs, prompts or external services. Never infer
+publication availability from `InvoiceDate`; retain
+`event_time_retrospective_unverified_availability`. For Census, prefer free
+official archived releases; use ALFRED only if access is free/authorized and
+series terms plus historical-vintage evidence suffice. Do not claim SKU-level
+demand or inventory validation. M5 remains NO-GO; B-01/B-02 remain open.
+
+Owner confirms GitHub Actions allowance is exhausted, with no paid usage or
+spending-limit increase authorized. Follow
+[`LOCAL_QUALITY_GATE.md`](LOCAL_QUALITY_GATE.md) on a clean exact head; report
+all six local checks as local evidence, not CI. Require independent review and
+a separate final gate on the integrated candidate before any integration
+decision. The owner's exact-head retest at `1bf178b` passed; the older
+`8f906b8` timeout cause remains unknown. On the separate M1E-02 commit
+`ac52ec9`, a restricted Windows sandbox reproduced a `test_health` wait in
+asyncio loopback socket-pair creation; a five-second event-loop probe
+reproduced the wait, and the same test plus full six-check gate passed outside
+that socket restriction. Do not generalize this diagnosis to the older
+`8f906b8` event. The latest `678755e` owner-recovered job records show
+`steps=[]` and `runner_id=0` for the `test` and `symbol-catalog` jobs, but the
+exact annotation remains unavailable; do not infer its per-check cause. Do
+not disable checks, change protections, or start a self-hosted runner without
+separate zero-cost isolated infrastructure approval. See comments
+[7164856818](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818),
+[7164870326](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164870326),
+[7164895449](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164895449)
+and [7167002881](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7167002881).
+
+The later PR #57 update on exact head `1cff92c` reports a complete six-check
+local gate: 712 pytest tests, Ruff, catalog, atlas, evidence and capability
+checks passed; Actions failed before repository steps with the same
+payment-or-spending-limit alternative. The independent retest at `1bf178b`
+passed 700 tests and the same six local checks. The integrated candidate at
+`42560e441f5020a5b4319a0f7b56474ef0485681` subsequently passed its own exact
+six-check gate with 828 tests; receipt and limitations are in
+[`LOCAL_QUALITY_GATE.md`](LOCAL_QUALITY_GATE.md). This remains local evidence,
+not CI. See comment
+[7169397485](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7169397485).
+
+The consolidated candidate is `codex/m1-engine-provenance`, published as
+[PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) against
+`main`. Commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85` preserves the exact
+published ancestry of #52–#59; #60/#61 are excluded. It fixes PR #59 review
+comment
+[7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947):
+WorldKernel is named as the selected source when it supplies metrics, while
+the invoked Python test double is recorded separately as parity oracle. V1
+trace remains supported; composed workflow uses v2 typed execution evidence.
+Commit `20e7b50f88df046eaf3541c5ea706b2e3b051aad` addresses the new #62
+DecisionTrace V2 chronology finding: later execution instants fail, earlier
+instants and timezone-equivalent equality pass. V1 remains unchanged. Its
+exact-head gate passed 835 tests, zero skips and all six checks with
+WorldKernel source pin `9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed.
+The code-head receipt is
+`results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
+After tracked status/backlog/handoff updates, repeat the full gate on the clean
+documentation-inclusive SHA and report that exact receipt on PR #62. All such
+results remain local evidence, not official Actions or merge approval.
+
+The package remains SHA-pinned and optional; API startup and HTTP workflow
+remain independent. The inventory demo's `demo-1` registry label is not
+artifact attestation. The policy world preserves the M1E-03 transition and
+exact parity on synthetic inputs. Do not edit WorldKernel, claim real demand
+or calibrated outcomes, or describe the subprocess as a hostile-code sandbox.
+No real UCI/Census bytes were accessed. PR #60/#61 remain separate, and no
+remote branch or `main` was changed.
 
 ## 4. Mandatory documentation standard
 

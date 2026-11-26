@@ -1,14 +1,14 @@
 """Offline prequential residual-envelope diagnostics on fictional retail proxies.
 
-A trailing maximum absolute residual is a descriptive *heuristic*, not a
-calibrated predictive interval or a guarantee of any coverage level.
+A maximum absolute residual from a fixed, pre-holdout calendar window is a
+descriptive *heuristic*, not a calibrated predictive interval or a guarantee
+of any coverage level.
 """
 from __future__ import annotations
 
 import re
 from datetime import date, timedelta
-from functools import cache
-from heapq import heappop, heappush
+from heapq import heappush
 
 from mirrormind.domains.retail.declared_releases import (
     DeclaredProductRelease,
@@ -30,10 +30,12 @@ def evaluate_retail_residual_envelopes(
 ) -> dict[str, object]:
     """Audit one-day seasonal-naive envelopes using only past published errors.
 
-    Each historical residual is admitted only if its own seven feature days
-    were available before its forecast origin and its target was released
-    no later than the *current* forecast origin. A target missing from the
-    positive-line projection is never interpreted as a recorded zero.
+    Calibration target dates form one fixed calendar window immediately
+    before the first holdout target. A residual is admitted at a holdout
+    origin only if its target release is available by that origin and its
+    own seven feature days were available before its own forecast origin.
+    Holdout target values never enter calibration, even at later origins. A
+    target missing from the positive-line projection is never a recorded zero.
     """
     if type(evaluation_on) is not date:
         raise ValueError("evaluation_on must be an exact date")
@@ -62,10 +64,8 @@ def evaluate_retail_residual_envelopes(
     published = {(entry.stock_code, entry.observed_on): entry.available_on
                  for entry in releases}
 
-    # Cache only within this evaluation: a forecast for target is determined
-    # by the seven values published at its own preceding origin. Never reuse
-    # predictions across distinct calls or evaluation cutoffs.
-    @cache
+    # Each fixed calibration target and holdout target is visited once. Its
+    # forecast still uses only the seven values published at its own origin.
     def _predict_on(target: date) -> float | None:
         origin = target - timedelta(days=1)
         history = tuple(origin - timedelta(days=offset) for offset in range(6, -1, -1))
@@ -77,21 +77,20 @@ def evaluate_retail_residual_envelopes(
         return _predict(tuple(observed[day] for day in history))["seasonal_naive_lag7"]
 
     first = evaluation_on - timedelta(days=holdout_days - 1)
-    # Only calendar candidates that can enter a holdout calibration window.
-    # Scheduling uses declared dates, but a candidate's units are not read
-    # until its release is available at the CURRENT holdout origin.
-    earliest_candidate = first - timedelta(days=calibration_days)
+    calibration_start = first - timedelta(days=calibration_days)
+    calibration_end = first - timedelta(days=1)
+    # Calibration targets occupy one fixed window strictly before holdout.
+    # Their release dates schedule eligibility, but a candidate's units are
+    # not read until its release is available at the CURRENT holdout origin.
     final_origin = evaluation_on - timedelta(days=1)
     release_events = sorted(
         (published[(stock_code, past)], past)
         for past in observed
-        if earliest_candidate <= past <= final_origin
+        if calibration_start <= past <= calibration_end
         and published[(stock_code, past)] <= final_origin
     )
     event_index = 0
     active_count = 0
-    # A candidate expires based on its target date even if published late.
-    expirations: list[tuple[date, float]] = []
     maximums: list[tuple[float, date]] = []
 
     statuses: list[dict[str, str]] = []
@@ -99,29 +98,19 @@ def evaluate_retail_residual_envelopes(
     for index in range(holdout_days):
         target = first + timedelta(days=index)
         origin = target - timedelta(days=1)
-        oldest = target - timedelta(days=calibration_days)
 
-        # Advance publication time even when the present target abstains;
-        # this retains eligible history for later origins. No future
-        # outcome is read to compute a residual before publication.
+        # Advance publication time even when this holdout target abstains.
+        # The candidate target window stays fixed and disjoint from holdout;
+        # no future outcome is read before its declared publication time.
         while event_index < len(release_events) and release_events[event_index][0] <= origin:
             _, past = release_events[event_index]
             event_index += 1
-            if past < oldest:
-                continue
             past_point = _predict_on(past)
             if past_point is None:
                 continue
             residual = abs(observed[past] - past_point)
-            heappush(expirations, (past, residual))
             heappush(maximums, (-residual, past))
             active_count += 1
-
-        while expirations and expirations[0][0] < oldest:
-            heappop(expirations)
-            active_count -= 1
-        while maximums and maximums[0][1] < oldest:
-            heappop(maximums)
 
         prefix = {"target_on": target.isoformat(), "origin_on": origin.isoformat()}
         if target not in observed:
@@ -162,6 +151,11 @@ def evaluate_retail_residual_envelopes(
         "evaluation_on": evaluation_on.isoformat(),
         "requested_origins": holdout_days,
         "calibration_days": calibration_days,
+        "calibration_target_window_start": calibration_start.isoformat(),
+        "calibration_target_window_end": calibration_end.isoformat(),
+        "holdout_target_window_start": first.isoformat(),
+        "holdout_target_window_end": evaluation_on.isoformat(),
+        "calibration_holdout_targets_disjoint": True,
         "minimum_calibration_residuals": min_calibration_residuals,
         "evaluated_origins": eligible,
         "retrospective_covered_origins": covered,
