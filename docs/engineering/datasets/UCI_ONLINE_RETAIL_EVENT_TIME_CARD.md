@@ -79,11 +79,12 @@ The study design is fixed before source inspection or model tuning:
    on locked holdout results or claim that transaction event time was
    historically available.
 
-The protocol is implemented against synthetic fixtures in draft PR #57. Its
-synthetic regressions verify transformation and metric rules; they do not
-verify actual workbook compatibility, rights, source completeness or
-predictive skill. See the [source review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
-and [event-time evaluator evidence](../EVIDENCE_MAP.json).
+The protocol is implemented against synthetic fixtures and is integrated in
+`main` through PR #62, which incorporated PR #57. Synthetic regressions verify
+transformation and metric rules; they do not verify actual workbook
+compatibility, rights, source completeness or predictive skill. See the
+[source review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and
+[event-time evaluator evidence](../EVIDENCE_MAP.json).
 
 ## Privacy, security and permissions gate
 

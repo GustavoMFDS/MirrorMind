@@ -14,7 +14,37 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
-## 1.1 Owner-approved continuation decisions — 2026-11-25
+## Current owner-approved continuation — 2026-11-26
+
+- `main` is `a456034c55ed7634ad4768b26788fec09dab1d08`, the
+  ancestry-preserving PR #62 merge. Independent post-merge gate passed 835
+  tests, zero skips and six checks with the exact WorldKernel source pin. PR
+  #52 is merged; #53–#59 are closed as incorporated and their branches remain
+  available. Do not duplicate their integration.
+- PR #60 is separate and ready for independent review at
+  `fafdedae3a76398e0450773065e40384c96d1ed7`; its local gate passed 845 tests,
+  zero skips and six checks. PR #61 is separate and ready at
+  `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; its gate passed 841 tests, zero
+  skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
+- Census remains separate as PR #63. Its published head
+  `b5e989314bcdcb566df479931794a5f56c07d477` passed 877 tests, zero skips and
+  six checks; this branch reconciles stale UCI/Census source-status prose and
+  must pass a new exact-head gate before push. Keep the current three PRs
+  separate; do not merge or broaden their contracts here.
+- PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
+  contains only a synthetic Census vintage evaluator. The UCI then aggregate
+  Census/ALFRED pilot sequence remains preparation-only; no source bytes,
+  credentials or records were acquired. B-01/B-02 still require source rights,
+  privacy, retention and time-availability evidence before any real run.
+- The owner confirms Actions quota exhaustion and zero paid budget. Use the
+  exact-clean-head local gate, distinguish receipts from CI, and do not
+  register a runner, modify workflows/protections or retry prior start failures.
+- ENG-02 tracks five existing Ruff findings under `examples/`; fix them only in
+  separate maintenance. After M2-01 (#60) review/integration and the Census
+  reconciliation settle, M2-02 retrieval evaluation is next. Do not add a new
+  feature PR while this review queue is unsettled.
+
+## 1.1 Historical owner-approved continuation decisions — 2026-11-25
 
 - Research preparation proceeds A then B: UCI Online Retail #352 event-time
   retrospective first, then an aggregate Census release-vintage study.
@@ -64,7 +94,7 @@ local asyncio socket-pair creation; the same test and full gate passed outside
 that restriction. This does not retroactively explain the historical 8f906b8
 timeout. Preserve both the scope and limits in the blocker register.
 
-## 1.2 Historical resumed state before PR #62 merge — 2026-11-25
+## 1.2 Historical resumed state before PR #62 merge — 2026-11-25 (superseded)
 
 GitHub review metadata confirms PR #62 remains open, mergeable and directed at
 `main`, at published head

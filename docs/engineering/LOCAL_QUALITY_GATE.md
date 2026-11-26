@@ -204,7 +204,7 @@ exact clean documentation-inclusive SHA before publishing the branch. Preserve
 that final SHA and receipt in the PR discussion; never treat either local
 receipt as official Actions or integration approval.
 
-## Census candidate after PR #62 merge — 2026-11-26
+## Published Census PR #63 baseline — 2026-11-26
 
 The separate Census branch includes merged `main` at
 `a456034c55ed7634ad4768b26788fec09dab1d08` through ancestry-preserving merge
@@ -222,8 +222,9 @@ exact merged candidate passed all six checks at
 - Status: `local_gate_passed_not_official_ci`; Actions were not checked by the
   local script.
 
-This receipt covers the exact candidate before the current baseline, backlog,
-handoff and change-request evidence update. Run the six checks on the final
-documentation-inclusive SHA before pushing or opening the separate Census PR.
-No receipt is official CI, and no source bytes, credential or licensed-data
-permission is implied.
+The candidate was published as the separate open PR #63 at head
+`b5e989314bcdcb566df479931794a5f56c07d477`. The current branch reconciles
+stale UCI/Census pilot-status prose; run the six checks again on that exact
+documentation-inclusive head before pushing the update. No receipt is
+official CI, and no source bytes, credential or licensed-data permission is
+implied.

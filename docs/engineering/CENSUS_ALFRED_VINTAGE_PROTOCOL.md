@@ -1,6 +1,9 @@
 # Aggregate Census/ALFRED vintage research protocol
 
-**Status:** owner-approved second research lane, protocol preparation only; no Census/FRED data or API key was acquired. This study follows the UCI event-time pilot and is independent of product-level claims.
+**Status:** owner-approved second research lane; the synthetic evaluator is
+published separately in open PR #63. Protocol and regression fixtures use no
+Census/FRED data or API key. This study follows the UCI event-time pilot and
+is independent of product-level claims.
 
 ## Research question and boundary
 

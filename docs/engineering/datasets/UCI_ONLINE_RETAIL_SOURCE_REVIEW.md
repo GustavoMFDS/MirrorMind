@@ -136,12 +136,14 @@ terms, attribution/change notice, field-minimization, secure storage,
 retention/deletion and manifest checks above and obtain source-specific
 approval. Automated tests remain synthetic-only.
 
-**Current source state:** the UCI event-time evaluator from draft PR #57 is
-present in the local M1 integration candidate; no real file was acquired. The local 1 MiB XLSX
-reader still cannot process UCI's complete 22.6 MB workbook, so a separately
-reviewed bounded streaming path would be required before full-file use.
-Unverified publication time, empirical performance and source permission are
-not delivered.
+**Current source state:** PR #62 incorporated PR #57's synthetic UCI event-time
+evaluator into `main` at `a456034c55ed7634ad4768b26788fec09dab1d08`; the
+consolidated synthetic M1 scope received favorable independent review and the
+merged-main gate passed 835 tests with zero skips. No real file was acquired.
+The local 1 MiB XLSX reader still cannot process UCI's complete 22.6 MB
+workbook, so a separately reviewed bounded streaming path would be required
+before full-file use. Unverified publication time, empirical performance and
+source permission are not delivered.
 
 ## 5. Owner-approved preparation plan for B-01 / B-02
 
@@ -169,12 +171,12 @@ and ordinal-only product summaries. Label all results
 `event_time_retrospective_unverified_availability`; never create
 `available_on` from `InvoiceDate`.
 
-The adapter and regression tests on draft [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
-operate on synthetic fixtures. The official workbook exceeds the existing
-parser's row/group bounds and would require a separately reviewed bounded
-streaming adapter. A synthetic test proves projection/evaluation behavior,
-not rights, source completeness, actual workbook compatibility or real-data
-predictive skill.
+The adapter and regression tests from [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
+are integrated through PR #62 and operate on synthetic fixtures. The official
+workbook exceeds the existing parser's row/group bounds and would require a
+separately reviewed bounded streaming adapter. A synthetic test proves
+projection/evaluation behavior, not rights, source completeness, actual
+workbook compatibility or real-data predictive skill.
 
 ### Option B — Census MARTS release-vintage method pilot
 
@@ -239,6 +241,8 @@ alternative vintage source; no API key, access or download is assumed here.
   from an aggregate Census series.
 
 Owner direction is recorded in [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818).
-**Current status:** A's synthetic evaluator is present on the local candidate;
-B's protocol is prepared. Neither source was downloaded, no source-specific
-processing approval was granted and no empirical result is claimed.
+**Current status:** A's synthetic evaluator is integrated on `main` through
+PR #62; B's aggregate-vintage evaluator and numerical/chronology corrections
+remain separate in open PR #63. Both lanes remain synthetic-only. Neither
+source was downloaded, no source-specific processing approval was granted
+and no empirical result is claimed.

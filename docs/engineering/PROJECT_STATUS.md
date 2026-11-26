@@ -1,45 +1,35 @@
 # Project status — current baseline, 2026-11-26
 
 **Merged main:** `a456034c55ed7634ad4768b26788fec09dab1d08`, PR #62's
-ancestry-preserving merge. The independent post-merge gate passed 835 tests,
-zero skips and six checks with WorldKernel at reviewed source revision
+ancestry-preserving merge. Independent post-merge gate passed 835 tests,
+zero skips and all six checks with WorldKernel at reviewed source revision
 `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Final PR #62 review and
 post-merge evidence are recorded in [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [comment 7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
-This is local validation, not official Actions.
+This is local validation, not official Actions. PR #52 is merged; #53–#59
+were closed as incorporated after ancestry checks, and their branches remain
+available.
 
-PR #62 incorporates the exact published ancestry of #52–#59. #52 is merged;
-#53–#59 were closed as incorporated after ancestry checks; all branches remain
-available. PR #60 is separate, retargeted to `main`, open, mergeable and ready
-for review at `fafdedae3a76398e0450773065e40384c96d1ed7`. Its exact local gate
-passed 845 tests, zero skips and all six checks with the reviewed WorldKernel
-pin. Its scope remains fictional, in-memory and caller-authorized; no route,
-identity or persistent store is included. Local results are not Actions.
-
-The separate Census candidate is branch `codex/m1-census-vintage-adapter` at
-`55e91f7d73c67867edaf1aa790242f6cdbc611b9`, with `a456034` as its second
-parent. Its exact reconciled gate passed 877 tests, zero skips and all six
-checks at `2026-11-26T03:58:32.075461+00:00`; receipt:
-`results/local-quality-gate-55e91f7d73c67867edaf1aa790242f6cdbc611b9.json`.
-WorldKernel was installed from the reviewed pin. This is synthetic adapter
-and evaluator evidence only. A status and receipt update still needs its own
-exact-head gate before the branch is published as a separate PR.
-
-PR #61 remains a separate G-01 proposal on its old base and needs an
-ancestry-preserving sync with `a456034`, conflict review, and an exact local
-gate before independent review. Do not merge it into #60 or Census.
+| Review item | Current exact state | Limits |
+| --- | --- | --- |
+| PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
+| PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
+| PR #63 | Open, non-draft, separate Census branch; published head `b5e989314bcdcb566df479931794a5f56c07d477` descends from merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9` whose second parent is `a456034`; exact gate: 877 tests, zero skips, six checks. This branch receives a documentation-only pilot-status reconciliation and will be re-gated before push. | Synthetic vintage evaluator; no Census/ALFRED bytes, source authorization or empirical results. Latest exact head/receipt will remain in its PR body. |
 
 The synthetic M1 evidence-to-decision path is integrated; M1 remains
 incomplete. Approved pilot order is UCI #352 retrospective by event time,
-then aggregate Census/ALFRED release-vintage evaluation. No real source bytes,
-credentials, or source records were acquired. B-01/B-02 still require exact
-rights, privacy, retention and temporal-evidence review. GitHub Actions
-allowance is exhausted under the owner's zero-paid-use decision (B-08); no
-runner or protection change was made.
+then aggregate Census/ALFRED release-vintage evaluation. PR #62 integrated the
+synthetic UCI evaluator; PR #63 keeps Census work separate. No real source
+bytes, credentials or records were acquired. B-01/B-02 still require exact
+rights, privacy, retention and temporal-evidence review. B-04 is resolved for
+the narrow reviewed local WorldKernel compatibility slice only; service
+isolation and deployment acceptance remain open. GitHub Actions allowance is
+exhausted under the owner's zero-paid-use decision (B-08); no runner,
+protection or workflow change was made.
 
 `ruff check examples` separately found five pre-existing findings in three
-M1 examples (I001, RUF007, F401); ENG-02 tracks them outside PR #60 and the
-`src`/`tests` gate. No example was changed to obtain a gate pass.
+M1 examples (I001, RUF007, F401); ENG-02 tracks them outside PR #60/#61/#63 and
+the `src`/`tests` gate. No example was changed to obtain a gate pass.
 
 ## Historical PR #51 baseline — 2026-11-23
 
