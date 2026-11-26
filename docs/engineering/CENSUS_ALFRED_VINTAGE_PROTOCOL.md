@@ -101,7 +101,42 @@ releases. A complete local check does not establish rights or official CI. No
 data adapter should call FRED until free account/API access, each series'
 terms and the owner-approved retention manifest are in place.
 
-## Current primary references checked 2026-11-25
+## Primary-source recheck — 2026-11-26 (metadata only)
+
+The official Census [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html)
+lists historical monthly releases and explicitly identifies missing releases;
+the stated gaps are before 1992. The separate [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html)
+lists sales tables from January 1992 through March 2025. These indexes make
+1992 onward a concrete candidate window, but they do not prove every original
+release file is available, consistent or complete for the selected series.
+The [release schedule](https://www.census.gov/retail/release_schedule.html)
+publishes a time of day for scheduled release dates; the timezone and exact
+timestamp for each historical artifact still need source-level verification.
+
+The [2022 annual-revision archive](https://www.census.gov/retail/mrts/historic_releases.html)
+carries a correction notice: its sales spreadsheet was replaced at 12:45 p.m.
+on the release date after a 10:00 a.m. release. This demonstrates that an
+official archive can be corrected within a day. Preserve distinct file
+versions, hashes and timestamps if permission is granted; do not treat a
+date-only vintage as ordered against a same-day update. The current date-only
+selector must abstain on that ambiguity. This notice is metadata evidence, not
+proof that the original file bytes remain available.
+
+FRED's current [API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html)
+require registration for a key and place responsibility for third-party series
+rights on the user; they direct users to contact data owners before non-personal
+use. Therefore `RSAFS` remains a conditional candidate, not an approved source
+or a shortcut around the original Census release archive. The direct Census
+archive is the preferred no-credential proposal, subject to series-specific
+rights and retention review.
+
+This was a metadata-only source review. No Census release file, FRED API
+response, credential or workbook was downloaded or processed. A search-result
+preview for the public FRED `RSAFS` table incidentally displayed a few published
+aggregate values; none was copied into repository artifacts or used in an
+evaluation. This is not a pilot run and does not establish source approval.
+
+## Current primary references checked 2026-11-26
 
 - U.S. Census [monthly retail data](https://www.census.gov/retail/data.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MRTS archive](https://www.census.gov/retail/marts/historic_releases.html), and [release schedule](https://www.census.gov/retail/release_schedule.html).
 - St. Louis Fed [RSAFS series record](https://fred.stlouisfed.org/series/RSAFS), [free account description](https://fred.stlouisfed.org/help/account/fred-account-features/register), [API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html), [`series/vintagedates`](https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html), and [`series/observations`](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).

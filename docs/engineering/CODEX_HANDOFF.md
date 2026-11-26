@@ -28,16 +28,21 @@ execution guidance and does not broaden the agent's permissions.
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
 - Census remains separate as PR #63. Its published baseline
   `b5e989314bcdcb566df479931794a5f56c07d477`, pilot-status reconciliation
-  `162268ded05eb8ba291025b6cc98e5658ae2e0a1`, and follow-up documentation head
-  `941d72956d9d00f6fd281fd3a3039a1786777c70` each passed 877 tests, zero skips
-  and all six checks. The current published head and exact gate receipt are in
-  PR #63; any later tracked edits require their own exact-head gate. Keep the
-  three PRs separate; do not merge or broaden their contracts here.
+  `162268ded05eb8ba291025b6cc98e5658ae2e0a1`, and published heads
+  `941d72956d9d00f6fd281fd3a3039a1786777c70` and
+  `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf` each passed 877 tests, zero skips
+  and all six checks. The current head and exact gate receipt are in PR #63;
+  any later tracked edits require their own exact-head gate. Keep the three PRs
+  separate; do not merge or broaden their contracts here.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
-  Census/ALFRED pilot sequence remains preparation-only; no source bytes,
-  credentials or records were acquired. B-01/B-02 still require source rights,
-  privacy, retention and time-availability evidence before any real run.
+  Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
+  API response or credential was downloaded or processed. A metadata-search
+  preview incidentally displayed a few published aggregate values; none was
+  copied into repository artifacts or used for evaluation. No pilot run
+  occurred. B-01/B-02 still require source rights, privacy, retention and
+  time-availability evidence before any real run; see the
+  [Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - The owner confirms Actions quota exhaustion and zero paid budget. Use the
   exact-clean-head local gate, distinguish receipts from CI, and do not
   register a runner, modify workflows/protections or retry prior start failures.

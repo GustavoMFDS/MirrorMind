@@ -14,14 +14,17 @@ available.
 | --- | --- | --- |
 | PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
 | PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
-| PR #63 | Open, non-draft, separate Census branch. It preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. The post-merge documentation head `941d72956d9d00f6fd281fd3a3039a1786777c70` passed the exact local gate: 877 tests, zero skips and all six checks. The current published head and exact gate receipt are recorded in the live PR body. | Synthetic vintage evaluator; no Census/ALFRED bytes, source authorization or empirical results. |
+| PR #63 | Open, non-draft, mergeable and based on `main`. It preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Published head `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf` passed the exact local gate: 877 tests, zero skips and all six checks. The current head and its exact receipt are maintained in the live PR body; documentation-only follow-ups are gated on their final commit. | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. |
 
 The synthetic M1 evidence-to-decision path is integrated; M1 remains
 incomplete. Approved pilot order is UCI #352 retrospective by event time,
 then aggregate Census/ALFRED release-vintage evaluation. PR #62 integrated the
-synthetic UCI evaluator; PR #63 keeps Census work separate. No real source
-bytes, credentials or records were acquired. B-01/B-02 still require exact
-rights, privacy, retention and temporal-evidence review. B-04 is resolved for
+synthetic UCI evaluator; PR #63 keeps Census work separate. No source file,
+FRED API response or credential was downloaded or processed. A search-result
+preview of the public FRED `RSAFS` table incidentally displayed a few published
+aggregate values; none was copied into repository artifacts or used in an
+evaluation. No pilot run occurred. B-01/B-02 still require exact rights,
+privacy, retention and temporal-evidence review. B-04 is resolved for
 the narrow reviewed local WorldKernel compatibility slice only; service
 isolation and deployment acceptance remain open. GitHub Actions allowance is
 exhausted under the owner's zero-paid-use decision (B-08); no runner,

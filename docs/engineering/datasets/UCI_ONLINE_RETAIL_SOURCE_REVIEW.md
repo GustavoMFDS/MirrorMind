@@ -1,6 +1,6 @@
 # UCI Online Retail (352) — licensed-source candidate, not approved ingestion
 
-**Review date:** 2026-11-18.
+**Review date:** 2026-11-26 (publisher metadata rechecked; no file acquired).
 **Status:** `license-published / privacy-and-use-review-pending`.
 **Operational decision:** **NO-GO** for unattended source downloads,
 commit of transaction records, model training, customer-level
@@ -22,7 +22,16 @@ risk boundaries; it is not a legal opinion or access authorization.
 | Source fields | `InvoiceNo`, `StockCode`, `Description`, `Quantity`, `InvoiceDate`, `UnitPrice`, `CustomerID`, `Country` |
 
 These facts were checked on the official UCI page and the
-official Creative Commons license summary on 2026-11-18.
+official Creative Commons license summary on 2026-11-18 and the
+publisher metadata was rechecked on 2026-11-26. The current UCI
+record still lists CC BY 4.0 and a 22.6 MB workbook. The [CC BY
+4.0 deed](https://creativecommons.org/licenses/by/4.0/deed.en) and
+[legal code](https://creativecommons.org/licenses/by/4.0/legalcode.en)
+require appropriate credit, a license link and an indication of
+changes when sharing licensed material. The deed also states that
+privacy and other rights may require additional permission. None of
+this verifies the exact bytes or resolves the planned field/privacy
+review.
 They **do not imply** that all records are complete, that
 customer-identifying fields are safe to redistribute,
 or that the dataset contains inventory, lead times,
