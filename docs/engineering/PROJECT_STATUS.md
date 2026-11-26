@@ -26,7 +26,7 @@ decision.
 | PR | Current published head | State and exact local evidence | Limits |
 | --- | --- | --- | --- |
 | #60 | `fafdedae3a76398e0450773065e40384c96d1ed7` | Open, non-draft, based on `main`; 845 tests, zero skips, six checks. | Experimental lexical retrieval; scope is caller-declared, not authenticated RBAC. |
-| #61 | `47fdceb58a2c3802f8e66e5aea51318a698ffe62` | Open, draft, based on `main`; current documentation refresh gate passed 841 tests, zero skips and all six checks, with the exact WorldKernel pin. The final status-only update will be gated again before its review transition; see the live PR body for the final head/receipt. | Read-only in-process responder; no route, persistence, authentication or deployed authority. |
+| #61 | Current exact head and receipt are maintained in the live PR body; documentation baseline gate `20ce86bde740d5b46d7aeba4d13138884e211dba` passed 841 tests, zero skips and all six checks. | Open, non-draft, based on `main`, ready for independent review. Any later commit receives a fresh exact-head gate; no CI result is claimed. | Read-only in-process responder; no route, persistence, authentication or deployed authority. |
 | #63 | `b5e989314bcdcb566df479931794a5f56c07d477` | Open, non-draft, separate from #60/#61; 877 tests, zero skips, six checks on the final docs head. | Synthetic Census vintage protocol only; no real source bytes or authorization. |
 
 The #62 final comments are [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)

@@ -197,6 +197,14 @@ from source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
 `results/local-quality-gate-47fdceb58a2c3802f8e66e5aea51318a698ffe62.json`;
 status `local_gate_passed_not_official_ci`.
 
+The status/documentation follow-up `20ce86bde740d5b46d7aeba4d13138884e211dba`
+also passed the exact six-check gate at `2026-11-26T04:34:17.237663+00:00`:
+841 tests, zero skips, all checks passed and one existing TestClient
+deprecation warning. The same exact WorldKernel pin was installed. Receipt:
+`results/local-quality-gate-20ce86bde740d5b46d7aeba4d13138884e211dba.json`;
+status `local_gate_passed_not_official_ci`. The #61 PR body carries the latest
+head and receipt; re-run the gate after any additional tracked change.
+
 These receipts cover only the named exact revisions. A later documentation
 commit on PR #61 requires a fresh exact-head gate. GitHub Actions was not
 checked by these local runs. No runner, paid usage, workflow change or

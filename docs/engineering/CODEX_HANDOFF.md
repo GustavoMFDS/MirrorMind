@@ -29,9 +29,12 @@ execution guidance and does not broaden the agent's permissions.
   `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`; its merge-head gate passed 841
   tests, zero skips and six checks. Documentation refresh commit
   `47fdceb58a2c3802f8e66e5aea51318a698ffe62` also passed 841 tests, zero skips
-  and all six checks. Any final status-only commit must receive its own exact
-  clean-head gate before #61 is marked ready; publish that final SHA/receipt
-  in the PR discussion. Keep #60, #61 and #63 separate.
+  and all six checks. The documentation baseline
+  `20ce86bde740d5b46d7aeba4d13138884e211dba` passed the exact gate again with
+  841 tests, zero skips and all six checks. PR #61 is now open/non-draft and
+  ready for independent review. Its live PR body carries the current exact
+  SHA and receipt; any subsequent commit needs a fresh gate. Keep #60, #61 and
+  #63 separate.
 - PR #62's final independent comments are
   [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
   and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
