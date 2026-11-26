@@ -28,13 +28,14 @@ execution guidance and does not broaden the agent's permissions.
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
 - Census remains separate as open PR #63. Feature/status head
   `f76ec54aeb95efcffc645f7482909c6befa15761` passed its exact-head local gate
-  with 877 tests, zero skips and all six checks. The prior published docs-only
-  status head `3bc7162d54ad3ed8a9bdeb158abdb07ccb5b1f66` passed a separate
-  exact gate with 877 tests, zero skips and all six checks. Its receipt is in
-  the live PR body. Two Actions attempts on that
-  docs-only head failed pre-start; B-08 records run/job IDs and the
-  alternatives-only annotation. Keep #63 separate from #60/#61/#64 pending
-  independent review; no integration decision is implied.
+  with 877 tests, zero skips and all six checks. Its published head
+  `0b8cf97f71dc2135a36574c21b99419003456259` also passed the exact six-check
+  gate with 877 tests, zero skips and all six checks; its receipt is in the
+  live PR body. GitHub returned no Actions status for that head at query time.
+  Two attempts on prior head
+  `3bc7162` failed pre-start; B-08 records their run/job IDs and alternatives-
+  only annotation. Keep #63 separate from #60/#61/#64 pending independent
+  review; no integration decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
@@ -49,10 +50,11 @@ execution guidance and does not broaden the agent's permissions.
   register a runner, modify workflows/protections or retry prior start failures.
 - ENG-02 is separate maintenance in [PR #64](https://github.com/GustavoMFDS/MirrorMind/pull/64),
   head `ca97ab61d15347aa271ee9ac8468a0714bdc3402`; its exact local gate passed
-  840 tests, zero skips and all six checks. M2-02 retrieval evaluation follows
-  M2-01 (#60) review/integration and independent review of #61/#63. Census
-  status reconciliation is complete; do not add a feature PR while the review
-  queue remains unsettled.
+  840 tests, zero skips and all six checks. Two Actions attempts on this head
+  failed before job steps; the annotation does not identify a specific cause.
+  See [B-08](BLOCKERS.md). M2-02 follows M2-01 (#60) review/integration and
+  independent review of #61/#63. Keep the review queue stable before adding
+  feature work.
 
 ## 1.1 Historical owner-approved continuation decisions — 2026-11-25
 
