@@ -259,3 +259,23 @@ is maintained in PR #63. This is local evidence, not official CI; no source
 bytes, credential or licensed-data permission is implied. See
 [B-08](BLOCKERS.md) for the exact pre-start Actions annotations and their
 unresolved alternatives.
+
+### PR #63 published head — 2026-11-26
+
+The exact clean head `5ec904dc0be6555d3651f947ef1f02fdd6ce20f7` passed the
+complete temporary local gate at `2026-11-26T15:42:29.443936+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx
+  `TestClient` deprecation warning.
+- Ruff, source catalog, repository atlas, evidence and capability checks: all
+  passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-5ec904dc0be6555d3651f947ef1f02fdd6ce20f7-authorized-local.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions were not checked by the
+  local script.
+
+The exact-head Actions attempts and unresolved alternatives-only annotation
+are recorded in [B-08](BLOCKERS.md). This result covers local synthetic tests
+and source guards. It does not establish real-source permission, empirical
+accuracy, official Actions success or production readiness.

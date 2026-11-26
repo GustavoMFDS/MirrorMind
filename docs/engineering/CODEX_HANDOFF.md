@@ -26,16 +26,15 @@ execution guidance and does not broaden the agent's permissions.
   zero skips and six checks. PR #61 is separate and ready at
   `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; its gate passed 841 tests, zero
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
-- Census remains separate as open PR #63. Feature/status head
-  `f76ec54aeb95efcffc645f7482909c6befa15761` passed its exact-head local gate
-  with 877 tests, zero skips and all six checks. Its published head
-  `0b8cf97f71dc2135a36574c21b99419003456259` also passed the exact six-check
-  gate with 877 tests, zero skips and all six checks; its receipt is in the
-  live PR body. GitHub returned no Actions status for that head at query time.
-  Two attempts on prior head
-  `3bc7162` failed pre-start; B-08 records their run/job IDs and alternatives-
-  only annotation. Keep #63 separate from #60/#61/#64 pending independent
-  review; no integration decision is implied.
+- Census remains separate as open PR #63. Published head
+  `5ec904dc0be6555d3651f947ef1f02fdd6ce20f7` passed the exact clean-head local
+  gate at `2026-11-26T15:42:29.443936Z`: 877 tests, zero skips and all six
+  checks with the reviewed WorldKernel pin. Receipt:
+  `results/local-quality-gate-5ec904dc0be6555d3651f947ef1f02fdd6ce20f7-authorized-local.json`.
+  Its Actions attempts failed before job steps; [B-08](BLOCKERS.md) records
+  their run/check IDs and alternatives-only account annotation. Keep #63
+  separate from #60/#61/#64 pending independent review; no integration
+  decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
