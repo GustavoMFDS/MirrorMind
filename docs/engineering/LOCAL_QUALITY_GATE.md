@@ -146,3 +146,25 @@ same exact-head command with `--receipt results/local-quality-gate-<head>.json`.
 `results/` is ignored local evidence: preserve it for inspection, but do not
 claim it as a repository artifact or official CI. Record the actual final
 head and outcome in the PR discussion.
+
+### DecisionTrace V2 chronology correction — 2026-11-25
+
+The independent PR #62 review reproduced acceptance of execution evidence
+dated after its enclosing trace. Code commit
+`20e7b50f88df046eaf3541c5ea706b2e3b051aad` compares timezone-aware instants
+and rejects later evidence while preserving earlier/equal timestamps. With
+WorldKernel `0.0.1` installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`, its exact clean-head gate passed:
+
+- Pytest: 835 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence and capability checks:
+  all passed.
+- Receipt: `results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
+- Status: `local_gate_passed_not_official_ci`; GitHub Actions remains unchecked.
+
+This receipt covers code commit `20e7b50`, not the status, backlog, handoff
+and gate-documentation update that records it. Rerun the six-check gate on the
+exact clean documentation-inclusive SHA before publishing the branch. Preserve
+that final SHA and receipt in the PR discussion; never treat either local
+receipt as official Actions or integration approval.

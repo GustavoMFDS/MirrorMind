@@ -201,12 +201,16 @@ comment
 WorldKernel is named as the selected source when it supplies metrics, while
 the invoked Python test double is recorded separately as parity oracle. V1
 trace remains supported; composed workflow uses v2 typed execution evidence.
-The exact-head gate on `74330d8` passed 832 tests with no skips and all six
-checks, with WorldKernel source pin
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed. The final
-documentation-head receipt is stored under
-`results/local-quality-gate-<full-head-sha>.json` and linked from PR #62. It is
-local evidence, not official Actions or merge approval.
+Commit `20e7b50f88df046eaf3541c5ea706b2e3b051aad` addresses the new #62
+DecisionTrace V2 chronology finding: later execution instants fail, earlier
+instants and timezone-equivalent equality pass. V1 remains unchanged. Its
+exact-head gate passed 835 tests, zero skips and all six checks with
+WorldKernel source pin `9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed.
+The code-head receipt is
+`results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
+After tracked status/backlog/handoff updates, repeat the full gate on the clean
+documentation-inclusive SHA and report that exact receipt on PR #62. All such
+results remain local evidence, not official Actions or merge approval.
 
 The package remains SHA-pinned and optional; API startup and HTTP workflow
 remain independent. The inventory demo's `demo-1` registry label is not
