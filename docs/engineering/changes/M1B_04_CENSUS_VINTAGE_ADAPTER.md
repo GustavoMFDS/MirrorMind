@@ -186,7 +186,7 @@ does not infer or authenticate the actual scheduled release day.
   source calendars, file/network reads, authorization or empirical claims.
 - [x] Explain the invariant, its source-specific motivation, the exact tests,
   and the limit that valid chronology does not authenticate a publisher.
-- [ ] Regenerate the catalog and pass the exact six-check local gate on the
+- [x] Regenerate the catalog and pass the exact six-check local gate on the
   final clean PR head with the reviewed optional WorldKernel pin.
 
 ### Impact map

@@ -302,7 +302,12 @@ The restricted sandbox run stalled in `socket.accept` during Windows
 A bounded faulthandler reproduction confirmed the known executor limitation;
 the interrupted run emitted no gate receipt. The same exact clean SHA then
 passed the full gate in the authorized local environment, with all checks
-enabled. The later status, handoff, backlog and gate-documentation update is
-separately gated before publication; its exact SHA and receipt are recorded in
-PR #63. Neither result establishes GitHub Actions success, real-source rights,
+enabled. Status, handoff, backlog and gate-documentation commit
+`a09b4c332519547c3ebc81890170873d4bfeee27` passed the same exact-head gate at
+`2026-11-26T17:41:09.165939+00:00`: 882 tests, zero skips and all six checks.
+Receipt:
+`results/local-quality-gate-a09b4c332519547c3ebc81890170873d4bfeee27.json`.
+The final acceptance-marker commit receives its own exact-head gate before
+publication; the current PR head and final receipt are recorded in PR #63.
+Neither local result establishes GitHub Actions success, real-source rights,
 publisher authenticity or empirical forecast quality.
