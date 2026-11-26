@@ -50,6 +50,21 @@ draft.
 | M2-02+ | planned | Start after M2-01 review/integration and independent reviews of #61/#63 are complete. Census status reconciliation is complete in PR #63; keep the active review queue stable and do not stack a new feature now. | M2-01 |
 | ENG-02 | independent review | Five pre-existing Ruff findings are corrected on PR #64, head `ca97ab61d15347aa271ee9ac8468a0714bdc3402`. Exact local gate: 840 tests, zero skips, six checks; `ruff check examples` passes. The original date-gap exception and no-imputation behavior remain covered. Current Actions attempts stopped before job steps under the alternatives-only account annotation; see [B-08](BLOCKERS.md). | Independent review; B-08 official Actions |
 
+### Pilot due-diligence update — 2026-11-26
+
+Metadata-only review narrows the Census candidate to the direct MARTS archive:
+national retail and food-services total sales, described by the release as
+seasonally adjusted but not price-adjusted (the nominal/current-dollar
+interpretation must be checked against the selected table). The official
+annual-revision index currently exposes January 1992 through August 2026, but
+that is not proof of complete first-release vintages.
+The 2025 removal of nonemployers is a methodology/coverage boundary that must
+be versioned and reviewed before pooling targets. FRED/ALFRED API use is
+deferred because current terms restrict API-associated storage and archiving;
+source-owner rights remain separate. No source file, API response, account or
+credential was acquired. B-01/B-02 remain open; see the detailed
+[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
 ## Conventions
 
 - `ready`: dependencies for the proposed bounded slice are satisfied.

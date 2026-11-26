@@ -732,7 +732,32 @@ vintage nor permission, and why UCI `InvoiceDate` cannot supply
 Add an anchored revision dated before its first estimate and verify chronology
 rejection; set both dates equal and explain why the date-only ambiguity guard
 also rejects it.
+
+### Regression extension — period-close lower bound
+
 Move a first estimate's publication date into its reference month and run
 `test_evaluator_rejects_first_estimates_published_before_reference_month_closes`.
 Then move it to the first day of the following month and explain why the
 normalized boundary still does not authenticate the official release date.
+
+## Guided exercise — review a temporal source without acquiring its data
+
+Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md), the
+[Census MARTS archive](https://www.census.gov/retail/marts/historic_releases.html),
+the [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html),
+the [current methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html),
+and the [FRED Services terms](https://fred.stlouisfed.org/legal/terms/).
+Without opening a release file or calling an API, identify which metadata proves
+that an archive index exists and which evidence is still needed to prove each
+month's first release, original bytes and local retention rights. Explain why
+an API key does not grant the rights of a third-party series owner and why the
+current API storage/archive restriction conflicts with a reproducible local
+vintage manifest.
+
+Then add `methodology_edition` to a hypothetical source manifest. Trace the
+documented April 2025 removal of nonemployers through the proposed time series:
+state why publication-date eligibility alone cannot prove that values on both
+sides have the same population definition, and design a fail-closed choice
+between a reviewed comparability analysis, separate reporting by edition, or
+abstention. Keep the exercise metadata-only; do not retrieve Census values,
+create an API key, or call the evaluation an empirical pilot.

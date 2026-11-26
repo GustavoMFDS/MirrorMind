@@ -52,6 +52,17 @@ execution guidance and does not broaden the agent's permissions.
   occurred. B-01/B-02 still require source rights, privacy, retention and
   time-availability evidence before any real run; see the
   [Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+- Metadata-only due diligence on 2026-11-26 confirms the direct Census MARTS
+  archive as the preferred no-credential candidate for national retail and
+  food-services sales. Current release text says seasonally adjusted but not
+  price-adjusted; its nominal/current-dollar interpretation still needs exact
+  table verification. The 2026 annual revision index reaches August 2026 but
+  does not establish first-release completeness. The April 2025 removal of
+  nonemployers is a documented definition boundary and must be carried in any
+  reviewed source manifest. FRED/ALFRED API use is deferred because current
+  terms restrict API-associated storage/archiving and do not grant third-party
+  series rights. No archive file, API response, key, account or workbook was
+  acquired; keep B-01/B-02 open and tests synthetic.
 - The owner confirms Actions quota exhaustion and zero paid budget. Use the
   exact-clean-head local gate, distinguish receipts from CI, and do not
   register a runner, modify workflows/protections or retry prior start failures.

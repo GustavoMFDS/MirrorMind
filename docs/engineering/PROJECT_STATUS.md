@@ -31,6 +31,21 @@ isolation and deployment acceptance remain open. GitHub Actions allowance is
 exhausted under the owner's zero-paid-use decision (B-08); no runner,
 protection or workflow change was made.
 
+Metadata-only Census due diligence on 2026-11-26 identifies the direct MARTS
+archive as the preferred pilot source: national retail and food-services total
+sales. Current release text describes it as seasonally adjusted but not
+price-adjusted; the nominal/current-dollar interpretation must be verified
+against the selected table. The official annual-revision index currently
+spans January 1992 through August 2026, but does not prove
+complete first-release vintages. Census documents a 2025 removal of
+nonemployers from the historical series, so methodology edition and coverage
+must be reviewed before combining targets. FRED/ALFRED API retrieval is
+deferred because current terms restrict API-associated storage and archiving;
+the underlying series rights also need review. No source file, API response,
+account, credential, or workbook was acquired. UCI and Census remain
+preparation-only under B-01/B-02; the detailed proposal is in the
+[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
 `ruff check examples` separately found five pre-existing findings in three
 M1 examples (I001, RUF007, F401). ENG-02 is published separately in PR #64;
 its pairwise change has empty/singleton/consecutive/gap regressions, preserves

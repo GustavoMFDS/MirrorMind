@@ -15,10 +15,12 @@ This can test release-aware evaluation on aggregate retail dollar sales. It cann
 
 | Candidate | Use and current public evidence | Conditions before any source acquisition |
 | --- | --- | --- |
-| Census MARTS historical releases | Official historical releases provide archived publications and the release schedule distinguishes reference periods from release dates. The archive notes specific missing early releases. Use an aggregate, published series only. | Recheck the exact table and date range; capture original release URLs, release header/timezone, retrieval time and byte digest; inspect notices and applicable use/redistribution terms; approve attribution, retention and outputs. Do not treat the current revised series as an old release. |
-| FRED/ALFRED `RSAFS` (candidate) | FRED identifies `RSAFS` as Census Bureau Advance Retail Sales: Retail Trade and Food Services. ALFRED exposes vintage dates and historical observation states. | API key is required; FRED account registration is currently described as free, but no account/key is authorized or present. Review current API terms and this series' source notes/rights. A FRED key or API response does not grant third-party series rights. Require cross-checks against original Census release files and adequate vintage coverage. |
+| Census MARTS historical releases (preferred candidate) | The Census data index links advance reports from October 1953 in PDF or Excel and annual revision reports from 1996. The current annual revision index exposes tables from January 1992 through August 2026. The proposal selects national total retail and food-services sales. Current release text says figures are seasonally adjusted but not price-adjusted; describing them as nominal/current-dollar values is an inference to verify against the exact selected table. These indexes establish candidate artifacts, not month-by-month completeness or rights. | Select the exact table, series definition, and date window; inspect original release headers and notices; record publication boundary, timezone, retrieval time and byte digest; approve applicable terms, attribution, local retention and outputs. Preserve first-release and revised files as distinct vintages. |
+| FRED/ALFRED `RSAFS` (deferred candidate) | FRED identifies `RSAFS` as Census Bureau Advance Retail Sales: Retail Trade and Food Services. ALFRED exposes date-granular real-time periods; FRED's current API documentation requires a registered API key. | Do not call the API or retain API results under this proposal. Current FRED Services terms prohibit API use in connection with storing, caching or archiving FRED content, while series rights can remain with third parties. Any future route needs written permission that covers the required local retention/archive, applicable series-owner rights, an authorized key, and required notices. A key or API response is not a data license. |
 
-The FRED API terms explicitly warn that a series may be third-party owned and that access through FRED does not override its restrictions. Before non-personal use, the series owner's permission may be needed. Therefore prefer the direct official Census release files; ALFRED is optional, not an automatic substitute for source clearance.
+The preferred candidate is the direct Census archive, subject to source-specific rights and retention review. The proposed measure is national retail and food-services total sales; current Census release text says its sales figures are seasonally adjusted but not price-adjusted. Treating that as nominal/current-dollar data is an inference that must be checked against the chosen table. The API terms for FRED/ALFRED are an additional constraint: FRED access does not override third-party rights, and the current terms restrict API-associated storage, caching, and archiving. Because the approved research method needs immutable local artifacts for reproducibility, ALFRED API retrieval is deferred unless written permissions explicitly cover that handling. No account or key is authorized or present.
+
+The source definition must be versioned with each vintage. Census methodology states that, as of the April 2025 annual revision, nonemployers were removed from the estimates and historical series to align with the Annual Integrated Economic Survey. This is a documented series-definition change. Record the methodology/population edition with the taxonomy, adjustment, and unit; do not pool first estimates across a definition boundary until the reviewer accepts a comparability analysis or a segmented result.
 
 ## Proposed source manifest
 
@@ -26,7 +28,7 @@ Do not store source values or archive files in Git. Keep locally approved artifa
 
 | Field | Contract |
 | --- | --- |
-| `publisher`, `series_id`, `definition`, `unit`, `adjustment` | Exact source owner and stable series definition; one candidate series per manifest version |
+| `publisher`, `series_id`, `definition`, `methodology_edition`, `unit`, `adjustment` | Exact source owner, population/coverage and taxonomy edition, stable series definition and units; one compatible candidate series per manifest version |
 | `reference_period` | Month measured; never treated as publication time |
 | `release_id`, `published_at`, `timezone`, `release_kind` | Exact initial/advance/monthly/annual revision identity and official publication boundary; missing or contradictory boundaries reject the vintage |
 | `source_uri`, `retrieved_at`, `snapshot_sha256`, `file_format` | Exact original release artifact identity and local retrieval evidence |
@@ -38,10 +40,10 @@ Each release is immutable. Corrections create a new vintage record; they never o
 ## Temporal protocol
 
 1. Before fetching values, inventory the official release calendar and archive. Record known missing periods and the exact candidate series. If an interval is incomplete, preserve the gap and abstain; do not manufacture a release or silently switch to revised current data.
-2. Pre-register a chronological fit/validation/locked-holdout calendar before examining scores. Candidate pilot period is 1992-01 onward because Census annual-revision tables identify that historical range; exact origin intervals are not accepted until monthly archive and vintage completeness are independently checked. If the candidate period fails the predeclared completeness rule, stop the empirical pilot rather than reselecting a favorable window.
+2. Pre-register a chronological fit/validation/locked-holdout calendar before examining scores. Census annual-revision tables currently identify January 1992 onward through August 2026, but this is only an inventory span: it does not establish completeness of the original first-release archive or comparability across methodology editions. Freeze the exact origin interval only after archive completeness, source rights, and the 2025 population-definition change have been reviewed. If the proposed interval fails the predeclared completeness or comparability rule, stop the empirical pilot rather than reselecting a favorable window.
 3. For each target month `m`, issue the forecast at the day-before boundary for the official first-estimate release of `m`. Use only aggregate values in the latest verified vintage whose publication date is strictly before that boundary. ALFRED vintages are date-granular; never assign a same-day vintage an invented intraday time. Cross-check the first-release target value against the original Census release artifact.
 4. Build each rolling origin independently from its then-available vintage. Annual and monthly revisions may enter only after their actual release boundary and strictly after the known first-estimate publication date for that reference month. An earlier revision is contradictory; a same-day first-estimate/revision pair is ambiguous under date-only timestamps. If the archive fragment has no first-estimate anchor, exclude and count its revisions instead of using them as features; preserve the month as missing so the history gate can abstain. Preserve first estimates and revised values as separate labels.
-5. Primary target is the first advance estimate for the target month. Report latest annual-revision values as a separate sensitivity analysis, never pooled with first-release scores. This separates prediction of the published first estimate from prediction against subsequently revised history.
+5. Primary target is the first advance estimate for the target month. Report latest annual-revision values as a separate sensitivity analysis, never pooled with first-release scores. This separates prediction of the published first estimate from prediction against subsequently revised history. Report definition editions separately; if first-estimate targets span incompatible coverage or taxonomy editions, split the scores or abstain instead of treating the values as one unchanged series.
 6. Evaluate horizons 1, 3 and 6 months from each origin, with lag-12 seasonal naive and trailing-12-month mean baselines. Both methods share matched targets per horizon. Use context-independent exact arithmetic for means and additive metrics; bound numeric precision/exponents and fail closed on float overflow, non-finite output or positive-metric underflow. Report per-horizon MAE, RMSE, zero-safe WAPE, coverage and separate abstention counts. Do not select a winner when fewer than two matched origins exist.
 7. A source timestamp that is only a date is treated conservatively: use the last verified vintage strictly before the release date and score the first release only after that release is independently recorded. Missing, ambiguous or contradictory vintage metadata means abstain.
 
@@ -117,10 +119,11 @@ terms and the owner-approved retention manifest are in place.
 
 The official Census [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html)
 lists historical monthly releases and explicitly identifies missing releases;
-the stated gaps are before 1992. The separate [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html)
-lists sales tables from January 1992 through March 2025. These indexes make
-1992 onward a concrete candidate window, but they do not prove every original
-release file is available, consistent or complete for the selected series.
+the documented archive gaps are before 1992. The separate [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html)
+currently lists the 2026 report with sales tables from January 1992 through
+August 2026. These indexes make 1992 onward an inventory span, but they do not
+prove every original first-release file is available, consistent or complete
+for the selected series.
 The official [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)
 states that advance estimates are released about ten business days after the
 reference month closes and revised one month later. This supports the
@@ -139,23 +142,35 @@ date-only vintage as ordered against a same-day update. The current date-only
 selector must abstain on that ambiguity. This notice is metadata evidence, not
 proof that the original file bytes remain available.
 
+The current Census [Advance MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html)
+also records a population-definition change: since the April 2025 annual
+revision, nonemployers are excluded and removed from the historical series.
+Treat this as a required version boundary in the source manifest and evaluation
+review; historical archive coverage by itself is not proof that first-release
+targets on either side are comparable.
+
 FRED's current [API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html)
-require registration for a key and place responsibility for third-party series
-rights on the user; they direct users to contact data owners before non-personal
-use. Therefore `RSAFS` remains a conditional candidate, not an approved source
-or a shortcut around the original Census release archive. The direct Census
-archive is the preferred no-credential proposal, subject to series-specific
-rights and retention review.
+require a registered key and place responsibility for third-party series rights
+on the user. They also prohibit use of the API in connection with storing,
+caching, or archiving FRED content. The [API key documentation](https://fred.stlouisfed.org/docs/api/fred/v2/api_key.html)
+requires a key for requests, and the [real-time-period documentation](https://fred.stlouisfed.org/docs/api/fred/realtime_period.html)
+defines date-granular historical knowledge periods. These conditions conflict
+with the immutable local archive needed by this reproducible pilot. Defer
+FRED/ALFRED API access unless written permissions expressly cover retained
+research artifacts and the underlying series rights. The direct Census archive
+remains the preferred no-credential candidate, subject to its own series and
+retention review.
 
 This was a metadata-only source review. No Census release file, FRED API
-response, credential or workbook was downloaded or processed. A search-result
-preview for the public FRED `RSAFS` table incidentally displayed a few published
-aggregate values; none was copied into repository artifacts or used in an
-evaluation. This is not a pilot run and does not establish source approval.
+response, credential or UCI workbook was downloaded or processed. A search
+preview for the public FRED `RSAFS` table and the current Census release HTML
+incidentally displayed published aggregate values; none was transcribed into
+repository artifacts, retained, or used in an evaluation. This is not a pilot
+run and does not establish source approval.
 
 ## Current primary references checked 2026-11-26
 
-- U.S. Census [monthly retail data](https://www.census.gov/retail/data.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html), [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html), and [release schedule](https://www.census.gov/retail/release_schedule.html).
-- St. Louis Fed [RSAFS series record](https://fred.stlouisfed.org/series/RSAFS), [free account description](https://fred.stlouisfed.org/help/account/fred-account-features/register), [API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html), [`series/vintagedates`](https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html), and [`series/observations`](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).
+- U.S. Census [monthly retail data](https://www.census.gov/retail/data.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html), [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html), [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html), and [release schedule](https://www.census.gov/retail/release_schedule.html).
+- St. Louis Fed [RSAFS series record](https://fred.stlouisfed.org/series/RSAFS), [FRED Services terms](https://fred.stlouisfed.org/legal/terms/), [FRED API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html), [API key documentation](https://fred.stlouisfed.org/docs/api/fred/v2/api_key.html), [real-time-period documentation](https://fred.stlouisfed.org/docs/api/fred/realtime_period.html), [`series/vintagedates`](https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html), and [`series/observations`](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).
 
-These pages establish that archives/API features exist and describe their conditions. They do not establish the exact series license, a complete period for this study, a specific downloaded snapshot, or owner authorization. No API key, series value or Census release artifact was acquired for this proposal.
+These pages establish that archives/API features exist and describe their conditions. They do not establish the exact series license, a complete period for this study, a specific downloaded snapshot, or owner authorization. The current Census release page exposed a published figure inline; it was not transcribed or retained. No source file, API response or credential was acquired, and no evaluation was run.

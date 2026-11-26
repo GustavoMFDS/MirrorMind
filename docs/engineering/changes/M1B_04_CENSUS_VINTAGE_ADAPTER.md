@@ -203,3 +203,57 @@ The Census methodology is linked in the protocol and guide as the reason for
 the invariant. The implementation accepts any date after the reference month
 as a valid normalized lower bound; the real MARTS schedule, release identity,
 source bytes and rights still require separate review.
+
+## Source-rights and series-definition recheck — 2026-11-26
+
+### Goal
+
+Keep the owner-approved aggregate pilot preparation aligned with current
+publisher metadata and service terms without acquiring a real source artifact
+or changing the normalized synthetic adapter. The selected primary candidate
+is the direct Census MARTS archive; FRED/ALFRED API retrieval is deferred.
+
+### Acceptance criteria
+
+- [x] Recheck the official Census release and annual-revision indexes, current
+  MARTS methodology, and the current FRED API/service terms.
+- [x] Record the candidate aggregate definition, archive-coverage limits, the
+  documented 2025 nonemployer change, and the API storage/archival constraint.
+- [x] Keep source files, API responses, account creation, credentials, real
+  evaluation and real-data tests out of scope.
+- [x] Update the protocol, blockers, backlog, project status, handoff and
+  learning material; leave the capability and evidence ledgers unchanged.
+- [ ] Obtain owner/rightsholder approval for exact source terms, retention,
+  definition comparability, manifest and temporal evaluation window before any
+  source bytes are acquired or processed.
+
+### Impact map
+
+| Layer | Relevant file/symbol | Change? | Evidence / tests |
+| --- | --- | --- | --- |
+| Source protocol | `CENSUS_ALFRED_VINTAGE_PROTOCOL.md` | Yes | Official metadata and terms links; no source artifact or API call |
+| Blocker and status records | `BLOCKERS.md`, `TASK_BACKLOG.md`, `PROJECT_STATUS.md`, `CODEX_HANDOFF.md` | Yes | B-01/B-02 stay open; no permission or capability is inferred |
+| Learning | `LEARNING.md` | Yes | Metadata-only investigation exercise covers rights and definition versions |
+| Runtime/API/contracts | Census adapter, evaluator, capabilities and evidence map | No | No runtime behavior, contract, capability or test claim changed |
+| External projects | Census, FRED/ALFRED and WorldKernel | No | Read-only publisher documentation only; no repositories modified |
+
+### Evidence and remaining limitations
+
+The Census data index currently points to advance reports from October 1953;
+its annual-revision index lists a 2026 report covering January 1992 through
+August 2026. Neither index proves original first-release completeness for the
+selected series. The current MARTS methodology records that nonemployers were
+removed from the historical series in the April 2025 annual revision. Current
+FRED terms require an API key, preserve third-party series rights, and restrict
+API-associated storage, caching and archiving. These findings support a
+metadata-only preference for direct Census source review and defer FRED API
+retrieval; they do not establish series rights, byte provenance or a legally
+acceptable retention route.
+
+The source pages exposed some current published aggregate figures in their
+HTML/search previews. No figure was transcribed, retained in repository files,
+or supplied to the evaluator. No Census release file, API response, credential
+or workbook was acquired. No focused behavioral regression applies because no
+runtime behavior changed; the full repository local quality gate must still
+pass on the exact clean commit before this follow-up is published. No entry is
+added to `DECISIONS.md`, because no new owner decision has been made.
