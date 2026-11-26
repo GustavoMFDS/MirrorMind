@@ -76,6 +76,23 @@ def test_same_day_first_estimate_is_excluded_and_receipt_is_unverified():
     assert receipt["forecast_eligible"] is False
 
 
+def test_revision_before_known_first_estimate_is_rejected():
+    records = (
+        _record(date(2020, 4, 1), date(2020, 5, 15), "100", "first_estimate",
+                "release-may", "a" * 64),
+        _record(date(2020, 4, 1), date(2020, 5, 14), "99", "monthly_revision",
+                "release-before-first", "b" * 64),
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="revision publication must follow first-estimate publication",
+    ):
+        select_census_vintage_as_of(
+            records, series_id="RSAFS", target_release_on=date(2020, 6, 15)
+        )
+
+
 def test_missing_reference_months_remain_absent_and_replay_is_deterministic():
     records = (
         _record(date(2020, 1, 1), date(2020, 2, 14), "80", "first_estimate",

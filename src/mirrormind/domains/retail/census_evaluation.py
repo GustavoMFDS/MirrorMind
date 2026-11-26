@@ -11,7 +11,8 @@ import json
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from math import fsum, isfinite, sqrt
+from fractions import Fraction
+from math import isfinite, ldexp, sqrt
 from typing import Literal
 
 from mirrormind.domains.retail.census_vintages import (
@@ -21,11 +22,16 @@ from mirrormind.domains.retail.census_vintages import (
     select_census_vintage_as_of,
 )
 
-CENSUS_BACKTEST_SCHEMA = "mirrormind.census.vintage_backtest.v1"
+CENSUS_BACKTEST_SCHEMA = "mirrormind.census.vintage_backtest.v2"
 MAX_CENSUS_EVALUATION_ORIGINS = 250
 CENSUS_HORIZONS_MONTHS = (1, 3, 6)
 _TRAILING_MONTHS = 12
-_MAX_METRIC_VALUE = 1e150
+_MAX_DECIMAL_DIGITS = 34
+_MIN_DECIMAL_EXPONENT = -433
+_MAX_DECIMAL_EXPONENT = 150
+_MIN_ADJUSTED_EXPONENT = -400
+_MAX_ADJUSTED_EXPONENT = 150
+_MAX_METRIC_VALUE = Decimal("1e150")
 _BASELINES = ("seasonal_naive_lag12", "trailing_12_month_mean")
 
 
@@ -98,28 +104,88 @@ def _selection_receipt(
     }
 
 
-def _metric_values(value: Decimal) -> float:
-    result = float(value)
-    if not isfinite(result) or abs(result) > _MAX_METRIC_VALUE:
+def _validate_metric_input(value: Decimal) -> None:
+    parts = value.as_tuple()
+    if (
+        len(parts.digits) > _MAX_DECIMAL_DIGITS
+        or not _MIN_DECIMAL_EXPONENT <= parts.exponent <= _MAX_DECIMAL_EXPONENT
+        or (
+            not value.is_zero()
+            and not _MIN_ADJUSTED_EXPONENT <= value.adjusted() <= _MAX_ADJUSTED_EXPONENT
+        )
+        or value.copy_abs() > _MAX_METRIC_VALUE
+    ):
         raise ValueError("aggregate values exceed the supported metric range")
+
+
+def _metric_float(value: Fraction) -> float:
+    if value == 0:
+        return 0.0
+    try:
+        result = float(value)
+    except OverflowError as exc:
+        raise ValueError("metric result overflows finite float range") from exc
+    if not isfinite(result):
+        raise ValueError("metric result overflows finite float range")
+    if result == 0.0:
+        raise ValueError("metric result underflows finite float range")
+    return result
+
+
+def _sqrt_metric_float(value: Fraction) -> float:
+    """Round a non-negative exact mean square without underflowing its root."""
+    if value == 0:
+        return 0.0
+    if value < 0:
+        raise ValueError("mean squared error cannot be negative")
+
+    numerator = value.numerator
+    denominator = value.denominator
+    exponent = numerator.bit_length() - denominator.bit_length()
+    if exponent >= 0:
+        if numerator < denominator << exponent:
+            exponent -= 1
+    else:
+        if numerator << -exponent < denominator:
+            exponent -= 1
+
+    if exponent >= 0:
+        scaled = Fraction(numerator, denominator << exponent)
+    else:
+        scaled = Fraction(numerator << -exponent, denominator)
+
+    if exponent % 2:
+        scaled *= 2
+        exponent -= 1
+    try:
+        result = ldexp(sqrt(float(scaled)), exponent // 2)
+    except OverflowError as exc:
+        raise ValueError("metric result overflows finite float range") from exc
+    if not isfinite(result):
+        raise ValueError("metric result overflows finite float range")
+    if result == 0.0:
+        raise ValueError("metric result underflows finite float range")
     return result
 
 
 def _metrics(
-    forecasts: tuple[Decimal, ...], actuals: tuple[Decimal, ...]
+    forecasts: tuple[Fraction, ...], actuals: tuple[Fraction, ...]
 ) -> dict[str, float | None]:
     if len(actuals) < 2 or len(forecasts) != len(actuals):
         raise ValueError("metrics require at least two paired observations")
-    predicted = tuple(_metric_values(value) for value in forecasts)
-    observed = tuple(_metric_values(value) for value in actuals)
-    errors = tuple(forecast - actual for forecast, actual in zip(predicted, observed))
-    absolute_error = fsum(abs(error) for error in errors)
-    squared_error = fsum(error * error for error in errors)
-    observed_total = fsum(observed)
+    errors = tuple(abs(forecast - actual) for forecast, actual in zip(forecasts, actuals))
+    absolute_error = sum(errors, Fraction())
+    squared_error_mean = sum(
+        (error * error for error in errors), Fraction()
+    ) / len(errors)
+    observed_total = sum(actuals, Fraction())
+    rmse = _sqrt_metric_float(squared_error_mean)
     return {
-        "mae": absolute_error / len(errors),
-        "rmse": sqrt(squared_error / len(errors)),
-        "wape": None if observed_total == 0 else absolute_error / observed_total,
+        "mae": _metric_float(absolute_error / len(errors)),
+        "rmse": rmse,
+        "wape": (
+            None if observed_total == 0 else _metric_float(absolute_error / observed_total)
+        ),
     }
 
 
@@ -163,6 +229,9 @@ def evaluate_census_vintage_backtest(
     select_census_vintage_as_of(
         records, series_id=series_id, target_release_on=origins[0].issued_on
     )
+    for record in records:
+        _validate_metric_input(record.value)
+
     first_estimate_by_month: dict[date, CensusVintageRecord] = {}
     for record in records:
         if record.release_kind != "first_estimate":
@@ -170,6 +239,18 @@ def evaluate_census_vintage_backtest(
         if record.reference_month in first_estimate_by_month:
             raise ValueError("each month must have one unique first-estimate label")
         first_estimate_by_month[record.reference_month] = record
+
+    unanchored_revision_count = sum(
+        record.release_kind != "first_estimate"
+        and record.reference_month not in first_estimate_by_month
+        for record in records
+    )
+    feature_records = tuple(
+        record
+        for record in records
+        if record.release_kind == "first_estimate"
+        or record.reference_month in first_estimate_by_month
+    )
 
     input_manifest_sha256 = _manifest_sha256(records)
     per_horizon: dict[int, dict[str, object]] = {
@@ -189,18 +270,18 @@ def evaluate_census_vintage_backtest(
         }
         for horizon in CENSUS_HORIZONS_MONTHS
     }
-    forecasts: dict[int, dict[str, list[Decimal]]] = {
+    forecasts: dict[int, dict[str, list[Fraction]]] = {
         horizon: {baseline: [] for baseline in _BASELINES}
         for horizon in CENSUS_HORIZONS_MONTHS
     }
-    actuals: dict[int, list[Decimal]] = {
+    actuals: dict[int, list[Fraction]] = {
         horizon: [] for horizon in CENSUS_HORIZONS_MONTHS
     }
     origin_audit: list[dict[str, object]] = []
 
     for origin in origins:
         view = select_census_vintage_as_of(
-            records, series_id=series_id, target_release_on=origin.issued_on
+            feature_records, series_id=series_id, target_release_on=origin.issued_on
         )
         visible_by_month = {item.reference_month: item for item in view.records}
         target_months = {
@@ -245,22 +326,23 @@ def evaluate_census_vintage_backtest(
                     status = "required_monthly_history_unavailable"
                 else:
                     history = tuple(visible_by_month[month] for month in history_months)
-                    for item in (*history, target):
-                        _metric_values(item.value)
                     seasonal_month = _month_offset(target_month, -12)
                     seasonal = visible_by_month.get(seasonal_month)
                     if seasonal is None:
                         status = "required_monthly_history_unavailable"
                     else:
+                        history_values = tuple(
+                            Fraction(item.value) for item in history
+                        )
                         predictions = {
-                            "seasonal_naive_lag12": seasonal.value,
+                            "seasonal_naive_lag12": Fraction(seasonal.value),
                             "trailing_12_month_mean": sum(
-                                (item.value for item in history), Decimal(0)
-                            ) / Decimal(_TRAILING_MONTHS),
+                                history_values, Fraction()
+                            ) / _TRAILING_MONTHS,
                         }
                         for baseline in _BASELINES:
                             forecasts[horizon][baseline].append(predictions[baseline])
-                        actuals[horizon].append(target.value)
+                        actuals[horizon].append(Fraction(target.value))
                         per_horizon[horizon]["scored_origins"] += 1
                         status = "scored"
 
@@ -310,6 +392,7 @@ def evaluate_census_vintage_backtest(
         "source_status": "caller_supplied_not_source_verified",
         "series_id": series_id,
         "input_record_count": len(records),
+        "unanchored_revision_count": unanchored_revision_count,
         "input_manifest_sha256": input_manifest_sha256,
         "requested_origins": len(origins),
         "horizons": tuple(per_horizon[horizon] for horizon in CENSUS_HORIZONS_MONTHS),

@@ -166,6 +166,12 @@ first-estimate publication is currently accepted into the historical feature
 view. Finite values at extreme magnitudes can also make float metrics overflow
 to infinity or underflow a positive result to zero.
 
+Before the fix, `python -m pytest tests/unit/test_census_vintage_evaluation.py
+-q` reproduced 10 failures against 15 passing tests: context-dependent metrics,
+both invalid revision dates, missing unanchored-revision accounting, three
+unsupported numeric domains, WAPE overflow and positive-metric underflow. The
+selector also returned the pre-first-estimate revision as the newest vintage.
+
 **Correction scope:** Keep all Census changes on the local descendant branch,
 separate from consolidated PR #62. Use context-independent exact arithmetic
 for fixed means and aggregate metrics; bound Decimal coefficient precision and
@@ -176,23 +182,33 @@ first-estimate release is absent, treat that month's revisions as unanchored:
 exclude them from the evaluator's feature vintage, count the excluded records
 in the result and allow the resulting history gate to abstain. This does not
 authenticate an archive or assert that an incomplete source has no earlier
-publication.
+publication. Because the new count changes the result envelope, advance the
+experimental result contract to
+`mirrormind.census.vintage_backtest.v2`; repository search found no other
+consumer of the unmerged v1 result. No external v1 compatibility is inferred.
 
 ### Follow-up acceptance criteria
 
-- [ ] Replaying identical records and origins under low precision and alternate
+- [x] Replaying identical records and origins under low precision and alternate
   Decimal rounding modes returns identical fingerprints and metrics.
-- [ ] A revision earlier than, or on the same date as, a known first estimate
+- [x] A revision earlier than, or on the same date as, a known first estimate
   is rejected; a later revision remains eligible under the date-only contract.
-- [ ] Revisions without a first-estimate anchor are excluded from forecast
+- [x] Revisions without a first-estimate anchor are excluded from forecast
   features, counted in the result, and cannot prevent missing-history
   abstention.
-- [ ] Public evaluator calls reject unsupported coefficient/exponent domains,
+- [x] Public evaluator calls reject unsupported coefficient/exponent domains,
   non-finite metric conversions and positive exact metrics that would underflow
   to zero; output contains no `Infinity`, `NaN` or fabricated zero.
-- [ ] Public evaluation regressions reproduce the reviewed `1e150` / `1e-300`
+- [x] RMSE scales the exact mean-square before float conversion, so an
+  intermediate underflow does not reject a representable final result; true
+  final underflow still fails closed.
+- [x] Public evaluation regressions reproduce the reviewed `1e150` / `1e-300`
   WAPE overflow and tiny-positive metric underflow cases.
-- [ ] The Census guide, model card, learning exercise, debugging notes, system
+- [x] A public regression confirms RMSE near `1e-200` stays representable while
+  its exact mean-square lies below float range.
+- [x] The result uses `mirrormind.census.vintage_backtest.v2` and reports the
+  count without changing the M1 API or capability ledger.
+- [x] The Census guide, model card, learning exercise, debugging notes, system
   map, atlas and evidence map explain the revised arithmetic and archival
   boundaries.
 - [ ] Full exact-head local gate passes on the descendant with WorldKernel
@@ -200,8 +216,8 @@ publication.
 
 | Layer | Follow-up impact | Evidence |
 | --- | --- | --- |
-| Evaluator | Exact rational mean/metrics, numeric-domain validation and finite conversion | `tests/unit/test_census_vintage_evaluation.py` public-call regressions |
-| Vintage selection for evaluator | Validate first-estimate/revision chronology and omit unanchored revisions from the feature view | Earlier/same-day revision rejection and incomplete-anchor abstention tests |
-| CLI / serialized result | Add explicit unanchored-revision count; preserve schema safety and synthetic-only flags | CLI replay and JSON finite-number assertions |
+| Evaluator | Exact rational mean/metrics, numeric-domain validation, scaled RMSE conversion and v2 result with unanchored count | `tests/unit/test_census_vintage_evaluation.py` public-call regressions |
+| Vintage selection for evaluator | Validate first-estimate/revision chronology and omit unanchored revisions from the feature view | `test_revision_before_known_first_estimate_is_rejected`, evaluator chronology and incomplete-anchor abstention tests |
+| CLI / serialized result | Add explicit unanchored-revision count; preserve schema safety and synthetic-only flags | CLI replay, v2/count assertions and non-finite JSON rejection |
 | API / capability ledger / source access | No change | Existing API and capability checks; no file/network or source ingestion |
 | Documentation | Explain exact arithmetic, numeric bounds, revision chronology, abstention and reproduction | Census source walkthrough, model card, learning/debugging, system/semantic maps and evidence selectors |

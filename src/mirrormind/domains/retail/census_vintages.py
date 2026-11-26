@@ -108,15 +108,34 @@ def select_census_vintage_as_of(
         raise ValueError("record limit exceeded or records must be a bounded tuple")
 
     record_keys: set[tuple[date, date]] = set()
-    release_metadata: dict[str, tuple[date, str]] = {}
-    latest_by_month: dict[date, CensusVintageRecord] = {}
+    first_estimate_by_month: dict[date, CensusVintageRecord] = {}
     for record in records:
         _validate_record(record, series_id=series_id)
         key = (record.reference_month, record.published_on)
         if key in record_keys:
             raise ValueError("ambiguous publication date for reference month")
         record_keys.add(key)
+        if record.release_kind != "first_estimate":
+            continue
+        if record.reference_month in first_estimate_by_month:
+            raise ValueError("each month must have one unique first-estimate label")
+        first_estimate_by_month[record.reference_month] = record
 
+    for record in records:
+        if record.release_kind == "first_estimate":
+            continue
+        first_estimate = first_estimate_by_month.get(record.reference_month)
+        if (
+            first_estimate is not None
+            and record.published_on <= first_estimate.published_on
+        ):
+            raise ValueError(
+                "revision publication must follow first-estimate publication"
+            )
+
+    release_metadata: dict[str, tuple[date, str]] = {}
+    latest_by_month: dict[date, CensusVintageRecord] = {}
+    for record in records:
         metadata = (record.published_on, record.snapshot_sha256)
         previous_metadata = release_metadata.setdefault(record.release_id, metadata)
         if previous_metadata != metadata:

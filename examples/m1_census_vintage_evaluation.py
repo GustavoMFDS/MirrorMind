@@ -86,9 +86,12 @@ def main() -> int:
     args = parser.parse_args()
     try:
         result = run_synthetic_evaluation(split=args.split)
+        output = json.dumps(
+            result, sort_keys=True, separators=(",", ":"), allow_nan=False
+        )
     except (TypeError, ValueError):
         parser.exit(2, "Invalid synthetic Census vintage evaluation input.\n")
-    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    print(output)
     return 0
 
 

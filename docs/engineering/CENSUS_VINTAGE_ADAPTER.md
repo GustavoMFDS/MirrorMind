@@ -84,8 +84,11 @@ The function first checks the exact tuple type and the 50,000-record bound,
 then validates every record. It rejects mixed series, malformed dates or
 digests, unsupported release kinds, non-finite/negative values, conflicting
 metadata for one release ID, and two records for the same reference month on
-the same publication date. Same-day releases cannot be ordered because the
-contract carries dates only.
+the same publication date. Each month may have only one first-estimate record;
+when one exists, every monthly or annual revision must have a strictly later
+publication date. Earlier revisions fail chronology validation. A same-day
+first-estimate/revision pair fails the ambiguity guard because releases cannot
+be ordered within a day.
 
 For each reference month `m`, the selection rule is:
 
@@ -99,6 +102,13 @@ The strict inequality excludes a release on the forecast target's release
 date. A target month with no earlier record remains absent. It is never
 zero-filled. The resulting records are sorted by reference month, making
 replay deterministic.
+
+The selector itself remains a generic latest-release view and can return a
+revision for a month without a first-estimate row in an incomplete archive.
+The Census evaluator has a stricter modeling boundary: it excludes and counts
+such unanchored revisions so they cannot silently satisfy forecast history.
+Do not infer that the normalized release set is complete or that an absent
+anchor means a real publisher never issued one.
 
 `CensusVintageView.receipt()` reports the schema, unverified source status,
 exclusive cutoff, timestamp precision, selected row count, release IDs,
@@ -180,13 +190,16 @@ FRED/ALFRED is not an automatic substitute for the original Census release.
 ## Regression evidence
 
 Evidence-map claims for the primary temporal-selection and privacy boundary
-regressions are `MM-CEN-001` and `MM-CEN-002`, respectively. The machine-checked
-selectors below are the tests attached to those claims.
+regressions are `MM-CEN-001` and `MM-CEN-002`, respectively. `MM-CEN-013`
+records the additional rule that an anchored revision must follow its first
+estimate. The machine-checked selectors below are the tests attached to those
+claims.
 
 | Test selector | What it proves | What it does not prove |
 | --- | --- | --- |
 | `tests/unit/test_census_vintages.py::test_selects_latest_revision_per_month_strictly_before_target_release` | A later eligible revision replaces the first estimate; post-cutoff revisions are excluded; release metadata is preserved | The supplied dates or digest correspond to a real publication |
 | `tests/unit/test_census_vintages.py::test_same_day_first_estimate_is_excluded_and_receipt_is_unverified` | Date-only same-day records abstain; receipt remains unverified and unauthorized | Actual intraday release time or account-level permission |
+| `tests/unit/test_census_vintages.py::test_revision_before_known_first_estimate_is_rejected` | A revision cannot predate a known first-estimate release | Does not verify an authentic publisher schedule |
 | `tests/unit/test_census_vintages.py::test_missing_reference_months_remain_absent_and_replay_is_deterministic` | Gaps remain missing and repeated selection returns equal records/receipts | Real archive completeness or metrics on a holdout |
 | `tests/unit/test_census_vintages.py::test_duplicate_period_and_publication_date_is_rejected_as_ambiguous` | Conflicting same-day values fail closed instead of relying on row order | That all ambiguity types in a real publisher archive are covered |
 | `tests/unit/test_census_vintages.py::test_release_id_cannot_bind_conflicting_publication_metadata` | One immutable release ID cannot silently change date or digest | Byte-level source integrity; adapter only validates digest syntax |

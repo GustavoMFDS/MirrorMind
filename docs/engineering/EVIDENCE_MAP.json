@@ -1106,6 +1106,13 @@
     "limitation": "Shows the date-only adapter excludes same-day releases and keeps false authorization flags on fictional input; it does not establish intraday ordering or an authenticated permission boundary."
   },
   {
+    "id": "MM-CEN-013",
+    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
+    "test": "tests/unit/test_census_vintages.py",
+    "function": "test_revision_before_known_first_estimate_is_rejected",
+    "limitation": "Rejects one earlier synthetic revision when a first-estimate anchor exists. It does not verify publisher timing or establish archive completeness."
+  },
+  {
     "id": "MM-XLSX-001",
     "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
     "test": "tests/unit/test_uci_workbook.py",
@@ -1181,5 +1188,61 @@
     "test": "tests/integration/test_census_vintage_evaluation_cli.py",
     "function": "test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint",
     "limitation": "Confirms the generated CLI has deterministic output and disjoint fixture origins. It does not establish a blinded/locked empirical holdout or source authorization."
+  },
+  {
+    "id": "MM-CEN-007",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_trailing_mean_and_metrics_ignore_ambient_decimal_context",
+    "limitation": "Shows identical metrics under two synthetic Decimal precision/rounding contexts. It does not prove cross-language floating-point identity or real forecast quality."
+  },
+  {
+    "id": "MM-CEN-008",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_revision_cannot_precede_or_match_known_first_estimate",
+    "limitation": "Rejects earlier and same-day synthetic revisions when an anchor is present. It does not authenticate publisher dates or release completeness."
+  },
+  {
+    "id": "MM-CEN-009",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history",
+    "limitation": "Excludes and counts one synthetic unanchored revision. It cannot prove whether a missing first-estimate record exists in a real archive."
+  },
+  {
+    "id": "MM-CEN-010",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_decimal_precision_and_exponent_domain_is_bounded",
+    "limitation": "Rejects four unsupported generated numeric representations. The bounds are computational and do not define valid Census units."
+  },
+  {
+    "id": "MM-CEN-011",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_non_finite_metric_overflow_is_rejected_by_public_evaluator",
+    "limitation": "Rejects a synthetic finite-input WAPE overflow at the public evaluator. It does not assert real source magnitudes or empirical performance."
+  },
+  {
+    "id": "MM-CEN-012",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_positive_metric_underflow_is_rejected_by_public_evaluator",
+    "limitation": "Rejects one synthetic positive MAE that would convert to zero. It does not define the precision needs of a real source series."
+  },
+  {
+    "id": "MM-CEN-014",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_vintage_evaluation_cli.py",
+    "function": "test_synthetic_census_cli_refuses_non_finite_json",
+    "limitation": "Confirms the example CLI refuses one injected infinite value before output. It does not replace exact finite-metric checks inside the public evaluator."
+  },
+  {
+    "id": "MM-CEN-015",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_representable_rmse_does_not_underflow_while_scaling_mean_square",
+    "limitation": "Shows a representable synthetic RMSE remains nonzero when its exact mean square is below the smallest float. It does not establish precision requirements for a real series."
   }
 ]

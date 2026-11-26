@@ -146,18 +146,20 @@ Static imports (including inside functions): `__future__`, `bisect`, `dataclasse
 
 Source: [`src/mirrormind/domains/retail/census_evaluation.py`](../../../src/mirrormind/domains/retail/census_evaluation.py)
 
-Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `decimal`, `hashlib`, `json`, `math`, `mirrormind.domains.retail.census_vintages`, `typing`
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `decimal`, `fractions`, `hashlib`, `json`, `math`, `mirrormind.domains.retail.census_vintages`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `CensusForecastOrigin` | class | `class CensusForecastOrigin` | One predeclared monthly reference period and date-only issue boundary. | [L33](../../../src/mirrormind/domains/retail/census_evaluation.py#L33) |
-| `_month_offset` | function | `def _month_offset(month: date, offset: int) -> date` | — | [L40](../../../src/mirrormind/domains/retail/census_evaluation.py#L40) |
-| `_record_payload` | function | `def _record_payload(record: CensusVintageRecord) -> dict[str, str]` | — | [L48](../../../src/mirrormind/domains/retail/census_evaluation.py#L48) |
-| `_manifest_sha256` | function | `def _manifest_sha256(records: tuple[CensusVintageRecord, ...]) -> str` | — | [L60](../../../src/mirrormind/domains/retail/census_evaluation.py#L60) |
-| `_selection_receipt` | function | `def _selection_receipt(view: CensusVintageView, manifest_sha256: str) -> dict[str, object]` | Summarize a selected vintage without repeating every release identifier. | [L79](../../../src/mirrormind/domains/retail/census_evaluation.py#L79) |
-| `_metric_values` | function | `def _metric_values(value: Decimal) -> float` | — | [L101](../../../src/mirrormind/domains/retail/census_evaluation.py#L101) |
-| `_metrics` | function | `def _metrics(forecasts: tuple[Decimal, ...], actuals: tuple[Decimal, ...]) -> dict[str, float \| None]` | — | [L108](../../../src/mirrormind/domains/retail/census_evaluation.py#L108) |
-| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L126](../../../src/mirrormind/domains/retail/census_evaluation.py#L126) |
+| `CensusForecastOrigin` | class | `class CensusForecastOrigin` | One predeclared monthly reference period and date-only issue boundary. | [L39](../../../src/mirrormind/domains/retail/census_evaluation.py#L39) |
+| `_month_offset` | function | `def _month_offset(month: date, offset: int) -> date` | — | [L46](../../../src/mirrormind/domains/retail/census_evaluation.py#L46) |
+| `_record_payload` | function | `def _record_payload(record: CensusVintageRecord) -> dict[str, str]` | — | [L54](../../../src/mirrormind/domains/retail/census_evaluation.py#L54) |
+| `_manifest_sha256` | function | `def _manifest_sha256(records: tuple[CensusVintageRecord, ...]) -> str` | — | [L66](../../../src/mirrormind/domains/retail/census_evaluation.py#L66) |
+| `_selection_receipt` | function | `def _selection_receipt(view: CensusVintageView, manifest_sha256: str) -> dict[str, object]` | Summarize a selected vintage without repeating every release identifier. | [L85](../../../src/mirrormind/domains/retail/census_evaluation.py#L85) |
+| `_validate_metric_input` | function | `def _validate_metric_input(value: Decimal) -> None` | — | [L107](../../../src/mirrormind/domains/retail/census_evaluation.py#L107) |
+| `_metric_float` | function | `def _metric_float(value: Fraction) -> float` | — | [L121](../../../src/mirrormind/domains/retail/census_evaluation.py#L121) |
+| `_sqrt_metric_float` | function | `def _sqrt_metric_float(value: Fraction) -> float` | Round a non-negative exact mean square without underflowing its root. | [L135](../../../src/mirrormind/domains/retail/census_evaluation.py#L135) |
+| `_metrics` | function | `def _metrics(forecasts: tuple[Fraction, ...], actuals: tuple[Fraction, ...]) -> dict[str, float \| None]` | — | [L171](../../../src/mirrormind/domains/retail/census_evaluation.py#L171) |
+| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L192](../../../src/mirrormind/domains/retail/census_evaluation.py#L192) |
 
 ## `mirrormind.domains.retail.census_vintages`
 

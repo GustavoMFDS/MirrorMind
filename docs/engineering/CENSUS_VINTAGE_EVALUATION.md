@@ -21,7 +21,8 @@ B-01/B-02 remain open.
 Synthetic records and fixed origins
     -> evaluate_census_vintage_backtest
     -> select_census_vintage_as_of for each issue date
-    -> latest eligible revision per reference month
+    -> validate first-estimate/revision chronology and latest eligible vintage
+    -> exclude/count revisions without a first-estimate anchor
     -> first-estimate target matching and 12-month history gate
     -> lag-12 and trailing-12 predictions on matched targets
     -> per-horizon metrics plus sanitized lineage receipt
@@ -30,8 +31,8 @@ Synthetic records and fixed origins
 | Component | Responsibility | Trust boundary |
 | --- | --- | --- |
 | CensusForecastOrigin | Freezes a reference month and date-only issue boundary | Caller-declared schedule; not an authenticated release calendar |
-| select_census_vintage_as_of | Validates normalized records and chooses the newest eligible release per month | Digest syntax is checked; source bytes and rights are not |
-| evaluate_census_vintage_backtest | Applies fixed horizons/baselines, target matching, abstention and receipt generation | No fitting, tuning, I/O, route, persistence or operational authority |
+| select_census_vintage_as_of | Validates normalized records, first-estimate uniqueness and revision chronology, then chooses the newest eligible release per month | Digest syntax is checked; source bytes and rights are not |
+| evaluate_census_vintage_backtest | Applies fixed horizons/baselines, excludes and counts unanchored revisions, matches targets, abstains and emits receipts | No fitting, tuning, I/O, route, persistence or operational authority |
 | examples/m1_census_vintage_evaluation.py | Builds an in-memory fictional series and exposes disjoint validation/holdout origin sets | No file or network source |
 | tests/unit/test_census_vintage_evaluation.py | Reproduces temporal, metric, rejection and abstention behavior | Every value is invented |
 | tests/integration/test_census_vintage_evaluation_cli.py | Runs the example twice and checks deterministic JSON, split separation and minimization | Does not validate a live source or publication schedule |
@@ -71,7 +72,12 @@ Origins must be a bounded, nonempty tuple of at most 250 exact values. Their
 reference months must be unique and chronological, and their issue dates must
 increase. Each origin needs one first-estimate record published strictly
 before issue. Each target month must have at most one first-estimate label.
-Duplicate labels, mixed series, ambiguous (reference_month, published_on)
+When an anchor exists for a month, each monthly or annual revision must be
+published strictly after that first-estimate date. An earlier revision fails
+chronology validation; a same-day collision fails the existing date-only
+ambiguity rule. A revision with no first-estimate anchor is valid normalized
+input, but is unanchored and cannot enter this evaluator's feature view.
+Duplicate labels, mixed series, ambiguous `(reference_month, published_on)`
 records, invalid release metadata and any release published on the issue date
 are rejected or excluded by the selector.
 
@@ -92,8 +98,15 @@ target reference month is t = o + h calendar months. At issue time:
    - trailing_12_month_mean: arithmetic mean of the 12 selected months ending
      at o, held constant for that horizon.
 
-Both forecasts use the same first-estimate labels. Per horizon, metrics are
-reported only with at least two matched origins:
+Both forecasts use the same first-estimate labels. The trailing mean and the
+additive metric aggregates use exact `Fraction` arithmetic constructed from
+the input Decimals, so ambient Decimal precision and rounding mode cannot alter
+the result. RMSE scales the exact mean-square by powers of two before converting
+the bounded mantissa to float, applies the square root, then restores the
+exponent with `ldexp`. This avoids an intermediate float underflow when the
+final RMSE remains representable; final overflow and underflow still fail
+closed. Per horizon, metrics are reported only with at least two matched
+origins:
 
 - MAE is mean absolute error.
 - RMSE is the square root of mean squared error.
@@ -102,22 +115,31 @@ reported only with at least two matched origins:
 - Coverage is scored origins divided by requested origins. Abstentions retain
   distinct reasons.
 
-Metric output converts Decimal amounts to finite floats and rejects absolute
-values above 1e150 so squared errors remain representable. This is a numerical
-safety bound, not a source-unit or Census-series definition. The result reports
-no model winner and never returns observation values or predictions.
+The evaluator accepts at most 34 coefficient digits, Decimal exponents from
+`-433` through `150`, nonzero adjusted exponents from `-400` through `150`,
+and absolute input values up to `1e150`. These bounds limit rational-arithmetic
+cost and keep squared errors representable; they are not a source-unit or
+Census-series definition. Metric conversion rejects float overflow, non-finite
+results and any nonzero exact result that would underflow to `0.0`. The public
+call raises `ValueError` instead of returning infinity, NaN or a false zero.
+This also rejects WAPE overflow such as errors near `1e150` divided by targets
+near `1e-300`. The result reports no model winner and never returns
+observation values or predictions.
 
 ## Result and replay receipt
 
-The versioned result, mirrormind.census.vintage_backtest.v1, contains the
-selected split, series, requested origin count, fixed horizons, per-origin
-audit, per-horizon metrics, abstention counts and false
-ingestion_authorized/forecast_eligible flags. Each origin audit records a
-compact selector receipt with the selected-row count and an as-of vintage
-fingerprint; it does not repeat every release ID and digest. Each target entry
-records its publication date, release ID and caller-supplied source digest
-string. The top-level input fingerprint binds all normalized records using
-canonical JSON.
+The versioned result, `mirrormind.census.vintage_backtest.v2`, contains the
+selected split, series, requested origin count, unanchored revision count,
+fixed horizons, per-origin audit, per-horizon metrics, abstention counts and
+false `ingestion_authorized`/`forecast_eligible` flags. V2 is required because
+the explicit unanchored count changes the serialized result contract; the
+v1 result is an unmerged experimental output with no other in-repository
+consumer. Each origin audit records a compact selector receipt with the
+selected-row count and a feature-vintage fingerprint; it does not repeat every
+release ID and digest. Each target entry records its publication date, release
+ID and caller-supplied source digest string. The top-level input fingerprint
+binds all normalized records using canonical JSON, including unanchored
+revisions; per-origin fingerprints include only eligible feature records.
 
 These fingerprints bind supplied normalized rows for deterministic replay.
 They do not hash or verify official source bytes, establish a legal grant,
@@ -152,9 +174,16 @@ authorize, download, store or submit any real source values.
 
 ## Regression evidence
 
-The curated evidence-map claims are MM-CEN-003 for fixed-horizon matched
-metrics, MM-CEN-004 for later-revision noninterference, MM-CEN-005 for
-missing-history abstention and MM-CEN-006 for deterministic split replay.
+The curated evidence-map claims are `MM-CEN-003` for fixed-horizon matched
+metrics, `MM-CEN-004` for later-revision noninterference, `MM-CEN-005` for
+missing-history abstention, and `MM-CEN-006` for deterministic split replay.
+`MM-CEN-007` verifies independence from ambient Decimal context;
+`MM-CEN-008` and `MM-CEN-009` cover anchored revision chronology and exclusion
+of unanchored revisions; `MM-CEN-010` covers bounded decimal inputs;
+`MM-CEN-011` and `MM-CEN-012` cover overflow and underflow rejection; and
+`MM-CEN-014` verifies that the example CLI refuses non-finite JSON, and
+`MM-CEN-015` protects RMSE square-root scaling from an intermediate float
+underflow when the final metric remains representable.
 Each claim cites the real top-level test selector and states what the fixture
 cannot establish.
 
@@ -172,8 +201,16 @@ cannot establish.
 | tests/unit/test_census_vintage_evaluation.py::test_origins_must_be_unique_chronological_and_split_is_explicit | Duplicate/out-of-order origins and undeclared split labels fail | The caller still chooses the frozen schedule |
 | tests/unit/test_census_vintage_evaluation.py::test_origin_count_budget_is_enforced_before_evaluation | Evaluation origin work is bounded before processing | Does not benchmark runtime |
 | tests/unit/test_census_vintage_evaluation.py::test_metric_range_rejects_values_that_cannot_be_scored_safely | Non-finite metric conversions are rejected | The numeric bound is not a source-unit contract |
+| tests/unit/test_census_vintage_evaluation.py::test_trailing_mean_and_metrics_ignore_ambient_decimal_context | Exact means and metrics replay identically under precision 2 with ROUND_DOWN and ROUND_UP | Tests two local Decimal contexts over generated values only |
+| tests/unit/test_census_vintage_evaluation.py::test_revision_cannot_precede_or_match_known_first_estimate | Earlier revisions fail chronology and same-day collisions fail the date-only ambiguity rule | Does not authenticate a publisher calendar |
+| tests/unit/test_census_vintage_evaluation.py::test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history | Missing first-estimate anchors remain missing, are counted and cannot become feature rows | One generated incomplete archive only |
+| tests/unit/test_census_vintage_evaluation.py::test_decimal_precision_and_exponent_domain_is_bounded | Excess coefficient digits and out-of-range exponents fail before metric serialization | Numeric bounds are not Census source units |
+| tests/unit/test_census_vintage_evaluation.py::test_non_finite_metric_overflow_is_rejected_by_public_evaluator | Public evaluation rejects WAPE overflow from finite extreme inputs | No claim about real source values or model performance |
+| tests/unit/test_census_vintage_evaluation.py::test_positive_metric_underflow_is_rejected_by_public_evaluator | Public evaluation rejects a positive exact MAE that would serialize as zero | One synthetic tiny-value boundary case |
+| tests/unit/test_census_vintage_evaluation.py::test_representable_rmse_does_not_underflow_while_scaling_mean_square | Exponent scaling preserves a representable RMSE even though its exact mean square is below float range | One synthetic tiny-value boundary case |
 | tests/integration/test_census_vintage_evaluation_cli.py::test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint | Example command output is deterministic and validation/holdout origins are disjoint | A generated split is not a locked empirical holdout |
 | tests/integration/test_census_vintage_evaluation_cli.py::test_synthetic_census_cli_rejects_unknown_split | The command rejects an unreviewed split name without printing fixture values | No production CLI surface is added |
+| tests/integration/test_census_vintage_evaluation_cli.py::test_synthetic_census_cli_refuses_non_finite_json | The CLI fails closed before writing an infinite metric as JSON | Exercises one injected non-finite synthetic result, not a production server |
 
 The focused selectors above are run by the repository's full pytest gate. The
 exact-head local receipt also includes Ruff, generated symbol catalog,
@@ -199,6 +236,15 @@ local evidence, not GitHub Actions or independent scientific review.
    fields.
 6. Add a third fixed origin to only one split. Predict the coverage denominator
    and why a per-horizon score still requires two matched outcomes.
+7. Run the same records under precision 2 with `ROUND_DOWN` and `ROUND_UP`.
+   Trace why the trailing mean uses `Fraction` and the output metrics remain
+   identical. Add an earlier and same-day revision; distinguish chronology
+   rejection from the date-only duplicate rule.
+8. Remove a first estimate but retain a later revision for that month. Compare
+   full-input and per-origin fingerprints, read `unanchored_revision_count`,
+   and explain why missing history still abstains. Try `1e150` / `1e-300` and
+   `1e-400`; explain why overflow and positive-metric underflow reject the
+   whole public evaluation rather than emit invalid JSON.
 
 ## Diagnosis, maintenance and evolution
 

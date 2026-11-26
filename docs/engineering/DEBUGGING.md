@@ -318,5 +318,18 @@ the as-of view. A missing month is an abstention, never a zero. An unrelated
 future reference month is a contract error; a target already published by
 issue is not a future outcome. Compare the per-origin vintage fingerprint and
 sanitized selector receipt before assuming a later revision affected a score.
+If a revision precedes its known first-estimate date, expect chronology
+rejection; a same-day collision is ambiguous at date-only precision. When the
+first-estimate anchor is absent, inspect `unanchored_revision_count` and ensure
+that row changes the full-input fingerprint but not the per-origin feature
+fingerprint or missing-history abstention. To diagnose metric drift, rerun the
+same records under Decimal precision 2 with `ROUND_DOWN` and `ROUND_UP`; exact
+`Fraction` means/aggregates must be identical. For `ValueError` from metric
+conversion, inspect the bounded coefficient/exponent domain and distinguish
+WAPE overflow from positive-result float underflow. Do not replace either with
+infinity, NaN or zero. If only the mean-square is below float range, inspect
+`_sqrt_metric_float`: it scales the exact rational by a power of two before
+converting the mantissa, so a representable RMSE remains available. The result
+is schema v2 because it carries the explicit unanchored count.
 The normalized-input fingerprint is not a publisher-byte digest, and no
 diagnosis resolves source rights, archive completeness or empirical validity.

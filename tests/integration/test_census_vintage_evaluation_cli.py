@@ -5,6 +5,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
+import examples.m1_census_vintage_evaluation as census_example
+
 
 def _run(split: str) -> subprocess.CompletedProcess[str]:
     repository_root = Path(__file__).resolve().parents[2]
@@ -39,6 +43,10 @@ def test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint():
     validation_result = json.loads(validation_first.stdout)
     holdout_result = json.loads(holdout.stdout)
     assert validation_result["status"] == "aggregate_vintage_backtest_unverified"
+    assert validation_result["schema_version"] == "mirrormind.census.vintage_backtest.v2"
+    assert validation_result["unanchored_revision_count"] == 0
+    assert holdout_result["schema_version"] == validation_result["schema_version"]
+    assert holdout_result["unanchored_revision_count"] == 0
     assert validation_result["evaluation_split"] == "validation"
     assert holdout_result["evaluation_split"] == "holdout"
     assert validation_result["input_manifest_sha256"] == holdout_result[
@@ -58,6 +66,23 @@ def test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint():
     assert "actual" not in validation_first.stdout
     assert "prediction" not in validation_first.stdout
     assert "999" not in validation_first.stdout
+
+
+def test_synthetic_census_cli_refuses_non_finite_json(monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["m1_census_vintage_evaluation", "--split", "validation"])
+    monkeypatch.setattr(
+        census_example,
+        "run_synthetic_evaluation",
+        lambda *, split: {"split": split, "metric": float("inf")},
+    )
+
+    with pytest.raises(SystemExit) as error:
+        census_example.main()
+
+    captured = capsys.readouterr()
+    assert error.value.code == 2
+    assert captured.out == ""
+    assert captured.err == "Invalid synthetic Census vintage evaluation input.\n"
 
 
 def test_synthetic_census_cli_rejects_unknown_split():

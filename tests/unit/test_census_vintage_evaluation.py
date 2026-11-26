@@ -1,6 +1,7 @@
+import json
 from dataclasses import replace
 from datetime import date
-from decimal import Decimal
+from decimal import ROUND_DOWN, ROUND_UP, Decimal, localcontext
 
 import pytest
 
@@ -81,8 +82,10 @@ def test_fixed_horizons_use_asof_vintages_and_matched_first_estimates():
     result = _evaluate(_records(values=values))
 
     assert result["status"] == "aggregate_vintage_backtest_unverified"
+    assert result["schema_version"] == "mirrormind.census.vintage_backtest.v2"
     assert result["source_status"] == "caller_supplied_not_source_verified"
     assert result["input_record_count"] == 19
+    assert result["unanchored_revision_count"] == 0
     assert result["ingestion_authorized"] is False
     assert result["forecast_eligible"] is False
     assert [item["horizon_months"] for item in result["horizons"]] == [1, 3, 6]
@@ -111,6 +114,7 @@ def test_fixed_horizons_use_asof_vintages_and_matched_first_estimates():
     assert first_origin["horizon_results"][0]["target_release_id"] == "first-2021-01"
     assert "value" not in repr(result)
     assert "prediction" not in repr(result)
+    json.dumps(result, allow_nan=False)
 
 
 def test_revision_published_before_origin_changes_only_that_asof_vintage():
@@ -234,8 +238,8 @@ def test_future_reference_rows_outside_requested_targets_fail_closed():
     records = _records()
     impossible_future_row = replace(
         records[15],
+        reference_month=date(2022, 1, 1),
         published_on=date(2021, 1, 10),
-        release_kind="monthly_revision",
         release_id="future-month-before-origin",
         snapshot_sha256="c" * 64,
     )
@@ -305,3 +309,130 @@ def test_origin_first_estimate_must_be_available_before_issue():
 
     assert _horizon(result, 1)["scored_origins"] == 0
     assert _horizon(result, 1)["abstentions"]["origin_not_published_at_issue"] == 1
+
+
+@pytest.mark.parametrize("rounding", (ROUND_DOWN, ROUND_UP))
+def test_trailing_mean_and_metrics_ignore_ambient_decimal_context(rounding):
+    values = {
+        date(2020, month, 1): f"100.{month:02d}"
+        for month in range(1, 13)
+    }
+    values.update({date(2021, 1, 1): "112.34", date(2021, 2, 1): "125.67"})
+    records = _records(values=values)
+
+    default_context_result = _evaluate(records)
+    with localcontext() as context:
+        context.prec = 2
+        context.rounding = rounding
+        constrained_result = _evaluate(records)
+
+    assert constrained_result["input_manifest_sha256"] == (
+        default_context_result["input_manifest_sha256"]
+    )
+    assert constrained_result["horizons"] == default_context_result["horizons"]
+
+
+@pytest.mark.parametrize(
+    ("published_on", "message"),
+    (
+        (
+            date(2020, 12, 14),
+            "revision publication must follow first-estimate publication",
+        ),
+        (date(2020, 12, 15), "ambiguous publication date"),
+    ),
+)
+def test_revision_cannot_precede_or_match_known_first_estimate(published_on, message):
+    records = _records()
+    revision = replace(
+        records[10],
+        value=Decimal(999),
+        published_on=published_on,
+        release_kind="monthly_revision",
+        release_id=f"invalid-revision-{published_on.isoformat()}",
+        snapshot_sha256="f" * 64,
+    )
+
+    with pytest.raises(ValueError, match=message):
+        _evaluate((*records, revision))
+
+
+def test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history():
+    complete = _records()
+    missing_month = date(2020, 11, 1)
+    incomplete = tuple(
+        record for record in complete if record.reference_month != missing_month
+    )
+    unanchored_revision = replace(
+        complete[10],
+        value=Decimal(999),
+        published_on=date(2021, 2, 1),
+        release_kind="monthly_revision",
+        release_id="unanchored-revision-2020-11",
+        snapshot_sha256="f" * 64,
+    )
+
+    without_revision = _evaluate(incomplete)
+    with_unanchored_revision = _evaluate((*incomplete, unanchored_revision))
+
+    assert without_revision["unanchored_revision_count"] == 0
+    assert with_unanchored_revision["unanchored_revision_count"] == 1
+    assert with_unanchored_revision["input_record_count"] == len(incomplete) + 1
+    assert with_unanchored_revision["input_manifest_sha256"] != (
+        without_revision["input_manifest_sha256"]
+    )
+    assert with_unanchored_revision["horizons"] == without_revision["horizons"]
+    assert with_unanchored_revision["origin_audit"] == without_revision["origin_audit"]
+    for horizon in with_unanchored_revision["horizons"]:
+        assert horizon["scored_origins"] == 0
+        assert horizon["metrics"] is None
+        assert horizon["abstentions"]["required_monthly_history_unavailable"] == 2
+
+
+@pytest.mark.parametrize(
+    "unsupported_value",
+    (
+        "1e151",
+        "1e-401",
+        "12345678901234567890123456789012345",
+        "0e151",
+    ),
+)
+def test_decimal_precision_and_exponent_domain_is_bounded(unsupported_value):
+    values = {date(2021, 1, 1): unsupported_value}
+
+    with pytest.raises(ValueError, match="supported metric range"):
+        _evaluate(_records(values=values))
+
+
+def test_non_finite_metric_overflow_is_rejected_by_public_evaluator():
+    values = {
+        date(2020, 1, 1): "1e150",
+        date(2020, 2, 1): "1e150",
+        date(2021, 1, 1): "1e-300",
+        date(2021, 2, 1): "1e-300",
+    }
+
+    with pytest.raises(ValueError, match="metric result overflows finite float range"):
+        _evaluate(_records(values=values))
+
+
+def test_positive_metric_underflow_is_rejected_by_public_evaluator():
+    values = {
+        date(2020, month, 1): "0"
+        for month in range(1, 13)
+    }
+    values.update({date(2021, 1, 1): "1e-400", date(2021, 2, 1): "1e-400"})
+
+    with pytest.raises(ValueError, match="metric result underflows finite float range"):
+        _evaluate(_records(values=values))
+
+
+def test_representable_rmse_does_not_underflow_while_scaling_mean_square():
+    values = {date(2020, month, 1): "0" for month in range(1, 13)}
+    values.update({date(2021, 1, 1): "1e-200", date(2021, 2, 1): "1e-200"})
+
+    metrics = _horizon(_evaluate(_records(values=values)), 1)["metrics"]
+
+    assert metrics["seasonal_naive_lag12"]["rmse"] == pytest.approx(1e-200)
+    assert metrics["trailing_12_month_mean"]["rmse"] == pytest.approx(1e-200)

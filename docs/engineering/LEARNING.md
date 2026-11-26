@@ -698,6 +698,19 @@ target first-estimate value and explain why metrics change while the output
 still omits that value and its forecast. Finally explain why a higher or lower
 fictional error is not evidence about Census accuracy, source permission,
 archive coverage or the proposed UCI product-level study.
+Run `test_trailing_mean_and_metrics_ignore_ambient_decimal_context` under both
+ROUND_DOWN and ROUND_UP and trace the `Decimal` to `Fraction` conversion.
+Append a revision dated before its known first estimate, then on the same date;
+identify the chronology error versus the date-only ambiguity error. Remove an
+estimate but retain a later revision, compare `unanchored_revision_count`, the
+full input hash and origin feature hashes, and explain why history remains
+missing. Finally run the public WAPE overflow and positive-metric underflow
+regressions; explain why they raise `ValueError` instead of serializing
+infinity, NaN or zero. Then run
+`test_representable_rmse_does_not_underflow_while_scaling_mean_square` and
+trace how `_sqrt_metric_float` rescales an exact rational before taking its
+square root. The explicit count changes the experimental result envelope to
+schema v2.
 
 ## Guided exercise — select an aggregate vintage without lookahead
 
@@ -716,3 +729,6 @@ changing its digest string and identify the missing byte-verification layer.
 Explain why this normalized synthetic selector proves neither a real source
 vintage nor permission, and why UCI `InvoiceDate` cannot supply
 `published_on`.
+Add an anchored revision dated before its first estimate and verify chronology
+rejection; set both dates equal and explain why the date-only ambiguity guard
+also rejects it.

@@ -28,6 +28,15 @@ split labels and origin dates are fixed in the example, but all values and
 source identities are public synthetic fixtures; this is not a blind or locked
 empirical holdout.
 
+When a first-estimate publication is present for a reference month, monthly
+and annual revisions must be published on a strictly later date. Earlier
+revisions are rejected and same-day collisions remain ambiguous because the
+contract has no intraday ordering. If an archive fragment contains a revision
+but no first-estimate anchor for its month, the evaluator excludes that row
+from all feature vintages, increments `unanchored_revision_count`, and leaves
+the missing month absent. The full input manifest still binds the excluded
+row; origin feature manifests do not.
+
 ## Baselines and metrics
 
 - seasonal_naive_lag12: use the selected vintage value for the target month
@@ -40,11 +49,24 @@ empirical holdout.
   the denominator is zero.
 - Coverage: scored origins divided by requested origins for each horizon.
 
+The trailing mean and additive error aggregates use exact `Fraction`
+arithmetic, so local Decimal precision and rounding settings cannot alter a
+score. The supported Decimal inputs contain at most 34 coefficient digits,
+raw exponent `-433..150`, nonzero adjusted exponent `-400..150`, and magnitude
+no greater than `1e150`. Metrics that overflow float range, become non-finite,
+or underflow a positive exact result to zero raise `ValueError`; output never
+substitutes infinity, NaN or a false zero. RMSE applies square root after
+scaling the exact mean-square's power-of-two exponent: only its bounded
+mantissa is converted to float, then `ldexp` restores the square-root exponent.
+This avoids rejecting a representable RMSE because its intermediate square is
+below float range. The final result still fails closed if it overflows or
+underflows. These are computational bounds, not source-unit limits.
+
 Metrics are withheld for a horizon with fewer than two matched origins. The
 evaluator does not select a winner, tune parameters or calculate uncertainty.
-Values that cannot safely convert to finite metric floats within the declared
-1e150 magnitude bound are rejected. The bound is an implementation safeguard,
-not a source-series unit.
+Its result schema is `mirrormind.census.vintage_backtest.v2`, which reports the
+unanchored-revision count. The earlier v1 output was only on an unmerged
+experimental branch and no in-repository consumer remains on it.
 
 ## Results and uncertainty
 
