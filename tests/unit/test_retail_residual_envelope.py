@@ -15,7 +15,7 @@ def day(index):
     return START + timedelta(days=index - 1)
 
 
-def fixture(*, late60=False, value60=4, missing68=False, withheld70=False):
+def fixture(*, late59=False, late60=False, value60=4, missing68=False, withheld70=False):
     rows = []
     releases = []
     for index in range(1, 71):
@@ -31,7 +31,8 @@ def fixture(*, late60=False, value60=4, missing68=False, withheld70=False):
             "CustomerID": "NEVER-COPY",
         })
         published = (
-            day(70) if late60 and index == 60
+            day(70) if late59 and index == 59
+            else day(70) if late60 and index == 60
             else day(71) if withheld70 and index == 70
             else event
         )
@@ -52,6 +53,9 @@ def test_fully_published_example_reports_retrospective_not_nominal_coverage():
     assert result["evaluated_origins"] == 7
     assert result["retrospective_coverage_denominator"] == 7
     assert 0 <= result["retrospective_covered_origins"] <= 7
+    assert result["retrospective_coverage_numerator"] == result["retrospective_covered_origins"]
+    assert result["retrospective_coverage_denominator"] == result["evaluated_origins"]
+    assert result["calibration_holdout_targets_disjoint"] is True
     assert result["calibrated_prediction_interval"] is None
     assert result["nominal_coverage"] is None
     assert result["uncertainty_status"] == "heuristic_envelope_not_prediction_interval"
@@ -83,6 +87,28 @@ def test_calibration_abstains_instead_of_claiming_small_sample_uncertainty():
     assert result["evaluated_origins"] == 0
     assert result["abstained_calibration"] == 2
     assert result["retrospective_coverage_denominator"] == 0
+    assert result["calibrated_prediction_interval"] is None
+
+
+def test_holdout_targets_never_enter_later_calibration_windows():
+    projection, releases = fixture(late59=True)
+    result = evaluate(
+        projection, releases,
+        holdout_days=2,
+        calibration_days=10,
+        min_calibration_residuals=10,
+    )
+
+    assert result["calibration_target_window_start"] == day(59).isoformat()
+    assert result["calibration_target_window_end"] == day(68).isoformat()
+    assert result["holdout_target_window_start"] == day(69).isoformat()
+    assert result["holdout_target_window_end"] == day(70).isoformat()
+    assert result["calibration_holdout_targets_disjoint"] is True
+    assert result["abstained_calibration"] == 2
+    assert result["evaluated_origins"] == 0
+    assert result["retrospective_coverage_numerator"] == 0
+    assert result["retrospective_coverage_denominator"] == 0
+    assert result["nominal_coverage"] is None
     assert result["calibrated_prediction_interval"] is None
 
 
@@ -124,8 +150,8 @@ def test_datetime_is_not_accepted_as_calendar_date():
         )
 
 
-def test_each_distinct_prequential_target_prediction_runs_once(monkeypatch):
-    """Seven origins with 21 calibration days need 28, not 154 predictions."""
+def test_fixed_split_predicts_each_distinct_target_once(monkeypatch):
+    """A disjoint 21-day calibration plus seven-day holdout visits 28 dates."""
     import mirrormind.domains.retail.residual_envelope as module
 
     projection, releases = fixture()
@@ -144,8 +170,8 @@ def test_each_distinct_prequential_target_prediction_runs_once(monkeypatch):
     assert actual["evaluated_origins"] == 7
 
 
-def test_prediction_cache_is_never_shared_between_evaluation_calls(monkeypatch):
-    """Call-local caching must not reuse forecasts at a subsequent cutoff."""
+def test_repeated_evaluations_recompute_without_hidden_state(monkeypatch):
+    """Each call evaluates its inputs independently and deterministically."""
     import mirrormind.domains.retail.residual_envelope as module
 
     projection, releases = fixture()
@@ -171,27 +197,13 @@ def test_prediction_cache_is_never_shared_between_evaluation_calls(monkeypatch):
     {"missing68": True},
     {"late60": True, "value60": 999_999},
 ])
-def test_cached_residuals_remain_deterministic_with_missing_and_late_data(
-    monkeypatch, variants
-):
-    import mirrormind.domains.retail.residual_envelope as module
-
+def test_fixed_split_is_deterministic_with_missing_and_late_data(variants):
     projection, releases = fixture(**variants)
     expected = evaluate(projection, releases)
-    original = module._predict
-    called = []
-
-    def counting_predict(history):
-        called.append(history)
-        return original(history)
-
-    monkeypatch.setattr(module, "_predict", counting_predict)
-    result = evaluate(projection, releases)
-    assert result == expected
-    assert 0 <= len(called) <= 28
-    assert result["requested_origins"] == len(result["origin_audit"]) == 7
-    assert result["nominal_coverage"] is None
-    assert result["calibrated_prediction_interval"] is None
+    assert evaluate(projection, releases) == expected
+    assert expected["requested_origins"] == len(expected["origin_audit"]) == 7
+    assert expected["nominal_coverage"] is None
+    assert expected["calibrated_prediction_interval"] is None
 
 
 def adversarial_fixture(seed):
@@ -228,12 +240,10 @@ def adversarial_fixture(seed):
     (65, 10, 15, 4),
     (78, 14, 30, 8),
 ])
-def test_cached_and_uncached_history_agree_under_adversarial_publication_schedules(
-    monkeypatch, seed, evaluation_index, holdout, calibration, minimum,
+def test_fixed_split_matches_independent_oracle_under_adversarial_publication_schedules(
+    seed, evaluation_index, holdout, calibration, minimum,
 ):
-    """An explicit uncached oracle guards reports, not just repeated cached calls."""
-    import mirrormind.domains.retail.residual_envelope as module
-
+    """Compare fixed, disjoint eligibility against a separate quadratic oracle."""
     projection, releases = adversarial_fixture(seed)
     kwargs = {
         "stock_code": "PRIVATE-SKU",
@@ -242,49 +252,25 @@ def test_cached_and_uncached_history_agree_under_adversarial_publication_schedul
         "calibration_days": calibration,
         "min_calibration_residuals": minimum,
     }
-    with monkeypatch.context() as patch:
-        patch.setattr(module, "cache", lambda function: function)
-        uncached = module.evaluate_retail_residual_envelopes(projection, releases, **kwargs)
-    cached = module.evaluate_retail_residual_envelopes(projection, releases, **kwargs)
-    assert cached == uncached
-    assert len(cached["origin_audit"]) == holdout
-    assert cached["retrospective_coverage_denominator"] == cached["evaluated_origins"]
-    assert cached["nominal_coverage"] is None
-    assert cached["calibrated_prediction_interval"] is None
+    actual = evaluate_retail_residual_envelopes(projection, releases, **kwargs)
+    expected_audit, expected_covered = _naive_calibration_oracle(
+        projection, releases,
+        evaluation_on=kwargs["evaluation_on"],
+        holdout_days=holdout,
+        calibration_days=calibration,
+        min_calibration_residuals=minimum,
+    )
+    assert actual["origin_audit"] == expected_audit
+    assert actual["retrospective_covered_origins"] == expected_covered
+    assert len(actual["origin_audit"]) == holdout
+    assert actual["retrospective_coverage_denominator"] == actual["evaluated_origins"]
+    assert actual["nominal_coverage"] is None
+    assert actual["calibrated_prediction_interval"] is None
     for private in ("PRIVATE-SKU", "SECONDARY-SKU", "MUST-NOT-ESCAPE", "500001"):
-        assert private not in str(cached)
+        assert private not in str(actual)
 
 
-def test_uncached_and_cached_full_history_predict_calls_match_exact_legacy_count(monkeypatch):
-    """Rolling calibration needs 34 uncached calls or 28 with memoization."""
-    import mirrormind.domains.retail.residual_envelope as module
-
-    projection, releases = fixture()
-    original = module._predict
-    calls = {"uncached": 0, "cached": 0}
-
-    def uncached_predict(history):
-        calls["uncached"] += 1
-        return original(history)
-
-    def cached_predict(history):
-        calls["cached"] += 1
-        return original(history)
-
-    with monkeypatch.context() as patch:
-        patch.setattr(module, "cache", lambda function: function)
-        patch.setattr(module, "_predict", uncached_predict)
-        baseline = evaluate(projection, releases)
-
-    with monkeypatch.context() as patch:
-        patch.setattr(module, "_predict", cached_predict)
-        optimized = evaluate(projection, releases)
-
-    assert baseline == optimized
-    assert calls == {"uncached": 34, "cached": 28}
-
-
-def test_different_release_schedules_cannot_share_earlier_cached_predictions(monkeypatch):
+def test_different_release_schedules_produce_distinct_asof_reports():
     """Changed publisher assertions must be reflected in a new evaluation."""
     import mirrormind.domains.retail.residual_envelope as module
 
@@ -298,16 +284,12 @@ def test_different_release_schedules_cannot_share_earlier_cached_predictions(mon
     normal = module.evaluate_retail_residual_envelopes(projection, releases_early, **kwargs)
     delayed = module.evaluate_retail_residual_envelopes(projection, releases_late, **kwargs)
     assert normal != delayed
-    with monkeypatch.context() as patch:
-        patch.setattr(module, "cache", lambda function: function)
-        expected_normal = module.evaluate_retail_residual_envelopes(
-            projection, releases_early, **kwargs
-        )
-        expected_delayed = module.evaluate_retail_residual_envelopes(
-            projection, releases_late, **kwargs
-        )
-    assert normal == expected_normal
-    assert delayed == expected_delayed
+    assert normal == module.evaluate_retail_residual_envelopes(
+        projection, releases_early, **kwargs
+    )
+    assert delayed == module.evaluate_retail_residual_envelopes(
+        projection, releases_late, **kwargs
+    )
     assert delayed["abstained_unpublished_target"] == 1
 
 
@@ -347,7 +329,7 @@ def _naive_calibration_oracle(projection, releases, *, evaluation_on, holdout_da
             else:
                 residuals = []
                 for lag in range(calibration_days, 0, -1):
-                    previous = target - timedelta(days=lag)
+                    previous = start - timedelta(days=lag)
                     if previous not in observed or published[("PRIVATE-SKU", previous)] > origin:
                         continue
                     previous_point = predict(previous)
@@ -371,10 +353,10 @@ def _naive_calibration_oracle(projection, releases, *, evaluation_on, holdout_da
     (78, 14, 30, 8),
     (83, 30, 60, 3),
 ])
-def test_incremental_calibration_exactly_matches_naive_reference(
+def test_disjoint_calibration_exactly_matches_naive_reference(
     seed, evaluation_index, holdout, calibration, minimum,
 ):
-    """Include delayed and expired targets, incomplete history, and long windows."""
+    """Include delayed targets, incomplete history, and long fixed windows."""
     projection, releases = adversarial_fixture(seed)
     cutoff = day(evaluation_index)
     report = evaluate_retail_residual_envelopes(
@@ -391,7 +373,20 @@ def test_incremental_calibration_exactly_matches_naive_reference(
         item["status"] == "retrospective_envelope_evaluated" for item in origin_audit
     )
     assert report["retrospective_covered_origins"] == covered
+    assert report["retrospective_coverage_numerator"] == covered
     assert report["retrospective_coverage_denominator"] == report["evaluated_origins"]
+    assert report["retrospective_coverage_numerator"] <= report["retrospective_coverage_denominator"]
+    assert report["calibration_target_window_start"] == (
+        cutoff - timedelta(days=holdout + calibration - 1)
+    ).isoformat()
+    assert report["calibration_target_window_end"] == (
+        cutoff - timedelta(days=holdout)
+    ).isoformat()
+    assert report["holdout_target_window_start"] == (
+        cutoff - timedelta(days=holdout - 1)
+    ).isoformat()
+    assert report["calibration_target_window_end"] < report["holdout_target_window_start"]
+    assert report["calibration_holdout_targets_disjoint"] is True
     assert report["nominal_coverage"] is None
     assert report["calibrated_prediction_interval"] is None
 
@@ -422,8 +417,7 @@ def test_calibration_release_activates_at_exact_origin_not_one_day_earlier():
         if r.observed_on == day(49) else r
         for r in releases
     )
-    # Day 49 becomes available at origin 69, the final origin at which
-    # it is still inside the 21-day trailing calibration window.
+    # Day 49 becomes available at origin 69, the final holdout origin.
     for end in (day(67), day(68), day(69), day(70)):
         report = evaluate_retail_residual_envelopes(
             projection, delayed, stock_code="PRIVATE-SKU",
@@ -439,7 +433,7 @@ def test_calibration_release_activates_at_exact_origin_not_one_day_earlier():
 
 
 def test_candidate_released_on_last_eligible_origin_is_counted_at_boundary():
-    """Day 49 released at origin 69 counts for day 70, but released on 70 does not."""
+    """A fixed-window residual enters at origin 69, but not when released on 70."""
     projection, releases = fixture()
     def published_on(chosen):
         return tuple(
@@ -452,8 +446,9 @@ def test_candidate_released_on_last_eligible_origin_is_counted_at_boundary():
         "stock_code": "PRIVATE-SKU", "evaluation_on": day(70),
         "holdout_days": 7, "calibration_days": 21,
         # Late release of day 49 also invalidates days 50..56 forecasts at
-        # their OWN origins. At day 70 there are 13 other eligible residuals:
-        # day 49 is the 14th only when available by day 69.
+        # their OWN origins. At day 70 there are 13 other eligible calibration
+        # targets in the fixed pre-holdout window; day 49 is the 14th only
+        # when available by day 69.
         "min_calibration_residuals": 14,
     }
     at_origin = evaluate_retail_residual_envelopes(

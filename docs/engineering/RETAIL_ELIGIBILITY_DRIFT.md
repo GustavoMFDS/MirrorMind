@@ -9,6 +9,10 @@ and its exact abstention reasons. The earlier window is evaluated at its
 **own earlier cutoff**, not using the later evaluation date. Therefore
 publisher releases declared after that earlier cutoff cannot retroactively
 turn unavailable history or targets into earlier-window evidence.
+Within each window, residual eligibility uses the diagnostic's fixed
+pre-holdout calibration target interval. A holdout target label never enters
+the residual pool for a later origin in that same window; late releases and
+incomplete feature histories remain abstentions.
 
 Each window contains 2–30 daily origins. The immutable receipt provides
 separate denominators, evaluated-origin numerators and missing-target,

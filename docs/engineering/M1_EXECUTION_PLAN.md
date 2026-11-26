@@ -4,12 +4,16 @@
 decision workflow while keeping MirrorMind domain-neutral.
 An accepted architecture is not equivalent to implemented AI.
 
-Current state: API scaffold and ScenarioSpec validation are
-implemented; bounded synthetic preflights, review-only staging,
-offline retail baselines and release-aware evaluation exist as
-**experimental local slices**. Authorized evidence ingestion,
-empirical forecasting, decision evaluation and WorldKernel adapter
-remain unimplemented.
+Current state (2026-11-25): the M1 synthetic CLI/API path composes generated
+evidence, fixed historical diagnostics, a 28-day profile, the paired policy
+comparison and a versioned trace. The API and default CLI use the test double;
+an explicit local CLI option can run the same policy rules through a
+MirrorMind-owned registered WorldKernel handler at the reviewed exact pin.
+These remain experimental. Real-source permission, publication-time evidence,
+empirical forecast/uncertainty, authenticated human review, persistent results
+and production service controls remain open. See the current [blockers](BLOCKERS.md)
+and [task claims](TASK_BACKLOG.md) rather than the dated historical entries
+below.
 
 ## 1. Dependency-ordered milestones
 
@@ -22,7 +26,16 @@ remain unimplemented.
 | **M1e — first simulation gateway** | Concrete, optional WorldKernel adapter over explicit version mapping and trusted worlds | SDK contract tests, unsupported input rejections, server-owned budgets, real fixture E2E without fabricating stock | `worldkernel_adapter` may become experimental after tests |
 | **M1f — reviewable decision comparison** | Trace observations, forecasts and conditional scenario outcomes without automatic business writes | Decision trace, approval gates, cost budgets and independent replay | No agentic automation or operational promise until implemented |
 
-## Current synthetic M1 path — 2026-11-24
+## Current synthetic M1 path — 2026-11-25
+
+The owner-approved research sequence is A then B: prepare the UCI Online
+Retail #352 event-time retrospective and then an independent aggregate Census
+release-vintage pilot. The UCI card and Census protocol are decision-ready
+proposals only; no source bytes or credentials were acquired. Keep both
+B-01/B-02 open, preserve synthetic-only automation, and retain M5 NO-GO. The
+owner also authorized use of the exact-clean-head local six-check gate while
+Actions remains unavailable under the no-paid-spend decision; this does not
+stand in for CI.
 
 The M1B-02 [evidence flow](M1_SYNTHETIC_EVIDENCE_FLOW.md) composes local
 CSV/XLSX staging, review-only metadata, declared calendar/release checks and
@@ -30,26 +43,79 @@ as-of selection. Its implementation is proposed in draft PR #52. The M1C-01
 [retail evidence-to-evaluation flow](M1_RETAIL_SYNTHETIC_EVALUATION.md) now
 composes the UCI-shaped evidence flow with the existing fixed baselines and
 per-origin release abstentions; its generated CLI uses only fictional bytes.
-Both remain experimental. Exact canonical local gates passed on the current
-M1C-01, M1F-01 and M1F-02 heads; the earlier restricted-sandbox socket-pair
-stall is historical under [B-07](BLOCKERS.md). Official Actions remains
-blocked before job steps by [B-08](BLOCKERS.md). This synthetic progress does
-not satisfy M1b's real-source rights and availability gate, M1c empirical
-holdout or calibrated uncertainty requirements.
+Both remain experimental. The exact PR #52 implementation SHA passed its
+canonical local gate with 696 tests; exact PR #53 head
+`210f0f382938a67e518df688cc4e19c03d3d7af6` passed with 700 tests, including
+the API integration module. Official Actions is separately blocked before
+jobs by [B-08](BLOCKERS.md). M1E-03 now has a partial local test-double
+proposal; it does not satisfy M1E-02 or the actual-engine gate. These
+synthetic slices do not satisfy M1b's real-source rights and availability
+gate, M1c's empirical holdout or M1d's calibrated uncertainty requirements.
 
-M1F-01 adds a versioned local decision-result contract on the current
-stacked branch. It keeps facts, estimates, modeled outcomes, assumptions,
-gaps, costs and human review separate, with local reference/cutoff checks and
-an exact-result digest. It is interface-only: no producer, ranking, API,
-storage, actual engine output or action permission exists. M1F-02 remains the
-first runnable end-to-end decision comparison and still depends on an actual
-compatible simulation path and the named M1 predecessors.
+M1F-01 adds a versioned local decision-result contract on its stacked
+branch. It keeps facts, estimates, modeled outcomes, assumptions, gaps, costs
+and human review separate, with local reference/cutoff checks and an
+exact-result digest. PR #54 keeps the contract interface-only on its own
+branch; the current M1F-02 continuation adds one experimental synthetic
+producer and a bounded API/CLI path. Its walkthrough records the fixture,
+cutoff, trace, abstention and test boundaries. The result remains partial:
+there is no authorized-source workflow, empirical forecast, calibrated
+uncertainty, WorldKernel execution, reviewer identity, persistence, ranking
+or action permission. Actual engine integration and named M1 predecessors
+remain separate gates.
+
+M1E-01 now has a pure, fail-closed request mapping for the inspected
+`retail.inventory` `0.1` to WorldKernel `retail.inventory.demo` `demo-1`
+contract. It requires explicit item/day/order units and operator-configured
+limits, and rejects unresolved evidence/forecast refs, interventions and
+unknown state or parameters. It constructs JSON only. M1E-02 remains blocked
+on B-04 for a pinned compatible engine and actual SDK execution; no simulation
+capability is promoted. The current docs head passed the canonical local gate
+with 737 tests, including API; official checks remain blocked by B-08.
+
+M1E-03 retains the local synthetic policy test double. M1E-04 adds a separate
+exact-pin execution path for the same policies through one code-owned
+WorldKernel handler. The [policy-world guide](WORLDKERNEL_POLICY_WORLD.md)
+explains the common transition function, strict mapping, deterministic shared
+demand draw, result checks, test-double parity oracle, explicit local CLI opt-in
+and API boundary. This demonstrates local engine compatibility on fictional
+inputs; it does not validate policy quality or resolve source/forecast gates.
 
 M1b should use only a **permitted subset** of M5 or another
 authorized source. Historical product-store *sales* are not
 proof of current stock, stockouts or true latent demand.
 Lead time and inventory starting points require separately
 sourced evidence or explicit synthetic assumptions.
+
+## Owner-approved research and local-engine sequence — 2026-11-25
+
+The source sequence is approved for **preparation** as UCI Online Retail #352
+event-time retrospective (A), followed by an independent aggregate Census
+release-vintage evaluation (B). Automated tests remain synthetic. A
+source-specific reviewer must verify rights, attribution/change notice,
+privacy minimization, private storage, retention/deletion and the exact
+snapshot manifest before the actual UCI workbook can be acquired or
+processed. The UCI pilot cannot satisfy point-in-time acceptance because
+`InvoiceDate` does not prove historical publication. The Census pilot must use
+verified original releases and explicit vintage gaps; ALFRED is conditional on
+free authorized access and adequate archive evidence. M5 remains NO-GO.
+
+The A preparation now includes a bounded local reader/evaluator, fixed
+event-time validation/holdout protocol, synthetic-only CLI regressions and
+data/model cards. All such results remain experimental and
+`event_time_retrospective_unverified_availability`; the source terms,
+privacy/storage manifest and original-file compatibility gates remain open.
+The B protocol names official Census archives as preferred and `RSAFS`/ALFRED
+as a conditional alternative, with date-granular vintages handled
+conservatively. No Census or ALFRED data or key has been acquired.
+
+In parallel, complete the optional local WorldKernel adapter after the
+existing M1E-01 strict request mapper: pin a reviewed engine commit, invoke
+only its registered synthetic world through local exchange v1, enforce
+MirrorMind's operator limits and timeout, validate result v1, and test
+unavailable/runtime failure paths. This does not authorize an HTTP service,
+untrusted code, production deployment or a real retail recommendation. See
+B-04 and the M1E-02 backlog criteria.
 
 ## 2. Risk and quality gates that cannot be skipped
 
@@ -79,7 +145,7 @@ Use the review templates:
 [decision trace](DECISION_TRACE_TEMPLATE.md) and
 [capability promotion](CAPABILITY_GATES.md).
 
-## 3. Minimum demonstrable first user story (not yet built)
+## 3. Minimum demonstrable first user story (partially built)
 
 A user asks, *"Among three inventory replenishment
 policies, what is the tradeoff between lost-sales proxy,
@@ -95,8 +161,13 @@ A conforming eventual response must show:
 5. The conditional comparison, costs and unknowns.
 6. Why a human should review before any operational action.
 
-No current API route delivers that story. In particular,
-`POST /v1/scenarios/validate` remains `validated_not_executed`.
+`POST /v1/decision-workflows/retail/synthetic` now demonstrates one bounded,
+fictional path through evidence checks, a fixed seasonal-naive profile, the
+local policy test double and a decision trace. It is experimental and does
+not deliver the authorized retail user story above: it has no permitted data,
+empirical forecast, calibrated uncertainty or WorldKernel result. The older
+`POST /v1/scenarios/validate` remains `validated_not_executed`; neither route
+approves a human or writes business state.
 
 ## 4. Developer and learner acceptance
 

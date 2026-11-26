@@ -544,9 +544,10 @@ sales or validate forecasting skill on an empirical dataset.
 
 | Tracked path | Behavior and review boundary |
 | --- | --- |
-| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Past-only eligible absolute residuals, conservative abstention, aggregate retrospective hits, no calibrated interval |
-| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Fictional hidden-value invariance, residual insufficiency, missing targets, malformed dates |
-| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Causal time cutoffs, traceable claims and non-production limitations |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Fixed pre-holdout calibration target interval, disjoint holdout labels, origin-specific release eligibility, conservative abstention and aggregate retrospective hits; no calibrated interval |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Fictional hidden-value invariance, fixed-split non-overlap, late release, independent oracle, exact denominator and malformed-input checks |
+| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Temporal rules, split metadata, test evidence, superseded cache history and non-production limitations |
+| [`docs/engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md`](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md) | Scoped acceptance criteria, impact map, trust review and compatibility notes |
 
 No nominal uncertainty target, statistical calibration, source rights,
 true demand or WorldKernel inference is asserted here.
@@ -605,16 +606,18 @@ as soon as the monthly quota becomes available.
 
 These scenarios do not identify true demand distribution shifts.
 
-## 34. Scoped historical forecast reuse (experimental)
+## 34. Historical forecast reuse and rolling window (superseded)
 
 | Tracked file | Review boundary |
 | --- | --- |
-| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Call-local forecast caching and release-aware incremental residual selection; each target forecast remains governed by its own origin |
-| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Instrumented prior 154-vs-28 comparison, rolling-window independent naive oracle over 40 schedules, repeated-call isolation and late/missing-data regressions |
-| [`docs/engineering/RETAIL_RESIDUAL_ENVELOPE.md`](RETAIL_RESIDUAL_ENVELOPE.md) | Describes the structural reduction and lack of calibrated intervals |
+| [`src/mirrormind/domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py) | Current code supersedes the historical call-local cache and rolling target-label window with a fixed disjoint calibration/holdout split; see section 28 |
+| [`tests/unit/test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py) | Current tests cover the fixed split; prior PR #34/#35 cache and rolling-window assertions have been removed |
+| [`docs/engineering/RETAIL_RESIDUAL_BENCHMARK.md`](RETAIL_RESIDUAL_BENCHMARK.md) | Preserves a historical two-revision benchmark whose results do not describe the current algorithm |
 
-No global forecast cache, authenticated vintages or operational forecasting
-are introduced by this optimization.
+The old 154-to-28 call-count and timing comparison remain historical evidence
+for those exact revisions only. They do not establish an optimization in the
+current implementation, authenticated vintages, calibrated intervals or
+operational forecasting.
 
 ## 35. Reproducible synthetic residual-evaluator performance experiment
 
@@ -838,24 +841,128 @@ release dates and positive-line units remain unverified proxies.
 The capability remains `interface_only`; `decision_evaluation` remains
 `planned`. The schema neither creates traces nor validates external records.
 
-## 53. Permission-filtered fictional evidence retrieval (experimental)
+## 53. Strict WorldKernel request mapping (pure; no execution)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py) | Exact retail world/revision allowlist, explicit unit context, strict state/parameter checks and separate operator ceilings; constructs JSON only |
+| [`examples/m1e_01_worldkernel_mapping.py`](../../examples/m1e_01_worldkernel_mapping.py) | Reproducible fictional request printer; does not import or execute WorldKernel |
+| [`tests/unit/test_worldkernel_mapping.py`](../../tests/unit/test_worldkernel_mapping.py) | Exact request, deterministic limits, version/unit/reference/intervention/value failures and import guard |
+| [`docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md`](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | Architecture, source contract, flow, exercises, diagnostics, test meaning and runtime limits |
+| [`docs/engineering/changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md`](changes/M1E_01_WORLDKERNEL_REQUEST_MAPPING.md) | M1E-01 scope, explicit acceptance, impact map and evidence |
+| [`docs/engineering/CHANGE_REQUEST_TEMPLATE.md`](CHANGE_REQUEST_TEMPLATE.md) | Reusable required-scope template referenced by the engineering workflow |
+
+The mapper itself does not execute the request or prove `demo-1` identifies
+immutable code. The following local runtime is a separate experimental path.
+
+## 54. Optional pinned local WorldKernel execution (experimental)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../src/mirrormind/modules/simulation/worldkernel_runner.py) | `LocalWorldKernelGateway`, `run_worldkernel_scenario`; revalidate/map, enforce local timeout and bounded output, validate exact result/inventory balance and form a provenance-bound summary |
+| [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../src/mirrormind/modules/simulation/worldkernel_worker.py) | One-shot optional worker; verifies distribution version and exact VCS origin, registers upstream built-ins plus one fixed code-owned policy world and calls strict registered-revision execution |
+| [`pyproject.toml`](../../pyproject.toml) | Optional `worldkernel` extra pinned to one reviewed full source commit; no core dependency |
+| [`examples/m1e_02_worldkernel_local_runner.py`](../../examples/m1e_02_worldkernel_local_runner.py) | Reproducible fictional scenario; prints a local conditional summary and performs no input-file or network access |
+| [`tests/unit/test_worldkernel_runner.py`](../../tests/unit/test_worldkernel_runner.py) | Synthetic fake-worker protocol, pin metadata, result/balance, timeout, output and missing-runtime regressions |
+| [`tests/integration/test_worldkernel_runner_engine.py`](../../tests/integration/test_worldkernel_runner_engine.py) | Executes the actual optional engine only when exact package metadata pin is installed; otherwise skips |
+| [`docs/engineering/WORLDKERNEL_GATEWAY_GATE.md`](WORLDKERNEL_GATEWAY_GATE.md) | Runtime architecture, contracts, installation, security boundaries, reproduction and residual acceptance gates |
+| [`docs/engineering/changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md`](changes/M1E_02_WORLDKERNEL_LOCAL_RUNTIME.md) | Scoped M1E-02 change request, impact map and exact-head evidence |
+
+The M1E-02 local path executes the upstream `retail.inventory.demo@demo-1`
+example at the exact WorldKernel source pin. M1E-04's separate code-owned
+policy handler is described below. Neither is an HTTP capability, hostile-code
+sandbox or production service. The API remains bootable with the optional
+package absent.
+
+
+## 55. Synthetic retail policy comparison (test double only)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py) | Validates bounded 28-day assumptions, generates paired seeded demand streams, applies three replenishment rules and reports lead-time sensitivity; no forecast, ranking or external engine |
+| [`examples/m1_retail_policy_test_double.py`](../../examples/m1_retail_policy_test_double.py) | Prints a deterministic fictional policy-comparison report; no real data or network access |
+| [`tests/unit/test_retail_policy_simulation.py`](../../tests/unit/test_retail_policy_simulation.py) | Tests deterministic streams, policy outcomes, metric accounting, invalid inputs, bounded work and the optional-engine import boundary |
+| [`tests/integration/test_retail_policy_simulation_cli.py`](../../tests/integration/test_retail_policy_simulation_cli.py) | Replays the no-argument CLI and checks the local-only/no-selection contract |
+| [`docs/engineering/M1_RETAIL_POLICY_SIMULATION.md`](M1_RETAIL_POLICY_SIMULATION.md) | Walkthrough, assumptions, algorithms, flow, examples, test evidence, safety, debugging and learning exercises |
+| [`docs/engineering/changes/M1E_03_SYNTHETIC_POLICY_TEST_DOUBLE.md`](changes/M1E_03_SYNTHETIC_POLICY_TEST_DOUBLE.md) | M1E-03 scoped change request, acceptance criteria, impact map and partial-delivery boundary |
+
+`local_retail_policy_test_double` is experimental. It does not satisfy the
+M1E-02 actual WorldKernel engine gate or produce an operational decision.
+
+## 56. WorldKernel-backed synthetic policy world (experimental, local CLI only)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/domains/retail/worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py) | Fixed registered handler; one shared random demand draw advances all policies and lead-time cases through the common M1E-03 transition |
+| [`src/mirrormind/modules/simulation/worldkernel_policy_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_mapping.py) | Strict policy contract mapping with exact world/version and operator fan-out bounds before launch |
+| [`src/mirrormind/modules/simulation/worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py) | Validates engine final states, paired streams and metrics against the synthetic reference before returning engine-derived outcomes |
+| [`tests/unit/test_worldkernel_policy_world.py`](../../tests/unit/test_worldkernel_policy_world.py) | Synthetic contract, limit-before-launch, handler parity, fixed registration and malformed result regressions |
+| [`tests/integration/test_worldkernel_policy_world_engine.py`](../../tests/integration/test_worldkernel_policy_world_engine.py) | Exact-pin engine parity and end-to-end explicit CLI execution; skips if the reviewed optional package is absent |
+| [`docs/engineering/WORLDKERNEL_POLICY_WORLD.md`](WORLDKERNEL_POLICY_WORLD.md) | Architecture, state transition, contract, security, failure modes, reproductions, tests and learning exercises |
+| [`docs/engineering/changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md`](changes/M1E_04_WORLDKERNEL_POLICY_WORLD.md) | M1E-04 scope, acceptance criteria, impact map and exact-head evidence |
+| [`docs/engineering/datasets/UCI_ONLINE_RETAIL_EVENT_TIME_CARD.md`](datasets/UCI_ONLINE_RETAIL_EVENT_TIME_CARD.md) | Proposed UCI research dataset card and pre-acquisition privacy/permission gate; no source bytes acquired |
+
+The experimental handler is available only through explicit local CLI
+composition. The API and default CLI remain on the in-process test double.
+Exact parity on fictional input is not evidence of real forecasts, source
+permission, policy optimality, hostile-code isolation or production safety.
+
+## 57. Synthetic retail decision workflow (experimental, no action authority)
+
+| Tracked path | Function / review boundary |
+| --- | --- |
+| [`src/mirrormind/api/routes/decisions.py`](../../src/mirrormind/api/routes/decisions.py) | Exposes one bounded synthetic workflow request and the same service result; no authentication, upload, persistence or business write |
+| [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../src/mirrormind/domains/retail/synthetic_fixtures.py) | Builds deterministic fictional workbook bytes and declared releases while preserving M1C-01 fixture defaults |
+| [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py) | Applies strict request bounds and release checks, composes existing evaluation/diagnostics, fixed seasonal profile, trusted local comparator and M1F-01 trace; API omits the comparator |
+| [`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py) | Runs the same fictional service with bounded date, seed, replication and explicit engine options; the default is the policy test double |
+| [`tests/unit/test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py) | Proves trace references/gaps, post-cutoff noninfluence, missing/late abstention before simulation and strict request bounds |
+| [`tests/integration/test_retail_synthetic_decision_workflow_cli.py`](../../tests/integration/test_retail_synthetic_decision_workflow_cli.py) | Replays CLI output byte-for-byte and checks the no-action result contract |
+| [`docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md`](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | Source walkthrough, sequence diagram, contracts, cutoffs, examples, tests, limits, diagnostics and exercises |
+| [`docs/engineering/model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md`](model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md) | Records the synthetic baseline and evaluation scope; explicitly does not establish predictive performance or calibrated uncertainty |
+| [`docs/engineering/changes/M1F_02_SYNTHETIC_DECISION_WORKFLOW.md`](changes/M1F_02_SYNTHETIC_DECISION_WORKFLOW.md) | Change request, acceptance criteria, impact map, compatibility and implementation evidence |
+| [`docs/engineering/changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md`](changes/M1F_03_ENGINE_EXECUTION_PROVENANCE.md) | Versioned trace change request, selected-engine/parity contract, exact-pin regressions and gate evidence |
+
+`synthetic_retail_decision_workflow` is experimental. The generated fixture
+is not authorized data; the seasonal profile is not an empirical forecast;
+the residual diagnostic is uncalibrated; and the policy test double is not
+WorldKernel. The trace supports inspection and replay only, not approval,
+ranking, persistence or operational action.
+
+## 58. Synthetic UCI event-time retrospective (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py) | Freezes the product cohort from fit dates, uses fixed validation/holdout origins, requires declared complete dates, abstains on unknown coverage and emits ordinal-only product summaries |
+| [`examples/m1_uci_event_time_research.py`](../../examples/m1_uci_event_time_research.py) | Creates a deterministic fictional workbook in memory and runs the bounded parser/evaluator without source download or persistent data files |
+| [`tests/unit/test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) | Covers fixed split/cohort, coverage and missing-date abstention, zero-safe metrics, holdout noninterference, validation and output minimization |
+| [`tests/integration/test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) | Replays the generated CLI and verifies deterministic parsing, cancellation/quantity classification and honest limitations |
+| [`docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md`](M1_UCI_EVENT_TIME_RESEARCH.md) | Explains source/event-time boundaries, data flow, algorithms, metric eligibility, examples, errors, tests and learning exercises |
+| [`docs/engineering/changes/M1B_01_UCI_EVENT_TIME_PILOT.md`](changes/M1B_01_UCI_EVENT_TIME_PILOT.md) | Defines scope, impact map, acceptance criteria and source-specific approval boundary |
+| [`docs/engineering/datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md`](datasets/SYNTHETIC_UCI_EVENT_TIME_CARD.md) | Describes generated rows and fixture limits; no original source bytes or permission claims |
+| [`docs/engineering/model_cards/SYNTHETIC_UCI_EVENT_TIME.md`](model_cards/SYNTHETIC_UCI_EVENT_TIME.md) | Records fixed splits, matched baselines and metric rules; makes no empirical or uncertainty claim |
+| [`docs/engineering/CENSUS_ALFRED_VINTAGE_PROTOCOL.md`](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | Keeps the independent aggregate release-vintage proposal separate from SKU demand and UCI event-time evaluation |
+
+The evaluator is experimental and synthetic-only in automated use. It does not
+infer publication time from `InvoiceDate`, authenticate a source manifest or
+prove completeness, source rights or predictive performance.
+
+## 59. Permission-filtered fictional evidence retrieval (experimental)
 
 | Tracked path | Reviewed responsibility |
 | --- | --- |
 | [`src/mirrormind/modules/retrieval/__init__.py`](../../src/mirrormind/modules/retrieval/__init__.py) | Namespace only; no import-time indexing or network activity |
-| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | Strict immutable bounded retrieval models; `RetrievedEvidence` validates span length and recomputes the excerpt SHA-256 over exact UTF-8 bytes |
-| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | Generated fictional corpus and fixed local demo principal/collection |
-| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | Scope-first in-memory BM25 ranking, stable tie ordering and exact source-offset/digest mapping |
-| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | Deterministic bounded local CLI; no public route, persistent storage, provider or arbitrary file access |
-| [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope filtering before tokenization, duplicate-ID rejection, exact excerpt-digest validation including tampered deserialization, deterministic ranking, limits and untrusted-text regressions |
-| [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | Deterministic CLI replay, citation presence, query omission and generic oversized-input failure |
-| [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Architecture, contracts, BM25, reproduction, security, test meaning, diagnostics and exercises |
-| [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance, impact map and implementation evidence |
+| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | Strict bounded retrieval contracts; recomputes exact UTF-8 excerpt digest during result validation |
+| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | Generated corpus and fixed demo principal/collection |
+| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | Scope-first in-memory BM25 ranking, stable ties and exact citation spans |
+| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | Bounded deterministic CLI over fictional text; no route, writes or arbitrary file access |
+| [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope-before-tokenization, citation integrity, deterministic ranking, bounds and untrusted-text regressions |
+| [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | CLI replay, citation presence, query omission and oversized-input failure |
+| [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Source walkthrough, contracts, BM25, safety, reproduction, tests and exercises |
+| [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance criteria, impact map, compatibility and evidence |
 
-The capability is `experimental`; access context is a caller assertion, not
-authentication. `evidence_and_rag` remains `planned` and no retrieval route
-or real-source permission is provided.
-
+The capability is experimental. Its access context is a caller assertion,
+not authenticated identity; `evidence_and_rag` remains planned and no real
+source permission or retrieval route is provided.
 
 ## Continuous engineering handoff and execution register
 

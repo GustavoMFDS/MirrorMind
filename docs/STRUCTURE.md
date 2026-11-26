@@ -17,6 +17,7 @@ MirrorMind/
 ├── examples/retail-scenario.json
 ├── examples/synthetic-daily-sales.json      # Invented observations, not real data
 ├── examples/m1_observation_preflight.py     # Standalone bounded preflight (experiment)
+├── examples/m1_retail_policy_test_double.py # Fictional local policy comparison only
 ├── src/mirrormind/
 │   ├── __init__.py
 │   ├── api/
@@ -33,6 +34,8 @@ MirrorMind/
 │   │       ├── __init__.py
 │   │       ├── uci_transactions.py  # Offline UCI-shaped invented row aggregation
 │   │       └── uci_workbook.py      # Optional bounded local XLSX edge
+│   │       ├── evaluation_flow.py   # Experimental evidence-to-baseline composition
+│   │       └── policy_simulation.py # Experimental local policy test double
 │   └── modules/
 │       ├── evidence/
 │       │   ├── __init__.py
@@ -41,12 +44,15 @@ MirrorMind/
 │       │   ├── __init__.py
 │       │   └── baselines.py    # Offline staged as-of one-step evaluation
 │       └── simulation/
-│           └── gateway.py     # Engine-neutral simulation interface
+│           ├── gateway.py             # Engine-neutral simulation interface
+│           └── worldkernel_mapping.py # Pure strict request mapper; no execution
 ├── tests/
 │   ├── unit/test_contracts.py
 │   ├── unit/test_m1_observation_preflight.py
+│   ├── unit/test_retail_policy_simulation.py
 │   ├── integration/test_api.py
-│   └── integration/test_m1_observation_preflight_cli.py
+│   ├── integration/test_m1_observation_preflight_cli.py
+│   └── integration/test_retail_policy_simulation_cli.py
 ├── pyproject.toml
 └── README.md
 ```
@@ -56,9 +62,9 @@ MirrorMind/
 - HTTP routes do not perform forecasting, RAG, agent orchestration or simulation calculations.
 - `core/` holds only cross-module contracts and shared primitives. Avoid a miscellaneous "utils" or global service locator.
 - `modules/` adds a new feature package **only when implementation and tests exist** (future evidence, forecasting, agents, decisions, governance).
-- Sector-specific logic will live in a separate `domains/` adapter package once the retail MVP is implemented. No retail dependency inside platform modules.
-- `modules/simulation/gateway.py` defines the interface to WorldKernel. No WorldKernel import in the platform's core; the optional adapter will be added later.
-- `tests/unit/` validates isolated contracts and algorithms; `tests/integration/` validates HTTP and adapters. Add an `e2e/` suite only when a real end-to-end flow exists.
+- Sector-specific logic lives in `domains/`; the current retail reference path is experimental and remains outside platform modules. No retail dependency inside platform modules.
+- `modules/simulation/gateway.py` defines the execution interface, while `modules/simulation/worldkernel_mapping.py` builds one strict request without importing or running WorldKernel. `domains/retail/policy_simulation.py` is a separate local test double, not a `SimulationGateway` implementation. No WorldKernel import belongs in MirrorMind core; a pinned optional SDK executor remains future work.
+- `tests/unit/` validates isolated contracts and algorithms; `tests/integration/` validates HTTP contracts and reproducible compositions. Add an `e2e/` suite only when a real end-to-end flow exists.
 - Future React UI, background workers, and deployment manifests get dedicated `apps/` or `infra/` directories **only when needed**. Do not create empty directories or microservices prematurely.
 - Direct endpoint imports remain `uvicorn mirrormind.api:app` for compatibility.
 

@@ -126,14 +126,9 @@ do not replace HTTP body-size, rate or concurrency controls.
 
 ## 6. Evidence after implementation
 
-The records in this section describe the initial implementation snapshot.
-The subsequent review-correction evidence below supersedes its original head
-and test count for current PR #54 status.
-
 - Commit / PR: source is at
   `27f1f1c9dec3886299077793a2d42a647313d7ae` on
-  `codex/m1f-01-decision-trace-contract`; current PR head is
-  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029`. Proposed as draft
+  `codex/m1f-01-decision-trace-contract`, proposed as draft
   [PR #54](https://github.com/GustavoMFDS/MirrorMind/pull/54), stacked on
   draft PR #53.
 - Modified symbols and files: `DecisionTrace`, `EvidenceReference`,
@@ -142,12 +137,14 @@ and test count for current PR #54 status.
   in `src/mirrormind/core/decision_trace.py`; reproducible fixture CLI in
   `examples/m1_decision_trace_contract.py`; 12 pure unit tests.
 - Tests executed, result, environment: focused unit suite passed 12 tests in
-  0.29 seconds. The canonical exact-head gate on current PR head
-  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed 712 tests, including the
-  API integration module; Ruff, catalog, atlas, evidence and capability
-  checks also passed. One existing Starlette/httpx deprecation warning was
-  emitted. The earlier restricted-sandbox socket-pair stall is historical
-  (B-07); its root cause is unknown.
+  0.29 seconds. The canonical local gate on docs head
+  `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` passed 712 tests, including
+  `tests/integration/test_api.py`; Ruff, catalog, atlas, evidence and
+  capability checks all exited successfully. Pytest reported one existing
+  Starlette/httpx deprecation warning. The gate ran outside the restricted
+  sandbox. B-07 is resolved for this stack, but the historical PR #52 SHA was
+  not rerun. A direct registered capability-handler/ledger comparison also
+  passed; it is not an HTTP runtime check.
 - Claim IDs and cited test path/function: `MM-DTRACE-001` cites
   `tests/unit/test_decision_trace.py::test_valid_trace_keeps_decision_evidence_categories_separate`.
 - Evidence/provenance/cutoff and uncertainty: generated fictional values only;
@@ -161,15 +158,22 @@ and test count for current PR #54 status.
   gates and ledger, evidence map, repository atlas, input-contract guide,
   decision trace template, M1 plan, backlog, project status, debugging,
   learning guide and generated symbol catalog.
-- Official CI: M1F implementation head `27f1f1c9dec3886299077793a2d42a647313d7ae` checks
+- Official CI: M1F head `27f1f1c9dec3886299077793a2d42a647313d7ae` checks
   failed before job start: [test run 45326109821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109821)
   and [symbol-catalog run 45326109808](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326109808)
   carry the B-08 account payment/spending-limit annotation. This is not an
-  observed test failure; no remote test result is inferred.
-- Known limitations / follow-up: M1F-02 must produce and replay an actual
-  synthetic evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates
-  remain separate. B-07/B-08 still block the exact full gate/official CI
-  evidence for the stacked branch.
+  observed test failure; no remote test result is inferred. The later docs
+  head `83c80d865b0eabdfc7e172bc7f43e6c4d2d8b029` also failed before job
+  start on [test run 45326329041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329041)
+  and [symbol-catalog run 45326329150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45326329150)
+  with the same account billing annotation. This confirms B-08; no repository
+  job steps ran.
+- Known limitations / follow-up at the initial implementation head:
+  M1F-02 must produce and replay an actual synthetic
+  evidence/forecast/simulation trace; M1B/M1C and WorldKernel gates remain
+  separate. The later integrated candidate's complete local gate is recorded
+  under review-correction evidence below; B-08 still blocks official CI on
+  published heads.
 - Independent explanation: completed in `DECISION_TRACE_RESULT.md` and its
   linked source walkthrough and learning exercises.
 
@@ -187,11 +191,11 @@ and test count for current PR #54 status.
   full trace at 1,000 records, and nested reference/metric tuples at 100;
   resolve evidence IDs through one map. The v1 fixture digest remains
   `fccf54eccb7971ea4731e08df4baae8755a394688d47d19d2c54d8ebe1f5b4ec`.
-- Verification on the correction commit: `tests/unit/test_decision_trace.py`
-  passed 28 tests; `ruff check src tests`, catalog check, atlas, evidence and
-  capability guards passed. The atlas used a temporary local Git excludes file
-  for existing untracked Graphify output directories; no guard, project ignore
-  rule or artifact was changed.
+- Focused verification on the correction commit:
+  `tests/unit/test_decision_trace.py` passed 28 tests; `ruff check src tests`,
+  catalog check, atlas, evidence and capability guards passed. The atlas used
+  a temporary local Git excludes file for existing untracked Graphify output
+  directories; no guard, project ignore rule or artifact was changed.
 - Integrated verification: merge commit
   `07c405b0d49ab05611413acce61af1123111fb48` retains both correction commits
   as ancestry and passed the complete local gate on its exact clean SHA:
@@ -199,28 +203,25 @@ and test count for current PR #54 status.
   restricted replay timed out at 900 seconds; the full pass ran outside that
   sandbox. One existing Starlette/httpx deprecation warning appeared.
   Documentation follow-up `4d1d5b92e990f6d771209097fde1622c3c88958f` and
-  current integrated head `970843edd260d0c794e7959150ab7c76af146ae4` also
-  passed the full gate with the same source state.
+  integrated heads `970843edd260d0c794e7959150ab7c76af146ae4` and
+  pre-sync head `3f9bbb876336334aac9abe289f9f9c0161d42b72` also passed the full
+  gate with the same source state. The #54-only documentation follow-up
+  `2794abff855665fb65f32af655415c52dde68872` passed the full local gate on its
+  exact clean SHA: 728 tests plus Ruff, catalog, atlas, evidence and capability
+  checks, with the same existing deprecation warning. The reconciled #54 → #55
+  merge `fd72b76e5e93dadc6175cd9244cf45bf17420116` also passed the complete
+  gate with 756 tests and all five other stages.
 - Publication / official CI: the correction branch was fast-forward-pushed at
   `9113d861affc2f4a6480f188a093f534196a0766`. On that exact published head,
   Actions [test run 45517352710](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352710)
   and [symbol-catalog run 45517352734](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45517352734)
   failed before repository steps with the account payment/spending-limit
-  annotation. No remote test ran. A PR follow-up with commits, regressions and
-  local gate evidence was posted at
+  annotation. The later docs head `2794abff855665fb65f32af655415c52dde68872`
+  had the same pre-job result in [test run 45518440891](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440891)
+  and [symbol-catalog run 45518440963](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440963).
+  No remote test ran. A PR follow-up was posted at
   [issue comment 7148444643](https://github.com/GustavoMFDS/MirrorMind/pull/54#issuecomment-7148444643).
   B-08 remains open; local gate evidence does not substitute for official CI.
-- Current PR head and validation: head
-  `2794abff855665fb65f32af655415c52dde68872` passed the exact full local gate
-  with 728 tests and all six stages. On that same head, Actions `test` runs
-  [45518448875](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518448875)
-  and [45518440891](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440891),
-  plus `symbol-catalog` runs
-  [45518449130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518449130)
-  and [45518440963](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45518440963),
-  carry the account payment-or-spending-limit annotation and expose no steps
-  or logs. This establishes the pre-job gate category, not the specific
-  account condition; no remote tests ran.
 - Limits: the local contract does not authenticate reviewer/reference claims,
   trust timestamps, cap HTTP request size or concurrency, or execute a
   decision. `decision_trace_result_contract` remains `interface_only`.
@@ -248,3 +249,15 @@ and test count for current PR #54 status.
   payments failed or the spending limit needs to be increased, without
   distinguishing the condition. No code tests ran remotely. This is B-08;
   do not infer a billing root cause or self-hosted runner workaround from it.
+
+## PR #55 dependency synchronization — 2026-11-25
+
+PR #55 was synchronized with the corrected PR #54 head `4d22006` by merge
+`b9eba02`; history was retained without cherry-picking duplicate fixes. Its
+published head `56aa92a` includes the mutable-scenario and effective-budget
+correction in the dependent WorldKernel request mapper. The exact #55 local
+gate passed 756 tests plus Ruff, catalog, atlas, evidence and capability
+checks at 2026-11-25 04:39:14 UTC. Its Actions failed before job steps under
+the exact alternative-condition annotation recorded in [B-08](../BLOCKERS.md);
+no remote code tests ran. This downstream mapping work does not change the
+M1F-01 contract's `interface_only` status or imply engine execution.

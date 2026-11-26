@@ -2,7 +2,7 @@
 
 import hashlib
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
 from typing import Annotated, Literal, TypeAlias
 
@@ -326,4 +326,127 @@ class DecisionTrace(_TraceModel):
             and self.human_review.reviewed_result_sha256 != self.result_sha256
         ):
             raise ValueError("human review digest does not match result digest")
+        return self
+
+
+class ExecutionEvidence(_TraceModel):
+    """Deterministic provenance for one selected or parity execution result."""
+
+    execution_id: RecordId
+    engine_contract_ref: Reference
+    role: Literal["selected_output", "parity_oracle"]
+    result_sha256: Sha256Digest
+    provenance_ref: Reference
+    produced_at: datetime
+
+    _aware_produced_at = field_validator("produced_at")(_require_timezone)
+
+
+class ConditionalOutcomeV2(ConditionalOutcome):
+    """A v2 outcome linked to the execution records that support its metrics."""
+
+    execution_evidence_refs: tuple[RecordId, ...] = Field(
+        min_length=1, max_length=_MAX_REFERENCES_PER_RECORD
+    )
+
+
+class DecisionTraceV2(DecisionTrace):
+    """Decision trace with explicit, linked simulation execution provenance."""
+
+    schema_version: Literal["mirrormind.decision_trace.v2"] = (
+        "mirrormind.decision_trace.v2"
+    )
+    outcomes: tuple[ConditionalOutcomeV2, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+    execution_evidence: tuple[ExecutionEvidence, ...] = Field(
+        default=(), max_length=_MAX_TRACE_RECORDS
+    )
+
+    @model_validator(mode="after")
+    def check_execution_evidence(self) -> "DecisionTraceV2":
+        if 1 + sum(
+            len(section)
+            for section in (
+                self.evidence,
+                self.observations,
+                self.forecasts,
+                self.assumptions,
+                self.outcomes,
+                self.missing_evidence,
+                self.costs,
+                self.execution_evidence,
+            )
+        ) > _MAX_TRACE_RECORDS:
+            raise ValueError(f"decision trace cannot exceed {_MAX_TRACE_RECORDS} records")
+
+        execution_ids = [item.execution_id for item in self.execution_evidence]
+        if len(execution_ids) != len(set(execution_ids)):
+            raise ValueError("duplicate execution identifier in decision trace")
+        created_at_utc = self.created_at.astimezone(UTC)
+        if any(
+            item.produced_at.astimezone(UTC) > created_at_utc
+            for item in self.execution_evidence
+        ):
+            raise ValueError("execution evidence cannot be produced after trace creation")
+
+        existing_ids = {
+            self.trace_id,
+            *(item.evidence_id for item in self.evidence),
+            *(item.fact_id for item in self.observations),
+            *(item.forecast_id for item in self.forecasts),
+            *(item.assumption_id for item in self.assumptions),
+            *(item.outcome_id for item in self.outcomes),
+            *(item.gap_id for item in self.missing_evidence),
+            *(item.cost_id for item in self.costs),
+        }
+        if existing_ids.intersection(execution_ids):
+            raise ValueError("execution identifier duplicates another trace record")
+
+        execution_by_id = {
+            item.execution_id: item for item in self.execution_evidence
+        }
+        referenced_execution_ids: set[str] = set()
+        for outcome in self.outcomes:
+            referenced_execution_ids.update(outcome.execution_evidence_refs)
+            unknown = set(outcome.execution_evidence_refs) - execution_by_id.keys()
+            if unknown:
+                raise ValueError(
+                    f"unknown execution evidence reference: {min(unknown)}"
+                )
+
+            linked = tuple(
+                execution_by_id[reference]
+                for reference in outcome.execution_evidence_refs
+            )
+            selected_outputs = tuple(
+                item for item in linked if item.role == "selected_output"
+            )
+            parity_oracles = tuple(
+                item for item in linked if item.role == "parity_oracle"
+            )
+            if len(selected_outputs) != 1 or len(parity_oracles) > 1:
+                raise ValueError(
+                    "each outcome must link one selected execution and at most one parity oracle"
+                )
+
+            selected = selected_outputs[0]
+            if selected.engine_contract_ref != outcome.engine_contract_ref:
+                raise ValueError(
+                    "outcome engine contract does not match its selected execution"
+                )
+            if parity_oracles and (
+                parity_oracles[0].result_sha256 != selected.result_sha256
+            ):
+                raise ValueError(
+                    "parity oracle digest does not match selected execution result"
+                )
+
+        unreferenced = execution_by_id.keys() - referenced_execution_ids
+        if unreferenced:
+            raise ValueError(
+                f"unreferenced execution evidence: {min(unreferenced)}"
+            )
+        if self.execution_evidence and not self.outcomes:
+            raise ValueError("execution evidence must be linked to an outcome")
         return self

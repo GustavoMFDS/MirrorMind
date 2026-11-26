@@ -17,6 +17,8 @@ from zipfile import BadZipFile, ZipFile
 from mirrormind.domains.retail.uci_transactions import (
     MAX_GROUPS,
     MAX_ROWS,
+    MAX_SUPPORTED_GROUPS,
+    MAX_SUPPORTED_ROWS,
     UciRetailProjection,
     project_uci_retail_rows,
 )
@@ -126,9 +128,9 @@ def read_uci_workbook(
         raise ValueError("expected workbook SHA-256 must be 64 lowercase hex digits")
     if sheet_name != "Online Retail":
         raise ValueError("unsupported workbook sheet selection")
-    if type(max_rows) is not int or not 1 <= max_rows <= MAX_ROWS:
+    if type(max_rows) is not int or not 1 <= max_rows <= MAX_SUPPORTED_ROWS:
         raise ValueError("invalid bounded workbook row limit")
-    if type(max_groups) is not int or not 1 <= max_groups <= MAX_GROUPS:
+    if type(max_groups) is not int or not 1 <= max_groups <= MAX_SUPPORTED_GROUPS:
         raise ValueError("invalid bounded workbook group limit")
     raw = _bounded_read(stream)
     digest = sha256(raw).hexdigest()

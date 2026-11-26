@@ -35,6 +35,16 @@ Source: [`src/mirrormind/api/routes/__init__.py`](../../../src/mirrormind/api/ro
 
 No top-level classes or functions.
 
+## `mirrormind.api.routes.decisions`
+
+Source: [`src/mirrormind/api/routes/decisions.py`](../../../src/mirrormind/api/routes/decisions.py)
+
+Static imports (including inside functions): `...domains.retail.synthetic_decision_workflow`, `fastapi`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `compare_synthetic_retail_decisions` | function | `def compare_synthetic_retail_decisions(request: SyntheticDecisionWorkflowRequest) -> dict[str, object]` | Return a deterministic fictional comparison without writes or engine I/O. | [L13](../../../src/mirrormind/api/routes/decisions.py#L13) |
+
 ## `mirrormind.api.routes.scenarios`
 
 Source: [`src/mirrormind/api/routes/scenarios.py`](../../../src/mirrormind/api/routes/scenarios.py)
@@ -103,6 +113,10 @@ Static imports (including inside functions): `datetime`, `decimal`, `hashlib`, `
 | `DecisionTrace` | class | `class DecisionTrace` | Immutable v1 result shape; approval records review but grants no action. | [L189](../../../src/mirrormind/core/decision_trace.py#L189) |
 | `DecisionTrace.result_sha256` | method | `def result_sha256(self) -> str` | Hash canonical result fields, excluding review to avoid circularity. | [L225](../../../src/mirrormind/core/decision_trace.py#L225) |
 | `DecisionTrace.check_trace_references_and_cutoff` | method | `def check_trace_references_and_cutoff(self) -> 'DecisionTrace'` | — | [L247](../../../src/mirrormind/core/decision_trace.py#L247) |
+| `ExecutionEvidence` | class | `class ExecutionEvidence` | Deterministic provenance for one selected or parity execution result. | [L332](../../../src/mirrormind/core/decision_trace.py#L332) |
+| `ConditionalOutcomeV2` | class | `class ConditionalOutcomeV2` | A v2 outcome linked to the execution records that support its metrics. | [L345](../../../src/mirrormind/core/decision_trace.py#L345) |
+| `DecisionTraceV2` | class | `class DecisionTraceV2` | Decision trace with explicit, linked simulation execution provenance. | [L353](../../../src/mirrormind/core/decision_trace.py#L353) |
+| `DecisionTraceV2.check_execution_evidence` | method | `def check_execution_evidence(self) -> 'DecisionTraceV2'` | — | [L367](../../../src/mirrormind/core/decision_trace.py#L367) |
 
 ## `mirrormind.domains.__init__`
 
@@ -214,6 +228,32 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 | `prepare_retail_csv_evidence_flow` | function | `def prepare_retail_csv_evidence_flow(stream: BinaryIO, *, expected_sha256: str, declaration: SourceReviewDeclaration, inspected_on: date, series_id: str, origin_on: str) -> RetailCsvEvidenceFlow` | Compose bounded CSV staging, review metadata, quality and declared as-of selection. | [L101](../../../src/mirrormind/domains/retail/evidence_flow.py#L101) |
 | `prepare_retail_uci_evidence_flow` | function | `def prepare_retail_uci_evidence_flow(stream: BinaryIO, *, expected_sha256: str, declaration: SourceReviewDeclaration, inspected_on: date, declared_calendar: tuple[date, ...], declared_releases: tuple[DeclaredProductRelease, ...], origin_on: date) -> RetailUciEvidenceFlow` | Compose bounded XLSX projection and explicit, unverified calendar/release checks. | [L134](../../../src/mirrormind/domains/retail/evidence_flow.py#L134) |
 
+## `mirrormind.domains.retail.policy_simulation`
+
+Source: [`src/mirrormind/domains/retail/policy_simulation.py`](../../../src/mirrormind/domains/retail/policy_simulation.py)
+
+Static imports (including inside functions): `__future__`, `hashlib`, `json`, `pydantic`, `random`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_DemandStream` | class | `class _DemandStream` | — | [L34](../../../src/mirrormind/domains/retail/policy_simulation.py#L34) |
+| `RetailPolicySimulationState` | class | `class RetailPolicySimulationState` | JSON-safe inventory state shared by the reference and engine worlds. | [L41](../../../src/mirrormind/domains/retail/policy_simulation.py#L41) |
+| `RetailPolicyAssumptions` | class | `class RetailPolicyAssumptions` | Explicit units, inventory controls and abstract synthetic costs. | [L57](../../../src/mirrormind/domains/retail/policy_simulation.py#L57) |
+| `RetailPolicyComparisonRequest` | class | `class RetailPolicyComparisonRequest` | Input contract for one paired, 28-day synthetic experiment. | [L77](../../../src/mirrormind/domains/retail/policy_simulation.py#L77) |
+| `RetailPolicyComparisonRequest.validate_experiment_bounds` | method | `def validate_experiment_bounds(self) -> RetailPolicyComparisonRequest` | — | [L88](../../../src/mirrormind/domains/retail/policy_simulation.py#L88) |
+| `_build_demand_streams` | function | `def _build_demand_streams(request: RetailPolicyComparisonRequest) -> tuple[_DemandStream, ...]` | Generate one reproducible exogenous sequence per replication. | [L106](../../../src/mirrormind/domains/retail/policy_simulation.py#L106) |
+| `sample_demand_units` | function | `def sample_demand_units(expected_units: int, multiplier_index: int) -> int` | Apply the fixed 75/100/125 percent synthetic multiplier with integer rounding. | [L137](../../../src/mirrormind/domains/retail/policy_simulation.py#L137) |
+| `_order_quantity` | function | `def _order_quantity(*, policy_id: str, day_index: int, inventory_position_units: int, demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> int` | — | [L150](../../../src/mirrormind/domains/retail/policy_simulation.py#L150) |
+| `create_retail_policy_state` | function | `def create_retail_policy_state(assumptions: RetailPolicyAssumptions) -> RetailPolicySimulationState` | Create a fresh, JSON-safe state with the declared starting inventory. | [L181](../../../src/mirrormind/domains/retail/policy_simulation.py#L181) |
+| `advance_retail_policy_day` | function | `def advance_retail_policy_day(state: RetailPolicySimulationState, *, policy_id: str, day_index: int, demand_units: int, demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> RetailPolicySimulationState` | Apply one day boundary: receive, fulfill, cost, then place a new order. | [L202](../../../src/mirrormind/domains/retail/policy_simulation.py#L202) |
+| `finalize_retail_policy_metrics` | function | `def finalize_retail_policy_metrics(state: RetailPolicySimulationState, assumptions: RetailPolicyAssumptions) -> dict[str, int]` | Derive the public cost and service metrics from a completed state. | [L279](../../../src/mirrormind/domains/retail/policy_simulation.py#L279) |
+| `_simulate_replication` | function | `def _simulate_replication(*, policy_id: str, demand_units: tuple[int, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, int]` | Run one policy against one fixed demand stream using day-boundary rules. | [L325](../../../src/mirrormind/domains/retail/policy_simulation.py#L325) |
+| `_basis_points` | function | `def _basis_points(numerator: int, denominator: int) -> int \| None` | — | [L348](../../../src/mirrormind/domains/retail/policy_simulation.py#L348) |
+| `summarize_retail_policy_runs` | function | `def summarize_retail_policy_runs(policy_id: str, replication_results: list[dict[str, object]]) -> dict[str, object]` | Aggregate already computed replication rows without changing their source. | [L354](../../../src/mirrormind/domains/retail/policy_simulation.py#L354) |
+| `_aggregate_policy` | function | `def _aggregate_policy(*, policy_id: str, demand_streams: tuple[_DemandStream, ...], demand_profile_units: tuple[int, ...], lead_time_days: int, assumptions: RetailPolicyAssumptions) -> dict[str, object]` | — | [L394](../../../src/mirrormind/domains/retail/policy_simulation.py#L394) |
+| `_lead_time_scenarios` | function | `def _lead_time_scenarios(base_lead_time_days: int) -> tuple[int, ...]` | — | [L420](../../../src/mirrormind/domains/retail/policy_simulation.py#L420) |
+| `compare_synthetic_retail_policies` | function | `def compare_synthetic_retail_policies(request: RetailPolicyComparisonRequest) -> dict[str, object]` | Compare three replenishment rules using paired caller-declared inputs. | [L432](../../../src/mirrormind/domains/retail/policy_simulation.py#L432) |
+
 ## `mirrormind.domains.retail.release_backtest`
 
 Source: [`src/mirrormind/domains/retail/release_backtest.py`](../../../src/mirrormind/domains/retail/release_backtest.py)
@@ -228,7 +268,7 @@ Static imports (including inside functions): `__future__`, `datetime`, `mirrormi
 
 Source: [`src/mirrormind/domains/retail/residual_envelope.py`](../../../src/mirrormind/domains/retail/residual_envelope.py)
 
-Static imports (including inside functions): `__future__`, `datetime`, `functools`, `heapq`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.modules.forecasting.baselines`, `re`
+Static imports (including inside functions): `__future__`, `datetime`, `heapq`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.modules.forecasting.baselines`, `re`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
@@ -260,6 +300,58 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `RetailSensitivitySweep.receipt` | method | `def receipt(self) -> dict[str, object]` | Show scenario receipts but never selected source identifiers. | [L30](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L30) |
 | `sweep_excluded_target_sensitivity` | function | `def sweep_excluded_target_sensitivity(projection: UciRetailProjection, releases: tuple[DeclaredProductRelease, ...], *, stock_code: str, evaluation_on: date, ceilings: tuple[int, ...], window_days: int=7, calibration_days: int=21, min_calibration_residuals: int=5, minimum_eligible_per_window: int=3, minimum_coverage_percent: int=80) -> RetailSensitivitySweep` | Compare two to eight strictly increasing, hypothetical ceilings. | [L50](../../../src/mirrormind/domains/retail/sensitivity_sweep.py#L50) |
 
+## `mirrormind.domains.retail.synthetic_decision_workflow`
+
+Source: [`src/mirrormind/domains/retail/synthetic_decision_workflow.py`](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `datetime`, `hashlib`, `json`, `mirrormind.core.decision_trace`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.policy_simulation`, `mirrormind.domains.retail.residual_envelope`, `mirrormind.domains.retail.synthetic_fixtures`, `mirrormind.domains.retail.worldkernel_policy_world`, `mirrormind.modules.forecasting.baselines`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `SyntheticDecisionWorkflowRequest` | class | `class SyntheticDecisionWorkflowRequest` | Strict bounded options for the generated local decision example. | [L82](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L82) |
+| `SyntheticDecisionWorkflowRequest.validate_as_of` | method | `def validate_as_of(cls, value: date) -> date` | — | [L95](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L95) |
+| `_default_policy_assumptions` | function | `def _default_policy_assumptions() -> RetailPolicyAssumptions` | Return the same explicit fictional controls used by the M1E-03 demo. | [L105](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L105) |
+| `_cutoff_timestamp` | function | `def _cutoff_timestamp(value: date) -> datetime` | — | [L121](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L121) |
+| `_canonical_json_sha256` | function | `def _canonical_json_sha256(value: object) -> str` | Hash a JSON value using the workflow's sorted-key UTF-8 encoding. | [L125](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L125) |
+| `_versioned_artifact_digests` | function | `def _versioned_artifact_digests(result: dict[str, object]) -> dict[str, dict[str, str]]` | Bind each returned evaluation artifact to its declared local schema. | [L137](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L137) |
+| `_decision_identity_sha256` | function | `def _decision_identity_sha256(request: SyntheticDecisionWorkflowRequest, artifact_digests: dict[str, dict[str, str]]) -> str` | Create a deterministic identity for this exact request/result pair. | [L155](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L155) |
+| `_flow_snapshot_digest` | function | `def _flow_snapshot_digest(flow: Any) -> str` | — | [L170](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L170) |
+| `_eligible_observation_rows` | function | `def _eligible_observation_rows(flow: Any, *, as_of: date) -> tuple[tuple[date, int, date], ...]` | — | [L178](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L178) |
+| `_requested_history_window` | function | `def _requested_history_window(as_of: date) -> tuple[date, ...]` | — | [L202](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L202) |
+| `_execution_evidence_records` | function | `def _execution_evidence_records(comparison: dict[str, object], *, produced_at: datetime) -> tuple[tuple[ExecutionEvidence, ...], tuple[str, ...], str, str, dict[str, object]]` | Validate selected-engine metadata and create replayable trace records. | [L206](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L206) |
+| `_policy_outcomes` | function | `def _policy_outcomes(comparison: dict[str, object], *, engine_contract_ref: str, execution_evidence_refs: tuple[str, ...], forecast_refs: tuple[str, ...], assumption_refs: tuple[str, ...], policy_caveat_refs: tuple[str, ...]) -> tuple[ConditionalOutcomeV2, ...]` | — | [L330](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L330) |
+| `_build_trace` | function | `def _build_trace(*, as_of: date, identity_sha256: str, snapshot_sha256: str, observations: tuple[tuple[date, int, date], ...], history: tuple[tuple[date, int, date], ...], forecast_profile: tuple[int, ...], comparison: dict[str, object], engine_contract_ref: str, execution_evidence: tuple[ExecutionEvidence, ...], execution_evidence_refs: tuple[str, ...]) -> DecisionTraceV2` | — | [L409](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L409) |
+| `run_synthetic_decision_workflow` | function | `def run_synthetic_decision_workflow(request: SyntheticDecisionWorkflowRequest, *, future_units: int=9, all_unpublished: bool=False, policy_comparator: Callable[[RetailPolicyComparisonRequest], dict[str, object]] \| None=None) -> dict[str, object]` | Run one deterministic, non-persisting synthetic decision comparison. | [L627](../../../src/mirrormind/domains/retail/synthetic_decision_workflow.py#L627) |
+
+## `mirrormind.domains.retail.synthetic_fixtures`
+
+Source: [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../../src/mirrormind/domains/retail/synthetic_fixtures.py)
+
+Static imports (including inside functions): `__future__`, `datetime`, `hashlib`, `io`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.evidence_flow`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.evidence.intake_review`, `openpyxl`, `re`, `zipfile`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `fixture_day` | function | `def fixture_day(index: int) -> date` | Return a one-based calendar day in the generated fixture. | [L34](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L34) |
+| `_canonical_xlsx` | function | `def _canonical_xlsx(data: bytes) -> bytes` | Normalize ZIP order, timestamps and compression for a stable digest. | [L41](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L41) |
+| `_synthetic_workbook` | function | `def _synthetic_workbook(*, future_units: int) -> bytes` | — | [L71](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L71) |
+| `build_synthetic_evidence_flow` | function | `def build_synthetic_evidence_flow(*, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> RetailUciEvidenceFlow` | Build a bounded fictional workbook with explicit fixture release dates. | [L101](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L101) |
+| `run_synthetic_evaluation` | function | `def run_synthetic_evaluation(*, holdout_days: int=7, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> dict[str, object]` | Build the fixture and run the existing local evidence evaluation. | [L162](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L162) |
+
+## `mirrormind.domains.retail.uci_event_time`
+
+Source: [`src/mirrormind/domains/retail/uci_event_time.py`](../../../src/mirrormind/domains/retail/uci_event_time.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `datetime`, `mirrormind.domains.retail.uci_transactions`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.forecasting.baselines`, `re`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `UciEventTimeEvaluationError` | class | `class UciEventTimeEvaluationError` | A snapshot, coverage contract or fixed split is not representable. | [L39](../../../src/mirrormind/domains/retail/uci_event_time.py#L39) |
+| `_date_range` | function | `def _date_range(start: date, end: date) -> tuple[date, ...]` | — | [L43](../../../src/mirrormind/domains/retail/uci_event_time.py#L43) |
+| `_snapshot_counts` | function | `def _snapshot_counts(snapshot: UciWorkbookReadResult) -> dict[tuple[str, date], int]` | — | [L47](../../../src/mirrormind/domains/retail/uci_event_time.py#L47) |
+| `_coverage_dates` | function | `def _coverage_dates(values: Iterable[date]) -> frozenset[date]` | — | [L75](../../../src/mirrormind/domains/retail/uci_event_time.py#L75) |
+| `_metrics` | function | `def _metrics(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None] \| None` | — | [L95](../../../src/mirrormind/domains/retail/uci_event_time.py#L95) |
+| `evaluate_uci_event_time` | function | `def evaluate_uci_event_time(snapshot: UciWorkbookReadResult, *, complete_event_dates: Iterable[date], split: Literal['validation', 'holdout']) -> dict[str, object]` | Compare fixed one-day baselines on one frozen UCI event-time split. | [L104](../../../src/mirrormind/domains/retail/uci_event_time.py#L104) |
+
 ## `mirrormind.domains.retail.uci_transactions`
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
@@ -268,12 +360,12 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L22](../../../src/mirrormind/domains/retail/uci_transactions.py#L22) |
-| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L31](../../../src/mirrormind/domains/retail/uci_transactions.py#L31) |
-| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L41](../../../src/mirrormind/domains/retail/uci_transactions.py#L41) |
-| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L55](../../../src/mirrormind/domains/retail/uci_transactions.py#L55) |
-| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L64](../../../src/mirrormind/domains/retail/uci_transactions.py#L64) |
-| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L71](../../../src/mirrormind/domains/retail/uci_transactions.py#L71) |
+| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L24](../../../src/mirrormind/domains/retail/uci_transactions.py#L24) |
+| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L33](../../../src/mirrormind/domains/retail/uci_transactions.py#L33) |
+| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L43](../../../src/mirrormind/domains/retail/uci_transactions.py#L43) |
+| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L57](../../../src/mirrormind/domains/retail/uci_transactions.py#L57) |
+| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L66](../../../src/mirrormind/domains/retail/uci_transactions.py#L66) |
+| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L73](../../../src/mirrormind/domains/retail/uci_transactions.py#L73) |
 
 ## `mirrormind.domains.retail.uci_workbook`
 
@@ -283,11 +375,24 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `hashl
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `UciWorkbookReadResult` | class | `class UciWorkbookReadResult` | Local digest-coupled product-day projection without source approval. | [L41](../../../src/mirrormind/domains/retail/uci_workbook.py#L41) |
-| `UciWorkbookReadResult.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Summarize input identity and exclusions, not raw customer or invoice data. | [L47](../../../src/mirrormind/domains/retail/uci_workbook.py#L47) |
-| `_bounded_read` | function | `def _bounded_read(stream: BinaryIO) -> bytes` | Consume at most one sentinel byte over the compressed workbook limit. | [L56](../../../src/mirrormind/domains/retail/uci_workbook.py#L56) |
-| `_check_zip_members` | function | `def _check_zip_members(raw: bytes) -> None` | Reject excessive/active archive entries before workbook XML processing. | [L81](../../../src/mirrormind/domains/retail/uci_workbook.py#L81) |
-| `read_uci_workbook` | function | `def read_uci_workbook(stream: BinaryIO, *, expected_sha256: str, sheet_name: str='Online Retail', max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciWorkbookReadResult` | Project a small, already-authorized local workbook through strict UCI schema. | [L112](../../../src/mirrormind/domains/retail/uci_workbook.py#L112) |
+| `UciWorkbookReadResult` | class | `class UciWorkbookReadResult` | Local digest-coupled product-day projection without source approval. | [L43](../../../src/mirrormind/domains/retail/uci_workbook.py#L43) |
+| `UciWorkbookReadResult.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Summarize input identity and exclusions, not raw customer or invoice data. | [L49](../../../src/mirrormind/domains/retail/uci_workbook.py#L49) |
+| `_bounded_read` | function | `def _bounded_read(stream: BinaryIO) -> bytes` | Consume at most one sentinel byte over the compressed workbook limit. | [L58](../../../src/mirrormind/domains/retail/uci_workbook.py#L58) |
+| `_check_zip_members` | function | `def _check_zip_members(raw: bytes) -> None` | Reject excessive/active archive entries before workbook XML processing. | [L83](../../../src/mirrormind/domains/retail/uci_workbook.py#L83) |
+| `read_uci_workbook` | function | `def read_uci_workbook(stream: BinaryIO, *, expected_sha256: str, sheet_name: str='Online Retail', max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciWorkbookReadResult` | Project a small, already-authorized local workbook through strict UCI schema. | [L114](../../../src/mirrormind/domains/retail/uci_workbook.py#L114) |
+
+## `mirrormind.domains.retail.worldkernel_policy_world`
+
+Source: [`src/mirrormind/domains/retail/worldkernel_policy_world.py`](../../../src/mirrormind/domains/retail/worldkernel_policy_world.py)
+
+Static imports (including inside functions): `.policy_simulation`, `__future__`, `collections.abc`, `random`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `create_policy_world_initial_state` | function | `def create_policy_world_initial_state(assumptions: RetailPolicyAssumptions, lead_time_days: tuple[int, ...]) -> dict[str, object]` | Create the exact state envelope accepted by the registered handler. | [L40](../../../src/mirrormind/domains/retail/worldkernel_policy_world.py#L40) |
+| `_validated_parameters` | function | `def _validated_parameters(parameters: Mapping[str, Any]) -> tuple[tuple[int, ...], tuple[int, ...], RetailPolicyAssumptions]` | — | [L68](../../../src/mirrormind/domains/retail/worldkernel_policy_world.py#L68) |
+| `mirrormind_retail_policy_step` | function | `def mirrormind_retail_policy_step(state: dict[str, Any], parameters: Mapping[str, Any], rng: Random) -> dict[str, Any]` | Apply one shared synthetic demand draw to all policy/sensitivity pairs. | [L104](../../../src/mirrormind/domains/retail/worldkernel_policy_world.py#L104) |
+| `register_mirrormind_policy_world` | function | `def register_mirrormind_policy_world(registrar: Callable[..., None]) -> None` | Register exactly this versioned handler through trusted worker code. | [L163](../../../src/mirrormind/domains/retail/worldkernel_policy_world.py#L163) |
 
 ## `mirrormind.modules.__init__`
 
@@ -591,8 +696,9 @@ Static imports (including inside functions): `__future__`, `datetime`, `math`, `
 | --- | --- | --- | --- | --- |
 | `_day` | function | `def _day(value: str) -> date` | Require exact, unambiguous ISO calendar days for evaluation cutoffs. | [L17](../../../src/mirrormind/modules/forecasting/baselines.py#L17) |
 | `_predict` | function | `def _predict(seven: tuple[int, ...]) -> dict[str, float]` | Return fixed one-day estimates from exactly seven prior daily values. | [L30](../../../src/mirrormind/modules/forecasting/baselines.py#L30) |
-| `_score` | function | `def _score(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None]` | Return matched MAE/RMSE/signed bias and undefined-zero WAPE as None. | [L40](../../../src/mirrormind/modules/forecasting/baselines.py#L40) |
-| `backtest_staged_snapshot` | function | `def backtest_staged_snapshot(snapshot: StagedSnapshot, *, series_id: str, evaluation_on: str, holdout_days: int=7, min_history_days: int=14) -> dict[str, object]` | Evaluate fixed daily origins only with data published before each origin. | [L55](../../../src/mirrormind/modules/forecasting/baselines.py#L55) |
+| `project_seasonal_naive_lag7` | function | `def project_seasonal_naive_lag7(last_seven: tuple[int, ...], *, horizon_days: int) -> tuple[int, ...]` | Project the fixed lag-seven baseline over a bounded integer horizon. | [L40](../../../src/mirrormind/modules/forecasting/baselines.py#L40) |
+| `_score` | function | `def _score(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None]` | Return matched MAE/RMSE/signed bias and undefined-zero WAPE as None. | [L65](../../../src/mirrormind/modules/forecasting/baselines.py#L65) |
+| `backtest_staged_snapshot` | function | `def backtest_staged_snapshot(snapshot: StagedSnapshot, *, series_id: str, evaluation_on: str, holdout_days: int=7, min_history_days: int=14) -> dict[str, object]` | Evaluate fixed daily origins only with data published before each origin. | [L80](../../../src/mirrormind/modules/forecasting/baselines.py#L80) |
 
 ## `mirrormind.modules.retrieval.__init__`
 
@@ -671,3 +777,87 @@ Static imports (including inside functions): `...core.contracts`, `pydantic`, `t
 | `SimulationSummary` | class | `class SimulationSummary` | — | [L9](../../../src/mirrormind/modules/simulation/gateway.py#L9) |
 | `SimulationGateway` | class | `class SimulationGateway` | — | [L17](../../../src/mirrormind/modules/simulation/gateway.py#L17) |
 | `SimulationGateway.execute` | method | `def execute(self, scenario: ScenarioSpec) -> SimulationSummary` | Run an approved scenario using a separately configured engine. | [L18](../../../src/mirrormind/modules/simulation/gateway.py#L18) |
+
+## `mirrormind.modules.simulation.worldkernel_mapping`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_mapping.py`](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py)
+
+Static imports (including inside functions): `...core.contracts`, `collections.abc`, `dataclasses`, `pydantic`, `types`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `WorldKernelMappingError` | class | `class WorldKernelMappingError` | The MirrorMind scenario cannot be represented by the allowlisted world. | [L24](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L24) |
+| `WorldKernelWorldMapping` | class | `class WorldKernelWorldMapping` | Exact source and target identifiers reviewed for request translation. | [L29](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L29) |
+| `WorldKernelOperatorLimits` | class | `class WorldKernelOperatorLimits` | Trusted composition-root ceilings, independent of scenario input. | [L53](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L53) |
+| `WorldKernelOperatorLimits.__post_init__` | method | `def __post_init__(self) -> None` | — | [L60](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L60) |
+| `InventoryWorldUnitContext` | class | `class InventoryWorldUnitContext` | Explicit units required by the integer-only inventory demo contract. | [L77](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L77) |
+| `_nonnegative_integer_object` | function | `def _nonnegative_integer_object(values: object, *, name: str, allowed_fields: frozenset[str], required_fields: frozenset[str]) -> dict[str, int]` | — | [L85](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L85) |
+| `_validate_units` | function | `def _validate_units(unit_context: InventoryWorldUnitContext) -> None` | — | [L115](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L115) |
+| `build_worldkernel_exchange_request` | function | `def build_worldkernel_exchange_request(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext) -> dict[str, object]` | Build a strict WorldKernel v1 request without executing it. | [L130](../../../src/mirrormind/modules/simulation/worldkernel_mapping.py#L130) |
+
+## `mirrormind.modules.simulation.worldkernel_policy_gateway`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_policy_gateway.py`](../../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py)
+
+Static imports (including inside functions): `...domains.retail.policy_simulation`, `...domains.retail.worldkernel_policy_world`, `.worldkernel_mapping`, `.worldkernel_policy_mapping`, `.worldkernel_runner`, `__future__`, `dataclasses`, `hashlib`, `json`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `LocalWorldKernelRetailPolicyGateway` | class | `class LocalWorldKernelRetailPolicyGateway` | Execute only the code-owned retail policy world in a local worker. | [L44](../../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py#L44) |
+| `LocalWorldKernelRetailPolicyGateway.compare` | method | `def compare(self, request: RetailPolicyComparisonRequest) -> dict[str, object]` | Run engine transitions, then reject any drift from the reviewed model. | [L50](../../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py#L50) |
+| `_canonical_json_sha256` | function | `def _canonical_json_sha256(value: object) -> str` | — | [L124](../../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py#L124) |
+| `_validate_policy_world_state` | function | `def _validate_policy_world_state(state: Any, assumptions: RetailPolicyAssumptions) -> None` | — | [L135](../../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py#L135) |
+| `_summarize_engine_runs` | function | `def _summarize_engine_runs(*, final_states: list[dict[str, Any]], request: RetailPolicyComparisonRequest, expected_streams: tuple[dict[str, Any], ...]) -> list[dict[str, object]]` | — | [L177](../../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py#L177) |
+
+## `mirrormind.modules.simulation.worldkernel_policy_mapping`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_policy_mapping.py`](../../../src/mirrormind/modules/simulation/worldkernel_policy_mapping.py)
+
+Static imports (including inside functions): `...domains.retail.policy_simulation`, `...domains.retail.worldkernel_policy_world`, `.worldkernel_mapping`, `__future__`, `pydantic`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `build_worldkernel_policy_exchange_request` | function | `def build_worldkernel_policy_exchange_request(request: RetailPolicyComparisonRequest, *, operator_limits: WorldKernelOperatorLimits) -> dict[str, object]` | Build one fixed 28-step exchange request; reject work over operator limits. | [L25](../../../src/mirrormind/modules/simulation/worldkernel_policy_mapping.py#L25) |
+
+## `mirrormind.modules.simulation.worldkernel_runner`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_runner.py`](../../../src/mirrormind/modules/simulation/worldkernel_runner.py)
+
+Static imports (including inside functions): `...core.contracts`, `.gateway`, `.worldkernel_mapping`, `__future__`, `dataclasses`, `hashlib`, `json`, `math`, `os`, `pathlib`, `pydantic`, `subprocess`, `sys`, `tempfile`, `threading`, `time`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `WorldKernelRunnerError` | class | `class WorldKernelRunnerError` | A local WorldKernel execution could not produce an accepted result. | [L78](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L78) |
+| `WorldKernelRuntimeUnavailable` | class | `class WorldKernelRuntimeUnavailable` | The optional pinned runtime is absent or does not match its source pin. | [L82](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L82) |
+| `WorldKernelExecutionTimeout` | class | `class WorldKernelExecutionTimeout` | The local worker exceeded its effective wall-clock budget. | [L86](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L86) |
+| `WorldKernelOutputLimitExceeded` | class | `class WorldKernelOutputLimitExceeded` | The local worker exceeded a bounded stdout or stderr size. | [L90](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L90) |
+| `WorldKernelRuntimeConfig` | class | `class WorldKernelRuntimeConfig` | Trusted local-process settings, supplied by the application operator. | [L95](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L95) |
+| `WorldKernelRuntimeConfig.__post_init__` | method | `def __post_init__(self) -> None` | — | [L102](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L102) |
+| `LocalWorldKernelGateway` | class | `class LocalWorldKernelGateway` | Optional local implementation of the engine-neutral simulation gateway. | [L118](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L118) |
+| `LocalWorldKernelGateway.execute` | method | `def execute(self, scenario: ScenarioSpec) -> SimulationSummary` | Execute one preconfigured scenario through the pinned local worker. | [L125](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L125) |
+| `_scenario_snapshot` | function | `def _scenario_snapshot(scenario: ScenarioSpec) -> ScenarioSpec` | — | [L135](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L135) |
+| `_worker_environment` | function | `def _worker_environment() -> dict[str, str]` | Pass OS-required variables only; omit arbitrary secrets and Python path overrides. | [L144](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L144) |
+| `_read_bounded_stream` | function | `def _read_bounded_stream(stream: Any, *, limit: int, output: bytearray, exceeded: threading.Event) -> None` | Drain a child pipe while retaining at most limit + 1 bytes. | [L150](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L150) |
+| `_terminate` | function | `def _terminate(process: subprocess.Popen[bytes]) -> None` | — | [L173](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L173) |
+| `_read_limited` | function | `def _read_limited(handle: Any, limit: int) -> bytes` | — | [L190](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L190) |
+| `_run_worker` | function | `def _run_worker(request_bytes: bytes, *, python_executable: str, timeout_seconds: float, max_output_bytes: int) -> bytes` | — | [L197](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L197) |
+| `_reject_json_constant` | function | `def _reject_json_constant(value: str) -> None` | — | [L313](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L313) |
+| `_parse_result` | function | `def _parse_result(raw: bytes) -> dict[str, object]` | — | [L317](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L317) |
+| `_validate_mapped_exchange_request` | function | `def _validate_mapped_exchange_request(request: dict[str, object]) -> None` | — | [L329](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L329) |
+| `_validate_exchange_result_envelope` | function | `def _validate_exchange_result_envelope(result: dict[str, object], request: dict[str, object]) -> tuple[list[dict[str, object]], list[str]]` | — | [L372](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L372) |
+| `_validate_result` | function | `def _validate_result(result: dict[str, object], request: dict[str, object]) -> tuple[list[dict[str, int]], list[str]]` | — | [L408](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L408) |
+| `execute_mapped_worldkernel_request` | function | `def execute_mapped_worldkernel_request(request: dict[str, object], *, runtime: WorldKernelRuntimeConfig \| None=None, timeout_seconds: float \| None=None) -> tuple[dict[str, object], bytes]` | Run one parent-mapped exchange request through the bounded pinned worker. | [L441](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L441) |
+| `run_worldkernel_scenario` | function | `def run_worldkernel_scenario(scenario: ScenarioSpec, *, operator_limits: WorldKernelOperatorLimits, unit_context: InventoryWorldUnitContext, runtime: WorldKernelRuntimeConfig \| None=None) -> SimulationSummary` | Execute one strictly mapped scenario using the pinned local runtime. | [L476](../../../src/mirrormind/modules/simulation/worldkernel_runner.py#L476) |
+
+## `mirrormind.modules.simulation.worldkernel_worker`
+
+Source: [`src/mirrormind/modules/simulation/worldkernel_worker.py`](../../../src/mirrormind/modules/simulation/worldkernel_worker.py)
+
+Static imports (including inside functions): `__future__`, `argparse`, `importlib`, `json`, `mirrormind.domains.retail.worldkernel_policy_world`, `re`, `sys`, `urllib.parse`, `worldkernel.adapters.exchange`, `worldkernel.core.registry`, `worldkernel.examples.bootstrap`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_RuntimeMissing` | class | `class _RuntimeMissing` | — | [L21](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L21) |
+| `_RuntimePinMismatch` | class | `class _RuntimePinMismatch` | — | [L25](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L25) |
+| `_verify_installed_runtime` | function | `def _verify_installed_runtime(expected_commit: str) -> None` | — | [L29](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L29) |
+| `main` | function | `def main() -> int` | — | [L59](../../../src/mirrormind/modules/simulation/worldkernel_worker.py#L59) |

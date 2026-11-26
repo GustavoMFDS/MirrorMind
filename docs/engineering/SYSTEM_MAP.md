@@ -1,25 +1,57 @@
 # MirrorMind — system map
 
-Updated on 2026-11-24 against merged main PR #51 (`e4f05a1`) and the current M1F-01/M2-01 branch. The API and scenario input contracts exist; bounded CSV/XLSX staging, review-only source metadata, local synthetic retail evaluation and fictional evidence retrieval are experimental. The decision trace result schema is interface-only. No authorized ingestion, authenticated retrieval, agents or production forecasts are deployed.
+Updated on 2026-11-26 against merged main `a456034` and the PR #60 M2-01 descendant. M1's bounded evidence, evaluation, synthetic decision workflow and exact-pin local engine paths are experimental; UCI availability remains unverified, and the DecisionTrace producer uses only synthetic non-authorizing data. This branch adds an experimental, fictional in-memory retrieval library/CLI with scope-first filtering and integrity-checked citations. It adds no retrieval route, authentication, source authorization, agent or provider.
 
 ## Current request path
 
-HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py` or `api/routes/scenarios.py` → validation with `core/contracts.py` → response. The `modules/simulation/gateway.py` interface defines an engine-neutral boundary; it does **not** execute WorldKernel simulations yet.
+HTTP request → `src/mirrormind/api/app.py` → thin routes `api/routes/system.py`, `api/routes/scenarios.py` or `api/routes/decisions.py` → validation and service composition → response. The decision route uses generated fixture bytes and the in-process test double. Separately, trusted local CLI composition can send either an explicitly mapped `ScenarioSpec` through M1E-02 or an M1E-03 policy request through M1E-04 to the fixed, optional WorldKernel worker. These paths are not reachable from HTTP.
 
-Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/scenarios/validate`. The externally declared capabilities must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and [promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and [STRUCTURE](../STRUCTURE.md).
+The local retail policy test double remains the default library/CLI path: a
+caller supplies a strict 28-day profile and inventory/cost assumptions to
+`domains/retail/policy_simulation.py`; the shared transition generates paired
+demand streams, compares three rules and reports lead-time sensitivity. M1E-04
+reuses that transition inside a fixed WorldKernel handler, then validates all
+engine states and metrics against the in-process reference. M1F-02 composes
+generated evidence and the test double through the experimental HTTP route;
+only the CLI can explicitly select WorldKernel. No path grants decision
+authority.
+
+The separate UCI event-time CLI builds a deterministic workbook in memory,
+passes it through the bounded XLSX reader and product-day projection, then
+calls `evaluate_uci_event_time` for a predeclared validation or holdout split.
+The evaluator requires caller-declared complete dates before treating an
+absent product-day as zero, freezes its product cohort from fit dates, and
+returns ordinal-only product summaries. This path does not fetch real source
+bytes and does not convert `InvoiceDate` into publication availability.
+
+Current supported routes: `GET /health`, `GET /v1/capabilities`,
+`POST /v1/scenarios/validate`, and the experimental
+`POST /v1/decision-workflows/retail/synthetic`. The latter runs only a bounded
+fictional fixture through the local service; the scaffold has no
+authentication, explicit request body-size limit, rate limit or concurrency
+control and is not safe for public exposure. Externally declared capabilities
+must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
+[promotion gates](CAPABILITY_GATES.md). See [CONTRACTS](../CONTRACTS.md) and
+[STRUCTURE](../STRUCTURE.md).
 
 ## Change-location guide
 | User request | Inspect first | Evidence |
 | --- | --- | --- |
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
+| Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover v1 input/reference bounds and review chronology; M1F-02 v2 binds selected-engine/parity evidence and rejects production instants after trace creation; timestamps remain caller-declared logical metadata, with no authenticated producer, trusted engine attestation, public engine API or action execution |
 | Retrieve locally scoped fictional evidence | [`modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py), [M2 walkthrough](M2_EVIDENCE_RETRIEVAL.md) | [scope, citation/digest integrity and untrusted-text tests](../../tests/unit/test_evidence_retrieval.py), plus [CLI replay](../../tests/integration/test_m2_evidence_retrieval_cli.py); experimental local library only, not authenticated authorization or a retrieval route |
-| Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover bounded references/records, evidence-ID lookup, review chronology and context-independent Decimal digests; no authenticated producer, API or action execution |
+| Evaluate UCI-shaped product-day observations | [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md) | [`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) and [`test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) exercise synthetic coverage, cohort, holdout, metrics and redaction; no real source rights, snapshot completeness or point-in-time availability |
+| Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API/default CLI test double plus explicit CLI WorldKernel engine regression with linked selected output and parity records; no source authorization, empirical forecast, authenticated review, public transport controls or writes |
+| Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py) cover revalidation of mutable scenarios and the lower scenario/operator run ceiling; no engine import or execution |
+| Execute the M1 policy comparison in WorldKernel | [`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py), [`worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py), [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) | Synthetic mapper/state/parity regressions plus exact-pin engine and CLI integration tests; no real data, forecast validity, hostile-code isolation or HTTP execution |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
 | Prepare a source review packet (not approval) | [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [guide](SOURCE_INTAKE_REVIEW.md) | [synthetic unit tests](../../tests/unit/test_source_intake_review.py); binds staged byte digest and opaque review references; never grants ingestion |
 | Compose local retail evidence preflight | [`domains/retail/evidence_flow.py`](../../src/mirrormind/domains/retail/evidence_flow.py), [M1 guide](M1_SYNTHETIC_EVIDENCE_FLOW.md), [scoped change request](changes/M1B_02_SYNTHETIC_EVIDENCE_FLOW.md) | [integration tests](../../tests/integration/test_retail_evidence_flow.py); CSV as-of rows use caller-declared dates, UCI checks require explicit calendar/release tuples, and receipts are aggregate-only; no source authorization |
 | Evaluate a prepared retail evidence flow | [`domains/retail/evaluation_flow.py`](../../src/mirrormind/domains/retail/evaluation_flow.py), [M1 evaluation guide](M1_RETAIL_SYNTHETIC_EVALUATION.md), [fixed synthetic CLI](../../examples/m1_retail_synthetic_evaluation.py) | [integration tests](../../tests/integration/test_retail_synthetic_evaluation.py) prove fixed split, matched-origin statuses, mutation resistance and sanitized receipts on a generated fixture; no authenticated source, empirical performance or HTTP evaluation endpoint |
+| Audit fictional retail residual uncertainty | [`domains/retail/residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py), [uncertainty guide](RETAIL_RESIDUAL_ENVELOPE.md), [M1D-01 change request](changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md) | [unit regressions](../../tests/unit/test_retail_residual_envelope.py) verify fixed disjoint target windows, as-of release eligibility, abstention, numerator/denominator and an independent test oracle; results remain uncalibrated and source-unverified |
+| Compare retail replenishment policies on paired fictional demand | [`domains/retail/policy_simulation.py`](../../src/mirrormind/domains/retail/policy_simulation.py), [M1 policy simulation guide](M1_RETAIL_POLICY_SIMULATION.md), [synthetic CLI](../../examples/m1_retail_policy_test_double.py) | [unit tests](../../tests/unit/test_retail_policy_simulation.py) and [CLI integration test](../../tests/integration/test_retail_policy_simulation_cli.py) prove local determinism, paired streams and bounded sensitivity only; no trained forecast, actual engine, recommendation or authorization |
 | Atomically apply current operator policy to local checkpoint publication (not external authority) | [`modules/evidence/atomic_governed_publisher.py`](../../src/mirrormind/modules/evidence/atomic_governed_publisher.py), [guide](ATOMIC_GOVERNED_PUBLISHER.md) | [signed revocation/race tests](../../tests/unit/test_atomic_governed_publisher.py); opt-in single new SQLite file, real identity/currentness missing |
 | Record dual-admin operator key policy (not publisher enforcement) | [`modules/evidence/operator_governance.py`](../../src/mirrormind/modules/evidence/operator_governance.py), [policy guide](OPERATOR_GOVERNANCE.md) | [synthetic dual-admin and rollback tests](../../tests/unit/test_operator_governance.py); separate SQLite, no atomic policy+publication integration |
 | Retain signer-gated local witness publication metadata (not a live authority) | [`modules/evidence/local_checkpoint_publisher.py`](../../src/mirrormind/modules/evidence/local_checkpoint_publisher.py), [guide](LOCAL_CHECKPOINT_PUBLISHER.md) | [synthetic operator and CAS tests](../../tests/unit/test_local_checkpoint_publisher.py); distinct key roles and local SQLite, no authenticated current head |
@@ -39,6 +71,7 @@ Current supported routes: `GET /health`, `GET /v1/capabilities`, and `POST /v1/s
 - General-purpose decision platform; retail is the first reference domain, not a hard-coded limitation.
 - Keep **observed evidence**, **forecast estimates** and **simulated counterfactuals** conceptually separate.
 - No core dependency on WorldKernel. Integrate through an optional, versioned simulation gateway.
+- Keep the local synthetic retail test double separate from the actual WorldKernel adapter and from forecast quality claims.
 - Preserve permission provenance and human review; don't claim live agents, RAG, forecasting, connectors or simulations until implemented and tested.
 - An interface alone does not establish functioning integration.
 

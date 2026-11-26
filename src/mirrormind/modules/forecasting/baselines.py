@@ -37,6 +37,31 @@ def _predict(seven: tuple[int, ...]) -> dict[str, float]:
     }
 
 
+def project_seasonal_naive_lag7(
+    last_seven: tuple[int, ...], *, horizon_days: int
+) -> tuple[int, ...]:
+    """Project the fixed lag-seven baseline over a bounded integer horizon.
+
+    Each next step reuses the existing one-step seasonal-naive rule. The
+    projected values are synthetic conditional inputs, not a fitted model or
+    a statement about future demand.
+    """
+    if type(last_seven) is not tuple or len(last_seven) != 7 or any(
+        type(value) is not int or value < 0 for value in last_seven
+    ):
+        raise ValueError("last_seven must contain exactly seven nonnegative integers")
+    if type(horizon_days) is not int or not 1 <= horizon_days <= 366:
+        raise ValueError("horizon_days must be an exact integer in 1..366")
+
+    rolling = list(last_seven)
+    profile: list[int] = []
+    for _ in range(horizon_days):
+        value = int(_predict(tuple(rolling[-7:]))["seasonal_naive_lag7"])
+        profile.append(value)
+        rolling.append(value)
+    return tuple(profile)
+
+
 def _score(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float | None]:
     """Return matched MAE/RMSE/signed bias and undefined-zero WAPE as None."""
     if not actuals or len(forecasts) != len(actuals):

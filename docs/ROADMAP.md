@@ -10,8 +10,8 @@ records external decisions. This roadmap retains milestone scope and
 historical development notes, not a second mutable task tracker.
 
 - **MM-M0 — Completed scaffold:** FastAPI, `/health`, `/v1/capabilities`, scenario contract validation, tests, Docker and CI, decision log.
-- **MM-M1 — Planned retail fundamentals:** ingest permitted M5 subset, validate cutoff, backtest two demand models, run first inventory simulation through gateway.
-- **MM-M2 — In progress, not accepted:** M2-01 now has an experimental fictional, in-memory retrieval slice with scope filtering and citations. Authenticated evidence/RAG, retrieval evaluation, tool-using agents, traceable scenario workflow, UI and human review remain open acceptance work.
+- **MM-M1 — In progress; acceptance remains open:** synthetic evidence/evaluation slices and a local three-policy test double are available in draft branch proposals. Authorized source ingestion, empirical forecasting/uncertainty, actual WorldKernel execution and the integrated human-review workflow remain open.
+- **MM-M2 — In progress, not accepted:** PR #60 proposes an experimental fictional, in-memory retrieval slice with scope filtering and citations. Authenticated evidence/RAG, retrieval evaluation, tool-using agents, traceable scenario workflow, UI and human review remain open acceptance work.
 - **MM-M3 — Planned engineering:** durable async jobs, token/call and compute budgets enforced, tracing, RBAC, tenant separation, failure recovery and load tests.
 - **MM-M4 — Planned generalization:** at least one *different* domain adapter, versioned contracts and validated WorldKernel integration.
 
@@ -62,6 +62,34 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   See the [M1 delivery plan](engineering/M1_EXECUTION_PLAN.md).
   These documents are design and future-review gates, **not**
   implemented evidence, forecasting, integration or agents.
+
+- **MM-M1E-01 — Strict simulation request mapping (branch proposal,
+  execution still planned):** MirrorMind now maps one explicit
+  `retail.inventory` v0.1 scenario shape to WorldKernel's trusted
+  `retail.inventory.demo` `demo-1` exchange contract. It requires declared
+  units and separate operator ceilings, and rejects unsupported inputs. This
+  is request construction only; no engine was imported or run, so the
+  `worldkernel_adapter` capability remains planned. See the
+  [mapping walkthrough](engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
+  [M1 plan](engineering/M1_EXECUTION_PLAN.md).
+
+- **MM-M1E-03 — Synthetic policy test double (partial branch proposal):** a
+  [local 28-day policy comparison](engineering/M1_RETAIL_POLICY_SIMULATION.md)
+  runs fixed-cycle, reorder-point and profile-aware rules on paired seeded
+  demand streams, with explicit item/day units, stock, abstract costs and
+  lead-time sensitivity. It is not a WorldKernel adapter, forecast,
+  recommendation or measured retail result. M1E-02 remains blocked on B-04.
+
+- **MM-M1F-02 — Synthetic decision workflow (experimental integrated slice, 2026-11-25):**
+  a bounded local service and API/CLI now join fictional release-aware
+  evidence, a repeated lag-7 profile, residual diagnostics, the M1E-03 test
+  double and an M1F-01 decision trace. The opt-in local CLI can execute the
+  pinned WorldKernel policy world; v2 trace evidence distinguishes its
+  selected metrics from the Python parity oracle. The synthetic route remains
+  experimental and lacks authentication and request/concurrency controls.
+  This does not complete M1 or its authorized-source, empirical-forecast,
+  broader engine-security or human-review gates. See the
+  [workflow walkthrough](engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
 
 - **MM-M1c-exp — Synthetic one-step baseline experiment (not full MM-M1c):**
   reviewed [rolling-origin benchmark](engineering/M1_TEMPORAL_BACKTEST.md)
@@ -349,37 +377,49 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   individual scenarios and the two-audit call invariant are tested without
   claiming measured runtime acceleration, actual demand rights or drift.
 
-- **MM-M1c residual-evaluator work deduplication (experimental):**
+- **Historical MM-M1c residual-evaluator work deduplication (superseded):**
   [prequential envelope method](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
-  now caches each target-date seasonal-naive prediction only within
-  that historical evaluation. An invented 7-day holdout and 21-day
+  recorded call-local caching of each target-date seasonal-naive prediction
+  in that historical implementation. An invented 7-day holdout and 21-day
   calibration exercise verifies 28 prediction calculations rather than
   154 repeated forecast calls, without claiming wall-clock benchmarking,
   forecast calibration, source rights, or actual demand inference.
 
-- **MM-M1c adversarial cache parity (synthetic):**
+- **Historical MM-M1c adversarial cache parity (superseded):**
   [retail residual method](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
-  now compares cached and explicitly uncached execution in 18 deterministic
+  recorded cached and explicitly uncached execution in 18 deterministic
   histories with changing release delays, missing observations and distinct
   cutoff/calibration settings. The exact no-cache vs cached example confirms
-  154 vs 28 baseline prediction calls and identical receipts. This is a
-  structural/regression claim, not a measured latency or statistical claim.
+  154 vs 28 baseline prediction calls and identical receipts. These receipts
+  concern superseded code; they are a structural regression claim, not a
+  measured latency or statistical claim for the current fixed split.
 
-- **MM-M1c release-aware rolling residuals (experimental):**
+- **Historical MM-M1c release-aware rolling residuals (superseded):**
   [prequential calibration guide](engineering/RETAIL_RESIDUAL_ENVELOPE.md)
-  now describes a bounded incremental activation/expiration algorithm for
-  retrospective residual candidates. Synthetic differential tests compare
-  this implementation with a separate quadratic oracle, including late
-  publication and moving-window expiry. No independent source authority,
-  forecast validity or wall-clock speedup is inferred.
+  described a bounded incremental activation/expiration algorithm for
+  retrospective residual candidates. M1D-01 supersedes the rolling
+  target-label policy with a fixed pre-holdout calibration interval. The
+  historical tests do not establish source authority, forecast validity,
+  calibrated coverage or wall-clock speedup.
 
-- **MM-M1c performance characterization (measurement only):**
+- **MM-M1d disjoint uncertainty holdout (experimental, draft PR #56):**
+  [uncertainty walkthrough](engineering/RETAIL_RESIDUAL_ENVELOPE.md) and
+  [scoped M1D-01 change request](engineering/changes/M1D_01_DISJOINT_UNCERTAINTY_HOLDOUT.md)
+  define a fixed pre-holdout calibration target interval, origin-specific
+  publication eligibility and holdout-label disjointness. Synthetic tests
+  compare the report with a separate quadratic oracle and verify late-data
+  abstention. No publisher authenticity, empirical calibration, nominal
+  coverage or future-performance guarantee is claimed.
+
+- **Historical MM-M1c performance characterization (measurement only):**
   [two-revision synthetic benchmark](engineering/RETAIL_RESIDUAL_BENCHMARK.md)
-  compares the same fictional residual workload before and after incremental
-  calibration. It checks entire report hashes, measures median local elapsed
-  time and peak traced Python allocations, and reports full-run limitations.
-  Measurements are **not** CI quality gates, actual demand/forecast evidence,
-  whole-process memory measurements or guaranteed speedups.
+  records the same fictional residual workload before and after incremental
+  calibration for the exact PR #34/#35 revisions. It checked entire report
+  hashes, measured median local elapsed time and peak traced Python
+  allocations, and reported full-run limitations. These observations are
+  **not** current-algorithm measurements, CI quality gates, actual
+  demand/forecast evidence, whole-process memory measurements or guaranteed
+  speedups.
 
 - **MM-M1b review packet (experimental, still not licensed ingestion):**
   [source-intake metadata binder](engineering/SOURCE_INTAKE_REVIEW.md)

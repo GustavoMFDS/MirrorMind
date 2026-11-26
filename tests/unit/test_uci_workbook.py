@@ -7,6 +7,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 import pytest
 from openpyxl import Workbook
 
+from mirrormind.domains.retail.uci_transactions import MAX_SUPPORTED_ROWS
 from mirrormind.domains.retail.uci_workbook import (
     UCI_HEADER,
     read_uci_workbook,
@@ -191,10 +192,17 @@ def test_stream_os_error_message_does_not_expose_source_location():
     assert "secret-home" not in str(caught.value)
 
 
-@pytest.mark.parametrize("rows", [0, True, -1, 10_001, "100", 1.5])
+@pytest.mark.parametrize("rows", [0, True, -1, MAX_SUPPORTED_ROWS + 1, "100", 1.5])
 def test_invalid_row_budget_rejected_before_stream_read(rows):
     with pytest.raises(ValueError, match="bounded workbook row limit"):
         read_uci_workbook(BytesIO(b"DO-NOT-READ"), expected_sha256="0" * 64, max_rows=rows)
+
+
+def test_reader_accepts_explicit_large_source_cap_without_changing_defaults():
+    raw = fictional_workbook(invoice())
+    result = stage(raw, max_rows=MAX_SUPPORTED_ROWS, max_groups=100_000)
+
+    assert result.projection.processed_rows == 1
 
 
 def test_unsupported_sheet_selection_rejected_before_stream_read():

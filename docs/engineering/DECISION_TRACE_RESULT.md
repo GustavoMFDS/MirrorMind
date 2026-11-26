@@ -1,17 +1,24 @@
 # Versioned decision trace result contract
 
-**Status:** `decision_trace_result_contract` is `interface_only`. This is a
-local result schema; MirrorMind does not yet produce decision evaluations,
-run a simulation, authenticate its references, persist a trace or expose a
-decision endpoint.
+**Status:** `decision_trace_result_contract` remains `interface_only` as a
+general product capability. The M1F-02 synthetic workflow creates a fictional,
+non-authorizing `DecisionTraceV2` through the local policy test double by
+default and exposes it through an experimental route. The explicit local CLI
+can select the pinned WorldKernel policy world and bind its execution receipt
+and the reference simulator's parity receipt. No producer authenticates its
+references, persists a trace or authorizes a business action.
 
 ## Purpose and boundary
 
 `ScenarioSpec` in [`core/contracts.py`](../../src/mirrormind/core/contracts.py)
 describes and validates a possible simulation request. It is an input contract.
 [`DecisionTrace`](../../src/mirrormind/core/decision_trace.py) is a separate
-output contract for a later reviewable comparison. Keeping them separate
-prevents a validated request from being mistaken for a calculated result.
+output contract for a reviewable comparison. Keeping them separate prevents a
+validated request from being mistaken for a calculated result. The
+[`M1F-02 workflow`](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) is one synthetic
+producer: it uses generated evidence, a fixed baseline and a selected local
+policy engine. Its typed output exercises the contract but does not establish a
+general decision-evaluation capability.
 
 The trace gives later M1 components a versioned envelope for observations,
 forecasts, conditional outcomes, assumptions, missing evidence, costs and
@@ -23,21 +30,31 @@ to a business system.
 
 ```mermaid
 flowchart LR
-  E[Evidence producer] --> P[Caller-built v1 payload]
-  F[Forecast producer] --> P
-  S[Simulation producer] --> P
-  A[Assumption and cost records] --> P
+  E[Generated fictional evidence] --> W[M1F-02 workflow]
+  F[Fixed seasonal-naive profile] --> W
+  S[Paired policy test double] --> W
+  A[Assumptions and explicit gaps] --> W
+  W --> P[DecisionTrace v2 payload for M1F-02]
   P --> V[DecisionTrace Pydantic validation]
   V --> R[Immutable trace result]
-  R --> H[Canonical result SHA-256]
-  H --> U[HumanReview binds reviewer decision to digest]
-  U --> O[Reviewable result envelope]
+  R --> H[Trace result SHA-256]
+  W --> D[Versioned artifact digests]
+  D --> I[Identity hash: request plus artifacts]
+  R --> O[Workflow response envelope]
+  H --> O
+  D --> O
+  I --> O
+  O --> Q[Workflow result SHA-256]
 ```
 
-There is no HTTP, storage, cryptographic signer, model registry or engine in
-this path. Future producers may create the payload, but each producer must
-establish its own evidence. The trace validates local structure and declared
-references only.
+The trace model itself has no HTTP, storage, cryptographic signer, model
+registry or engine. M1F-02 adds a separate experimental HTTP route and hashes
+for the outer workflow response. The default route uses the Python test double.
+The local CLI can add execution evidence supplied by its trusted WorldKernel
+gateway. Those records improve reproducibility and traceability but do not add
+authentication or attest the producer. Each producer must establish its own
+evidence. The trace validates local structure and caller-declared references
+only.
 
 | Component | Responsibility |
 | --- | --- |
@@ -96,6 +113,83 @@ the record exists, is permitted, is authentic, was produced by the named model
 or engine, or was available at the declared time. These remain explicit gates
 for M1B, M1C and M1E.
 
+## Execution evidence in decision trace v2
+
+The general `DecisionTrace` and its `mirrormind.decision_trace.v1` example are
+unchanged. `DecisionTraceV2` adds a separate `execution_evidence` section and
+`execution_evidence_refs` on `ConditionalOutcomeV2`. This section is distinct
+from input `EvidenceReference` because a simulator output is produced after the
+input cutoff. Each record carries an execution ID, engine contract, role,
+selected-result SHA-256, provenance reference and timezone-aware production
+time. Roles are `selected_output` and `parity_oracle`. For v2, each declared
+production instant must be at or before trace `created_at`; timezone-aware
+comparison uses the represented instant, so equivalent offsets compare equal.
+
+The synthetic workflow stores deterministic logical metadata at
+`cutoff_at + 1 microsecond` for both trace creation and execution production;
+this is not wall-clock runtime evidence. The
+selected source is also explicit in the workflow response:
+`policy_test_double` for the default path and `worldkernel_policy_world` for
+the opt-in engine path. `policy_test_double_invoked` means the Python
+simulator ran; with WorldKernel it ran only as the parity oracle, while
+`policy_test_double_result_selected=false` identifies the actual metric
+source. The WorldKernel path uses
+`mirrormind.worldkernel.retail_policy_comparison.v1` on each outcome.
+
+The v2 validator enforces these cross-record rules before hashing the trace:
+
+- Every outcome links to exactly one selected-output record.
+- The selected record's `engine_contract_ref` equals the outcome's contract.
+- An outcome may link to at most one parity record.
+- If present, the parity digest must equal the selected-result digest.
+- Every execution record must be referenced by at least one outcome.
+- Execution IDs are unique across the trace and count toward the global record
+  bound.
+- Execution `produced_at` cannot be later than trace `created_at`; equality is
+  valid and aware timezone offsets are compared by instant.
+
+This is an internal ordering check over caller-declared timestamps. It does
+not authenticate a clock or prove when a process ran. The deterministic
+workflow remains valid because its logical creation and production times are
+equal and later than the input cutoff.
+
+For the default synthetic path, the selected-output record identifies the
+Python test-double contract. For the WorldKernel path, the selected record
+identifies the versioned engine contract and its provenance reference includes
+the package version, pinned source commit, registered world and revision,
+result schema and raw worker-result digest. The selected-result digest on both
+records is the canonical hash of the comparable policy metrics, distinct from
+the raw worker-byte digest. A second record identifies the test double as the
+parity oracle. The comparator applies the same reviewed transition rules to
+both engines, so exact equality checks integration consistency rather than
+independent scientific validity. Engine provenance is also present in the
+versioned simulation artifact and therefore covered by the complete workflow
+digest. These local hashes support replay and tamper detection when recomputed;
+they are not signatures or upstream attestations.
+
+### M1F-02 workflow-level identity and digest
+
+The synthetic workflow wraps this trace in a separate
+`mirrormind.synthetic_retail_decision_workflow.v2` response. It hashes each of
+five major artifacts (evaluation, uncertainty, forecast evidence receipt,
+forecast and simulation) together with that artifact's schema-version label.
+`decision_identity_sha256` then hashes the workflow schema, validated request
+and artifact-digest map. This makes the trace identity sensitive to request
+fields such as replication count; revision 1 is scoped to that content identity
+and is not a persisted revision history.
+
+`trace_sha256` remains the trace's own `result_sha256`. The outer
+`workflow_result_sha256` covers the complete response, including all artifact
+digests, identity and trace, excluding only the outer digest field itself. An
+abstention has artifact and workflow digests but a null decision identity
+because no trace exists. These hashes support deterministic replay and
+change-detection by recomputation. They are not signatures, producer
+authentication, provenance, approval or transport protections. The experimental
+HTTP route has no authentication, request body-size limit, rate limit or
+concurrency control; schema collection bounds do not supply those controls.
+See the [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) for the
+service flow and independent digest regressions.
+
 ## Reproduce the fictional example
 
 Run from the repository root with the project environment:
@@ -140,6 +234,7 @@ authorize any write.
 | Missing evidence reference or future availability | Validation error | Source permission, truthful publisher timestamp or data completeness |
 | Forecast/outcome points to missing facts, forecasts or assumptions | Validation error | Forecast quality or actual engine execution |
 | Naive timestamp, observation after cutoff or review before creation | Validation error | Correctness of caller-declared timestamps or reviewer identity |
+| V2 execution evidence produced after trace creation | `ValidationError` | Trusted wall-clock ordering, producer identity or authentic execution |
 | More than 1,000 records total, more than 1,000 in one section, or more than 100 references/metrics in one record | Validation error | A transport-level request-body or concurrency limit |
 | `unavailable` cost has a numeric amount | Validation error | That metered/declared costs are accurate or enforce a budget |
 | Approved/rejected review is incomplete or digest is stale | Validation error | Identity, signature, authorization or non-repudiation |
@@ -159,7 +254,7 @@ providers or a simulator.
 
 | Test | Proves | Does not prove |
 | --- | --- | --- |
-| `test_valid_trace_keeps_decision_evidence_categories_separate` | The synthetic fixture validates with distinct typed sections, metered/declared/unavailable cost states and a SHA-256 result | Any producer is implemented |
+| `test_valid_trace_keeps_decision_evidence_categories_separate` | The contract fixture validates with distinct typed sections, metered/declared/unavailable cost states and a SHA-256 result | It does not verify a real evidence, forecast or engine producer; M1F-02's separate tests cover its local synthetic producer |
 | `test_synthetic_example_json_is_reproducible` | The fictional rendered JSON and digest repeat deterministically | Cross-version/toolchain byte identity |
 | `test_unknown_local_references_are_rejected` | A forecast cannot refer to an absent fact | External reference existence |
 | `test_outcome_requires_known_forecasts_and_assumptions` | Outcome links must resolve to both local input categories | A real engine produced the outcome |
@@ -175,6 +270,22 @@ providers or a simulator.
 | `test_trace_record_sections_have_a_maximum_size`, `test_total_trace_records_are_bounded_across_sections` and `test_trace_reference_lists_have_a_maximum_size` | Per-section, aggregate-record and per-record collection bounds reject oversized payloads | HTTP body-size, rate or concurrency enforcement |
 | `test_trace_models_are_immutable_after_validation` | Assignment to a validated top-level model fails | Deep immutability of arbitrary external objects |
 
+The v2 execution-provenance claim **MM-DTRACE-008** maps to
+[`test_trace_rejects_execution_evidence_from_a_different_engine_contract`](../../tests/unit/test_synthetic_decision_workflow.py).
+It rejects an outcome whose declared contract differs from its selected
+execution record; it does not authenticate the engine or record.
+The **MM-DTRACE-009** orphan-record regression maps to
+[`test_trace_rejects_unreferenced_execution_evidence_records`](../../tests/unit/test_synthetic_decision_workflow.py)
+and rejects execution records that no outcome uses.
+The **MM-DTRACE-010** chronology regression maps to
+[`test_trace_rejects_execution_evidence_after_trace_creation`](../../tests/unit/test_synthetic_decision_workflow.py).
+`MM-DTRACE-011` maps to
+[`test_trace_accepts_execution_evidence_before_trace_creation`](../../tests/unit/test_synthetic_decision_workflow.py),
+and `MM-DTRACE-012` maps to
+[`test_trace_accepts_execution_evidence_at_creation_with_equivalent_timezone`](../../tests/unit/test_synthetic_decision_workflow.py).
+Together they cover future, earlier and equal instants without claiming clock
+authenticity.
+
 The evidence map links `MM-DTRACE-001`, `MM-DTRACE-002`, `MM-DTRACE-003`,
   `MM-DTRACE-004`, `MM-DTRACE-005`, `MM-DTRACE-006` and `MM-DTRACE-007` to the synthetic
 contract, chronology, canonicalization and collection-bound regressions.
@@ -182,6 +293,14 @@ Together these selectors cover the negative/equality chronology cases and
 aggregate, per-section and per-record bounds.
 Their limitations retain the caller-asserted-reference and no-execution
 boundary.
+
+The workflow-level claims `MM-MF-001` through `MM-MF-007` are separately
+linked to the service, API and CLI tests in the [reviewed evidence map](EVIDENCE_MAP.json).
+In particular, `test_trace_identity_includes_replications_and_exact_replay_is_stable`,
+`test_versioned_artifact_and_workflow_digests_bind_the_complete_response` and
+`test_profile_aware_policy_modeling_caveats_are_bound_into_trace` cover the
+review corrections; they do not change the general interface-only capability
+status.
 
 ## Learning exercises
 
@@ -205,6 +324,15 @@ boundary.
    trace: approved source evidence, evaluated forecast, actual simulation
    receipt, authenticated reviewer, cost metering and action-specific
    authorization.
+8. Compare `trace_sha256`, `decision_identity_sha256` and
+   `workflow_result_sha256` in the M1F-02 response. Mutate a nested simulation
+   value and determine which digests become stale. Explain why none of them
+   proves who created or approved the result, and why model collection bounds
+   do not cap an HTTP request body or concurrent requests.
+9. Move one v2 `produced_at` to the next day and confirm validation fails; move
+   it one second earlier and confirm validation succeeds. Rewrite an equal
+   instant using a `-05:00` offset. Explain why it passes and why this ordering
+   check does not authenticate a wall clock.
 
 ## Diagnosis, maintenance and evolution
 

@@ -42,16 +42,16 @@ cutoff/availability fields, cost status and review digest. The references and
 timestamps are caller assertions; do not log private payloads or infer source
 rights, model execution, engine execution, reviewer identity or authorization
 from a passing validation.
-
-For review chronology, compare the parsed `decided_at` and `created_at`
-instants; a different UTC offset can represent the same valid instant. For a
-digest that changes only under a different Decimal precision, inspect
-`_canonical_decimal` and run `test_result_digest_is_lossless_and_independent_of_decimal_context`.
-Oversized traces fail at field bounds or the aggregate 1,000-record check;
-these contract limits do not replace an HTTP request-size or concurrency cap.
+For a v2 execution-time error, compare every
+`execution_evidence[].produced_at` with `created_at` as a timezone-aware
+instant. A later instant fails; an equivalent offset for the same instant
+passes. Generated timestamps are logical fixture metadata, not process
+wall-clock evidence.
 - For planned evidence/agents, design permission-bound provenance, error handling and budget limits before implementing.
 - For fictional UCI-shaped retail projection failures: trace [`domains/retail/uci_transactions.py`](../../src/mirrormind/domains/retail/uci_transactions.py), [reviewed method guide](UCI_RETAIL_PROJECTION.md) and [unit regressions](../../tests/unit/test_uci_retail_projection.py). Do not copy customer IDs or invoice descriptions into bug reports.
 - For bounded local XLSX input failures: inspect [`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), [the workbook guide](UCI_WORKBOOK_READER.md) and [ZIP/schema tests](../../tests/unit/test_uci_workbook.py). Never paste original workbook bytes or customer fields in an issue.
+- For event-time UCI evaluation failures: inspect [`domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), the [fixed-protocol walkthrough](M1_UCI_EVENT_TIME_RESEARCH.md), and [synthetic regressions](../../tests/unit/test_uci_event_time.py). Separate target-date coverage from seven-day history coverage; only synthetic declared-complete dates may justify a zero in the fixture. The result is never point-in-time evidence.
+- For a point-in-time evaluation that selects a later source revision too early: compare `reference_month` with `published_at`, verify the immutable vintage manifest/hash, then check the official release schedule and the source review's ALFRED real-time boundary. Do not manufacture `available_on=InvoiceDate`; if a release timestamp or vintage is missing, abstain or exclude that origin.
 
 - For missing or mismatched review packets: inspect [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [the review guide](SOURCE_INTAKE_REVIEW.md) and [synthetic tests](../../tests/unit/test_source_intake_review.py). Share only sanitized refs/digests, never proof documents or raw rows in issues; references alone do not authorize use.
 
@@ -166,20 +166,159 @@ rules. Do not log the typed projection or identifiers while debugging. A
 stable fixture digest and matching cutoff still do not verify publisher
 availability, source rights or demand completeness.
 
+## WorldKernel request mapping rejects a retail scenario
+
+Read the [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
+[`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py).
+Run `python -m pytest -q tests/unit/test_worldkernel_mapping.py`. Check the
+exact `world_type`/`world_version` allowlist, explicit `item`/`day`/`order`
+unit context, required starting stock and daily demand, and the separately
+configured operator ceilings. Interventions and evidence/forecast references
+are intentionally unsupported. The existing `examples/retail-scenario.json`
+fails mapping because it has an intervention and omits daily demand; do not
+add hidden defaults to make it pass. This module only constructs a request.
+It does not verify remote package identity, run the simulation, enforce
+`timeout_seconds`, model-call/output-token limits, worker quotas, wall-clock or
+memory limits, or validate result payloads. A future adapter must enforce
+budgets absent from exchange v1 or reject before execution.
+
+## Retail residual diagnostic abstains for insufficient calibration
+
+Inspect [`residual_envelope.py`](../../src/mirrormind/domains/retail/residual_envelope.py),
+the [fixed split rules](RETAIL_RESIDUAL_ENVELOPE.md) and
+[`test_retail_residual_envelope.py`](../../tests/unit/test_retail_residual_envelope.py).
+Read `calibration_target_window_start/end` first: calibration labels are a
+fixed interval immediately before `holdout_target_window_start`. At each
+origin, a target in that interval contributes only after its declared release
+is available and its own seven feature dates pass their own-origin checks.
+Late releases, missing positive-line dates or unavailable feature history can
+reduce the active residual count; a later holdout outcome cannot refill the
+calibration interval. The correct response is an explicit abstention or a
+reviewed change to the window/minimum settings, never zero imputation or
+reusing holdout labels. Verify the exact `evaluated_origins` denominator and
+keep `nominal_coverage` and `calibrated_prediction_interval` unset. The
+synthetic diagnostic does not authenticate releases or establish empirical
+coverage.
+
+## Synthetic decision workflow abstains or a digest/identity is unexpected
+
+Reproduce with
+[`examples/m1_retail_decision_workflow.py`](../../examples/m1_retail_decision_workflow.py)
+and follow the [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
+Compare `as_of` with the historical `evaluation_cutoff` and the seven dates in
+`forecast.history_start/history_end`. Inspect
+`forecast_evidence_receipt.release_audit`; distinguish absent dates from
+declared releases after the cutoff. An abstention must have no forecast, no
+trace and no policy invocation, while retaining artifact digests and the
+whole-response digest. Its decision identity is null because no trace exists.
+
+On success, verify `trace_sha256` against the serialized M1F-01 trace, then
+check `artifact_digests`, `decision_identity_sha256` and
+`workflow_result_sha256` as separate scopes. The identity includes the
+validated request and five versioned artifact digests, so changing only the
+replication count must change the identity. The workflow digest includes the
+trace and outer response fields and excludes only itself. Recompute it after a
+copy is modified. The digests detect content changes but do not prove producer
+identity, provenance or approval. Use
+`test_trace_identity_includes_replications_and_exact_replay_is_stable` and
+`test_versioned_artifact_and_workflow_digests_bind_the_complete_response` to
+reproduce the reviewed cases.
+
+For trace references, follow each forecast's seven `fact_refs` and each
+outcome's forecast/assumption references. Check that profile-aware outcomes
+carry the comparison's `modeling_caveats`, including the one-day lead-time
+arrival-day demand exclusion. The HTTP route is experimental and has no
+authentication, request body-size limit, rate limit or concurrency control;
+do not expose it publicly. A digest is not a signature.
+
+For an explicit WorldKernel run, check `simulation.selected_result_source`,
+`simulation.policy_test_double_invoked` and
+`simulation.policy_test_double_result_selected` independently. The expected
+values are `worldkernel_policy_world`, `true` and `false`. In `trace`, find one
+`selected_output` and one `parity_oracle` record. Every outcome must reference
+both, name the selected engine contract and preserve equal result digests. The
+selected record's provenance reference includes the package version, exact
+source commit, registered world/revision, result schema and raw worker digest.
+If these values disagree, reject the response and inspect the gateway metadata
+before changing either engine.
+
+## Synthetic retail policy comparison differs from its expected fixture
+
+Reproduce with
+[`examples/m1_retail_policy_test_double.py`](../../examples/m1_retail_policy_test_double.py)
+and read the [M1 policy simulation walkthrough](M1_RETAIL_POLICY_SIMULATION.md).
+Run `tests/unit/test_retail_policy_simulation.py` and
+`tests/integration/test_retail_policy_simulation_cli.py`. Compare the request
+seed and profile first, then verify that the per-replication demand digest is
+identical across every policy and lead-time scenario. Trace day ordering in
+`_simulate_replication`: due orders arrive at day start, demand is fulfilled,
+holding cost is charged, and the policy places an order at day end. If a
+one-day lead-time run with zero stock and safety stock orders zero despite a
+positive arrival-day profile value, inspect the result's `modeling_caveats`
+and `_order_quantity` interval `[day + 1, arrival_day)`. This is the current
+toy convention; the output must not be described as a standard or optimized
+order-up-to policy. Check `test_one_day_zero_safety_stock_exclusion_is_exposed_as_caveat`
+and `test_inventory_mass_balance_holds_for_every_policy_replication` before
+changing that behavior. A mismatch is a local deterministic behavior change,
+not evidence about actual retail stock or costs. Never pass this result to the
+WorldKernel mapper as if it were an engine receipt.
+
+## WorldKernel policy-world execution fails or differs from the reference
+
+Reproduce only with the generated fixture and explicit local opt-in:
+
+```powershell
+python -m examples.m1_retail_decision_workflow --as-of 2011-01-26 --replications 2 --seed 317 --engine worldkernel
+python -m pytest -q tests/unit/test_worldkernel_policy_world.py tests/integration/test_worldkernel_policy_world_engine.py
+```
+
+Trace `LocalWorldKernelRetailPolicyGateway.compare` through the strict policy
+mapper, fixed `worldkernel_worker.py`, `_validate_exchange_result_envelope`
+and `_validate_policy_world_state`. Confirm the installed distribution's
+`worldkernel` version, PEP 610 repository and commit; this checks declared
+metadata, not installed-file integrity. A missing or mismatched package must
+fail with a sanitized error, never fall back to the test double. For an
+operator rejection, inspect the 28-day horizon, replication count and
+fan-out-adjusted transition ceiling before looking at subprocess output.
+
+For a seed mismatch, compare the WorldKernel run index rule `seed + run_index`
+and verify that exactly one random demand draw is shared across all nine
+policy/lead-time states each day. For an inventory mismatch, recompute the
+state balance and verify every demand value against `_build_demand_streams`.
+Then compare all returned policy metrics with the reference result. The
+gateway rejects drift; do not patch the returned result from reference
+values. Check `worldkernel_execution.result_sha256` only as a content digest,
+not as a signature. Timeouts and output overflow remain local process limits,
+not CPU/memory isolation. The API route is expected to use the test double
+and must not launch this worker.
+
+## API `test_health` hangs before application code
+
+First record the exact interpreter, dependency versions, head, command and
+whether the failure is a timeout or a stack-backed wait. Never increase the
+test timeout, skip the health test or change application code based only on a
+stalled test. In the 2026-11-25 restricted Windows execution, Python 3.13.5's
+faulthandler stack stopped in `socket.accept` while AnyIO/Starlette created
+the asyncio fallback self-pipe. This supports a loopback-socket restriction
+in that execution context, not an application diagnosis and not a proven
+cause for the older `8f906b8` timeout. PR #57's independent exact-head
+checkout passed `test_health` and the complete local gate; preserve both
+observations. Use the owner-approved exact-clean-head gate in an already
+authorized local environment and report its full commit. Do not call a local
+pass GitHub Actions success.
+
 ## Fictional evidence retrieval misses or returns an unexpected citation
 
 Reproduce with [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py)
 and the [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md). For an empty
-result, check the query tokens and the fixed collection/principal scope before
-changing ranking. For a scope regression, run
+result, inspect query tokenization and the fixed collection/principal scope
+before changing the ranker. For a scope regression, run
 [`test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py)
-and confirm filtering still precedes tokenization and score construction.
-For a citation mismatch, compare the exact source slice at the reported
-Python code-point offsets, then recompute SHA-256 over that excerpt's UTF-8
-bytes. `RetrievedEvidence.require_excerpt_integrity` rejects a same-length
-excerpt mutation when the prior digest is retained and rejects a different
-well-formed digest. If a caller changes both excerpt and digest, the contract
-cannot verify the source slice without original document bytes; the digest is
-not provenance. Do not put denied IDs, hidden content or raw queries in logs. BM25
-scores are ranking values, not relevance probabilities. The caller-supplied
-scope is not authentication, and every returned excerpt remains untrusted.
+and verify filtering still precedes tokenization and score construction.
+For a citation mismatch, compare the reported Python code-point slice and
+recompute SHA-256 over its UTF-8 bytes. `RetrievedEvidence` rejects a changed
+excerpt with the old digest and a different well-formed digest. Replacing both
+excerpt and digest can still create a self-consistent untrusted envelope; the
+digest is not source provenance. Never log denied IDs, hidden content or raw
+queries. BM25 scores are ranking values, not relevance probabilities, and a
+caller-declared scope is not authentication.
