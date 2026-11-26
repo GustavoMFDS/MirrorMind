@@ -26,15 +26,23 @@ execution guidance and does not broaden the agent's permissions.
   zero skips and six checks. PR #61 is separate and ready at
   `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; its gate passed 841 tests, zero
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
-- Census remains separate as open PR #63. Published head
-  `5ec904dc0be6555d3651f947ef1f02fdd6ce20f7` passed the exact clean-head local
-  gate at `2026-11-26T15:42:29.443936Z`: 877 tests, zero skips and all six
-  checks with the reviewed WorldKernel pin. Receipt:
-  `results/local-quality-gate-5ec904dc0be6555d3651f947ef1f02fdd6ce20f7-authorized-local.json`.
-  Its Actions attempts failed before job steps; [B-08](BLOCKERS.md) records
-  their run/check IDs and alternatives-only account annotation. Keep #63
-  separate from #60/#61/#64 pending independent review; no integration
-  decision is implied.
+- Census remains separate as open PR #63 and preserves merge `55e91f7` from
+  `main` plus the PR #62 ancestry. Follow-up commit
+  `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and
+  revisions published inside their reference month; selector-boundary and
+  public-evaluator regressions cover the original false-scoring case. The
+  exact clean-head gate passed 882 tests, zero skips and all six checks at
+  `2026-11-26T17:35:07.989722Z`, with WorldKernel `0.0.1` at the reviewed
+  source pin. Receipt:
+  `results/local-quality-gate-00311c6344e8a70bb72315afc10f4fbd02926d26.json`.
+  A restricted-sandbox attempt stalled in Windows asyncio socket-pair setup;
+  faulthandler reproduced the documented executor limitation. That attempt
+  was interrupted without a gate receipt; the same full gate then passed in
+  the authorized local environment, with no checks omitted. The final
+  documentation-inclusive head is separately gated and its exact SHA and
+  receipt are in PR #63. Actions remain unchecked; [B-08](BLOCKERS.md) records
+  the pre-start attempts. Keep #63 separate from #60/#61/#64 pending
+  independent review; no integration decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED

@@ -279,3 +279,30 @@ The exact-head Actions attempts and unresolved alternatives-only annotation
 are recorded in [B-08](BLOCKERS.md). This result covers local synthetic tests
 and source guards. It does not establish real-source permission, empirical
 accuracy, official Actions success or production readiness.
+
+### Census period-close chronology correction — 2026-11-26
+
+Code and feature-documentation commit
+`00311c6344e8a70bb72315afc10f4fbd02926d26` rejects any normalized first
+estimate or revision published before its reference month closes. The focused
+Census selector/evaluator/CLI suite passed 47 tests. Its exact clean-head gate
+passed at `2026-11-26T17:35:07.989722+00:00`:
+
+- Pytest: 882 passed, zero skipped; one existing Starlette/httpx `TestClient`
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks: all
+  passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-00311c6344e8a70bb72315afc10f4fbd02926d26.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions were not checked.
+
+The restricted sandbox run stalled in `socket.accept` during Windows
+`asyncio` self-pipe creation for `tests/integration/test_api.py::test_health`.
+A bounded faulthandler reproduction confirmed the known executor limitation;
+the interrupted run emitted no gate receipt. The same exact clean SHA then
+passed the full gate in the authorized local environment, with all checks
+enabled. The later status, handoff, backlog and gate-documentation update is
+separately gated before publication; its exact SHA and receipt are recorded in
+PR #63. Neither result establishes GitHub Actions success, real-source rights,
+publisher authenticity or empirical forecast quality.
