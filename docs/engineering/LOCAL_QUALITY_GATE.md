@@ -250,7 +250,12 @@ passed the exact six-check gate at `2026-11-26T04:52:25.496219+00:00`:
 - Status: `local_gate_passed_not_official_ci`; the script records Actions as
   `not_checked_by_this_script`.
 
-The final baseline-documentation reconciliation is included in the published
-PR #63 head; its exact-head receipt is recorded in the PR body. No receipt is
-official CI, and no source bytes, credential or licensed-data permission is
-implied.
+The previously published baseline-documentation head
+`42a9746d7925e023a97445a6fe6cd4db324173fa` passed the exact gate at
+`2026-11-26T05:49:17.262178Z`: 877 tests, zero skips and all six checks. Its
+receipt is `results/local-quality-gate-42a9746d7925e023a97445a6fe6cd4db324173fa.json`.
+The current status refresh has a separate exact-head gate; its final receipt
+is maintained in PR #63. This is local evidence, not official CI; no source
+bytes, credential or licensed-data permission is implied. See
+[B-08](BLOCKERS.md) for the exact pre-start Actions annotations and their
+unresolved alternatives.

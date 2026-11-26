@@ -14,7 +14,8 @@ available.
 | --- | --- | --- |
 | PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
 | PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
-| PR #63 | Open, non-draft, mergeable and based on `main`. It preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Published head `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf` passed the exact local gate: 877 tests, zero skips and all six checks. The current head and its exact receipt are maintained in the live PR body; documentation-only follow-ups are gated on their final commit. | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. |
+| PR #63 | Open, non-draft, mergeable and based on `main`. It preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Pre-documentation-follow-up head `42a9746d7925e023a97445a6fe6cd4db324173fa` passed the local six-check gate at `2026-11-26T05:49:17.262178Z`: 877 tests, zero skips. This status refresh requires its own exact-head gate, recorded in the live PR body. Four check runs on the prior head failed before repository steps. Their account-level annotations list payment failure or spending-limit increase as alternatives; they do not identify which condition applies. | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Actions did not execute repository checks for the prior head. |
+| PR #64 | Open, non-draft, mergeable and based on `main`; separate ENG-02 example-lint maintenance at `ca97ab61d15347aa271ee9ac8468a0714bdc3402`. Its exact local gate passed 840 tests, zero skips and all six checks; `ruff check examples` passed. No PR-triggered run or combined status was returned for this head at query time. | No forecast, real-source, API or authorization capability added. Local evidence is not official Actions; independent review remains pending. |
 
 The synthetic M1 evidence-to-decision path is integrated; M1 remains
 incomplete. Approved pilot order is UCI #352 retrospective by event time,
@@ -31,8 +32,10 @@ exhausted under the owner's zero-paid-use decision (B-08); no runner,
 protection or workflow change was made.
 
 `ruff check examples` separately found five pre-existing findings in three
-M1 examples (I001, RUF007, F401); ENG-02 tracks them outside PR #60/#61/#63 and
-the `src`/`tests` gate. No example was changed to obtain a gate pass.
+M1 examples (I001, RUF007, F401). ENG-02 is published separately in PR #64;
+its pairwise change has empty/singleton/consecutive/gap regressions, preserves
+the missing-day failure, and passed `ruff check examples`. The change does not
+alter forecast results or capability claims.
 
 ## Historical PR #51 baseline — 2026-11-23
 

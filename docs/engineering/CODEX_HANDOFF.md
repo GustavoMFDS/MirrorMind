@@ -29,11 +29,13 @@ execution guidance and does not broaden the agent's permissions.
 - Census remains separate as PR #63. Its published baseline
   `b5e989314bcdcb566df479931794a5f56c07d477`, pilot-status reconciliation
   `162268ded05eb8ba291025b6cc98e5658ae2e0a1`, and published heads
-  `941d72956d9d00f6fd281fd3a3039a1786777c70` and
-  `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf` each passed 877 tests, zero skips
-  and all six checks. The current head and exact gate receipt are in PR #63;
-  any later tracked edits require their own exact-head gate. Keep the three PRs
-  separate; do not merge or broaden their contracts here.
+  `941d72956d9d00f6fd281fd3a3039a1786777c70`, `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf`
+  and pre-documentation-follow-up head `42a9746d7925e023a97445a6fe6cd4db324173fa`
+  each passed 877 tests, zero skips and all six checks. This status refresh
+  requires its own exact-head gate; the live PR body records the final SHA and
+  receipt. Four prior-head Actions check runs failed before repository steps;
+  annotations list payment/spending-limit alternatives without identifying
+  which applies. Keep #60/#61/#63 separate; do not merge or broaden contracts.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
@@ -46,11 +48,12 @@ execution guidance and does not broaden the agent's permissions.
 - The owner confirms Actions quota exhaustion and zero paid budget. Use the
   exact-clean-head local gate, distinguish receipts from CI, and do not
   register a runner, modify workflows/protections or retry prior start failures.
-- ENG-02 tracks five existing Ruff findings under `examples/`; fix them only in
-  separate maintenance. M2-02 retrieval evaluation follows M2-01 (#60)
-  review/integration and independent review of #61/#63. Census status
-  reconciliation is complete; do not add a feature PR while the review queue
-  remains unsettled.
+- ENG-02 is separate maintenance in [PR #64](https://github.com/GustavoMFDS/MirrorMind/pull/64),
+  head `ca97ab61d15347aa271ee9ac8468a0714bdc3402`; its exact local gate passed
+  840 tests, zero skips and all six checks. M2-02 retrieval evaluation follows
+  M2-01 (#60) review/integration and independent review of #61/#63. Census
+  status reconciliation is complete; do not add a feature PR while the review
+  queue remains unsettled.
 
 ## 1.1 Historical owner-approved continuation decisions — 2026-11-25
 
