@@ -28,8 +28,10 @@ execution guidance and does not broaden the agent's permissions.
   skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
 - Census remains separate as PR #63. Its published head
   `b5e989314bcdcb566df479931794a5f56c07d477` passed 877 tests, zero skips and
-  six checks; this branch reconciles stale UCI/Census source-status prose and
-  must pass a new exact-head gate before push. Keep the current three PRs
+  six checks. Pilot-status reconciliation commit
+  `162268ded05eb8ba291025b6cc98e5658ae2e0a1` also passed 877 tests, zero skips
+  and all six checks. The final status-only commit receives its own gate before
+  push; publish the latest exact SHA/receipt on PR #63. Keep the three PRs
   separate; do not merge or broaden their contracts here.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate

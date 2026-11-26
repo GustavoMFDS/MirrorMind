@@ -223,8 +223,20 @@ exact merged candidate passed all six checks at
   local script.
 
 The candidate was published as the separate open PR #63 at head
-`b5e989314bcdcb566df479931794a5f56c07d477`. The current branch reconciles
-stale UCI/Census pilot-status prose; run the six checks again on that exact
-documentation-inclusive head before pushing the update. No receipt is
-official CI, and no source bytes, credential or licensed-data permission is
-implied.
+`b5e989314bcdcb566df479931794a5f56c07d477`. Pilot-status reconciliation
+commit `162268ded05eb8ba291025b6cc98e5658ae2e0a1` passed the exact six-check
+gate at `2026-11-26T04:49:09.425850+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks:
+  all passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-162268ded05eb8ba291025b6cc98e5658ae2e0a1.json`.
+- Status: `local_gate_passed_not_official_ci`; the script records Actions as
+  `not_checked_by_this_script`.
+
+The final status-only note is gated on its exact head before push; its final
+SHA and receipt are recorded on PR #63. No receipt is official CI, and no
+source bytes, credential or licensed-data permission is implied.
