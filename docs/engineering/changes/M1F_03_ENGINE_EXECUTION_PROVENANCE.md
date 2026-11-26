@@ -121,3 +121,33 @@ report the observed call even when the call serves only as a parity oracle.
   empirical forecast evaluation, production isolation, official Actions and
   final integration review remain open.
 - Independent explanation: review comment `7174402947` reproduced the mismatch on predecessor `995f55d`; the corrected contract now rejects outcome/contract mismatch, dangling/orphan references and parity digest disagreement, and the exact-pin CLI regression proves WorldKernel is the selected source while the test double is separately recorded as the parity oracle.
+
+## 7. Independent review follow-up — v2 execution chronology
+
+The independent review reproduced a v2 deserialization gap: an execution
+record with `produced_at` one day after `created_at` is currently accepted,
+even though that evidence is part of an already-created immutable trace.
+
+### Follow-up acceptance criteria
+
+- [ ] `DecisionTraceV2` rejects execution evidence whose timezone-aware
+  `produced_at` instant is later than trace `created_at`.
+- [ ] Equal instants and earlier instants are accepted, including equal times
+  written with different timezone offsets; comparison uses absolute instants.
+- [ ] The v1 `DecisionTrace` contract and accepted v1 payloads remain unchanged.
+- [ ] The synthetic workflow continues to emit valid provenance: its
+  `created_at` and `produced_at` values are deterministic logical fixture
+  timestamps at the declared cutoff boundary, not wall-clock audit time.
+- [ ] Regressions reproduce after-creation rejection, earlier acceptance,
+  timezone-equivalent equality and the unchanged v1 fixture.
+- [ ] The trace contract guide, M1 workflow guide, system map, debugging and
+  learning exercise explain the invariant and the logical-time limitation.
+- [ ] The exact-clean-head local six-check gate passes with the reviewed
+  WorldKernel pin installed; no official Actions result is inferred.
+
+| Layer | Follow-up impact | Evidence |
+| --- | --- | --- |
+| Core v2 contract | Add chronological validation to `DecisionTraceV2.check_execution_evidence`; no field/schema change | `tests/unit/test_synthetic_decision_workflow.py` timestamp regressions |
+| V1 compatibility | No implementation change | Existing v1 fixture and digest tests in `tests/unit/test_decision_trace.py` |
+| Producer | No timestamp generation change; keep logical deterministic fixture time | `test_successful_workflow_produces_valid_trace_and_explicit_gaps` |
+| Documentation | Distinguish chronology validation from clock authenticity | Decision trace walkthrough, retail workflow walkthrough, system map, debugging and learning guide |
