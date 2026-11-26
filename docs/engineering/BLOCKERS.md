@@ -16,7 +16,33 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 published head `5ec904dc0be6555d3651f947ef1f02fdd6ce20f7` (877), and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840). Each local receipt reports zero skips and six passing checks; none is official Actions. Four #63 check runs on prior heads `42a9746` and `3bc7162`, four #63 runs on `5ec904d`, and four #64 runs on `ca97ab6`, failed before repository steps. Their annotations list payment failure or spending-limit increase as alternatives and do not identify which condition applies. No repository tests/catalog steps ran; job steps and logs are absent and combined status was empty. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
+| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 preceding published head `2764e60e445281d4dbe56715a5f71fd4640c0f1d` (882), and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840); PR #63's live body records the latest head and exact receipt. Each local receipt reports zero skips and six passing checks; none is official Actions. Four #63 checks on `2764e60` failed before repository steps (two attempts); four earlier checks on `42a9746` and `3bc7162`, four on `5ec904d`, and four #64 checks on `ca97ab6` also failed before steps. The exact #63 annotation lists account-payment failure **or** spending-limit increase; it does not identify which condition applies. Job records have no steps/log URLs and combined status is empty. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
+
+### PR #63 pre-start checks — head `2764e60` — 2026-11-26
+
+Two automatic workflow attempts created four failed checks on exact head
+`2764e60e445281d4dbe56715a5f71fd4640c0f1d`:
+
+| Check | Run | Job | Result |
+| --- | --- | --- | --- |
+| `test` | [45876594693](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876594693) | `140105112634` | Failed before repository steps |
+| `symbol-catalog` | [45876594601](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876594601) | `140105111098` | Failed before repository steps |
+| `test` | [45876583141](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876583141) | `140105071567` | Failed before repository steps |
+| `symbol-catalog` | [45876583156](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876583156) | `140105071542` | Failed before repository steps |
+
+All four check annotations contain the same message: “The job was not started
+because recent account payments have failed or your spending limit needs to be
+increased. Please check the 'Billing & plans' section in your settings”. This
+states alternatives, not a diagnosis. The owner separately reported exhausted
+Actions quota and a zero-paid budget; do not infer a payment failure or a
+specific account setting from the annotation. Job records have no executed
+steps or log URLs; the commit has no combined status entries. Therefore these
+checks provide no test or catalog execution evidence. The local exact-head
+gate is separate: it passed 882 tests, zero skips and six checks at
+`2026-11-26T18:30:26.772586Z` with WorldKernel at the reviewed source pin;
+receipt `results/local-quality-gate-2764e60e445281d4dbe56715a5f71fd4640c0f1d.json`.
+No manual rerun, paid usage, workflow/protection change or runner registration
+was made.
 
 ### PR #63 exact-head Actions diagnostics — 2026-11-26
 
