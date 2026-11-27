@@ -191,3 +191,31 @@ handoff and this gate record were updated afterward, so run all six checks
 again on the exact clean documentation-inclusive head before publishing the
 review candidate. Preserve that receipt separately; do not call it official
 Actions or use it to bypass required checks.
+
+### Published UCI PR #65 head before status refresh
+
+PR #65 published the approved bounded reader on exact head
+`75da34fc2cb91d3354cfbe49af43aeb40721164d`. Its complete temporary local gate
+passed at `2026-11-27T00:38:35.670136+00:00`:
+
+- Pytest: 863 passed, zero skips; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence and capability checks: all
+  passed.
+- Python 3.13.5; WorldKernel `0.0.1` installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-75da34fc2cb91d3354cfbe49af43aeb40721164d.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions is
+  `not_checked_by_this_script`.
+
+A focused rerun of the UCI workbook, transaction projection, event-time and
+workbook-flow suites passed 112 tests on this same checkout. This is additional
+local test evidence, not a replacement for the exact full receipt. Automatic
+Actions on this head failed before repository steps with the alternatives-only
+account annotation; no jobs, steps, logs or combined status were available.
+PR #65 remains open for independent review. The local gate does not clear the
+250,000-group stop: the approved real-source call returned no complete
+projection or empirical score. Do not retry, partition or increase the cap
+without a separate owner decision. A later documentation-only status sync must
+pass the same exact-head gate before it is pushed; report that new receipt on
+PR #65 without treating it as official Actions evidence.

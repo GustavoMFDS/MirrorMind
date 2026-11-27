@@ -1,13 +1,15 @@
 # Project status — reviewed baseline, not live status
 
-**Baseline:** 2026-11-26 (Brazil local date); main
-`a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62 merge commit).
+**Main baseline:** `a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62 merge).
+**UCI review snapshot before this status sync:** 2026-11-27 UTC; PR #65 head
+`75da34fc2cb91d3354cfbe49af43aeb40721164d`. PR #63 (Census) and #64
+(examples maintenance) are separate open candidates. Main has not changed.
 The detailed sections below preserve the earlier PR #51 baseline and PR #62
 review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
 using this document as a general execution report.
 
-## Current UCI #352 pilot worktree — 2026-11-26
+## UCI #352 pilot review snapshot — 2026-11-27 UTC
 
 Current branch: `codex/uci352-pilot-20261126`, based directly on the new
 `main` commit above. It is separate from the preserved pre-existing
@@ -33,14 +35,21 @@ materialized excluded `Description` values without persistence or transfer;
 the new selective OOXML path disables Python text callbacks for excluded body
 cells and has synthetic shared-string regressions. Reader defaults remain
 2,000 groups, generic projection remains capped at 100,000. Code candidate
-`5ff334230b9a5f222993d626dbe76c385a2c92d1` passed the exact clean-head local
-gate at `2026-11-27T00:33:13.845213Z`: 863 tests, zero skips and all six
-checks. Python 3.13.5; exact WorldKernel source pin installed; one existing
-Starlette/httpx deprecation warning. Receipt:
-`results/local-quality-gate-5ff334230b9a5f222993d626dbe76c385a2c92d1.json`.
-This is local evidence only; Actions was not checked. Rerun the full gate on
-the final documentation-inclusive head before review publication. No official
-Actions result is claimed.
+The implementation and owner-approved stop are published for independent
+review in [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65), open,
+non-draft and mergeable at this snapshot, with no review submission or inline
+thread yet. Its exact head `75da34fc2cb91d3354cfbe49af43aeb40721164d` passed
+the full local gate at `2026-11-27T00:38:35.670136Z`: 863 tests, zero skips,
+and all six checks. Python 3.13.5; reviewed WorldKernel source pin installed;
+one existing Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-75da34fc2cb91d3354cfbe49af43aeb40721164d.json`.
+A focused rerun of the workbook, projection, event-time and workbook-flow
+suites passed 112 tests on the same checkout. Both are local evidence only.
+Actions diagnostics on this exact head show four automatic failures before
+repository steps with the generic account-payment-or-spending-limit
+annotation; no job steps, logs or combined status were available. The
+annotation does not distinguish the cause; the owner separately confirms
+quota exhaustion and zero paid budget. No official Actions result is claimed.
 
 **Verified baseline on e4f05a1:** 691 pytest tests passed, one existing
 Starlette/httpx deprecation warning. Six local gate checks passed

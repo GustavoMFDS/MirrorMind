@@ -255,17 +255,27 @@ widen the cap without a new decision. No full projection, complete exclusion
 count, empirical metric or real-source model card exists. Keep all results
 retrospective and availability-unverified.
 
-The focused UCI workbook/projection/event-time and CLI regressions passed 114
-tests after MM-021. Code candidate
-`5ff334230b9a5f222993d626dbe76c385a2c92d1` then passed the exact clean-head
-six-check gate at `2026-11-27T00:33:13.845213Z`: 863 tests, zero skips and all
-six checks. Python 3.13.5; WorldKernel `0.0.1` was installed from the exact
-reviewed source commit; one existing Starlette/httpx deprecation warning.
-Receipt: `results/local-quality-gate-5ff334230b9a5f222993d626dbe76c385a2c92d1.json`.
-The local receipt is not CI evidence. Rerun the full gate on the final
-documentation-inclusive head before publishing a review PR. GitHub Actions
-remains unavailable under the zero-cost decision. Do not change gates, spend
-or modify the separate Census or WorldKernel repositories. See
+The synthetic invoice-classification regressions and docs already encode
+MM-021: six-digit IDs continue through the projection, `C`/`c` are classified
+as cancellations, and other single-ASCII-letter plus six-digit IDs are
+excluded before grouping with one aggregate-only count. Other formats fail
+closed; generic projection remains unchanged. The exact owner authorization
+does not raise MM-020's 250,000-group ceiling.
+
+The published [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
+candidate is `75da34fc2cb91d3354cfbe49af43aeb40721164d` on
+`codex/uci352-pilot-20261126`, based on main `a456034c55ed7634ad4768b26788fec09dab1d08`.
+It passed the exact clean-head six-check local gate at
+`2026-11-27T00:38:35.670136Z`: 863 tests, zero skips and all six checks.
+Python 3.13.5; WorldKernel `0.0.1` installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing Starlette/httpx
+deprecation warning. A focused rerun passed 112 workbook, projection,
+event-time and workbook-flow tests. Receipt:
+`results/local-quality-gate-75da34fc2cb91d3354cfbe49af43aeb40721164d.json`.
+PR #65 is open and awaits independent review. Actions diagnostics show only
+automatic pre-start failures with the generic alternatives-only annotation;
+no repository steps ran. Local receipts are not CI evidence. Do not change
+gates, spend or modify the separate Census or WorldKernel repositories. See
 the [change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md),
 [manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
 [source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [B-01/B-02](BLOCKERS.md).
