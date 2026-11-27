@@ -117,16 +117,21 @@ MM-021, the corrected call applied the then-approved conservative invoice
 classification but exceeded the 250,000 product-day cap. It returned no
 partial projection and no metrics or model card were produced. MM-022 later
 made uppercase `C` the sole cancellation marker and was verified with
-synthetic tests only; the real source was not read again. The lane is stopped
-under the current scope. Excluding unverified invoice-prefix rows can reduce
-category-day totals, change which categories enter the fit cohort, alter
-zero-valued targets and
-change every downstream score. Any future metric would describe only records
-with recognized invoice IDs and must retain the aggregate exclusion count;
-coverage would still mean eligible pairs on dates declared complete by the UCI
-snapshot assertion. Synthetic regressions do not verify source rights,
-independent ledger completeness or empirical predictive skill. See the
-[source review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [event-time evaluator
+synthetic tests only; the real source was not read again. Under MM-021,
+lowercase-`c` rows were cancellations; under MM-022 they are unverified-prefix
+exclusions. Both classes were already excluded before aggregation, so this
+clarification changes aggregate classification counts only. It does not change
+the recognized sales rows, product-day groups or the cap failure. The lane is
+stopped under the current scope. Excluding unverified invoice-prefix rows can
+reduce category-day totals, change which categories enter the fit cohort,
+alter zero-valued targets and change downstream scores relative to treating
+those rows as sales; the MM-022 relabeling alone does not cause that change.
+Any future metric would describe only records with recognized invoice IDs
+and must retain the aggregate exclusion count; coverage would still mean
+eligible pairs on dates declared complete by the UCI snapshot assertion.
+Synthetic regressions do not verify source rights, independent ledger
+completeness or empirical predictive skill. See the [source
+review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [event-time evaluator
 evidence](../EVIDENCE_MAP.json).
 
 ## Privacy, security and permissions gate

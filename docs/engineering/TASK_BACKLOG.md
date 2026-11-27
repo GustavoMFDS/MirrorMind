@@ -10,7 +10,7 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
-## PR reconciliation snapshot at `c2410bd` — 2026-11-27 UTC
+## PR reconciliation snapshot at `91fc585` — 2026-11-27 UTC
 
 PR #52 merged at `e922b03666f04bd8c570a0448466d25838e3f84e`; PRs #53–#59
 closed without individual merges. Local ancestry checks confirm all eight
@@ -33,7 +33,7 @@ implied.
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
 | [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
 | [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
-| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `c2410bdbafbb7a522730d31a304faa8a72b1b097` | Open for independent review; no review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `91fc58553049706c18250ff5f72073fc83658ea6` | Open for independent review; no review submission or inline thread observed |
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -59,6 +59,8 @@ clarifies the current UCI-only rule: exact uppercase `C` marks cancellation;
 lowercase `c` and other single ASCII-letter plus six-digit identifiers are
 excluded as unverified, with aggregate counts only. The stopped source call
 used MM-021, exceeded 250,000 groups and returned no projection or evaluation.
+Because MM-021 already excluded lowercase-`c` rows before grouping, MM-022
+changes only aggregate classification counts and cannot reduce the group count.
 MM-022 has synthetic regression evidence only. The pilot remains stopped at
 that bound; do not chunk, retry or widen it without a new decision. Generic
 defaults/caps remain unchanged. See the path-free [snapshot
@@ -149,9 +151,9 @@ the vertical product path.
 
 | ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M1B-01 | P0 | partial | None | Synthetic UCI #352 event-time evaluator and fixed split are implemented; separate aggregate Census/ALFRED protocol is prepared. MM-020 approves the UCI-only 250,000-group ceiling; MM-021 governed invoice classification during the stopped source attempt; MM-022 makes exact uppercase `C` the sole cancellation prefix and classifies lowercase `c` and other single-ASCII-letter-plus-six-digit forms as unverified. The real-source call applied MM-021, exceeded the cap and failed closed with no projection or metrics; MM-022 has synthetic regression coverage only. Keep the lane stopped under current scope; no chunking or larger cap. Source remains private until deletion deadline. |
+| M1B-01 | P0 | partial | None | Synthetic UCI #352 event-time evaluator and fixed split are implemented; separate aggregate Census/ALFRED protocol is prepared. MM-020 approves the UCI-only 250,000-group ceiling; MM-021 governed invoice classification during the stopped source attempt; MM-022 makes exact uppercase `C` the sole cancellation prefix and classifies lowercase `c` and other single-ASCII-letter-plus-six-digit forms as unverified. Since both MM-021 classes were excluded before grouping, MM-022 changes aggregate classification counts only and cannot reduce product-day groups. The real-source call applied MM-021, exceeded the cap and failed closed with no projection or metrics; MM-022 has synthetic regression coverage only. Keep the lane stopped under current scope; no chunking or larger cap. Source remains private until deletion deadline. |
 | M1B-02 | P0 | integrated (synthetic slice; M1b remains partial) | None | PR #52/#62 integrate bounded CSV/workbook staging, review-only metadata, calendar/release checks and as-of selection into a deterministic synthetic evidence flow. This completes the fictional slice only; no approved real-source ingestion or publisher availability proof is included. |
-| M1B-03 | P0 | blocked | M1B-01, M1B-02, B-01, B-02 | PR #65 contains the UCI #352 adapter, path-free manifest and metadata preflight. Current MM-022 rule excludes lowercase `c` and other single-ASCII-letter-plus-six-digit prefixes as unverified; only exact uppercase `C` marks cancellation. The bounded source attempt used MM-021 and exceeded 250,000 groups. No complete projection/evaluation exists; MM-022 was not applied to real data. Do not rerun or partition the source without a new scope decision. Keep Census/ALFRED acquisition separate and pending its own exact source/vintage review. |
+| M1B-03 | P0 | blocked | M1B-01, M1B-02, B-01, B-02 | PR #65 contains the UCI #352 adapter, path-free manifest and metadata preflight. Current MM-022 rule excludes lowercase `c` and other single-ASCII-letter-plus-six-digit prefixes as unverified; only exact uppercase `C` marks cancellation. Since lowercase `c` was also excluded under MM-021, the clarification does not change accepted sales rows or the 250,000-group overflow. No complete projection/evaluation exists; MM-022 was not applied to real data. Do not rerun or partition the source without a new scope decision. Keep Census/ALFRED acquisition separate and pending its own exact source/vintage review. |
 | M1C-01 | P0 | integrated (synthetic slice) | M1B-02 | PR #53/#62 integrate the offline baselines and retail release backtests into a reproducible synthetic evaluation entrypoint with aligned eligible targets, fixed splits and per-origin receipts. No empirical forecast claim is included. |
 | M1C-02 | P0 | covered_by_existing_code | M1C-01 | Existing seasonal-naive and trailing-mean baselines already share eligible targets; do not add a third candidate without a justified need. Final acceptance remains synthetic until M1C-03 is approved. |
 | M1C-03 | P0 | blocked | M1B-03, M1C-02, B-02 | Run approved empirical holdout, record actual MAE/RMSE/zero-safe metrics, coverage, abstention and model card; no invented accuracy. |

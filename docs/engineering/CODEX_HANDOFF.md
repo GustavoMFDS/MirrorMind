@@ -263,8 +263,11 @@ IDs continue through the projection, exact uppercase `C` is cancellation, and
 lowercase `c` plus other single-ASCII-letter-plus-six-digit IDs are excluded before
 sales aggregation under one aggregate-only class count. Other formats fail
 closed; generic projection remains unchanged. The real-source attempt used
-MM-021 and was not repeated after this clarification. MM-022 does not raise
-MM-020's 250,000-group ceiling.
+MM-021 and was not repeated after this clarification. Because MM-021 also
+excluded lowercase-`c` rows before aggregation, MM-022 only changes aggregate
+classification counts; it cannot reduce the product-day group count or
+resolve the existing cap failure. MM-022 does not raise MM-020's 250,000-group
+ceiling.
 
 Current code-bearing commit for [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65):
 `94c60b6ee20adbb5023e11aeded9b8fff90b1176`, on
