@@ -17,23 +17,24 @@ and [46062900063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/4606290
 Earlier PR #66/#67 local receipts remain separately recorded. No paid usage or
 check/protection change occurred.
 
-PR #65 remains open and separate; use its live metadata for the latest
-published head. Local branch
-`codex/uci352-pilot-20261126` includes current main `2a7641b` through the
-ancestry-preserving merge `0182eba`, plus first-round fixes and the latest
-`6df8af1` structural correction. The immediately preceding documentation
-candidate `53a9322` passed 960 tests, zero skips and six checks before `f6e10e0`
-was merged; it does not validate this newer combined tree. See
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for that receipt. Re-run the exact
-current-head gate before publication and record its SHA and receipt in the PR
-discussion; older receipts do not transfer.
+PR #65 remains open; use its live metadata for the latest published head and
+checks. Local branch `codex/uci352-pilot-20261126` includes current main
+`2a7641b` through ancestry-preserving merge `0182eba`, plus the first-round
+parser fixes and `6df8af1` correction. Exact implementation head
+`35bff7824970ebc511e05add240088b2ffd74057` passed 968 tests, zero skips and all
+six local checks with the reviewed WorldKernel pin; its receipt is recorded in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). All seven official checks also
+passed on that exact PR head. Comment
+[7227559961](https://github.com/GustavoMFDS/MirrorMind/pull/65#issuecomment-7227559961)
+responds to the latest independent parser finding. Any later tracked change
+requires its own exact-head gate and PR check observation; do not transfer the
+`35bff78` receipts to a descendant.
+
 Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
 types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
 inline payloads. The focused UCI workbook unit and integration suites passed 75
-tests; the 10 second-round structural cases passed. Prior exact-head gate
-receipts are local only and do not validate the current combined tree. Gate
-the exact current head before publication; report the SHA and receipt on PR
-#65. Verify Actions on the published PR head separately.
+tests, including the second-round structural cases. The PR awaits independent
+review; it is not merged.
 
 The approved 250,000-cap UCI #352 source call stopped above its product-day
 group limit and returned no projection or metrics. The UCI-only
@@ -64,7 +65,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | --- | --- | --- |
 | PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
-| PR #65 | Open, non-draft; live PR metadata is the authority for its published head and checks. Local merge `0182eba` includes current main; `6df8af1` contains the latest parser-review fix. See the latest PR discussion entry for exact local-gate evidence. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PR #65 | Open, non-draft; implementation head `35bff78` passed 968 local tests, zero skips, six local checks and all seven official checks. The latest PR comment responds to the parser review; confirm live metadata for any later documentation-only head. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
 | PRs #66–#76 | Closed as merged. #66/#67 consolidate M2-01, G-01, ENG-02 and Census; #68–#74 advance the public portfolio/release evidence; #75 hardens CI; #76 adds security and community workflows. | No source/data or WorldKernel rights grant follows from these changes; no production readiness follows. |
 
 

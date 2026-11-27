@@ -10,27 +10,25 @@
   exact-main check runs succeeded on `2a7641b` (test, two compatibility jobs,
   catalog and two analyses). The owner still authorizes zero paid usage.
   Preserve protections and distinguish local gate receipts from Actions.
-- Continue PR #65 only. Read its live metadata for the currently published
-  head and checks. Local merge commit
+- Continue PR #65 review follow-up only. Read its live metadata for the
+  currently published head and checks. Local merge commit
   `0182ebad70b2098e06741e83139dc14f87cb366f` preserves current `main`
   (`2a7641b`) as its second parent. Latest local code commit `6df8af1`
   rejects repeated selected-cell `<v>` payloads and ambiguous
   `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
   and excluded `Description` handling remain covered. The 10 focused second-
-  round cases and 75 UCI workbook unit/integration tests passed. Exact
-  pre-latest-main head `53a932295c4c981590e6bee105247a65a357eba6` passed 960
-  tests, zero skips and six checks with the reviewed WorldKernel pin; that
-  receipt does not cover `2a7641b`. Run the gate on the latest-main combined
-  tree, publish normally and verify the actual PR head.
-- Reconcile the shared docs and evidence map after the completed
-  ancestry-preserving merge, run the complete six-check gate with the exact
-  reviewed WorldKernel pin, then publish normally and report the exact
-  SHA/receipt for independent review. Do not merge #65 or resolve the
-  independent review comments.
-- Do not reread the private UCI workbook. Its sole authorized source call
-  stopped above 250,000 product-day groups without a projection or metric.
-  Do not retry, partition, increase the cap or retrieve Census values. Keep
-  synthetic tests only and preserve the `2026-12-26` deletion deadline.
+-  round cases and 75 UCI workbook unit/integration tests passed. Published PR
+  head `35bff7824970ebc511e05add240088b2ffd74057` then passed the full local
+  gate (968 tests, zero skips, six checks) with the reviewed WorldKernel pin;
+  all seven observed GitHub checks passed on that exact head. See the exact
+  receipt and run links in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+  Reply `7227559961` addresses review finding `7226309300`; obtain independent
+  re-review. If documentation changes advance the branch, record their own
+  exact-head gate and checks; never transfer the `35bff78` evidence. Do not
+  merge #65 or mark review comments resolved.
+- Keep parser changes synthetic-test-only. No more UCI source processing is
+  authorized; preserve the `2026-12-26` deletion deadline. Do not begin a
+  disconnected feature while #65 awaits review.
 - M1 synthetic workflow is integrated; M1 empirical and production acceptance
   remain incomplete. Keep the queue stable until #65 review; afterward resume
   existing M2-02/G-02 work only in approved offline scopes. No new unrelated
@@ -50,14 +48,18 @@ merge decision recorded in the integration PR. No actual Census data or
 FRED/ALFRED access is authorized; the direct original Census artifact
 proposal requires separate owner decisions under B-01/B-02.
 
-PR #65 is still separate: the UCI source was privately acquired within
+PR #65 remains separate: the UCI source was privately acquired within
 MM-017 through MM-022, but the attempt stopped above 250,000 product-day
-groups without scores. The duplicate-cell and error-cell parsing findings
-remain with Codex. No further source processing is authorized here.
-Preserve the 2026-12-26 deletion deadline. B-08 remains open with zero
-paid budget. M2-02 and G-02 may advance independently within their
-existing fictional/offline scopes. The dated branch/status records below
-are historical where inconsistent with this reconciliation and live PRs.
+groups without scores. The duplicate-cell, error-cell and ambiguous scalar
+payload findings have synthetic regressions; the latest response is recorded
+in comment `7227559961`. Published head `35bff78` passed its local gate and
+all seven observed exact-head GitHub checks, but still awaits independent
+re-review.
+No further source processing is authorized. Preserve the 2026-12-26 deletion
+deadline. Historical pre-start check diagnostics remain unexplained despite
+current green public checks; the zero-paid budget remains. The dated branch
+and status records below are historical where inconsistent with this
+reconciliation and live PRs.
 
 ## Historical integration candidate - 2026-11-27
 

@@ -10,12 +10,14 @@ check runs completed successfully: `test`, `compatibility (3.12)`,
 [46062899967](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899967)
 and [46062900063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062900063).
 This verifies workflows on that exact commit; it does not transfer to a PR's
-different head. The current PR #65 candidate still needs its own
-required-check observation after publication. The exact six-check local gate
-remains complementary, especially for the optional private pinned WorldKernel
-extra, absent from standard public workflows. No paid usage, spending-limit
-change or protection change is authorized. Prior quota and pre-start failures
-remain historical; their causes are not inferred from later success.
+different head. PR #65 head
+`35bff7824970ebc511e05add240088b2ffd74057` also received successful results
+for all seven observed GitHub checks; see the PR-specific receipt below. The
+exact six-check local gate remains complementary, especially for the optional
+private pinned WorldKernel extra, absent from standard public workflows. No
+paid usage, spending-limit change or protection change is authorized. Prior
+quota and pre-start failures remain historical; their causes are not inferred
+from later success.
 
 The repository owner authorized a **temporary** six-check local alternative
 to GitHub Actions while official checks were unavailable. Keep it available
@@ -29,8 +31,23 @@ The ancestry-preserving merge of current main `2a7641b` is complete at
 `0182eba`. The previous local receipt predates this latest main; it does not
 validate the newly combined tree. Every candidate needs the full six-check
 local gate on the exact synchronized, documentation-inclusive SHA before
-publication. Record that SHA, receipt and later official check state in the
-latest PR #65 discussion entry. Successful main checks do not transfer.
+publication. Published head `35bff7824970ebc511e05add240088b2ffd74057`
+passed at `2026-11-27T20:26:36.841691Z`: 968 tests, zero skips and all six
+local checks, with reviewed WorldKernel `0.0.1` at source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-35bff7824970ebc511e05add240088b2ffd74057.json`.
+All seven observed GitHub checks succeeded on that exact head: `test` and
+Python 3.12/3.13 compatibility in
+[run 46063704228](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46063704228),
+`symbol-catalog` in
+[run 46063704465](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46063704465),
+`Analyze (actions)` and `Analyze (python)` in
+[run 46063699783](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46063699783),
+and `CodeQL` at
+[run 140723990206](https://github.com/GustavoMFDS/MirrorMind/runs/140723990206).
+These results do not transfer to descendants; any
+later tracked change requires a new exact-head gate and check observation.
+PR #65 remains open pending independent review, not merged.
 
 ### Pre-latest-main synchronized candidate receipts
 
