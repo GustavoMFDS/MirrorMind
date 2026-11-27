@@ -2,8 +2,9 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `7efced55a6821bb1de84190eab5ab3db654da4b8`, the normal
-PR #80 merge after PR #79's curated portfolio/index update. PR #77
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal
+PR #81 merge after PR #80's synthetic benchmark/release preparation and PR
+#79's curated portfolio/index update. PR #77
 integrated at `540c47411898cc820ac651c19430017ecd8c20fe` over PR #65 merge
 `51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #77
 (`df7c450523a8f3475e0a8161936f6ac80e705720`) adds measured public
@@ -65,23 +66,33 @@ Continue existing fictional/offline M2-02/G-02 work independently.
 PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`. Its exact head
 `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970 tests, zero skips and
 six local checks; seven observed GitHub Actions jobs succeeded, with the
-main-only deployment job skipped. PR #80 merged normally at current `main`
+main-only deployment job skipped. PR #80 merged normally at
 `7efced55a6821bb1de84190eab5ab3db654da4b8`. Its exact head
 `e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips and
 six local checks. Five PR workflows were observed: eight jobs succeeded and
 the main-only Pages deployment and release-rehearsal jobs were skipped by
 their conditions. The release rehearsal only prepares a synthetic bundle;
-no tag or release is created. Combined-status queries for both merge commits
-and current `main` returned no entries; keep PR-head evidence scoped to those
-heads. See [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for run links and
-timestamps.
+no tag or release is created. Combined-status queries for merge commits
+`5100ebf` and `7efced5`, including then-current `main` `7efced5`, returned no
+entries; keep PR-head evidence scoped to those heads. See
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for run links and timestamps.
 
-**Current main:** `7efced55a6821bb1de84190eab5ab3db654da4b8`, descendant of
+PR #81 / REX-15 merged normally at `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`.
+Its exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977 tests,
+zero skips and six local checks; nine applicable jobs succeeded across five
+official workflows, including package and non-root container smoke, with
+main-only deployment and release rehearsal skipped. Local Docker was
+unavailable for that authoring run, so only the official CI container-smoke
+job is evidence. Combined-status queries for the exact PR head and merge SHA
+returned no individual entries.
+
+**Current main:** `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, descendant of
 PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
-PRs #68–#80 through their existing merges, including MM-024 (#78), the curated
+PRs #68–#81 through their existing merges, including MM-024 (#78), the curated
 portfolio/index (#79) and synthetic benchmarks/read-only release preparation
-(#80). WorldKernel and dataset terms remain separate.
+(#80), and developer onboarding/container smoke (#81). WorldKernel and dataset
+terms remain separate.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -95,7 +106,8 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #78 (MM-024 UCI documentation) | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. Existing MM-022 code and synthetic tests implement the approved classification. | No empirical UCI metric: the approved call stopped above the 250,000-group ceiling. Keep source-processing stop and deletion deadline. |
 | PR #79 / REX-11/12 | Merged normally at `5100ebf`; exact head `b5c1bcc` passed 970 tests, six local checks and seven observed successful workflow jobs; guarded deployment was skipped. | Static site and curated index only; no live model, source processing or automatic deployment. |
 | PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
-| M2-02 retrieval evaluation | In progress on `codex/m2-02-retrieval-evaluation-20261127`, synchronized with current main `7efced5` by merge `f74d286`; implementation and docs are drafted. Focused retrieval suites pass 22 tests and Ruff/catalog/atlas/evidence/capability checks pass. | Run the clean integrated exact-head six-check local gate and publish for independent review. Local mypy is absent; strict retrieval typing awaits the official quality job. Metrics remain fictional and experimental. |
+| PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
+| M2-02 retrieval evaluation | In progress on `codex/m2-02-retrieval-evaluation-20261127`, ancestry-synced with main `10b94c9` by merges `f74d286` and `0b4881f`; malformed/oversized corpus regressions and evidence docs are updated. Focused retrieval suites pass 22 tests; Ruff/catalog/atlas/evidence/capability checks pass. | Run the clean integrated exact-head six-check local gate and publish for independent review. Local mypy is absent; strict typing awaits this candidate's official quality job. Metrics remain fictional and experimental. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

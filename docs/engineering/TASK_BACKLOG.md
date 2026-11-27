@@ -2,7 +2,7 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `7efced55a6821bb1de84190eab5ab3db654da4b8`, PR #80's normal
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, PR #81's normal
 merge after PR #79. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
 with the curated portfolio/index update; PR #80 adds bounded synthetic
 benchmarks and read-only release preparation. PR #77 merged normally at
@@ -29,6 +29,15 @@ records are linked in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Combined
 status for current merge `7efced5` returned no entries. The benchmark is
 observational, and release preparation does not create or authorize a release.
 
+PR #81's exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977
+tests, zero skips, and six local checks. Nine applicable jobs succeeded across
+five workflows: docs catalog, public site build, quality/package/container
+smoke, API test and Python 3.12/3.13 compatibility, and synthetic research
+benchmark. Main-only deployment and release rehearsal were skipped.
+Combined-status queries for the PR head and merge `10b94c9` returned no
+entries; preserve official workflow evidence at its exact head in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+
 PR #77 resolves the MM-009 wording follow-up alongside REX-09/10. The active
 candidate now records the owner's MM-024 UCI clarification. Its branch
 `codex/mm009-mm023-reconcile-20261127` is ancestry-merged with current main
@@ -49,11 +58,11 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `7efced55a6821bb1de84190eab5ab3db654da4b8`. PR #52–#59 were
+**Baseline:** main `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
-#77–#80 are integrated. The portfolio/index and synthetic benchmark/release
-preparation updates are present. Merged branches preserve ancestry and must
-not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
+#77–#81 are integrated. The portfolio/index, synthetic benchmark/release
+preparation and developer-onboarding updates are present. Merged branches
+preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
@@ -64,7 +73,7 @@ not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 | PR #78 / MM-024 UCI policy | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. | Preserve the no-reread/no-partition/no-cap-increase stop and snapshot deletion deadline. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| M2-02 retrieval evaluation | In progress on `codex/m2-02-retrieval-evaluation-20261127`, synchronized with current main `7efced5` by merge `f74d286`; implementation and documentation are drafted. Focused retrieval suites passed 22 tests; Ruff, catalog, atlas, evidence and capability checks passed. | Run the six-check full local gate on the clean integrated exact head, publish a reviewable PR, then inspect its official checks. Local mypy is absent from the environment; do not report strict typing until the official quality job verifies the branch. |
+| M2-02 retrieval evaluation | In progress on `codex/m2-02-retrieval-evaluation-20261127`, ancestry-synced with current main `10b94c9` by merges `f74d286` and `0b4881f`. The evaluator rejects empty/oversized corpora and unsupported document objects; focused retrieval suites pass 22 tests and Ruff/catalog/atlas/evidence/capability checks pass. | Run the six-check full local gate on the clean integrated exact head, publish a reviewable PR, then inspect its official checks. Local mypy is absent; do not claim strict typing until this candidate's official quality job verifies the branch. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26

@@ -2,8 +2,9 @@
 
 ## Current baseline and recent merged PR heads - 2026-11-27
 
-Current `main` is `7efced55a6821bb1de84190eab5ab3db654da4b8`, normal merge of
-[PR #80](https://github.com/GustavoMFDS/MirrorMind/pull/80) after
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
+[PR #81](https://github.com/GustavoMFDS/MirrorMind/pull/81) after
+[PR #80](https://github.com/GustavoMFDS/MirrorMind/pull/80) and
 [PR #79](https://github.com/GustavoMFDS/MirrorMind/pull/79) at
 `5100ebf42265e01b65856e7ba91b659ff1b487c7`. PR #79 head
 `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970 tests, zero skips and
@@ -33,10 +34,31 @@ quality/package in
 and Python API test/compatibility in
 [46075726059](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726059).
 The main-only Pages deployment and manual release rehearsal were skipped by
-their workflow conditions. Combined-status queries for both PR heads, both
-merge commits and current `main` returned no individual entries, so preserve
-the evidence at each exact PR head. These results do not transfer to the M2-02
-candidate.
+their workflow conditions. Combined-status queries recorded for the PR #79/#80
+heads, merge commits `5100ebf` and `7efced5`, and then-current `main` `7efced5`
+returned no individual entries, so preserve the evidence at each exact PR
+head. These results do not transfer to the M2-02 candidate.
+
+PR #81 exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977 tests,
+zero skips and six local checks; its receipt is
+`%TEMP%/mm-rex-developer-experience.json` at
+`2026-11-27T22:29:07.300466+00:00`. Five official workflows completed:
+documentation catalog
+([46076949626](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949626)),
+public site
+([46076949610](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949610)),
+repository quality/package/container smoke
+([46076949702](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949702)),
+Python API test and compatibility
+([46076949561](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949561)),
+and research benchmark
+([46076949612](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949612)).
+Nine applicable jobs succeeded. Guarded deployment and release-rehearsal jobs
+were skipped by their conditions. Combined-status queries for PR head `41e6db8`
+and merge/current-main `10b94c9` returned no individual entries, so retain
+workflow evidence only for the exact PR head. This result does not validate the
+M2-02 candidate; its clean exact-head six-check gate and PR workflows remain
+required.
 
 ## Current public CI baseline - 2026-11-27
 

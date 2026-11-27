@@ -2,8 +2,8 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `7efced55a6821bb1de84190eab5ab3db654da4b8`, after the
-  normal PR #80 merge. PR #79's portfolio/index update merged at `5100ebf`;
+- Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal PR #81
+  merge after PR #80 (`7efced5`). PR #79's portfolio/index update merged at `5100ebf`;
   PR #77 merged at `540c474`; nine official
   contexts passed on exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`.
   PR #78 / MM-024 merged normally at `291562a`; its final head
@@ -20,6 +20,12 @@
   [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); merge SHA `7efced5` has no
   combined-status entries. PR #80's benchmark is synthetic and release prep
   does not create a release.
+- PR #81 / REX-15 exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc`
+  passed 977 tests, zero skips and six local checks. Five official workflows
+  completed with nine applicable jobs successful; main-only deployment and
+  release rehearsal were skipped. The CI container smoke passed, although the
+  developer's local Docker daemon was unavailable. The merged `10b94c9` SHA
+  has no combined-status entries; keep evidence scoped to the PR head.
 - The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
   only uppercase `C` plus six digits means cancellation; other single ASCII
   letters plus six digits are excluded before sales grouping and represented
@@ -31,14 +37,16 @@
   changes an exclusion label, not the set of sales rows or group cardinality.
   Do not reread, chunk, sample or raise the cap. Preserve local snapshot
   deletion by `2026-12-26`; no empirical score is available.
-- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`. It includes
-  commit `fc43935` and ancestry-preserving merge `f74d286` of current main
-  `7efced5`. Its scope is a bounded offline evaluator for the existing
+- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`. Its ancestry
+  includes feature commit `fc43935`, merge `f74d286` of main `7efced5`, and
+  merge `0b4881f` of current main `10b94c9`. Its scope is a bounded offline evaluator for the existing
   fictional M2-01 index. It must keep `evidence_and_rag` planned and local
   retrieval experimental; no route, auth, real data, persistence or RAG claim.
   Source walkthrough, debugging/learning, evidence/atlas/catalog updates are
   drafted and all five focused static checks pass; the targeted retrieval
-  suites pass 22 tests. The clean exact-head six-check gate remains mandatory
+  suites pass 22 tests. Regression coverage now rejects empty/oversized
+  corpora and unsupported document objects before scoring. The clean
+  exact-head six-check gate remains mandatory
   before publishing. Local mypy is not installed; rely on the official quality
   job for strict retrieval typing and record its exact head/status.
 - Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
