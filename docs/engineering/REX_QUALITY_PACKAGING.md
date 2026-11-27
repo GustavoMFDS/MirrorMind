@@ -21,6 +21,17 @@ a maintenance change. The retrieval module passed strict typing (4 files);
 make that narrow scope a CI check and expand only after reviewed fixes.
 Track full-package typing debt separately.
 
+## Integration status
+
+PR #77 merged normally into `main` at `540c47411898cc820ac651c19430017ecd8c20fe`.
+The reviewed PR head was `df7c450523a8f3475e0a8161936f6ac80e705720`; all nine
+observed official contexts succeeded on that exact head, including the quality
+and package jobs. The merge-SHA combined-status query returned no individual
+entries; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for that distinction.
+No distribution was uploaded. The exact coverage/type/package measurements
+above describe the PR's reviewed candidate based on main `51c90d2`, not a new
+measurement of merge SHA `540c474`.
+
 ## Reproduction
 
 ```bash

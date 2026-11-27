@@ -2,42 +2,38 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is merge commit `51c90d2601b2fba16b03a13a8723df0a54437d92`.
-It includes PR #65 while preserving pre-merge main `2a7641b` and reviewed PR
-head `77b3afd` as parents. The active main ruleset required a PR and successful
-`test`/`symbol-catalog` checks; no bypass was configured or used. All six
-observed checks succeeded on exact main `51c90d2` across runs 46066346279,
-46066346334 and 46066346498. The post-merge full local gate also passed 968
-tests, zero skips and six checks with the exact reviewed WorldKernel pin.
-Receipts and links are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
+PR #77 merged normally over #65 at `540c474`, preserving reviewed PR head
+`df7c450523a8f3475e0a8161936f6ac80e705720`. Nine observed official contexts
+passed on that exact PR head: test, Python 3.12/3.13 compatibility,
+symbol-catalog, both CodeQL analyses, repository quality, package and CodeQL.
+The combined-status query for merge commit `540c474` returned no individual
+entries; do not report PR-head checks as exact-merge checks. PR #77's separate
+local report records 968 tests, zero skips, six local checks and the quality /
+package measurements. Details are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md)
+and [REX_QUALITY_PACKAGING](REX_QUALITY_PACKAGING.md).
 
-PR #65 is closed as merged. Independent review accepted the bounded synthetic
-reader and confirmed no source reread, projection or metrics; see review
-comment [7227890501](https://github.com/GustavoMFDS/MirrorMind/pull/65#issuecomment-7227890501).
-That review also found MM-009 still lists licensing as deferred despite MM-023.
-The owner requested an independent documentation-only reconciliation PR; its
-branch is `codex/mm009-mm023-reconcile-20261127`. The current scope also
-records MM-024's UCI invoice clarification and unchanged source-group limit;
-it introduces no parser code change.
+PR #77 resolves the MM-009 wording follow-up alongside REX-09/10. The active
+candidate now records the owner's MM-024 UCI clarification. Its branch
+`codex/mm009-mm023-reconcile-20261127` is ancestry-merged with current main
+at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. No parser code is needed:
+MM-022 already implements the approved UCI-only classification, with synthetic
+regressions for supported and rejected formats, aggregate-only exclusion
+counts and redaction. This increment updates the decision, dataset/source
+records, status and learning material.
 
-The approved UCI #352 processing attempt stopped above 250,000 product-day
-groups without a projection, complete exclusion count or metrics. The owner
-has now clarified the conservative invoice classification in MM-024; the
-existing MM-022 reader and synthetic regressions already implement it. Since
-the previous call excluded the same cancellation and unverified-prefix rows
-before grouping, that clarification changes only aggregate labels/counts and
-does not reduce product-day cardinality. Do not chunk, sample or raise the
-cap; no empirical result exists. Preserve the snapshot deletion deadline
-`2026-12-26`. B-01/B-02 and production acceptance remain open. M1's synthetic
-end-to-end path is integrated, but M1 as a whole remains incomplete. Once the
-MM-009/024 documentation PR is review-ready, continue existing M2-02/G-02
-tasks within their approved fictional/offline scopes without waiting for
-external review.
+The UCI #352 source call exceeded the owner-approved 250,000 product-day group
+ceiling before returning a complete projection. It produced no complete
+exclusion count or metrics. MM-024 reclassifies a subset of rows already
+excluded before sales grouping, so accepted rows and cardinality do not change.
+Do not retry, chunk, sample or raise the cap under this decision. Preserve
+snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
+M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #52–#59
-were incorporated through #62; #60/#61/#64 through #66; Census #63 through
-#67; PRs #68–#76 are also integrated. Merged branches preserve ancestry and
-must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
+**Baseline:** main `540c47411898cc820ac651c19430017ecd8c20fe`. PR #52–#59 were
+incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
+PRs #68–#77 are integrated. Merged branches preserve ancestry and must not be
+replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
@@ -45,10 +41,11 @@ must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| Post-#65 documentation reconciliation | In progress on `codex/mm009-mm023-reconcile-20261127`, in response to independent PR #65 review and the latest owner clarification. Reconcile MM-009/MM-023 and document MM-024 without changing parser contracts or source bounds. | Publish as an independent docs-only PR, run the exact-head local gate, verify its own GitHub checks and obtain independent review. |
-| UCI empirical pilot | Stopped at the approved 250,000-group bound; no projection, complete exclusion counts or metrics. MM-024 confirms the existing conservative UCI-only classification; the prior attempt's inclusion/exclusion set and group count are unchanged. | Preserve deletion deadline and synthetic test coverage. The failed bound cannot be overcome by the classification clarification; any new sampling/partition/bound design needs its own approval. |
-| B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
-| M2-02 retrieval evaluation | Planned; M2-01 retrieval is integrated through #66. | Start after the documentation PR is review-ready; do not wait for external review. Use fictional/authorized fixtures within existing scope and measure citation support, lineage and abstention. |
+| MM-024 UCI policy reconciliation | Documentation candidate is ancestry-merged with `540c474`; existing adapter/tests already satisfy the owner decision. | Run exact-head full local gate, publish an independent docs-only PR, verify official checks for its exact head and request independent review. |
+| UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
+| B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
+| M2-02 retrieval evaluation | M2-01 retrieval is integrated through #66; evaluation work is independent of the source-data blockers. | Proceed with the existing fictional/offline test set; measure citation support, lineage, access-constraint adherence and abstention. Add the behavior walkthrough, tests and evidence-map entry required by the backlog. |
+| G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
 

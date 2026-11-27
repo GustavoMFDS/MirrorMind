@@ -2,39 +2,35 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is merge commit `51c90d2601b2fba16b03a13a8723df0a54437d92`;
-  it preserves pre-merge main `2a7641b` and reviewed PR #65 head `77b3afd` as
-  parents. PR #65 was accepted and integrated through the normal protected PR
-  path. Exact-main official checks `test`, compatibility 3.12/3.13,
-  `symbol-catalog` and both analyses succeeded (runs `46066346279`,
-  `46066346334`, `46066346498`). The exact-main local gate also passed 968
-  tests, zero skips and six checks with WorldKernel pinned to reviewed source
-  commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt and limitations
-  are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). No paid use or protection
-  change occurred.
-- The independent PR #65 review accepted the bounded synthetic reader and
-  explicitly did not accept empirical success, a retry or a wider bound.
-  It found MM-009 still described licensing as deferred despite accepted
-  decision MM-023. Continue the separate documentation reconciliation on
-  `codex/mm009-mm023-reconcile-20261127`; publish its own exact-head gate and
-  checks, and leave it for independent review.
-- On 2026-11-27 the owner clarified the UCI-only invoice rule: exact six-digit
-  identifiers enter normal processing, uppercase `C` plus six digits is the
-  cancellation class, and every other one-letter ASCII prefix plus six digits
-  is excluded before sales aggregation under an aggregate category count.
-  Original identifiers are never retained; all other formats fail closed.
-  Existing MM-022 code and synthetic regressions already implement that rule.
-  This clarification does not change accepted rows or product-day cardinality
-  from the prior stopped call, which already excluded cancellation and
-  unverified-prefix rows before grouping. The 250,000-group limit remains;
-  do not chunk, sample or widen it. Preserve source deletion deadline
-  `2026-12-26`, and do not claim metrics while no complete projection exists.
-- M1's synthetic end-to-end path is integrated, while empirical and production
-  acceptance remain incomplete. Once the MM-009/024 maintenance PR is ready
-  for review, continue existing approved offline work (including M2-02/G-02)
-  without waiting for external review, plus source-independent tasks. Keep the
-  zero-paid budget, exact validation receipts and source-rights/temporal
-  boundaries current.
+- Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
+  PR #77 merged normally over PR #65 main `51c90d2`. Nine observed official
+  contexts passed on exact PR head `df7c450523a8f3475e0a8161936f6ac80e705720`;
+  a combined-status query for merge commit `540c474` returned no individual
+  entries, so keep the evidence scoped to the reviewed PR head. PR #77 adds
+  public coverage measurement, scoped strict typing, wheel packaging smoke
+  tests and CI. Its exact-head local report also records 968 tests, zero skips
+  and six local checks. No paid services or protection changes were used.
+- PR #77 reconciles MM-009 with accepted MM-023. Continue the separate MM-024
+  documentation candidate on `codex/mm009-mm023-reconcile-20261127`, now
+  ancestry-merged with `540c474` at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`.
+  The branch changes no parser contract; run the exact-head local gate before
+  publishing its independent docs-only PR.
+- The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
+  only uppercase `C` plus six digits means cancellation; other single ASCII
+  letters plus six digits are excluded before sales grouping and represented
+  by one aggregate unverified class; all other formats fail closed. Existing
+  MM-022 code and synthetic regressions already implement this, including
+  identifier redaction and unchanged generic-reader behavior.
+- The UCI source call stopped above the 250,000 product-day group ceiling
+  without a complete projection, full exclusion counts or metrics. MM-024
+  changes an exclusion label, not the set of sales rows or group cardinality.
+  Do not reread, chunk, sample or raise the cap. Preserve local snapshot
+  deletion by `2026-12-26`; no empirical score is available.
+- Proceed with existing source-independent M2-02/G-02 work after the docs
+  candidate is review-ready, without waiting for its review. Keep automated
+  tests synthetic, and keep Census source bytes, FRED/ALFRED and paid usage
+  prohibited under current B-01/B-02 and budget decisions. M1 synthetic
+  workflow is integrated; real-data and production acceptance remain open.
 
 
 ## Historical review reconciliation - 2026-11-27

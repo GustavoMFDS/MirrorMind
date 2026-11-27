@@ -2,28 +2,39 @@
 
 ## Current public CI baseline - 2026-11-27
 
-On current main `51c90d2601b2fba16b03a13a8723df0a54437d92`, all six GitHub
-check runs completed successfully: `test`, `compatibility (3.12)`,
-`compatibility (3.13)`, `symbol-catalog`, `Analyze (actions)` and
-`Analyze (python)` across runs
-[46066346279](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346279),
-[46066346334](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346334)
-and [46066346498](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346498).
-This verifies workflows on that exact commit; it does not transfer to a PR's
-different head. PR #65 head
-`35bff7824970ebc511e05add240088b2ffd74057` also received successful results
-for all seven observed GitHub checks; see the PR-specific receipt below. The
-exact six-check local gate remains complementary, especially for the optional
-private pinned WorldKernel extra, absent from standard public workflows. No
-paid usage, spending-limit change or protection change is authorized. Prior
-quota and pre-start failures remain historical; their causes are not inferred
-from later success.
+PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
+main `51c90d2`; reviewed PR head was
+`df7c450523a8f3475e0a8161936f6ac80e705720`. Nine official contexts completed
+successfully on that exact PR head: `test`, compatibility 3.12/3.13,
+`symbol-catalog`, `Analyze (actions)`, `Analyze (python)`, `quality`,
+`package` and `CodeQL`. Run links:
+[46066734014](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734014),
+[46066733925](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066733925),
+[46066734009](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734009),
+[46066732130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066732130)
+and [140733898759](https://github.com/GustavoMFDS/MirrorMind/runs/140733898759).
+The query for combined status on merge commit `540c474` returned no entries;
+do not conflate PR-head evidence with checks on the merge SHA.
 
-The repository owner authorized a **temporary** six-check local alternative
-to GitHub Actions while official checks were unavailable. Keep it available
-for exact-head review, private dependency validation or later check outages;
-it is **not** a claim that official workflows ran or passed. Every PR records
-the specific revision and local environment separately.
+The PR #77 body records its exact-head local gate: 968 tests, zero skips,
+six checks, one known warning and its temporary receipt
+`%TEMP%/mm-rex-quality-packaging-final.json` at
+`2026-11-27T20:53:44.941779+00:00`. Separate quality evidence measured
+89.77% statement coverage, 79.58% branch coverage and 87.09% combined coverage;
+strict typing passed on four retrieval files while whole-package mypy found
+62 diagnostic errors across 16 files; wheel/sdist build and clean installed
+wheel smoke passed on Python 3.13.5. These are PR-head results and do not
+validate the current documentation candidate. The pre-PR #77 exact-main
+`51c90d2` receipt passed 968 tests, zero skips and six local checks with the
+reviewed WorldKernel pin; historic receipt is described below.
+
+The owner-authorized temporary six-check local gate remains complementary for
+exact-head validation and the optional pinned WorldKernel dependency. It is
+not official Actions evidence. The PR #77 workflows ran on public GitHub-hosted
+runners without a paid service, budget increase or protection change. Historical
+pre-start failures remain unexplained and are not attributed to billing without
+evidence. Preserve zero paid usage and do not register a self-hosted runner or
+weaken, bypass or disable checks.
 
 ## PR #65 synchronized candidate
 

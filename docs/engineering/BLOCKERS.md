@@ -2,20 +2,17 @@
 
 ## Current B-08 reconciliation - 2026-11-27
 
-Standard GitHub-hosted checks are operational on public main
-`51c90d2601b2fba16b03a13a8723df0a54437d92`: six GitHub-hosted test,
-compatibility, catalog and analysis check runs completed successfully.
-Exact-main local validation also passed 968 tests, zero skips and six checks
-with the reviewed WorldKernel pin. See the
-[quality gate baseline](LOCAL_QUALITY_GATE.md). This verifies that exact main
-commit only; check the exact PR head separately after publication. Earlier
-pre-start failures remain historical, and their annotations do not establish
-which account condition caused them. The owner's zero-paid-budget constraint
-still applies. PR #65 was accepted and merged by the normal protected path;
-its independent reviewer verified all seven PR check contexts on exact head
-`77b3afd6aeb2a2fe7b27489f9b9c4aabb59b9a88`. No self-hosted runner is needed
-for these verified checks. The optional private WorldKernel dependency is
-validated separately by the exact-head local gate.
+GitHub-hosted Actions are operational on reviewed PR head
+`df7c450523a8f3475e0a8161936f6ac80e705720` for PR #77: all nine observed
+contexts succeeded, including the new `quality` and `package` jobs. See the
+[exact-head run record](LOCAL_QUALITY_GATE.md). PR #77 merged normally as
+`540c47411898cc820ac651c19430017ecd8c20fe`; the combined-status query for
+that merge SHA returned no individual entries, so the PR-head result is not
+presented as exact-merge CI. Earlier pre-start failures remain unexplained;
+their alternative account annotations do not establish a cause. The owner's
+zero-paid-budget decision still applies. No self-hosted runner was needed or
+created, and no required check or protection was bypassed. Continue using the
+local six-check gate for exact candidate and pinned WorldKernel validation.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
@@ -33,7 +30,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | Historical pre-start failures remain unexplained; their annotations list alternative account conditions without identifying one. Current public checks are operational: all six succeeded on exact main `51c90d2601b2fba16b03a13a8723df0a54437d92`, and all seven observed checks succeeded on PR #65 exact head `77b3afd6aeb2a2fe7b27489f9b9c4aabb59b9a88`. No self-hosted runner is needed for those verified checks. The owner still authorizes zero paid usage and no spending-limit increase. Historical cause diagnosis remains open, but it does not block current PR check evidence. | Preserve exact-head check/run evidence; if a future pre-start failure recurs, inspect its annotations and run state without inferring a cause. | GitHub account owner / repository administrator | Continue normal exact-head public checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change workflows/protections, bypass or weaken checks. |
+| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77's exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720` passed all nine observed official contexts, including `quality` and `package`, before normal merge `540c474`. The merge-SHA combined-status query returned no entries, so the PR-head result is not claimed for the merge commit. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for the observed current workflow. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 

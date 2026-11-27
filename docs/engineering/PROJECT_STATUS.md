@@ -2,56 +2,59 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is merge commit `51c90d2601b2fba16b03a13a8723df0a54437d92`,
-with parents `2a7641b88b0d97a239d44102d4da9497460f21d1` and reviewed PR head
-`77b3afd6aeb2a2fe7b27489f9b9c4aabb59b9a88`. PR #65 was integrated by a normal
-merge after the exact-head review accepted the bounded synthetic reader; the
-review did not accept empirical success or authorize a source retry. The owner
-later clarified the UCI-only invoice classification under MM-024; that
-clarification does not change the source bounds or resolve the group-limit
-failure. The active main ruleset prohibited deletion and non-fast-forward
-updates and required a PR plus `test` and `symbol-catalog`. No bypass was
-configured or used.
+Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`,
+integrating PR #77 over PR #65 merge
+`51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #77
+(`df7c450523a8f3475e0a8161936f6ac80e705720`) adds measured public
+coverage, strict typing for retrieval, wheel build/install smoke checks and
+repository quality CI; it also reconciles MM-009 with accepted decision MM-023.
+All nine observed official contexts on that exact PR head succeeded: `test`,
+compatibility 3.12/3.13, `symbol-catalog`, `Analyze (actions)`,
+`Analyze (python)`, `quality`, `package` and `CodeQL` (runs
+[46066734014](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734014),
+[46066733925](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066733925),
+[46066734009](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734009),
+[46066732130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066732130)
+and [140733898759](https://github.com/GustavoMFDS/MirrorMind/runs/140733898759)).
+This evidence applies to the PR head; the combined-status query for merge
+commit `540c474` returned no individual entries, so no exact-merge official
+result is claimed here. PR #77 merged normally; no protection or required check
+was bypassed, and no paid services were used.
 
-All six exact-main checks succeeded on `51c90d2`: `test`, Python 3.12/3.13
-compatibility, `symbol-catalog`, and `Analyze (actions/python)` across runs
-[46066346279](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346279),
-[46066346334](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346334)
-and [46066346498](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346498).
-The full local gate on the exact merge commit also passed 968 tests, zero
-skips and six checks with reviewed WorldKernel `0.0.1` at source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt is in
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). No paid usage or protection change
-occurred.
+The PR #77 exact-head report records a separate local gate of 968 tests, zero
+skips and six local checks, alongside its coverage, typing and package results;
+see [REX-09/10](REX_QUALITY_PACKAGING.md) and
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The pre-PR #77 exact-main gate at
+`51c90d2` also passed 968 tests, zero skips and six checks with reviewed
+WorldKernel `0.0.1` at source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Neither receipt validates the
+current documentation candidate; its exact-head gate is recorded separately.
 
-The bounded UCI reader now resides in `main`, with synthetic regressions for
-duplicate coordinates, unsupported/error cell types, malformed numeric
-encodings, repeated `<v>` payloads and mixed scalar/inline payloads. The
-approved 250,000-cap source call stopped above its product-day group limit and
-returned no projection, complete exclusion count or metrics. The owner's
-MM-024 clarification matches the existing MM-022 adapter behavior and its
-synthetic tests; because the previous call already excluded cancellation and
-unverified-prefix rows before grouping, it does not change the accepted
-product-day groups or overcome the limit. Do not chunk, sample or increase the
-cap. Preserve the private snapshot deletion deadline `2026-12-26`. B-01/B-02
+The bounded UCI reader and MM-024 classification are already implemented in
+main with synthetic regressions. The approved source call stopped above the
+250,000 product-day group limit without returning a projection, complete
+exclusion counts or metrics. The owner's MM-024 clarification preserves exact
+six-digit identifiers, treats only uppercase `C` plus six digits as
+cancellation, and excludes other one-letter ASCII prefixes before sales
+aggregation under one aggregate category. It changes exclusion labels, not
+accepted rows or group cardinality. Do not chunk, sample, reread or raise the
+cap. Preserve the local snapshot deletion deadline `2026-12-26`. B-01/B-02
 still gate empirical and point-in-time claims; B-04 remains open for broad
-service isolation and deployment acceptance. The zero-paid budget remains.
+service isolation and deployment acceptance.
 
-The independent review also found that MM-009 again lists licensing as
-deferred despite accepted decision MM-023. A separate documentation-only
-maintenance branch is reconciling the wording and current decision records; it
-does not change the Apache-2.0 decision or third-party terms. Once that PR is
-review-ready, continue existing M2-02/G-02 work within approved
-fictional/offline scopes without waiting on its review.
+The current documentation candidate is on
+`codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
+`ccd74d72b7d30cafaef10d36ac44857c629b6a08`. It updates the UCI policy record
+and status; it does not change parser contracts or reread the private workbook.
+The exact-head full local gate and receipt are the remaining publication
+precondition. After publication, continue existing fictional/offline M2-02/G-02
+work independently; do not wait for this documentation review.
 
-**Current main:** `51c90d2601b2fba16b03a13a8723df0a54437d92`, descendant of
+**Current main:** `540c47411898cc820ac651c19430017ecd8c20fe`, descendant of
 PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
-incorporated through #62; PR #60/#61/#64 are incorporated by #66; Census #63
-is incorporated by #67. PRs #68–#71 update the public portfolio and original
-project license; #72 adds an offline synthetic report, #73 prepares the source
-alpha release, #74 records repository excellence/inventory, #75 hardens
-public CI, and #76 establishes security/community workflows. WorldKernel and
-dataset terms remain separate.
+incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
+PRs #68–#76 through their existing merges; PR #77 establishes REX-09/10 quality
+and package checks. WorldKernel and dataset terms remain separate.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -60,10 +63,9 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | --- | --- | --- |
 | PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
-| PR #65 | Closed as merged at `51c90d2601b2fba16b03a13a8723df0a54437d92`; merge parents preserve current pre-merge main and reviewed head `77b3afd`. Exact integrated main passed 968 local tests, zero skips, six checks and all six observed main checks. | Reader accepted within bounded synthetic scope. UCI attempt remains stopped above 250,000 groups; no projection or metric. MM-024 clarifies classification but does not change this failure. Preserve `2026-12-26` deletion deadline. |
-| MM-009 / MM-023 documentation reconciliation | In progress on `codex/mm009-mm023-reconcile-20261127`, per independent review comment [7227890501](https://github.com/GustavoMFDS/MirrorMind/pull/65#issuecomment-7227890501). | Restore the accepted original-project license cross-reference while retaining separate production, hosting, integration and third-party-rights gates; publish as independent docs-only PR. |
-| PRs #66–#76 | Closed as merged. #66/#67 consolidate M2-01, G-01, ENG-02 and Census; #68–#74 advance the public portfolio/release evidence; #75 hardens CI; #76 adds security and community workflows. | No source/data or WorldKernel rights grant follows from these changes; no production readiness follows. |
-
+| PR #65 | Closed as merged at `51c90d2601b2fba16b03a13a8723df0a54437d92`; exact integrated main passed 968 local tests, zero skips and six checks. | Reader accepted within bounded synthetic scope. UCI attempt remains stopped above 250,000 groups; no projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PR #77 | Closed as merged at `540c47411898cc820ac651c19430017ecd8c20fe`; nine official contexts succeeded on exact reviewed head `df7c450`. | Quality checks measure public coverage, strict retrieval typing and packaging. No release upload, private dependency change, empirical result or production readiness. |
+| MM-024 UCI documentation | Candidate records the current approved policy on `codex/mm009-mm023-reconcile-20261127`; existing MM-022 code and synthetic tests already implement the classification. | Exact-head local gate and independent review remain pending. The 250,000-group stop still prevents any UCI metric. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted
