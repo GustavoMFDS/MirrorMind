@@ -16,10 +16,10 @@ Zero paid services; preserve Codex's active checkout and source permissions.
 | REX-08 | Labels and milestones | Ten labels and five milestones confirmed; PR #76 |
 | REX-09 | Coverage and static analysis | Integrated via PR #77; full-package typing debt remains |
 | REX-10 | Packaging and reproducibility | Integrated via PR #77; clean wheel smoke passed |
-| REX-11 | Static Pages demo | Candidate built; deployment evidence pending |
-| REX-12 | Documentation portal | Curated bilingual index candidate; full rendered docs deferred |
-| REX-13 | Reproducible benchmarks | Proposed |
-| REX-14 | Release automation | Proposed |
+| REX-11 | Static Pages demo | Published from 5100ebf4; PR #79 and deployment 46072981620 |
+| REX-12 | Documentation portal | Curated public index online; full rendered docs deferred |
+| REX-13 | Reproducible benchmarks | Fixed synthetic benchmark candidate |
+| REX-14 | Release automation | Read-only preparation candidate; publication manual |
 | REX-15 | Developer experience review | Proposed |
 
 See [branch audit](REX_BRANCH_AUDIT.md) and [CI and governance plan](REX_CI_GOVERNANCE.md). REX-01/02 acceptance is recorded
