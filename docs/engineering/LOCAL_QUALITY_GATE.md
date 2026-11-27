@@ -298,3 +298,22 @@ with failure; job steps/logs and combined statuses were unavailable through
 the configured connector. The precise cause is undetermined. This local gate
 does not imply Actions success, integration approval, or completion of the
 stopped real-source evaluation.
+
+### Published status-sync head 11de601 — 2026-11-27
+
+The later documentation-only head
+`11de60127ab0b31b609d98ada1b764a3dde542f9` passed the exact local six-check
+gate at `2026-11-27T18:17:31.990456+00:00`:
+
+- Pytest: 867 passed, zero skipped; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, catalog, atlas, evidence and capability checks: all passed.
+- Python 3.13.5 with WorldKernel `0.0.1` from reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-11de60127ab0b31b609d98ada1b764a3dde542f9.json`.
+- Status: `local_gate_passed_not_official_ci`.
+
+Automatic test and catalog runs on that head concluded failure. Their job
+records contained no steps or logs, and combined status returned no entries.
+The exact cause is undetermined; the owner's quota report is separate.
+This receipt is local evidence only and does not verify official CI.

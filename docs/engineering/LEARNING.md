@@ -308,6 +308,29 @@ and internal-space representations are handled without trimming or Description
 inference. Finally, explain why units per StockCode category are not verified
 physical-SKU demand and why event time is still not publication availability.
 
+## Guided exercise 24 — reject duplicate and mistyped OOXML cells (35 minutes)
+
+Read [`uci_xlsx_xml.py`](../../src/mirrormind/domains/retail/uci_xlsx_xml.py),
+the [workbook reader guide](UCI_WORKBOOK_READER.md), and the synthetic review
+regressions in [`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py).
+Reproduce the duplicate `D2` quantity that used to replace `2` with `99`.
+Then follow `seen_cell_coordinates` in `_iter_worksheet_rows`: explain why it
+tracks every schema column, including excluded `Description`, and why its set
+is reset per row rather than retained for the whole worksheet. Trace both
+worksheet passes and identify where each invokes the shared iterator.
+
+Next inspect `_DATA_CELL_TYPES` and `_decode_cell`. Predict what happens for an
+error cell (`t="e"`), an unknown type, a numeric token `12_345`, an overflowing
+exponent and an underflowing nonzero value. Run
+`test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original`,
+`test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes`,
+`test_error_and_unknown_selected_cell_types_fail_without_echo`, and
+`test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes`.
+Explain why strict lexical parsing prevents a malformed numeric cell from
+falling back into a valid-looking category, and why these invented cases say
+nothing about corruption in the private UCI snapshot or hostile-file
+isolation.
+
 ## Guided exercise — a checksum is not a data use grant (25 minutes)
 
 Read [the source review packet guide](SOURCE_INTAKE_REVIEW.md),

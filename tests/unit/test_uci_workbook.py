@@ -1,4 +1,5 @@
 """Synthetic XLSX workbook security and strict retail-schema regressions."""
+from copy import deepcopy
 from datetime import datetime
 from hashlib import sha256
 from io import BytesIO, StringIO
@@ -118,6 +119,52 @@ def stage(raw, **kwargs):
     )
 
 
+def edit_worksheet(raw, edit):
+    main_ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+    ET.register_namespace("", main_ns)
+    source = ZipFile(BytesIO(raw))
+    worksheet = ET.fromstring(source.read("xl/worksheets/sheet1.xml"))
+    edit(worksheet, main_ns)
+    output = BytesIO()
+    with ZipFile(output, "w", ZIP_DEFLATED) as destination:
+        for item in source.infolist():
+            content = source.read(item.filename)
+            if item.filename == "xl/worksheets/sheet1.xml":
+                content = ET.tostring(worksheet, encoding="utf-8")
+            destination.writestr(item, content)
+    source.close()
+    return output.getvalue()
+
+
+def duplicate_cell(raw, coordinate, *, replacement_value=None):
+    def edit(worksheet, namespace):
+        cell = worksheet.find(f".//{{{namespace}}}c[@r='{coordinate}']")
+        assert cell is not None
+        row_number = "".join(character for character in coordinate if character.isdigit())
+        row = worksheet.find(f".//{{{namespace}}}row[@r='{row_number}']")
+        assert row is not None
+        duplicate = deepcopy(cell)
+        if replacement_value is not None:
+            value = duplicate.find(f"{{{namespace}}}v")
+            assert value is not None
+            value.text = replacement_value
+        row.append(duplicate)
+
+    return edit_worksheet(raw, edit)
+
+
+def replace_cell_value(raw, coordinate, *, cell_type, value):
+    def edit(worksheet, namespace):
+        cell = worksheet.find(f".//{{{namespace}}}c[@r='{coordinate}']")
+        assert cell is not None
+        cell.clear()
+        cell.attrib.update({"r": coordinate, "t": cell_type})
+        value_element = ET.SubElement(cell, f"{{{namespace}}}v")
+        value_element.text = value
+
+    return edit_worksheet(raw, edit)
+
+
 def test_xlsx_stage_projects_positive_units_and_never_copies_sensitive_values():
     raw = fictional_workbook(
         invoice("536365", "SKU-A", 2, customer=12345),
@@ -211,6 +258,81 @@ def test_description_shared_string_is_not_extracted_for_projection(monkeypatch):
         chunk for parser in parsers for chunk in parser.character_chunks
     )
     assert marker not in str(stage(raw))
+
+
+def test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original():
+    raw = duplicate_cell(
+        fictional_workbook(invoice("536365", "SKU-A", 2)),
+        "D2",
+        replacement_value="99",
+    )
+
+    with pytest.raises(ValueError, match="duplicate workbook cell coordinate"):
+        stage(raw)
+
+
+@pytest.mark.parametrize("coordinate", ["A1", "B2", "C2"])
+@pytest.mark.parametrize("collect_shared_references", [True, False])
+def test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes(
+    coordinate, collect_shared_references
+):
+    from mirrormind.domains.retail.uci_xlsx_xml import (
+        _iter_worksheet_rows,
+        _resolve_worksheet,
+    )
+
+    raw = duplicate_cell(fictional_workbook(invoice()), coordinate)
+
+    with ZipFile(BytesIO(raw)) as archive:
+        worksheet_path, _ = _resolve_worksheet(archive, "Online Retail")
+        with pytest.raises(ValueError, match="duplicate workbook cell coordinate"):
+            list(_iter_worksheet_rows(
+                archive,
+                worksheet_path,
+                max_rows=100,
+                collect_shared_references=collect_shared_references,
+            ))
+
+
+@pytest.mark.parametrize(
+    ("coordinate", "cell_type", "value"),
+    [
+        ("A2", "e", "536365"),
+        ("B2", "e", "SKU-ERROR"),
+        ("B2", "future-type", "SKU-UNKNOWN"),
+    ],
+)
+def test_error_and_unknown_selected_cell_types_fail_without_echo(
+    coordinate, cell_type, value
+):
+    raw = replace_cell_value(
+        fictional_workbook(invoice()),
+        coordinate,
+        cell_type=cell_type,
+        value=value,
+    )
+
+    with pytest.raises(
+        ValueError, match="unsupported selected workbook cell type"
+    ) as caught:
+        stage(raw)
+
+    assert value not in str(caught.value)
+
+
+@pytest.mark.parametrize("value", ["SKU-X", "12_345", "1e999", "1e-999"])
+def test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes(value):
+    raw = replace_cell_value(
+        fictional_workbook(invoice()),
+        "B2",
+        cell_type="n",
+        value=value,
+    )
+
+    with pytest.raises(ValueError, match="invalid numeric workbook cell") as caught:
+        stage(raw)
+
+    assert value not in str(caught.value)
 
 
 def test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded():
@@ -310,16 +432,29 @@ def test_reordered_or_added_header_fails_closed():
 def test_malformed_required_excel_cell_rejected_without_echoing_value():
     bad = invoice()
     bad[3] = "PRIVATE_BAD_QUANTITY"
-    with pytest.raises(ValueError, match="exact bounded integer") as caught:
+    with pytest.raises(
+        ValueError, match="unsupported selected workbook cell type"
+    ) as caught:
         stage(fictional_workbook(bad))
     assert "PRIVATE_BAD_QUANTITY" not in str(caught.value)
 
 
 @pytest.mark.parametrize(
-    "stock_code", [1234, 123456, True, " SKU-A", "SKU-A ", "SKU\tA", "SKU\nA"]
+    ("stock_code", "message"),
+    [
+        (1234, "invalid product stock code"),
+        (123456, "invalid product stock code"),
+        (True, "unsupported selected workbook cell type"),
+        (" SKU-A", "invalid product stock code"),
+        ("SKU-A ", "invalid product stock code"),
+        ("SKU\tA", "invalid product stock code"),
+        ("SKU\nA", "invalid product stock code"),
+    ],
 )
-def test_unsupported_stock_code_encoding_fails_without_echoing_value(stock_code):
-    with pytest.raises(ValueError, match="invalid product stock code") as caught:
+def test_unsupported_stock_code_encoding_fails_without_echoing_value(
+    stock_code, message
+):
+    with pytest.raises(ValueError, match=message) as caught:
         stage(fictional_workbook(invoice(stock=stock_code)))
     assert str(stock_code) not in str(caught.value)
 
@@ -334,7 +469,7 @@ def test_workbook_stock_code_normalizer_rejects_float_cells():
 def test_required_formula_cell_is_not_evaluated_or_treated_as_observation():
     bad = invoice()
     bad[3] = "=2+3"
-    with pytest.raises(ValueError, match="exact bounded integer"):
+    with pytest.raises(ValueError, match="unsupported formula cell"):
         stage(fictional_workbook(bad))
 
 

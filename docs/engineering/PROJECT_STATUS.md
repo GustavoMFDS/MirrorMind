@@ -8,25 +8,50 @@ the snapshot are #60 `fafdedae3a76398e0450773065e40384c96d1ed7`, #61
 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, #63
 `ffd3d770d5c7e9bafba975544de7947bcf20f1fc`, #64
 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
-`5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. #60/#61 have the earlier
+`11de60127ab0b31b609d98ada1b764a3dde542f9`. #60/#61 have the earlier
 owner-authored `COMMENTED` reviews whose findings were addressed; no new
-independent review submissions or unresolved inline threads were present. #63–
-#65 had no review submissions or inline threads. Main has not changed.
+independent review submissions or unresolved inline threads were present. #63
+and #64 had no review submissions or inline threads. PR #65 received a new
+owner-authored `COMMENTED` review after the recorded head; it has no inline
+threads. Main has not changed.
 The detailed sections below preserve the earlier PR #51 baseline and PR #62
 review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
 using this document as a general execution report.
 
-PR #65 now publishes the MM-022 all-prefix synthetic regression and its
-documentation follow-up at exact head
-`5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. This head passed the exact
+PR #65 publishes the MM-022 all-prefix synthetic regression and documentation
+follow-up at exact head
+`11de60127ab0b31b609d98ada1b764a3dde542f9`. This head passed the exact
 temporary six-check local gate with 867 tests, zero skips and WorldKernel at
 reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt:
-`results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
-Automatic test and documentation-catalog Actions runs failed without returned
-steps or logs. Their cause is undetermined; the separate owner report of
-exhausted allowance does not identify it. No review submission or inline
-thread was observed after publication. The local gate is not official CI.
+`results/local-quality-gate-11de60127ab0b31b609d98ada1b764a3dde542f9.json`.
+Automatic test and documentation-catalog Actions runs
+`46048409261` and `46048409192` failed with no steps, logs or combined
+statuses returned. The precise cause is undetermined; the owner's exhausted
+allowance report is separate evidence. The subsequent owner-authored review
+reported reproducible duplicate-cell overwrite, error/unknown selected types,
+and malformed numeric fallback. No inline thread was created. This is local
+validation, not official CI.
+
+B-01 remains stopped at the approved ceiling. An unapproved deterministic
+500-category fit-cohort hash-sample proposal is recorded in the pilot change
+request and blocker register. It authorizes no new source processing and
+requires an explicit owner decision.
+
+## PR #65 current owner review correction — 2026-11-27 UTC
+
+The owner-authored `COMMENTED` review on head
+`11de60127ab0b31b609d98ada1b764a3dde542f9` reproduced duplicate cell
+coordinates overwriting values, error/unknown selected cell types falling
+through as data, and malformed numeric text becoming a valid-looking
+category. The correction is implemented locally in `_iter_worksheet_rows`
+and `_decode_cell`, with regressions for duplicate headers/selected/excluded
+cells in both worksheet passes, error/unknown types, malformed numeric syntax
+and overflow. The 13 initial selected reproduction cases failed before the
+fix; an underflow edge case was added afterward. Current focused tests pass,
+and the UCI workbook unit/integration
+suites pass 65 tests. Ruff passes on the changed Python files. The exact-head
+full gate and review response remain pending; no real workbook was reread.
 
 ## Current PR #65 invoice-policy update — 2026-11-27 UTC
 

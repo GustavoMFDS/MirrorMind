@@ -93,7 +93,19 @@ The initial source attempts used a parser that transiently materialized
 `Description` values before discarding them. This violated the minimized-read
 boundary; no values were persisted or transferred. The implementation was
 replaced by selective OOXML parsing, with a synthetic regression for shared
-and inline strings. The next source attempt uses the corrected parser.
+and inline strings. The corrected source call used that parser and stopped at
+the approved group ceiling without returning a projection.
+
+A later synthetic review found that duplicate cell coordinates could overwrite
+an earlier selected value and that an OOXML error cell could be mistaken for a
+valid category. The reader now rejects duplicate coordinates in every schema
+column during both worksheet passes. It also validates field-specific cell
+types and numeric lexical forms; error/unknown types, malformed numeric text,
+overflow and underflow fail with fixed redacted errors. Added fixtures
+reproduce each behavior, including a duplicate quantity changing `2` to `99`.
+This parser hardening is based only on generated workbooks. It does not imply
+that the private source contains duplicate cells, error cells or malformed
+numeric values, and the real source was not reread.
 
 ## Fixed evaluation protocol prepared in PR #57
 

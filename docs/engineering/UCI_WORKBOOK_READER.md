@@ -74,7 +74,8 @@ scope.
 | `_resolve_worksheet(archive, sheet_name)` | Resolves the sole named worksheet through bounded workbook relationships and reads the date-system flag | Rejects multiple sheets, external/escaping relationships and unsupported worksheet paths |
 | `_selected_shared_string_indices(...)` | First worksheet pass collects shared-string indexes only from the eight header cells and data columns A, B, D and E | The data `Description` column is not selected; only its header name is checked as schema metadata |
 | `_read_required_shared_strings(archive, indexes)` | Streams the shared-string table and retains only referenced strings, with finite per-string/count/total byte limits | Python character callbacks are disabled for unreferenced strings, including Description-only strings |
-| `_iter_worksheet_rows(...)` / `_decode_cell(...)` | Expat scans worksheet XML and captures header cells plus the four approved projection columns; selected Excel serial dates use the workbook epoch/style | Character callbacks are disabled for nonselected body cells; XML bytes and structure are still parsed, but excluded cell text is not delivered to Python application code |
+| `_iter_worksheet_rows(...)` | Expat scans worksheet XML and captures header cells plus the four approved projection columns; a per-row set rejects duplicate coordinates across every schema column in both worksheet passes | Only eight column coordinates can be retained for one row; excluded cell text remains uncaptured, but its coordinate is still checked |
+| `_decode_cell(...)` | Enforces field-specific OOXML cell types, strict numeric lexical syntax, finite conversion and date conversion using workbook epoch/style | Error and unknown types, malformed numeric text, numeric overflow/underflow and formulas fail with redacted errors; this is not a hostile-file sandbox |
 | `_normalize_uci_workbook_invoice(value)` | Accepts six-digit numeric IDs, preserves only exact uppercase `C` plus six digits as the cancellation class, and maps lowercase `c` or another one-letter ASCII prefix to a private sentinel | Only the aggregate unverified-prefix count survives; original IDs are discarded before grouping. Every other format fails closed. |
 | `read_uci_workbook(stream, expected_sha256, sheet_name='Online Retail', max_rows, max_groups, max_zip_entry_bytes, max_zip_total_bytes)` | Verifies hash and ZIP bounds, classifies the scoped invoice forms, then streams approved projection fields into the bounded transaction projection | UCI-only invoice policy and 250,000-group cap; generic behavior remains unchanged. ZIP overrides are exact integers within 192/224 MiB supported ceilings. Parsing is not hostile-file isolation. |
 
@@ -102,14 +103,28 @@ indexes required by selected columns without retaining data values. The
 shared-string pass then captures only those indexes. The second worksheet pass
 decodes only header metadata and `InvoiceNo`, `StockCode`, `Quantity` and
 `InvoiceDate`. In particular, the `Description` body column is omitted from
-both the selected-index set and the cell-value decoder. The standard-library
-Expat parser still scans the enclosing XML stream; it does not retain or
-interpret nonselected cell content. `openpyxl` supplies Excel date-format and
-serial-date utilities only; `load_workbook` is not used.
+both the selected-index set and the cell-value decoder. The shared row iterator
+checks each cell coordinate before storing any selected value. It resets a set
+of at most eight `(row, column)` pairs at each row boundary, so it rejects a
+duplicate header, selected data cell or excluded-column cell before a later
+cell can overwrite dictionary state. Because both worksheet passes use this
+iterator, the same structural rule applies during shared-string discovery and
+value decoding. Expat still scans the enclosing XML stream but does not retain
+or interpret nonselected cell content. `openpyxl` supplies Excel date-format
+and serial-date utilities only; `load_workbook` is not used.
 
-Formula text is not evaluated. A formula in a required field is marked as
-unsupported and rejected by the same strict field validators. The parser
-demands one sheet named `Online Retail` and the exact columns:
+Formula text is not evaluated; a formula in any selected required field is
+rejected before decoding. `_decode_cell` also applies a field-specific type
+contract: invoice and stock-code cells may be numeric or textual, quantities
+must be numeric, and dates may be numeric serials or OOXML ISO dates. Error
+cells (`t="e"`) and unknown cell types never fall back to their raw text.
+Numeric cells must match a decimal/scientific lexical grammar before parsing;
+non-finite values and nonzero values that underflow to zero are rejected.
+This prevents malformed numeric payloads such as `12_345` or `SKU-X` from
+being accepted as a category after a failed numeric conversion. These checks
+raise fixed, redacted `ValueError` messages without including cell contents.
+
+The parser demands one sheet named `Online Retail` and the exact columns:
 
 ```text
 InvoiceNo,StockCode,Description,Quantity,InvoiceDate,UnitPrice,CustomerID,Country
@@ -211,6 +226,10 @@ required before another run or partitioning strategy.
 | **MM-XLSX-006** | `tests/unit/test_uci_workbook.py::test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded`; `tests/unit/test_uci_workbook.py::test_uci_invoice_formats_outside_scoped_classes_fail_without_echo` | Synthetic fixtures prove the approved source-specific classification, aggregate-only exclusion and fail-closed remainder; no empirical run completed and generic callers remain unchanged |
 | **MM-XLSX-007** | `tests/unit/test_uci_retail_projection.py::test_invalid_invoice_format_does_not_get_treated_as_regular_sale` | A synthetic generic-row regression confirms lowercase `c` remains invalid and is not echoed outside the UCI reader; it does not establish source rights or real-dataset behavior |
 | **MM-XLSX-008** | `tests/unit/test_uci_workbook.py::test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class` | A generated workbook covers all 52 ASCII letters and proves one aggregate exclusion count with no retained invoice values; it does not establish the source's full count, row semantics or empirical metrics |
+| **MM-XLSX-009** | `tests/unit/test_uci_workbook.py::test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original` | A generated duplicate D2 cell proves the reader rejects an attempted overwrite; it does not show that the private workbook contains duplicate coordinates or prove general hostile-file isolation |
+| **MM-XLSX-010** | `tests/unit/test_uci_workbook.py::test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes` | Generated fixtures prove duplicate coordinate rejection for header, selected and excluded columns in both worksheet passes; they do not establish any source-level anomaly |
+| **MM-XLSX-011** | `tests/unit/test_uci_workbook.py::test_error_and_unknown_selected_cell_types_fail_without_echo` | Synthetic error and unknown cell types prove fixed redacted rejection for selected cells only; they do not validate arbitrary OOXML or hostile-file containment |
+| **MM-XLSX-012** | `tests/unit/test_uci_workbook.py::test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes` | Synthetic malformed, overflowing and underflowing numeric tokens prove strict decoding on fixture cells; they do not demonstrate how often such tokens occur in the private source or establish empirical results |
 | **MM-UCIE-004** | `tests/unit/test_uci_event_time.py::test_event_time_evaluator_accepts_approved_uci_group_limit` | A synthetic 100,001-group projection exercises the evaluator bound; the real workbook exceeded 250,000 groups, so this does not prove full-source compatibility |
 | **MM-UCIE-005** | `tests/unit/test_uci_event_time.py::test_event_time_result_exposes_aggregate_unverified_invoice_exclusions` | Synthetic output preserves a count and target semantics only; no complete real-source exclusion count or empirical score exists |
 | ZIP profile regressions | `tests/unit/test_uci_workbook.py::test_zip_expansion_profile_is_explicit_bounded_and_defaults_stay_unchanged`; `test_zip_expansion_budgets_must_be_exact_bounded_and_consistent` | Verify caller override bounds and unchanged defaults on generated archives only; no runtime resource metering |
@@ -221,6 +240,14 @@ workbook layout, malformed quantity, unsupported formula
 cell, forbidden external-link ZIP part, oversized streams,
 partial reads, generic OSError redaction and
 invalid row settings.
+
+Review regressions additionally reproduce a duplicate `D2` quantity that used
+to replace the original value, then verify rejection of duplicate header,
+selected and excluded-column coordinates in both worksheet passes. Separate
+fixtures prove error/unknown selected types and malformed numeric encodings
+fail without echoing their payloads. These synthetic cases verify parser
+behavior only; they do not assert that the private UCI workbook contains such
+corruption or establish source-level counts.
 
 ```bash
 python -m pip install -e ".[dev]"

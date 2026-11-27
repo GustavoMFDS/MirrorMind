@@ -341,9 +341,10 @@ and mergeable against that main. Snapshot heads were #60
 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
 `b1bd7951ecc80988146eb46362eea99940ef7542`. #60/#61 have only the earlier
 owner-authored `COMMENTED` findings, which their branches address; no new
-independent approvals or unresolved inline threads were present. #63–#65 had
-no review submissions or inline threads. Do not merge or close these PRs
-without the separately scheduled review/integration decision.
+independent approvals or unresolved inline threads were present. #63 and #64
+had no review submissions or inline threads. PR #65 later received an
+owner-authored `COMMENTED` review, with no inline thread. Do not merge or close
+these PRs without the separately scheduled review/integration decision.
 
 PR #65 code commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176` implements the
 MM-022 UCI-only correction: exact uppercase `C` means cancellation; lowercase
@@ -427,6 +428,40 @@ the configured connector yielded no cause or combined statuses. The owner's
 quota report is separate evidence. No official Actions success or review
 approval is claimed. PR #65 remains open for independent review. Do not retry
 or partition the source, or raise its cap, under current approval.
+
+The next documentation-only head
+`11de60127ab0b31b609d98ada1b764a3dde542f9` passed the exact local six-check
+gate at `2026-11-27T18:17:31.990456+00:00`: 867 tests, zero skips, all six
+checks and the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-11de60127ab0b31b609d98ada1b764a3dde542f9.json`.
+Its automatic test and catalog runs failed with no job steps/logs or combined
+statuses returned; no cause was established. The owner's quota report is
+separate. At the time of publication, no new review submission or inline
+thread had been observed; the later owner review is recorded below.
+
+Because the full-category source attempt exceeded the approved group cap, the
+[M1B-01 change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md) now proposes
+a fit-period hash sample capped at 500 categories, whose worst-case 374-day
+grain is 187,000 category-day groups. The proposal is explicitly unapproved,
+unimplemented and unrun. It requests one additional local processing attempt
+on the existing snapshot without a retention extension. No further source
+access is authorized unless the owner approves that method.
+
+### PR #65 owner review correction — 2026-11-27 UTC
+
+The owner submitted a `COMMENTED` review against head
+`11de60127ab0b31b609d98ada1b764a3dde542f9`. It reproduces a duplicate
+`D2` quantity overwriting the original, an OOXML error cell accepted as a
+category, and malformed numeric text falling back to string data. The code
+now rejects duplicate cell coordinates across all schema columns in both
+worksheet passes; selected values use strict field-specific OOXML types and
+numeric lexical parsing. New regressions cover the exact overwrite, duplicate
+header/selected/excluded coordinates, error/unknown types, malformed tokens,
+overflow. Initial 13 selected cases failed before the fix; a nonzero-underflow
+edge case was added afterward. Post-fix UCI workbook unit/integration suites
+passed 65 tests and Ruff passed.
+The exact full gate and review response remain pending. No source bytes were
+re-read; the 500-category sampling proposal above remains unapproved.
 
 ## 4. Mandatory documentation standard
 

@@ -1148,6 +1148,34 @@
     "limitation": "A generated workbook proves classification and aggregate-only handling for the 52 ASCII letters; it does not establish source-level exclusion counts, row semantics, coverage, or empirical metrics."
   },
   {
+    "id": "MM-XLSX-009",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original",
+    "limitation": "A generated duplicate D2 cell proves the reader rejects an attempted overwrite; it does not show that the private workbook contains duplicate coordinates or prove general hostile-file isolation."
+  },
+  {
+    "id": "MM-XLSX-010",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes",
+    "limitation": "Generated fixtures prove duplicate coordinate rejection for header, selected and excluded columns in both worksheet passes; they do not establish any source-level anomaly."
+  },
+  {
+    "id": "MM-XLSX-011",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_error_and_unknown_selected_cell_types_fail_without_echo",
+    "limitation": "Synthetic error and unknown cell types prove fixed redacted rejection for selected cells only; they do not validate arbitrary OOXML or hostile-file containment."
+  },
+  {
+    "id": "MM-XLSX-012",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes",
+    "limitation": "Synthetic malformed, overflowing and underflowing numeric tokens prove strict decoding on fixture cells; they do not demonstrate how often such tokens occur in the private source or establish empirical results."
+  },
+  {
     "id": "MM-UCIE-001",
     "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
     "test": "tests/integration/test_uci_event_time_cli.py",

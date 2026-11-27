@@ -389,22 +389,22 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `hashl
 
 Source: [`src/mirrormind/domains/retail/uci_xlsx_xml.py`](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py)
 
-Static imports (including inside functions): `__future__`, `collections`, `collections.abc`, `datetime`, `openpyxl.styles.numbers`, `openpyxl.utils.datetime`, `re`, `xml.parsers`, `zipfile`
+Static imports (including inside functions): `__future__`, `collections`, `collections.abc`, `datetime`, `decimal`, `math`, `openpyxl.styles.numbers`, `openpyxl.utils.datetime`, `re`, `xml.parsers`, `zipfile`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `_local_name` | function | `def _local_name(name: str) -> str` | — | [L28](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L28) |
-| `_reject_xml_feature` | function | `def _reject_xml_feature(*_args: object) -> None` | — | [L32](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L32) |
-| `_new_xml_parser` | function | `def _new_xml_parser() -> expat.xmlparser` | — | [L36](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L36) |
-| `_parse_small_xml_member` | function | `def _parse_small_xml_member(archive: ZipFile, name: str, start_handler) -> None` | — | [L45](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L45) |
-| `_resolve_worksheet` | function | `def _resolve_worksheet(archive: ZipFile, sheet_name: str) -> tuple[str, bool]` | Resolve the one allowed sheet and the workbook's date-system flag. | [L61](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L61) |
-| `_date_style_ids` | function | `def _date_style_ids(archive: ZipFile) -> frozenset[int]` | Return style indexes whose number formats represent Excel dates. | [L122](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L122) |
-| `_column_and_row` | function | `def _column_and_row(reference: str) -> tuple[int, int]` | — | [L178](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L178) |
-| `_iter_worksheet_rows` | function | `def _iter_worksheet_rows(archive: ZipFile, worksheet_path: str, *, max_rows: int, collect_shared_references: bool) -> Iterator[tuple[int, dict[int, dict[str, object]]]]` | Stream rows while capturing only approved columns and the header. | [L191](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L191) |
-| `_selected_shared_string_indices` | function | `def _selected_shared_string_indices(archive: ZipFile, worksheet_path: str, *, max_rows: int) -> frozenset[int]` | — | [L343](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L343) |
-| `_read_required_shared_strings` | function | `def _read_required_shared_strings(archive: ZipFile, required: frozenset[int]) -> dict[int, str]` | — | [L361](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L361) |
-| `_decode_cell` | function | `def _decode_cell(cell: dict[str, object] \| None, *, column: int, shared_strings: dict[int, str], date_style_ids: frozenset[int], epoch: datetime) -> object` | — | [L436](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L436) |
-| `iter_uci_projection_rows` | function | `def iter_uci_projection_rows(archive: ZipFile, *, sheet_name: str, max_rows: int, expected_header: tuple[str, ...]) -> Iterator[dict[str, object]]` | Yield only approved projection fields; never materialize Description values. | [L494](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L494) |
+| `_local_name` | function | `def _local_name(name: str) -> str` | — | [L41](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L41) |
+| `_reject_xml_feature` | function | `def _reject_xml_feature(*_args: object) -> None` | — | [L45](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L45) |
+| `_new_xml_parser` | function | `def _new_xml_parser() -> expat.xmlparser` | — | [L49](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L49) |
+| `_parse_small_xml_member` | function | `def _parse_small_xml_member(archive: ZipFile, name: str, start_handler) -> None` | — | [L58](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L58) |
+| `_resolve_worksheet` | function | `def _resolve_worksheet(archive: ZipFile, sheet_name: str) -> tuple[str, bool]` | Resolve the one allowed sheet and the workbook's date-system flag. | [L74](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L74) |
+| `_date_style_ids` | function | `def _date_style_ids(archive: ZipFile) -> frozenset[int]` | Return style indexes whose number formats represent Excel dates. | [L135](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L135) |
+| `_column_and_row` | function | `def _column_and_row(reference: str) -> tuple[int, int]` | — | [L191](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L191) |
+| `_iter_worksheet_rows` | function | `def _iter_worksheet_rows(archive: ZipFile, worksheet_path: str, *, max_rows: int, collect_shared_references: bool) -> Iterator[tuple[int, dict[int, dict[str, object]]]]` | Stream approved cells and reject duplicate coordinates in every column. | [L204](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L204) |
+| `_selected_shared_string_indices` | function | `def _selected_shared_string_indices(archive: ZipFile, worksheet_path: str, *, max_rows: int) -> frozenset[int]` | — | [L362](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L362) |
+| `_read_required_shared_strings` | function | `def _read_required_shared_strings(archive: ZipFile, required: frozenset[int]) -> dict[int, str]` | — | [L380](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L380) |
+| `_decode_cell` | function | `def _decode_cell(cell: dict[str, object] \| None, *, column: int, shared_strings: dict[int, str], date_style_ids: frozenset[int], epoch: datetime, is_header: bool=False) -> object` | Decode one selected cell under the header or field-specific type contract. | [L455](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L455) |
+| `iter_uci_projection_rows` | function | `def iter_uci_projection_rows(archive: ZipFile, *, sheet_name: str, max_rows: int, expected_header: tuple[str, ...]) -> Iterator[dict[str, object]]` | Yield only approved projection fields; never materialize Description values. | [L521](../../../src/mirrormind/domains/retail/uci_xlsx_xml.py#L521) |
 
 ## `mirrormind.domains.retail.worldkernel_policy_world`
 

@@ -10,7 +10,7 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
-## PR reconciliation snapshot at `5c1835f` — 2026-11-27 UTC
+## PR reconciliation snapshot at `11de601` — 2026-11-27 UTC
 
 PR #52 merged at `e922b03666f04bd8c570a0448466d25838e3f84e`; PRs #53–#59
 closed without individual merges. Local ancestry checks confirm all eight
@@ -33,7 +33,7 @@ implied.
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
 | [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
 | [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
-| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `5c1835f8862bbe12b9028707cfa3b9d893b9eda6` | Open for independent review; no review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `11de60127ab0b31b609d98ada1b764a3dde542f9` | Owner-authored `COMMENTED` review reproduced duplicate-cell overwrite, error/unknown type acceptance and malformed numeric fallback; correction in progress |
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -120,9 +120,21 @@ six checks passed with the reviewed WorldKernel pin. Receipt:
 Two automatic Actions runs on this head failed without available job steps or
 logs; the configured connector returned no cause or combined statuses. The
 owner's exhausted-allowance report is separate evidence. No manual retry,
-workflow change or protection change was made. The PR remains open for
-independent review, with no review submission or inline thread observed after
-publication. This does not reduce the source group count or close B-01.
+workflow change or protection change was made. At that publication snapshot,
+no review submission or inline thread had been observed. A later owner-authored
+review is captured in the current correction section below. This does not
+reduce the source group count or close B-01.
+
+The subsequent documentation-only head
+`11de60127ab0b31b609d98ada1b764a3dde542f9` also passed the exact six-check
+gate at `2026-11-27T18:17:31.990456+00:00`: 867 tests, zero skips, all six
+checks and the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-11de60127ab0b31b609d98ada1b764a3dde542f9.json`.
+Its two automatic Actions runs failed without returned steps/logs or a
+combined status; the precise cause is undetermined. Reviews and inline-thread
+queries returned none. The [M1B-01 change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md)
+now contains an explicitly unapproved, bounded fit-cohort sample proposal.
+No source processing is authorized by that proposal.
 
 ## Historical consolidated review candidate — 2026-11-25 (PR #62 later integrated)
 
@@ -266,6 +278,25 @@ their snapshot statuses do not represent current PR states or open work.
 PR #52 is merged; PRs #53–#59 are closed unmerged with their published heads
 integrated through #62. PRs #60 and #61 remain separate from the #62 ancestry.
 Current UCI pilot state is recorded above and in B-01.
+
+## PR #65 owner review correction — 2026-11-27 UTC
+
+The owner-authored review on exact head `11de60127ab0b31b609d98ada1b764a3dde542f9`
+reported a duplicate `D2` quantity overwrite, acceptance of error/unknown
+selected cell types, and malformed numeric text falling back to valid-looking
+category/identifier strings. Synthetic regressions reproduced the findings:
+13 initial selected cases failed before correction. An underflow edge case was
+then added to the numeric regression; all current cases pass. The adapter now
+rejects duplicate coordinates across header, selected and excluded columns in
+both worksheet passes and strictly validates selected cell types and numeric
+encodings.
+
+After correction, the new focused cases passed; the UCI workbook unit and
+integration suites passed 65 tests and Ruff passed on the modified Python
+files. The exact clean-head full local gate and review response are pending.
+No real workbook was reread. MM-022 remains the approved invoice rule, while
+the separate 500-category fit-cohort proposal remains unapproved and grants no
+source-processing permission.
 
 ## Historical branch claims
 

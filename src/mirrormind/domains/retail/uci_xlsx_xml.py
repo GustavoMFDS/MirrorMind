@@ -10,6 +10,8 @@ import re
 from collections import deque
 from collections.abc import Iterator
 from datetime import datetime
+from decimal import Decimal, DecimalException
+from math import isfinite
 from xml.parsers import expat
 from zipfile import ZipFile
 
@@ -23,6 +25,17 @@ _MAX_SCHEMA_COLUMN = 8
 _HEADER_COLUMNS = frozenset(range(1, _MAX_SCHEMA_COLUMN + 1))
 _PROJECTION_COLUMNS = frozenset({1, 2, 4, 5})
 _CELL_REFERENCE = re.compile(r"([A-Z]{1,3})([1-9][0-9]{0,6})")
+_NUMERIC_CELL_VALUE = re.compile(
+    r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[Ee][+-]?[0-9]+)?"
+)
+_HEADER_CELL_TYPES = frozenset({"inlineStr", "s", "str"})
+# OOXML types accepted for projection columns A, B, D and E, respectively.
+_DATA_CELL_TYPES = {
+    1: frozenset({"", "inlineStr", "n", "s", "str"}),
+    2: frozenset({"", "inlineStr", "n", "s", "str"}),
+    4: frozenset({"", "n"}),
+    5: frozenset({"", "d", "n"}),
+}
 
 
 def _local_name(name: str) -> str:
@@ -195,12 +208,13 @@ def _iter_worksheet_rows(
     max_rows: int,
     collect_shared_references: bool,
 ) -> Iterator[tuple[int, dict[int, dict[str, object]]]]:
-    """Stream rows while capturing only approved columns and the header."""
+    """Stream approved cells and reject duplicate coordinates in every column."""
     queue: deque[tuple[int, dict[int, dict[str, object]]]] = deque()
     parser = _new_xml_parser()
     current_row_number: int | None = None
     last_row_number = 0
     row_cells: dict[int, dict[str, object]] = {}
+    seen_cell_coordinates: set[tuple[int, int]] = set()
     current_cell: dict[str, object] | None = None
     current_column: int | None = None
     capture_kind: str | None = None
@@ -225,6 +239,7 @@ def _iter_worksheet_rows(
                 raise ValueError("workbook rows must be consecutive")
             current_row_number = row_number
             row_cells = {}
+            seen_cell_coordinates.clear()
         elif element == "c" and current_row_number is not None:
             if current_cell is not None:
                 raise ValueError("nested workbook cells are unsupported")
@@ -232,6 +247,10 @@ def _iter_worksheet_rows(
             column, cell_row = _column_and_row(reference)
             if cell_row != current_row_number or column > _MAX_SCHEMA_COLUMN:
                 raise ValueError("workbook cell is outside the reviewed schema")
+            coordinate = (cell_row, column)
+            if coordinate in seen_cell_coordinates:
+                raise ValueError("duplicate workbook cell coordinate")
+            seen_cell_coordinates.add(coordinate)
             selected = (
                 column in _HEADER_COLUMNS
                 if current_row_number == 1
@@ -440,12 +459,17 @@ def _decode_cell(
     shared_strings: dict[int, str],
     date_style_ids: frozenset[int],
     epoch: datetime,
+    is_header: bool = False,
 ) -> object:
+    """Decode one selected cell under the header or field-specific type contract."""
     if cell is None:
         return None
     if cell.get("formula"):
-        return "unsupported formula cell"
+        raise ValueError("unsupported formula cell")
     cell_type = cell.get("type", "n")
+    allowed_types = _HEADER_CELL_TYPES if is_header else _DATA_CELL_TYPES[column]
+    if cell_type not in allowed_types:
+        raise ValueError("unsupported selected workbook cell type")
     raw = cell.get("raw")
     if raw is None:
         return None
@@ -460,28 +484,31 @@ def _decode_cell(
             raise ValueError("workbook references an unselected shared string") from None
     if cell_type == "inlineStr" or cell_type == "str":
         return raw
-    if cell_type == "b":
-        if raw not in {"0", "1"}:
-            raise ValueError("invalid workbook boolean cell")
-        return raw == "1"
-    if cell_type == "e":
-        return raw
     if cell_type == "d":
         try:
             from openpyxl.utils.datetime import from_ISO8601
             return from_ISO8601(raw)
         except (ImportError, ValueError):
-            return raw
+            raise ValueError("invalid date workbook cell") from None
     if cell_type not in {"n", ""}:
-        return raw
+        raise ValueError("unsupported selected workbook cell type")
+    if not _NUMERIC_CELL_VALUE.fullmatch(raw):
+        raise ValueError("invalid numeric workbook cell")
     try:
-        number: int | float
+        exact_number = Decimal(raw)
+        if not exact_number.is_finite():
+            raise ValueError("invalid numeric workbook cell")
         if "." in raw or "E" in raw.upper():
-            number = float(raw)
+            number = float(exact_number)
+            if (
+                not isfinite(number)
+                or (exact_number != 0 and number == 0.0)
+            ):
+                raise ValueError("invalid numeric workbook cell")
         else:
             number = int(raw)
-    except (OverflowError, ValueError):
-        return raw
+    except (DecimalException, OverflowError, ValueError):
+        raise ValueError("invalid numeric workbook cell") from None
     if column == 5 and int(cell.get("style_id", 0)) in date_style_ids:
         try:
             from openpyxl.utils.datetime import from_excel
@@ -520,7 +547,7 @@ def iter_uci_projection_rows(
         _decode_cell(
             header_cells.get(column), column=column,
             shared_strings=shared_strings, date_style_ids=date_styles,
-            epoch=epoch,
+            epoch=epoch, is_header=True,
         )
         for column in range(1, _MAX_SCHEMA_COLUMN + 1)
     )

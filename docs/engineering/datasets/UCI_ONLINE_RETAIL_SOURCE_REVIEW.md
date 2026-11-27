@@ -91,6 +91,17 @@ unverified classes were excluded before grouping; the clarification cannot
 reduce the observed product-day count. No complete exclusion count or
 empirical metric exists.
 
+A subsequent owner review reproduced three parser hazards with generated
+workbooks: duplicate cell coordinates overwrote prior values, an OOXML error
+cell could be interpreted as a valid `StockCode`, and malformed numeric text
+could fall back into a category key. The adapter now rejects duplicate
+coordinates in all schema columns in both worksheet passes, validates
+field-specific types and numeric syntax, and emits only fixed redacted errors.
+Regression coverage includes duplicate header, selected and excluded cells;
+error and unknown selected types; and malformed, overflowing and underflowing
+numeric tokens. This is synthetic evidence only. The private workbook was not
+re-read and no source-level anomaly is asserted.
+
 The preflight passed the owner-approved 192 MiB/member and 224 MiB/total ZIP
 profile while retaining the generic 64/128 MiB defaults and the 32 MiB
 compressed-input, 200:1 ratio and 600,000-row bounds. It stopped at the

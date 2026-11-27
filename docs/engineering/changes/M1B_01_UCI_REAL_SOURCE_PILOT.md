@@ -271,3 +271,161 @@ This remains local evidence, not Actions. The automatic test and catalog
 runs failed with no job steps, logs or combined statuses returned by the
 configured connector; the cause is undetermined and the owner's quota report
 is separate. No official CI pass is claimed.
+
+The later status-sync head `11de60127ab0b31b609d98ada1b764a3dde542f9` also
+passed its exact local six-check gate at `2026-11-27T18:17:31.990456+00:00`:
+867 tests, zero skips, all checks and the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-11de60127ab0b31b609d98ada1b764a3dde542f9.json`.
+Its automatic test and catalog runs failed without steps, logs or combined
+statuses; the cause is undetermined and the quota report remains separate.
+
+## 7. Proposed fit-cohort hash sample — decision required
+
+**Status:** proposal only. This method is not owner-approved, implemented,
+tested or run against the private workbook. No source bytes were accessed
+while preparing the proposal.
+
+### Objective and scope
+
+The current full-category projection exceeded the authorized
+250,000 product-day group cap. A deterministic sample could make one bounded
+retrospective evaluation possible while preserving the existing cap and
+without changing generic readers. This proposal would reuse only the already
+acquired UCI #352 snapshot, if the owner authorizes one additional local
+processing attempt before the existing deletion deadline
+(`2026-12-26T22:39:45Z`). It authorizes no download, external transfer,
+retention extension, Census access, or commercial/customer-level use.
+
+### Proposed selection and execution
+
+1. Keep the current MM-022 invoice classifier, approved `StockCode`
+   normalization, date interpretation, parser limits and fixed evaluator
+   split. Select candidate categories only from positive, recognized sales
+   rows in the existing fit interval, 2010-12-01 through 2011-08-30. Do not
+   use validation or holdout values to define the sample.
+2. Normalize each candidate category exactly as the UCI adapter already does.
+   Rank it using SHA-256 of the bytes
+   `b"MirrorMind/UCI352/fit-category-sample/v1\0" + key.encode("utf-8")`;
+   retain the 500 lowest ranks. A digest collision
+   between distinct keys must fail closed. The namespace, sample size and
+   fit interval are fixed before the additional source read. This is a
+   deterministic hash sample of fit-active categories, not a claim of
+   population representativeness.
+3. Add one bounded worksheet pass to discover the sample, then perform the
+   existing projection pass for only those categories across the full
+   publisher-reported date interval. The current worksheet scan used to find
+   selected shared-string indexes remains. Enforce at most 600,000 data rows
+   per pass and no more than three passes, for a maximum of 1,800,000
+   row-visits. Keep the 32 MiB compressed input limit, 192 MiB member and
+   224 MiB archive ceilings, 200:1 ratio, and 600,000 unique-row limit.
+4. The manifest bounds the date range to 2010-12-01 through 2011-12-09,
+   374 calendar dates inclusive. At most 500 sampled categories times 374
+   dates yields 187,000 category-day groups, below the existing 250,000
+   group ceiling. Still enforce that ceiling and fail closed if bytes,
+   schema, dates, row counts or observed groups violate the reviewed bounds.
+   Never return a partial projection after a failure.
+
+The arithmetic is reproducible without reading the source:
+
+```powershell
+.\.venv\Scripts\python.exe -c "from datetime import date; days = (date(2011, 12, 9) - date(2010, 12, 1)).days + 1; print(days, 500 * days)"
+```
+
+Expected output: `374 187000`. This is a worst-case group bound, not an
+observed source count.
+5. Keep category keys and sample digests in process memory only. Emit the
+   existing aggregate receipt and ordinal category summaries; emit no
+   `StockCode`, hash digest, invoice ID, customer ID, description or row.
+   Any result must say it is an event-time retrospective over the sampled,
+   fit-active category cohort, with availability unverified and no SKU,
+   full-population, causal or business-performance claim.
+6. Run the existing fixed lag-7 and trailing-7 baselines on matched targets
+   and the predeclared validation/holdout windows. Do not tune after seeing
+   holdout results. Create a source-specific dataset/model card only after
+   an approved evaluation returns complete results; report the sample
+   denominator, exclusions, coverage and abstentions. No confidence
+   interval or population estimate is proposed.
+
+### Acceptance checks required before any authorized run
+
+- Synthetic XLSX tests prove the selected fit category set is deterministic
+  under row reordering and independent of mutations to validation/holdout
+  rows; malformed invoice forms still fail closed.
+- Tests prove a maximum of 500 fit-active categories, the 187,000-group
+  mathematical bound, the existing 250,000 fail-closed guard, and the
+  three-pass/1,800,000-row-visit limit.
+- Tests and receipts prove sample digests and original category keys never
+  leave the process, and public output contains only aggregate values and
+  ordinals.
+- The exact synthetic local quality gate passes before the owner-approved
+  source run. The source run itself remains local, uses the existing snapshot
+  and deletion deadline, and does not alter tests or bypass source controls.
+
+### Owner decision
+
+Approve or reject **one additional local processing attempt** using this
+500-category fit-cohort hash sample on the existing snapshot, with the limits
+above and no retention extension. Rejection leaves the real UCI lane closed;
+the synthetic M1 path and separately reviewed Census/ALFRED protocol remain
+available without acquiring data.
+
+## 8. PR #65 review correction — duplicate and malformed OOXML cells
+
+**Status:** confirmed and corrected locally; exact full-gate evidence and the
+review response remain pending. No private source bytes were read for this
+correction.
+
+The owner-authored PR review reproduced three fail-open cases using generated
+workbooks: appending duplicate coordinate `D2` changed a quantity of `2` to
+`99`; an OOXML error cell (`t="e"`) with `SKU-X` was accepted as a category;
+and malformed numeric text could fall back to a string category. The new
+regressions failed before the fix: 13 selected cases failed, including
+duplicates in header, selected and excluded cells, error/unknown selected
+types, malformed numeric tokens and overflow. The numeric parameterization
+then gained a nonzero-underflow case, which passes after the correction.
+
+### Accepted correction and impact
+
+- `_iter_worksheet_rows` tracks each `(row, column)` coordinate before
+  selecting or decoding a cell. It rejects duplicates across the entire
+  reviewed eight-column schema, including the excluded `Description` column.
+  The same iterator is used for both worksheet passes. Its set is reset per
+  row and retains at most eight coordinates.
+- `_decode_cell` enforces per-field cell types: invoice and stock-code fields
+  accept reviewed text or numeric encodings; `Quantity` accepts numeric cells;
+  `InvoiceDate` accepts numeric serials or OOXML ISO date cells. Error/unknown
+  types, formulas and invalid date/numeric encodings fail with fixed,
+  redacted `ValueError` messages.
+- Numeric cells must match a strict decimal/scientific grammar. Decimal
+  parsing rejects non-finite values and detects float overflow or nonzero
+  underflow before conversion. Malformed numeric payloads cannot become a
+  valid-looking string category or identifier.
+- The UCI-only MM-022 invoice policy and aggregate-only exclusion count remain
+  unchanged. `uci_transactions.project_uci_retail_rows` and generic callers
+  are unchanged. No capability, source permission, group/row ceiling or
+  empirical claim changes.
+
+### Reproduction, verification and limitations
+
+The regressions are in
+[`test_uci_workbook.py`](../../../tests/unit/test_uci_workbook.py):
+
+- `test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original`
+  reproduces the quantity overwrite and proves fail-closed behavior.
+- `test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes`
+  covers duplicate header, selected and excluded coordinates in both scans.
+- `test_error_and_unknown_selected_cell_types_fail_without_echo` covers error
+  and unsupported types in invoice and stock-code fields.
+- `test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes`
+  covers text, underscore, overflow and underflow encodings without echoing
+  values.
+
+The 13 initially selected focused cases failed on the original implementation
+and passed after correction; the added underflow parameter also passed. The UCI
+workbook unit plus integration tests then passed 65 cases, and Ruff passed on
+both changed Python files. These fixtures prove
+parser behavior only; they do not establish that the private workbook contains
+such anomalies, source rights or hostile-file isolation. Run the exact clean
+head six-check gate before publishing a review response. Do not reread the
+source under this correction; the separate fit-cohort sampling proposal above
+still requires owner approval.
