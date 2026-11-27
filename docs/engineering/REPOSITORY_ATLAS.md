@@ -1057,3 +1057,11 @@ forecast claims or cross-repository changes.
 
 - [REX plan](REPOSITORY_EXCELLENCE.md): independent maintenance track.
 - [Branch inventory](REX_BRANCH_AUDIT.md): exact-head snapshot and deletion safety boundaries.
+
+- [REX CI governance](REX_CI_GOVERNANCE.md): workflow triggers, compatibility, least privilege and main protection policy.
+
+## Security and community workflow
+
+- [REX security and community](REX_SECURITY_COMMUNITY.md): free security settings and review scope.
+- [Bug template](../../.github/ISSUE_TEMPLATE/bug_report.md), [feature template](../../.github/ISSUE_TEMPLATE/feature_request.md), [research template](../../.github/ISSUE_TEMPLATE/research_proposal.md), [issue configuration](../../.github/ISSUE_TEMPLATE/config.yml).
+- [PR template](../../.github/pull_request_template.md): integration evidence and boundaries.
