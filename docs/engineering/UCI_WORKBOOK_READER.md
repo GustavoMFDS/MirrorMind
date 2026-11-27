@@ -54,14 +54,17 @@ required-field, event-date and StockCode preflight. The first call stopped at
 the generic 100,000-group ceiling. The corrected MM-021 invoice classifier
 then exceeded the approved UCI-only 250,000-group ceiling. Both calls failed
 closed without partial projections or metrics; the exact count was not
-retained. MM-022 later narrowed the classifier to treat only uppercase `C` as
-cancellation; lowercase `c` is now synthetically tested as unverified. This
-clarification was not applied to the source, and does not authorize another
-read. Reader defaults remain 10,000 rows/2,000 groups, and direct/generic
-projection remains capped at 100,000. Generic ZIP defaults remain 64/128 MiB.
-The larger ZIP profile is an explicit per-call request within the supported
-192/224 MiB ceilings. Do not retry or partition this source under the current
-scope.
+retained. MM-022 and owner clarification MM-024 define the current rule:
+six-digit IDs enter normal processing, only uppercase `C` plus six digits is
+cancellation, and other one-letter ASCII prefixes plus six digits are excluded
+as unverified. The existing parser and synthetic tests already implement it.
+The earlier run excluded the same rows before grouping, so the clarification
+changes aggregate class counts but does not reduce group cardinality or make a
+complete projection possible under the 250,000 cap. Reader defaults remain
+10,000 rows/2,000 groups, and direct/generic projection remains capped at
+100,000. Generic ZIP defaults remain 64/128 MiB. The larger ZIP profile is an
+explicit per-call request within the supported 192/224 MiB ceilings. Do not
+chunk, sample or widen the source bounds; the stopped run produced no metrics.
 
 ## 2. Method-by-method contracts and unsafe inputs
 
@@ -153,13 +156,14 @@ existing projection; only uppercase `C` plus six digits remains a cancellation
 record. Lowercase `c` and other one-letter ASCII prefixes plus six digits are
 excluded before grouping and recorded only in the aggregate
 `unverified_invoice_prefix_rows` count. Other invoice formats fail closed.
-This MM-022 clarification supersedes MM-021's lowercase-`c` cancellation rule
-for the UCI reader only; it does not change generic row projection behavior.
+MM-022 and MM-024 supersede MM-021's lowercase-`c` cancellation rule for the
+UCI reader only; they do not change generic row projection behavior.
 The synthetic generic rejection regression is
 `tests/unit/test_uci_retail_projection.py::test_invalid_invoice_format_does_not_get_treated_as_regular_sale`.
 Excluding those rows may lower category-day totals,
-change the fit cohort and alter zero targets and metrics. The workbook may
-contain personal data; the reader cannot verify customer-data rights.
+change the fit cohort, coverage denominators, zero targets and metrics. The
+workbook may contain personal data; the reader cannot verify customer-data
+rights.
 
 The existing transaction projection records excluded
 `C` cancellations, negative returns and zero lines separately; the UCI

@@ -2,66 +2,64 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. It includes PR
-#66 (PRs #60, #61 and #64), PR #67 (Census #63), public-portfolio PRs #68–#70,
-owner-approved Apache-2.0 PR #71, PORT-07's local interactive report (#72),
-the first source alpha release preparation (#73), repository excellence and
-branch inventory (#74), CI hardening/Python compatibility (#75), and security
-and community workflows (#76). PRs #74–#76 each recorded 912 passing local
-tests, zero skips and six checks. On exact main `2a7641b`, all six returned
-check runs succeeded: `test`, `compatibility (3.12)`, `compatibility (3.13)`,
-`symbol-catalog`, `Analyze (actions)` and `Analyze (python)` across runs
-[46062899971](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899971),
-[46062899967](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899967),
-and [46062900063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062900063).
-Earlier PR #66/#67 local receipts remain separately recorded. No paid usage or
-check/protection change occurred.
+Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`,
+integrating PR #77 over PR #65 merge
+`51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #77
+(`df7c450523a8f3475e0a8161936f6ac80e705720`) adds measured public
+coverage, strict typing for retrieval, wheel build/install smoke checks and
+repository quality CI; it also reconciles MM-009 with accepted decision MM-023.
+All nine observed official contexts on that exact PR head succeeded: `test`,
+compatibility 3.12/3.13, `symbol-catalog`, `Analyze (actions)`,
+`Analyze (python)`, `quality`, `package` and `CodeQL` (runs
+[46066734014](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734014),
+[46066733925](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066733925),
+[46066734009](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734009),
+[46066732130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066732130)
+and [140733898759](https://github.com/GustavoMFDS/MirrorMind/runs/140733898759)).
+This evidence applies to the PR head; the combined-status query for merge
+commit `540c474` returned no individual entries, so no exact-merge official
+result is claimed here. PR #77 merged normally; no protection or required check
+was bypassed, and no paid services were used.
 
-PR #65 remains open; use its live metadata for the latest published head and
-checks. Local branch `codex/uci352-pilot-20261126` includes current main
-`2a7641b` through ancestry-preserving merge `0182eba`, plus the first-round
-parser fixes and `6df8af1` correction. Exact implementation head
-`35bff7824970ebc511e05add240088b2ffd74057` passed 968 tests, zero skips and all
-six local checks with the reviewed WorldKernel pin; its receipt is recorded in
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). All seven official checks also
-passed on that exact PR head. Comment
-[7227559961](https://github.com/GustavoMFDS/MirrorMind/pull/65#issuecomment-7227559961)
-responds to the latest independent parser finding. Any later tracked change
-requires its own exact-head gate and PR check observation; do not transfer the
-`35bff78` receipts to a descendant.
-Documentation-only follow-up head
-`d454b48477af4691a363622ecf8b2fd85a7e5a60` also passed 968 tests, zero skips,
-all six local checks and all seven observed GitHub checks, with the same exact
-WorldKernel pin. Its receipt and run links are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
-Use live PR metadata for the currently published descendant.
+The PR #77 exact-head report records a separate local gate of 968 tests, zero
+skips and six local checks, alongside its coverage, typing and package results;
+see [REX-09/10](REX_QUALITY_PACKAGING.md) and
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The pre-PR #77 exact-main gate at
+`51c90d2` also passed 968 tests, zero skips and six checks with reviewed
+WorldKernel `0.0.1` at source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Neither receipt validates the
+current documentation candidate; its exact-head gate is recorded separately.
 
-Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
-types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
-inline payloads. The focused UCI workbook unit and integration suites passed 75
-tests, including the second-round structural cases. The PR awaits independent
-review; it is not merged.
+The bounded UCI reader and MM-024 classification are already implemented in
+main with synthetic regressions. The approved source call stopped above the
+250,000 product-day group limit without returning a projection, complete
+exclusion counts or metrics. The owner's MM-024 clarification preserves exact
+six-digit identifiers, treats only uppercase `C` plus six digits as
+cancellation, and excludes other one-letter ASCII prefixes before sales
+aggregation under one aggregate category. It changes exclusion labels, not
+accepted rows or group cardinality. Do not chunk, sample, reread or raise the
+cap. Preserve the local snapshot deletion deadline `2026-12-26`. B-01/B-02
+still gate empirical and point-in-time claims; B-04 remains open for broad
+service isolation and deployment acceptance.
 
-The approved 250,000-cap UCI #352 source call stopped above its product-day
-group limit and returned no projection or metrics. The UCI-only
-MM-022 rule accepts exact six-digit IDs, treats only uppercase `C` plus six
-digits as cancellation, and excludes other single-letter ASCII prefixes into
-one aggregate class; its regressions are synthetic and the source was not read
-again. No retry, chunking, cap increase or Census acquisition is authorized.
-Preserve the private snapshot deletion deadline `2026-12-26`. B-01/B-02 still
-gate empirical and point-in-time claims. B-04 is resolved only for the narrow
-reviewed local WorldKernel slice; service isolation and deployment acceptance
-remain open. The owner's zero-paid
-budget remains in force. M2-02 and G-02 can continue only within their existing
-fictional/offline scopes after the PR #65 review candidate is consolidated.
+The MM-024 documentation-only candidate is published as
+[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) from
+`codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
+`ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact head
+`7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the local gate (968 tests,
+zero skips, six checks) and all nine observed official contexts. Local receipt:
+`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`.
+The PR is not merged; inspect the live link for its current head and checks.
+This increment does not change parser contracts or reread the private workbook.
+Any later tracked change needs a new exact-head gate and official check run.
+Continue existing fictional/offline M2-02/G-02 work independently; do not wait
+for this documentation review.
 
-**Current main:** `2a7641b88b0d97a239d44102d4da9497460f21d1`, descendant of
+**Current main:** `540c47411898cc820ac651c19430017ecd8c20fe`, descendant of
 PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
-incorporated through #62; PR #60/#61/#64 are incorporated by #66; Census #63
-is incorporated by #67. PRs #68–#71 update the public portfolio and original
-project license; #72 adds an offline synthetic report, #73 prepares the source
-alpha release, #74 records repository excellence/inventory, #75 hardens
-public CI, and #76 establishes security/community workflows. WorldKernel and
-dataset terms remain separate.
+incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
+PRs #68–#76 through their existing merges; PR #77 establishes REX-09/10 quality
+and package checks. WorldKernel and dataset terms remain separate.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -70,9 +68,9 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | --- | --- | --- |
 | PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
-| PR #65 | Open, non-draft; implementation head `35bff78` and documentation-only follow-up `d454b48` each passed 968 local tests, zero skips, six local checks and all seven observed GitHub checks. The latest PR comment responds to the parser review; confirm live metadata for any later descendant. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
-| PRs #66–#76 | Closed as merged. #66/#67 consolidate M2-01, G-01, ENG-02 and Census; #68–#74 advance the public portfolio/release evidence; #75 hardens CI; #76 adds security and community workflows. | No source/data or WorldKernel rights grant follows from these changes; no production readiness follows. |
-
+| PR #65 | Closed as merged at `51c90d2601b2fba16b03a13a8723df0a54437d92`; exact integrated main passed 968 local tests, zero skips and six checks. | Reader accepted within bounded synthetic scope. UCI attempt remains stopped above 250,000 groups; no projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PR #77 | Closed as merged at `540c47411898cc820ac651c19430017ecd8c20fe`; nine official contexts succeeded on exact reviewed head `df7c450`. | Quality checks measure public coverage, strict retrieval typing and packaging. No release upload, private dependency change, empirical result or production readiness. |
+| PR #78 (MM-024 UCI documentation) | Open on `codex/mm009-mm023-reconcile-20261127`; exact head `7059dc5` passed the local gate and nine official contexts. Existing MM-022 code and synthetic tests implement the approved classification. | Read live PR for current status; obtain independent review and integrate only through protected `main`. The 250,000-group stop still prevents any UCI metric. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

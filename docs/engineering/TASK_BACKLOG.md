@@ -2,63 +2,54 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
-integrated #60/#61/#64; PR #67 integrated Census #63; PRs #68–#71 updated the
-public portfolio/license; #72 added the offline synthetic report; #73
-prepared the source alpha; #74 recorded repository excellence and branch
-inventory; #75 hardened public CI and expanded Python compatibility; #76
-established security/community workflows. PRs #74–#76 each recorded 912 local
-tests, zero skips and six checks. All six exact-main check runs succeeded on
-`2a7641b`: `test`, Python 3.12/3.13 compatibility, symbol catalog and two
-CodeQL analyses (runs 46062899971, 46062899967 and 46062900063). Local and
-remote evidence remain separately labeled. No paid budget, runner registration
-or protection change was used.
+Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
+PR #77 merged normally over #65 at `540c474`, preserving reviewed PR head
+`df7c450523a8f3475e0a8161936f6ac80e705720`. Nine observed official contexts
+passed on that exact PR head: test, Python 3.12/3.13 compatibility,
+symbol-catalog, both CodeQL analyses, repository quality, package and CodeQL.
+The combined-status query for merge commit `540c474` returned no individual
+entries; do not report PR-head checks as exact-merge checks. PR #77's separate
+local report records 968 tests, zero skips, six local checks and the quality /
+package measurements. Details are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md)
+and [REX_QUALITY_PACKAGING](REX_QUALITY_PACKAGING.md).
 
-PR #65 remains the active queue item; use its live metadata for the currently
-published head. Local branch `codex/uci352-pilot-20261126` contains merge commit
-`0182eba`, preserving current main `2a7641b` as its second parent. It includes
-the prior duplicate-coordinate/type/numeric fixes and latest `6df8af1`
-correction for repeated scalar and mixed scalar/inline worksheet payloads.
-Regressions reproduce both review rounds, including both parser passes,
-rich-text compatibility and excluded-field privacy. Focused UCI workbook
-unit/integration suites passed 75 tests, including 10 second-round structural
-cases. Published code head `35bff7824970ebc511e05add240088b2ffd74057` passed
-the exact six-check local gate with 968 tests, zero skips and reviewed
-WorldKernel pin; all seven observed GitHub checks also succeeded. Its
-documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
-passed the same local gate and all seven checks. Both receipts and exact Actions
-runs are recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Comment
-`7227559961` replies to review finding `7226309300` with correction and test
-evidence. PR #65 remains open for independent re-review. This is not empirical
-pilot evidence: the source attempt stopped above the approved group bound.
-Any later tracked change needs a fresh exact-head gate and check observation.
-Do not merge PR #65 or mark review comments resolved before independent
-acceptance.
+PR #77 resolves the MM-009 wording follow-up alongside REX-09/10. The active
+candidate now records the owner's MM-024 UCI clarification. Its branch
+`codex/mm009-mm023-reconcile-20261127` is ancestry-merged with current main
+at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. No parser code is needed:
+MM-022 already implements the approved UCI-only classification, with synthetic
+regressions for supported and rejected formats, aggregate-only exclusion
+counts and redaction. This increment updates the decision, dataset/source
+records, status and learning material. It is published as
+[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78). Exact reviewed
+head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the full local gate
+(968 tests, zero skips, six checks) and all nine observed official contexts.
+Read the live PR for its current head/check state after any subsequent push.
 
-The only approved UCI #352 processing attempt stopped above 250,000
-product-day groups without a projection, complete exclusion count or metrics.
-The source was not reread. Keep tests synthetic; do not retry, partition, raise
-the cap or acquire Census under this work. Preserve the UCI snapshot's
-`2026-12-26` deletion deadline. B-01/B-02 and production acceptance remain
-open. M1's synthetic end-to-end path is integrated, but M1 as a whole remains
-incomplete. After #65 is consolidated and independently reviewed, continue the
-existing M2-02/G-02 tasks only within their approved fictional/offline scopes;
-do not add a disconnected feature while this review queue remains active.
+The UCI #352 source call exceeded the owner-approved 250,000 product-day group
+ceiling before returning a complete projection. It produced no complete
+exclusion count or metrics. MM-024 reclassifies a subset of rows already
+excluded before sales grouping, so accepted rows and cardinality do not change.
+Do not retry, chunk, sample or raise the cap under this decision. Preserve
+snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
+M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #52–#59
-were incorporated through #62; #60/#61/#64 through #66; Census #63 through
-#67; PRs #68–#76 are also integrated. The merged branches preserve their
-ancestry and must not be replayed as new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
+**Baseline:** main `540c47411898cc820ac651c19430017ecd8c20fe`. PR #52–#59 were
+incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
+PRs #68–#77 are integrated. Merged branches preserve ancestry and must not be
+replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
-## Current PR #65 review candidate
+## Current follow-up queue
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| UCI workbook parser review | Published code head `35bff7824970ebc511e05add240088b2ffd74057` includes correction `6df8af1` and current-main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads fail closed in both worksheet passes. Valid inline rich text passes; `Description` remains excluded from selected text callbacks. Code head and documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60` passed 968 tests, zero skips, six local checks and seven observed GitHub checks each. Response `7227559961` addresses review finding `7226309300`. | Obtain independent re-review. For any new tracked commit, repeat the exact-head local gate, publish normally, and verify its own official checks. Keep #65 open and unmerged until review acceptance. |
-| UCI empirical pilot | Stopped at approved 250,000 group bound; no projection or metrics. | No further source operation without new owner authorization; preserve deletion deadline. |
-| B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue only existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
+| PR #78 / MM-024 UCI policy | Open docs-only PR; verified head `7059dc5` passed the local gate and all nine observed official contexts. | Obtain independent review; rerun full gate and inspect exact-head checks after every tracked change; merge only through protected `main`. |
+| UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
+| B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
+| M2-02 retrieval evaluation | M2-01 retrieval is integrated through #66; evaluation work is independent of the source-data blockers. | Proceed with the existing fictional/offline test set; measure citation support, lineage, access-constraint adherence and abstention. Add the behavior walkthrough, tests and evidence-map entry required by the backlog. |
+| G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
 

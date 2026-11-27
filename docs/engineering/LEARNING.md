@@ -867,6 +867,30 @@ synthetic tests establish parser behavior only; they do not establish source
 rights, private-workbook anomalies, archive completeness or hostile-file
 isolation. Do not reread the private workbook or infer empirical quality.
 
+## Guided exercise — conservatively classify UCI invoice prefixes
+
+Trace `_normalize_uci_workbook_invoice` in
+[`uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), then
+run `test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded` and
+`test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class` in
+[`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py). Explain why
+only uppercase `C` plus six ASCII digits is a cancellation, why lowercase `c`
+and other one-letter prefixes must not silently become sales, and why the
+reader retains one aggregate unverified-prefix count instead of individual
+IDs or per-prefix counts. Follow the excluded sentinel through
+`_project_uci_retail_rows` and confirm that excluded rows bypass `StockCode`
+normalization and product-day grouping. Then read
+`test_synthetic_local_xlsx_file_to_product_day_projection` in
+[`test_uci_workbook_flow.py`](../../tests/integration/test_uci_workbook_flow.py)
+to verify that excluded quantities do not change category-day values.
+
+Finally, explain how removing rows could change a fitted category cohort,
+coverage denominators, zero-valued targets and forecast metrics. The approved
+private UCI call exceeded its fixed 250,000-group budget before producing a
+complete projection, so neither the full exclusion count nor those effects
+were measured. These fixtures prove the classifier and aggregation boundary;
+they do not prove full-source compatibility or empirical forecast quality.
+
 
 ## Exercise: inspect a local decision report
 

@@ -2,39 +2,38 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
-  integrated #60/#61/#64 and PR #67 integrated Census #63; PRs #68–#71 update
-  the public portfolio/license, #72 adds an offline synthetic report, #73
-  prepares the source alpha, #74 records repository excellence/inventory, #75
-  hardens public CI, and #76 establishes security/community workflows. Six
-  exact-main check runs succeeded on `2a7641b` (test, two compatibility jobs,
-  catalog and two analyses). The owner still authorizes zero paid usage.
-  Preserve protections and distinguish local gate receipts from Actions.
-- Continue PR #65 review follow-up only. Read its live metadata for the
-  currently published head and checks. Local merge commit
-  `0182ebad70b2098e06741e83139dc14f87cb366f` preserves current `main`
-  (`2a7641b`) as its second parent. Latest local code commit `6df8af1`
-  rejects repeated selected-cell `<v>` payloads and ambiguous
-  `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
-  and excluded `Description` handling remain covered. The 10 focused second-
--  round cases and 75 UCI workbook unit/integration tests passed. Published PR
-  head `35bff7824970ebc511e05add240088b2ffd74057` passed the full local gate
-  (968 tests, zero skips, six checks) with the reviewed WorldKernel pin; all
-  seven observed GitHub checks passed on that exact head. Its
-  documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
-  passed the same gate and seven checks. See exact receipts and run links in
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
-  Reply `7227559961` addresses review finding `7226309300`; obtain independent
-  re-review. If documentation changes advance the branch, record their own
-  exact-head gate and checks; never transfer the `35bff78` evidence. Do not
-  merge #65 or mark review comments resolved.
-- Keep parser changes synthetic-test-only. No more UCI source processing is
-  authorized; preserve the `2026-12-26` deletion deadline. Do not begin a
-  disconnected feature while #65 awaits review.
-- M1 synthetic workflow is integrated; M1 empirical and production acceptance
-  remain incomplete. Keep the queue stable until #65 review; afterward resume
-  existing M2-02/G-02 work only in approved offline scopes. No new unrelated
-  feature is authorized by this continuation.
+- Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
+  PR #77 merged normally over PR #65 main `51c90d2`. Nine observed official
+  contexts passed on exact PR head `df7c450523a8f3475e0a8161936f6ac80e705720`;
+  a combined-status query for merge commit `540c474` returned no individual
+  entries, so keep the evidence scoped to the reviewed PR head. PR #77 adds
+  public coverage measurement, scoped strict typing, wheel packaging smoke
+  tests and CI. Its exact-head local report also records 968 tests, zero skips
+  and six local checks. No paid services or protection changes were used.
+- PR #77 reconciles MM-009 with accepted MM-023. MM-024 documentation-only
+  follow-up is open as [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78)
+  on `codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
+  `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact PR head
+  `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed 968 tests, zero skips,
+  six local checks and nine official contexts. The local receipt path is in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The branch changes no parser
+  contract; read live PR #78 after any new push and rerun exact-head checks.
+- The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
+  only uppercase `C` plus six digits means cancellation; other single ASCII
+  letters plus six digits are excluded before sales grouping and represented
+  by one aggregate unverified class; all other formats fail closed. Existing
+  MM-022 code and synthetic regressions already implement this, including
+  identifier redaction and unchanged generic-reader behavior.
+- The UCI source call stopped above the 250,000 product-day group ceiling
+  without a complete projection, full exclusion counts or metrics. MM-024
+  changes an exclusion label, not the set of sales rows or group cardinality.
+  Do not reread, chunk, sample or raise the cap. Preserve local snapshot
+  deletion by `2026-12-26`; no empirical score is available.
+- Proceed with existing source-independent M2-02/G-02 work after the docs
+  candidate is review-ready, without waiting for its review. Keep automated
+  tests synthetic, and keep Census source bytes, FRED/ALFRED and paid usage
+  prohibited under current B-01/B-02 and budget decisions. M1 synthetic
+  workflow is integrated; real-data and production acceptance remain open.
 
 
 ## Historical review reconciliation - 2026-11-27
@@ -50,18 +49,22 @@ merge decision recorded in the integration PR. No actual Census data or
 FRED/ALFRED access is authorized; the direct original Census artifact
 proposal requires separate owner decisions under B-01/B-02.
 
-PR #65 remains separate: the UCI source was privately acquired within
-MM-017 through MM-022, but the attempt stopped above 250,000 product-day
-groups without scores. The duplicate-cell, error-cell and ambiguous scalar
-payload findings have synthetic regressions; the latest response is recorded
-in comment `7227559961`. Published code head `35bff78` and documentation-only
-descendant `d454b48` passed their exact-head local gates and all seven
-observed GitHub checks; PR still awaits independent re-review.
-No further source processing is authorized. Preserve the 2026-12-26 deletion
-deadline. Historical pre-start check diagnostics remain unexplained despite
-current green public checks; the zero-paid budget remains. The dated branch
-and status records below are historical where inconsistent with this
-reconciliation and live PRs.
+PR #65 was independently accepted and integrated at `51c90d2`. The UCI source
+was privately acquired under MM-017 through MM-020; the call stopped above
+250,000 product-day groups without a complete projection or score. Parser
+review findings have synthetic regressions, and the exact integrated tree
+passed its local and official checks as recorded above. MM-024 now confirms
+that only exact uppercase `C` plus six digits indicates cancellation; other
+single-letter ASCII prefixes are excluded as unverified, with aggregate-only
+counts. Existing code and tests already satisfy this rule. Because the
+stopped call had already excluded those rows before grouping, the new
+classification does not change accepted rows or the group-limit failure.
+Preserve the `2026-12-26` deletion deadline; do not chunk, sample or increase
+the cap, and do not report empirical metrics without a full projection.
+Historical pre-start check diagnostics remain unexplained despite current
+green public checks; the zero-paid budget remains. The dated branch and status
+records below are historical where inconsistent with this reconciliation and
+live PRs.
 
 ## Historical integration candidate - 2026-11-27
 
