@@ -51,10 +51,19 @@ WorldKernel `0.0.1` installed from reviewed commit
 `results/local-quality-gate-b1bd7951ecc80988146eb46362eea99940ef7542.json`.
 This is local evidence, not official Actions.
 
-This receipt covers the prior `b1bd795` head, not the documentation-only
-reconciliation in this branch. The current branch tip must pass its own exact
-local gate; its commit and receipt are recorded in the latest PR #65
-conversation update.
+That receipt covers the prior `b1bd795` head. Documentation-only follow-up
+`c2410bdbafbb7a522730d31a304faa8a72b1b097` was pushed to PR #65 and passed the
+exact six-check local gate at `2026-11-27T04:25:32.503435Z`: 864 tests, zero
+skips and all checks passed with the reviewed WorldKernel pin installed.
+Receipt: `results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097.json`.
+The first sandboxed run of that same SHA timed out in pytest after 900 seconds
+(exit 124). A 20-second faulthandler trace showed `test_health` waiting in the
+Python 3.13.5 Windows asyncio `_fallback_socketpair` at `socket.accept`, before
+application code; a bounded child event-loop probe timed out in the sandbox
+and completed in the authorized local environment. The exact-head gate was
+rerun there without code or test changes. The timeout record is preserved in
+`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097-sandbox-timeout.json`.
+These are local results, not official Actions.
 
 An additional synthetic CLI smoke run on that head replayed both the default
 test-double and explicit WorldKernel paths byte-for-byte. Each returned the

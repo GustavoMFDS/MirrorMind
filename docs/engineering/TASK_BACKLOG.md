@@ -10,7 +10,7 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
-## Current PR reconciliation — 2026-11-27 UTC
+## PR reconciliation snapshot at `c2410bd` — 2026-11-27 UTC
 
 PR #52 merged at `e922b03666f04bd8c570a0448466d25838e3f84e`; PRs #53–#59
 closed without individual merges. Local ancestry checks confirm all eight
@@ -21,10 +21,11 @@ are historical evidence, not open work; no duplicate merge is required.
 Implementation rows below record whether each bounded slice is integrated,
 while source, empirical, production and official-CI gates remain distinct.
 
-The separately reviewable queue was rechecked on 2026-11-27 UTC before this
-documentation-only reconciliation. All five
-remaining PRs are open, non-draft, mergeable and based on the main commit
-above; no merge or independent approval is implied.
+PRs #60, #61, #63 and #64 were rechecked on 2026-11-27 UTC before this
+documentation-only reconciliation. PR #65 received the docs-only follow-up
+below after its exact-head gate. All five remain open, non-draft and
+mergeable against the main commit above; no merge or independent approval is
+implied.
 
 | PR | Scope | Verified head | Review state |
 | --- | --- | --- | --- |
@@ -32,7 +33,7 @@ above; no merge or independent approval is implied.
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
 | [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
 | [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
-| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `b1bd7951ecc80988146eb46362eea99940ef7542` | No review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `c2410bdbafbb7a522730d31a304faa8a72b1b097` | Open for independent review; no review submission or inline thread observed |
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -76,6 +77,17 @@ statuses; the exact annotation gave payment-failure **or** spending-limit
 alternatives and does not identify the subcause (B-08). PR #65 remains open
 without independent review. Neither gate clears the 250,000-group stop or
 establishes real metrics.
+
+Published documentation-only follow-up
+`c2410bdbafbb7a522730d31a304faa8a72b1b097` passed its exact six-check gate at
+`2026-11-27T04:25:32.503435Z` with 864 tests, zero skips and the reviewed
+WorldKernel pin; see [PROJECT_STATUS](PROJECT_STATUS.md) for the passing
+receipt and [B-08](BLOCKERS.md) for the separate sandbox-timeout diagnosis. Four
+At that exact head, four automatic Actions runs failed before steps; annotations
+again
+show the same unresolved payment-or-spending-limit alternatives. See [B-08](BLOCKERS.md)
+for exact run/check IDs. The quota report is separate evidence; there is no
+official CI pass or newly resolved empirical result.
 
 ## Historical consolidated review candidate — 2026-11-25 (PR #62 later integrated)
 

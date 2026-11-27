@@ -75,6 +75,24 @@ annotation alternative applied. The owner separately confirms quota
 exhaustion and zero paid budget. No manual retry, spending-limit change, paid
 usage, workflow change or protection bypass occurred.
 
+### B-08 diagnostics — PR #65 documentation follow-up `c2410bd`
+
+For exact head
+`c2410bdbafbb7a522730d31a304faa8a72b1b097`, automatic runs [45939953770](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939953770), [45939953729](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939953729), [45939948905](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939948905) and [45939948832](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939948832) failed before repository steps. Check-run IDs are `140311734334`, `140311734200`, `140311718330` and `140311717818`. Each annotation repeats the payment-failure **or** spending-limit message; it does not identify the alternative. Jobs returned no steps or logs, and combined status returned no statuses. The owner's quota report remains separate evidence. No rerun or configuration change was made.
+
+The sandboxed exact-head local gate timed out in pytest after 900 seconds
+(exit `124`); receipt:
+`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097-sandbox-timeout.json`.
+A 20-second faulthandler trace placed `test_health` in Python 3.13.5's
+Windows asyncio `_fallback_socketpair` waiting at `socket.accept`, before
+application code. A bounded child-process `asyncio.new_event_loop()` probe
+timed out in the sandbox and completed in the authorized local environment.
+The same exact SHA then passed all six local checks: 864 tests, zero skips,
+with the reviewed WorldKernel pin, at `2026-11-27T04:25:32.503435Z`. Receipt:
+`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097.json`.
+This diagnoses the restricted sandbox for that run; it is not official CI or
+evidence of an application failure.
+
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for

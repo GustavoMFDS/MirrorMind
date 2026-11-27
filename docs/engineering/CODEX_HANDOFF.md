@@ -369,9 +369,18 @@ checks. The annotation lists recent payment failure **or** a spending-limit
 increase; no job steps, logs or combined statuses were returned, so the
 subcause is not established. The owner separately confirms exhausted quota
 and zero paid budget. No rerun or protections/workflow change was made; see
-the exact IDs in [B-08](BLOCKERS.md). This documentation-only reconciliation
-must pass its own exact-head local gate; record that commit and receipt in the
-latest PR #65 conversation update.
+the exact IDs in [B-08](BLOCKERS.md). Documentation-only follow-up
+`c2410bdbafbb7a522730d31a304faa8a72b1b097` was pushed to PR #65 and passed
+the exact six-check local gate at `2026-11-27T04:25:32.503435Z`: 864 tests,
+zero skips, all six checks and the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097.json`.
+The first sandboxed attempt timed out after 900 seconds in pytest; faulthandler
+and a bounded event-loop child probe isolated the wait to Windows asyncio's
+fallback socket pair before application code. The same SHA passed in the
+authorized local environment without changing tests or code. Preserve the
+timeout record at
+`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097-sandbox-timeout.json`.
+This local pass is not official Actions evidence.
 
 A separate isolated invocation of
 `tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result`
