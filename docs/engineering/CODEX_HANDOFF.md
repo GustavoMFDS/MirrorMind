@@ -54,6 +54,15 @@
   See [B-07](BLOCKERS.md). Any final PR head after subsequent tracked changes
   needs its own exact receipt. Local mypy is absent; rely on the candidate's
   official quality job for strict retrieval typing and record its exact status.
+- PR #82 is open for M2-02. Its initial head
+  `d542e5e129e091dc649e1a187c96e18c59ccc695` passed the local 989-test,
+  six-check gate and 12 exact-head official checks; the guarded deploy and
+  release-rehearsal jobs were skipped. Official quality completed coverage and
+  strict retrieval typing. One non-blocking Node.js 20 deprecation annotation
+  remains. Run IDs, exact SHA scope and the warning are in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); later heads need separate
+  local and official checks. Independent review and M2-02 acceptance remain
+  pending.
 - Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
   new UCI source processing remain unauthorized. M1 synthetic workflow is
   integrated; empirical and production acceptance remain open. Preserve the

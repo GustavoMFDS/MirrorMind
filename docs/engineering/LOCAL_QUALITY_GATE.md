@@ -81,6 +81,31 @@ Both are local-only evidence, not GitHub Actions. Run a new receipt for the
 final PR head after any subsequent tracked changes, and verify that PR's
 official checks independently.
 
+PR #82 opened at exact head
+`d542e5e129e091dc649e1a187c96e18c59ccc695`. Diagnostics pinned all results to
+that head. Its local gate passed 989 tests, zero skips and all six checks with
+the reviewed WorldKernel pin; receipt:
+`results/local-quality-gate-d542e5e129e091dc649e1a187c96e18c59ccc695-workspace.json`.
+Twelve official checks succeeded and two condition-controlled jobs were skipped.
+Python API test/compatibility 3.12/3.13 passed in
+[46081696063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696063);
+quality, package and non-root container smoke passed in
+[46081696099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696099);
+site build passed and guarded deployment skipped in
+[46081696082](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696082);
+symbol catalog passed in
+[46081696007](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696007);
+synthetic benchmark passed and release rehearsal skipped in
+[46081696075](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696075);
+and both CodeQL language analyses passed in
+[46081693804](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081693804).
+The CodeQL check reported no new alerts
+([check details](https://github.com/GustavoMFDS/MirrorMind/runs/140782041800)).
+The quality workflow completed coverage measurement and strict retrieval
+typing. One non-blocking annotation warns that Actions using Node.js 20 are
+being forced onto Node.js 24; it did not fail a check. These are initial
+exact-head PR results only; any later PR head needs its own checks.
+
 ## Current public CI baseline - 2026-11-27
 
 PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
