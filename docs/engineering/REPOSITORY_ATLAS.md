@@ -1075,3 +1075,7 @@ forecast claims or cross-repository changes.
 
 - [Portal builder](../../examples/build_portfolio_site.py), [landing template](../assets/portfolio_site.html) and [contract tests](../../tests/integration/test_portfolio_site.py): allowlisted synthetic site.
 - [Pages workflow](../../.github/workflows/pages.yml) and [deployment guide](REX_PUBLIC_PORTAL.md): scoped build and manual main deployment.
+
+## Research maintenance
+
+- [Benchmark](../../examples/synthetic_benchmark.py), [release rehearsal](../../examples/prepare_alpha_release.py), [tests](../../tests/integration/test_research_maintenance.py), [workflow](../../.github/workflows/research-maintenance.yml) and [guide](REX_BENCHMARK_RELEASE.md).

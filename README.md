@@ -18,7 +18,7 @@ transparent, reproducible workflow. Its first application is inventory
 planning in retail, with a modular architecture designed to support other
 domains over time.
 
-[Try the demo](#try-mirrormind) · [Research preview](https://github.com/GustavoMFDS/MirrorMind/releases/tag/v0.1.0-alpha.1) · [Architecture](#architecture) · [Quick start](#quick-start) · [Documentation](#documentation)
+[Website](https://gustavomfds.github.io/MirrorMind/) · [Try the demo](#try-mirrormind) · [Research preview](https://github.com/GustavoMFDS/MirrorMind/releases/tag/v0.1.0-alpha.1) · [Architecture](#architecture) · [Quick start](#quick-start) · [Documentation](#documentation)
 
 ## Try MirrorMind
 
