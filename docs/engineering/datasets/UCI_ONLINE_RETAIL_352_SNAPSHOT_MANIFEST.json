@@ -74,10 +74,10 @@
     "group_limit_decision": "MM-020; owner approved 2026-11-26"
   },
   "invoice_number_handling": {
-    "decision": "MM-021; owner approved 2026-11-26",
+    "decision": "MM-022; owner confirmed 2026-11-27",
     "standard_identifiers": "Exact six-digit integer cells or six-digit ASCII digit strings enter the existing projection.",
-    "cancellation_identifiers": "C or c followed by six ASCII digits is normalized to the existing cancellation marker and counted as cancelled.",
-    "unverified_prefix_identifiers": "Any other single ASCII letter followed by six ASCII digits is excluded before aggregation and counted in one aggregate unverified-prefix category.",
+    "cancellation_identifiers": "Only uppercase C followed by six ASCII digits is normalized to the existing cancellation marker and counted as cancelled.",
+    "unverified_prefix_identifiers": "Lowercase c and every other single ASCII letter followed by six ASCII digits are excluded before aggregation and counted in one aggregate unverified-prefix category.",
     "unsupported_formats": "All other formats fail closed without echoing the value.",
     "generic_projection_unchanged": true,
     "identifier_values_retained": false

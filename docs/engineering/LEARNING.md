@@ -695,4 +695,8 @@ the UCI reader excludes lowercase `c` and other one-letter prefixes under the
 same aggregate class count. Verify that unknown identifiers do not appear in
 results and generic projection still rejects those forms. Explain how
 excluding such rows can change the fit cohort, zero targets and downstream
-scores. Do not use real UCI rows in this exercise.
+scores and coverage denominators. Run
+`tests/unit/test_uci_workbook.py::test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`
+to inspect the full ASCII classification and prove that the receipt retains one
+aggregate exclusion count rather than per-letter counters. Do not use real UCI
+rows in this exercise.

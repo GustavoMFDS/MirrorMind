@@ -33,8 +33,11 @@ uppercase `C` plus six digits marks cancellation; lowercase `c` and other
 single ASCII-letter prefixes map to one unverified class whose aggregate count
 survives. Other forms fail closed, identifiers do not reach the output, and
 generic projection defaults remain unchanged. The real-source attempt used
-MM-021 and stopped above the approved group cap; MM-022 is verified by
-synthetic regressions only and was not applied to source data.
+MM-021 and stopped above the approved group cap. MM-022's full 52-letter
+classification and one-counter boundary are covered by the synthetic
+`test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`;
+the policy relabeling does not change the source attempt's accepted rows or
+group count, and no source reread or empirical metric exists.
 
 Current supported routes: `GET /health`, `GET /v1/capabilities`,
 `POST /v1/scenarios/validate`, and the experimental

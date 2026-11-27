@@ -81,11 +81,15 @@ aggregate counter before grouping. Other invoice formats still fail closed;
 the generic projection contract is unchanged. The original IDs are not
 retained.
 
-The owner later clarified this rule in MM-022: exact uppercase `C` is the only
+The owner clarified this rule in MM-022: exact uppercase `C` is the only
 cancellation marker, while lowercase `c` joins other letter prefixes in the
-unverified class. This distinction has synthetic regression coverage only;
-the real-source attempt used MM-021 and was not repeated. No real exclusion
-count or empirical metric exists.
+unverified class. The owner confirmed the conservative, aggregate-only
+exclusion policy on 2026-11-27. Synthetic regressions cover every single ASCII
+letter prefix and fail-closed handling of other formats. The real-source
+attempt used MM-021 and was not repeated because both cancellation and
+unverified classes were excluded before grouping; the clarification cannot
+reduce the observed product-day count. No complete exclusion count or
+empirical metric exists.
 
 The preflight passed the owner-approved 192 MiB/member and 224 MiB/total ZIP
 profile while retaining the generic 64/128 MiB defaults and the 32 MiB

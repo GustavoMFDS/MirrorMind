@@ -100,14 +100,18 @@ plus six digits as cancellation; (2) lowercase `c` and other single ASCII
 letters plus six digits are excluded before aggregation and increment only the
 aggregate unverified-class count; (3) original IDs do not appear in results or
 errors; (4) all other malformed forms fail closed; (5) generic projections
-retain their existing contract; (6) synthetic tests cover the uppercase and
-lowercase cases. A real-source re-run is prohibited under the existing
-250,000-group stop.
+retain their existing contract; (6) synthetic tests cover all 52 single ASCII
+letter prefixes, preserve one aggregate exclusion counter, and reject
+non-ASCII or malformed forms. A real-source re-run is not useful under the
+existing 250,000-group stop: MM-021 already excluded both cancellation and
+unverified classes before grouping, so this classification clarification
+cannot change accepted sales rows or group cardinality.
 
 Impact map: `_normalize_uci_workbook_invoice` changes only the explicit UCI
 reader; `project_uci_retail_rows` and generic callers do not change. The UCI
-regression remains in `tests/unit/test_uci_workbook.py`; a lowercase-`c`
-compatibility case was added to
+regressions remain in `tests/unit/test_uci_workbook.py`, including
+`test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`;
+a lowercase-`c` compatibility case was added to
 `tests/unit/test_uci_retail_projection.py::test_invalid_invoice_format_does_not_get_treated_as_regular_sale`.
 Evidence IDs MM-XLSX-006 and MM-XLSX-007 cite these tests. Reader/projection
 walkthroughs, dataset card, decision log, status, debugging and learning

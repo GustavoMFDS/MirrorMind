@@ -64,9 +64,10 @@ IDs and aggregate:
   single ASCII-letter plus six-digit ID as `unverified_invoice_prefix` before
   grouping, recording only the aggregate class count. Reject every other
   invoice format. Never retain an excluded identifier or use it to group,
-  deduplicate or select rows. MM-022 supersedes MM-021's lowercase-`c` rule;
-  this synthetic-verified clarification was not applied to the stopped real
-  source attempt, which was not repeated;
+  deduplicate or select rows. MM-022 supersedes MM-021's lowercase-`c` rule.
+  The owner confirmed this conservative exclusion policy on 2026-11-27. The
+  stopped real-source attempt used MM-021 and was not repeated under the
+  clarified policy;
 - aggregate eligible positive quantities by `StockCode` category and calendar
   day, and emit only ordinal category summaries plus aggregate metrics;
 - do not materialize a missing day as zero unless source completeness and
@@ -124,11 +125,14 @@ clarification changes aggregate classification counts only. It does not change
 the recognized sales rows, product-day groups or the cap failure. The lane is
 stopped under the current scope. Excluding unverified invoice-prefix rows can
 reduce category-day totals, change which categories enter the fit cohort,
-alter zero-valued targets and change downstream scores relative to treating
-those rows as sales; the MM-022 relabeling alone does not cause that change.
-Any future metric would describe only records with recognized invoice IDs
-and must retain the aggregate exclusion count; coverage would still mean
-eligible pairs on dates declared complete by the UCI snapshot assertion.
+alter zero-valued targets, change coverage denominators and change downstream
+scores relative to treating those rows as sales; the MM-022 relabeling alone
+does not cause that change. Any future metric would describe only records with
+recognized invoice IDs and must retain the single aggregate exclusion count.
+Coverage would mean eligible pairs on dates declared complete by the UCI
+snapshot assertion, using the recognized-ID cohort; it is not ledger
+completeness. No metric may be compared with an inclusive run unless the
+cohort and denominators are explicitly matched.
 Synthetic regressions do not verify source rights, independent ledger
 completeness or empirical predictive skill. See the [source
 review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [event-time evaluator

@@ -2,6 +2,7 @@
 from datetime import datetime
 from hashlib import sha256
 from io import BytesIO, StringIO
+from string import ascii_letters
 from xml.etree import ElementTree as ET
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -233,7 +234,29 @@ def test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded():
     assert "c536367" not in str(result)
 
 
-@pytest.mark.parametrize("invoice_number", ["AB123456", "X12345", "12345", "1234567"])
+def test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class():
+    invoice_numbers = [f"{prefix}123456" for prefix in ascii_letters]
+    raw = fictional_workbook(*(
+        invoice(invoice_number, "SKU-A", 1)
+        for invoice_number in invoice_numbers
+    ))
+
+    result = stage(raw)
+    receipt = result.receipt()
+
+    assert result.projection.processed_rows == len(ascii_letters)
+    assert result.projection.accepted_rows == 0
+    assert result.projection.cancelled_rows == 1
+    assert receipt["unverified_invoice_prefix_rows"] == len(ascii_letters) - 1
+    assert not result.projection.days
+    assert sum(key.startswith("unverified_invoice_prefix") for key in receipt) == 1
+    assert all(invoice_number not in str(result) for invoice_number in invoice_numbers)
+
+
+@pytest.mark.parametrize(
+    "invoice_number",
+    ["AB123456", "X12345", "12345", "1234567", "é123456", "_123456"],
+)
 def test_uci_invoice_formats_outside_scoped_classes_fail_without_echo(
     invoice_number,
 ):
