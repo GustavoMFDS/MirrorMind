@@ -558,6 +558,10 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   can request a current sequence/digest using a per-request random nonce,
   verify a separate service Ed25519 signature with short UTC validity,
   and compare to the [local separately signed registry](engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md).
+  The current G-01 draft adds an
+  [in-process response handler and read-only store contract](engineering/REMOTE_FENCE_HEAD_SERVICE.md)
+  that reuse the same canonical signing helpers; it is not wired to an HTTP
+  server and has no persistence or authenticated caller boundary.
   A *genuinely independent honest signer* that reports a newer head could
   detect compatible rollback of both local SQLite files. No real service,
   independent custody, server endpoint, signer deployment, real-source

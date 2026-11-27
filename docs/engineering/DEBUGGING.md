@@ -334,3 +334,24 @@ excerpt and digest can still create a self-consistent untrusted envelope; the
 digest is not source provenance. Never log denied IDs, hidden content or raw
 queries. BM25 scores are ranking values, not relevance probabilities, and a
 caller-declared scope is not authentication.
+
+## In-process challenged-head responder returns an error
+
+The experimental [G-01 responder walkthrough](REMOTE_FENCE_HEAD_SERVICE.md)
+describes `RemoteFenceHeadResponder.respond`; it is not an HTTP route. For
+400/405/406, inspect the method, fixed path, exact `Accept` value and raw
+`nonce=...&packet_sha256=...` ordering in the generated request test. A 404
+means no current record was found for the packet scope or the store returned
+a different packet digest. A bodyless 503 means a typed store/clock
+operational error, invalid record or invalid returned clock was observed.
+Store adapters must translate expected unsafe/unavailable reads to
+`RemoteFenceHeadStoreError`; clock adapters must translate expected time
+service failures to `RemoteFenceHeadClockError`. Inspect sanitized adapter
+diagnostics locally, never expose exception text or source rows in a response.
+Unexpected programming exceptions propagate to the in-process caller. The
+responder does not advance or repair state; use the generated-key round-trip
+and adverse cases in
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+If the client rejects a 200 response, verify the configured service key,
+request nonce, packet/snapshot digest and UTC validity against its existing
+verifier. Do not infer an attack or independent freshness from a mismatch.

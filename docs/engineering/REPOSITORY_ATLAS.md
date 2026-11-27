@@ -790,17 +790,22 @@ delivery is provided, and none of these results grants permission.
 No independently operated current-head service, source permission
 grant, production custody or cross-file atomicity is implied.
 
-## 49. Experimental nonce-challenged remote signed current-head read
+## 49. Experimental nonce-challenged current-head protocol, client and responder
 
 | Tracked file | Reviewed responsibility |
 | --- | --- |
+| [`src/mirrormind/modules/evidence/remote_fence_head_protocol.py`](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py) | One shared response type, signing domain, strict canonical signing message, compact JSON wire encoder and response parser |
 | [`src/mirrormind/modules/evidence/remote_fence_head_client.py`](../../src/mirrormind/modules/evidence/remote_fence_head_client.py) | Fixed HTTPS read, OS-generated nonce, separately verified signed service reply, bounded canonical wire format and exact local signed-registry comparison |
-| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery/clock/packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
+| [`src/mirrormind/modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py) | In-process request responder with typed clock/store operational errors and propagation of unrelated programming errors; no listener, authentication or persistence |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery, typed operational clock/store failure, programming-error propagation, packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
 | [`docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md`](REMOTE_FENCE_HEAD_CLIENT.md) | Request-response contract, trust boundaries, replay resistance and no independently deployed service |
+| [`docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md`](REMOTE_FENCE_HEAD_SERVICE.md) | G-01 source walkthrough, store/request/response contracts, signing flow, reproduction, failure modes and learning exercise |
 | [`docs/engineering/changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md`](changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md) | Scope, acceptance, impact map and deferred service operation |
+| [`docs/engineering/changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md`](changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md) | G-01 acceptance, impact map, compatibility, safety and evidence record |
 
-The client does not grant source rights, publish, ingest data, manage
-real service keys, or claim globally current external authority.
+The client does not grant source rights, publish or ingest data. The responder
+does not provide a live server, managed key custody, durable current state or
+globally current external authority.
 
 ## 50. Composed synthetic retail evidence preflight
 

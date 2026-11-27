@@ -713,3 +713,23 @@ when both values are replaced. Inspect the injection-like fixture and explain
 why it remains `untrusted_evidence` without creating an instruction or tool
 call. Finally change the fixed demo scope in a practice branch and explain why
 this tests a local input boundary rather than identity or authorization.
+
+## Guided exercise — sign a current-head challenge in process (35 minutes)
+
+Read the [G-01 service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md), the
+[shared wire protocol](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py),
+the [responder](../../src/mirrormind/modules/evidence/remote_fence_head_service.py)
+and
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+Run all six `test_remote_head_service_*` selectors. Trace the request nonce
+from the raw query into `SignedRemoteFenceHead`, the canonical signing
+message and the existing client verifier. Change one query field and predict
+whether the responder calls the store. Then reuse a protected public key as
+the service signer and explain why initialization fails. Finally, list the
+transport, durable storage and operational evidence that these tests do not
+provide. Make a fake clock raise `RemoteFenceHeadClockError` and verify the
+bodyless 503. Then make the clock and store raise `RuntimeError`; explain why
+those programming failures propagate rather than being mislabeled as routine
+service outages. Describe how a future HTTP adapter can map an unexpected
+exception at its transport boundary without broad catches inside the typed
+responder.

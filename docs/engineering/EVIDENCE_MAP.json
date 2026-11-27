@@ -1195,5 +1195,47 @@
     "test": "tests/unit/test_evidence_retrieval.py",
     "function": "test_contract_rejects_wrong_well_formed_excerpt_digest",
     "limitation": "Deserialization rejects a shape-valid digest that does not match the exact UTF-8 excerpt. An envelope with both excerpt and digest replaced remains unauthenticated."
+  },
+  {
+    "id": "MM-RHEAD-008",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_response_round_trips_through_existing_client",
+    "limitation": "A generated-key in-memory response is accepted by the existing local verifier and retains false permission flags. No HTTP transport, persistent store, separate operators or live authority is exercised."
+  },
+  {
+    "id": "MM-RHEAD-009",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_rejects_bad_wire_scope_and_store_failure",
+    "limitation": "The pure responder rejects malformed fictional requests and store records with empty errors. No web framework parsing or production storage adapter is exercised."
+  },
+  {
+    "id": "MM-RHEAD-010",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_binds_nonce_and_snapshot_scope",
+    "limitation": "The existing verifier rejects generated responses with a wrong nonce or snapshot digest. A fresh signer may still provide a stale claim; independent currentness is not proven."
+  },
+  {
+    "id": "MM-RHEAD-011",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_enforces_distinct_keys_and_bounded_clock",
+    "limitation": "Construction checks the supplied non-service key roster and lifetime, and a naive test clock fails closed. Roster completeness, custody and real clock trust are not established."
+  },
+  {
+    "id": "MM-RHEAD-012",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_translates_typed_clock_failure_without_leaking",
+    "limitation": "A typed error from an injected in-process clock maps to an empty 503; no real clock adapter, trusted time source or HTTP transport is tested."
+  },
+  {
+    "id": "MM-RHEAD-013",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_propagates_unexpected_adapter_programming_errors",
+    "limitation": "In-process fake clock/store RuntimeErrors remain visible; no production adapter or future transport-level exception policy is tested."
   }
 ]

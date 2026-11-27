@@ -27,7 +27,50 @@ execution guidance and does not broaden the agent's permissions.
   Actions run `45769344631` has no job steps or retrievable logs, so the cause
   is unknown. Keep #64 separate from #60/#61/#63.
 
-## 1.1 Owner-approved continuation decisions — 2026-11-25
+## 1.2 Current owner-approved continuation — 2026-11-26
+
+- Current `main` is `a456034c55ed7634ad4768b26788fec09dab1d08`, the
+  ancestry-preserving PR #62 merge. Independent post-merge verification ran
+  the complete temporary local gate: 835 tests, zero skips, six checks and
+  the exact WorldKernel source pin. The reviewer recommends preserving this
+  merge ancestry. PRs #52–#59 are reconciled as incorporated by #62; retain
+  their branches where useful and do not repeat their merges.
+- The M1 path on main is a synthetic experimental workflow, not a real-data,
+  empirical-forecast or production acceptance. Census remains a separate open
+  PR #63. PR #60 is open/non-draft for independent review. PR #61 has been
+  synchronized with main through ancestry-preserving merge
+  `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`; its merge-head gate passed 841
+  tests, zero skips and six checks. Documentation refresh commit
+  `47fdceb58a2c3802f8e66e5aea51318a698ffe62` also passed 841 tests, zero skips
+  and all six checks. The documentation baseline
+  `20ce86bde740d5b46d7aeba4d13138884e211dba` passed the exact gate again with
+  841 tests, zero skips and all six checks. PR #61 is now open/non-draft and
+  ready for independent review. Its live PR body carries the current exact
+  SHA and receipt; any subsequent commit needs a fresh gate. Keep #60, #61 and
+  #63 separate.
+- PR #62's final independent comments are
+  [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+  and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
+  The former approves the experimental synthetic M1 scope and recommends a
+  merge commit; the latter verifies `a456034` and the separate Census
+  descendant. Neither grants production, scientific-data or official-CI
+  approval.
+- The owner confirms Actions quota exhaustion, a zero-paid budget and no limit
+  increase. Follow [LOCAL_QUALITY_GATE.md](LOCAL_QUALITY_GATE.md) on exact
+  clean heads. Local receipts are not CI. Do not register a runner, change a
+  workflow, alter protections, or retry known pre-job failures. No new paid
+  infrastructure is approved.
+- Continue UCI #352 then aggregate Census/ALFRED preparation under B-01/B-02.
+  Automated tests stay synthetic. No source bytes, keys or credentials may be
+  acquired or processed until source-specific rights, privacy, retention,
+  snapshot and temporal-availability conditions are separately satisfied.
+- After the remaining PR review queue is prepared, M2-02 retrieval evaluation
+  is the next M2 slice and depends on M2-01 (#60) review/integration. Do not
+  open disconnected feature work while this queue remains unsettled. ENG-02
+  tracks five pre-existing Ruff findings in `examples/` as separate
+  maintenance; leave those files out of #60/#61/#63.
+
+## Historical owner-approved continuation decisions — 2026-11-25 (superseded)
 
 - Research preparation proceeds A then B: UCI Online Retail #352 event-time
   retrospective first, then an aggregate Census release-vintage study.

@@ -5,9 +5,28 @@ see [PROJECT_STATUS](PROJECT_STATUS.md). This is
 the maintained task register, not a duplicate roadmap or a promise
 of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
-On resuming work, reconcile with actual branches, open PRs, merged
-commits and independently observed evidence. Do not duplicate work
-already underway.
+On resuming work, reconcile with actual branches, open PRs, merged commits and
+independently observed evidence. Do not duplicate work already underway.
+
+## Current queue reconciliation — 2026-11-26
+
+| Work | Current state | Evidence / next gate |
+| --- | --- | --- |
+| M1 synthetic vertical slice | Integrated experimentally in main `a456034`; PR #52–#59 are incorporated by #62 and their branches are retained. Independent merged-main gate: 835 tests, zero skips, six checks, exact WorldKernel pin. | M1 real-data, empirical forecast and production acceptance remain incomplete; do not close M1 overall. |
+| Census vintage evaluator | Separate PR #63, open/non-draft at `b5e989314bcdcb566df479931794a5f56c07d477`, based on main. Exact local gate: 877 tests, zero skips, six checks. | Await independent review. Synthetic only; no Census/ALFRED bytes or source authorization. |
+| M2-01 retrieval | PR #60, open/non-draft at `fafdedae3a76398e0450773065e40384c96d1ed7`, based on main. Exact local gate: 845 tests, zero skips, six checks. | Await independent review. Retrieval remains experimental and caller-scope is not authenticated authorization. |
+| G-01 responder | PR #61 remains separate on main; the ancestry-preserving sync commit is `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`. Documentation baseline gate `20ce86bde740d5b46d7aeba4d13138884e211dba` passed 841 tests, zero skips and all six checks with the exact WorldKernel pin. | PR #61 is open/non-draft and ready for independent review. Its live body records the latest exact head/receipt; every later commit needs a fresh gate. No route or operational authority. |
+| M2-02 retrieval evaluation | Planned; depends on M2-01. | Start after M2-01 review/integration settles. Use fictional/authorized fixtures; measure citation support, lineage and abstention. |
+| ENG-02 examples lint maintenance | Ready as a separate maintenance item. `ruff check examples` on this branch reports five findings in three example files; none of these files differ from main. | Handle in a separate scoped PR; do not fold cleanup into #60/#61/#63. |
+| Real-source pilots | Preparation only under the approved UCI then aggregate Census/ALFRED sequence. | B-01/B-02 remain open; keep automated tests synthetic and wait for source-specific rights, privacy, snapshot and temporal evidence. |
+
+GitHub Actions remains unavailable under the zero-paid-budget decision. Use
+the exact-clean-head six-check local procedure; receipts are local evidence,
+never official CI. No required check, workflow or branch protection is
+weakened. The PR #62 final comments
+[7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141)
+are the review record for the incorporated M1 baseline and PR ordering.
 
 ## Historical reconciliation at the PR #51 baseline
 

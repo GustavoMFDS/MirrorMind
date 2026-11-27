@@ -45,6 +45,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | Map a retail scenario to WorldKernel v1 | [`worldkernel_mapping.py`](../../src/mirrormind/modules/simulation/worldkernel_mapping.py), [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) | [strict synthetic mapping tests](../../tests/unit/test_worldkernel_mapping.py) cover revalidation of mutable scenarios and the lower scenario/operator run ceiling; no engine import or execution |
 | Execute the M1 policy comparison in WorldKernel | [`worldkernel_policy_world.py`](../../src/mirrormind/domains/retail/worldkernel_policy_world.py), [`worldkernel_policy_gateway.py`](../../src/mirrormind/modules/simulation/worldkernel_policy_gateway.py), [M1E-04 guide](WORLDKERNEL_POLICY_WORLD.md) | Synthetic mapper/state/parity regressions plus exact-pin engine and CLI integration tests; no real data, forecast validity, hostile-code isolation or HTTP execution |
 | Change health/capabilities | `api/routes/system.py`, `api/app.py` | `tests/integration/test_api.py` |
+| Respond to a challenged remote head request (G-01) | [`modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py), [service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md) | [generated-key round-trip, typed clock/store failure and programming-error propagation tests](../../tests/unit/test_atomic_governed_publisher.py); in-process only, no HTTP route, persistent store or independent authority |
 | Add simulation execution | `modules/simulation/gateway.py`, `core/contracts.py` | New adapter/contract tests; separate WorldKernel integration review |
 | Stage and inspect local CSV structure | [`modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py), [staging guide](M1_LOCAL_CSV_STAGING.md) | [unit](../../tests/unit/test_evidence_snapshots.py) and [fixture integration](../../tests/integration/test_local_snapshot_flow.py) tests; no authorization |
 | Prepare a source review packet (not approval) | [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [guide](SOURCE_INTAKE_REVIEW.md) | [synthetic unit tests](../../tests/unit/test_source_intake_review.py); binds staged byte digest and opaque review references; never grants ingestion |
@@ -188,6 +189,14 @@ The code neither deploys an external service nor certifies its
 administrative independence, durable latest-state operation, key
 custody or honesty. This network read does not grant any access
 rights or alter publisher transactions.
+
+The [G-01 responder](REMOTE_FENCE_HEAD_SERVICE.md) provides an in-process
+implementation of the existing response contract through a read-only store
+`Protocol`. It shares canonicalization with the client, but no transport,
+persistence, authentication or independent administration is implemented.
+The client does not call this responder; the generated-key round trip is
+exercised in a local test. This is a PR #61 proposal, not an integrated main
+capability.
 
 ## Standalone M1 examples — adjacent-date invariant
 

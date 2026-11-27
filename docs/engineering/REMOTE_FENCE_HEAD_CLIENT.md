@@ -95,6 +95,12 @@ checked_at=...)` accepts a **caller-supplied clock only for offline
 verification/test use**. The network helper chooses its own local
 UTC clock. Neither is a secure independent timestamp.
 
+The experimental [G-01 in-process responder](REMOTE_FENCE_HEAD_SERVICE.md)
+uses the same canonical protocol helpers and a read-only storage `Protocol`.
+It is not wired to this client's HTTPS transport, and no route, listener,
+persistent store or deployment exists. A generated-key test passes its bytes
+through this existing verifier to check wire compatibility.
+
 ## What this changes and what it cannot guarantee
 
 The client can reject a **replayed previous HTTP reply** because the

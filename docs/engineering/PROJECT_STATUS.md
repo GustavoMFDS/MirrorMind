@@ -5,6 +5,59 @@
 #62. This is the latest confirmed main baseline, not a claim that the open
 follow-up branches have been accepted.
 
+## Current merged baseline — 2026-11-26
+
+**Main:** `a456034c55ed7634ad4768b26788fec09dab1d08` integrates PR #62 by an
+ancestry-preserving merge. PR #62's final independent review recommended this
+method; #52–#59 are incorporated and their branches remain available. The
+independent post-merge gate reported 835 tests, zero skips, all six checks,
+one known warning and the exact WorldKernel pin
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt:
+`%TEMP%\mirrormind-independent-main-a456034c.json`. This is local evidence,
+not GitHub Actions.
+
+The integrated M1 workflow is experimental and synthetic. It joins evidence
+staging, temporal baselines, uncertainty diagnostics, three-policy simulation
+and a v2 decision trace; the optional WorldKernel path is locally pinned and
+records the test-double parity run separately. It does not establish real-data
+rights, temporal source availability, empirical forecast accuracy, production
+isolation or approval to act. B-01/B-02 remain open. B-04 is resolved only
+for the reviewed local compatibility slice; broader service/deployment
+acceptance remains open. B-08 remains open under the owner's zero-paid-budget
+decision.
+
+**Independent review queue:**
+
+| PR | Current published head | State and exact local evidence | Limits |
+| --- | --- | --- | --- |
+| #60 | `fafdedae3a76398e0450773065e40384c96d1ed7` | Open, non-draft, based on `main`; 845 tests, zero skips, six checks. | Experimental lexical retrieval; scope is caller-declared, not authenticated RBAC. |
+| #61 | Current exact head and receipt are maintained in the live PR body; documentation baseline gate `20ce86bde740d5b46d7aeba4d13138884e211dba` passed 841 tests, zero skips and all six checks. | Open, non-draft, based on `main`, ready for independent review. Any later commit receives a fresh exact-head gate; no CI result is claimed. | Read-only in-process responder; no route, persistence, authentication or deployed authority. |
+| #63 | `b5e989314bcdcb566df479931794a5f56c07d477` | Open, non-draft, separate from #60/#61; 877 tests, zero skips, six checks on the final docs head. | Synthetic Census vintage protocol only; no real source bytes or authorization. |
+
+The #62 final comments are [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
+They confirm technical approval of experimental synthetic M1, recommend
+preserving #52–#59 ancestry, and keep Census separate from #62. No real
+UCI/Census bytes, paid Actions usage or limit increase are authorized. The
+UCI then Census/ALFRED pilot sequence remains preparation-only; automated
+tests stay synthetic.
+
+The pre-existing `ruff check examples` findings are a separate maintenance
+item ENG-02; feature PRs do not include those example changes.
+
+---
+
+The following entries are a **historical evidence archive** captured before
+PR #62 was integrated. Their branch heads, PR states and next steps are not
+the current queue; use the baseline above plus live GitHub metadata for current
+status. Historical receipts remain useful for tracing exact revisions.
+
+**Baseline:** 2026-11-23 (Brazil local date); main
+`e4f05a152aefcf68fa8ec22f3baa3b61adb8519d` (PR #51 merge commit).
+This was the latest confirmed merged-main baseline after the handoff-doc
+update. PR #50 (`036b8d6`) is its parent. It is retained as historical
+evidence, not as a working-branch or current PR inventory.
+
 **Independent post-merge evidence:** the exact `a456034` tree passed the local
 six-check gate with 835 tests, zero skips and one existing TestClient warning;
 WorldKernel was installed from reviewed source commit
