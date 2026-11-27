@@ -29,6 +29,18 @@ their named SHAs and do not validate this merge candidate. After publication,
 verify official checks on that exact PR head; the successful main checks above
 do not transfer.
 
+### Synchronized code/status candidate receipt - `0ead3ec`
+
+Exact head `0ead3ec51e6400e9d216250aa6babef75e3a10f8` passed at
+`2026-11-27T20:06:38.086100Z`: 960 tests passed, zero skips, all six checks,
+and one existing Starlette/httpx `TestClient` deprecation warning. WorldKernel
+`0.0.1` was installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-0ead3ec51e6400e9d216250aa6babef75e3a10f8.json`.
+The result is `local_gate_passed_not_official_ci`; the script did not check
+GitHub Actions. This receipt applies only to the named SHA. Re-run all six
+checks after this documentation update on the exact publication head.
+
 ### Previous PR #65 code-head receipt - `c6c1326`
 
 Before the latest scalar-payload correction, exact code head

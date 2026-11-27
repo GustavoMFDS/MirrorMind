@@ -21,7 +21,11 @@ Regressions reproduce both review rounds, including both parser passes,
 rich-text compatibility and excluded-field privacy. Focused UCI workbook
 unit/integration suites passed 75 tests, including 10 second-round structural
 cases. The complete exact-clean-head six-check gate, normal publication and
-independent re-review remain required. Do not merge PR #65 or mark its
+independent re-review remain required. The synchronized code/status head
+`0ead3ec51e6400e9d216250aa6babef75e3a10f8` passed 960 tests, zero skips and
+all six local checks with the reviewed WorldKernel pin; see
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Re-run the gate on the exact
+publication head after recording the receipt. Do not merge PR #65 or mark its
 comments resolved until that evidence and review are complete.
 
 The only approved UCI #352 processing attempt stopped above 250,000

@@ -20,9 +20,12 @@ Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
 types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
 inline payloads. The focused UCI workbook unit and integration suites passed 75
 tests; the 10 second-round structural cases passed. The full exact-clean-head
-gate on the synchronized, documentation-inclusive candidate has not yet run.
-Publish the exact candidate and local receipt for independent review; verify
-Actions on that exact PR head separately.
+gate passed on documentation/status head
+`0ead3ec51e6400e9d216250aa6babef75e3a10f8`: 960 tests, zero skips, all six
+checks, with the reviewed WorldKernel pin. Its receipt is recorded in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This is local evidence only; the
+receipt update itself needs a fresh exact-head gate before publication. Verify
+Actions on the published PR head separately.
 
 The approved 250,000-cap UCI #352 source call stopped above its product-day
 group limit and returned no projection or metrics. The UCI-only

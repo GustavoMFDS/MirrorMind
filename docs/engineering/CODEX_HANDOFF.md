@@ -15,8 +15,12 @@
   rejects repeated selected-cell `<v>` payloads and ambiguous
   `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
   and excluded `Description` handling remain covered. The 10 focused second-
-  round cases and 75 UCI workbook unit/integration tests passed. The complete
-  exact-head local gate and exact-head Actions observations remain pending.
+  round cases and 75 UCI workbook unit/integration tests passed. Exact
+  documentation/status head `0ead3ec51e6400e9d216250aa6babef75e3a10f8`
+  passed 960 tests, zero skips and six checks with the reviewed WorldKernel
+  pin; its receipt is in `LOCAL_QUALITY_GATE.md`. This is local evidence, not
+  Actions. Re-run the exact gate after recording this receipt, then publish and
+  verify the actual PR head.
 - Reconcile the shared docs and evidence map after the completed
   ancestry-preserving merge, run the complete six-check gate with the exact
   reviewed WorldKernel pin, then publish normally and report the exact
