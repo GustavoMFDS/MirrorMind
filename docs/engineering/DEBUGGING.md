@@ -336,3 +336,12 @@ converting the mantissa, so a representable RMSE remains available. The result
 is schema v2 because it carries the explicit unanchored count.
 The normalized-input fingerprint is not a publisher-byte digest, and no
 diagnosis resolves source rights, archive completeness or empirical validity.
+
+## Census metrics replay but lineage hashes differ
+
+Check the exact normalized records, including Decimal scale and signed
+zero. The evaluator uses explicit uppercase general formatting in
+`_record_payload`; ambient Decimal capitals must not affect the v2 replay.
+Run the scientific-notation fingerprint regression in
+[the Census guide](CENSUS_VINTAGE_EVALUATION.md). Historical lowercase-context
+hashes are superseded; do not silently rewrite stored receipts.

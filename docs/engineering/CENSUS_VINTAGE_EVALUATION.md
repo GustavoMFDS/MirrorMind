@@ -286,3 +286,16 @@ origins and model-card assumptions, and obtain independent source/model review.
 Keep later annual revisions as a separate sensitivity analysis. Do not merge
 their scores with first-estimate targets or treat ALFRED as automatic rights
 evidence.
+
+## Fingerprint formatting contract (review follow-up)
+
+`_record_payload` serializes each bounded Decimal using explicit
+`format(record.value, "G")`. Without a precision argument, the uppercase
+general format retains the coefficient scale and signed zero while fixing
+the exponent marker independently of `decimal.getcontext().capitals`.
+The v2 uppercase-default input and as-of digests remain compatible;
+prior lowercase-context digests for scientific notation are superseded.
+This is a normalized-record replay fingerprint, not cross-language
+canonicalization or publisher verification. The public regression
+`test_scientific_notation_fingerprints_ignore_decimal_capitals` checks
+the entire result and pins a historical uppercase-default digest.

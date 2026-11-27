@@ -55,7 +55,8 @@ def _record_payload(record: CensusVintageRecord) -> dict[str, str]:
     return {
         "series_id": record.series_id,
         "reference_month": record.reference_month.isoformat(),
-        "value": str(record.value),
+        # Explicit uppercase general format preserves scale without ambient capitals.
+        "value": format(record.value, "G"),
         "published_on": record.published_on.isoformat(),
         "release_kind": record.release_kind,
         "release_id": record.release_id,

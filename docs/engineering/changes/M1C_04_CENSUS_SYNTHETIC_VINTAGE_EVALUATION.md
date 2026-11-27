@@ -250,3 +250,23 @@ in the combined repository. All fixtures remain synthetic. No Census/ALFRED
 bytes were acquired and the adapter does not parse or authenticate official
 source archives. The documentation status update now in progress requires a
 new exact-head gate before publication as a separate PR.
+
+## 8. Independent review correction - 2026-11-27
+
+PR #63 review reproduced a fingerprint-only divergence when Decimal capitals
+is zero and an input uses scientific notation. Preserve the v2 default
+uppercase-exponent representation, coefficient scale and signed zero; make
+formatting explicit with Decimal's precision-free G format. No numerical
+rounding, metrics, cutoff or schema change is intended. Under capitals=0,
+prior scientific-notation fingerprints are superseded by the default
+uppercase encoding. No cross-language canonicalization is claimed.
+
+Acceptance: a public evaluator replay across both capitals settings must
+return the identical entire result (including input and per-origin hashes),
+while a separately computed default-uppercase input hash must still match.
+Run the focused regression before the fix, then all six checks after
+reconciling with main. No source acquisition or processing is authorized.
+
+The new public regression failed on the original published head with
+different input and origin-audit hashes despite equal metrics. Its
+historical default-uppercase hash is pinned as a compatibility check.

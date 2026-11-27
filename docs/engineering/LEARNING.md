@@ -779,3 +779,13 @@ why same-day correction metadata without orderable timestamps requires
 abstention, and why fewer than 60 matched holdout origins per horizon supports
 descriptive metrics only under the proposed 12-month moving-block bootstrap.
 These are proposed acceptance criteria, not executed evidence.
+
+## Guided exercise: fingerprint formatting and numeric replay
+
+Read [the Census walkthrough](CENSUS_VINTAGE_EVALUATION.md), then compare
+`str(Decimal("1.00E+20"))` with `format(Decimal("1.00E+20"), "G")`
+under local Decimal contexts with capitals 0 and 1. Run
+`test_scientific_notation_fingerprints_ignore_decimal_capitals` and
+explain why exact Fraction arithmetic alone did not guarantee identical
+normalized-input fingerprints. Inspect the stored uppercase-default digest;
+no source-byte authenticity or empirical accuracy follows.

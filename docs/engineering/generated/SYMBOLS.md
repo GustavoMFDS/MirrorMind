@@ -153,13 +153,13 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `CensusForecastOrigin` | class | `class CensusForecastOrigin` | One predeclared monthly reference period and date-only issue boundary. | [L39](../../../src/mirrormind/domains/retail/census_evaluation.py#L39) |
 | `_month_offset` | function | `def _month_offset(month: date, offset: int) -> date` | — | [L46](../../../src/mirrormind/domains/retail/census_evaluation.py#L46) |
 | `_record_payload` | function | `def _record_payload(record: CensusVintageRecord) -> dict[str, str]` | — | [L54](../../../src/mirrormind/domains/retail/census_evaluation.py#L54) |
-| `_manifest_sha256` | function | `def _manifest_sha256(records: tuple[CensusVintageRecord, ...]) -> str` | — | [L66](../../../src/mirrormind/domains/retail/census_evaluation.py#L66) |
-| `_selection_receipt` | function | `def _selection_receipt(view: CensusVintageView, manifest_sha256: str) -> dict[str, object]` | Summarize a selected vintage without repeating every release identifier. | [L85](../../../src/mirrormind/domains/retail/census_evaluation.py#L85) |
-| `_validate_metric_input` | function | `def _validate_metric_input(value: Decimal) -> None` | — | [L107](../../../src/mirrormind/domains/retail/census_evaluation.py#L107) |
-| `_metric_float` | function | `def _metric_float(value: Fraction) -> float` | — | [L121](../../../src/mirrormind/domains/retail/census_evaluation.py#L121) |
-| `_sqrt_metric_float` | function | `def _sqrt_metric_float(value: Fraction) -> float` | Round a non-negative exact mean square without underflowing its root. | [L135](../../../src/mirrormind/domains/retail/census_evaluation.py#L135) |
-| `_metrics` | function | `def _metrics(forecasts: tuple[Fraction, ...], actuals: tuple[Fraction, ...]) -> dict[str, float \| None]` | — | [L171](../../../src/mirrormind/domains/retail/census_evaluation.py#L171) |
-| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L192](../../../src/mirrormind/domains/retail/census_evaluation.py#L192) |
+| `_manifest_sha256` | function | `def _manifest_sha256(records: tuple[CensusVintageRecord, ...]) -> str` | — | [L67](../../../src/mirrormind/domains/retail/census_evaluation.py#L67) |
+| `_selection_receipt` | function | `def _selection_receipt(view: CensusVintageView, manifest_sha256: str) -> dict[str, object]` | Summarize a selected vintage without repeating every release identifier. | [L86](../../../src/mirrormind/domains/retail/census_evaluation.py#L86) |
+| `_validate_metric_input` | function | `def _validate_metric_input(value: Decimal) -> None` | — | [L108](../../../src/mirrormind/domains/retail/census_evaluation.py#L108) |
+| `_metric_float` | function | `def _metric_float(value: Fraction) -> float` | — | [L122](../../../src/mirrormind/domains/retail/census_evaluation.py#L122) |
+| `_sqrt_metric_float` | function | `def _sqrt_metric_float(value: Fraction) -> float` | Round a non-negative exact mean square without underflowing its root. | [L136](../../../src/mirrormind/domains/retail/census_evaluation.py#L136) |
+| `_metrics` | function | `def _metrics(forecasts: tuple[Fraction, ...], actuals: tuple[Fraction, ...]) -> dict[str, float \| None]` | — | [L172](../../../src/mirrormind/domains/retail/census_evaluation.py#L172) |
+| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L193](../../../src/mirrormind/domains/retail/census_evaluation.py#L193) |
 
 ## `mirrormind.domains.retail.census_vintages`
 

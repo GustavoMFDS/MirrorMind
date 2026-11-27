@@ -1251,5 +1251,12 @@
     "test": "tests/unit/test_census_vintage_evaluation.py",
     "function": "test_evaluator_rejects_first_estimates_published_before_reference_month_closes",
     "limitation": "The generated public-evaluator regression rejects first-estimate dates inside their own reference months. It does not authenticate publisher timestamps or prove the source-specific release schedule."
+  },
+  {
+    "id": "MM-CEN-017",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_scientific_notation_fingerprints_ignore_decimal_capitals",
+    "limitation": "Synthetic full-result replay and historical uppercase-default input digest under Decimal capitals 0/1; no cross-language canonicalization or verified publisher bytes."
   }
 ]

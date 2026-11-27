@@ -464,3 +464,21 @@ def test_representable_rmse_does_not_underflow_while_scaling_mean_square():
 
     assert metrics["seasonal_naive_lag12"]["rmse"] == pytest.approx(1e-200)
     assert metrics["trailing_12_month_mean"]["rmse"] == pytest.approx(1e-200)
+
+
+def test_scientific_notation_fingerprints_ignore_decimal_capitals():
+    records = _records(values={
+        date(2020, 1, 1): "1.00E+20",
+        date(2020, 2, 1): "1.25E-10",
+        date(2020, 3, 1): "-0E+7",
+    })
+    with localcontext() as context:
+        context.capitals = 1
+        expected = _evaluate(records)
+    with localcontext() as context:
+        context.capitals = 0
+        actual = _evaluate(records)
+    assert actual == expected
+    assert actual["input_manifest_sha256"] == (
+        "5e73a712f818d840289f0712b125003b9265aed5be979ceacb9d63940958b4a8"
+    )
