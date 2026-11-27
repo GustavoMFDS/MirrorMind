@@ -14,10 +14,10 @@ Zero paid services; preserve Codex's active checkout and source permissions.
 | REX-06 | Free dependency and secret security checks | Enabled; first Python/Actions analysis passed; PR #76 |
 | REX-07 | Issue and PR templates | Integrated via PR #76 |
 | REX-08 | Labels and milestones | Ten labels and five milestones confirmed; PR #76 |
-| REX-09 | Coverage and static analysis | Baseline measured; scoped CI candidate |
-| REX-10 | Packaging and reproducibility | Source/wheel build and metadata candidate |
-| REX-11 | Static Pages demo | Proposed |
-| REX-12 | Documentation portal | Proposed |
+| REX-09 | Coverage and static analysis | Integrated via PR #77; full-package typing debt remains |
+| REX-10 | Packaging and reproducibility | Integrated via PR #77; clean wheel smoke passed |
+| REX-11 | Static Pages demo | Candidate built; deployment evidence pending |
+| REX-12 | Documentation portal | Curated bilingual index candidate; full rendered docs deferred |
 | REX-13 | Reproducible benchmarks | Proposed |
 | REX-14 | Release automation | Proposed |
 | REX-15 | Developer experience review | Proposed |

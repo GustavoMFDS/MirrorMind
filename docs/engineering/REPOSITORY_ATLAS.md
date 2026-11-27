@@ -1070,3 +1070,8 @@ forecast claims or cross-repository changes.
 
 - [Repository quality workflow](../../.github/workflows/quality.yml): coverage, scoped strict typing and wheel smoke.
 - [REX quality and packaging](REX_QUALITY_PACKAGING.md): measured baseline and reproduction limits.
+
+## Public portal
+
+- [Portal builder](../../examples/build_portfolio_site.py), [landing template](../assets/portfolio_site.html) and [contract tests](../../tests/integration/test_portfolio_site.py): allowlisted synthetic site.
+- [Pages workflow](../../.github/workflows/pages.yml) and [deployment guide](REX_PUBLIC_PORTAL.md): scoped build and manual main deployment.
