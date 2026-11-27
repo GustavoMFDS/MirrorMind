@@ -1,5 +1,14 @@
 # Blocker and decision register
 
+## Current B-08 reconciliation - 2026-11-27
+
+Standard GitHub-hosted CI is operational after the owner made the repository
+public. Both workflows succeeded on main `6a596660`; see the
+[quality gate baseline](LOCAL_QUALITY_GATE.md). The earlier quota-blocked
+records below are retained as historical evidence. The zero-paid-budget
+constraint remains; the private optional WorldKernel dependency still
+requires separately authorized access and independent local validation.
+
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
 [PROJECT_STATUS](PROJECT_STATUS.md). Task dependencies live in
