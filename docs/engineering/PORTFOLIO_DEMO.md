@@ -40,7 +40,8 @@ existing fictional fixture configuration.
   validation, synthetic fixture, temporal cutoff, model card, policy engine,
   assumptions and trace contracts remain unchanged. The default engine is
   the reference policy test double, not WorldKernel.
-- [Tests](../../tests/integration/test_portfolio_demo.py): MM-PORT-001 checks
+- [Tests](../../tests/integration/test_portfolio_demo.py): MM-PORT-001 uses
+  `test_offline_report_preserves_exact_workflow_result` to verify
   that the exact full result round-trips from the embedded JSON; additional
   regressions check script-terminator escaping, existing file preservation
   and invalid input rejection. Tests do not certify browser isolation.
