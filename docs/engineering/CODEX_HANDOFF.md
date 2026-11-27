@@ -2,24 +2,25 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `f6e10e04d3135373c7a9cb60f767b8e655291519`. PR #66
+- Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
   integrated #60/#61/#64 and PR #67 integrated Census #63; PRs #68–#71 update
   the public portfolio/license, #72 adds an offline synthetic report, #73
-  prepares the source alpha, and #74 records repository excellence and branch
-  inventory. Exact-main `test` and `symbol-catalog` Actions checks succeeded
-  (runs 46060933138 and 46060933090). The owner still authorizes zero paid
-  usage. Preserve protections and distinguish local gate receipts from Actions.
+  prepares the source alpha, #74 records repository excellence/inventory, #75
+  hardens public CI, and #76 establishes security/community workflows. Six
+  exact-main check runs succeeded on `2a7641b` (test, two compatibility jobs,
+  catalog and two analyses). The owner still authorizes zero paid usage.
+  Preserve protections and distinguish local gate receipts from Actions.
 - Continue PR #65 only. Read its live metadata for the currently published
   head and checks. Local merge commit
-  `9b5acd403bdaf6ee343fe9c815935c96c8693e66` preserves current `main`
-  (`f6e10e0`) as its second parent. Latest local code commit `6df8af1`
+  `0182ebad70b2098e06741e83139dc14f87cb366f` preserves current `main`
+  (`2a7641b`) as its second parent. Latest local code commit `6df8af1`
   rejects repeated selected-cell `<v>` payloads and ambiguous
   `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
   and excluded `Description` handling remain covered. The 10 focused second-
   round cases and 75 UCI workbook unit/integration tests passed. Exact
   pre-latest-main head `53a932295c4c981590e6bee105247a65a357eba6` passed 960
   tests, zero skips and six checks with the reviewed WorldKernel pin; that
-  receipt does not cover `f6e10e0`. Run the gate on the latest-main combined
+  receipt does not cover `2a7641b`. Run the gate on the latest-main combined
   tree, publish normally and verify the actual PR head.
 - Reconcile the shared docs and evidence map after the completed
   ancestry-preserving merge, run the complete six-check gate with the exact

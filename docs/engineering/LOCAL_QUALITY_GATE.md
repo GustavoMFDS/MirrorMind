@@ -2,12 +2,15 @@
 
 ## Current public CI baseline - 2026-11-27
 
-On current main `f6e10e04d3135373c7a9cb60f767b8e655291519`, standard
-GitHub-hosted `test` and `symbol-catalog` checks completed successfully:
-[test run 46060933138](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46060933138)
-and [catalog run 46060933090](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46060933090).
-This verifies workflow availability on that exact commit; it does not transfer
-to a PR's different head. The current PR #65 candidate still needs its own
+On current main `2a7641b88b0d97a239d44102d4da9497460f21d1`, all six GitHub
+check runs completed successfully: `test`, `compatibility (3.12)`,
+`compatibility (3.13)`, `symbol-catalog`, `Analyze (actions)` and
+`Analyze (python)` across runs
+[46062899971](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899971),
+[46062899967](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899967)
+and [46062900063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062900063).
+This verifies workflows on that exact commit; it does not transfer to a PR's
+different head. The current PR #65 candidate still needs its own
 required-check observation after publication. The exact six-check local gate
 remains complementary, especially for the optional private pinned WorldKernel
 extra, absent from standard public workflows. No paid usage, spending-limit
@@ -22,8 +25,8 @@ the specific revision and local environment separately.
 
 ## PR #65 synchronized candidate
 
-The ancestry-preserving merge of current main `f6e10e0` is complete at
-`9b5acd4`. The previous local receipt predates this latest main; it does not
+The ancestry-preserving merge of current main `2a7641b` is complete at
+`0182eba`. The previous local receipt predates this latest main; it does not
 validate the newly combined tree. Every candidate needs the full six-check
 local gate on the exact synchronized, documentation-inclusive SHA before
 publication. Record that SHA, receipt and later official check state in the
@@ -47,7 +50,8 @@ and one existing Starlette/httpx `TestClient` deprecation warning. WorldKernel
 `results/local-quality-gate-0ead3ec51e6400e9d216250aa6babef75e3a10f8.json`.
 Both are `local_gate_passed_not_official_ci`; the script did not check GitHub
 Actions. These receipts apply only to their named SHAs and predate the latest
-main merge at `f6e10e0`. Re-run all six checks on the final publication head.
+main merges through `f6e10e0` and `2a7641b`. Re-run all six checks on the
+final publication head.
 
 ### Previous PR #65 code-head receipt - `c6c1326`
 

@@ -2,19 +2,21 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `f6e10e04d3135373c7a9cb60f767b8e655291519`. PR #66
+Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
 integrated #60/#61/#64; PR #67 integrated Census #63; PRs #68–#71 updated the
 public portfolio/license; #72 added the offline synthetic report; #73
-prepared the source alpha; #74 recorded repository excellence and the branch
-inventory. PR #74's exact local gate passed 912 tests, zero skips and six
-checks. Official `test` and `symbol-catalog` checks passed on exact main
-`f6e10e0` (runs 46060933138 and 46060933090). Local and remote evidence remain
-separately labeled. No paid budget, runner registration or protection change
-was used.
+prepared the source alpha; #74 recorded repository excellence and branch
+inventory; #75 hardened public CI and expanded Python compatibility; #76
+established security/community workflows. PRs #74–#76 each recorded 912 local
+tests, zero skips and six checks. All six exact-main check runs succeeded on
+`2a7641b`: `test`, Python 3.12/3.13 compatibility, symbol catalog and two
+CodeQL analyses (runs 46062899971, 46062899967 and 46062900063). Local and
+remote evidence remain separately labeled. No paid budget, runner registration
+or protection change was used.
 
 PR #65 remains the active queue item; use its live metadata for the currently
 published head. Local branch `codex/uci352-pilot-20261126` contains merge commit
-`9b5acd4`, preserving current main `f6e10e0` as its second parent. It includes
+`0182eba`, preserving current main `2a7641b` as its second parent. It includes
 the prior duplicate-coordinate/type/numeric fixes and latest `6df8af1`
 correction for repeated scalar and mixed scalar/inline worksheet payloads.
 Regressions reproduce both review rounds, including both parser passes,
@@ -39,9 +41,9 @@ incomplete. After #65 is consolidated and independently reviewed, continue the
 existing M2-02/G-02 tasks only within their approved fictional/offline scopes;
 do not add a disconnected feature while this review queue remains active.
 
-**Baseline:** main `f6e10e04d3135373c7a9cb60f767b8e655291519`. PR #52–#59
+**Baseline:** main `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #52–#59
 were incorporated through #62; #60/#61/#64 through #66; Census #63 through
-#67; PRs #68–#74 are also integrated. The merged branches preserve their
+#67; PRs #68–#76 are also integrated. The merged branches preserve their
 ancestry and must not be replayed as new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
@@ -50,7 +52,7 @@ ancestry and must not be replayed as new work. See [PROJECT_STATUS](PROJECT_STAT
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| UCI workbook parser review | Local source/test changes include `6df8af1`; merge `9b5acd4` preserves latest main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads now fail closed in both worksheet passes. Valid inline rich text still passes; `Description` remains excluded from selected text callbacks. | Run full exact-clean-head gate with reviewed WorldKernel; publish candidate and local receipt; verify official checks on exact PR head; obtain independent review. |
+| UCI workbook parser review | Local source/test changes include `6df8af1`; merge `0182eba` preserves latest main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads now fail closed in both worksheet passes. Valid inline rich text still passes; `Description` remains excluded from selected text callbacks. | Run full exact-clean-head gate with reviewed WorldKernel; publish candidate and local receipt; verify official checks on exact PR head; obtain independent review. |
 | UCI empirical pilot | Stopped at approved 250,000 group bound; no projection or metrics. | No further source operation without new owner authorization; preserve deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue only existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
 
