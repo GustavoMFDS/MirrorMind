@@ -1065,3 +1065,8 @@ forecast claims or cross-repository changes.
 - [REX security and community](REX_SECURITY_COMMUNITY.md): free security settings and review scope.
 - [Bug template](../../.github/ISSUE_TEMPLATE/bug_report.md), [feature template](../../.github/ISSUE_TEMPLATE/feature_request.md), [research template](../../.github/ISSUE_TEMPLATE/research_proposal.md), [issue configuration](../../.github/ISSUE_TEMPLATE/config.yml).
 - [PR template](../../.github/pull_request_template.md): integration evidence and boundaries.
+
+## Quality and packaging
+
+- [Repository quality workflow](../../.github/workflows/quality.yml): coverage, scoped strict typing and wheel smoke.
+- [REX quality and packaging](REX_QUALITY_PACKAGING.md): measured baseline and reproduction limits.
