@@ -231,3 +231,32 @@ intended use, projection, retention period, or point-in-time claim.
 - Known limitation: event-time metrics do not establish when observations
   became available, latent demand, stockouts, lead times, causal effect,
   commercial suitability, or general forecast performance.
+
+### MM-022 all-prefix regression and exact local gate — 2026-11-27
+
+The owner reconfirmed that exact uppercase `C` is the only cancellation
+marker. Commit `2413df151fd6baa9bb4de472c713519f2d69937c` covers all 52 single
+ASCII-letter prefixes with synthetic XLSX fixtures: `C` is classified as
+cancellation; all other prefixes are excluded as unverified under one
+aggregate counter; identifiers are absent from returned results; and
+non-ASCII or malformed values fail closed. This behavior is local to
+`read_uci_workbook`; the generic projection contract is unchanged. The test
+selector is
+`tests/unit/test_uci_workbook.py::test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`.
+
+The exact candidate passed all six temporary local checks at
+`2026-11-27T05:47:01.681022+00:00`: 867 tests, zero skips, Ruff, catalog,
+atlas, evidence and capability checks. Python 3.13.5 used WorldKernel `0.0.1`
+at reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+Receipt: `results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
+The earlier restricted-executor run was interrupted and is not evidence; the
+passing receipt is from the authorized local executor and is not official CI.
+
+The real-source attempt was made under MM-021 and stopped above the approved
+250,000 product-day ceiling. MM-021 already excluded cancellation and
+unverified invoice prefixes before grouping; MM-022 therefore cannot change
+the sales cohort or group count from that attempt. The workbook was not read
+again. No complete projection, source-level exclusion count, metric or model
+card exists. Do not retry, partition or widen the source call under current
+approval. The local candidate was not yet published when this record was
+written; the preceding remote PR #65 head was `6150bfd5dea03d68c5c840fc0e33acea995a7ad8`.

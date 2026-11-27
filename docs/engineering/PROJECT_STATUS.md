@@ -8,7 +8,7 @@ the snapshot are #60 `fafdedae3a76398e0450773065e40384c96d1ed7`, #61
 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, #63
 `ffd3d770d5c7e9bafba975544de7947bcf20f1fc`, #64
 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
-`b1bd7951ecc80988146eb46362eea99940ef7542`. #60/#61 have the earlier
+`6150bfd5dea03d68c5c840fc0e33acea995a7ad8`. #60/#61 have the earlier
 owner-authored `COMMENTED` reviews whose findings were addressed; no new
 independent review submissions or unresolved inline threads were present. #63–
 #65 had no review submissions or inline threads. Main has not changed.
@@ -16,6 +16,13 @@ The detailed sections below preserve the earlier PR #51 baseline and PR #62
 review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
 using this document as a general execution report.
+
+The remote PR snapshot above predates local commit
+`2413df151fd6baa9bb4de472c713519f2d69937c`, which adds the MM-022 all-prefix
+synthetic regression and passed its exact local gate. The remote PR head was
+still `6150bfd5dea03d68c5c840fc0e33acea995a7ad8` when independently checked;
+the updated candidate remains pending publication of its documentation
+follow-up and exact-head gate.
 
 ## Current PR #65 invoice-policy update — 2026-11-27 UTC
 
@@ -102,6 +109,37 @@ Check-run IDs are `140325964948`, `140325964665`, `140325945246` and
 increase without identifying which applies. Jobs returned no steps/logs and
 the combined-status response was empty. The owner's quota report is separate
 evidence; no manual rerun or workflow/protection change occurred.
+
+## PR #65 all-prefix regression and exact local gate — 2026-11-27 UTC
+
+The owner confirmed the conservative MM-022 policy: exact uppercase `C` is the
+only cancellation marker; every other single ASCII letter plus six digits is
+an unverified transaction class excluded before sales aggregation. The policy
+was already present in the UCI adapter. Commit
+`2413df151fd6baa9bb4de472c713519f2d69937c` adds a synthetic workbook regression
+covering all 52 ASCII letters, proving the single aggregate exclusion counter,
+absence of original invoice IDs in output, and fail-closed behavior for
+non-ASCII or malformed forms. The manifest now distinguishes the current
+MM-022 policy from the MM-021 policy used by the stopped source attempt.
+Dataset documentation explains how exclusions can change eligible cohorts,
+coverage denominators and metrics. No source bytes were read again.
+
+The exact clean commit passed the temporary six-check local gate at
+`2026-11-27T05:47:01.681022+00:00`: 867 tests, zero skips, Ruff, catalog, atlas,
+evidence and capability checks all passed. One existing Starlette/httpx
+`TestClient` deprecation warning remains. Python 3.13.5 used WorldKernel
+`0.0.1` from reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+Receipt: `results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
+An earlier restricted-executor attempt was interrupted without a result; the
+pass came from the authorized local executor. It is not official GitHub Actions.
+
+The prior published PR #65 head was `6150bfd5dea03d68c5c840fc0e33acea995a7ad8`;
+it had no review submissions or inline threads when checked. MM-021 had already
+excluded both cancellation and unverified-prefix classes before grouping, so
+MM-022 leaves accepted sales rows and the observed `>250,000` product-day count
+unchanged. B-01 remains stopped; no complete projection, source exclusion
+count, evaluation or empirical metric exists. Do not retry, partition or widen
+the approved ceiling without a separate bounded-method decision.
 
 ## Pull request reconciliation — 2026-11-27 UTC
 

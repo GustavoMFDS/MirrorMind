@@ -10,7 +10,7 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
-## PR reconciliation snapshot at `04509c4` — 2026-11-27 UTC
+## PR reconciliation snapshot at `6150bfd` — 2026-11-27 UTC
 
 PR #52 merged at `e922b03666f04bd8c570a0448466d25838e3f84e`; PRs #53–#59
 closed without individual merges. Local ancestry checks confirm all eight
@@ -33,7 +33,7 @@ implied.
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
 | [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
 | [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
-| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `04509c40baf9802fd3e0da9765d96d61fb9e990b` | Open for independent review; no review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `6150bfd5dea03d68c5c840fc0e33acea995a7ad8` | Open for independent review; no review submission or inline thread observed |
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -90,6 +90,30 @@ again
 show the same unresolved payment-or-spending-limit alternatives. See [B-08](BLOCKERS.md)
 for exact run/check IDs. The quota report is separate evidence; there is no
 official CI pass or newly resolved empirical result.
+
+## MM-022 owner confirmation and regression — 2026-11-27 UTC
+
+The owner confirmed the conservative invoice-prefix rule for the bounded local
+UCI profile. The rule already existed in the adapter; commit
+`2413df151fd6baa9bb4de472c713519f2d69937c` expands the synthetic regression to
+all 52 single ASCII letter prefixes, checks that only uppercase `C` is a
+cancellation, confirms one aggregate exclusion counter and identifier
+redaction, and rejects non-ASCII or malformed forms. The path-free manifest
+now records MM-022 as the current policy while preserving MM-021 as the policy
+used for the failed source attempt. The event-time card describes cohort,
+coverage-denominator and metric impacts. No source rows were reread.
+
+The exact-head temporary local gate passed at
+`2026-11-27T05:47:01.681022+00:00`: 867 tests, zero skips, all six checks, and
+the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
+One existing `TestClient` deprecation warning remains. The restricted executor
+attempt was interrupted without a result; the recorded pass is from the
+authorized local executor and is not official Actions CI. This confirmation
+does not reduce the prior `>250,000` product-day count or close B-01. The PR
+reconciliation table above records the last remotely observed head before this
+local increment; it does not imply that the local commit had already been
+published.
 
 ## Historical consolidated review candidate — 2026-11-25 (PR #62 later integrated)
 

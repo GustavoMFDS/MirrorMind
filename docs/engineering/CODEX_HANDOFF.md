@@ -391,6 +391,36 @@ produced no pytest output within 30 seconds and was interrupted. No stack was
 captured and no cause is assigned. Do not treat that attempt as a pass; the
 exact-head full-gate receipt above remains the independent suite evidence.
 
+### MM-022 all-prefix regression and local gate — 2026-11-27 UTC
+
+The owner reconfirmed the UCI-only conservative policy: six-digit invoice
+identifiers are accepted for normal projection, only exact uppercase `C` plus
+six digits denotes cancellation, and any other one-letter ASCII prefix plus
+six digits is excluded as an unverified transaction. The adapter retains only
+an aggregate exclusion count and redacts original invoice identifiers; other
+formats fail closed. The generic projection contract is unchanged.
+
+Commit `2413df151fd6baa9bb4de472c713519f2d69937c` adds a synthetic workbook
+regression spanning all 52 ASCII letters. It verifies the `C`-only cancellation
+rule, one aggregate exclusion counter, no identifier retention and rejection
+of malformed or non-ASCII forms. The MM-021 source attempt was not repeated:
+MM-021 already excluded both cancellation and unverified classes before
+aggregation, so MM-022 cannot reduce the observed `>250,000` product-day count.
+No projection, complete exclusion count, empirical score or model card exists.
+
+The exact clean candidate passed the temporary local gate at
+`2026-11-27T05:47:01.681022+00:00`: 867 tests, zero skips, Ruff, catalog, atlas,
+evidence and capability checks passed. Python 3.13.5 used WorldKernel `0.0.1`
+from reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing
+Starlette/httpx `TestClient` deprecation warning remains. Receipt:
+`results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
+An earlier restricted-executor attempt was interrupted without a result; the
+recorded pass came from the authorized local executor. This is not official
+Actions evidence. At the last remote observation PR #65 still pointed to
+`6150bfd5dea03d68c5c840fc0e33acea995a7ad8`; the candidate is local until the
+documentation-inclusive gate completes and a fast-forward publication occurs.
+Do not retry or partition the source, or raise its cap, under current approval.
+
 ## 4. Mandatory documentation standard
 
 MirrorMind documentation is both **engineering knowledge and a

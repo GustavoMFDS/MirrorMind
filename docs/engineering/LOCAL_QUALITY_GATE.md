@@ -247,3 +247,32 @@ This verifies the new synthetic rule on this code commit. It does not apply
 MM-022 to the real snapshot, produce an exclusion count or metric, clear the
 250,000-group stop, or resolve independent review. Do not retry or partition
 the source under the current approval.
+
+### MM-022 all-prefix regression — 2026-11-27
+
+The synthetic regression was broadened in commit
+`2413df151fd6baa9bb4de472c713519f2d69937c` to iterate all 52 single ASCII
+letters. It asserts that uppercase `C` alone is cancellation, all other
+prefixes share one aggregate unverified-exclusion counter, source invoice IDs
+do not appear in output, and malformed/non-ASCII forms fail closed. Focused
+reader regressions passed 8 tests (`8 passed, 42 deselected`).
+
+The exact clean-head temporary six-check gate passed at
+`2026-11-27T05:47:01.681022+00:00`:
+
+- Pytest: 867 passed, zero skipped; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- Python 3.13.5; WorldKernel `0.0.1` installed from reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
+- Status: `local_gate_passed_not_official_ci`; no GitHub Actions success is
+  claimed.
+
+The restricted sandbox attempt on this SHA was interrupted without a result;
+the receipt is from the authorized local executor. The source attempt used
+MM-021 and exceeded its 250,000-group ceiling. This regression does not reread
+the workbook, generate source counts or metrics, or clear the stop. Never
+retry, partition or enlarge the source call without a new bounded-method
+decision.
