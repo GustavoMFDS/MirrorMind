@@ -1015,3 +1015,8 @@ source permission or retrieval route is provided.
 These are engineering planning and navigation documents. They do not
 add a runtime capability or authorize real ingestion, deployment,
 forecast claims or cross-repository changes.
+
+## Public portfolio entrypoints
+
+- [README.md](../../README.md): English public overview, executable synthetic demo and live CI.
+- [README.pt-BR.md](../../README.pt-BR.md): Brazilian Portuguese counterpart with identical demo and evidence boundaries.

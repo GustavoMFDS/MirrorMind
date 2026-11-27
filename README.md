@@ -1,5 +1,11 @@
 # MirrorMind
 
+[![Python API CI](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/ci.yml)
+[![Documentation checks](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/docs.yml)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB)](https://www.python.org/)
+
+[Português (Brasil)](README.pt-BR.md)
+
 **Evidence-driven decision intelligence | AI engineering, forecasting and simulation**
 
 MirrorMind is a Python research and engineering project for comparing decisions
@@ -84,6 +90,33 @@ require that extra. Do not substitute an unrelated package or revision.
 For authorized developers with the pinned dependency installed, the
 engine path uses the same CLI with `--engine worldkernel`.
 
+### Example result: a conditional inventory comparison
+
+The first command above was run on main `14252c78` with seed 317,
+two replications, a 28-day horizon and the base two-day lead time.
+The numbers below are the actual synthetic output, not real retail data.
+
+| Policy | Mean cost (synthetic units) | Fill rate | Mean ending stock (items) | Mean orders |
+| --- | ---: | ---: | ---: | ---: |
+| Fixed cycle / fixed quantity | 5,082.5 | 100% | 228 | 4 |
+| Reorder point / fixed quantity | 2,678.5 | 100% | 88 | 2 |
+| Forecast-aware order-up-to | 950.5 | 100% | 9 | 15 |
+
+The last policy holds less stock but places more orders. These are
+conditional trade-offs under fictional costs and a shared demand stream,
+not evidence of real-world superiority. The report also contains one-
+and three-day lead-time sensitivity, assumption references and the
+selected-engine provenance. No ranking or action is authorized.
+
+```json
+{
+  "decision_status": "comparison_only_no_policy_selection_or_authorization",
+  "action_authorized": false,
+  "writes_performed": false,
+  "ingestion_authorized": false
+}
+```
+
 ### Local API
 
 ```bash
@@ -107,7 +140,7 @@ At the reviewed baseline of 27 November 2026
 commit `858211d`), the independent local gate passed **904 tests with
 zero skips**, all six checks and examples lint, including the exact pinned
 WorldKernel runtime. This is a dated local result, not a claim about every
-later commit or GitHub Actions.
+later commit or GitHub Actions. The public [CI run](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46054365093) on main `14252c78` passed the standard Python and Ruff workflow; the [documentation workflow](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46054365104) also succeeded.
 
 ```bash
 python -m pytest -q -rs
