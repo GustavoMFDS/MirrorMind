@@ -2,39 +2,39 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
-  integrated #60/#61/#64 and PR #67 integrated Census #63; PRs #68–#71 update
-  the public portfolio/license, #72 adds an offline synthetic report, #73
-  prepares the source alpha, #74 records repository excellence/inventory, #75
-  hardens public CI, and #76 establishes security/community workflows. Six
-  exact-main check runs succeeded on `2a7641b` (test, two compatibility jobs,
-  catalog and two analyses). The owner still authorizes zero paid usage.
-  Preserve protections and distinguish local gate receipts from Actions.
-- Continue PR #65 review follow-up only. Read its live metadata for the
-  currently published head and checks. Local merge commit
-  `0182ebad70b2098e06741e83139dc14f87cb366f` preserves current `main`
-  (`2a7641b`) as its second parent. Latest local code commit `6df8af1`
-  rejects repeated selected-cell `<v>` payloads and ambiguous
-  `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
-  and excluded `Description` handling remain covered. The 10 focused second-
--  round cases and 75 UCI workbook unit/integration tests passed. Published PR
-  head `35bff7824970ebc511e05add240088b2ffd74057` passed the full local gate
-  (968 tests, zero skips, six checks) with the reviewed WorldKernel pin; all
-  seven observed GitHub checks passed on that exact head. Its
-  documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
-  passed the same gate and seven checks. See exact receipts and run links in
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
-  Reply `7227559961` addresses review finding `7226309300`; obtain independent
-  re-review. If documentation changes advance the branch, record their own
-  exact-head gate and checks; never transfer the `35bff78` evidence. Do not
-  merge #65 or mark review comments resolved.
-- Keep parser changes synthetic-test-only. No more UCI source processing is
-  authorized; preserve the `2026-12-26` deletion deadline. Do not begin a
-  disconnected feature while #65 awaits review.
-- M1 synthetic workflow is integrated; M1 empirical and production acceptance
-  remain incomplete. Keep the queue stable until #65 review; afterward resume
-  existing M2-02/G-02 work only in approved offline scopes. No new unrelated
-  feature is authorized by this continuation.
+- Current `main` is merge commit `51c90d2601b2fba16b03a13a8723df0a54437d92`;
+  it preserves pre-merge main `2a7641b` and reviewed PR #65 head `77b3afd` as
+  parents. PR #65 was accepted and integrated through the normal protected PR
+  path. Exact-main official checks `test`, compatibility 3.12/3.13,
+  `symbol-catalog` and both analyses succeeded (runs `46066346279`,
+  `46066346334`, `46066346498`). The exact-main local gate also passed 968
+  tests, zero skips and six checks with WorldKernel pinned to reviewed source
+  commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt and limitations
+  are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). No paid use or protection
+  change occurred.
+- The independent PR #65 review accepted the bounded synthetic reader and
+  explicitly did not accept empirical success, a retry or a wider bound.
+  It found MM-009 still described licensing as deferred despite accepted
+  decision MM-023. Continue the separate documentation reconciliation on
+  `codex/mm009-mm023-reconcile-20261127`; publish its own exact-head gate and
+  checks, and leave it for independent review.
+- On 2026-11-27 the owner clarified the UCI-only invoice rule: exact six-digit
+  identifiers enter normal processing, uppercase `C` plus six digits is the
+  cancellation class, and every other one-letter ASCII prefix plus six digits
+  is excluded before sales aggregation under an aggregate category count.
+  Original identifiers are never retained; all other formats fail closed.
+  Existing MM-022 code and synthetic regressions already implement that rule.
+  This clarification does not change accepted rows or product-day cardinality
+  from the prior stopped call, which already excluded cancellation and
+  unverified-prefix rows before grouping. The 250,000-group limit remains;
+  do not chunk, sample or widen it. Preserve source deletion deadline
+  `2026-12-26`, and do not claim metrics while no complete projection exists.
+- M1's synthetic end-to-end path is integrated, while empirical and production
+  acceptance remain incomplete. Once the MM-009/024 maintenance PR is ready
+  for review, continue existing approved offline work (including M2-02/G-02)
+  without waiting for external review, plus source-independent tasks. Keep the
+  zero-paid budget, exact validation receipts and source-rights/temporal
+  boundaries current.
 
 
 ## Historical review reconciliation - 2026-11-27
@@ -50,18 +50,22 @@ merge decision recorded in the integration PR. No actual Census data or
 FRED/ALFRED access is authorized; the direct original Census artifact
 proposal requires separate owner decisions under B-01/B-02.
 
-PR #65 remains separate: the UCI source was privately acquired within
-MM-017 through MM-022, but the attempt stopped above 250,000 product-day
-groups without scores. The duplicate-cell, error-cell and ambiguous scalar
-payload findings have synthetic regressions; the latest response is recorded
-in comment `7227559961`. Published code head `35bff78` and documentation-only
-descendant `d454b48` passed their exact-head local gates and all seven
-observed GitHub checks; PR still awaits independent re-review.
-No further source processing is authorized. Preserve the 2026-12-26 deletion
-deadline. Historical pre-start check diagnostics remain unexplained despite
-current green public checks; the zero-paid budget remains. The dated branch
-and status records below are historical where inconsistent with this
-reconciliation and live PRs.
+PR #65 was independently accepted and integrated at `51c90d2`. The UCI source
+was privately acquired under MM-017 through MM-020; the call stopped above
+250,000 product-day groups without a complete projection or score. Parser
+review findings have synthetic regressions, and the exact integrated tree
+passed its local and official checks as recorded above. MM-024 now confirms
+that only exact uppercase `C` plus six digits indicates cancellation; other
+single-letter ASCII prefixes are excluded as unverified, with aggregate-only
+counts. Existing code and tests already satisfy this rule. Because the
+stopped call had already excluded those rows before grouping, the new
+classification does not change accepted rows or the group-limit failure.
+Preserve the `2026-12-26` deletion deadline; do not chunk, sample or increase
+the cap, and do not report empirical metrics without a full projection.
+Historical pre-start check diagnostics remain unexplained despite current
+green public checks; the zero-paid budget remains. The dated branch and status
+records below are historical where inconsistent with this reconciliation and
+live PRs.
 
 ## Historical integration candidate - 2026-11-27
 

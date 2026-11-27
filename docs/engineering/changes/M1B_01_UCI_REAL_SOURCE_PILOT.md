@@ -2,13 +2,13 @@
 
 **Status:** approved scoped local research run; the ZIP profile, source-specific
 `StockCode` normalization, group ceiling and invoice-prefix classification are
-implemented and published in [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
-for independent review. Its exact head passed the temporary local gate. The
-corrected source call exceeded the approved 250,000 group cap and failed closed
-without a projection or evaluation. Do not retry, chunk or widen that cap
-under this scope. This approval does not
-promote an API capability, authorize commercial use, or establish
-point-in-time availability.
+implemented and merged through [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65).
+The corrected source call exceeded the approved 250,000 group cap and failed
+closed without a projection or evaluation. Owner decision MM-024 confirms the
+conservative invoice categories but changes neither accepted sales rows nor
+the group count from that call. No metric is available. Do not chunk, sample or
+widen the cap. This approval does not promote an API capability, authorize
+commercial use, or establish point-in-time availability.
 
 ## 1. Goal in plain language
 
@@ -120,6 +120,45 @@ public capability, external contract, source permission, metric or group
 budget changes. If an invoice value falls outside the reviewed ASCII-prefix
 shape, the reader raises the existing redacted `ValueError` without echoing
 the value.
+
+## Owner clarification MM-024 — 2026-11-27
+
+The owner explicitly approved a conservative classification for the exact UCI
+#352 profile: six-digit IDs enter normal processing, uppercase `C` plus six
+digits remains the cancellation class, and every other single ASCII-letter
+plus six-digit ID is a transaction with unverified semantics. Exclude these
+rows before sales aggregation and retain only the aggregate count for that
+predefined unverified class. Never keep the source identifier. Reject all
+formats outside those patterns, do not inspect `Description`, and keep every
+generic reader unchanged.
+
+### Impact, verification and operating consequence
+
+The current code already satisfies the clarification in
+`_normalize_uci_workbook_invoice` and `read_uci_workbook`; no implementation
+change or new parser exception is required. The tests
+`tests/unit/test_uci_workbook.py::test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded`,
+`tests/unit/test_uci_workbook.py::test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`,
+`tests/unit/test_uci_workbook.py::test_uci_invoice_formats_outside_scoped_classes_fail_without_echo`,
+and `tests/unit/test_uci_event_time.py::test_event_time_result_exposes_aggregate_unverified_invoice_exclusions`
+prove the classification, redaction, aggregation boundary and result receipt
+using generated workbooks/projections. The UCI reader integration fixture also
+proves excluded quantities do not enter category-day units. These tests do not
+establish the real workbook's complete category counts or predictive skill.
+
+Unverified rows can lower category-day totals, remove categories from the
+fit cohort, alter verified-zero targets and change coverage denominators and
+downstream scores. Since the last source attempt already excluded both
+cancellation and unverified-prefix rows before grouping, MM-024's relabeling
+does not change accepted sales rows or product-day cardinality. The verified
+source run stopped above the unchanged 250,000-group ceiling and returned no
+projection; the evaluator did not run. Do not publish partial counts or infer
+metrics from the stopped parse. A different bounded evaluation plan requires
+separate owner and model-review approval.
+
+MM-024 records the owner's current classification direction. It does not
+increase storage/retention, row, ZIP or group budgets, and it does not
+authorize chunking, sampling, Census acquisition or commercial use.
 
 Before processing, verify the official UCI terms and exact artifact URL again.
 Stop if the archive layout, workbook sheet/header, row count, fields used by

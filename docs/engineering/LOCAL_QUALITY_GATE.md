@@ -2,13 +2,13 @@
 
 ## Current public CI baseline - 2026-11-27
 
-On current main `2a7641b88b0d97a239d44102d4da9497460f21d1`, all six GitHub
+On current main `51c90d2601b2fba16b03a13a8723df0a54437d92`, all six GitHub
 check runs completed successfully: `test`, `compatibility (3.12)`,
 `compatibility (3.13)`, `symbol-catalog`, `Analyze (actions)` and
 `Analyze (python)` across runs
-[46062899971](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899971),
-[46062899967](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899967)
-and [46062900063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062900063).
+[46066346279](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346279),
+[46066346334](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346334)
+and [46066346498](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066346498).
 This verifies workflows on that exact commit; it does not transfer to a PR's
 different head. PR #65 head
 `35bff7824970ebc511e05add240088b2ffd74057` also received successful results
@@ -26,6 +26,19 @@ it is **not** a claim that official workflows ran or passed. Every PR records
 the specific revision and local environment separately.
 
 ## PR #65 synchronized candidate
+
+### Integrated main receipt - `51c90d2`
+
+PR #65 merged normally at `51c90d2601b2fba16b03a13a8723df0a54437d92`, with
+pre-merge main `2a7641b88b0d97a239d44102d4da9497460f21d1` and reviewed head
+`77b3afd6aeb2a2fe7b27489f9b9c4aabb59b9a88` as parents. Exact-main GitHub
+checks passed as recorded above. The full local gate passed at
+`2026-11-27T20:57:20.907650Z`: 968 tests, zero skips and all six local checks,
+with WorldKernel `0.0.1` installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing Starlette/httpx
+`TestClient` deprecation warning. Receipt:
+`results/local-quality-gate-51c90d2601b2fba16b03a13a8723df0a54437d92.json`.
+This is exact-merge local evidence, not a replacement for official checks.
 
 The ancestry-preserving merge of current main `2a7641b` is complete at
 `0182eba`. The previous local receipt predates this latest main; it does not
@@ -47,7 +60,8 @@ and `CodeQL` at
 [run 140723990206](https://github.com/GustavoMFDS/MirrorMind/runs/140723990206).
 These results do not transfer to descendants; any
 later tracked change requires a new exact-head gate and check observation.
-PR #65 remains open pending independent review, not merged.
+These pre-merge candidate receipts remain historical; PR #65 was later
+reviewed and merged at `51c90d2` as recorded above.
 
 The documentation-only descendant
 `d454b48477af4691a363622ecf8b2fd85a7e5a60` passed at

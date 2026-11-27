@@ -3,7 +3,10 @@
 **Status:** owner-approved local research scope; source acquired and metadata
 preflighted; the corrected projection exceeded the approved 250,000 product-day
 group cap and stopped fail-closed, so no evaluation was completed. This card is
-not a legal opinion, general permission grant or empirical model card. Exact snapshot details are in the path-free
+not a legal opinion, general permission grant or empirical model card. Owner
+clarification MM-024 confirms the conservative invoice classification but does
+not change the accepted rows or group count; the empirical lane remains stopped
+at the existing cap. Exact snapshot details are in the path-free
 [manifest](UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json).
 
 ## Purpose and intended use
@@ -64,10 +67,12 @@ IDs and aggregate:
   single ASCII-letter plus six-digit ID as `unverified_invoice_prefix` before
   grouping, recording only the aggregate class count. Reject every other
   invoice format. Never retain an excluded identifier or use it to group,
-  deduplicate or select rows. MM-022 supersedes MM-021's lowercase-`c` rule.
-  The owner confirmed this conservative exclusion policy on 2026-11-27. The
-  stopped real-source attempt used MM-021 and was not repeated under the
-  clarified policy;
+  deduplicate or select rows. MM-022 and MM-024 supersede MM-021's
+  lowercase-`c` rule. The owner confirmed this conservative exclusion policy
+  on 2026-11-27. The stopped real-source attempt used MM-021; MM-024 confirms
+  the current implementation, but the previous attempt excluded these rows
+  before grouping, so the clarification cannot change its group-limit failure.
+  No complete projection, exclusion count or metric exists;
 - aggregate eligible positive quantities by `StockCode` category and calendar
   day, and emit only ordinal category summaries plus aggregate metrics;
 - do not materialize a missing day as zero unless source completeness and
@@ -135,8 +140,9 @@ lowercase-`c` rows were cancellations; under MM-022 they are unverified-prefix
 exclusions. Both classes were already excluded before aggregation, so this
 clarification changes aggregate classification counts only. It does not change
 the recognized sales rows, product-day groups or the cap failure. The lane is
-stopped under the current scope. Excluding unverified invoice-prefix rows can
-reduce category-day totals, change which categories enter the fit cohort,
+stopped at the unchanged 250,000-group ceiling. Excluding unverified
+invoice-prefix rows can reduce category-day totals, change which categories
+enter the fit cohort,
 alter zero-valued targets, change coverage denominators and change downstream
 scores relative to treating those rows as sales; the MM-022 relabeling alone
 does not cause that change. Any future metric would describe only records with

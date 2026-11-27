@@ -74,10 +74,10 @@
     "group_limit_decision": "MM-020; owner approved 2026-11-26"
   },
   "invoice_number_handling": {
-    "decision": "MM-022; owner confirmed 2026-11-27",
+    "decision": "MM-022 and MM-024; owner confirmed 2026-11-27",
     "standard_identifiers": "Exact six-digit integer cells or six-digit ASCII digit strings enter the existing projection.",
     "cancellation_identifiers": "Only uppercase C followed by six ASCII digits is normalized to the existing cancellation marker and counted as cancelled.",
-    "unverified_prefix_identifiers": "Lowercase c and every other single ASCII letter followed by six ASCII digits are excluded before aggregation and counted in one aggregate unverified-prefix category.",
+    "unverified_prefix_identifiers": "Lowercase c and every other single ASCII letter followed by six ASCII digits are excluded before aggregation and counted only in one aggregate unverified-prefix category; original identifiers are not retained.",
     "unsupported_formats": "All other formats fail closed without echoing the value.",
     "generic_projection_unchanged": true,
     "identifier_values_retained": false
@@ -111,7 +111,7 @@
     "stop_reason": "The approved 250000 product-day group ceiling was exceeded; the reader failed closed before returning a projection.",
     "observed_group_count": "greater_than_250000; exact count not retained",
     "evaluation_run": false,
-    "current_invoice_policy_revision": "MM-022",
+    "current_invoice_policy_revision": "MM-024 (same parser behavior as MM-022)",
     "invoice_policy_applied_to_last_source_attempt": "MM-021",
     "current_invoice_policy_verified_with_synthetic_tests_only": true,
     "metrics_produced": false,
@@ -136,7 +136,7 @@
         "local_runtime": "Python 3.13.5; openpyxl 3.1.5"
       }
     ],
-    "next_action": "Do not retry, chunk, or widen the cap under this approval. Any alternative requires a separate scope decision; proceed with independent approved research preparation."
+    "next_action": "MM-024 reconfirms the existing UCI-only classification but does not reduce product-day group cardinality from the stopped MM-021 attempt. Do not chunk, sample, or widen the 250000-group cap; any alternative evaluation design requires a separate owner and model-review decision. No projection, complete exclusion count, or metric is available."
   },
   "retention": {
     "maximum_retention_days": 30,

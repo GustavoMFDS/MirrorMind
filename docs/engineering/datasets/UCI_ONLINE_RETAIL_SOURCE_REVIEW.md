@@ -81,15 +81,17 @@ aggregate counter before grouping. Other invoice formats still fail closed;
 the generic projection contract is unchanged. The original IDs are not
 retained.
 
-The owner clarified this rule in MM-022: exact uppercase `C` is the only
-cancellation marker, while lowercase `c` joins other letter prefixes in the
-unverified class. The owner confirmed the conservative, aggregate-only
-exclusion policy on 2026-11-27. Synthetic regressions cover every single ASCII
-letter prefix and fail-closed handling of other formats. The real-source
-attempt used MM-021 and was not repeated because both cancellation and
-unverified classes were excluded before grouping; the clarification cannot
-reduce the observed product-day count. No complete exclusion count or
-empirical metric exists.
+The owner clarified this rule in MM-022 and reconfirmed it under MM-024:
+exact uppercase `C` is the only cancellation marker, while lowercase `c` and
+other letter prefixes join one unverified transaction class. Exclude that
+class before sales aggregation and retain only its aggregate count. Synthetic
+regressions cover every single ASCII letter prefix, identifier redaction and
+fail-closed handling of other formats. The real-source attempt used MM-021;
+both cancellation and unverified classes were already excluded before
+grouping. The later clarification cannot reduce the observed product-day
+count, so the prior 250,000-group stop remains. No complete exclusion count or
+empirical metric exists, and no source-level claim is inferred beyond the
+verified metadata preflight.
 
 A subsequent owner review reproduced three parser hazards with generated
 workbooks: duplicate cell coordinates overwrote prior values, an OOXML error
