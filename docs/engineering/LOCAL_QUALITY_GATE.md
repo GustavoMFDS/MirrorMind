@@ -22,7 +22,12 @@ the specific revision and local environment separately.
 
 ## PR #65 synchronized candidate
 
-The full six-check local gate on the synchronized, documentation-inclusive candidate is pending. Earlier receipts are bound to their named SHAs and do not validate the merge candidate. After publication, verify official checks on that exact PR head; the successful main checks above do not transfer.
+The ancestry-preserving merge of current main `c747838` is complete at
+`ab71f54`. The full six-check local gate on the synchronized,
+documentation-inclusive candidate is pending. Earlier receipts are bound to
+their named SHAs and do not validate this merge candidate. After publication,
+verify official checks on that exact PR head; the successful main checks above
+do not transfer.
 
 ### Previous PR #65 code-head receipt - `c6c1326`
 

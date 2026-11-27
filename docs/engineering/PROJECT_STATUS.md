@@ -13,8 +13,9 @@ completed successfully. No paid usage or check/protection change occurred.
 
 PR #65 remains open and separate. Its published head is still
 `11de60127ab0b31b609d98ada1b764a3dde542f9`; local branch
-`codex/uci352-pilot-20261126` now includes first-round fixes and the latest
-`6df8af1` structural correction, and is being synchronized with current main.
+`codex/uci352-pilot-20261126` includes current main `c747838` through the
+ancestry-preserving merge `ab71f54`, plus first-round fixes and the latest
+`6df8af1` structural correction.
 Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
 types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
 inline payloads. The focused UCI workbook unit and integration suites passed 75
@@ -23,13 +24,16 @@ gate on the synchronized, documentation-inclusive candidate has not yet run.
 Publish the exact candidate and local receipt for independent review; verify
 Actions on that exact PR head separately.
 
-The single approved UCI #352 source attempt stopped above the 250,000
-product-day group cap and returned no projection or metrics. MM-022 and parser
-review fixes are synthetic-only; no new source read, retry, chunking, cap
-increase or Census acquisition is authorized. Preserve the private snapshot
-deletion deadline `2026-12-26`. B-01/B-02 still gate empirical and point-in-time
-claims. B-04 is resolved only for the narrow reviewed local WorldKernel slice;
-service isolation and deployment acceptance remain open. The owner's zero-paid
+The approved 250,000-cap UCI #352 source call stopped above its product-day
+group limit and returned no projection or metrics. The UCI-only
+MM-022 rule accepts exact six-digit IDs, treats only uppercase `C` plus six
+digits as cancellation, and excludes other single-letter ASCII prefixes into
+one aggregate class; its regressions are synthetic and the source was not read
+again. No retry, chunking, cap increase or Census acquisition is authorized.
+Preserve the private snapshot deletion deadline `2026-12-26`. B-01/B-02 still
+gate empirical and point-in-time claims. B-04 is resolved only for the narrow
+reviewed local WorldKernel slice; service isolation and deployment acceptance
+remain open. The owner's zero-paid
 budget remains in force. M2-02 and G-02 can continue only within their existing
 fictional/offline scopes after the PR #65 review candidate is consolidated.
 
@@ -46,7 +50,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | --- | --- | --- |
 | PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
-| PR #65 | Open, non-draft; public head remains `11de601` until the synchronized candidate is pushed. Local branch contains `6df8af1` parser-review fix; full combined candidate gate pending. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PR #65 | Open, non-draft; public head remains `11de601` until the synchronized candidate is pushed. Local merge `ab71f54` includes current main, and `6df8af1` contains the latest parser-review fix. Full combined candidate gate pending. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
 | PRs #66–#71 | Closed as merged. #66 consolidates #60/#61/#64; #67 adds reviewed Census work; #68–#70 update public portfolio; #71 licenses original project material under Apache-2.0. | No source/data or WorldKernel rights grant follows from #71; no production readiness follows from these docs. |
 
 

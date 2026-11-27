@@ -9,17 +9,19 @@
   authorizes zero paid usage. Preserve protections and distinguish local gate
   receipts from Actions.
 - Continue PR #65 only. Public head remains `11de60127ab0b31b609d98ada1b764a3dde542f9`
-  until the synchronized branch is pushed. Latest local code commit
-  `6df8af1` rejects repeated selected-cell `<v>` payloads and ambiguous
+  until the synchronized branch is pushed. Local merge commit
+  `ab71f54eaae86452acce5f3f20cb6c6546d871b4` preserves current `main`
+  (`c747838`) as its second parent. Latest local code commit `6df8af1`
+  rejects repeated selected-cell `<v>` payloads and ambiguous
   `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
   and excluded `Description` handling remain covered. The 10 focused second-
   round cases and 75 UCI workbook unit/integration tests passed. The complete
   exact-head local gate and exact-head Actions observations remain pending.
-- Finish the in-progress ancestry-preserving merge of current main into
-  `codex/uci352-pilot-20261126`, reconcile the shared docs and evidence map,
-  run the complete six-check gate with the exact reviewed WorldKernel pin,
-  then publish normally and report the exact SHA/receipt for independent
-  review. Do not merge #65 or resolve the independent review comments.
+- Reconcile the shared docs and evidence map after the completed
+  ancestry-preserving merge, run the complete six-check gate with the exact
+  reviewed WorldKernel pin, then publish normally and report the exact
+  SHA/receipt for independent review. Do not merge #65 or resolve the
+  independent review comments.
 - Do not reread the private UCI workbook. Its sole authorized source call
   stopped above 250,000 product-day groups without a projection or metric.
   Do not retry, partition, increase the cap or retrieve Census values. Keep

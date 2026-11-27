@@ -13,14 +13,15 @@ remain separately labeled. No paid budget, runner registration or protection
 change was used.
 
 PR #65 remains the active queue item. Published head `11de601` has not yet been
-updated; local branch `codex/uci352-pilot-20261126` contains the prior duplicate
-coordinate/type/numeric fixes and latest `6df8af1` correction for duplicate
-scalar and mixed scalar/inline worksheet payloads. Regressions reproduce both
-review rounds, including both parser passes, rich-text compatibility and
-excluded-field privacy. Focused UCI workbook unit/integration suites passed 75
-tests, including 10 second-round structural cases. The main synchronization is
-in progress; the complete exact-clean-head six-check gate, publication and
-independent re-review are still required. Do not merge PR #65 or mark its
+updated; local branch `codex/uci352-pilot-20261126` now contains merge commit
+`ab71f54`, preserving current main `c747838` as its second parent. It includes
+the prior duplicate-coordinate/type/numeric fixes and latest `6df8af1`
+correction for repeated scalar and mixed scalar/inline worksheet payloads.
+Regressions reproduce both review rounds, including both parser passes,
+rich-text compatibility and excluded-field privacy. Focused UCI workbook
+unit/integration suites passed 75 tests, including 10 second-round structural
+cases. The complete exact-clean-head six-check gate, normal publication and
+independent re-review remain required. Do not merge PR #65 or mark its
 comments resolved until that evidence and review are complete.
 
 The only approved UCI #352 processing attempt stopped above 250,000
@@ -44,7 +45,7 @@ new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| UCI workbook parser review | Local source/test changes include `6df8af1`; repeated `<v>` values and mixed `<v>`/`<is>` payloads now fail closed in both worksheet passes. Valid inline rich text still passes; `Description` remains excluded from selected text callbacks. | Finish ancestry-preserving main merge; run full exact-clean-head gate with reviewed WorldKernel; publish candidate and local receipt; verify official checks on exact PR head; obtain independent review. |
+| UCI workbook parser review | Local source/test changes include `6df8af1`; merge `ab71f54` preserves current main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads now fail closed in both worksheet passes. Valid inline rich text still passes; `Description` remains excluded from selected text callbacks. | Run full exact-clean-head gate with reviewed WorldKernel; publish candidate and local receipt; verify official checks on exact PR head; obtain independent review. |
 | UCI empirical pilot | Stopped at approved 250,000 group bound; no projection or metrics. | No further source operation without new owner authorization; preserve deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue only existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
 
