@@ -16,3 +16,11 @@ results/
 # Local Graphify products and semantic-extraction cache are generated artifacts.
 /graphify-out/
 /docs/engineering/graphify-out/
+
+# Default generated developer outputs
+/mirror-demo.html
+/public-site/
+/benchmark.json
+/alpha-candidate/
+/coverage.json
+.mypy_cache/

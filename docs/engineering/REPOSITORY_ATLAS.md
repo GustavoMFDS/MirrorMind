@@ -1038,7 +1038,7 @@ forecast claims or cross-repository changes.
 
 - [Architecture artwork](../assets/mirrormind-architecture.svg): editable static SVG of reviewed experimental boundaries.
 - [Synthetic comparison artwork](../assets/mirrormind-synthetic-comparison.svg): measured fictional CLI example; no decision ranking.
-- [CONTRIBUTING.md](../../CONTRIBUTING.md): reporting and contribution boundaries pending license decision.
+- [CONTRIBUTING.md](../../CONTRIBUTING.md): reporting and contribution boundaries under Apache-2.0.
 - [SECURITY.md](../../SECURITY.md): private disclosure channel and experimental support limits.
 
 ## Public licensing
@@ -1084,3 +1084,8 @@ forecast claims or cross-repository changes.
 ## Research maintenance
 
 - [Benchmark](../../examples/synthetic_benchmark.py), [release rehearsal](../../examples/prepare_alpha_release.py), [tests](../../tests/integration/test_research_maintenance.py), [workflow](../../.github/workflows/research-maintenance.yml) and [guide](REX_BENCHMARK_RELEASE.md).
+
+## Developer experience
+
+- [Developer quick start](DEVELOPER_QUICK_START.md): clean public checkout, validation and local container workflow.
+- [Docker context allowlist](../../.dockerignore): restricted local image inputs.

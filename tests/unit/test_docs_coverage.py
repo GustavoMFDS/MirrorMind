@@ -83,3 +83,12 @@ def test_inline_code_link_text_does_not_count_as_actual_link(tmp_path):
     assert coverage.missing_atlas_entries(
         tmp_path, atlas.read_text(), {"src/mirrormind/feature.py"}
     ) == ["src/mirrormind/feature.py"]
+
+
+def test_public_root_documents_are_checked(tmp_path):
+    _src, _atlas = _fixture(tmp_path)
+    for name in ("README.pt-BR.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md"):
+        assert name in coverage.ROOT_FILES
+        (tmp_path / name).write_text("[missing](absent.md)", encoding="utf-8")
+    assert len(coverage.broken_links(tmp_path)) == 4
+    assert {".dockerignore", "LICENSE"} <= coverage.ROOT_FILES

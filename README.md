@@ -22,7 +22,7 @@ domains over time.
 
 ## Try MirrorMind
 
-**[Download the interactive demo](https://github.com/GustavoMFDS/MirrorMind/releases/download/v0.1.0-alpha.1/mirror-demo.html)** and open it in your browser. No installation, API key or server is needed. The report comes from a real execution of the Python workflow on synthetic data.
+**[Open the online demo](https://gustavomfds.github.io/MirrorMind/demo.html)** or **[download the interactive demo](https://github.com/GustavoMFDS/MirrorMind/releases/download/v0.1.0-alpha.1/mirror-demo.html)** and open it in your browser. No installation, API key or server is needed. The report comes from a real execution of the Python workflow on synthetic data.
 
 What happens if a retailer changes its replenishment rule? Our example
 compares three policies over 28 days using the same fictional demand streams.

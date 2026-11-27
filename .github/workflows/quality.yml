@@ -56,3 +56,27 @@ jobs:
           "${{ runner.temp }}/mm-wheel/bin/python" -m pip install dist/*.whl
           cd "${{ runner.temp }}"
           mm-wheel/bin/python -I -c 'from importlib.metadata import metadata; from mirrormind import __version__; from mirrormind.api import app; from mirrormind.domains.retail.synthetic_decision_workflow import SyntheticDecisionWorkflowRequest, run_synthetic_decision_workflow; m = metadata("mirrormind"); assert m["License-Expression"] == "Apache-2.0"; assert m["Version"] == __version__ == app.version; r = run_synthetic_decision_workflow(SyntheticDecisionWorkflowRequest(replications=2)); assert r["action_authorized"] is False and r["worldkernel_execution"] == "worldkernel_not_invoked"; print("Installed wheel: metadata, API version and synthetic workflow passed")'
+
+  container-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build development image
+        run: docker build -t mirrormind-ci .
+      - name: Verify non-root identity and local health
+        run: |
+          test "$(docker run --rm --entrypoint id mirrormind-ci -u)" = "10001"
+          docker run -d --name mirrormind-ci -p 127.0.0.1:8000:8000 mirrormind-ci
+          trap 'docker rm -f mirrormind-ci >/dev/null' EXIT
+          for attempt in $(seq 1 20); do
+            if curl --fail --silent http://127.0.0.1:8000/health > /tmp/mm-health.json; then
+              python -c 'import json; assert json.load(open("/tmp/mm-health.json")) == {"status": "ok", "service": "mirrormind-api"}'
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs mirrormind-ci
+          exit 1
