@@ -195,8 +195,8 @@ implementation of the existing response contract through a read-only store
 `Protocol`. It shares canonicalization with the client, but no transport,
 persistence, authentication or independent administration is implemented.
 The client does not call this responder; the generated-key round trip is
-exercised in a local test. This is a PR #61 proposal, not an integrated main
-capability.
+exercised in a local test. This remains an experimental in-process component, not an
+operational service.
 
 ## Standalone M1 examples — adjacent-date invariant
 

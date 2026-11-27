@@ -1,5 +1,27 @@
 # Task backlog — prioritized execution register
 
+## Integration candidate - 2026-11-27
+
+The separately reviewed heads of PRs #64 (example maintenance), #60
+(experimental scoped BM25 retrieval), and #61 (in-process current-head
+responder) are included by normal merges, preserving their ancestry. This
+candidate is intended for a single ancestry-preserving PR to main; the
+independent combined gate and merge decision are recorded in its PR.
+Do not infer approval from this document alone. Once integrated, begin M2-02
+against the retrieval interface and continue G-02 only within its scoped
+offline contract. No authenticated RBAC, deployed authority, empirical
+forecast or production readiness is implied.
+
+PR #63 (synthetic Census) and #65 (UCI reader) remain separate. The latter
+records the owner's narrow UCI approval MM-017 through MM-022, a source
+snapshot held privately, and a fail-closed stop above 250,000 product-day
+groups without metrics. No new source processing, partitioning, cap increase
+or Census acquisition is authorized by this integration. Preserve the
+2026-12-26 deletion deadline and see the live PR #65 and its manifest for the
+latest source-specific evidence. B-01/B-02 and B-08 remain open. The
+following dated records retain historical gate and branch information;
+where they differ from this queue, use the live PRs and current evidence.
+
 **Baseline:** PR #62 merge commit `a456034c55ed7634ad4768b26788fec09dab1d08`,
 see [PROJECT_STATUS](PROJECT_STATUS.md). This is
 the maintained task register, not a duplicate roadmap or a promise
