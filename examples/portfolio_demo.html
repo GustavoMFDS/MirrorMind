@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'">
+<title>MirrorMind | Synthetic decision explorer</title>
+<style>
+:root{color-scheme:dark;--bg:#0d1727;--panel:#16243a;--line:#30455f;--text:#f1f6ff;--muted:#a9bbd2;--accent:#6fe0d2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:36px 24px 64px}h1{font-size:clamp(28px,5vw,44px);line-height:1.12;margin:8px 0}h2{font-size:21px;margin:0 0 12px}h3{font-size:16px;margin:12px 0 6px}p{margin:8px 0;color:var(--muted)}.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700}.notice{border:1px solid #726542;border-radius:10px;background:#2a271e;padding:12px 16px;color:#f7deb0;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:16px 0}.panel,.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}.metric{margin:0}.metric strong{display:block;font-size:24px;color:var(--accent);overflow-wrap:anywhere}.small{font-size:12px;color:var(--muted)}label{font-weight:600}select{font:inherit;background:#22344b;color:var(--text);padding:8px 14px;border:1px solid #647f9f;border-radius:7px;margin:0 8px}select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-variant-numeric:tabular-nums}th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted)}.bar-track{height:12px;border-radius:4px;background:#253850;margin:5px 0 12px;overflow:hidden}.bar{height:100%;background:var(--accent);border-radius:4px}.costrow{display:flex;justify-content:space-between;gap:10px}.chart{display:grid;grid-template-columns:repeat(28,minmax(12px,1fr));gap:3px;align-items:end;height:132px;padding-top:6px}.daybar{min-height:2px;background:#8cacf6;border-radius:3px 3px 0 0}.daylabels{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#101c2e;padding:14px;border-radius:8px;max-height:420px;overflow:auto;color:#d5e3f7;font-size:12px}summary{cursor:pointer;font-weight:600}code{overflow-wrap:anywhere}.error{color:#ffb7ac}footer{color:var(--muted);font-size:12px;margin-top:24px}@media(max-width:650px){main{padding:24px 14px}th,td{padding:8px}.chart{gap:2px;grid-template-columns:repeat(28,minmax(6px,1fr))}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="eyebrow">MIRRORMIND / RESEARCH DEMONSTRATION</div><h1>Synthetic decision explorer</h1><p>Evidence, forecast, conditional simulation and review trace. Offline snapshot of a single Python workflow run.</p></header>
+<div class="notice">Fictional data and assumptions only. No real forecast skill, policy ranking, ingestion permission or business action is established.</div>
+<noscript><p class="error">JavaScript is required to explore this local report. The original result is embedded in the file.</p></noscript>
+<p id="error" class="error" role="alert" hidden></p>
+<div id="report" hidden>
+<div class="grid">
+<div class="metric"><span class="small">As-of date</span><strong id="asof"></strong></div>
+<div class="metric"><span class="small">Forecast horizon</span><strong id="horizon"></strong></div>
+<div class="metric"><span class="small">Observed facts in trace</span><strong id="facts-count"></strong></div>
+<div class="metric"><span class="small">Human review</span><strong id="review"></strong></div>
+</div>
+<section class="panel" aria-labelledby="simulation-title">
+<h2 id="simulation-title">Compare the three inventory policies</h2>
+<p>Same fictional demand streams and explicit assumptions. Choose an already-computed lead-time case; no new simulation runs in the browser.</p>
+<label for="lead-time">Lead time</label><select id="lead-time"></select><span id="case-label" class="small" aria-live="polite"></span>
+<h3>Mean cost (synthetic units)</h3><div id="cost-bars"></div>
+<div class="scroll"><table><thead><tr><th>Policy</th><th>Mean cost</th><th>Fill rate</th><th>Ending stock</th><th>Mean orders</th><th>Stockout days / run</th></tr></thead><tbody id="policy-rows"></tbody></table></div>
+<p class="small">No selection is authorized. Cost, inventory and order frequency are conditional trade-offs, not causal or business evidence.</p>
+<details><summary>Simulation assumptions</summary><pre id="assumptions"></pre></details>
+</section>
+<section class="panel" aria-labelledby="forecast-title">
+<h2 id="forecast-title">Forecast profile</h2><p id="forecast-meta"></p>
+<div id="forecast-chart" class="chart" role="img" aria-label="Forecast profile by day; exact values available below"></div><div class="daylabels"><span>Day 1</span><span>Day 28</span></div>
+<details><summary>Exact daily values and historical diagnostics</summary><pre id="forecast-json"></pre><pre id="evaluation-json"></pre></details>
+<p id="uncertainty"></p><details><summary>Residual diagnostic (not a calibrated interval)</summary><pre id="uncertainty-json"></pre></details>
+</section>
+<section class="panel" aria-labelledby="evidence-title">
+<h2 id="evidence-title">Evidence and traceability</h2><p>Fixture declarations are not authenticated source evidence.</p>
+<div class="scroll"><table><thead><tr><th>Observed date</th><th>Units</th><th>Fact ID</th><th>Evidence references</th></tr></thead><tbody id="fact-rows"></tbody></table></div>
+<details><summary>Declared evidence receipt</summary><pre id="receipt"></pre></details>
+<details><summary>Missing evidence and modeling assumptions</summary><pre id="gaps"></pre></details>
+<h3>Selected engine</h3><pre id="engine"></pre>
+<h3>Trace SHA-256</h3><code id="digest"></code>
+<h3>Authorization flags</h3><pre id="flags"></pre>
+<details><summary>Full versioned decision trace</summary><pre id="trace"></pre></details>
+<details><summary>Full original workflow JSON</summary><pre id="raw"></pre></details>
+</section>
+</div>
+<footer>Generated locally by MirrorMind. No external assets or API calls. Apache-2.0 project code; separate terms apply to third-party components and data.</footer>
+</main>
+<script id="workflow-result" type="application/json">__MIRRORMIND_RESULT_JSON__</script>
+<script>
+"use strict";
+const el = id => document.getElementById(id);
+const put = (id, value) => { el(id).textContent = String(value); };
+const pretty = (id, value) => { put(id, JSON.stringify(value, null, 2)); };
+const labels = {
+  fixed_cycle_quantity: "Fixed cycle / fixed quantity",
+  reorder_point_fixed_quantity: "Reorder point / fixed quantity",
+  forecast_aware_order_up_to: "Forecast-aware order-up-to"
+};
+function cell(row, value) {
+  const td = document.createElement("td"); td.textContent = String(value); row.append(td);
+}
+function renderCase(cases, lead) {
+  const scenario = cases.find(c => c.lead_time_days === Number(lead));
+  if (!scenario) throw new Error("Unknown lead-time case");
+  put("case-label", scenario.is_base_assumption ? "Base assumption" : "Sensitivity case");
+  const policies = scenario.policies;
+  const max = Math.max(1, ...policies.map(p => p.mean_metrics_per_replication.total_cost_units));
+  el("policy-rows").replaceChildren(); el("cost-bars").replaceChildren();
+  for (const p of policies) {
+    const m = p.mean_metrics_per_replication;
+    const label = labels[p.policy_id] || p.policy_id;
+    const row = document.createElement("tr");
+    [label, m.total_cost_units, (m.fill_rate_basis_points / 100) + "%",
+      m.ending_on_hand_units, m.order_count, m.stockout_days_per_replication].forEach(v => cell(row,v));
+    el("policy-rows").append(row);
+    const group = document.createElement("div"), title = document.createElement("div");
+    title.className = "costrow"; title.textContent = label + " - " + m.total_cost_units;
+    const track = document.createElement("div"), bar = document.createElement("div");
+    track.className = "bar-track"; bar.className = "bar";
+    bar.style.width = (100 * m.total_cost_units / max) + "%";
+    track.append(bar); group.append(title,track); el("cost-bars").append(group);
+  }
+}
+try {
+  const r = JSON.parse(el("workflow-result").textContent);
+  const sim = r.simulation.result, cases = sim.lead_time_sensitivity;
+  put("asof",r.as_of); put("horizon",r.forecast.horizon_days+" days");
+  put("facts-count",r.trace.observations.length); put("review",r.human_review);
+  for (const c of cases) {
+    const opt = document.createElement("option"); opt.value = String(c.lead_time_days);
+    opt.textContent = c.lead_time_days+" day(s)"; opt.selected = c.is_base_assumption;
+    el("lead-time").append(opt);
+  }
+  renderCase(cases,el("lead-time").value);
+  el("lead-time").addEventListener("change", () => renderCase(cases,el("lead-time").value));
+  pretty("assumptions",sim.assumptions);
+  put("forecast-meta",r.forecast.model+" | history "+r.forecast.history_start+" to "+r.forecast.history_end);
+  const values = r.forecast.profile_units, max = Math.max(1,...values);
+  values.forEach((v,i) => {
+    const bar = document.createElement("div"); bar.className = "daybar";
+    bar.style.height = (100*v/max)+"%"; bar.title = "Day "+(i+1)+": "+v+" units";
+    el("forecast-chart").append(bar);
+  });
+  pretty("forecast-json",r.forecast); pretty("evaluation-json",r.evaluation);
+  put("uncertainty","Uncertainty: "+r.uncertainty.status);
+  pretty("uncertainty-json",r.uncertainty);
+  for (const f of r.trace.observations) {
+    const row = document.createElement("tr");
+    [f.observed_at, f.value, f.fact_id, f.evidence_refs.join(", ")].forEach(v=>cell(row,v));
+    el("fact-rows").append(row);
+  }
+  pretty("receipt",r.forecast_evidence_receipt);
+  pretty("gaps",{missing_evidence:r.trace.missing_evidence,assumptions:r.trace.assumptions});
+  pretty("engine",r.trace.execution_evidence); put("digest",r.trace_sha256);
+  pretty("flags",{decision_status:r.decision_status,action_authorized:r.action_authorized,
+    ingestion_authorized:r.ingestion_authorized,source_forecast_eligible:r.source_forecast_eligible,
+    writes_performed:r.writes_performed});
+  pretty("trace",r.trace); pretty("raw",r);
+  el("report").hidden = false;
+} catch (error) {
+  put("error","Unable to display this report. Inspect the original local output.");
+  el("error").hidden = false;
+}
+</script>
+</body>
+</html>

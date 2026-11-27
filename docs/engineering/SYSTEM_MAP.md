@@ -257,3 +257,7 @@ guide](M1_ASOF_ROLLING_EVALUATION.md) for evaluation semantics.
 This is a local synthetic example, not an API path or source adapter. A
 contiguous sequence of declared dates proves neither original publication
 availability nor source permission.
+
+## Experimental offline portfolio report
+
+The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision workflow once and embeds its exact result in a new local HTML file. Browser interactions only select existing cases; no extra server route, live simulation, external dependency or production claim.

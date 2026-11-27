@@ -846,3 +846,7 @@ those programming failures propagate rather than being mislabeled as routine
 service outages. Describe how a future HTTP adapter can map an unexpected
 exception at its transport boundary without broad catches inside the typed
 responder.
+
+## Exercise: inspect a local decision report
+
+Follow the [report walkthrough](PORTFOLIO_DEMO.md), compare selected case metrics with original JSON and explain the difference between display selection and a new seeded workflow execution.

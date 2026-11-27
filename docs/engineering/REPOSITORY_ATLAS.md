@@ -1032,3 +1032,10 @@ forecast claims or cross-repository changes.
 
 - [LICENSE](../../LICENSE): standard Apache-2.0 license text for original project material.
 - [Third-party licensing](../THIRD_PARTY.md): dependency metadata and separate engine/data boundaries.
+
+## Local interactive portfolio report
+
+- [Generator](../../examples/m2_portfolio_demo.py): bounded request, exact result embedding and explicit new HTML file.
+- [HTML template](../../examples/portfolio_demo.html): offline client-side exploration of precomputed cases.
+- [Report tests](../../tests/integration/test_portfolio_demo.py): exact JSON, escaping and failure contracts.
+- [Report guide](PORTFOLIO_DEMO.md) and [change request](changes/PORT_07_LOCAL_INTERACTIVE_REPORT.md): walkthrough, limits and acceptance.

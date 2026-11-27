@@ -394,3 +394,7 @@ and adverse cases in
 If the client rejects a 200 response, verify the configured service key,
 request nonce, packet/snapshot digest and UTC validity against its existing
 verifier. Do not infer an attack or independent freshness from a mismatch.
+
+## Offline report fails to generate or render
+
+Check the bounded workflow options and unused output path, then the browser console and embedded result. See [the report guide](PORTFOLIO_DEMO.md); do not invent missing values or overwrite earlier reports.

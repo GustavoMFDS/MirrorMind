@@ -114,6 +114,16 @@ ou ação é autorizado.
 }
 ```
 
+### Demonstração interativa offline
+
+Gere um novo relatório HTML local a partir do fluxo sintético:
+
+```bash
+python -m examples.m2_portfolio_demo --as-of 2011-01-26 --replications 2 --seed 317 --output mirror-demo.html
+```
+
+Abra o arquivo gerado no navegador. Explore os cenários de prazo de entrega já calculados, previsões, evidências e a rastreabilidade completa. Não exige servidor nem serviço externo. [Guia do relatório](docs/engineering/PORTFOLIO_DEMO.md).
+
 ### API local
 
 ```bash
