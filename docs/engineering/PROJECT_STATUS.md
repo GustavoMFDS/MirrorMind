@@ -1,13 +1,26 @@
 # Project status — reviewed baseline, not live status
 
 **Main baseline:** `a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62 merge).
-**UCI review snapshot before this status sync:** 2026-11-27 UTC; PR #65 head
-`75da34fc2cb91d3354cfbe49af43aeb40721164d`. PR #63 (Census) and #64
-(examples maintenance) are separate open candidates. Main has not changed.
+**Last verified PR snapshot before this status refresh:** 2026-11-27 UTC. PRs
+#60, #61, #63, #64 and #65 are open, non-draft, mergeable and based on this
+main commit. Their reviewed heads are recorded below or in their live PRs.
+Main has not changed.
 The detailed sections below preserve the earlier PR #51 baseline and PR #62
 review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
 using this document as a general execution report.
+
+## Pull request reconciliation — 2026-11-27 UTC
+
+PR #52 was merged at `e922b03666f04bd8c570a0448466d25838e3f84e`. PRs #53–#59
+were closed without individual merges. Their exact published heads are
+ancestors of PR #62 head `0bed1269613eb689e84ad971c7d8f1878767d6cf`; PR #52's
+merge commit is also an ancestor. PR #62 was integrated as main commit
+`a456034c55ed7634ad4768b26788fec09dab1d08`. Git ancestry confirms these
+changes are integrated once; no additional merge of #52–#59 is needed. The
+branch-by-branch sections below are historical implementation evidence, not
+an open PR queue. PRs #60 and #61 remain separate candidates; #63–#65 remain
+independent open candidates as recorded above.
 
 ## UCI #352 pilot review snapshot — 2026-11-27 UTC
 
@@ -34,20 +47,19 @@ owner decision. The former `openpyxl.values_only` reader transiently
 materialized excluded `Description` values without persistence or transfer;
 the new selective OOXML path disables Python text callbacks for excluded body
 cells and has synthetic shared-string regressions. Reader defaults remain
-2,000 groups, generic projection remains capped at 100,000. Code candidate
-The implementation and owner-approved stop are published for independent
-review in [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65), open,
-non-draft and mergeable at this snapshot, with no review submission or inline
-thread yet. Its exact head `75da34fc2cb91d3354cfbe49af43aeb40721164d` passed
-the full local gate at `2026-11-27T00:38:35.670136Z`: 863 tests, zero skips,
-and all six checks. Python 3.13.5; reviewed WorldKernel source pin installed;
-one existing Starlette/httpx deprecation warning. Receipt:
-`results/local-quality-gate-75da34fc2cb91d3354cfbe49af43aeb40721164d.json`.
+2,000 groups, generic projection remains capped at 100,000. The implementation
+and owner-approved stop are published for independent
+review in [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65). The last
+published and gated head before this status refresh is
+`9899cffaaf05e5bb9ffcf6fcac02edaa6bd8efa9`; its exact local gate passed at
+`2026-11-27T01:35:26.472264Z`: 863 tests, zero skips and all six checks.
+Python 3.13.5; reviewed WorldKernel source pin installed; one existing
+Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-9899cffaaf05e5bb9ffcf6fcac02edaa6bd8efa9.json`.
 A focused rerun of the workbook, projection, event-time and workbook-flow
-suites passed 112 tests on the same checkout. Both are local evidence only.
-Actions diagnostics on this exact head show four automatic failures before
-repository steps with the generic account-payment-or-spending-limit
-annotation; no job steps, logs or combined status were available. The
+suites passed 112 tests. Actions diagnostics on that head show four automatic
+failures before repository steps with the generic account-payment-or-spending-
+limit annotation; no job steps, logs or combined status were available. The
 annotation does not distinguish the cause; the owner separately confirms
 quota exhaustion and zero paid budget. No official Actions result is claimed.
 
@@ -259,23 +271,35 @@ return the annotation text. This is not remote test evidence. The route remains
 experimental, unauthenticated and without body-size/rate/concurrency controls;
 WorldKernel execution and real-source claims remain blocked.
 
-## PR #60 and #61 review state
+## PR #60 and #61 review state — 2026-11-27 UTC
 
-PR #60's excerpt-integrity correction is published at
-`59deef2a780d7802d8b8d29b66dd0189e96365ea`; same-length excerpt tampering and
-wrong well-formed digest regressions are present, and its prior exact-head gate
-passed 738 tests plus all five other checks. It is based on PR #54 and currently
-reports a base conflict; sync to published #54 head `4d22006` and re-gate before
-review follow-up. Scope filtering remains caller-declared, not authenticated
-RBAC.
+Both candidates are open, non-draft, mergeable and target `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08`. They remain separate from the
+consolidated M1 and UCI/Census work; no merge is implied.
 
-PR #61's typed clock-failure correction is published at
-`8101bc78dfa6a0f96bdfabe3dd8c9dc46d19a93e`; expected clock errors produce the
-generic bodyless 503 while unexpected programming errors remain visible. The
-two regressions distinguish those cases, and the exact-head gate passed 697
-tests plus all five other checks. Its current branch is independent of M1 and
-reported mergeable; it remains draft for separate review. No HTTP adapter,
-persistence, authentication or authority is claimed.
+PR #60 head `fafdedae3a76398e0450773065e40384c96d1ed7` includes the
+ancestry-preserving sync with PR #62 and the excerpt-integrity correction.
+The same-length tampering and wrong well-formed digest regressions remain.
+Its exact local six-check gate passed 845 tests, zero skips, at
+`2026-11-26T03:55:01.928894Z`; receipt:
+`results/local-quality-gate-fafdedae3a76398e0450773065e40384c96d1ed7.json`.
+The review response is recorded in the [PR conversation](https://github.com/GustavoMFDS/MirrorMind/pull/60#issuecomment-7151002830).
+Scope filtering remains caller-declared, not authenticated RBAC.
+
+PR #61 head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` includes the
+ancestry-preserving sync with PR #62 and typed clock-failure correction.
+Its exact local six-check gate passed 841 tests, zero skips, at
+`2026-11-26T04:38:11.522249Z`; receipt:
+`results/local-quality-gate-f30556ecb9219c1bc4eb0eb720f9c59c3a729b29.json`.
+The review response is recorded in the [PR conversation](https://github.com/GustavoMFDS/MirrorMind/pull/61#issuecomment-7151371714).
+No HTTP adapter, persistence, authentication or operational authority is
+claimed.
+
+Actions on both exact heads failed before repository steps under the same
+alternatives-only payment-or-spending-limit annotation. Exact run IDs and the
+absence of jobs, logs and combined status are recorded in [B-08](BLOCKERS.md);
+the owner's quota report remains separate evidence. No official CI success is
+claimed.
 
 The local M1F dependency stack now integrates published PR #56 head `e993391`
 and PR #58 head `37737c2` without cherry-picking their commits. Its merge

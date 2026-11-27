@@ -280,6 +280,23 @@ the [change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md),
 [manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
 [source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [B-01/B-02](BLOCKERS.md).
 
+### Separate PR review state — 2026-11-27 UTC
+
+PR #60 is open, non-draft and mergeable against `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08`; current head is
+`fafdedae3a76398e0450773065e40384c96d1ed7`. Its exact local gate passed 845
+tests, zero skips and all six checks. The review correction and response are
+in the [PR conversation](https://github.com/GustavoMFDS/MirrorMind/pull/60#issuecomment-7151002830).
+
+PR #61 is also open, non-draft and mergeable against the same main; current
+head is `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`. Its exact local gate passed
+841 tests, zero skips and all six checks. Its typed clock-failure correction
+and response are in the [PR conversation](https://github.com/GustavoMFDS/MirrorMind/pull/61#issuecomment-7151371714).
+Both remain separate from the M1/UCI/Census candidates and await independent
+review. Their automatic Actions failed before repository steps under the
+generic alternatives-only annotation; see [B-08](BLOCKERS.md). No official CI
+success or merge is claimed.
+
 ## 4. Mandatory documentation standard
 
 MirrorMind documentation is both **engineering knowledge and a
