@@ -1,4 +1,4 @@
-# Project status — current baseline, 2026-11-26
+# Project status — current baseline, 2026-11-27
 
 **Merged main:** `a456034c55ed7634ad4768b26788fec09dab1d08`, PR #62's
 ancestry-preserving merge. Independent post-merge gate passed 835 tests,
@@ -14,7 +14,7 @@ available.
 | --- | --- | --- |
 | PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
 | PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
-| PR #63 | Open, non-draft, mergeable and based on `main`; preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Published docs candidate `44b128c4f7768117148dc23f7c71b3e2e9cd86a4` passed the full local gate at `2026-11-27T01:12:07.694019Z`: 882 tests, zero skips and all six checks with WorldKernel at reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt `results/local-quality-gate-44b128c4f7768117148dc23f7c71b3e2e9cd86a4.json`. Four automatic Actions checks on that head failed before repository steps; their annotation lists account-payment failure or spending-limit increase as alternatives and does not identify the cause. A docs-only B-08 status follow-up and its final exact-head receipt will be recorded in the live PR comment. See [B-08](BLOCKERS.md). | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Independent review remains pending. |
+| PR #63 | Open, non-draft, mergeable and based on `main`; preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Its previously published pre-source-policy head `0a24c01c914592a718380a350dc35f56ce59d9ef` passed the full local gate at `2026-11-27T01:18:27.951434Z`: 882 tests, zero skips and all six checks with WorldKernel at reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt `results/local-quality-gate-0a24c01c914592a718380a350dc35f56ce59d9ef.json`. Four automatic Actions checks on that head failed; jobs expose no steps/logs and annotation text is unavailable through the connector, so no cause is inferred. The pending source-policy documentation update needs its own exact-head gate. See [B-08](BLOCKERS.md). | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Independent review remains pending. |
 | PR #64 | Open, non-draft, mergeable and based on `main`; separate ENG-02 example-lint maintenance at `ca97ab61d15347aa271ee9ac8468a0714bdc3402`. Its exact local gate passed 840 tests, zero skips and all six checks; `ruff check examples` passed. Two Actions attempts failed before steps; the pre-start annotation lists account-payment/spending-limit alternatives without identifying the cause. Job records had no steps/logs and combined status was empty; see [B-08](BLOCKERS.md). | No forecast, real-source, API or authorization capability added. Local evidence is not official Actions; independent review remains pending. |
 
 The synthetic M1 evidence-to-decision path is integrated; M1 remains
@@ -31,7 +31,7 @@ isolation and deployment acceptance remain open. GitHub Actions allowance is
 exhausted under the owner's zero-paid-use decision (B-08); no runner,
 protection or workflow change was made.
 
-Metadata-only Census due diligence on 2026-11-26 proposes direct MARTS
+Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted
 retail-and-food-services total. Exact table, unit and methodology edition
 must be checked before use; the annual-revision index spans January 1992
@@ -40,6 +40,18 @@ official schedule gives 8:30 a.m. for advance sales without stating a timezone
 in its table; any unorderable same-day correction must remain ambiguous.
 Census documents the April 2025 removal of nonemployers, so methodology and
 coverage comparability must be reviewed before pooling outcomes.
+
+The [Census citation guidance](https://www.census.gov/about/policies/citation.html)
+supports attribution when deriving estimates from disseminated tables and
+assigns analytical conclusions to the analyst. Its [research transparency
+policy](https://www2.census.gov/foia/ds_policies/ds027.pdf) states that works
+created by Census employees generally are not subject to U.S. copyright, with
+foreign and non-Census creator exceptions. These are general policy statements,
+not file-specific clearance for MARTS release artifacts. The source proposal
+now distinguishes project-scope approval from artifact-rights review; see the
+[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md). No Census file
+was downloaded into the workspace or pilot store. Search previews incidentally
+displayed published aggregate values; none was retained or used in evaluation.
 
 Current FRED Services terms apply to ALFRED and the API, prohibit storage,
 caching or archiving service content, and the API terms prohibit use in

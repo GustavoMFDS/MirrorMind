@@ -14,7 +14,7 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
-## Current owner-approved continuation — 2026-11-26
+## Current owner-approved continuation — 2026-11-27
 
 - `main` is `a456034c55ed7634ad4768b26788fec09dab1d08`, the
   ancestry-preserving PR #62 merge. Independent post-merge gate passed 835
@@ -31,28 +31,29 @@ execution guidance and does not broaden the agent's permissions.
   `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and
   revisions published inside their reference month; selector-boundary and
   public-evaluator regressions cover the original false-scoring case. The
-  published docs candidate `44b128c4f7768117148dc23f7c71b3e2e9cd86a4` passed
-  the exact clean-head gate at `2026-11-27T01:12:07.694019Z`: 882 tests, zero
-  skips and all six checks, with WorldKernel `0.0.1` at the reviewed source
-  pin. Receipt: `results/local-quality-gate-44b128c4f7768117148dc23f7c71b3e2e9cd86a4.json`.
-  One existing Starlette/httpx `TestClient` deprecation warning appeared. Four
-  automatic Actions checks on that head failed before repository steps; the
-  annotation lists payment failure or spending-limit increase as alternatives
-  and does not identify which applies. [B-08](BLOCKERS.md) records exact
-  run/check IDs and no-job/log evidence. The live PR comment will hold the
-  final documentation-only B-08 head and exact gate receipt. Keep #63 separate
-  from #60/#61/#64 pending independent review; no integration decision is
-  implied.
+  previously published pre-source-policy head
+  `0a24c01c914592a718380a350dc35f56ce59d9ef` passed the exact
+  clean-head gate at `2026-11-27T01:18:27.951434Z`: 882 tests, zero skips and
+  all six checks, with WorldKernel `0.0.1` at reviewed source pin
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+  `results/local-quality-gate-0a24c01c914592a718380a350dc35f56ce59d9ef.json`;
+  PR comment [7207260482](https://github.com/GustavoMFDS/MirrorMind/pull/63#issuecomment-7207260482)
+  records it. Four automatic Actions checks on that head failed; jobs expose
+  no steps/logs and the connector could not retrieve annotation text, so no
+  specific cause is inferred. [B-08](BLOCKERS.md) records exact run/check IDs.
+  This source-policy documentation update needs its own exact-head gate; put
+  the resulting receipt in the live PR comment. Keep #63 separate from
+  #60/#61/#64 pending independent review; no integration decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
-  API response or credential was downloaded or processed. A metadata-search
-  preview incidentally displayed a few published aggregate values; none was
-  copied into repository artifacts or used for evaluation. No pilot run
+  API response or credential was downloaded into the workspace or pilot store.
+  Search previews of public Census release summaries incidentally displayed
+  published aggregate values; none was retained or used in evaluation. No pilot run
   occurred. B-01/B-02 still require source rights, privacy, retention and
   time-availability evidence before any real run; see the
   [Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
-- Metadata-only due diligence on 2026-11-26 confirms the direct Census MARTS
+- Metadata-first due diligence on 2026-11-27 confirms the direct Census MARTS
   archive as the preferred no-credential candidate for national retail and
   food-services sales. Current release text says seasonally adjusted but not
   price-adjusted; its nominal/current-dollar interpretation still needs exact
@@ -65,9 +66,12 @@ execution guidance and does not broaden the agent's permissions.
   therefore NO-GO for the current development and archive route absent
   St. Louis Fed written authorization or changed terms plus separate
   series-owner rights clearance; this does not decide rights for original
-  Census files. The proposed source is direct original MARTS
-  release files, subject to exact artifact rights, attribution, purpose,
-  storage and output approval. Proposed retention is 30 days for local
+  Census files. Census citation guidance and its general employee-created-work
+  copyright statement inform the proposal but do not establish rights for a
+  specific MARTS file or embedded third-party content; see the [Census
+  protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md). The proposed source is direct
+  original MARTS release files, subject to project-scope approval, attribution,
+  storage, retention and output review. Proposed retention is 30 days for local
   value-bearing artifacts, followed by deletion. The proposed fixed evaluation
   uses a frozen 60/20/20 chronological split, first estimates, 1/3/6-month
   lag-12 and trailing-mean baselines, strict-before date cutoffs, preserved

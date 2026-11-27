@@ -9,14 +9,14 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | Real source rights and privacy remain open. The owner selected UCI Online Retail #352 for research-only event-time preparation followed by an aggregate Census MARTS study; this authorizes preparation, not a blanket data grant. Direct Census original-release files are the proposed Census route, but exact artifact rights, attribution and retention are not approved. FRED/ALFRED is NO-GO under current posted FRED Services/API terms for MirrorMind development and local archival use: ALFRED is within the Services terms, which prohibit storage/cache/archive, and the API additionally prohibits software/AI-development use. Reconsider only if the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate series-owner rights are cleared. This does not determine rights for original Census files. M5 remains NO-GO. | Recheck UCI terms/attribution/change notice for the exact snapshot and preserve its approved retention controls. For Census, the owner/rightsholder must approve the exact direct MARTS table/artifacts, internal research purpose, attribution, local access-controlled storage, 30-day proposed retention/deletion and permitted outputs before any bytes are acquired. Do not create a FRED API key, fetch FRED/ALFRED values or retain service content unless the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate underlying series rights permit the use and retention. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine direct-source manifest, archive completeness checks, deletion checklist and privacy controls without retrieving real Census bytes |
+| B-01 | Real source rights and privacy remain open. The owner selected UCI Online Retail #352 for research-only event-time preparation followed by an aggregate Census MARTS study; this authorizes preparation, not a blanket data grant. Direct Census original-release files are the proposed route. Census public-use guidance calls for attribution when deriving estimates, and a general policy says employee-created works are generally not copyright-protected in the United States, with exceptions; neither resolves notices, provenance or third-party rights for a specific MARTS artifact. FRED/ALFRED is NO-GO under current posted FRED Services/API terms for MirrorMind development and local archival use: ALFRED is within the Services terms, which prohibit storage/cache/archive, and the API additionally prohibits software/AI-development use. Reconsider only if the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate series-owner rights are cleared. This does not determine rights for original Census files. M5 remains NO-GO. | Recheck UCI terms/attribution/change notice for the exact snapshot and preserve its approved retention controls. For Census, preflight the public publisher index, landing pages, posted notices and available provenance. Before acquiring any file bytes, the owner must approve one exact direct-from-Census artifact for quarantined local inspection of embedded notices, provenance and schema only; no value parsing or evaluation. Delete the inspection copy immediately after review and no later than the expressly approved retention limit. Then obtain artifact-specific rights review for ambiguity and a separate owner go/no-go for processing, including bounded purpose, attribution, access-controlled storage, proposed 30-day maximum retention/deletion and outputs. Citation guidance is not a file-specific license. Do not create a FRED API key, fetch FRED/ALFRED values or retain service content unless the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate underlying series rights permit the use and retention. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine direct-source manifest, archive completeness checks, deletion checklist and privacy controls without retrieving real Census bytes |
 | B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's annual-revision index spans January 1992 through August 2026 but does not prove first-release completeness. Census's current advance schedule states 8:30 a.m. without a timezone in its table; historical same-day corrections may be ambiguous. The April 2025 annual revision removed nonemployers, creating a source-definition boundary. | For UCI, retain event-time labeling and never derive `available_on` from `InvoiceDate`. Before Census acquisition, approve and inventory original first-release artifacts and exact publication boundaries, methodology edition, and a pre-registered chronological 60/20/20 development/validation/locked-holdout split. Use date-only strict-before cutoffs where timestamps/timezones cannot be authenticated; preserve gaps and abstain. Compare first estimates against fixed lag-12 and trailing-12-month baselines at 1/3/6 horizons; keep later revisions separate. Require 60 matched holdout origins per horizon for proposed 12-month block-bootstrap uncertainty, or report descriptive metrics only. Same-day corrections without orderable timestamps/original bytes remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census release inventory and versioned manifest without fabricating vintages |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
 | B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently approved and merged at `a456034`; its post-merge exact-main gate passed 835 tests, zero skips and six checks with the reviewed pin (final review evidence: [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)). Broader service acceptance remains open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Broader service acceptance needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 head `44b128c4f7768117148dc23f7c71b3e2e9cd86a4` (882), and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840); all report zero skips and six local checks, none is official Actions. Four #63 checks on `44b128c` and earlier published heads `2764e60`, `42a9746`, `3bc7162`, `5ec904d`, plus four #64 checks on `ca97ab6`, failed before repository steps; see exact IDs below and earlier records. The annotation lists account-payment failure **or** spending-limit increase and does not identify which condition applies. Job records expose no executed steps/logs; combined statuses are empty. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
+| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 pre-source-policy head `0a24c01c914592a718380a350dc35f56ce59d9ef` (882; previous docs head `44b128c` also passed 882), and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840); each reports zero skips and six local checks, none is official Actions. Four #63 checks on `0a24c01` and previous head `44b128c`, earlier #63 heads, plus four #64 checks on `ca97ab6`, failed; see exact evidence below and earlier records. On `0a24c01`, check records report one annotation each, but annotation content was unavailable through the connector; jobs expose empty steps, logs return 404, and combined statuses are empty. No cause is inferred for that head. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
 
 ### PR #63 pre-start checks — head `2764e60` — 2026-11-26
 
@@ -121,6 +121,26 @@ This is local evidence, not official Actions success. No manual rerun, paid
 use, runner registration, spending-limit change or workflow/protection change
 was made.
 
+### PR #63 Actions diagnostics — pre-source-policy head `0a24c` — 2026-11-27 UTC
+
+On published head `0a24c01c914592a718380a350dc35f56ce59d9ef`, two automatic
+workflow attempts produced four failed checks: test runs
+[45921856066](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921856066)
+and [45921861735](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921861735),
+and symbol-catalog runs
+[45921856041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921856041)
+and [45921861784](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921861784).
+Their check runs (`140254188569`, `140254205500`, `140254188611`,
+`140254205791`) each report one annotation. The connected diagnostics could
+not retrieve annotation text. All four jobs returned empty step lists and log
+downloads returned 404; the combined-status endpoint returned no statuses.
+This establishes failed checks without retrievable execution evidence, not a
+specific cause. The owner's allowance report remains separate evidence. No
+manual rerun, paid use, runner registration or workflow/protection change was
+made. PR #63 exact local gate on this head passed 882 tests, zero skips and all
+six checks; its receipt is `results/local-quality-gate-0a24c01c914592a718380a350dc35f56ce59d9ef.json`.
+Local evidence is not official Actions success.
+
 ### PR #64 exact-head Actions diagnostics — 2026-11-26
 
 On exact head `ca97ab61d15347aa271ee9ac8468a0714bdc3402`, GitHub reported two
@@ -146,16 +166,33 @@ cannot be ordered safely by date alone. Preserve original and corrected file
 versions separately and abstain when timestamps cannot distinguish them. No
 Census release file was downloaded; see the [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 
-### B-01/B-02 owner proposal — 2026-11-26
+### B-01/B-02 source proposal update — 2026-11-27 UTC
 
 The reviewed direct-source candidate is the original Census MARTS historical
 release file for national seasonally adjusted Retail and Food Services total
 sales. The exact table row, units, source notices and rights must be verified
-from the selected artifact before acquisition. Census's index lists known
+from the selected artifact before processing. A concrete inspection candidate
+is the September 2026 first-release PDF [`adv2609.pdf`](https://www2.census.gov/retail/releases/historical/marts/adv2609.pdf),
+linked from the official archive and dated October 15, 2026 in release
+metadata. It is a one-file inspection proposal only, not rights clearance or
+approval to process values or acquire a vintage set. Census's index lists known
 missing releases and an interval when advance sales were not produced; its
 current release schedule says 8:30 a.m. but does not state a timezone in the
-table. A metadata-only search is not an artifact-level license or complete
-vintage inventory.
+table. Index and search-result excerpts are not an artifact-specific license
+or complete vintage inventory.
+
+Official Census [citation guidance](https://www.census.gov/about/policies/citation.html)
+directs users who derive estimates from disseminated tables to cite Census as
+the source of the original data and says analytical conclusions are the user's
+responsibility. The [Research Transparency and Public Access policy](https://www2.census.gov/foia/ds_policies/ds027.pdf)
+states that Census employee-created works are generally not protected by U.S.
+copyright, while noting exceptions for foreign copyright and non-Census
+creators. These sources support a concrete attribution pattern, but do not
+establish the creator or notices of a selected MARTS file and do not grant
+third-party rights. Search previews displayed published release content, but
+no exact artifact was downloaded into the workspace or pilot store for review;
+no blanket rights or redistribution claim is made. See the [Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md)
+for the artifact review and citation checklist.
 
 Current FRED Services terms apply to ALFRED and the API and prohibit storage,
 caching or archiving service content. API-specific terms additionally prohibit
@@ -167,18 +204,25 @@ revised terms explicitly allow the intended development and retention.
 
 Concrete proposed approval package: (1) direct Census MARTS original files,
 one verified national seasonally adjusted total-sales row; (2) non-commercial
-internal research with attribution and no redistribution of files or
-row-level values; (3) access-controlled local storage, no Git/CI/log/prompt or
-external-service copies, and 30-day source/value-bearing-artifact retention
-followed by deletion, keeping only rights/citation metadata, hashes and
-sanitized audit results; (4) chronological 60/20/20 development/validation/
-locked holdout, first estimates as primary targets, fixed 1/3/6-month lag-12
-and trailing-mean baselines, and separate revised-value sensitivity; and (5)
-date-only strict-before cutoffs, preserved archive gaps and abstention on
-ambiguous same-day corrections. A proposed 12-month moving-block bootstrap
-requires 60 matched holdout origins per horizon; below that, results would be
-descriptive without a winner claim. These conditions remain proposals, not
-owner authorization or evaluation evidence. No Census source was acquired.
+internal research with Census attribution and explicit analyst-responsibility
+disclaimer, no redistribution of files or row-level values;
+(3) preflight publisher metadata, then seek explicit owner approval for one exact
+artifact to be fetched into local quarantine for embedded notice, provenance
+and schema inspection only; do no parsing or evaluation, delete it immediately
+after review and no later than the approved retention limit; request artifact-
+specific rights review for ambiguity, then obtain separate owner go/no-go
+before processing;
+(4) access-controlled local storage, no Git/CI/log/prompt or external-service
+copies, and 30-day source/value-bearing-artifact retention followed by
+deletion, keeping only rights/citation metadata, hashes and sanitized audit
+results; (5) chronological 60/20/20 development/validation/locked holdout,
+first estimates as primary targets, fixed 1/3/6-month lag-12 and trailing-mean
+baselines, and separate revised-value sensitivity; and (6) date-only
+strict-before cutoffs, preserved archive gaps and abstention on ambiguous
+same-day corrections. A proposed 12-month moving-block bootstrap requires 60
+matched holdout origins per horizon; below that, results would be descriptive
+without a winner claim. These conditions remain proposals, not owner
+authorization or evaluation evidence. No Census source was acquired.
 
 While B-01/B-02 remain open, independent synthetic pilot work now includes
 the normalized vintage selector and the fixed-origin, first-estimate Census
