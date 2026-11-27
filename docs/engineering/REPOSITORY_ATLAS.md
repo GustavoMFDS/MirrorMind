@@ -1044,3 +1044,8 @@ forecast claims or cross-repository changes.
 
 - [Changelog](../../CHANGELOG.md): source-release scope and limitations.
 - [Alpha release guide](ALPHA_RELEASE.md): version alignment, reproduction and evidence.
+
+## Repository Excellence
+
+- [REX plan](REPOSITORY_EXCELLENCE.md): independent maintenance track.
+- [Branch inventory](REX_BRANCH_AUDIT.md): exact-head snapshot and deletion safety boundaries.
