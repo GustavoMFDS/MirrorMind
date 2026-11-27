@@ -2,22 +2,14 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
-  PR #77 merged normally over PR #65 main `51c90d2`. Nine observed official
-  contexts passed on exact PR head `df7c450523a8f3475e0a8161936f6ac80e705720`;
-  a combined-status query for merge commit `540c474` returned no individual
-  entries, so keep the evidence scoped to the reviewed PR head. PR #77 adds
-  public coverage measurement, scoped strict typing, wheel packaging smoke
-  tests and CI. Its exact-head local report also records 968 tests, zero skips
-  and six local checks. No paid services or protection changes were used.
-- PR #77 reconciles MM-009 with accepted MM-023. MM-024 documentation-only
-  follow-up is open as [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78)
-  on `codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
-  `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact PR head
-  `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed 968 tests, zero skips,
-  six local checks and nine official contexts. The local receipt path is in
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The branch changes no parser
-  contract; read live PR #78 after any new push and rerun exact-head checks.
+- Current `main` is `5100ebf42265e01b65856e7ba91b659ff1b487c7`, after the
+  curated portfolio/index update. PR #77 merged at `540c474`; nine official
+  contexts passed on exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`.
+  PR #78 / MM-024 merged normally at `291562a`; its final head
+  `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed 968 tests, zero skips,
+  six local checks and six observed official jobs. Those jobs are in runs
+  `46072345590`, `46072345631` and `46072345603`; combined status for the merge
+  and current main was empty, so keep claims scoped to their exact PR heads.
 - The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
   only uppercase `C` plus six digits means cancellation; other single ASCII
   letters plus six digits are excluded before sales grouping and represented
@@ -29,11 +21,19 @@
   changes an exclusion label, not the set of sales rows or group cardinality.
   Do not reread, chunk, sample or raise the cap. Preserve local snapshot
   deletion by `2026-12-26`; no empirical score is available.
-- Proceed with existing source-independent M2-02/G-02 work after the docs
-  candidate is review-ready, without waiting for its review. Keep automated
-  tests synthetic, and keep Census source bytes, FRED/ALFRED and paid usage
-  prohibited under current B-01/B-02 and budget decisions. M1 synthetic
-  workflow is integrated; real-data and production acceptance remain open.
+- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`, based on the
+  current main tip. Its scope is a bounded offline evaluator for the existing
+  fictional M2-01 index. It must keep `evidence_and_rag` planned and local
+  retrieval experimental; no route, auth, real data, persistence or RAG claim.
+  Source walkthrough, debugging/learning, evidence/atlas/catalog updates are
+  drafted and all five focused static checks pass; the targeted retrieval
+  suites pass 22 tests. The clean exact-head six-check gate remains mandatory
+  before publishing. Local mypy is not installed; rely on the official quality
+  job for strict retrieval typing and record its exact head/status.
+- Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
+  new UCI source processing remain unauthorized. M1 synthetic workflow is
+  integrated; empirical and production acceptance remain open. Preserve the
+  zero-paid budget and all protected-main checks.
 
 
 ## Historical review reconciliation - 2026-11-27

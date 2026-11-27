@@ -8,11 +8,17 @@ contexts succeeded, including the new `quality` and `package` jobs. See the
 [exact-head run record](LOCAL_QUALITY_GATE.md). PR #77 merged normally as
 `540c47411898cc820ac651c19430017ecd8c20fe`; the combined-status query for
 that merge SHA returned no individual entries, so the PR-head result is not
-presented as exact-merge CI. Earlier pre-start failures remain unexplained;
-their alternative account annotations do not establish a cause. The owner's
-zero-paid-budget decision still applies. No self-hosted runner was needed or
-created, and no required check or protection was bypassed. Continue using the
-local six-check gate for exact candidate and pinned WorldKernel validation.
+presented as exact-merge CI. PR #78's final docs-only head
+`8c8f8627a7162cb766a70d264569d3fcc2d442c8` later passed six observed jobs
+across documentation catalog, Python API test/compatibility and repository
+quality/package workflows (runs `46072345590`, `46072345631` and
+`46072345603`) before merging at `291562a`. Combined-status queries for its
+merge SHA and current `main` returned no entries; keep that evidence scoped to
+the PR head. Earlier pre-start failures remain unexplained; their alternative
+account annotations do not establish a cause. The owner's zero-paid-budget
+decision still applies. No self-hosted runner was needed or created, and no
+required check or protection was bypassed. Continue using the local six-check
+gate for exact candidate and pinned WorldKernel validation.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
@@ -30,7 +36,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77's exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720` passed all nine observed official contexts, including `quality` and `package`, before normal merge `540c474`. The merge-SHA combined-status query returned no entries, so the PR-head result is not claimed for the merge commit. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for the observed current workflow. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine official contexts, and PR #78 head `8c8f862` passed six observed official jobs across three workflows before normal merges. Combined-status queries for merge commits/current main returned no entries, so the head-level results are not claimed for those commits. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for these observed workflows. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 

@@ -38,16 +38,30 @@ weaken, bypass or disable checks.
 
 ## PR #78 MM-024 exact-head validation
 
-Published head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the full
-temporary local gate at `2026-11-27T21:38:27.280983Z`: 968 tests, zero skips,
-all six checks and one existing Starlette/httpx `TestClient` deprecation
-warning. WorldKernel `0.0.1` was installed from reviewed source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
-`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`.
-All nine observed official contexts also succeeded on that exact PR head; the
-live [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) is the source
-of current check status. The local receipt marks GitHub Actions as not checked
-by its script. Any later tracked change requires a fresh exact-head gate.
+The final published head `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed
+the full temporary local gate at `2026-11-27T21:45:12.655657Z`: 968 tests,
+zero skips, all six checks and one existing Starlette/httpx `TestClient`
+deprecation warning. WorldKernel `0.0.1` was installed from reviewed source
+commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-8c8f8627a7162cb766a70d264569d3fcc2d442c8.json`.
+Six official jobs succeeded on that exact PR head across three workflows:
+documentation catalog in
+[46072345590](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345590),
+Python API test and compatibility jobs in
+[46072345631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345631),
+and repository quality/package jobs in
+[46072345603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345603).
+Combined-status queries for its merge commit and current `main` returned no
+entries; do not assign those PR-head results to another SHA.
+
+Earlier exact PR head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` also passed
+at `2026-11-27T21:38:27.280983Z` with 968 tests, zero skips, six local checks,
+the same WorldKernel pin and receipt
+`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`;
+nine official contexts were observed on that earlier head. Both local receipts
+mark GitHub Actions as not checked by the script. These records document the
+merged docs-only policy change and do not authorize another source read. Any
+later tracked change requires its own exact-head gate.
 
 ## PR #65 synchronized candidate
 
