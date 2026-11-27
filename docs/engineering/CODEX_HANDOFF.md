@@ -31,19 +31,19 @@ execution guidance and does not broaden the agent's permissions.
   `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and
   revisions published inside their reference month; selector-boundary and
   public-evaluator regressions cover the original false-scoring case. The
-  previously published pre-source-policy head
-  `0a24c01c914592a718380a350dc35f56ce59d9ef` passed the exact
-  clean-head gate at `2026-11-27T01:18:27.951434Z`: 882 tests, zero skips and
-  all six checks, with WorldKernel `0.0.1` at reviewed source pin
+  pre-diagnostic source-policy head
+  `47cdb587b0deab19835acd1435e4bd028ba28519` passed the exact clean-head gate
+  at `2026-11-27T02:38:46.324939Z`: 882 tests, zero skips and all six checks,
+  with WorldKernel `0.0.1` at reviewed source pin
   `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
-  `results/local-quality-gate-0a24c01c914592a718380a350dc35f56ce59d9ef.json`;
-  PR comment [7207260482](https://github.com/GustavoMFDS/MirrorMind/pull/63#issuecomment-7207260482)
-  records it. Four automatic Actions checks on that head failed; jobs expose
-  no steps/logs and the connector could not retrieve annotation text, so no
-  specific cause is inferred. [B-08](BLOCKERS.md) records exact run/check IDs.
-  This source-policy documentation update needs its own exact-head gate; put
-  the resulting receipt in the live PR comment. Keep #63 separate from
-  #60/#61/#64 pending independent review; no integration decision is implied.
+  `results/local-quality-gate-47cdb587b0deab19835acd1435e4bd028ba28519.json`;
+  PR comment [7208332106](https://github.com/GustavoMFDS/MirrorMind/pull/63#issuecomment-7208332106)
+  records it. Four automatic Actions checks on that head failed before jobs
+  ran. The annotation lists payment failure or a spending-limit increase as
+  alternatives; diagnostics expose no jobs, steps, logs or combined status, so
+  no cause is inferred. [B-08](BLOCKERS.md) records exact run/check IDs. Keep
+  #63 separate from #60/#61/#64 pending independent review; no integration
+  decision is implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
