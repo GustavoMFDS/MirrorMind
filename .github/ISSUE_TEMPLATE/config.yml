@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Private security report
+    url: https://github.com/GustavoMFDS/MirrorMind/security/advisories/new
+    about: Report vulnerabilities privately; do not disclose details in issues.
+  - name: Engineering documentation
+    url: https://github.com/GustavoMFDS/MirrorMind/tree/main/docs/engineering
+    about: Find architecture, reproduction guides and research boundaries.
