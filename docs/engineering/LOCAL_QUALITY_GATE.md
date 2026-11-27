@@ -219,3 +219,31 @@ projection or empirical score. Do not retry, partition or increase the cap
 without a separate owner decision. A later documentation-only status sync must
 pass the same exact-head gate before it is pushed; report that new receipt on
 PR #65 without treating it as official Actions evidence.
+
+### MM-022 UCI invoice-classification correction — 2026-11-27
+
+Code-bearing commit
+`94c60b6ee20adbb5023e11aeded9b8fff90b1176` narrows the UCI-only cancellation
+marker to exact uppercase `C`. Lowercase `c` now joins other single-letter
+ASCII prefixes in the unverified class; the generic row projection remains
+strict. Synthetic regressions cover the misclassification and the generic
+contract. The real-source attempt used MM-021 and was not repeated.
+
+The exact clean-head six-check local gate passed at
+`2026-11-27T03:09:46.301016+00:00`:
+
+- Pytest: 864 passed, zero skips; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- Python 3.13.5; WorldKernel `0.0.1` installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Focused UCI reader, generic projection, workbook-flow and event-time suites:
+  113 passed.
+- Receipt: `results/local-quality-gate-94c60b6ee20adbb5023e11aeded9b8fff90b1176.json`.
+- Status: `local_gate_passed_not_official_ci`; GitHub Actions is not checked.
+
+This verifies the new synthetic rule on this code commit. It does not apply
+MM-022 to the real snapshot, produce an exclusion count or metric, clear the
+250,000-group stop, or resolve independent review. Do not retry or partition
+the source under the current approval.

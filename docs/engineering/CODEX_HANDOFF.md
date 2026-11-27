@@ -265,8 +265,23 @@ closed; generic projection remains unchanged. The real-source attempt used
 MM-021 and was not repeated after this clarification. MM-022 does not raise
 MM-020's 250,000-group ceiling.
 
-The published [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
-candidate is `75da34fc2cb91d3354cfbe49af43aeb40721164d` on
+Current code-bearing commit for [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65):
+`94c60b6ee20adbb5023e11aeded9b8fff90b1176`, on
+`codex/uci352-pilot-20261126` and based on `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08`. Its focused UCI reader,
+projection, workbook-flow and event-time suites passed 113 tests. The exact
+clean-head gate passed 864 tests, zero skips and all six checks at
+`2026-11-27T03:09:46.301016Z`; WorldKernel `0.0.1` was installed from reviewed
+commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-94c60b6ee20adbb5023e11aeded9b8fff90b1176.json`.
+This is local evidence, not Actions. The source attempt still reflects MM-021
+and the 250,000-group stop; MM-022 has synthetic-only evidence and no source
+retry or empirical result. A receipt for this code-bearing commit does not
+cover later documentation commits; the exact final PR-head receipt is recorded
+separately in the PR discussion.
+
+Earlier published [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
+candidate was `75da34fc2cb91d3354cfbe49af43aeb40721164d` on
 `codex/uci352-pilot-20261126`, based on main `a456034c55ed7634ad4768b26788fec09dab1d08`.
 It passed the exact clean-head six-check local gate at
 `2026-11-27T00:38:35.670136Z`: 863 tests, zero skips and all six checks.

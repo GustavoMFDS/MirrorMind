@@ -10,6 +10,30 @@ review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
 using this document as a general execution report.
 
+## Current PR #65 invoice-policy update — 2026-11-27 UTC
+
+Candidate code commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176` is based on
+`main` at `a456034c55ed7634ad4768b26788fec09dab1d08`. It applies owner decision
+MM-022 only inside the approved UCI workbook adapter: exact uppercase `C` is
+the cancellation marker; lowercase `c` and other single ASCII-letter plus
+six-digit forms are excluded under one aggregate class count. Generic row
+projection remains strict. A new synthetic workbook regression reproduces the
+old lowercase-`c` misclassification; a generic projection regression confirms
+that the lowercase form remains rejected outside this adapter.
+
+The focused UCI workbook, projection, workbook-flow and event-time suites
+passed 113 tests. The exact clean code commit passed the six-check local gate
+at `2026-11-27T03:09:46.301016Z`: 864 tests, zero skips, Ruff, catalog, atlas,
+evidence and capabilities checks. WorldKernel `0.0.1` was installed from
+reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-94c60b6ee20adbb5023e11aeded9b8fff90b1176.json`.
+This is local validation, not GitHub Actions.
+
+The only real-source attempt used MM-021 and stopped above its approved
+250,000-group cap. MM-022 has synthetic evidence only; no source retry,
+complete projection, exclusion count, score or empirical model card exists.
+Keep B-01 stopped and preserve the existing source-retention deadline.
+
 ## Pull request reconciliation — 2026-11-27 UTC
 
 PR #52 was merged at `e922b03666f04bd8c570a0448466d25838e3f84e`. PRs #53–#59
@@ -22,9 +46,9 @@ branch-by-branch sections below are historical implementation evidence, not
 an open PR queue. PRs #60 and #61 remain separate candidates; #63–#65 remain
 independent open candidates as recorded above.
 
-## UCI #352 pilot review snapshot — 2026-11-27 UTC
+## Earlier UCI #352 pilot snapshot — 2026-11-27 UTC
 
-Current branch: `codex/uci352-pilot-20261126`, based directly on the new
+At that snapshot, branch `codex/uci352-pilot-20261126` was based directly on the new
 `main` commit above. It is separate from the preserved pre-existing
 integration branch `codex/integration-pr63-pr64-349b77e`; no branch history or
 uncommitted work was discarded. The UCI reader now supports the owner-approved
