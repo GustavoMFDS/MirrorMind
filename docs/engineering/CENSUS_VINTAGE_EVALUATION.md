@@ -296,6 +296,6 @@ the exponent marker independently of `decimal.getcontext().capitals`.
 The v2 uppercase-default input and as-of digests remain compatible;
 prior lowercase-context digests for scientific notation are superseded.
 This is a normalized-record replay fingerprint, not cross-language
-canonicalization or publisher verification. The public regression
+canonicalization or publisher verification. Evidence claim `MM-CEN-017` uses the public regression
 `test_scientific_notation_fingerprints_ignore_decimal_capitals` checks
 the entire result and pins a historical uppercase-default digest.
