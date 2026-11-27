@@ -20,7 +20,9 @@ at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. No parser code is needed:
 MM-022 already implements the approved UCI-only classification, with synthetic
 regressions for supported and rejected formats, aggregate-only exclusion
 counts and redaction. This increment updates the decision, dataset/source
-records, status and learning material.
+records, status and learning material. Checkpoint
+`6eb612fa76e30b4abf5634f84d31932e2f3aea78` passed the exact-head local gate
+(968 tests, zero skips, six checks; receipt recorded under `results/`).
 
 The UCI #352 source call exceeded the owner-approved 250,000 product-day group
 ceiling before returning a complete projection. It produced no complete
@@ -41,7 +43,7 @@ replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| MM-024 UCI policy reconciliation | Documentation candidate is ancestry-merged with `540c474`; existing adapter/tests already satisfy the owner decision. | Run exact-head full local gate, publish an independent docs-only PR, verify official checks for its exact head and request independent review. |
+| MM-024 UCI policy reconciliation | Documentation candidate is ancestry-merged with `540c474`; existing adapter/tests already satisfy the owner decision. Checkpoint `6eb612f` passed the full local gate. | Re-run the gate on the final PR head after any later tracked change, then verify that PR's official checks and request independent review. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
 | M2-02 retrieval evaluation | M2-01 retrieval is integrated through #66; evaluation work is independent of the source-data blockers. | Proceed with the existing fictional/offline test set; measure citation support, lineage, access-constraint adherence and abstention. Add the behavior walkthrough, tests and evidence-map entry required by the backlog. |

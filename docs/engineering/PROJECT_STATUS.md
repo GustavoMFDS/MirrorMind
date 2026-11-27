@@ -44,11 +44,16 @@ service isolation and deployment acceptance.
 
 The current documentation candidate is on
 `codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
-`ccd74d72b7d30cafaef10d36ac44857c629b6a08`. It updates the UCI policy record
-and status; it does not change parser contracts or reread the private workbook.
-The exact-head full local gate and receipt are the remaining publication
-precondition. After publication, continue existing fictional/offline M2-02/G-02
-work independently; do not wait for this documentation review.
+`ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Checkpoint
+`6eb612fa76e30b4abf5634f84d31932e2f3aea78` passed the full local gate with
+968 tests, zero skips and six checks; WorldKernel `0.0.1` was installed at the
+reviewed source pin. Its receipt is
+`results/local-quality-gate-6eb612fa76e30b4abf5634f84d31932e2f3aea78.json`.
+This docs-only increment does not change parser contracts or reread the private
+workbook. Any further tracked change requires another exact-head gate before
+publication; record the final PR-head SHA and receipt with the PR. After
+publication, continue existing fictional/offline M2-02/G-02 work independently;
+do not wait for this documentation review.
 
 **Current main:** `540c47411898cc820ac651c19430017ecd8c20fe`, descendant of
 PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
@@ -65,7 +70,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
 | PR #65 | Closed as merged at `51c90d2601b2fba16b03a13a8723df0a54437d92`; exact integrated main passed 968 local tests, zero skips and six checks. | Reader accepted within bounded synthetic scope. UCI attempt remains stopped above 250,000 groups; no projection or metric. Preserve `2026-12-26` deletion deadline. |
 | PR #77 | Closed as merged at `540c47411898cc820ac651c19430017ecd8c20fe`; nine official contexts succeeded on exact reviewed head `df7c450`. | Quality checks measure public coverage, strict retrieval typing and packaging. No release upload, private dependency change, empirical result or production readiness. |
-| MM-024 UCI documentation | Candidate records the current approved policy on `codex/mm009-mm023-reconcile-20261127`; existing MM-022 code and synthetic tests already implement the classification. | Exact-head local gate and independent review remain pending. The 250,000-group stop still prevents any UCI metric. |
+| MM-024 UCI documentation | Candidate records the current approved policy on `codex/mm009-mm023-reconcile-20261127`; existing MM-022 code and synthetic tests already implement the classification. Checkpoint `6eb612f` passed the full local gate (968 tests, zero skips, six checks). | Any later tracked change needs a new exact-head gate; request independent review after publishing. The 250,000-group stop still prevents any UCI metric. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted
