@@ -39,6 +39,24 @@ No manual rerun was made.
   [45756497802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45756497802),
   [45756497731](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45756497731).
 
+### B-08 diagnostics — PR #65 status-sync head `7e47844`
+
+The exact PR #65 status-sync head passed the local gate, then produced four
+failed Actions check-runs across two automatic attempts: test runs
+[45925209232](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925209232)
+and [45925213284](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925213284),
+and symbol-catalog runs
+[45925209273](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925209273)
+and [45925213300](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925213300).
+The check-run records report one annotation each, but the available connector
+could not retrieve annotation content. All four jobs returned empty step lists,
+null log URLs and log-download 404 responses; the combined-status endpoint
+returned an empty status list. The evidence confirms failed checks without
+repository steps or retrievable logs. It does not establish their cause.
+The owner's report of exhausted Actions allowance and zero paid budget remains
+separate evidence; no billing-specific cause is inferred from these runs.
+No manual rerun was made.
+
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for

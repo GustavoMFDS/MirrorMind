@@ -63,6 +63,17 @@ limit annotation; no job steps, logs or combined status were available. The
 annotation does not distinguish the cause; the owner separately confirms
 quota exhaustion and zero paid budget. No official Actions result is claimed.
 
+The subsequent documentation reconciliation head
+`7e478440dc7661ebf35483073bad46ab290051c5` also passed the exact full local
+gate at `2026-11-27T01:53:25.664117Z`: 863 tests, zero skips and six checks,
+with WorldKernel `0.0.1` installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-7e478440dc7661ebf35483073bad46ab290051c5.json`.
+Its four automatic Actions check-runs failed; available diagnostics exposed no
+steps, logs or combined statuses, and the annotation text could not be
+retrieved. Their cause remains undetermined; see [B-08](BLOCKERS.md). The
+local gate is not official CI.
+
 **Verified baseline on e4f05a1:** 691 pytest tests passed, one existing
 Starlette/httpx deprecation warning. Six local gate checks passed
 (pytest, Ruff, symbol catalog, atlas, evidence and capabilities) on

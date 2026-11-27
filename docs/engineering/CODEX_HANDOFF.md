@@ -297,6 +297,16 @@ review. Their automatic Actions failed before repository steps under the
 generic alternatives-only annotation; see [B-08](BLOCKERS.md). No official CI
 success or merge is claimed.
 
+The subsequent PR #65 status-sync head
+`7e478440dc7661ebf35483073bad46ab290051c5` passed the exact local gate:
+863 tests, zero skips and all six checks, with reviewed WorldKernel commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed. Receipt:
+`results/local-quality-gate-7e478440dc7661ebf35483073bad46ab290051c5.json`.
+Its four automatic Actions checks failed without retrievable steps or logs;
+the connector could not retrieve annotation text, so no specific cause is
+assigned. The owner separately reports exhausted allowance and zero paid
+budget. Local evidence is not official CI; see [B-08](BLOCKERS.md).
+
 ## 4. Mandatory documentation standard
 
 MirrorMind documentation is both **engineering knowledge and a
