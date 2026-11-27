@@ -22,7 +22,7 @@ ao longo do desenvolvimento.
 
 ## Experimente o MirrorMind
 
-**[Baixe a demonstração interativa](https://github.com/GustavoMFDS/MirrorMind/releases/download/v0.1.0-alpha.1/mirror-demo.html)** e abra o arquivo no navegador. Não é necessário instalar nada, usar uma chave de API ou iniciar um servidor. O relatório foi gerado pelo próprio fluxo Python, com dados sintéticos.
+**[Abra a demonstração online](https://gustavomfds.github.io/MirrorMind/demo.html)** ou **[baixe a demonstração interativa](https://github.com/GustavoMFDS/MirrorMind/releases/download/v0.1.0-alpha.1/mirror-demo.html)** e abra o arquivo no navegador. Não é necessário instalar nada, usar uma chave de API ou iniciar um servidor. O relatório foi gerado pelo próprio fluxo Python, com dados sintéticos.
 
 O que acontece quando uma loja muda sua estratégia de reposição? O exemplo
 compara três políticas ao longo de 28 dias, usando os mesmos cenários de

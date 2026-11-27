@@ -17,7 +17,8 @@ ATLAS = ROOT / "docs" / "engineering" / "REPOSITORY_ATLAS.md"
 CATALOG = ROOT / "docs" / "engineering" / "generated" / "SYMBOLS.md"
 ROOT_FILES = {
     ".env.example", ".gitignore", "AGENTS.md", "README.md",
-    "Dockerfile", "compose.yml", "pyproject.toml",
+    "Dockerfile", "compose.yml", "pyproject.toml", ".dockerignore",
+    "README.pt-BR.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "LICENSE",
 }
 TRACKED_DIRS = ("src/", "tests/", "scripts/", "examples/", "docs/", ".github/")
 
@@ -78,7 +79,7 @@ def missing_atlas_entries(
 
 def broken_links(root: Path) -> list[str]:
     docs = sorted((root / "docs").rglob("*.md"))
-    docs += [root / "README.md", root / "AGENTS.md"]
+    docs += [root / name for name in sorted(ROOT_FILES) if name.endswith(".md")]
     errors: list[str] = []
     for document in docs:
         if not document.is_file():

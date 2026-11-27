@@ -18,9 +18,9 @@ Zero paid services; preserve Codex's active checkout and source permissions.
 | REX-10 | Packaging and reproducibility | Integrated via PR #77; clean wheel smoke passed |
 | REX-11 | Static Pages demo | Published from 5100ebf4; PR #79 and deployment 46072981620 |
 | REX-12 | Documentation portal | Curated public index online; full rendered docs deferred |
-| REX-13 | Reproducible benchmarks | Fixed synthetic benchmark candidate |
-| REX-14 | Release automation | Read-only preparation candidate; publication manual |
-| REX-15 | Developer experience review | Proposed |
+| REX-13 | Reproducible benchmarks | Integrated via PR #80; public benchmark and rehearsal passed |
+| REX-14 | Release automation | Integrated via PR #80; main rehearsal 46076749036 passed; publication manual |
+| REX-15 | Developer experience review | Candidate ready; clean checkout and container smoke evidence pending |
 
 See [branch audit](REX_BRANCH_AUDIT.md) and [CI and governance plan](REX_CI_GOVERNANCE.md). REX-01/02 acceptance is recorded
 in the integration PR, not inferred from this document. Keep the first
@@ -32,3 +32,11 @@ before and after. For protection, confirm the exact required checks,
 permissions and solo-maintainer workflow before changing rules. Avoid
 simultaneous edits to the active UCI branch; independent work uses a
 separate worktree.
+
+## Remaining maintenance debt
+
+- Branch deletion requires a separate decision and refreshed preservation checks.
+- Full-package typing, coverage floor and dependency locking remain open.
+- Portal is a curated index; full rendered documentation is deferred.
+- Benchmarks are observational; no regression threshold or new release is authorized.
+- See [developer quick start](DEVELOPER_QUICK_START.md) and the integration PR for acceptance.
