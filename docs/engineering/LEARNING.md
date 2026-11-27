@@ -723,3 +723,22 @@ scores and coverage denominators. Run
 to inspect the full ASCII classification and prove that the receipt retains one
 aggregate exclusion count rather than per-letter counters. Do not use real UCI
 rows in this exercise.
+
+## Guided exercise — trace OOXML cell payload structure
+
+Read the [bounded workbook reader](UCI_WORKBOOK_READER.md),
+[`uci_xlsx_xml.py`](../../src/mirrormind/domains/retail/uci_xlsx_xml.py),
+and [`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py). Run
+`test_duplicate_scalar_values_fail_in_both_worksheet_passes`, then inspect
+how the iterator counts `<v>` elements even when the first shared-string pass
+does not retain numeric text. Add a second synthetic `<v>` to `D2` and predict
+why traversal-order overwrite would change `2` to `99`; verify the reader now
+fails closed without returning either value. Next run
+`test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes` for both
+inline and shared-string representations. Trace why checking payload starts,
+separate from text capture, catches the conflict in both scans. Finally run
+`test_valid_inline_rich_text_runs_remain_one_stock_code` and explain why two
+ordered `<r><t>` runs inside one `<is>` are valid while a second scalar is not.
+Re-run `test_description_shared_string_is_not_extracted_for_projection` to
+verify the parser still avoids character callbacks for excluded descriptions.
+All examples are generated; never inspect the private source workbook.

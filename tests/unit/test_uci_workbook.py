@@ -153,6 +153,27 @@ def duplicate_cell(raw, coordinate, *, replacement_value=None):
     return edit_worksheet(raw, edit)
 
 
+def add_scalar_value(raw, coordinate, value):
+    def edit(worksheet, namespace):
+        cell = worksheet.find(f".//{{{namespace}}}c[@r='{coordinate}']")
+        assert cell is not None
+        scalar = ET.SubElement(cell, f"{{{namespace}}}v")
+        scalar.text = value
+
+    return edit_worksheet(raw, edit)
+
+
+def add_inline_payload(raw, coordinate, value="AMBIGUOUS-INLINE"):
+    def edit(worksheet, namespace):
+        cell = worksheet.find(f".//{{{namespace}}}c[@r='{coordinate}']")
+        assert cell is not None
+        inline = ET.SubElement(cell, f"{{{namespace}}}is")
+        text = ET.SubElement(inline, f"{{{namespace}}}t")
+        text.text = value
+
+    return edit_worksheet(raw, edit)
+
+
 def replace_cell_value(raw, coordinate, *, cell_type, value):
     def edit(worksheet, namespace):
         cell = worksheet.find(f".//{{{namespace}}}c[@r='{coordinate}']")
@@ -269,6 +290,101 @@ def test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original():
 
     with pytest.raises(ValueError, match="duplicate workbook cell coordinate"):
         stage(raw)
+
+
+def test_duplicate_scalar_value_does_not_overwrite_original_quantity():
+    raw = add_scalar_value(
+        fictional_workbook(invoice("536365", "SKU-A", 2)), "D2", "99"
+    )
+
+    with pytest.raises(ValueError, match="duplicate selected workbook scalar value"):
+        stage(raw)
+
+
+@pytest.mark.parametrize("collect_shared_references", [True, False])
+def test_duplicate_scalar_values_fail_in_both_worksheet_passes(
+    collect_shared_references,
+):
+    from mirrormind.domains.retail.uci_xlsx_xml import (
+        _iter_worksheet_rows,
+        _resolve_worksheet,
+    )
+
+    raw = add_scalar_value(fictional_workbook(invoice()), "D2", "99")
+
+    with ZipFile(BytesIO(raw)) as archive:
+        worksheet_path, _ = _resolve_worksheet(archive, "Online Retail")
+        with pytest.raises(
+            ValueError, match="duplicate selected workbook scalar value"
+        ):
+            list(_iter_worksheet_rows(
+                archive, worksheet_path, max_rows=100,
+                collect_shared_references=collect_shared_references,
+            ))
+
+
+def mixed_cell_payload(raw, coordinate, representation):
+    if representation == "inline":
+        return add_scalar_value(raw, coordinate, "0")
+    if representation == "shared":
+        return add_inline_payload(raw, coordinate)
+    raise AssertionError("unknown synthetic cell representation")
+
+
+@pytest.mark.parametrize("representation", ["inline", "shared"])
+def test_read_rejects_mixed_scalar_and_inline_payloads(representation):
+    raw = fictional_workbook(invoice())
+    if representation == "shared":
+        raw = with_shared_strings(raw)
+    raw = mixed_cell_payload(raw, "B2", representation)
+
+    with pytest.raises(ValueError, match="ambiguous selected workbook cell payload"):
+        stage(raw)
+
+
+@pytest.mark.parametrize("representation", ["inline", "shared"])
+@pytest.mark.parametrize("collect_shared_references", [True, False])
+def test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes(
+    representation, collect_shared_references,
+):
+    from mirrormind.domains.retail.uci_xlsx_xml import (
+        _iter_worksheet_rows,
+        _resolve_worksheet,
+    )
+
+    raw = fictional_workbook(invoice())
+    if representation == "shared":
+        raw = with_shared_strings(raw)
+    raw = mixed_cell_payload(raw, "B2", representation)
+
+    with ZipFile(BytesIO(raw)) as archive:
+        worksheet_path, _ = _resolve_worksheet(archive, "Online Retail")
+        with pytest.raises(
+            ValueError, match="ambiguous selected workbook cell payload"
+        ):
+            list(_iter_worksheet_rows(
+                archive, worksheet_path, max_rows=100,
+                collect_shared_references=collect_shared_references,
+            ))
+
+
+def test_valid_inline_rich_text_runs_remain_one_stock_code():
+    def edit(worksheet, namespace):
+        cell = worksheet.find(f".//{{{namespace}}}c[@r='B2']")
+        assert cell is not None
+        inline = cell.find(f"{{{namespace}}}is")
+        assert inline is not None
+        inline.clear()
+        for part in ("SKU-", "A"):
+            run = ET.SubElement(inline, f"{{{namespace}}}r")
+            text = ET.SubElement(run, f"{{{namespace}}}t")
+            text.text = part
+
+    result = stage(edit_worksheet(fictional_workbook(invoice()), edit))
+
+    assert [(item.stock_code, item.units) for item in result.projection.days] == [
+        ("SKU-A", 2)
+    ]
 
 
 @pytest.mark.parametrize("coordinate", ["A1", "B2", "C2"])

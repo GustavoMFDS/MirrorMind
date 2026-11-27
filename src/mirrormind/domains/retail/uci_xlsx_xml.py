@@ -208,7 +208,7 @@ def _iter_worksheet_rows(
     max_rows: int,
     collect_shared_references: bool,
 ) -> Iterator[tuple[int, dict[int, dict[str, object]]]]:
-    """Stream approved cells and reject duplicate coordinates in every column."""
+    """Stream selected cells and reject duplicate coordinates or payloads."""
     queue: deque[tuple[int, dict[int, dict[str, object]]]] = deque()
     parser = _new_xml_parser()
     current_row_number: int | None = None
@@ -267,6 +267,9 @@ def _iter_worksheet_rows(
                     "style_id": style_id,
                     "formula": False,
                     "selected": True,
+                    "scalar_value_count": 0,
+                    "inline_payload_count": 0,
+                    "in_inline_string": False,
                     "raw_parts": [],
                 }
                 parser.CharacterDataHandler = characters
@@ -278,6 +281,12 @@ def _iter_worksheet_rows(
         elif element == "f" and current_cell and current_cell.get("selected"):
             current_cell["formula"] = True
         elif element == "v" and current_cell and current_cell.get("selected"):
+            if current_cell.get("inline_payload_count"):
+                raise ValueError("ambiguous selected workbook cell payload")
+            scalar_value_count = int(current_cell.get("scalar_value_count", 0)) + 1
+            if scalar_value_count > 1:
+                raise ValueError("duplicate selected workbook scalar value")
+            current_cell["scalar_value_count"] = scalar_value_count
             should_capture = (
                 collect_shared_references
                 and current_cell.get("type") == "s"
@@ -285,11 +294,19 @@ def _iter_worksheet_rows(
             if should_capture:
                 capture_kind = "v"
                 capture_parts = []
+        elif element == "is" and current_cell and current_cell.get("selected"):
+            if current_cell.get("scalar_value_count"):
+                raise ValueError("ambiguous selected workbook cell payload")
+            if current_cell.get("inline_payload_count"):
+                raise ValueError("duplicate selected inline string payload")
+            current_cell["inline_payload_count"] = 1
+            current_cell["in_inline_string"] = True
         elif (
             element == "t"
             and current_cell
             and current_cell.get("selected")
             and current_cell.get("type") == "inlineStr"
+            and current_cell.get("in_inline_string")
             and phonetic_depth == 0
             and not collect_shared_references
         ):
@@ -310,6 +327,8 @@ def _iter_worksheet_rows(
             current_cell.setdefault("raw_parts", []).extend(capture_parts)
             capture_kind = None
             capture_parts = []
+        elif element == "is" and current_cell and current_cell.get("selected"):
+            current_cell["in_inline_string"] = False
         elif element == "c" and current_cell is not None:
             if current_cell.get("selected") and current_column is not None:
                 cell = dict(current_cell)

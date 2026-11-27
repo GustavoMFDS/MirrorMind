@@ -386,6 +386,20 @@ duplicates in header, selected and excluded cells, error/unknown selected
 types, malformed numeric tokens and overflow. The numeric parameterization
 then gained a nonzero-underflow case, which passes after the correction.
 
+### Second review finding — scalar cardinality and mixed payloads
+
+Independent review then reproduced a second, distinct ambiguity: one selected
+cell with two scalar `<v>` elements returned the later value (`99`) instead of
+rejecting the cell. It also identified that a scalar `<v>` combined with an
+inline `<is>` payload could be resolved by traversal order. The correction
+must reject more than one scalar value and reject any scalar/inline mixture in
+selected cells during both worksheet passes, including the shared-string
+index pass. Preserve legitimate rich-text runs within one `<is>` container;
+continue to leave excluded `Description` content uncaptured. Add exact
+synthetic regressions for duplicate `<v>`, scalar/inline mixtures in inline
+and shared-string cells, both parser passes, and valid rich-text runs. Keep
+fixed redacted errors and do not reread the private source.
+
 ### Accepted correction and impact
 
 - `_iter_worksheet_rows` tracks each `(row, column)` coordinate before
@@ -393,6 +407,15 @@ then gained a nonzero-underflow case, which passes after the correction.
   reviewed eight-column schema, including the excluded `Description` column.
   The same iterator is used for both worksheet passes. Its set is reset per
   row and retains at most eight coordinates.
+- For selected cells, the same iterator counts scalar `<v>` and inline `<is>`
+  starts before optional text capture. It rejects a repeated scalar value,
+  multiple inline payloads, or a scalar/inline mixture during both the shared-
+  string-index and value-decoding passes. This prevents an unselected numeric
+  `<v>` in the first pass from escaping structural validation and prevents
+  traversal order from choosing one of two conflicting payloads. One valid
+  inline `<is>` may still contain multiple ordered rich-text `<r><t>` runs;
+  only the selected inline text is concatenated. Excluded `Description`
+  content remains outside character callbacks.
 - `_decode_cell` enforces per-field cell types: invoice and stock-code fields
   accept reviewed text or numeric encodings; `Quantity` accepts numeric cells;
   `InvoiceDate` accepts numeric serials or OOXML ISO date cells. Error/unknown
@@ -421,23 +444,34 @@ The regressions are in
 - `test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes`
   covers text, underscore, overflow and underflow encodings without echoing
   values.
+- `test_duplicate_scalar_values_fail_in_both_worksheet_passes` rejects
+  repeated `<v>` values in the shared-string-index and decode scans;
+  `test_duplicate_scalar_value_does_not_overwrite_original_quantity` verifies
+  the complete reader fails instead of reporting the later quantity.
+- `test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes` covers
+  inline and shared-string cells in both scans;
+  `test_read_rejects_mixed_scalar_and_inline_payloads` verifies the complete
+  reader rejects them. `test_valid_inline_rich_text_runs_remain_one_stock_code`
+  is the compatibility control for ordered rich-text runs.
 
-The 13 initially selected focused cases failed on the original implementation
-and passed after correction; the added underflow parameter also passed. The UCI
-workbook unit plus integration tests passed 65 cases. The exact clean code-head
-six-check gate passed at `2026-11-27T19:19:54.200355Z`: 881 tests, zero skips,
-Ruff, catalog, atlas, evidence and capability checks; Python 3.13.5 with
-WorldKernel `0.0.1` from reviewed commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Passing receipt:
-`results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793-loopback.json`.
-The sandbox timeout receipt is preserved separately at
-`results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793.json`.
-An isolated reproduction located the sandbox wait at `test_health`; the same
-test and complete gate passed in the loopback-capable local execution without
-code or test changes. This is not official Actions and does not explain the
-historical B-07 timeout. These fixtures prove parser behavior only; they do
-not establish that the private workbook contains such anomalies, source
-rights or hostile-file isolation. Do not reread the source under this
-correction; the separate fit-cohort sampling proposal above still requires
-owner approval. Rerun the exact gate on the documentation-inclusive head
-before publication.
+The 13 initially selected cases from the first review failed on the original
+implementation and passed after correction; the added underflow case also
+passed. The second review's 9 selected structural regressions failed before
+the payload correction; all 10 selected cases (including the rich-text control)
+passed afterward. The UCI workbook unit and integration suites passed 75 tests,
+and Ruff passed on the changed Python files. Catalog, atlas, evidence and
+capability checks passed after the documentation/evidence updates. The full
+gate on the synchronized documentation-inclusive candidate is still required
+before publication; the earlier 881-test receipt covers `c6c1326`, not this
+follow-up.
+
+The earlier `c6c1326` sandbox timeout receipt remains preserved separately
+from its pass: `results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793.json`
+and `results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793-loopback.json`.
+An isolated reproduction located that earlier sandbox wait at `test_health`;
+the same test and full gate passed in the loopback-capable local execution.
+This explains that reproduction only, not the historical B-07 timeout or
+Actions. These fixtures prove parser behavior only; they do not establish
+that the private workbook contains such anomalies, source rights or
+hostile-file isolation. Do not reread the source; the separate fit-cohort
+sampling proposal above still requires owner approval.

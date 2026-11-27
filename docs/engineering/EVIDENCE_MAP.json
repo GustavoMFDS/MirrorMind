@@ -1176,6 +1176,27 @@
     "limitation": "Synthetic malformed, overflowing and underflowing numeric tokens prove strict decoding on fixture cells; they do not demonstrate how often such tokens occur in the private source or establish empirical results."
   },
   {
+    "id": "MM-XLSX-013",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_duplicate_scalar_values_fail_in_both_worksheet_passes",
+    "limitation": "Generated duplicate scalar values prove selected-cell rejection in shared-string discovery and decode passes; they do not establish that the private workbook contains repeated values or provide hostile-file isolation."
+  },
+  {
+    "id": "MM-XLSX-014",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes",
+    "limitation": "Generated inline and shared-string fixtures prove mixed payload rejection in both parser passes; they do not establish source anomaly frequency, data rights or general OOXML safety."
+  },
+  {
+    "id": "MM-XLSX-015",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_valid_inline_rich_text_runs_remain_one_stock_code",
+    "limitation": "One generated rich-text fixture proves its ordered runs concatenate to one category; it does not validate every OOXML rich-text extension or source workbook."
+  },
+  {
     "id": "MM-UCIE-001",
     "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
     "test": "tests/integration/test_uci_event_time_cli.py",

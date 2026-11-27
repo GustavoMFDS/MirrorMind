@@ -39,6 +39,12 @@ classification and one-counter boundary are covered by the synthetic
 the policy relabeling does not change the source attempt's accepted rows or
 group count, and no source reread or empirical metric exists.
 
+The OOXML iterator also rejects repeated scalar `<v>` values and ambiguous
+scalar/inline `<v>` plus `<is>` combinations on selected cells during both
+worksheet passes. It concatenates ordered rich-text runs inside one valid
+inline string; excluded Description text remains uncaptured. Synthetic
+regressions cover both parser passes and this rich-text compatibility boundary.
+
 Current supported routes: `GET /health`, `GET /v1/capabilities`,
 `POST /v1/scenarios/validate`, and the experimental
 `POST /v1/decision-workflows/retail/synthetic`. The latter runs only a bounded
