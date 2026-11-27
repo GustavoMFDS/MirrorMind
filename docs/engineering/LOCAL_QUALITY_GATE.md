@@ -317,3 +317,36 @@ Automatic test and catalog runs on that head concluded failure. Their job
 records contained no steps or logs, and combined status returned no entries.
 The exact cause is undetermined; the owner's quota report is separate.
 This receipt is local evidence only and does not verify official CI.
+
+### PR #65 duplicate-cell review correction — code head c6c1326 — 2026-11-27
+
+The owner review on published predecessor `11de60127ab0b31b609d98ada1b764a3dde542f9`
+reproduced a duplicate-coordinate overwrite, acceptance of malformed OOXML
+cell types, and malformed numeric payloads becoming data. Code commit
+`c6c1326be9332e51b160931de4dd994d54868793` rejects duplicate coordinates in
+both worksheet passes and validates field-specific cell types and numeric
+encodings. Synthetic regressions reproduce the review findings and numeric
+overflow/underflow; no source workbook was reread.
+
+The restricted-sandbox full-gate attempt produced a failed receipt because
+pytest timed out. A focused `test_health` invocation reproduced the wait at
+that test, while the documented local loopback-capable execution passed it in
+1.27 seconds. The full gate on the exact same clean code SHA then passed at
+`2026-11-27T19:19:54.200355Z` without code or test changes:
+
+- Pytest: 881 passed, zero skips; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- Python 3.13.5; WorldKernel `0.0.1` installed from reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Passing receipt: `results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793-loopback.json`.
+- Failed sandbox receipt is preserved separately at
+  `results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions was not checked.
+
+This reproduction supports a sandbox loopback limitation for this run only;
+it does not explain the historical `8f906b8` timeout or establish an Actions
+cause. The receipt covers code head `c6c1326`; run the exact gate again after
+the documentation-inclusive review update before publishing. Do not use a
+local receipt as an official check or bypass repository protections.

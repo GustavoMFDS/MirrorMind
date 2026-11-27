@@ -44,14 +44,22 @@ The owner-authored `COMMENTED` review on head
 `11de60127ab0b31b609d98ada1b764a3dde542f9` reproduced duplicate cell
 coordinates overwriting values, error/unknown selected cell types falling
 through as data, and malformed numeric text becoming a valid-looking
-category. The correction is implemented locally in `_iter_worksheet_rows`
-and `_decode_cell`, with regressions for duplicate headers/selected/excluded
-cells in both worksheet passes, error/unknown types, malformed numeric syntax
-and overflow. The 13 initial selected reproduction cases failed before the
-fix; an underflow edge case was added afterward. Current focused tests pass,
-and the UCI workbook unit/integration
-suites pass 65 tests. Ruff passes on the changed Python files. The exact-head
-full gate and review response remain pending; no real workbook was reread.
+category. The correction is implemented in `_iter_worksheet_rows` and
+`_decode_cell`, with regressions for duplicate headers/selected/excluded cells
+in both worksheet passes, error/unknown types, malformed numeric syntax,
+overflow and underflow. The 13 initial selected reproduction cases failed
+before the fix. Code commit
+`c6c1326be9332e51b160931de4dd994d54868793` passed the exact clean-head six-check
+local gate at `2026-11-27T19:19:54.200355Z`: 881 tests, zero skips, Ruff,
+catalog, atlas, evidence and capability checks. Python 3.13.5 used WorldKernel
+`0.0.1` from reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+Passing receipt: `results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793-loopback.json`.
+The first restricted-sandbox receipt records pytest timeout `124`; isolated
+`test_health` reproduced the socket wait, while the same test and full gate
+passed in the already-authorized loopback-capable local execution without
+changing tests or code. This explains this reproduction only, not historical
+B-07 or GitHub Actions. The docs-inclusive gate and review response remain to
+be recorded before publication. No real workbook was reread.
 
 ## Current PR #65 invoice-policy update — 2026-11-27 UTC
 

@@ -457,11 +457,17 @@ now rejects duplicate cell coordinates across all schema columns in both
 worksheet passes; selected values use strict field-specific OOXML types and
 numeric lexical parsing. New regressions cover the exact overwrite, duplicate
 header/selected/excluded coordinates, error/unknown types, malformed tokens,
-overflow. Initial 13 selected cases failed before the fix; a nonzero-underflow
-edge case was added afterward. Post-fix UCI workbook unit/integration suites
-passed 65 tests and Ruff passed.
-The exact full gate and review response remain pending. No source bytes were
-re-read; the 500-category sampling proposal above remains unapproved.
+overflow and underflow. Initial 13 selected cases failed before the fix; a
+nonzero-underflow edge case was added afterward. Post-fix UCI workbook
+unit/integration suites passed 65 tests. Code head
+`c6c1326be9332e51b160931de4dd994d54868793` passed the full local six-check
+gate with 881 tests, zero skips and reviewed WorldKernel pin; see the exact
+receipts and sandbox diagnosis in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+The restricted run reproduced a `test_health` socket wait; that same test and
+the complete gate passed in the loopback-capable local execution without code
+or test changes. This is not official CI and does not explain historical B-07.
+The documentation-inclusive gate and PR review response are next. No source
+bytes were reread; the 500-category sampling proposal remains unapproved.
 
 ## 4. Mandatory documentation standard
 

@@ -371,8 +371,10 @@ available without acquiring data.
 
 ## 8. PR #65 review correction — duplicate and malformed OOXML cells
 
-**Status:** confirmed and corrected locally; exact full-gate evidence and the
-review response remain pending. No private source bytes were read for this
+**Status:** confirmed and corrected on code head
+`c6c1326be9332e51b160931de4dd994d54868793`; exact full-gate evidence is
+recorded below. The documentation-inclusive gate and PR review response are
+the remaining publication steps. No private source bytes were read for this
 correction.
 
 The owner-authored PR review reproduced three fail-open cases using generated
@@ -422,10 +424,20 @@ The regressions are in
 
 The 13 initially selected focused cases failed on the original implementation
 and passed after correction; the added underflow parameter also passed. The UCI
-workbook unit plus integration tests then passed 65 cases, and Ruff passed on
-both changed Python files. These fixtures prove
-parser behavior only; they do not establish that the private workbook contains
-such anomalies, source rights or hostile-file isolation. Run the exact clean
-head six-check gate before publishing a review response. Do not reread the
-source under this correction; the separate fit-cohort sampling proposal above
-still requires owner approval.
+workbook unit plus integration tests passed 65 cases. The exact clean code-head
+six-check gate passed at `2026-11-27T19:19:54.200355Z`: 881 tests, zero skips,
+Ruff, catalog, atlas, evidence and capability checks; Python 3.13.5 with
+WorldKernel `0.0.1` from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Passing receipt:
+`results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793-loopback.json`.
+The sandbox timeout receipt is preserved separately at
+`results/local-quality-gate-c6c1326be9332e51b160931de4dd994d54868793.json`.
+An isolated reproduction located the sandbox wait at `test_health`; the same
+test and complete gate passed in the loopback-capable local execution without
+code or test changes. This is not official Actions and does not explain the
+historical B-07 timeout. These fixtures prove parser behavior only; they do
+not establish that the private workbook contains such anomalies, source
+rights or hostile-file isolation. Do not reread the source under this
+correction; the separate fit-cohort sampling proposal above still requires
+owner approval. Rerun the exact gate on the documentation-inclusive head
+before publication.

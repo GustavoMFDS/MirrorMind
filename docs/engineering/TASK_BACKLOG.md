@@ -291,9 +291,15 @@ rejects duplicate coordinates across header, selected and excluded columns in
 both worksheet passes and strictly validates selected cell types and numeric
 encodings.
 
-After correction, the new focused cases passed; the UCI workbook unit and
-integration suites passed 65 tests and Ruff passed on the modified Python
-files. The exact clean-head full local gate and review response are pending.
+After correction, the focused regressions and UCI workbook unit/integration
+suites passed 65 tests. Exact code head
+`c6c1326be9332e51b160931de4dd994d54868793` passed all six local checks with
+881 tests, zero skips and the reviewed WorldKernel pin; receipt and the
+preserved sandbox timeout are documented in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The restricted run's `test_health`
+socket wait was reproduced in isolation; the same test and full gate passed in
+the loopback-capable local execution without modifying tests or code. The
+documentation-inclusive gate and PR review response remain the next actions.
 No real workbook was reread. MM-022 remains the approved invoice rule, while
 the separate 500-category fit-cohort proposal remains unapproved and grants no
 source-processing permission.
