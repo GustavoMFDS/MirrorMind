@@ -182,6 +182,125 @@
     "limitation": "End-to-end local fixture flow lacks rights validation, encrypted persistence, tenant isolation and external forecast serving."
   },
   {
+    "id": "MM-CEN-001",
+    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
+    "test": "tests/unit/test_census_vintages.py",
+    "function": "test_selects_latest_revision_per_month_strictly_before_target_release",
+    "limitation": "Proves cutoff and revision selection over generated normalized records only; it does not verify a source file, Census/ALFRED publication date, legal permission, archive completeness or forecast performance."
+  },
+  {
+    "id": "MM-CEN-002",
+    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
+    "test": "tests/unit/test_census_vintages.py",
+    "function": "test_same_day_first_estimate_is_excluded_and_receipt_is_unverified",
+    "limitation": "Shows the date-only adapter excludes same-day releases and keeps false authorization flags on fictional input; it does not establish intraday ordering or an authenticated permission boundary."
+  },
+  {
+    "id": "MM-CEN-003",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_fixed_horizons_use_asof_vintages_and_matched_first_estimates",
+    "limitation": "Shows fixed monthly baselines and matched metrics over a generated normalized series. It does not authenticate publisher bytes or establish Census/ALFRED archive coverage or empirical forecast quality."
+  },
+  {
+    "id": "MM-CEN-004",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_later_revision_does_not_change_any_prior_origin_score",
+    "limitation": "Proves one later synthetic revision cannot rewrite fixed earlier origins. It does not validate a real release calendar or every source-specific revision rule."
+  },
+  {
+    "id": "MM-CEN-005",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_incomplete_trailing_history_abstains_without_filling_months",
+    "limitation": "A generated missing month causes synthetic abstention rather than zero filling. It does not prove real archive completeness or a valid zero observation."
+  },
+  {
+    "id": "MM-CEN-006",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_vintage_evaluation_cli.py",
+    "function": "test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint",
+    "limitation": "Confirms the generated CLI has deterministic output and disjoint fixture origins. It does not establish a blinded/locked empirical holdout or source authorization."
+  },
+  {
+    "id": "MM-CEN-007",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_trailing_mean_and_metrics_ignore_ambient_decimal_context",
+    "limitation": "Shows identical metrics under two synthetic Decimal precision/rounding contexts. It does not prove cross-language floating-point identity or real forecast quality."
+  },
+  {
+    "id": "MM-CEN-008",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_revision_cannot_precede_or_match_known_first_estimate",
+    "limitation": "Rejects earlier and same-day synthetic revisions when an anchor is present. It does not authenticate publisher dates or release completeness."
+  },
+  {
+    "id": "MM-CEN-009",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history",
+    "limitation": "Excludes and counts one synthetic unanchored revision. It cannot prove whether a missing first-estimate record exists in a real archive."
+  },
+  {
+    "id": "MM-CEN-010",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_decimal_precision_and_exponent_domain_is_bounded",
+    "limitation": "Rejects four unsupported generated numeric representations. The bounds are computational and do not define valid Census units."
+  },
+  {
+    "id": "MM-CEN-011",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_non_finite_metric_overflow_is_rejected_by_public_evaluator",
+    "limitation": "Rejects a synthetic finite-input WAPE overflow at the public evaluator. It does not assert real source magnitudes or empirical performance."
+  },
+  {
+    "id": "MM-CEN-012",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_positive_metric_underflow_is_rejected_by_public_evaluator",
+    "limitation": "Rejects one synthetic positive MAE that would convert to zero. It does not define the precision needs of a real source series."
+  },
+  {
+    "id": "MM-CEN-013",
+    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
+    "test": "tests/unit/test_census_vintages.py",
+    "function": "test_revision_before_known_first_estimate_is_rejected",
+    "limitation": "Rejects one earlier synthetic revision when a first-estimate anchor exists. It does not verify publisher timing or establish archive completeness."
+  },
+  {
+    "id": "MM-CEN-014",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_vintage_evaluation_cli.py",
+    "function": "test_synthetic_census_cli_refuses_non_finite_json",
+    "limitation": "Confirms the example CLI refuses one injected infinite value before output. It does not replace exact finite-metric checks inside the public evaluator."
+  },
+  {
+    "id": "MM-CEN-015",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_representable_rmse_does_not_underflow_while_scaling_mean_square",
+    "limitation": "Shows a representable synthetic RMSE remains nonzero when its exact mean square is below the smallest float. It does not establish precision requirements for a real series."
+  },
+  {
+    "id": "MM-CEN-016",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_evaluator_rejects_first_estimates_published_before_reference_month_closes",
+    "limitation": "The generated public-evaluator regression rejects first-estimate dates inside their own reference months. It does not authenticate publisher timestamps or prove the source-specific release schedule."
+  },
+  {
+    "id": "MM-CEN-017",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_scientific_notation_fingerprints_ignore_decimal_capitals",
+    "limitation": "Synthetic full-result replay and historical uppercase-default input digest under Decimal capitals 0/1; no cross-language canonicalization or verified publisher bytes."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",
@@ -791,6 +910,62 @@
     "limitation": "The generated fixture proves date-label disjointness and caller-declared release eligibility only; it does not prove unit/source provenance, calibrated uncertainty or empirical coverage."
   },
   {
+    "id": "MM-RETR-001",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_query_filters_documents_before_ranking_and_never_discloses_denied_records",
+    "limitation": "The local index excludes the fictional denied document before tokenization, scoring and output. The caller-declared context is not authenticated identity, production authorization or tenant isolation."
+  },
+  {
+    "id": "MM-RETR-002",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_retrieval_citation_span_matches_source_and_digest",
+    "limitation": "The excerpt matches a generated fixture substring at Python code-point offsets and its UTF-8 digest. This does not authenticate an external source, publisher, freshness or rights."
+  },
+  {
+    "id": "MM-RETR-003",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_retrieved_instruction_like_fixture_remains_untrusted_evidence",
+    "limitation": "An instruction-like fictional excerpt retains a fixed untrusted label and exposes no tool fields. No model or future executor consumes it, so downstream prompt-injection safety is not established."
+  },
+  {
+    "id": "MM-RETR-004",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/integration/test_m2_evidence_retrieval_cli.py",
+    "function": "test_evidence_retrieval_cli_replays_cited_results_and_rejects_oversized_query",
+    "limitation": "The fixed local CLI replays generated results and rejects oversized input without echoing the query. It proves no deployment, authenticated access, real data or external service behavior."
+  },
+  {
+    "id": "MM-RETR-005",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_duplicate_ids_are_rejected_before_permission_filtering",
+    "limitation": "Duplicate identifiers across visible and denied fictional records are rejected with a generic error. The check does not authenticate records or establish source identity."
+  },
+  {
+    "id": "MM-RETR-006",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_contracts_reject_extra_fields_coercion_oversized_text_invalid_refs_and_mutation",
+    "limitation": "The local strict Pydantic models reject malformed fixture requests and mutation. This does not secure an HTTP boundary, validate external source references or authenticate caller scope."
+  },
+  {
+    "id": "MM-RETR-007",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_contract_rejects_same_length_excerpt_tampering",
+    "limitation": "Deserialization rejects same-length excerpt alteration when the prior digest is retained. It cannot authenticate the source or resolve absolute offsets without original source bytes."
+  },
+  {
+    "id": "MM-RETR-008",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_contract_rejects_wrong_well_formed_excerpt_digest",
+    "limitation": "Deserialization rejects a shape-valid digest that does not match the exact UTF-8 excerpt. An envelope with both excerpt and digest replaced remains unauthenticated."
+  },
+  {
     "id": "MM-REVAL-001",
     "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_EVALUATION.md",
     "test": "tests/integration/test_retail_synthetic_evaluation.py",
@@ -866,6 +1041,48 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_remote_https_transport_enforces_timeout_mime_bytes_and_no_redirects",
     "limitation": "Fake HTTPS opener checks fixed request query, timeout, disabled proxy/redirect handlers, HTTP status, content type, maximum bytes and outage refusal. No real TLS interoperability or DNS failure recovery was tested."
+  },
+  {
+    "id": "MM-RHEAD-008",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_response_round_trips_through_existing_client",
+    "limitation": "A generated-key in-memory response is accepted by the existing local verifier and retains false permission flags. No HTTP transport, persistent store, separate operators or live authority is exercised."
+  },
+  {
+    "id": "MM-RHEAD-009",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_rejects_bad_wire_scope_and_store_failure",
+    "limitation": "The pure responder rejects malformed fictional requests and store records with empty errors. No web framework parsing or production storage adapter is exercised."
+  },
+  {
+    "id": "MM-RHEAD-010",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_binds_nonce_and_snapshot_scope",
+    "limitation": "The existing verifier rejects generated responses with a wrong nonce or snapshot digest. A fresh signer may still provide a stale claim; independent currentness is not proven."
+  },
+  {
+    "id": "MM-RHEAD-011",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_enforces_distinct_keys_and_bounded_clock",
+    "limitation": "Construction checks the supplied non-service key roster and lifetime, and a naive test clock fails closed. Roster completeness, custody and real clock trust are not established."
+  },
+  {
+    "id": "MM-RHEAD-012",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_translates_typed_clock_failure_without_leaking",
+    "limitation": "A typed error from an injected in-process clock maps to an empty 503; no real clock adapter, trusted time source or HTTP transport is tested."
+  },
+  {
+    "id": "MM-RHEAD-013",
+    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
+    "test": "tests/unit/test_atomic_governed_publisher.py",
+    "function": "test_remote_head_service_propagates_unexpected_adapter_programming_errors",
+    "limitation": "In-process fake clock/store RuntimeErrors remain visible; no production adapter or future transport-level exception policy is tested."
   },
   {
     "id": "MM-SEL-001",
@@ -1001,6 +1218,41 @@
     "limitation": "Refusing to invent historical publication timestamps is not independent evidence of true publisher release times or source data rights."
   },
   {
+    "id": "MM-UCIE-001",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/integration/test_uci_event_time_cli.py",
+    "function": "test_synthetic_cli_is_reproducible_and_keeps_event_time_limitations",
+    "limitation": "The integration is deterministic and identifier-minimized only for a generated workbook. It does not establish original source rights, real-workbook compatibility, actual date completeness or point-in-time publication history."
+  },
+  {
+    "id": "MM-UCIE-002",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_incomplete_target_day_abstains_instead_of_becoming_zero",
+    "limitation": "The evaluator abstains when a caller omits a synthetic date declaration. It cannot authenticate completeness claims for a real source."
+  },
+  {
+    "id": "MM-UCIE-003",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_validation_scores_do_not_depend_on_locked_holdout_values",
+    "limitation": "This mutation regression establishes validation independence from later fixture values only. It does not test preprocessing leakage or revised source vintages."
+  },
+  {
+    "id": "MM-UCIE-004",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_event_time_evaluator_accepts_approved_uci_group_limit",
+    "limitation": "A synthetic 100001-group projection exercises the source-specific evaluator bound; the exact UCI source exceeded 250000 groups and produced no projection or metric, so the fixture does not prove full-source compatibility."
+  },
+  {
+    "id": "MM-UCIE-005",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_event_time_result_exposes_aggregate_unverified_invoice_exclusions",
+    "limitation": "A synthetic receipt preserves one aggregate exclusion count and recognized-ID semantics; no complete real-source exclusion count or empirical score was produced."
+  },
+  {
     "id": "MM-WKMAP-001",
     "guide": "docs/engineering/WORLDKERNEL_MAPPING_WALKTHROUGH.md",
     "test": "tests/unit/test_worldkernel_mapping.py",
@@ -1020,34 +1272,6 @@
     "test": "tests/unit/test_worldkernel_mapping.py",
     "function": "test_mapping_preserves_lower_scenario_or_operator_run_ceiling",
     "limitation": "Checks the request's declared max_runs against two local ceilings; it does not prove that an external WorldKernel executor enforces the declaration or the other scenario budgets."
-  },
-  {
-    "id": "MM-WKR-001",
-    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
-    "test": "tests/unit/test_worldkernel_runner.py",
-    "function": "test_local_runner_bounds_worker_output",
-    "limitation": "The synthetic fake worker proves the parent retains bounded output; it does not provide CPU/memory isolation or contain arbitrary child processes."
-  },
-  {
-    "id": "MM-WKR-002",
-    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
-    "test": "tests/integration/test_worldkernel_runner_engine.py",
-    "function": "test_pinned_local_runner_executes_synthetic_inventory_world_deterministically",
-    "limitation": "Executes the exact reviewed package pin with fictional inputs only; it does not establish lead-time semantics, source rights, production isolation or business validity."
-  },
-  {
-    "id": "MM-WKR-003",
-    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
-    "test": "tests/unit/test_worldkernel_runner.py",
-    "function": "test_worker_accepts_exact_pep610_repository_and_commit",
-    "limitation": "Verifies local metadata comparison logic, not installed-file integrity, trusted distribution, source license or runtime behavior."
-  },
-  {
-    "id": "MM-WKR-004",
-    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
-    "test": "tests/unit/test_worldkernel_runner.py",
-    "function": "test_local_runner_rejects_inventory_result_that_breaks_balance",
-    "limitation": "Rejects an invented inconsistent inventory result; it does not prove that the modeled world represents a retailer or real replenishment process."
   },
   {
     "id": "MM-WKPW-001",
@@ -1092,25 +1316,32 @@
     "limitation": "The exact installed pin produces a deterministic synthetic trace with distinct selected-output and parity-oracle records and bound execution metadata. Shared-rule parity is not independent scientific validation, installed-file attestation, source authorization or production isolation."
   },
   {
-    "id": "MM-CEN-001",
-    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
-    "test": "tests/unit/test_census_vintages.py",
-    "function": "test_selects_latest_revision_per_month_strictly_before_target_release",
-    "limitation": "Proves cutoff and revision selection over generated normalized records only; it does not verify a source file, Census/ALFRED publication date, legal permission, archive completeness or forecast performance."
+    "id": "MM-WKR-001",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_bounds_worker_output",
+    "limitation": "The synthetic fake worker proves the parent retains bounded output; it does not provide CPU/memory isolation or contain arbitrary child processes."
   },
   {
-    "id": "MM-CEN-002",
-    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
-    "test": "tests/unit/test_census_vintages.py",
-    "function": "test_same_day_first_estimate_is_excluded_and_receipt_is_unverified",
-    "limitation": "Shows the date-only adapter excludes same-day releases and keeps false authorization flags on fictional input; it does not establish intraday ordering or an authenticated permission boundary."
+    "id": "MM-WKR-002",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/integration/test_worldkernel_runner_engine.py",
+    "function": "test_pinned_local_runner_executes_synthetic_inventory_world_deterministically",
+    "limitation": "Executes the exact reviewed package pin with fictional inputs only; it does not establish lead-time semantics, source rights, production isolation or business validity."
   },
   {
-    "id": "MM-CEN-013",
-    "guide": "docs/engineering/CENSUS_VINTAGE_ADAPTER.md",
-    "test": "tests/unit/test_census_vintages.py",
-    "function": "test_revision_before_known_first_estimate_is_rejected",
-    "limitation": "Rejects one earlier synthetic revision when a first-estimate anchor exists. It does not verify publisher timing or establish archive completeness."
+    "id": "MM-WKR-003",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_worker_accepts_exact_pep610_repository_and_commit",
+    "limitation": "Verifies local metadata comparison logic, not installed-file integrity, trusted distribution, source license or runtime behavior."
+  },
+  {
+    "id": "MM-WKR-004",
+    "guide": "docs/engineering/WORLDKERNEL_GATEWAY_GATE.md",
+    "test": "tests/unit/test_worldkernel_runner.py",
+    "function": "test_local_runner_rejects_inventory_result_that_breaks_balance",
+    "limitation": "Rejects an invented inconsistent inventory result; it does not prove that the modeled world represents a retailer or real replenishment process."
   },
   {
     "id": "MM-XLSX-001",
@@ -1141,221 +1372,81 @@
     "limitation": "Fictional local XLSX test does not use real UCI records, independently proven first-availability dates, trained models or WorldKernel."
   },
   {
-    "id": "MM-UCIE-001",
-    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
-    "test": "tests/integration/test_uci_event_time_cli.py",
-    "function": "test_synthetic_cli_is_reproducible_and_keeps_event_time_limitations",
-    "limitation": "The integration is deterministic and identifier-minimized only for a generated workbook. It does not establish original source rights, real-workbook compatibility, actual date completeness or point-in-time publication history."
+    "id": "MM-XLSX-005",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_description_shared_string_is_not_extracted_for_projection",
+    "limitation": "Synthetic tracking proves Description-only shared text is not delivered to Python character callbacks or retained by the reader; Expat still scans worksheet XML, and this does not prove source authorization, publisher completeness or hostile-file isolation."
   },
   {
-    "id": "MM-UCIE-002",
-    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
-    "test": "tests/unit/test_uci_event_time.py",
-    "function": "test_incomplete_target_day_abstains_instead_of_becoming_zero",
-    "limitation": "The evaluator abstains when a caller omits a synthetic date declaration. It cannot authenticate completeness claims for a real source."
+    "id": "MM-XLSX-006",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded",
+    "limitation": "Synthetic rows prove the UCI-only aggregate exclusion and identifier minimization; they do not establish the full source exclusion count, evaluation, or any change to generic projection behavior."
   },
   {
-    "id": "MM-UCIE-003",
-    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
-    "test": "tests/unit/test_uci_event_time.py",
-    "function": "test_validation_scores_do_not_depend_on_locked_holdout_values",
-    "limitation": "This mutation regression establishes validation independence from later fixture values only. It does not test preprocessing leakage or revised source vintages."
+    "id": "MM-XLSX-007",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_invalid_invoice_format_does_not_get_treated_as_regular_sale",
+    "limitation": "Synthetic generic rows prove lowercase c-prefixed invoice IDs remain invalid and are not echoed outside the UCI workbook adapter; they do not establish source rights or real-dataset behavior."
   },
   {
-    "id": "MM-CEN-003",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_fixed_horizons_use_asof_vintages_and_matched_first_estimates",
-    "limitation": "Shows fixed monthly baselines and matched metrics over a generated normalized series. It does not authenticate publisher bytes or establish Census/ALFRED archive coverage or empirical forecast quality."
+    "id": "MM-XLSX-008",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class",
+    "limitation": "A generated workbook proves classification and aggregate-only handling for the 52 ASCII letters; it does not establish source-level exclusion counts, row semantics, coverage, or empirical metrics."
   },
   {
-    "id": "MM-CEN-004",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_later_revision_does_not_change_any_prior_origin_score",
-    "limitation": "Proves one later synthetic revision cannot rewrite fixed earlier origins. It does not validate a real release calendar or every source-specific revision rule."
+    "id": "MM-XLSX-009",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original",
+    "limitation": "A generated duplicate D2 cell proves the reader rejects an attempted overwrite; it does not show that the private workbook contains duplicate coordinates or prove general hostile-file isolation."
   },
   {
-    "id": "MM-CEN-005",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_incomplete_trailing_history_abstains_without_filling_months",
-    "limitation": "A generated missing month causes synthetic abstention rather than zero filling. It does not prove real archive completeness or a valid zero observation."
+    "id": "MM-XLSX-010",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes",
+    "limitation": "Generated fixtures prove duplicate coordinate rejection for header, selected and excluded columns in both worksheet passes; they do not establish any source-level anomaly."
   },
   {
-    "id": "MM-CEN-006",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/integration/test_census_vintage_evaluation_cli.py",
-    "function": "test_synthetic_validation_and_holdout_cli_are_reproducible_and_disjoint",
-    "limitation": "Confirms the generated CLI has deterministic output and disjoint fixture origins. It does not establish a blinded/locked empirical holdout or source authorization."
+    "id": "MM-XLSX-011",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_error_and_unknown_selected_cell_types_fail_without_echo",
+    "limitation": "Synthetic error and unknown cell types prove fixed redacted rejection for selected cells only; they do not validate arbitrary OOXML or hostile-file containment."
   },
   {
-    "id": "MM-CEN-007",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_trailing_mean_and_metrics_ignore_ambient_decimal_context",
-    "limitation": "Shows identical metrics under two synthetic Decimal precision/rounding contexts. It does not prove cross-language floating-point identity or real forecast quality."
+    "id": "MM-XLSX-012",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes",
+    "limitation": "Synthetic malformed, overflowing and underflowing numeric tokens prove strict decoding on fixture cells; they do not demonstrate how often such tokens occur in the private source or establish empirical results."
   },
   {
-    "id": "MM-CEN-008",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_revision_cannot_precede_or_match_known_first_estimate",
-    "limitation": "Rejects earlier and same-day synthetic revisions when an anchor is present. It does not authenticate publisher dates or release completeness."
+    "id": "MM-XLSX-013",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_duplicate_scalar_values_fail_in_both_worksheet_passes",
+    "limitation": "Generated duplicate scalar values prove selected-cell rejection in shared-string discovery and decode passes; they do not establish that the private workbook contains repeated values or provide hostile-file isolation."
   },
   {
-    "id": "MM-CEN-009",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_unanchored_revisions_are_excluded_counted_and_cannot_fill_history",
-    "limitation": "Excludes and counts one synthetic unanchored revision. It cannot prove whether a missing first-estimate record exists in a real archive."
+    "id": "MM-XLSX-014",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes",
+    "limitation": "Generated inline and shared-string fixtures prove mixed payload rejection in both parser passes; they do not establish source anomaly frequency, data rights or general OOXML safety."
   },
   {
-    "id": "MM-CEN-010",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_decimal_precision_and_exponent_domain_is_bounded",
-    "limitation": "Rejects four unsupported generated numeric representations. The bounds are computational and do not define valid Census units."
-  },
-  {
-    "id": "MM-CEN-011",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_non_finite_metric_overflow_is_rejected_by_public_evaluator",
-    "limitation": "Rejects a synthetic finite-input WAPE overflow at the public evaluator. It does not assert real source magnitudes or empirical performance."
-  },
-  {
-    "id": "MM-CEN-012",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_positive_metric_underflow_is_rejected_by_public_evaluator",
-    "limitation": "Rejects one synthetic positive MAE that would convert to zero. It does not define the precision needs of a real source series."
-  },
-  {
-    "id": "MM-CEN-014",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/integration/test_census_vintage_evaluation_cli.py",
-    "function": "test_synthetic_census_cli_refuses_non_finite_json",
-    "limitation": "Confirms the example CLI refuses one injected infinite value before output. It does not replace exact finite-metric checks inside the public evaluator."
-  },
-  {
-    "id": "MM-CEN-015",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_representable_rmse_does_not_underflow_while_scaling_mean_square",
-    "limitation": "Shows a representable synthetic RMSE remains nonzero when its exact mean square is below the smallest float. It does not establish precision requirements for a real series."
-  },
-  {
-    "id": "MM-CEN-016",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_evaluator_rejects_first_estimates_published_before_reference_month_closes",
-    "limitation": "The generated public-evaluator regression rejects first-estimate dates inside their own reference months. It does not authenticate publisher timestamps or prove the source-specific release schedule."
-  },
-  {
-    "id": "MM-CEN-017",
-    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
-    "test": "tests/unit/test_census_vintage_evaluation.py",
-    "function": "test_scientific_notation_fingerprints_ignore_decimal_capitals",
-    "limitation": "Synthetic full-result replay and historical uppercase-default input digest under Decimal capitals 0/1; no cross-language canonicalization or verified publisher bytes."
-  },
-  {
-    "id": "MM-RETR-001",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_query_filters_documents_before_ranking_and_never_discloses_denied_records",
-    "limitation": "The local index excludes the fictional denied document before tokenization, scoring and output. The caller-declared context is not authenticated identity, production authorization or tenant isolation."
-  },
-  {
-    "id": "MM-RETR-002",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_retrieval_citation_span_matches_source_and_digest",
-    "limitation": "The excerpt matches a generated fixture substring at Python code-point offsets and its UTF-8 digest. This does not authenticate an external source, publisher, freshness or rights."
-  },
-  {
-    "id": "MM-RETR-003",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_retrieved_instruction_like_fixture_remains_untrusted_evidence",
-    "limitation": "An instruction-like fictional excerpt retains a fixed untrusted label and exposes no tool fields. No model or future executor consumes it, so downstream prompt-injection safety is not established."
-  },
-  {
-    "id": "MM-RETR-004",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/integration/test_m2_evidence_retrieval_cli.py",
-    "function": "test_evidence_retrieval_cli_replays_cited_results_and_rejects_oversized_query",
-    "limitation": "The fixed local CLI replays generated results and rejects oversized input without echoing the query. It proves no deployment, authenticated access, real data or external service behavior."
-  },
-  {
-    "id": "MM-RETR-005",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_duplicate_ids_are_rejected_before_permission_filtering",
-    "limitation": "Duplicate identifiers across visible and denied fictional records are rejected with a generic error. The check does not authenticate records or establish source identity."
-  },
-  {
-    "id": "MM-RETR-006",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_contracts_reject_extra_fields_coercion_oversized_text_invalid_refs_and_mutation",
-    "limitation": "The local strict Pydantic models reject malformed fixture requests and mutation. This does not secure an HTTP boundary, validate external source references or authenticate caller scope."
-  },
-  {
-    "id": "MM-RETR-007",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_contract_rejects_same_length_excerpt_tampering",
-    "limitation": "Deserialization rejects same-length excerpt alteration when the prior digest is retained. It cannot authenticate the source or resolve absolute offsets without original source bytes."
-  },
-  {
-    "id": "MM-RETR-008",
-    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
-    "test": "tests/unit/test_evidence_retrieval.py",
-    "function": "test_contract_rejects_wrong_well_formed_excerpt_digest",
-    "limitation": "Deserialization rejects a shape-valid digest that does not match the exact UTF-8 excerpt. An envelope with both excerpt and digest replaced remains unauthenticated."
-  },
-  {
-    "id": "MM-RHEAD-008",
-    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_remote_head_service_response_round_trips_through_existing_client",
-    "limitation": "A generated-key in-memory response is accepted by the existing local verifier and retains false permission flags. No HTTP transport, persistent store, separate operators or live authority is exercised."
-  },
-  {
-    "id": "MM-RHEAD-009",
-    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_remote_head_service_rejects_bad_wire_scope_and_store_failure",
-    "limitation": "The pure responder rejects malformed fictional requests and store records with empty errors. No web framework parsing or production storage adapter is exercised."
-  },
-  {
-    "id": "MM-RHEAD-010",
-    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_remote_head_service_binds_nonce_and_snapshot_scope",
-    "limitation": "The existing verifier rejects generated responses with a wrong nonce or snapshot digest. A fresh signer may still provide a stale claim; independent currentness is not proven."
-  },
-  {
-    "id": "MM-RHEAD-011",
-    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_remote_head_service_enforces_distinct_keys_and_bounded_clock",
-    "limitation": "Construction checks the supplied non-service key roster and lifetime, and a naive test clock fails closed. Roster completeness, custody and real clock trust are not established."
-  },
-  {
-    "id": "MM-RHEAD-012",
-    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_remote_head_service_translates_typed_clock_failure_without_leaking",
-    "limitation": "A typed error from an injected in-process clock maps to an empty 503; no real clock adapter, trusted time source or HTTP transport is tested."
-  },
-  {
-    "id": "MM-RHEAD-013",
-    "guide": "docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md",
-    "test": "tests/unit/test_atomic_governed_publisher.py",
-    "function": "test_remote_head_service_propagates_unexpected_adapter_programming_errors",
-    "limitation": "In-process fake clock/store RuntimeErrors remain visible; no production adapter or future transport-level exception policy is tested."
+    "id": "MM-XLSX-015",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_valid_inline_rich_text_runs_remain_one_stock_code",
+    "limitation": "One generated rich-text fixture proves its ordered runs concatenate to one category; it does not validate every OOXML rich-text extension or source workbook."
   },
   {
     "id": "MM-PORT-001",

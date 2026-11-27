@@ -2,56 +2,77 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Main `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc` incorporates #60, #61 and
-#64 through #66. The independent post-merge gate passed 856 tests, zero skips
-and all six checks plus examples Ruff. See [PR #66](https://github.com/GustavoMFDS/MirrorMind/pull/66).
-M2-01, G-01 and ENG-02 are integrated within their experimental scopes.
-The Census review candidate preserves the exact #63 head and adds the
-uppercase Decimal fingerprint fix with a failing-before/passing-after
-regression. The candidate is not accepted until the combined gate and
-merge decision recorded in the integration PR. No actual Census data or
-FRED/ALFRED access is authorized; the direct original Census artifact
-proposal requires separate owner decisions under B-01/B-02.
+Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. It includes PR
+#66 (PRs #60, #61 and #64), PR #67 (Census #63), public-portfolio PRs #68–#70,
+owner-approved Apache-2.0 PR #71, PORT-07's local interactive report (#72),
+the first source alpha release preparation (#73), repository excellence and
+branch inventory (#74), CI hardening/Python compatibility (#75), and security
+and community workflows (#76). PRs #74–#76 each recorded 912 passing local
+tests, zero skips and six checks. On exact main `2a7641b`, all six returned
+check runs succeeded: `test`, `compatibility (3.12)`, `compatibility (3.13)`,
+`symbol-catalog`, `Analyze (actions)` and `Analyze (python)` across runs
+[46062899971](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899971),
+[46062899967](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062899967),
+and [46062900063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46062900063).
+Earlier PR #66/#67 local receipts remain separately recorded. No paid usage or
+check/protection change occurred.
 
-PR #65 is still separate: the UCI source was privately acquired within
-MM-017 through MM-022, but the attempt stopped above 250,000 product-day
-groups without scores. The duplicate-cell and error-cell parsing findings
-remain with Codex. No further source processing is authorized here.
-Preserve the 2026-12-26 deletion deadline. B-08 remains open with zero
-paid budget. M2-02 and G-02 may advance independently within their
-existing fictional/offline scopes. The dated branch/status records below
-are historical where inconsistent with this reconciliation and live PRs.
+PR #65 remains open; use its live metadata for the latest published head and
+checks. Local branch `codex/uci352-pilot-20261126` includes current main
+`2a7641b` through ancestry-preserving merge `0182eba`, plus the first-round
+parser fixes and `6df8af1` correction. Exact implementation head
+`35bff7824970ebc511e05add240088b2ffd74057` passed 968 tests, zero skips and all
+six local checks with the reviewed WorldKernel pin; its receipt is recorded in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). All seven official checks also
+passed on that exact PR head. Comment
+[7227559961](https://github.com/GustavoMFDS/MirrorMind/pull/65#issuecomment-7227559961)
+responds to the latest independent parser finding. Any later tracked change
+requires its own exact-head gate and PR check observation; do not transfer the
+`35bff78` receipts to a descendant.
+Documentation-only follow-up head
+`d454b48477af4691a363622ecf8b2fd85a7e5a60` also passed 968 tests, zero skips,
+all six local checks and all seven observed GitHub checks, with the same exact
+WorldKernel pin. Its receipt and run links are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+Use live PR metadata for the currently published descendant.
 
-**Merged main:** `a456034c55ed7634ad4768b26788fec09dab1d08`, PR #62's
-ancestry-preserving merge. Independent post-merge gate passed 835 tests,
-zero skips and all six checks with WorldKernel at reviewed source revision
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Final PR #62 review and
-post-merge evidence are recorded in [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
-and [comment 7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
-This is local validation, not official Actions. PR #52 is merged; #53–#59
-were closed as incorporated after ancestry checks, and their branches remain
-available.
+Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
+types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
+inline payloads. The focused UCI workbook unit and integration suites passed 75
+tests, including the second-round structural cases. The PR awaits independent
+review; it is not merged.
+
+The approved 250,000-cap UCI #352 source call stopped above its product-day
+group limit and returned no projection or metrics. The UCI-only
+MM-022 rule accepts exact six-digit IDs, treats only uppercase `C` plus six
+digits as cancellation, and excludes other single-letter ASCII prefixes into
+one aggregate class; its regressions are synthetic and the source was not read
+again. No retry, chunking, cap increase or Census acquisition is authorized.
+Preserve the private snapshot deletion deadline `2026-12-26`. B-01/B-02 still
+gate empirical and point-in-time claims. B-04 is resolved only for the narrow
+reviewed local WorldKernel slice; service isolation and deployment acceptance
+remain open. The owner's zero-paid
+budget remains in force. M2-02 and G-02 can continue only within their existing
+fictional/offline scopes after the PR #65 review candidate is consolidated.
+
+**Current main:** `2a7641b88b0d97a239d44102d4da9497460f21d1`, descendant of
+PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
+incorporated through #62; PR #60/#61/#64 are incorporated by #66; Census #63
+is incorporated by #67. PRs #68–#71 update the public portfolio and original
+project license; #72 adds an offline synthetic report, #73 prepares the source
+alpha release, #74 records repository excellence/inventory, #75 hardens
+public CI, and #76 establishes security/community workflows. WorldKernel and
+dataset terms remain separate.
+The exact #62 post-merge receipt and review remain in
+[comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
 
 | Review item | Current exact state | Limits |
 | --- | --- | --- |
-| PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
-| PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
-| PR #63 | Open, non-draft, mergeable and based on `main`; preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Its pre-diagnostic source-policy head `47cdb587b0deab19835acd1435e4bd028ba28519` passed the full local gate at `2026-11-27T02:38:46.324939Z`: 882 tests, zero skips and all six checks with WorldKernel at reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt `results/local-quality-gate-47cdb587b0deab19835acd1435e4bd028ba28519.json`; PR comment [7208332106](https://github.com/GustavoMFDS/MirrorMind/pull/63#issuecomment-7208332106) records it. Four automatic Actions checks failed before jobs ran. Their annotation lists recent payment failure or spending-limit increase as alternatives and identifies neither cause; no jobs, steps, logs or combined statuses were available. See [B-08](BLOCKERS.md). | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Independent review remains pending. |
-| PR #64 | Open, non-draft, mergeable and based on `main`; separate ENG-02 example-lint maintenance at `ca97ab61d15347aa271ee9ac8468a0714bdc3402`. Its exact local gate passed 840 tests, zero skips and all six checks; `ruff check examples` passed. Two Actions attempts failed before steps; the pre-start annotation lists account-payment/spending-limit alternatives without identifying the cause. Job records had no steps/logs and combined status was empty; see [B-08](BLOCKERS.md). | No forecast, real-source, API or authorization capability added. Local evidence is not official Actions; independent review remains pending. |
+| PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
+| PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
+| PR #65 | Open, non-draft; implementation head `35bff78` and documentation-only follow-up `d454b48` each passed 968 local tests, zero skips, six local checks and all seven observed GitHub checks. The latest PR comment responds to the parser review; confirm live metadata for any later descendant. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PRs #66–#76 | Closed as merged. #66/#67 consolidate M2-01, G-01, ENG-02 and Census; #68–#74 advance the public portfolio/release evidence; #75 hardens CI; #76 adds security and community workflows. | No source/data or WorldKernel rights grant follows from these changes; no production readiness follows. |
 
-The synthetic M1 evidence-to-decision path is integrated; M1 remains
-incomplete. Approved pilot order is UCI #352 retrospective by event time,
-then aggregate Census/ALFRED release-vintage evaluation. PR #62 integrated the
-synthetic UCI evaluator; PR #63 keeps Census work separate. No source file,
-FRED API response or credential was downloaded or processed. A search-result
-preview of the public FRED `RSAFS` table incidentally displayed a few published
-aggregate values; none was copied into repository artifacts or used in an
-evaluation. No pilot run occurred. B-01/B-02 still require exact rights,
-privacy, retention and temporal-evidence review. B-04 is resolved for
-the narrow reviewed local WorldKernel compatibility slice only; service
-isolation and deployment acceptance remain open. GitHub Actions allowance is
-exhausted under the owner's zero-paid-use decision (B-08); no runner,
-protection or workflow change was made.
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted
@@ -88,20 +109,21 @@ uses a 60/20/20 chronological development/validation/locked holdout, first
 estimates as primary targets, fixed baselines at 1/3/6 horizons, date-only
 strict-before selection, and a 12-month moving-block bootstrap only with at
 least 60 matched holdout origins per horizon. These are proposals requiring
-approval, not authorized use or completed evaluation. No source file, API
-response, account, credential or workbook was acquired. UCI and Census remain
-preparation-only under B-01/B-02; see the
-[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+approval, not authorized use or completed Census evaluation. No Census file,
+FRED/ALFRED response, account or credential was acquired. The privately held
+UCI workbook was acquired and its one approved bounded attempt stopped without
+a projection or score; it remains subject to its deletion deadline. See the
+[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) and UCI source card.
 
-`ruff check examples` separately found five pre-existing findings in three
-M1 examples (I001, RUF007, F401). ENG-02 is published separately in PR #64;
-its pairwise change has empty/singleton/consecutive/gap regressions, preserves
-the missing-day failure, and passed `ruff check examples`. The change does not
-alter forecast results or capability claims.
+At the pre-integration baseline, `ruff check examples` found five pre-existing
+findings in three M1 examples (I001, RUF007, F401). ENG-02 was merged through
+PR #66; its pairwise change has empty/singleton/consecutive/gap regressions,
+preserves the missing-day failure, and passed `ruff check examples`. It does
+not alter forecast results or capability claims.
 
 ## Historical PR #51 baseline — 2026-11-23
 
-## Integration candidate - 2026-11-27
+## Historical integration candidate - 2026-11-27
 
 The separately reviewed heads of PRs #64 (example maintenance), #60
 (experimental scoped BM25 retrieval), and #61 (in-process current-head
@@ -128,9 +150,9 @@ where they differ from this queue, use the live PRs and current evidence.
 #62. This is the latest confirmed main baseline, not a claim that the open
 follow-up branches have been accepted.
 
-## Current merged baseline — 2026-11-26
+## Historical merged baseline — 2026-11-26
 
-**Main:** `a456034c55ed7634ad4768b26788fec09dab1d08` integrates PR #62 by an
+**Historical main baseline:** `a456034c55ed7634ad4768b26788fec09dab1d08` integrates PR #62 by an
 ancestry-preserving merge. PR #62's final independent review recommended this
 method; #52–#59 are incorporated and their branches remain available. The
 independent post-merge gate reported 835 tests, zero skips, all six checks,
@@ -149,7 +171,7 @@ for the reviewed local compatibility slice; broader service/deployment
 acceptance remains open. B-08 remains open under the owner's zero-paid-budget
 decision.
 
-**Independent review queue:**
+**Historical independent review queue at this baseline:**
 
 | PR | Current published head | State and exact local evidence | Limits |
 | --- | --- | --- | --- |
@@ -157,7 +179,7 @@ decision.
 | #61 | Current exact head and receipt are maintained in the live PR body; documentation baseline gate `20ce86bde740d5b46d7aeba4d13138884e211dba` passed 841 tests, zero skips and all six checks. | Open, non-draft, based on `main`, ready for independent review. Any later commit receives a fresh exact-head gate; no CI result is claimed. | Read-only in-process responder; no route, persistence, authentication or deployed authority. |
 | #63 | `b5e989314bcdcb566df479931794a5f56c07d477` | Open, non-draft, separate from #60/#61; 877 tests, zero skips, six checks on the final docs head. | Synthetic Census vintage protocol only; no real source bytes or authorization. |
 
-The #62 final comments are [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+The #62 final comments in this historical baseline are [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
 They confirm technical approval of experimental synthetic M1, recommend
 preserving #52–#59 ancestry, and keep Census separate from #62. No real
@@ -165,8 +187,7 @@ UCI/Census bytes, paid Actions usage or limit increase are authorized. The
 UCI then Census/ALFRED pilot sequence remains preparation-only; automated
 tests stay synthetic.
 
-The pre-existing `ruff check examples` findings are a separate maintenance
-item ENG-02; feature PRs do not include those example changes.
+The pre-existing `ruff check examples` findings were resolved by ENG-02 in PR #66; the separate PR is retained in the historical record below.
 
 ---
 
@@ -351,7 +372,7 @@ and symbol-catalog run
 failed before repository steps with the same alternative account annotation;
 no code tests ran remotely. See [B-08](BLOCKERS.md).
 
-## PR #55 review correction and current sync
+## Historical PR #55 review correction and sync
 
 Draft PR #55's implementation commit `8769241` builds a pure allowlisted
 request for the versioned WorldKernel exchange. Review fix `07c405b`
@@ -517,7 +538,7 @@ adapter, persistence, authentication or authority is claimed.
 | Decision, orchestration and UI | Experimental synthetic M1F-02 CLI/API workflow and typed trace | Approved-source evaluation, actual engine result, authenticated review, production transport controls, agent/RAG workflow and review interface |
 | Operations and generalization | Scaffold Docker/CI and reviewed design | Auth, isolation, durable jobs, runtime limits, observability, recovery, second domain |
 
-### Current governance chain
+### Historical governance chain description
 
 The combined local SQLite publisher checks current operator policy and
 signed publication together. A distinct registry replays full signed

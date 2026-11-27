@@ -29,6 +29,7 @@ def _snapshot(
     omit_coverage_day: date | None = None,
     holdout_multiplier: int = 1,
     evaluation_rows: bool = True,
+    stock_code: str = "SYNTHETIC-A",
 ) -> tuple[UciWorkbookReadResult, set[date]]:
     projected: list[ProductDayUnits] = []
     accepted = 0
@@ -36,7 +37,7 @@ def _snapshot(
         if (event_day <= FIT_END or evaluation_rows) and event_day != omit_product_day:
             multiplier = holdout_multiplier if event_day > date(2011, 10, 1) else 1
             units = event_day.toordinal() % 7 + multiplier
-            projected.append(ProductDayUnits("SYNTHETIC-A", event_day, units))
+            projected.append(ProductDayUnits(stock_code, event_day, units))
             accepted += 1
         if event_day == date(2011, 9, 1):
             projected.append(ProductDayUnits("SYNTHETIC-B", event_day, 5))
@@ -82,6 +83,18 @@ def test_event_time_protocol_uses_frozen_cohort_matched_pairs_and_redacts_codes(
     assert "SYNTHETIC-B" not in str(result)
     assert result["ingestion_authorized"] is False
     assert result["point_in_time_eligible"] is False
+
+
+def test_event_time_evaluator_accepts_approved_internal_space_codes_and_redacts_them():
+    snapshot, coverage = _snapshot(stock_code="SYNTHETIC A")
+
+    result = evaluate_uci_event_time(
+        snapshot, complete_event_dates=coverage, split="validation"
+    )
+
+    assert result["evaluation_status"] == "metrics_available"
+    assert result["cohort_size"] == 1
+    assert "SYNTHETIC A" not in str(result)
 
 
 def test_incomplete_target_day_abstains_instead_of_becoming_zero():
@@ -164,3 +177,63 @@ def test_fixed_calendar_matches_the_reviewed_source_window():
     assert FIT_END == date(2011, 8, 30)
     assert SOURCE_START == date(2010, 12, 1)
     assert SOURCE_END == date(2011, 12, 9)
+
+
+def test_event_time_evaluator_accepts_approved_uci_group_limit():
+    fit_dates = _days(FIT_START, FIT_END)
+    groups = 100_001
+    projected = tuple(
+        ProductDayUnits(
+            f"SYN-{index // len(fit_dates):04d}",
+            fit_dates[index % len(fit_dates)],
+            1,
+        )
+        for index in range(groups)
+    )
+    snapshot = UciWorkbookReadResult(
+        "a" * 64,
+        UciRetailProjection(
+            days=projected,
+            processed_rows=groups,
+            accepted_rows=groups,
+            cancelled_rows=0,
+            negative_quantity_rows=0,
+            zero_quantity_rows=0,
+        ),
+    )
+
+    result = evaluate_uci_event_time(
+        snapshot,
+        complete_event_dates=_days(SOURCE_START, SOURCE_END),
+        split="validation",
+    )
+
+    assert result["evaluation_status"] == "metrics_available"
+    assert result["projection_receipt"]["product_day_groups"] == groups
+    assert result["cohort_size"] == 367
+
+
+def test_event_time_result_exposes_aggregate_unverified_invoice_exclusions():
+    snapshot, coverage = _snapshot()
+    source_projection = snapshot.projection
+    snapshot = UciWorkbookReadResult(
+        snapshot.sha256_hex,
+        UciRetailProjection(
+            days=source_projection.days,
+            processed_rows=source_projection.processed_rows + 2,
+            accepted_rows=source_projection.accepted_rows,
+            cancelled_rows=source_projection.cancelled_rows,
+            negative_quantity_rows=source_projection.negative_quantity_rows,
+            zero_quantity_rows=source_projection.zero_quantity_rows,
+            unverified_invoice_prefix_rows=2,
+        ),
+    )
+
+    result = evaluate_uci_event_time(
+        snapshot, complete_event_dates=coverage, split="validation"
+    )
+
+    assert result["target_semantics"] == (
+        "positive_invoice_line_units_from_recognized_invoice_ids_not_latent_demand"
+    )
+    assert result["projection_receipt"]["unverified_invoice_prefix_rows"] == 2

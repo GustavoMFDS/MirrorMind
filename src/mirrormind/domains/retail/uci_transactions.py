@@ -15,9 +15,15 @@ MAX_ROWS = 10_000
 MAX_GROUPS = 2_000
 MAX_SUPPORTED_ROWS = 600_000
 MAX_SUPPORTED_GROUPS = 100_000
+MAX_SUPPORTED_UCI_WORKBOOK_GROUPS = 250_000
 MAX_LINE_UNITS = 1_000_000_000
 MAX_TOTAL_UNITS = 1_000_000_000
 REQUIRED_FIELDS = frozenset({"InvoiceNo", "StockCode", "Quantity", "InvoiceDate"})
+_STOCK_CODE_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,31}")
+_SPACED_STOCK_CODE_PATTERN = re.compile(
+    r"[A-Za-z0-9][A-Za-z0-9._ -]{0,30}[A-Za-z0-9]"
+)
+_UCI_UNVERIFIED_INVOICE_PREFIX = object()
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,6 +45,7 @@ class UciRetailProjection:
     cancelled_rows: int
     negative_quantity_rows: int
     zero_quantity_rows: int
+    unverified_invoice_prefix_rows: int = 0
 
     def receipt(self) -> dict[str, str | int]:
         """Return only aggregate counters and explicit permission/time uncertainty."""
@@ -70,6 +77,27 @@ def _transaction_day(value: object) -> date:
     return value.date()
 
 
+def is_valid_uci_stock_code(
+    value: object, *, allow_internal_spaces: bool = False
+) -> bool:
+    """Validate a normalized source code without trimming or coercion.
+
+    The normal synthetic row contract remains a compact ASCII token. The
+    reviewed XLSX adapter may additionally preserve internal ASCII spaces as
+    opaque categories; leading/trailing whitespace and non-ASCII characters
+    remain invalid.
+    """
+    if type(value) is not str:
+        return False
+    if _STOCK_CODE_PATTERN.fullmatch(value):
+        return True
+    return (
+        type(allow_internal_spaces) is bool
+        and allow_internal_spaces
+        and _SPACED_STOCK_CODE_PATTERN.fullmatch(value) is not None
+    )
+
+
 def project_uci_retail_rows(
     rows: Iterable[Mapping[str, object]], *,
     max_rows: int = MAX_ROWS,
@@ -82,30 +110,63 @@ def project_uci_retail_rows(
     UnitPrice) are neither accessed nor returned. Nothing is persisted or
     logged. Cancellation/negative/zero rows are reported, not imputed.
     """
+    return _project_uci_retail_rows(
+        rows,
+        max_rows=max_rows,
+        max_groups=max_groups,
+        max_groups_ceiling=MAX_SUPPORTED_GROUPS,
+        allow_internal_stock_code_spaces=False,
+    )
+
+
+def _project_uci_retail_rows(
+    rows: Iterable[Mapping[str, object]], *,
+    max_rows: int,
+    max_groups: int,
+    max_groups_ceiling: int,
+    allow_internal_stock_code_spaces: bool,
+    allow_unverified_invoice_prefix: bool = False,
+) -> UciRetailProjection:
+    """Internal bounded implementation shared with the UCI workbook adapter."""
     if type(max_rows) is not int or not 1 <= max_rows <= MAX_SUPPORTED_ROWS:
         raise ValueError(
             f"max_rows must be an exact integer in 1..{MAX_SUPPORTED_ROWS}"
         )
-    if type(max_groups) is not int or not 1 <= max_groups <= MAX_SUPPORTED_GROUPS:
+    if type(max_groups_ceiling) is not int or max_groups_ceiling not in {
+        MAX_SUPPORTED_GROUPS, MAX_SUPPORTED_UCI_WORKBOOK_GROUPS
+    }:
+        raise ValueError("unsupported local group-budget profile")
+    if type(max_groups) is not int or not 1 <= max_groups <= max_groups_ceiling:
         raise ValueError(
-            f"max_groups must be an exact integer in 1..{MAX_SUPPORTED_GROUPS}"
+            f"max_groups must be an exact integer in 1..{max_groups_ceiling}"
         )
+    if type(allow_internal_stock_code_spaces) is not bool:
+        raise ValueError("allow_internal_stock_code_spaces must be a boolean")
+    if type(allow_unverified_invoice_prefix) is not bool:
+        raise ValueError("allow_unverified_invoice_prefix must be a boolean")
     try:
         iterator = iter(rows)
     except TypeError as exc:
         raise TypeError("rows must be an iterable of mappings") from exc
     grouped: dict[tuple[str, date], int] = {}
-    processed = accepted = cancelled = negative = zeros = total = 0
+    processed = accepted = cancelled = negative = zeros = 0
+    unverified_invoice_prefixes = total = 0
     for row in iterator:
         if processed >= max_rows:
             raise ValueError("row count exceeds local projection budget")
         processed += 1
         if not isinstance(row, Mapping) or not REQUIRED_FIELDS.issubset(row):
             raise ValueError("invalid required transaction fields")
-        invoice = _invoice_number(row["InvoiceNo"])
+        invoice_value = row["InvoiceNo"]
+        if invoice_value is _UCI_UNVERIFIED_INVOICE_PREFIX:
+            if not allow_unverified_invoice_prefix:
+                raise ValueError("invalid invoice number format")
+            unverified_invoice_prefixes += 1
+            continue
+        invoice = _invoice_number(invoice_value)
         stock_code = row["StockCode"]
-        if type(stock_code) is not str or not re.fullmatch(
-            r"[A-Za-z0-9][A-Za-z0-9._-]{0,31}", stock_code
+        if not is_valid_uci_stock_code(
+            stock_code, allow_internal_spaces=allow_internal_stock_code_spaces
         ):
             raise ValueError("invalid product stock code")
         quantity = row["Quantity"]
@@ -139,4 +200,5 @@ def project_uci_retail_rows(
         cancelled_rows=cancelled,
         negative_quantity_rows=negative,
         zero_quantity_rows=zeros,
+        unverified_invoice_prefix_rows=unverified_invoice_prefixes,
     )

@@ -1,6 +1,43 @@
 # Agent handoff — continuous engineering and documentation standard
 
-## Current review reconciliation - 2026-11-27
+## Current continuation - 2026-11-27
+
+- Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
+  integrated #60/#61/#64 and PR #67 integrated Census #63; PRs #68–#71 update
+  the public portfolio/license, #72 adds an offline synthetic report, #73
+  prepares the source alpha, #74 records repository excellence/inventory, #75
+  hardens public CI, and #76 establishes security/community workflows. Six
+  exact-main check runs succeeded on `2a7641b` (test, two compatibility jobs,
+  catalog and two analyses). The owner still authorizes zero paid usage.
+  Preserve protections and distinguish local gate receipts from Actions.
+- Continue PR #65 review follow-up only. Read its live metadata for the
+  currently published head and checks. Local merge commit
+  `0182ebad70b2098e06741e83139dc14f87cb366f` preserves current `main`
+  (`2a7641b`) as its second parent. Latest local code commit `6df8af1`
+  rejects repeated selected-cell `<v>` payloads and ambiguous
+  `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
+  and excluded `Description` handling remain covered. The 10 focused second-
+-  round cases and 75 UCI workbook unit/integration tests passed. Published PR
+  head `35bff7824970ebc511e05add240088b2ffd74057` passed the full local gate
+  (968 tests, zero skips, six checks) with the reviewed WorldKernel pin; all
+  seven observed GitHub checks passed on that exact head. Its
+  documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
+  passed the same gate and seven checks. See exact receipts and run links in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+  Reply `7227559961` addresses review finding `7226309300`; obtain independent
+  re-review. If documentation changes advance the branch, record their own
+  exact-head gate and checks; never transfer the `35bff78` evidence. Do not
+  merge #65 or mark review comments resolved.
+- Keep parser changes synthetic-test-only. No more UCI source processing is
+  authorized; preserve the `2026-12-26` deletion deadline. Do not begin a
+  disconnected feature while #65 awaits review.
+- M1 synthetic workflow is integrated; M1 empirical and production acceptance
+  remain incomplete. Keep the queue stable until #65 review; afterward resume
+  existing M2-02/G-02 work only in approved offline scopes. No new unrelated
+  feature is authorized by this continuation.
+
+
+## Historical review reconciliation - 2026-11-27
 
 Main `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc` incorporates #60, #61 and
 #64 through #66. The independent post-merge gate passed 856 tests, zero skips
@@ -13,16 +50,20 @@ merge decision recorded in the integration PR. No actual Census data or
 FRED/ALFRED access is authorized; the direct original Census artifact
 proposal requires separate owner decisions under B-01/B-02.
 
-PR #65 is still separate: the UCI source was privately acquired within
+PR #65 remains separate: the UCI source was privately acquired within
 MM-017 through MM-022, but the attempt stopped above 250,000 product-day
-groups without scores. The duplicate-cell and error-cell parsing findings
-remain with Codex. No further source processing is authorized here.
-Preserve the 2026-12-26 deletion deadline. B-08 remains open with zero
-paid budget. M2-02 and G-02 may advance independently within their
-existing fictional/offline scopes. The dated branch/status records below
-are historical where inconsistent with this reconciliation and live PRs.
+groups without scores. The duplicate-cell, error-cell and ambiguous scalar
+payload findings have synthetic regressions; the latest response is recorded
+in comment `7227559961`. Published code head `35bff78` and documentation-only
+descendant `d454b48` passed their exact-head local gates and all seven
+observed GitHub checks; PR still awaits independent re-review.
+No further source processing is authorized. Preserve the 2026-12-26 deletion
+deadline. Historical pre-start check diagnostics remain unexplained despite
+current green public checks; the zero-paid budget remains. The dated branch
+and status records below are historical where inconsistent with this
+reconciliation and live PRs.
 
-## Integration candidate - 2026-11-27
+## Historical integration candidate - 2026-11-27
 
 The separately reviewed heads of PRs #64 (example maintenance), #60
 (experimental scoped BM25 retrieval), and #61 (in-process current-head
@@ -58,7 +99,7 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
-## Current owner-approved continuation — 2026-11-27
+## Historical owner-approved continuation — 2026-11-27
 
 - `main` is `a456034c55ed7634ad4768b26788fec09dab1d08`, the
   ancestry-preserving PR #62 merge. Independent post-merge gate passed 835
@@ -321,7 +362,7 @@ ENG-02 tracks five pre-existing Ruff findings in three M1 examples separately
 from the review queue. Do not auto-apply the unsafe RUF007 suggestion.
 Consolidate #60, Census and #61 before expanding M2 beyond M2-01.
 
-## 1.2 Current resumed state — 2026-11-26
+## 1.2 Historical resumed state — 2026-11-26
 
 PR #62 is merged into `main` at
 `a456034c55ed7634ad4768b26788fec09dab1d08`. Independent post-merge local

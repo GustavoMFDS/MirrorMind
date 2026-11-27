@@ -847,6 +847,27 @@ service outages. Describe how a future HTTP adapter can map an unexpected
 exception at its transport boundary without broad catches inside the typed
 responder.
 
+
+## Guided exercise — reject ambiguous worksheet cell payloads
+
+Read the [bounded UCI workbook walkthrough](UCI_WORKBOOK_READER.md) and trace
+`_iter_worksheet_rows` in [`uci_xlsx_xml.py`](../../src/mirrormind/domains/retail/uci_xlsx_xml.py).
+The parser runs this iterator twice: first to discover only referenced shared
+strings, then to decode selected values. Run
+`test_duplicate_scalar_values_fail_in_both_worksheet_passes`,
+`test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes`, and
+`test_valid_inline_rich_text_runs_remain_one_stock_code` from
+[`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py). Explain why
+counting `<v>` structure matters even when the first pass does not capture
+scalar text, why mixed `<v>` and `<is>` representations are ambiguous, and
+why multiple ordered rich-text runs inside one valid `<is>` payload remain
+supported. Verify that a failed cell produces a fixed redacted error and that
+excluded `Description` text remains outside character callbacks. These
+synthetic tests establish parser behavior only; they do not establish source
+rights, private-workbook anomalies, archive completeness or hostile-file
+isolation. Do not reread the private workbook or infer empirical quality.
+
+
 ## Exercise: inspect a local decision report
 
 Follow the [report walkthrough](PORTFOLIO_DEMO.md), compare selected case metrics with original JSON and explain the difference between display selection and a new seeded workflow execution.

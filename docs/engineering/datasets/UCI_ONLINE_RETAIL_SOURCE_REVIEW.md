@@ -1,13 +1,13 @@
-# UCI Online Retail (352) — licensed-source candidate, not approved ingestion
+# UCI Online Retail (352) — approved local research scope and snapshot record
 
-**Review date:** 2026-11-26 (publisher metadata rechecked; no file acquired).
-**Status:** `license-published / privacy-and-use-review-pending`.
-**Operational decision:** **NO-GO** for unattended source downloads,
-commit of transaction records, model training, customer-level
-analytics or a claim of historically available forecasts until
-the applicable attribution, privacy and provenance review is
-signed off. This document records source information and
-risk boundaries; it is not a legal opinion or access authorization.
+**Source review:** 2026-11-18; owner scope approval and exact snapshot
+preflight: 2026-11-26.
+**Status:** `approved_scoped_local_research / snapshot_preflighted / evaluation_blocked`.
+The owner approved one local, non-commercial UCI #352 event-time run. This is
+not a legal opinion or authorization for commercial use, customer-level
+analysis, broad ingestion, model promotion, publication-time claims or another
+source. The current parser fails closed after the product-day group limit is
+exceeded; no complete projection or empirical metric exists.
 
 ## 1. Original evidence (not a third-party mirror)
 
@@ -17,21 +17,13 @@ risk boundaries; it is not a legal opinion or access authorization.
 | Citation / DOI | Chen, D. (2015). *Online Retail* [Dataset]. UCI Machine Learning Repository. [doi:10.24432/C5BW33](https://doi.org/10.24432/C5BW33) |
 | License shown by UCI | [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) — UCI's official page explicitly labels **this dataset** CC BY 4.0 |
 | Published license scope | CC BY 4.0 allows copying/adaptation, including commercial use, **provided its attribution, license link and change notice obligations are respected**; it does not waive unrelated privacy, publicity, contract, database or security obligations |
-| File | UCI lists `Online Retail.xlsx`, about 22.6 MB; this is **larger** than the 1 MiB MirrorMind local parser budget |
+| File | Official archive contains `Online Retail.xlsx`; the verified archive is 23,715,478 bytes and workbook is 23,715,344 bytes |
 | Rows and period | UCI reports 541,909 transactions, dated 2010-12-01 through 2011-12-09, for a UK non-store retailer |
 | Source fields | `InvoiceNo`, `StockCode`, `Description`, `Quantity`, `InvoiceDate`, `UnitPrice`, `CustomerID`, `Country` |
 
-These facts were checked on the official UCI page and the
-official Creative Commons license summary on 2026-11-18 and the
-publisher metadata was rechecked on 2026-11-26. The current UCI
-record still lists CC BY 4.0 and a 22.6 MB workbook. The [CC BY
-4.0 deed](https://creativecommons.org/licenses/by/4.0/deed.en) and
-[legal code](https://creativecommons.org/licenses/by/4.0/legalcode.en)
-require appropriate credit, a license link and an indication of
-changes when sharing licensed material. The deed also states that
-privacy and other rights may require additional permission. None of
-this verifies the exact bytes or resolves the planned field/privacy
-review.
+These source facts were checked on the official UCI page and the official
+Creative Commons license summary on 2026-11-18, and rechecked before the
+2026-11-26 acquisition.
 They **do not imply** that all records are complete, that
 customer-identifying fields are safe to redistribute,
 or that the dataset contains inventory, lead times,
@@ -47,7 +39,79 @@ with its own UCI-published CC BY 4.0 entry and
 about 1.07 million transactions from 2009–2011.
 **Do not silently mix the two datasets or their snapshots.**
 
-## 2. Required human review before source adapter operation
+## 2. Source-specific controls and completed checks
+
+The owner approved this exact research scope on 2026-11-26. The accepted
+license terms, attribution and change-notice obligation are recorded in the
+[snapshot manifest](UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json). The source
+is held outside Git in a private local directory; its path is deliberately
+omitted from the manifest. Raw bytes and row-level intermediates must be
+deleted no later than 30 days after acquisition.
+
+The adapter uses only `InvoiceNo` transiently for the existing cancellation
+rule, `StockCode` as an opaque category key, `Quantity` and `InvoiceDate` as
+transaction event time. It never forwards `CustomerID`, `Description`,
+`UnitPrice` or `Country` to projection or evaluation. `StockCode` normalization
+is limited to exact positive five-digit integer cells and the approved source
+strings containing internal ASCII spaces. Those results mean units per
+`StockCode` category, not verified physical-SKU demand. Automated tests remain
+synthetic-only.
+
+The local metadata preflight matched the publisher row count, dates, sheet and
+header. It found blank cells in excluded `CustomerID` and `Description` fields,
+despite UCI's page saying there are no missing values. Required projection
+fields were complete. The discrepancy is disclosed in the path-free manifest;
+excluded values are not used to filter or group rows.
+
+The initial real-source reader attempts used `openpyxl.iter_rows(values_only=True)`
+and therefore materialized `Description` body values transiently before
+discarding them. This did not satisfy the approved field-read boundary. The
+values were not persisted or transferred externally; the old reader path was
+removed and replaced with selective OOXML streaming. The corrected parser
+does not pass excluded-cell character data to Python callbacks; Expat still
+scans XML structure. A synthetic shared-string regression records callback
+chunks and proves the excluded marker is absent from application-visible text.
+
+The publisher describes invoice IDs as six-digit numbers and `C`-prefixed
+cancellations. The exact workbook also contains at least one other
+single-letter ASCII prefix followed by six digits. Under owner decision
+MM-021, the UCI-only path treats six-digit IDs normally, retains `C`/`c`
+cancellation handling, and excludes other single-letter prefixes into one
+aggregate counter before grouping. Other invoice formats still fail closed;
+the generic projection contract is unchanged. The original IDs are not
+retained.
+
+The owner clarified this rule in MM-022: exact uppercase `C` is the only
+cancellation marker, while lowercase `c` joins other letter prefixes in the
+unverified class. The owner confirmed the conservative, aggregate-only
+exclusion policy on 2026-11-27. Synthetic regressions cover every single ASCII
+letter prefix and fail-closed handling of other formats. The real-source
+attempt used MM-021 and was not repeated because both cancellation and
+unverified classes were excluded before grouping; the clarification cannot
+reduce the observed product-day count. No complete exclusion count or
+empirical metric exists.
+
+A subsequent owner review reproduced three parser hazards with generated
+workbooks: duplicate cell coordinates overwrote prior values, an OOXML error
+cell could be interpreted as a valid `StockCode`, and malformed numeric text
+could fall back into a category key. The adapter now rejects duplicate
+coordinates in all schema columns in both worksheet passes, validates
+field-specific types and numeric syntax, and emits only fixed redacted errors.
+Regression coverage includes duplicate header, selected and excluded cells;
+error and unknown selected types; and malformed, overflowing and underflowing
+numeric tokens. This is synthetic evidence only. The private workbook was not
+re-read and no source-level anomaly is asserted.
+
+The preflight passed the owner-approved 192 MiB/member and 224 MiB/total ZIP
+profile while retaining the generic 64/128 MiB defaults and the 32 MiB
+compressed-input, 200:1 ratio and 600,000-row bounds. It stopped at the
+unchanged generic 100,000 product-day group ceiling. The owner separately
+approved a UCI-workbook-only explicit call cap of 250,000 groups; the default
+remains 2,000 and generic callers are unchanged.
+
+The following checklist is retained as pre-acquisition review history.
+
+### Historical pre-acquisition checklist
 
 - [ ] Verify the original UCI dataset page and linked CC BY 4.0
   license are still applicable to the exact downloaded file.
@@ -92,11 +156,11 @@ CSV containing exactly:
 series_id,observed_on,available_on,units
 ```
 
-The official UCI source is an approximately 22.6 MB
-Excel workbook, not this daily CSV contract.
+The official UCI source is an Excel transaction workbook, not this daily CSV
+contract.
 It contains transaction records including customer
 and invoice identifiers. A future source-specific
-adapter must be a **separate, opt-in and tested**
+adapter remains a **separate, opt-in and tested**
 component that:
 
 1. Opens a locally reviewed, approved, size-bounded
@@ -136,56 +200,58 @@ A legally usable snapshot can still be
 scientifically unsuitable for a particular
 forecasting claim.
 
-## Next action
+## Current source state and next action
 
-Owner approved preparing a narrow, local research adapter and a separate
-aggregate temporal-method protocol. This is not approval to acquire or process
-the real workbook. Before any source bytes are handled, complete the exact
-terms, attribution/change notice, field-minimization, secure storage,
-retention/deletion and manifest checks above and obtain source-specific
-approval. Automated tests remain synthetic-only.
+The source-specific local snapshot has been acquired and preflighted. Its
+path-free manifest records the exact official artifact hashes, acquisition
+time, metadata, approved resource profile and retention deadline. The initial
+projection stopped at the generic 100,000-group ceiling. After MM-020 and
+MM-021 implementation, one corrected call applied the approved invoice
+classification and exceeded 250,000 product-day groups. It failed closed
+without returning a partial projection, exact count, exclusion count or
+metrics. The UCI lane is stopped at this bound. Do not retry, partition, alter
+generic limits or process beyond the approved cap without a new owner scope
+decision.
 
-**Current source state:** PR #62 incorporated PR #57's synthetic UCI event-time
-evaluator into `main` at `a456034c55ed7634ad4768b26788fec09dab1d08`; the
-consolidated synthetic M1 scope received favorable independent review and the
-merged-main gate passed 835 tests with zero skips. No real file was acquired.
-The local 1 MiB XLSX reader still cannot process UCI's complete 22.6 MB
-workbook, so a separately reviewed bounded streaming path would be required
-before full-file use. Unverified publication time, empirical performance and
-source permission are not delivered.
+Even after a successful event-time run, there will be no verified
+publication-time history. Keep the result label
+`event_time_retrospective_unverified_availability`; B-02 remains open.
 
-## 5. Owner-approved preparation plan for B-01 / B-02
+## 5. Owner-approved research lanes and temporal methods for B-01 / B-02
 
-This section prepares a source and temporal-method decision. It grants no
-permission to download data or make a real-source capability claim.
+This section records the research lane order and evaluation contracts. UCI
+approval is limited to the acquired local #352 snapshot and scope above. It
+does not grant permission to retrieve Census/ALFRED or make a production
+capability claim.
 
 ### A — UCI Online Retail #352 event-time retrospective
 
 The selected source is UCI [Online Retail #352](https://archive.ics.uci.edu/dataset/352/online-retail),
 not Online Retail II #502. Its `InvoiceDate` is transaction event time; no
-row-level publication timestamp is supplied. The owner approved preparation
-of research-only event-time evaluation, not real workbook acquisition or
-commercial use. Removing `CustomerID` and `InvoiceNo` is minimization, not
-proof of anonymization.
+row-level publication timestamp is supplied. The owner approved one
+research-only event-time evaluation, including the local download and
+processing within the reviewed limits. Removing `CustomerID` and `InvoiceNo`
+is minimization, not proof of anonymization.
 
-**Predeclared protocol:** freeze product cohort from fit history only. Fit and
+**Predeclared protocol:** freeze the `StockCode`-category cohort from fit
+history only. Fit and
 cohort end 2011-08-30; validation origins run 2011-08-31 through 2011-09-30;
 locked one-day-ahead holdout origins run 2011-10-01 through 2011-12-08 with
 targets through catalog end 2011-12-09. Compare same-weekday lag-7 and
-trailing-seven-calendar-day baselines on identical eligible product/origin
+trailing-seven-calendar-day baselines on identical eligible category/origin
 pairs. Report MAE, RMSE, zero-safe WAPE, coverage and abstentions. A zero target
 may be materialized only after a reviewed snapshot proves date coverage and
 source completeness; otherwise abstain. Restrict output to aggregate metrics
-and ordinal-only product summaries. Label all results
+and ordinal-only category summaries. Label all results
 `event_time_retrospective_unverified_availability`; never create
 `available_on` from `InvoiceDate`.
 
 The adapter and regression tests from [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
-are integrated through PR #62 and operate on synthetic fixtures. The official
-workbook exceeds the existing parser's row/group bounds and would require a
-separately reviewed bounded streaming adapter. A synthetic test proves
-projection/evaluation behavior, not rights, source completeness, actual
-workbook compatibility or real-data predictive skill.
+operate only on synthetic fixtures. A separate approved local source preflight
+verified workbook compatibility through schema and field validation; the
+projection then refused at its generic group ceiling. No real-data evaluation
+or predictive-skill result is available. Synthetic tests still do not prove
+rights, source completeness or empirical behavior.
 
 ### Option B — Census MARTS release-vintage method pilot
 
@@ -232,26 +298,30 @@ alternative vintage source; no API key, access or download is assumed here.
 
 ### Decision recorded and remaining permission gates
 
-- **Accepted:** prepare A followed by independent B; keep Census aggregate-only
-  and UCI event-time retrospective. Synthetic tests remain mandatory and no
-  source bytes or credentials are in scope.
-- **Still required before UCI processing:** verify original terms and
-  attribution/change notice, approve exact field projection and cancellation
-  classification, secure local storage, retention/deletion, exact snapshot
-  manifest and dataset card. No raw/identifying data in Git, CI, logs, prompts
-  or external services.
+- **Accepted:** execute A before considering independent B; keep Census
+  aggregate-only and UCI event-time retrospective. Automated tests remain
+  synthetic. The UCI source has been acquired locally under the reviewed scope.
+- **UCI stop condition reached:** after the approved invoice-classification
+  policy was applied, the bounded reader exceeded the owner-approved 250,000
+  product-day cap and failed closed. No projection or evaluation exists.
+  Do not retry, partition, or raise the cap without a new owner decision.
+  The source remains local/private until its recorded deletion deadline;
+  never place raw or identifying data in Git, CI, logs, prompts or external
+  services.
 - **Still required before Census retrieval:** select exact aggregate series,
   release archive and geography; verify rights, source bytes, first-release
   versus revised-vintage semantics, availability timestamps and an immutable
   manifest. Do not reconstruct missing historical vintages from today's
   revised series.
-- B-01/B-02 remain open for source authorization and point-in-time acceptance.
-  M5 remains NO-GO. No SKU-level demand or inventory-policy validation follows
-  from an aggregate Census series.
+- B-01 is scope-limited and stopped at the approved group bound; B-02 remains
+  open because transaction event time is not publication availability and no
+  Census vintage has been retrieved. Independent Census protocol preparation
+  may proceed, but acquisition requires a separate exact source/vintage review.
+  M5 remains NO-GO. No physical SKU demand or inventory-policy validation
+  follows from either this UCI protocol or aggregate Census.
 
-Owner direction is recorded in [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818).
-**Current status:** A's synthetic evaluator is integrated on `main` through
-PR #62; B's aggregate-vintage evaluator and numerical/chronology corrections
-remain separate in open PR #63. Both lanes remain synthetic-only. Neither
-source was downloaded, no source-specific processing approval was granted
-and no empirical result is claimed.
+Owner direction is recorded in [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57#issuecomment-7164856818)
+and the 2026-11-26 decisions in the [scoped change request](../changes/M1B_01_UCI_REAL_SOURCE_PILOT.md).
+**Current status:** A's approved bounded attempt was stopped at 250,000 groups;
+no full projection or empirical result is claimed. B's aggregate-vintage
+protocol is prepared, but no Census/ALFRED data has been acquired.

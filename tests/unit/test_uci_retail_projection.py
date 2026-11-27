@@ -88,6 +88,17 @@ def test_retained_row_is_not_automatically_proof_of_merchandise_or_true_demand()
     assert result.receipt()["status"].endswith("not_authorized")
 
 
+def test_internal_ascii_space_policy_is_not_public_on_generic_projection():
+    source_row = row(code="SPECIAL ITEM")
+    with pytest.raises(ValueError, match="invalid product stock code"):
+        project_uci_retail_rows([source_row])
+
+    with pytest.raises(TypeError, match="unexpected keyword"):
+        project_uci_retail_rows(
+            [source_row], allow_internal_stock_code_spaces=True
+        )
+
+
 @pytest.mark.parametrize("bad", [True, 0, -2, MAX_SUPPORTED_ROWS + 1, 1.5, "10"])
 def test_invalid_row_budgets_fail_before_consuming_rows(bad):
     with pytest.raises(ValueError, match="max_rows"):
@@ -152,11 +163,13 @@ def test_invalid_quantity_fails_closed_even_on_cancelled_invoice(quantity):
         project_uci_retail_rows([row(invoice="C536365", quantity=quantity)])
 
 
-@pytest.mark.parametrize("invoice", ["", "X536365", "=ABC", "C1", "123", True,
+@pytest.mark.parametrize("invoice", ["", "X536365", "c536365", "=ABC", "C1", "123", True,
                                      536365.0, None, -1])
 def test_invalid_invoice_format_does_not_get_treated_as_regular_sale(invoice):
-    with pytest.raises(ValueError, match="invoice number"):
+    with pytest.raises(ValueError, match="invoice number") as caught:
         project_uci_retail_rows([row(invoice=invoice)])
+    if str(invoice):
+        assert str(invoice) not in str(caught.value)
 
 
 @pytest.mark.parametrize("stock", ["", "=FORMULA", "SKU SPACE", None, True,

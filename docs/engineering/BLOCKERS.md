@@ -2,12 +2,18 @@
 
 ## Current B-08 reconciliation - 2026-11-27
 
-Standard GitHub-hosted CI is operational after the owner made the repository
-public. Both workflows succeeded on main `6a596660`; see the
-[quality gate baseline](LOCAL_QUALITY_GATE.md). The earlier quota-blocked
-records below are retained as historical evidence. The zero-paid-budget
-constraint remains; the private optional WorldKernel dependency still
-requires separately authorized access and independent local validation.
+Standard GitHub-hosted checks are operational on public main
+`2a7641b88b0d97a239d44102d4da9497460f21d1`: six GitHub-hosted test,
+compatibility, catalog and CodeQL check runs completed successfully at 20:19
+UTC. See the
+[quality gate baseline](LOCAL_QUALITY_GATE.md). This verifies that exact main
+commit only; check the exact PR head separately after publication. Earlier
+pre-start failures remain historical, and their annotations do not establish
+which account condition caused them. The owner's zero-paid-budget constraint
+still applies. No self-hosted runner is needed: all seven observed public
+checks also succeeded on PR #65 documentation head
+`d454b48477af4691a363622ecf8b2fd85a7e5a60`. The optional private WorldKernel
+dependency is validated separately by the exact-head local gate.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
@@ -25,7 +31,45 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | The owner confirms the Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. Exact local gates exist for merged main `a456034c55ed7634ad4768b26788fec09dab1d08` (835 tests), PR #60 `fafdedae3a76398e0450773065e40384c96d1ed7` (845), PR #61 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` (841), PR #63 pre-diagnostic source-policy head `47cdb587b0deab19835acd1435e4bd028ba28519` (882; pre-source-policy `0a24c01` also passed 882), and PR #64 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` (840); each reports zero skips and six local checks, none is official Actions. Four #63 checks on `47cdb58`, `0a24c01`, previous `44b128c` and earlier #63 heads, plus four #64 checks on `ca97ab6`, failed; see exact evidence below and earlier records. On `47cdb58`, four check annotations state that recent account payments failed or the spending limit needs an increase; the text presents alternatives and identifies neither cause. Diagnostics expose no jobs, steps, logs or combined status. On `0a24c01`, annotation text was unavailable; no cause is inferred for either head. The owner's allowance report is separate evidence. No runner is registered; the zero-cost ephemeral-host option still needs a dedicated host and security/feasibility approval. | Official Actions can run within the existing zero-paid budget, or the owner separately approves a zero-cost dedicated ephemeral host after feasibility and security review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
+| B-08 | Historical pre-start failures remain unexplained; their annotations list alternative account conditions without identifying one. Current public checks are operational: all six succeeded on main `2a7641b88b0d97a239d44102d4da9497460f21d1` and all seven observed checks succeeded on PR #65 exact documentation head `d454b48477af4691a363622ecf8b2fd85a7e5a60`. No self-hosted runner is needed for those verified checks. The owner still authorizes zero paid usage and no spending-limit increase. Historical cause diagnosis remains open, but it does not block current PR check evidence. | Preserve exact-head check/run evidence; if a future pre-start failure recurs, inspect its annotations and run state without inferring a cause. | GitHub account owner / repository administrator | Continue normal exact-head public checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change workflows/protections, bypass or weaken checks. |
+
+## PR #65 parser-review reconciliation - 2026-11-27
+
+The latest independent synthetic review reproduced two structural cases after
+the first correction: a repeated `<v>` inside one selected quantity cell could
+overwrite the earlier value, and a selected cell could mix scalar `<v>` and
+inline `<is>` payloads. Commit `6df8af1` rejects repeated scalar values and
+ambiguous mixed payloads in both worksheet passes, while preserving valid
+ordered rich-text runs. It does not change the UCI-only invoice policy, generic
+projection contracts, bounds, or excluded `Description` handling.
+
+The 9 targeted structural regressions failed on the pre-fix parser; the 10
+focused cases passed after correction, including the rich-text compatibility
+control. The UCI workbook unit and integration suites passed 75 tests; Ruff
+passed on the changed Python files. These are synthetic parser tests. The
+source remains stopped above 250,000 groups; it was not reread and has no
+projection, complete exclusion count or empirical score. The complete local
+gate on code head `35bff7824970ebc511e05add240088b2ffd74057` and documented
+head `d454b48477af4691a363622ecf8b2fd85a7e5a60` passed
+(968 tests, zero skips, six checks, reviewed WorldKernel pin), and all seven
+observed GitHub checks succeeded. Comment `7227559961` records the correction
+and evidence for review finding `7226309300`; independent re-review remains
+pending. Any later tracked change needs its own exact-head gate and check
+observation. See the [reader walkthrough](UCI_WORKBOOK_READER.md),
+[change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md) and
+[PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65).
+
+### B-07 PR #65 restricted-sandbox diagnostic - `c6c1326`
+
+A restricted-sandbox full-gate attempt on exact code head
+`c6c1326be9332e51b160931de4dd994d54868793` timed out in
+`tests/integration/test_api.py::test_health`. An isolated run of that test
+waited in the restricted executor and passed in 1.27 seconds with loopback
+permitted. The unchanged exact SHA then passed its full 881-test, zero-skip
+six-check gate; see the two receipts in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This supports a loopback
+restriction for this reproduction only. It does not explain the historical
+`8f906b8` timeout, GitHub Actions or the newer parser candidate.
 
 ### PR #63 pre-start checks — head `2764e60` — 2026-11-26
 

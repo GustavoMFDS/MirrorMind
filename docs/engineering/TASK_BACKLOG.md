@@ -2,57 +2,65 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Main `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc` incorporates #60, #61 and
-#64 through #66. The independent post-merge gate passed 856 tests, zero skips
-and all six checks plus examples Ruff. See [PR #66](https://github.com/GustavoMFDS/MirrorMind/pull/66).
-M2-01, G-01 and ENG-02 are integrated within their experimental scopes.
-The Census review candidate preserves the exact #63 head and adds the
-uppercase Decimal fingerprint fix with a failing-before/passing-after
-regression. The candidate is not accepted until the combined gate and
-merge decision recorded in the integration PR. No actual Census data or
-FRED/ALFRED access is authorized; the direct original Census artifact
-proposal requires separate owner decisions under B-01/B-02.
+Current `main` is `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #66
+integrated #60/#61/#64; PR #67 integrated Census #63; PRs #68–#71 updated the
+public portfolio/license; #72 added the offline synthetic report; #73
+prepared the source alpha; #74 recorded repository excellence and branch
+inventory; #75 hardened public CI and expanded Python compatibility; #76
+established security/community workflows. PRs #74–#76 each recorded 912 local
+tests, zero skips and six checks. All six exact-main check runs succeeded on
+`2a7641b`: `test`, Python 3.12/3.13 compatibility, symbol catalog and two
+CodeQL analyses (runs 46062899971, 46062899967 and 46062900063). Local and
+remote evidence remain separately labeled. No paid budget, runner registration
+or protection change was used.
 
-PR #65 is still separate: the UCI source was privately acquired within
-MM-017 through MM-022, but the attempt stopped above 250,000 product-day
-groups without scores. The duplicate-cell and error-cell parsing findings
-remain with Codex. No further source processing is authorized here.
-Preserve the 2026-12-26 deletion deadline. B-08 remains open with zero
-paid budget. M2-02 and G-02 may advance independently within their
-existing fictional/offline scopes. The dated branch/status records below
-are historical where inconsistent with this reconciliation and live PRs.
+PR #65 remains the active queue item; use its live metadata for the currently
+published head. Local branch `codex/uci352-pilot-20261126` contains merge commit
+`0182eba`, preserving current main `2a7641b` as its second parent. It includes
+the prior duplicate-coordinate/type/numeric fixes and latest `6df8af1`
+correction for repeated scalar and mixed scalar/inline worksheet payloads.
+Regressions reproduce both review rounds, including both parser passes,
+rich-text compatibility and excluded-field privacy. Focused UCI workbook
+unit/integration suites passed 75 tests, including 10 second-round structural
+cases. Published code head `35bff7824970ebc511e05add240088b2ffd74057` passed
+the exact six-check local gate with 968 tests, zero skips and reviewed
+WorldKernel pin; all seven observed GitHub checks also succeeded. Its
+documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
+passed the same local gate and all seven checks. Both receipts and exact Actions
+runs are recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Comment
+`7227559961` replies to review finding `7226309300` with correction and test
+evidence. PR #65 remains open for independent re-review. This is not empirical
+pilot evidence: the source attempt stopped above the approved group bound.
+Any later tracked change needs a fresh exact-head gate and check observation.
+Do not merge PR #65 or mark review comments resolved before independent
+acceptance.
 
-## Integration candidate - 2026-11-27
+The only approved UCI #352 processing attempt stopped above 250,000
+product-day groups without a projection, complete exclusion count or metrics.
+The source was not reread. Keep tests synthetic; do not retry, partition, raise
+the cap or acquire Census under this work. Preserve the UCI snapshot's
+`2026-12-26` deletion deadline. B-01/B-02 and production acceptance remain
+open. M1's synthetic end-to-end path is integrated, but M1 as a whole remains
+incomplete. After #65 is consolidated and independently reviewed, continue the
+existing M2-02/G-02 tasks only within their approved fictional/offline scopes;
+do not add a disconnected feature while this review queue remains active.
 
-The separately reviewed heads of PRs #64 (example maintenance), #60
-(experimental scoped BM25 retrieval), and #61 (in-process current-head
-responder) are included by normal merges, preserving their ancestry. This
-candidate is intended for a single ancestry-preserving PR to main; the
-independent combined gate and merge decision are recorded in its PR.
-Do not infer approval from this document alone. Once integrated, begin M2-02
-against the retrieval interface and continue G-02 only within its scoped
-offline contract. No authenticated RBAC, deployed authority, empirical
-forecast or production readiness is implied.
-
-PR #63 (synthetic Census) and #65 (UCI reader) remain separate. The latter
-records the owner's narrow UCI approval MM-017 through MM-022, a source
-snapshot held privately, and a fail-closed stop above 250,000 product-day
-groups without metrics. No new source processing, partitioning, cap increase
-or Census acquisition is authorized by this integration. Preserve the
-2026-12-26 deletion deadline and see the live PR #65 and its manifest for the
-latest source-specific evidence. B-01/B-02 and B-08 remain open. The
-following dated records retain historical gate and branch information;
-where they differ from this queue, use the live PRs and current evidence.
-
-**Baseline:** PR #62 merge commit `a456034c55ed7634ad4768b26788fec09dab1d08`,
-see [PROJECT_STATUS](PROJECT_STATUS.md). This is
-the maintained task register, not a duplicate roadmap or a promise
-of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
+**Baseline:** main `2a7641b88b0d97a239d44102d4da9497460f21d1`. PR #52–#59
+were incorporated through #62; #60/#61/#64 through #66; Census #63 through
+#67; PRs #68–#76 are also integrated. The merged branches preserve their
+ancestry and must not be replayed as new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
+[MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
-On resuming work, reconcile with actual branches, open PRs, merged commits and
-independently observed evidence. Do not duplicate work already underway.
 
-## Current queue reconciliation — 2026-11-26
+## Current PR #65 review candidate
+
+| Work | Current state | Next acceptance gate |
+| --- | --- | --- |
+| UCI workbook parser review | Published code head `35bff7824970ebc511e05add240088b2ffd74057` includes correction `6df8af1` and current-main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads fail closed in both worksheet passes. Valid inline rich text passes; `Description` remains excluded from selected text callbacks. Code head and documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60` passed 968 tests, zero skips, six local checks and seven observed GitHub checks each. Response `7227559961` addresses review finding `7226309300`. | Obtain independent re-review. For any new tracked commit, repeat the exact-head local gate, publish normally, and verify its own official checks. Keep #65 open and unmerged until review acceptance. |
+| UCI empirical pilot | Stopped at approved 250,000 group bound; no projection or metrics. | No further source operation without new owner authorization; preserve deletion deadline. |
+| B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue only existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
+
+## Historical queue reconciliation — 2026-11-26
 
 | Work | Current state | Evidence / next gate |
 | --- | --- | --- |
@@ -64,10 +72,9 @@ independently observed evidence. Do not duplicate work already underway.
 | ENG-02 examples lint maintenance | Ready as a separate maintenance item. `ruff check examples` on this branch reports five findings in three example files; none of these files differ from main. | Handle in a separate scoped PR; do not fold cleanup into #60/#61/#63. |
 | Real-source pilots | Preparation only under the approved UCI then aggregate Census/ALFRED sequence. | B-01/B-02 remain open; keep automated tests synthetic and wait for source-specific rights, privacy, snapshot and temporal evidence. |
 
-GitHub Actions remains unavailable under the zero-paid-budget decision. Use
-the exact-clean-head six-check local procedure; receipts are local evidence,
-never official CI. No required check, workflow or branch protection is
-weakened. The PR #62 final comments
+At this 2026-11-26 snapshot, GitHub Actions was unavailable under the
+zero-paid-budget decision. The local six-check procedure remained separate
+from official CI; no required check or protection was weakened. The PR #62 final comments
 [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141)
 are the review record for the incorporated M1 baseline and PR ordering.
@@ -101,7 +108,7 @@ its later fixes are not part of #62. No branch was merged and `main` was not
 changed. PR #60 remains a separate M2 draft; PR #61 remains a separate G-01
 draft.
 
-## Current queue — 2026-11-26
+## Historical queue — 2026-11-26
 
 | ID | Status | Current state / next action | Blockers |
 | --- | --- | --- | --- |
@@ -276,7 +283,7 @@ If a gate fails, preserve the failure and choose the next safe
 independent slice. A blocker resolved for a synthetic fixture does
 not automatically resolve real-source, deployment or product gates.
 
-## Current queue — 2026-11-26
+## Historical queue — 2026-11-26
 
 | ID | Status | Current state / next action | Blockers |
 | --- | --- | --- | --- |
