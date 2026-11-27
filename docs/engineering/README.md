@@ -141,3 +141,5 @@ These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but 
   it has no HTTP server, persistence, authentication or separate custody.
   No independently trusted currentness or real ingestion permission is
   provided by this repository. See its [change request](changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md).
+
+- [Offline interactive report](PORTFOLIO_DEMO.md): presentation of existing synthetic results, not a hosted UI.

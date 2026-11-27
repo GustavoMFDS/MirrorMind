@@ -127,6 +127,16 @@ selected-engine provenance. No ranking or action is authorized.
 }
 ```
 
+### Interactive offline demo
+
+Generate a new local HTML report from the actual synthetic workflow:
+
+```bash
+python -m examples.m2_portfolio_demo --as-of 2011-01-26 --replications 2 --seed 317 --output mirror-demo.html
+```
+
+Open the generated file in a browser. Explore precomputed lead-time scenarios, forecasts, evidence and the complete decision trace. No server or external service is required. [Report guide](docs/engineering/PORTFOLIO_DEMO.md).
+
 ### Local API
 
 ```bash

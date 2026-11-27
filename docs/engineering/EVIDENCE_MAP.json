@@ -1356,5 +1356,12 @@
     "test": "tests/unit/test_atomic_governed_publisher.py",
     "function": "test_remote_head_service_propagates_unexpected_adapter_programming_errors",
     "limitation": "In-process fake clock/store RuntimeErrors remain visible; no production adapter or future transport-level exception policy is tested."
+  },
+  {
+    "id": "MM-PORT-001",
+    "guide": "docs/engineering/PORTFOLIO_DEMO.md",
+    "test": "tests/integration/test_portfolio_demo.py",
+    "function": "test_offline_report_preserves_exact_workflow_result",
+    "limitation": "Embedded JSON equals the existing synthetic service output and retains nonauthorization flags; this is a static local report, not a live agent, empirical evaluation, browser security certification or production UI."
   }
 ]
