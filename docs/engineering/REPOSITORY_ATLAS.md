@@ -1040,3 +1040,20 @@ forecast claims or cross-repository changes.
 
 - [LICENSE](../../LICENSE): standard Apache-2.0 license text for original project material.
 - [Third-party licensing](../THIRD_PARTY.md): dependency metadata and separate engine/data boundaries.
+
+## Local interactive portfolio report
+
+- [Generator](../../examples/m2_portfolio_demo.py): bounded request, exact result embedding and explicit new HTML file.
+- [HTML template](../../examples/portfolio_demo.html): offline client-side exploration of precomputed cases.
+- [Report tests](../../tests/integration/test_portfolio_demo.py): exact JSON, escaping and failure contracts.
+- [Report guide](PORTFOLIO_DEMO.md) and [change request](changes/PORT_07_LOCAL_INTERACTIVE_REPORT.md): walkthrough, limits and acceptance.
+
+## First public alpha release
+
+- [Changelog](../../CHANGELOG.md): source-release scope and limitations.
+- [Alpha release guide](ALPHA_RELEASE.md): version alignment, reproduction and evidence.
+
+## Repository Excellence
+
+- [REX plan](REPOSITORY_EXCELLENCE.md): independent maintenance track.
+- [Branch inventory](REX_BRANCH_AUDIT.md): exact-head snapshot and deletion safety boundaries.

@@ -115,3 +115,18 @@ def test_live_api_claims_equal_reviewed_capability_ledger():
     assert not set(public["implemented"]) & set(public["planned"])
     assert all(item["status"] != "implemented" for item in capabilities
                if item["id"] == "simulation_gateway_protocol")
+
+
+def test_openapi_version_matches_project_version():
+    import re
+    from pathlib import Path
+
+    from mirrormind import __version__
+
+    project = (Path(__file__).resolve().parents[2] / "pyproject.toml").read_text(
+        encoding="utf-8"
+    )
+    version = re.search(r'^version = "([^"]+)"$', project, re.MULTILINE)
+    assert version is not None
+    assert version.group(1) == __version__
+    assert client.get("/openapi.json").json()["info"]["version"] == __version__

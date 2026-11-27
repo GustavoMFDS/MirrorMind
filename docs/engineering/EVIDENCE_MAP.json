@@ -1447,5 +1447,12 @@
     "test": "tests/unit/test_uci_workbook.py",
     "function": "test_valid_inline_rich_text_runs_remain_one_stock_code",
     "limitation": "One generated rich-text fixture proves its ordered runs concatenate to one category; it does not validate every OOXML rich-text extension or source workbook."
+  },
+  {
+    "id": "MM-PORT-001",
+    "guide": "docs/engineering/PORTFOLIO_DEMO.md",
+    "test": "tests/integration/test_portfolio_demo.py",
+    "function": "test_offline_report_preserves_exact_workflow_result",
+    "limitation": "Embedded JSON equals the existing synthetic service output and retains nonauthorization flags; this is a static local report, not a live agent, empirical evaluation, browser security certification or production UI."
   }
 ]

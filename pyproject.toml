@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mirrormind"
-version = "0.0.1"
+version = "0.1.0a1"
 description = "Evidence-driven decision intelligence research platform"
 license = {file = "LICENSE"}
 requires-python = ">=3.11"

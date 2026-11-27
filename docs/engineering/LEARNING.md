@@ -866,3 +866,8 @@ excluded `Description` text remains outside character callbacks. These
 synthetic tests establish parser behavior only; they do not establish source
 rights, private-workbook anomalies, archive completeness or hostile-file
 isolation. Do not reread the private workbook or infer empirical quality.
+
+
+## Exercise: inspect a local decision report
+
+Follow the [report walkthrough](PORTFOLIO_DEMO.md), compare selected case metrics with original JSON and explain the difference between display selection and a new seeded workflow execution.
