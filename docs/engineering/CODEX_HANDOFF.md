@@ -46,9 +46,14 @@
   drafted and all five focused static checks pass; the targeted retrieval
   suites pass 22 tests. Regression coverage now rejects empty/oversized
   corpora and unsupported document objects before scoring. The clean
-  exact-head six-check gate remains mandatory
-  before publishing. Local mypy is not installed; rely on the official quality
-  job for strict retrieval typing and record its exact head/status.
+  six-check gate passed on exact candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`:
+  989 tests, zero skips and all six checks; receipt is in
+  `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`.
+  The first sandboxed attempt timed out in TestClient's local socketpair setup;
+  the same unchanged gate passed outside the sandbox. See [B-07](BLOCKERS.md).
+  A fresh receipt is required for the final PR head after this evidence-doc
+  update. Local mypy is absent; rely on the candidate's official quality job
+  for strict retrieval typing and record its exact head/status.
 - Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
   new UCI source processing remain unauthorized. M1 synthetic workflow is
   integrated; empirical and production acceptance remain open. Preserve the

@@ -60,6 +60,24 @@ workflow evidence only for the exact PR head. This result does not validate the
 M2-02 candidate; its clean exact-head six-check gate and PR workflows remain
 required.
 
+### M2-02 integrated candidate diagnostic - 2026-11-27
+
+Candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3` first timed out only when
+the full gate ran inside the restricted sandbox: `pytest` reached its fixed
+900-second limit and returned `124` (receipt
+`results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`).
+A diagnostic trace localized the wait to Windows asyncio Proactor self-pipe
+startup inside Starlette TestClient/AnyIO (`socket.accept`); a standalone
+`socketpair()` probe did not return in five seconds under the same sandbox.
+Without changing source or tests, the isolated API health test passed outside
+the sandbox with one Starlette deprecation warning. The unchanged full gate
+then passed on the exact candidate: 989 tests, zero skips, and all six checks.
+Its receipt is
+`results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`.
+This is local-only evidence, not GitHub Actions. Run a new receipt for the
+final PR head after any subsequent tracked changes, and verify that PR's
+official checks independently.
+
 ## Current public CI baseline - 2026-11-27
 
 PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
