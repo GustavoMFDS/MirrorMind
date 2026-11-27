@@ -1,67 +1,66 @@
 # Project status — reviewed baseline, not live status
 
-**Baseline:** 2026-11-23 (Brazil local date); main
-`e4f05a152aefcf68fa8ec22f3baa3b61adb8519d` (PR #51 merge commit).
-This is the latest confirmed merged-main baseline after the handoff-doc
-update. PR #50 (`036b8d6`) is its parent. This is not the live status of a
-working branch; reconcile active task claims below with Git, open PRs, actual
-code and quality receipts before using this document as an execution report.
+**Baseline:** 2026-11-26 (Brazil local date); merged `main`
+`a456034c55ed7634ad4768b26788fec09dab1d08`, ancestry-preserving merge of PR
+#62. This is the latest confirmed main baseline, not a claim that the open
+follow-up branches have been accepted.
 
-**Verified baseline on e4f05a1:** 691 pytest tests passed, one existing
-Starlette/httpx deprecation warning. Six local gate checks passed
-(pytest, Ruff, symbol catalog, atlas, evidence and capabilities) on
-that SHA, including after relocation to the permanent Windows
-checkout at `D:\MirrorMind`. The checkout was clean at migration
-verification. GitHub returned no workflow runs or check statuses for
-PR #51's merge commit in the preceding inspection; remote CI is therefore
-not represented as passing. No PRs were open at that preceding status
-check; this is historical, not a current open-PR inventory.
+**Independent post-merge evidence:** the exact `a456034` tree passed the local
+six-check gate with 835 tests, zero skips and one existing TestClient warning;
+WorldKernel was installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt and independent reviewer
+attestation are linked in [PR #62 comment 7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
+This is local evidence only. GitHub Actions did not run successfully, no paid
+usage is approved, and no real source bytes were acquired.
 
-At this merged baseline the [capability ledger](CAPABILITY_LEDGER.json)
-contained 40 entries: 2 implemented, 31 experimental, 1 interface-only
-and 6 planned. The active M1B-02 branch adds one experimental composite
-evidence-flow declaration; that branch-local addition is not part of the
-merged baseline. Regenerate counts from the ledger rather than treating
-them as progress percentages. The reviewed API reports a scaffold,
-not a production-ready AI platform.
+PR #62 integrates the exact published heads of #52–#59 without duplicate
+merges; ancestry checks confirm each published head is an ancestor of
+`a456034`. PR #52 is already closed as merged. PRs #53–#59 have been closed
+as incorporated after exact-head ancestry checks; all branches remain
+available. #60 (M2-01 retrieval) and #61 (G-01 current
+head responder) remain separate. #60 now contains the new main through
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; the
+exact sync-head gate passed 845 tests with zero skips and all six checks. The
+docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0` also passed the same
+gate; its receipt is recorded in `LOCAL_QUALITY_GATE.md`. The current status
+refresh still needs its exact gate before push and independent review. #61
+still needs synchronization and an exact gate.
 
-## Current consolidated M1 candidate — 2026-11-25
+The merged M1 path is a complete **synthetic experimental** evidence-to-
+comparison flow: fixed retail evidence, evaluation, residual diagnostics,
+policy simulation, DecisionTrace V2 and optional exact-pin local WorldKernel
+execution. The HTTP/default path still uses the Python test double. This does
+not complete licensed ingestion, empirical forecasting, broad engine
+isolation, authenticated review, production controls or human decision
+acceptance. M1 remains incomplete.
 
-The review candidate is branch `codex/m1-engine-provenance`, published as
-[PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) against `main`.
-Code correction commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85` fixes the
-PR #59 provenance finding; the final review head is the exact revision shown
-in PR #62 and `results/local-quality-gate-<full-head-sha>.json`.
-Its history preserves all exact published heads of PRs #52–#59 as ancestors;
-#60 and #61 are excluded. GitHub reports the candidate as mergeable. The
-candidate contains the synthetic M1 workflow, pinned local WorldKernel runner
-and policy world, plus the UCI event-time evaluator and aggregate Census
-protocol. No real source bytes were acquired.
+The local Census descendant `codex/m1-census-vintage-adapter` contains the
+separate synthetic vintage selector/evaluator and four review corrections.
+Published candidate `da540a2` passed 877 tests, zero skips and all six local
+checks, plus 64 focused tests, with the reviewed WorldKernel pin. Merge
+`55e91f7` preserves its ancestry while including `a456034`; the reconciled
+exact head still needs the full gate before publication as a separate PR. Its
+fixtures do not resolve B-01/B-02 or authorize acquisition.
 
-PR #59 review comment
-[7174402947](https://github.com/GustavoMFDS/MirrorMind/pull/59#issuecomment-7174402947)
-identified an engine-contract mismatch and ambiguous parity invocation in the
-prior `995f55d` candidate. Commit `74330d8` adds typed v2 execution evidence,
-binds every outcome to its selected-result engine, and represents the Python
-test double separately as a parity oracle when WorldKernel supplies selected
-metrics. It preserves trace v1. Regression coverage checks both engines,
-replay, mismatched/dangling provenance and parity-digest disagreement.
+The separate `ruff check examples` inspection found five pre-existing
+diagnostics in three tracked M1 example files: three import-order findings
+(I001), one unused import (F401), and one `zip`/`pairwise` recommendation
+(RUF007) flagged as unsafe to auto-fix. The integrated gate's Ruff check
+targets `src` and `tests`; these examples were not changed in the integration
+branch. Tracked as ENG-02 maintenance after PR consolidation, not as a gate
+failure.
 
-The later independent review found that v2 accepted execution evidence dated
-after trace creation. Commit `20e7b50f88df046eaf3541c5ea706b2e3b051aad`
-adds UTC-instant chronology validation and regressions for later, earlier and
-timezone-equivalent equal timestamps. Its exact-clean-head six-check local
-gate passed 835 tests with zero skips, Ruff, catalog, atlas, evidence and
-capability checks, with WorldKernel `0.0.1` installed from reviewed commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. One existing Starlette/httpx
-`TestClient` deprecation warning appeared. Receipt:
-`results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
-This is local evidence, not Actions, independent approval or merge evidence.
-After this documentation update, the exact clean candidate head must pass the
-same six-check gate; its receipt and full SHA are reported on PR #62. PR #62
-remains awaiting review. `main` was not changed, and #60/#61 remain separate.
+The approved pilot order remains A (UCI #352 event-time retrospective), then B
+(aggregate Census/ALFRED publication-vintage evaluation). Preparation is
+allowed; source bytes remain unauthorized until the source-specific terms,
+privacy, minimization, storage, retention, vintage evidence and evaluation
+gates in [B-01/B-02](BLOCKERS.md) are met. Keep automated tests synthetic.
 
-## Active branch evidence — 2026-11-25
+## Historical branch evidence recorded before the PR #62 merge — 2026-11-25
+
+The following dated snapshots preserve exact prior branch, review and local
+gate evidence. Their PR states and branch heads are historical; use the
+current baseline above and live GitHub metadata for present status.
 
 The composed synthetic evidence flow is implemented in the history beginning
 at `c51ab30370db47e9f7105c97f870008e4fc442c5`; the latest published PR #52
@@ -215,7 +214,7 @@ return the annotation text. This is not remote test evidence. The route remains
 experimental, unauthenticated and without body-size/rate/concurrency controls;
 WorldKernel execution and real-source claims remain blocked.
 
-## PR #60 and #61 review state
+## Historical PR #60 and #61 evidence at their original heads
 
 PR #60's excerpt-integrity correction is published at
 `59deef2a780d7802d8b8d29b66dd0189e96365ea`; same-length excerpt tampering and
@@ -243,6 +242,51 @@ needs to be merged and gated before the #56 review follow-up is complete. See
 [B-07](BLOCKERS.md) for the restricted-run limitation and [B-08](BLOCKERS.md)
 for official Actions diagnostics. PRs remain drafts pending separate review
 and integration decisions.
+
+## Historical PR #60 and #61 evidence at their original heads
+
+### M2-01 permission-filtered retrieval
+
+Draft PR #60 retains the correction from `73c191050865b0865e582f31a78859cc24262efb`:
+the result contract hashes the exact UTF-8 excerpt, and regression tests reject
+same-length excerpt tampering and a wrong well-formed digest. The branch was
+normally merged with the latest published PR #54 head `4d220066` at
+`a3a342450b3aa72b69d10b52485175ca497ffd5d`. That merge's first full local
+gate exposed one documentation inventory failure after shared status pages
+from unrelated PR #55–#59 work were selected; 737 tests passed and
+`tests/unit/test_docs_coverage.py::test_live_repository_passes_linked_inventory`
+reported two absent M1E links. The shared pages have been restored to PR #54's
+dependency scope. The exact corrected integration head
+`d1d4f74d69a3d4e772ba3eeb3119493491921875` passed the complete local gate:
+738 tests, Ruff, catalog, atlas, evidence and capability checks. One existing
+Starlette/httpx TestClient deprecation warning appeared. The initial failure
+and correction are both retained here; neither retrieval code nor verifiers
+were changed to address the documentation mismatch. Local validation does not
+resolve official Actions B-08.
+
+The documentation-only evidence follow-up at published head
+`5b0a026cc008bffb953b3a6ae7d3cbdd252bd161` was also gated exactly: 738 tests,
+Ruff, catalog, atlas, evidence and capability checks passed with the same
+existing warning. See the [retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md)
+and [change request](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md).
+The corresponding Actions checks failed before repository steps; their exact
+annotation text was not exposed, so this is not CI success or an account-cause
+finding.
+
+The scope filter is caller-declared, not authenticated RBAC. The digest binds
+the excerpt bytes but does not authenticate the source snapshot or prove
+absolute offsets without source bytes. Retrieval remains local, fictional and
+experimental; no HTTP route or model call is exposed.
+
+### G-01 current-head service
+
+Draft PR #61's typed clock-failure correction is published at
+`8101bc78dfa6a0f96bdfabe3dd8c9dc46d19a93e`. Expected operational clock errors
+produce the generic bodyless 503; unexpected programming errors remain
+visible. The regressions distinguish those cases, and the exact-head gate
+passed 697 tests plus Ruff, catalog, atlas, evidence and capability checks.
+The branch is independent of M1 and remains draft for separate review. No HTTP
+adapter, persistence, authentication or authority is claimed.
 
 ## Architecture and actual execution boundaries
 

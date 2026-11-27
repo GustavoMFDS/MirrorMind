@@ -693,3 +693,23 @@ input and Python 3.11 minimum, and why a missing day must raise instead of
 being represented as zero demand. Re-run the three regressions and
 `ruff check examples`; confirm imports and lint cleanup did not change any
 forecast, output or authorization contract.
+
+## Guided exercise — verify scope-first evidence retrieval (35 minutes)
+
+Read the [M2 evidence retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md),
+[`contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py),
+[`index.py`](../../src/mirrormind/modules/retrieval/index.py) and
+[`fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py).
+Trace how `EvidenceAccessContext` filters documents before `_token_spans`
+builds the index. Run
+`python -m pytest -q tests/unit/test_evidence_retrieval.py` and predict what
+the denied-record test would observe if tokenization moved before filtering.
+For one result, verify that the cited Python string slice equals the excerpt
+and recompute SHA-256 over its UTF-8 bytes. Run
+`test_contract_rejects_same_length_excerpt_tampering` and
+`test_contract_rejects_wrong_well_formed_excerpt_digest`; explain why the
+contract detects excerpt/digest mismatch but cannot authenticate a source
+when both values are replaced. Inspect the injection-like fixture and explain
+why it remains `untrusted_evidence` without creating an instruction or tool
+call. Finally change the fixed demo scope in a practice branch and explain why
+this tests a local input boundary rather than identity or authorization.

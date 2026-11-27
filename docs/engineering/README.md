@@ -23,6 +23,7 @@ This is the entry point for **understanding, changing, testing and maintaining**
 - [Semantic learning map](SEMANTIC_COVERAGE.md) — current implemented, interface-only and planned capability boundaries, source by source.
 - [Contracts walkthrough](CONTRACT_WALKTHROUGH.md) — stepwise Pydantic validation and its limits: input shape is not authorized evidence or simulation.
 - [Decision trace result contract](DECISION_TRACE_RESULT.md) — v1 general result envelope plus v2 selected-engine and parity execution evidence for the M1F-02 synthetic workflow; no real-source or action authority.
+- [M2 fictional evidence retrieval](M2_EVIDENCE_RETRIEVAL.md) — PR #60's proposed M2-01 scope-first local BM25 over generated text, strict citation/digest contracts and regression walkthrough; no authenticated RAG service.
 - [M1 synthetic retail decision workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) — joins release-aware evidence, historical baseline/uncertainty diagnostics, a fixed 28-day profile, either the default policy test double or an explicit local WorldKernel policy handler, and a referenced trace through the same service.
 - [M1E-04 WorldKernel policy world](WORLDKERNEL_POLICY_WORLD.md) — explains the code-owned fixed handler, versioned mapping, paired demand stream, local worker, parent validation, parity tests and limits.
 - [Synthetic forecast model card](model_cards/SYNTHETIC_RETAIL_DECISION_WORKFLOW.md) — fixed seasonal-naive profile, split dates, baselines, uncertainty limits and upgrade gates.

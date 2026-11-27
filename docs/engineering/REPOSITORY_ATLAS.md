@@ -947,6 +947,24 @@ The evaluator is experimental and synthetic-only in automated use. It does not
 infer publication time from `InvoiceDate`, authenticate a source manifest or
 prove completeness, source rights or predictive performance.
 
+## 59. Permission-filtered fictional evidence retrieval (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/retrieval/__init__.py`](../../src/mirrormind/modules/retrieval/__init__.py) | Namespace only; no import-time indexing or network activity |
+| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | Strict bounded retrieval contracts; recomputes exact UTF-8 excerpt digest during result validation |
+| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | Generated corpus and fixed demo principal/collection |
+| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | Scope-first in-memory BM25 ranking, stable ties and exact citation spans |
+| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | Bounded deterministic CLI over fictional text; no route, writes or arbitrary file access |
+| [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope-before-tokenization, citation integrity, deterministic ranking, bounds and untrusted-text regressions |
+| [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | CLI replay, citation presence, query omission and oversized-input failure |
+| [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Source walkthrough, contracts, BM25, safety, reproduction, tests and exercises |
+| [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance criteria, impact map, compatibility and evidence |
+
+The capability is experimental. Its access context is a caller assertion,
+not authenticated identity; `evidence_and_rag` remains planned and no real
+source permission or retrieval route is provided.
+
 ## Continuous engineering handoff and execution register
 
 | Tracked document | Reviewed responsibility |

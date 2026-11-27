@@ -77,6 +77,53 @@ local asyncio socket-pair creation; the same test and full gate passed outside
 that restriction. This does not retroactively explain the historical 8f906b8
 timeout. Preserve both the scope and limits in the blocker register.
 
+## 1.2 Current resumed state — 2026-11-26
+
+PR #62 is merged into `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08`. Independent post-merge local
+validation passed 835 tests, zero skips and all six checks with the exact
+reviewed WorldKernel pin. This is local evidence only; GitHub Actions remain
+unavailable under the owner's zero-paid-use decision.
+
+The exact published heads of PRs #52–#59 are ancestors of `a456034`. PR #52
+was already merged, and #53–#59 were closed as incorporated after those
+ancestry checks. Their remote branches remain intact; do not merge or delete
+them. PRs #60 and #61 stay separate. PR #60 now includes the new main via
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; its
+exact sync-head gate passed 845 tests, zero skips and all six checks with the
+reviewed WorldKernel pin. Docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0`
+also passed 845 tests, zero skips and all six checks; its receipt is in
+`LOCAL_QUALITY_GATE.md`. Rerun the gate after this status refresh, then push
+and prepare #60 for independent review. #61 still needs its
+ancestry-preserving sync and exact gate. Report local evidence separately
+from Actions; keep required protections unchanged.
+
+The local Census branch passed its pre-sync gate at `da540a2` (877 tests,
+zero skips and six checks, plus 64 focused tests). Merge commit `55e91f7`
+includes `a456034` without discarding Census history. Re-run the exact local
+gate on that reconciled state, publish it as a separate PR, and do not add it
+to #60 or #61. #60's sync preserved its excerpt-integrity regressions and the
+newer M1 contracts; #61 remains an independent G-01 slice.
+
+The local `ruff check examples` inspection found five existing findings in
+three M1 example files. ENG-02 tracks that cleanup separately; do not silently
+fold it into the queued PRs or apply Ruff's unsafe RUF007 fix without semantic
+review.
+
+The approved A+B pilot order permits preparation only: UCI #352 retrospective
+by event time, then aggregate Census publication-vintage evaluation. No real
+bytes, credentials or source records are authorized until B-01/B-02 are
+resolved. Keep automated fixtures synthetic and preserve privacy, licensing,
+availability-time and retention boundaries. Do not claim empirical forecast
+quality from synthetic results.
+
+M1's synthetic end-to-end flow is now integrated, but M1 is not complete:
+source rights, empirical evaluation, broader engine isolation, authenticated
+review and production controls remain open. M2-01 retrieval is a local
+fictional slice without authentication or an HTTP route. Continue with
+reviewable increments; do not broaden M2 while #60/#61 and Census are still
+being consolidated.
+
 Read in order:
 
 1. [Master plan](MASTER_EXECUTION_PLAN.md) — desired architecture,
@@ -155,7 +202,7 @@ perform destructive operations or relax gates. Ask the owner for
 only the decision or permission needed. Do not manufacture approvals
 or official CI results.
 
-### Current owner decisions — 2026-11-25
+### Historical owner decisions and evidence through 2026-11-25
 
 Owner comments on [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
 approve preparing two independent research lanes in sequence: A, the narrow

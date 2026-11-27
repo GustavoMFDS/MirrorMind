@@ -700,6 +700,66 @@ Static imports (including inside functions): `__future__`, `datetime`, `math`, `
 | `_score` | function | `def _score(forecasts: tuple[float, ...], actuals: tuple[int, ...]) -> dict[str, float \| None]` | Return matched MAE/RMSE/signed bias and undefined-zero WAPE as None. | [L65](../../../src/mirrormind/modules/forecasting/baselines.py#L65) |
 | `backtest_staged_snapshot` | function | `def backtest_staged_snapshot(snapshot: StagedSnapshot, *, series_id: str, evaluation_on: str, holdout_days: int=7, min_history_days: int=14) -> dict[str, object]` | Evaluate fixed daily origins only with data published before each origin. | [L80](../../../src/mirrormind/modules/forecasting/baselines.py#L80) |
 
+## `mirrormind.modules.retrieval.__init__`
+
+Source: [`src/mirrormind/modules/retrieval/__init__.py`](../../../src/mirrormind/modules/retrieval/__init__.py)
+
+Static imports (including inside functions): `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.index`
+
+No top-level classes or functions.
+
+## `mirrormind.modules.retrieval.contracts`
+
+Source: [`src/mirrormind/modules/retrieval/contracts.py`](../../../src/mirrormind/modules/retrieval/contracts.py)
+
+Static imports (including inside functions): `__future__`, `hashlib`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_RetrievalModel` | class | `class _RetrievalModel` | Share immutable, non-coercing validation across retrieval contracts. | [L32](../../../src/mirrormind/modules/retrieval/contracts.py#L32) |
+| `EvidenceDocument` | class | `class EvidenceDocument` | One bounded fictional document with caller-declared visibility scope. | [L38](../../../src/mirrormind/modules/retrieval/contracts.py#L38) |
+| `EvidenceDocument.reject_unsafe_controls` | method | `def reject_unsafe_controls(cls, value: str) -> str` | — | [L51](../../../src/mirrormind/modules/retrieval/contracts.py#L51) |
+| `EvidenceDocument.require_unique_principals` | method | `def require_unique_principals(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L58](../../../src/mirrormind/modules/retrieval/contracts.py#L58) |
+| `EvidenceAccessContext` | class | `class EvidenceAccessContext` | Trusted-caller scope; not an authenticated identity or permission grant. | [L64](../../../src/mirrormind/modules/retrieval/contracts.py#L64) |
+| `EvidenceAccessContext.require_unique_collections` | method | `def require_unique_collections(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L72](../../../src/mirrormind/modules/retrieval/contracts.py#L72) |
+| `EvidenceQuery` | class | `class EvidenceQuery` | Bounded lexical query and optional subset of caller-visible collections. | [L78](../../../src/mirrormind/modules/retrieval/contracts.py#L78) |
+| `EvidenceQuery.normalize_and_bound_text` | method | `def normalize_and_bound_text(cls, value: str) -> str` | — | [L87](../../../src/mirrormind/modules/retrieval/contracts.py#L87) |
+| `EvidenceQuery.require_unique_query_collections` | method | `def require_unique_query_collections(cls, value: tuple[str, ...] \| None) -> tuple[str, ...] \| None` | — | [L97](../../../src/mirrormind/modules/retrieval/contracts.py#L97) |
+| `EvidenceCitation` | class | `class EvidenceCitation` | Exact source pointer for one excerpt, using Python Unicode code-point offsets. | [L105](../../../src/mirrormind/modules/retrieval/contracts.py#L105) |
+| `EvidenceCitation.require_nonempty_span` | method | `def require_nonempty_span(self) -> EvidenceCitation` | — | [L117](../../../src/mirrormind/modules/retrieval/contracts.py#L117) |
+| `RetrievedEvidence` | class | `class RetrievedEvidence` | Retrieved text stays explicitly untrusted and carries a verifiable citation. | [L123](../../../src/mirrormind/modules/retrieval/contracts.py#L123) |
+| `RetrievedEvidence.require_excerpt_integrity` | method | `def require_excerpt_integrity(self) -> RetrievedEvidence` | — | [L132](../../../src/mirrormind/modules/retrieval/contracts.py#L132) |
+| `EvidenceRetrievalResult` | class | `class EvidenceRetrievalResult` | Versioned result envelope; query text and denied-record metadata are omitted. | [L141](../../../src/mirrormind/modules/retrieval/contracts.py#L141) |
+| `EvidenceRetrievalResult.match_status_to_hits` | method | `def match_status_to_hits(self) -> EvidenceRetrievalResult` | — | [L149](../../../src/mirrormind/modules/retrieval/contracts.py#L149) |
+
+## `mirrormind.modules.retrieval.fictional_fixture`
+
+Source: [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../../src/mirrormind/modules/retrieval/fictional_fixture.py)
+
+Static imports (including inside functions): `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.index`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `fictional_documents` | function | `def fictional_documents() -> tuple[EvidenceDocument, ...]` | Return small, deterministic documents with disjoint fictional scopes. | [L10](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L10) |
+| `build_fictional_index` | function | `def build_fictional_index() -> InMemoryEvidenceIndex` | Build the CLI's fixed fictional scope; this is not an auth mechanism. | [L59](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L59) |
+
+## `mirrormind.modules.retrieval.index`
+
+Source: [`src/mirrormind/modules/retrieval/index.py`](../../../src/mirrormind/modules/retrieval/index.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `hashlib`, `math`, `mirrormind.modules.retrieval.contracts`, `re`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_TokenSpan` | class | `class _TokenSpan` | — | [L27](../../../src/mirrormind/modules/retrieval/index.py#L27) |
+| `_IndexedDocument` | class | `class _IndexedDocument` | — | [L34](../../../src/mirrormind/modules/retrieval/index.py#L34) |
+| `_token_spans` | function | `def _token_spans(text: str) -> tuple[_TokenSpan, ...]` | Tokenize Unicode words while retaining exact source offsets. | [L40](../../../src/mirrormind/modules/retrieval/index.py#L40) |
+| `InMemoryEvidenceIndex` | class | `class InMemoryEvidenceIndex` | A read-only index containing only records visible to its build context. | [L49](../../../src/mirrormind/modules/retrieval/index.py#L49) |
+| `InMemoryEvidenceIndex.build` | method | `def build(cls, documents: tuple[EvidenceDocument, ...] \| list[EvidenceDocument], access: EvidenceAccessContext) -> InMemoryEvidenceIndex` | Filter scope first, then tokenize only documents caller may see. | [L56](../../../src/mirrormind/modules/retrieval/index.py#L56) |
+| `InMemoryEvidenceIndex.search` | method | `def search(self, query: EvidenceQuery) -> EvidenceRetrievalResult` | Run deterministic BM25 over pre-filtered documents and return exact citations. | [L104](../../../src/mirrormind/modules/retrieval/index.py#L104) |
+| `_empty_result` | function | `def _empty_result() -> EvidenceRetrievalResult` | — | [L164](../../../src/mirrormind/modules/retrieval/index.py#L164) |
+| `_make_hit` | function | `def _make_hit(score: float, item: _IndexedDocument, query_terms: frozenset[str]) -> RetrievedEvidence` | — | [L172](../../../src/mirrormind/modules/retrieval/index.py#L172) |
+
 ## `mirrormind.modules.simulation.__init__`
 
 Source: [`src/mirrormind/modules/simulation/__init__.py`](../../../src/mirrormind/modules/simulation/__init__.py)

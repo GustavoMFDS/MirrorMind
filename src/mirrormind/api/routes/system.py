@@ -37,6 +37,7 @@ def capabilities() -> dict[str, object]:
             "local_uci_transaction_projection",
             "local_uci_xlsx_reader",
             "local_uci_event_time_research",
+            "local_fictional_evidence_retrieval",
             "local_retail_synthetic_evidence_flow",
             "local_retail_evidence_evaluation",
             "local_retail_policy_test_double",

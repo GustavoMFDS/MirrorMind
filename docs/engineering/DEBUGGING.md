@@ -318,3 +318,19 @@ checkout passed `test_health` and the complete local gate; preserve both
 observations. Use the owner-approved exact-clean-head gate in an already
 authorized local environment and report its full commit. Do not call a local
 pass GitHub Actions success.
+
+## Fictional evidence retrieval misses or returns an unexpected citation
+
+Reproduce with [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py)
+and the [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md). For an empty
+result, inspect query tokenization and the fixed collection/principal scope
+before changing the ranker. For a scope regression, run
+[`test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py)
+and verify filtering still precedes tokenization and score construction.
+For a citation mismatch, compare the reported Python code-point slice and
+recompute SHA-256 over its UTF-8 bytes. `RetrievedEvidence` rejects a changed
+excerpt with the old digest and a different well-formed digest. Replacing both
+excerpt and digest can still create a self-consistent untrusted envelope; the
+digest is not source provenance. Never log denied IDs, hidden content or raw
+queries. BM25 scores are ranking values, not relevance probabilities, and a
+caller-declared scope is not authentication.
