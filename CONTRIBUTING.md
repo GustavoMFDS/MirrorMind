@@ -44,3 +44,9 @@ its repository remains private. Record optional test skips honestly.
 The standard GitHub-hosted workflows and local receipts are separate
 evidence. Keep source rights, review authority and production readiness
 separate from test success.
+
+## Set up a development environment
+
+Follow the [developer quick start](docs/engineering/DEVELOPER_QUICK_START.md)
+for clean public installation, checks and local API instructions. Use an
+isolated branch and submit a PR; do not push directly to main.
