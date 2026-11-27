@@ -10,7 +10,7 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
-## PR reconciliation snapshot at `91fc585` — 2026-11-27 UTC
+## PR reconciliation snapshot at `04509c4` — 2026-11-27 UTC
 
 PR #52 merged at `e922b03666f04bd8c570a0448466d25838e3f84e`; PRs #53–#59
 closed without individual merges. Local ancestry checks confirm all eight
@@ -33,7 +33,7 @@ implied.
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
 | [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
 | [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
-| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `91fc58553049706c18250ff5f72073fc83658ea6` | Open for independent review; no review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `04509c40baf9802fd3e0da9765d96d61fb9e990b` | Open for independent review; no review submission or inline thread observed |
 
 ## Historical reconciliation at the PR #51 baseline
 

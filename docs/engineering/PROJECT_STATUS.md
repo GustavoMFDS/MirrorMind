@@ -73,6 +73,36 @@ write or action authorization occurred. This verifies the experimental
 fictional workflow only; it does not close B-01/B-02 or claim empirical retail
 quality.
 
+## PR #65 MM-022 impact follow-up — 2026-11-27 UTC
+
+Documentation commit `04509c40baf9802fd3e0da9765d96d61fb9e990b` records that
+MM-022 reclassifies lowercase-`c` rows from cancellation to the unverified
+invoice-prefix class. Both classes were already excluded before aggregation
+under MM-021, so the clarification changes aggregate classification counts
+only; it does not change accepted sales rows or product-day group cardinality.
+It therefore does not resolve the existing 250,000-group stop. No source
+reread or empirical score was produced.
+
+The exact-head temporary local gate passed on `04509c40baf9802fd3e0da9765d96d61fb9e990b`
+at `2026-11-27T05:12:35.664760Z`: 864 tests, zero skips and six checks passed
+(pytest, Ruff, catalog, atlas, evidence and capabilities), with one existing
+Starlette/httpx `TestClient` deprecation warning. Receipt:
+`results/local-quality-gate-04509c40baf9802fd3e0da9765d96d61fb9e990b.json`.
+The restricted-sandbox attempt was interrupted without a result; this passing
+receipt is from the authorized local executor and is not official Actions CI.
+
+PR #65 remains open, non-draft and mergeable at this head, with no independent
+review submission or inline thread observed. Its four automatic Actions checks
+failed before repository steps: test runs [45944491583](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45944491583)
+and [45944484648](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45944484648),
+and symbol-catalog runs [45944491495](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45944491495)
+and [45944484629](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45944484629).
+Check-run IDs are `140325964948`, `140325964665`, `140325945246` and
+`140325945132`. Each annotation reports payment failure **or** spending-limit
+increase without identifying which applies. Jobs returned no steps/logs and
+the combined-status response was empty. The owner's quota report is separate
+evidence; no manual rerun or workflow/protection change occurred.
+
 ## Pull request reconciliation — 2026-11-27 UTC
 
 PR #52 was merged at `e922b03666f04bd8c570a0448466d25838e3f84e`. PRs #53–#59
