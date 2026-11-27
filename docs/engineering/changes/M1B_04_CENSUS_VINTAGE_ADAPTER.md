@@ -218,11 +218,13 @@ is the direct Census MARTS archive; FRED/ALFRED API retrieval is deferred.
 - [x] Recheck the official Census release and annual-revision indexes, current
   MARTS methodology, and the current FRED API/service terms.
 - [x] Record the candidate aggregate definition, archive-coverage limits, the
-  documented 2025 nonemployer change, and the API storage/archival constraint.
+  documented 2025 nonemployer change, and the current FRED storage and
+  software/AI-development restrictions.
 - [x] Keep source files, API responses, account creation, credentials, real
   evaluation and real-data tests out of scope.
-- [x] Update the protocol, blockers, backlog, project status, handoff and
-  learning material; leave the capability and evidence ledgers unchanged.
+- [x] Update the protocol, adapter/model walkthroughs, execution plan,
+  blockers, backlog, project status, handoff and learning material; leave the
+  capability and evidence ledgers unchanged.
 - [ ] Obtain owner/rightsholder approval for exact source terms, retention,
   definition comparability, manifest and temporal evaluation window before any
   source bytes are acquired or processed.
@@ -231,29 +233,50 @@ is the direct Census MARTS archive; FRED/ALFRED API retrieval is deferred.
 
 | Layer | Relevant file/symbol | Change? | Evidence / tests |
 | --- | --- | --- | --- |
-| Source protocol | `CENSUS_ALFRED_VINTAGE_PROTOCOL.md` | Yes | Official metadata and terms links; no source artifact or API call |
-| Blocker and status records | `BLOCKERS.md`, `TASK_BACKLOG.md`, `PROJECT_STATUS.md`, `CODEX_HANDOFF.md` | Yes | B-01/B-02 stay open; no permission or capability is inferred |
-| Learning | `LEARNING.md` | Yes | Metadata-only investigation exercise covers rights and definition versions |
+| Source protocol | `CENSUS_ALFRED_VINTAGE_PROTOCOL.md`, `CENSUS_VINTAGE_ADAPTER.md`, Census synthetic model card | Yes | Official metadata and terms links; no source artifact or API call |
+| Plan and status records | `M1_EXECUTION_PLAN.md`, `BLOCKERS.md`, `TASK_BACKLOG.md`, `PROJECT_STATUS.md`, `CODEX_HANDOFF.md` | Yes | B-01/B-02 stay open; no permission or capability is inferred |
+| Learning | `LEARNING.md` | Yes | Metadata-only investigation exercise covers rights, definition versions, temporal split and abstention |
 | Runtime/API/contracts | Census adapter, evaluator, capabilities and evidence map | No | No runtime behavior, contract, capability or test claim changed |
 | External projects | Census, FRED/ALFRED and WorldKernel | No | Read-only publisher documentation only; no repositories modified |
 
 ### Evidence and remaining limitations
 
-The Census data index currently points to advance reports from October 1953;
-its annual-revision index lists a 2026 report covering January 1992 through
-August 2026. Neither index proves original first-release completeness for the
-selected series. The current MARTS methodology records that nonemployers were
-removed from the historical series in the April 2025 annual revision. Current
-FRED terms require an API key, preserve third-party series rights, and restrict
-API-associated storage, caching and archiving. These findings support a
-metadata-only preference for direct Census source review and defer FRED API
-retrieval; they do not establish series rights, byte provenance or a legally
-acceptable retention route.
+The Census MARTS archive index lists original monthly releases, known missing
+releases and the interval when advance sales were not produced; its annual-
+revision index lists a 2026 report covering January 1992 through August 2026.
+Neither index proves original first-release completeness for the selected
+series. The current release schedule lists 8:30 a.m. for advance sales but
+does not state the timezone in its schedule table. Census methodology says
+nonemployers were removed from the historical series in the April 2025 annual
+revision.
 
-The source pages exposed some current published aggregate figures in their
-HTML/search previews. No figure was transcribed, retained in repository files,
-or supplied to the evaluator. No Census release file, API response, credential
-or workbook was acquired. No focused behavioral regression applies because no
-runtime behavior changed; the full repository local quality gate must still
-pass on the exact clean commit before this follow-up is published. No entry is
-added to `DECISIONS.md`, because no new owner decision has been made.
+The current FRED Services terms apply to ALFRED and the API. The general terms
+prohibit storing, caching or archiving FRED Services/Content; API-specific
+terms also prohibit accessing FRED content via the API in connection with
+software/AI development and API-associated storage. FRED identifies `RSAFS`
+as Census-sourced and displays a copyright notice for chart data; access does
+not override third-party rights. This makes FRED/ALFRED NO-GO for the proposed
+MirrorMind development/archive route absent express written permission or
+changed terms. It does not establish the rights for original Census artifacts.
+
+The concrete owner proposal is direct original MARTS files, one verified
+national seasonally adjusted retail-and-food-services total, internal
+non-commercial research with attribution and no redistribution, access-
+controlled local storage, and 30-day retention/deletion for value-bearing
+artifacts. The temporal proposal freezes a 60/20/20 chronological split before
+scoring, uses first-estimate labels and fixed lag-12/trailing-12-month
+baselines at 1/3/6 horizons, preserves gaps, treats date-only availability as
+strictly-before, and keeps later revisions as a separate sensitivity. A
+12-month moving-block bootstrap requires at least 60 matched holdout origins
+per horizon; otherwise results are descriptive and no winner is declared.
+These are proposed criteria pending owner approval, not evidence that a source
+is licensed or an evaluation has run.
+
+Official source/terms pages and a FRED metadata page exposed current published
+aggregate figures in browser previews. No figure was transcribed, retained in
+repository files, or supplied to the evaluator. No Census release file, API
+response, credential or workbook was acquired. No focused behavioral
+regression applies because no runtime behavior changed; the full repository
+local quality gate must still pass on the exact clean commit before this
+follow-up is published. No entry is added to `DECISIONS.md`, because the
+source, retention and temporal proposals have not been approved.

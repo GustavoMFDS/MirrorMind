@@ -746,18 +746,36 @@ Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md), the
 [Census MARTS archive](https://www.census.gov/retail/marts/historic_releases.html),
 the [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html),
 the [current methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html),
+the [release schedule](https://www.census.gov/retail/release_schedule.html),
 and the [FRED Services terms](https://fred.stlouisfed.org/legal/terms/).
 Without opening a release file or calling an API, identify which metadata proves
 that an archive index exists and which evidence is still needed to prove each
 month's first release, original bytes and local retention rights. Explain why
 an API key does not grant the rights of a third-party series owner and why the
-current API storage/archive restriction conflicts with a reproducible local
-vintage manifest.
+current Services terms apply to ALFRED and prohibit storage/cache/archive,
+while API-specific terms also prohibit software/AI-development access and
+API-associated storage. State why FRED/ALFRED is currently a NO-GO data route
+for MirrorMind's reproducible development study unless written permission or
+changed terms expressly cover these uses. Separate this conclusion from the
+still-open rights review for direct Census artifacts.
 
 Then add `methodology_edition` to a hypothetical source manifest. Trace the
 documented April 2025 removal of nonemployers through the proposed time series:
 state why publication-date eligibility alone cannot prove that values on both
 sides have the same population definition, and design a fail-closed choice
 between a reviewed comparability analysis, separate reporting by edition, or
-abstention. Keep the exercise metadata-only; do not retrieve Census values,
-create an API key, or call the evaluation an empirical pilot.
+abstention. Review the owner's proposed source package: original Census
+MARTS files only, one verified national seasonally adjusted total, internal
+research with attribution, access-controlled local storage, 30-day retention
+of value-bearing artifacts and deletion, and no redistribution. Explain why
+each item requires approval before acquisition. Keep the exercise metadata-
+only; do not retrieve Census values, create an API key, or call the evaluation
+an empirical pilot.
+
+Finally, pre-register a chronological 60/20/20 development/validation/locked-
+holdout split and the fixed 1/3/6-month baselines before looking at scores.
+Explain why date-only publication values require strict-before selection,
+why same-day correction metadata without orderable timestamps requires
+abstention, and why fewer than 60 matched holdout origins per horizon supports
+descriptive metrics only under the proposed 12-month moving-block bootstrap.
+These are proposed acceptance criteria, not executed evidence.

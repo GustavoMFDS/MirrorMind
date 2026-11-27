@@ -82,14 +82,19 @@ anonymous.
 
 ## Review gates before real use
 
-B-01/B-02 remain open. Before any source access, review the exact Census table
-or ALFRED series rights, attribution, official archive and release schedule,
-privacy scope, local storage, retention/deletion and output handling. Verify
-original bytes and first-estimate releases, pre-register chronological
-fit/validation/locked-holdout origins, compare with the fixed baselines, and
-obtain independent source/model review. Preserve later annual revisions as a
-separate sensitivity analysis. A passing test or local quality gate cannot
-resolve these reviews or establish official CI.
+B-01/B-02 remain open. The current proposal prefers original Census MARTS
+release artifacts, subject to exact artifact rights, attribution, official
+archive completeness, publication schedule/timezone, privacy scope, local
+storage, retention/deletion and output review. FRED Services terms apply to
+ALFRED and prohibit storage/cache/archive; API terms also prohibit
+software/AI-development use, so FRED/ALFRED is currently NO-GO for this
+development/archive route absent St. Louis Fed written authorization or
+changed terms, plus separate source-owner rights clearance. Before any Census
+source access, verify original bytes and first-estimate releases, pre-register
+chronological fit/validation/locked-holdout origins, compare with fixed
+baselines, and obtain independent source/model review. Preserve later annual
+revisions as a separate sensitivity analysis. A passing test or local quality
+gate cannot resolve these reviews or establish official CI.
 
 See the source walkthrough (../CENSUS_VINTAGE_EVALUATION.md), vintage selector
 guide (../CENSUS_VINTAGE_ADAPTER.md), aggregate-vintage protocol

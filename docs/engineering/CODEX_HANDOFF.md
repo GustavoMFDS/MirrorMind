@@ -62,10 +62,23 @@ execution guidance and does not broaden the agent's permissions.
   table verification. The 2026 annual revision index reaches August 2026 but
   does not establish first-release completeness. The April 2025 removal of
   nonemployers is a documented definition boundary and must be carried in any
-  reviewed source manifest. FRED/ALFRED API use is deferred because current
-  terms restrict API-associated storage/archiving and do not grant third-party
-  series rights. No archive file, API response, key, account or workbook was
-  acquired; keep B-01/B-02 open and tests synthetic.
+  reviewed source manifest. The current FRED Services terms apply to ALFRED
+  and the API, forbid storing/caching/archiving FRED content, and the API
+  terms additionally prohibit software/AI-development use. FRED/ALFRED is
+  therefore NO-GO for the current development and archive route absent
+  St. Louis Fed written authorization or changed terms plus separate
+  series-owner rights clearance; this does not decide rights for original
+  Census files. The proposed source is direct original MARTS
+  release files, subject to exact artifact rights, attribution, purpose,
+  storage and output approval. Proposed retention is 30 days for local
+  value-bearing artifacts, followed by deletion. The proposed fixed evaluation
+  uses a frozen 60/20/20 chronological split, first estimates, 1/3/6-month
+  lag-12 and trailing-mean baselines, strict-before date cutoffs, preserved
+  gaps, and a 12-month moving-block bootstrap only with 60 matched holdout
+  origins per horizon. These are not yet approved. No archive file, API
+  response, key, account or workbook was acquired; keep B-01/B-02 open and
+  tests synthetic. The complete proposal and owner decision checklist are in
+  [the Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - The owner confirms Actions quota exhaustion and zero paid budget. Use the
   exact-clean-head local gate, distinguish receipts from CI, and do not
   register a runner, modify workflows/protections or retry prior start failures.
@@ -81,10 +94,13 @@ execution guidance and does not broaden the agent's permissions.
 
 - Research preparation proceeds A then B: UCI Online Retail #352 event-time
   retrospective first, then an aggregate Census release-vintage study.
-  ALFRED is conditional on free authorized access, acceptable series terms and
-  adequate archive evidence. This is not approval to acquire or process real
-  data. Keep raw data out of Git, CI, logs, prompts and external services;
-  automated tests remain synthetic.
+  This historical decision did not approve acquisition or processing of real
+  data. The 2026-11-26 terms review supersedes ALFRED as an active data route:
+  current FRED terms block the proposed software-development and local archive
+  use absent St. Louis Fed written authorization or changed terms plus
+  separate series-owner rights clearance. The direct Census candidate
+  also needs source-specific approval. Keep raw data out of Git, CI, logs,
+  prompts and external services; automated tests remain synthetic.
 - Before processing the original UCI workbook, verify original terms,
   attribution/change notice, minimal product/day/positive-quantity projection
   after cancellation classification, private local storage,
@@ -293,10 +309,14 @@ are handled, verify original terms, attribution/change notice, minimized fields
 local storage, retention/deletion and a source manifest. Do not put raw or
 identifying rows in Git, CI, logs, prompts or external services. Never infer
 publication availability from `InvoiceDate`; retain
-`event_time_retrospective_unverified_availability`. For Census, prefer free
-official archived releases; use ALFRED only if access is free/authorized and
-series terms plus historical-vintage evidence suffice. Do not claim SKU-level
-demand or inventory validation. M5 remains NO-GO; B-01/B-02 remain open.
+`event_time_retrospective_unverified_availability`. For Census, prefer direct
+official archived releases subject to artifact-level review. Current FRED
+Services terms apply to ALFRED and prohibit storing/caching/archiving; API
+terms also prohibit software/AI-development use, so FRED/ALFRED is NO-GO for
+this development/archive route absent St. Louis Fed written authorization or
+changed terms plus separate series-owner rights clearance. Do not claim SKU-level
+demand or inventory validation. M5 remains
+NO-GO; B-01/B-02 remain open.
 
 Owner confirms GitHub Actions allowance is exhausted, with no paid usage or
 spending-limit increase authorized. Follow

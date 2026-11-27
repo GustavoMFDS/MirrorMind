@@ -9,8 +9,8 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | Real source rights and privacy remain open. The owner selected UCI Online Retail #352 for research-only event-time preparation followed by an aggregate Census MARTS study; this authorizes preparation, not workbook acquisition, processing, commercial use or a blanket data grant. The preferred Census candidate is the direct official archive. FRED/ALFRED API access is deferred because current terms restrict API-associated storage, caching and archiving, and do not grant third-party series rights. M5 remains NO-GO. | Recheck original UCI terms and attribution/change notice for the exact snapshot; approve minimal projection, cancellation classification, secure local storage, retention/deletion, manifest and dataset card before bytes are acquired or processed. For Census, approve the exact national aggregate series, archive, release files and retention terms. Do not create a FRED API key or retain API content unless written permissions cover storage and underlying series rights. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine source manifests, archive completeness checks and privacy controls without retrieving real source bytes |
-| B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's current annual revision index spans January 1992 through August 2026, but does not prove first-release completeness. The April 2025 annual revision removed nonemployers from the series, so source-definition comparability is an explicit gate. | For UCI, retain the event-time split and never derive `available_on` from `InvoiceDate`; any point-in-time claim needs independent publication evidence. For Census, verify immutable first-release/revision artifacts, exact publication boundaries and methodology edition, then pre-register compatible chronological origins, holdout and matched baselines. Same-day corrections without orderable timestamps must remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census archive inventory and versioned manifest without fabricating vintages |
+| B-01 | Real source rights and privacy remain open. The owner selected UCI Online Retail #352 for research-only event-time preparation followed by an aggregate Census MARTS study; this authorizes preparation, not a blanket data grant. Direct Census original-release files are the proposed Census route, but exact artifact rights, attribution and retention are not approved. FRED/ALFRED is NO-GO under current posted FRED Services/API terms for MirrorMind development and local archival use: ALFRED is within the Services terms, which prohibit storage/cache/archive, and the API additionally prohibits software/AI-development use. Reconsider only if the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate series-owner rights are cleared. This does not determine rights for original Census files. M5 remains NO-GO. | Recheck UCI terms/attribution/change notice for the exact snapshot and preserve its approved retention controls. For Census, the owner/rightsholder must approve the exact direct MARTS table/artifacts, internal research purpose, attribution, local access-controlled storage, 30-day proposed retention/deletion and permitted outputs before any bytes are acquired. Do not create a FRED API key, fetch FRED/ALFRED values or retain service content unless the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate underlying series rights permit the use and retention. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine direct-source manifest, archive completeness checks, deletion checklist and privacy controls without retrieving real Census bytes |
+| B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's annual-revision index spans January 1992 through August 2026 but does not prove first-release completeness. Census's current advance schedule states 8:30 a.m. without a timezone in its table; historical same-day corrections may be ambiguous. The April 2025 annual revision removed nonemployers, creating a source-definition boundary. | For UCI, retain event-time labeling and never derive `available_on` from `InvoiceDate`. Before Census acquisition, approve and inventory original first-release artifacts and exact publication boundaries, methodology edition, and a pre-registered chronological 60/20/20 development/validation/locked-holdout split. Use date-only strict-before cutoffs where timestamps/timezones cannot be authenticated; preserve gaps and abstain. Compare first estimates against fixed lag-12 and trailing-12-month baselines at 1/3/6 horizons; keep later revisions separate. Require 60 matched holdout origins per horizon for proposed 12-month block-bootstrap uncertainty, or report descriptive metrics only. Same-day corrections without orderable timestamps/original bytes remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census release inventory and versioned manifest without fabricating vintages |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
 | B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently approved and merged at `a456034`; its post-merge exact-main gate passed 835 tests, zero skips and six checks with the reviewed pin (final review evidence: [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)). Broader service acceptance remains open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Broader service acceptance needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
@@ -122,6 +122,40 @@ p.m. after the 10:00 a.m. release. This confirms that a same-day corrected file
 cannot be ordered safely by date alone. Preserve original and corrected file
 versions separately and abstain when timestamps cannot distinguish them. No
 Census release file was downloaded; see the [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+### B-01/B-02 owner proposal — 2026-11-26
+
+The reviewed direct-source candidate is the original Census MARTS historical
+release file for national seasonally adjusted Retail and Food Services total
+sales. The exact table row, units, source notices and rights must be verified
+from the selected artifact before acquisition. Census's index lists known
+missing releases and an interval when advance sales were not produced; its
+current release schedule says 8:30 a.m. but does not state a timezone in the
+table. A metadata-only search is not an artifact-level license or complete
+vintage inventory.
+
+Current FRED Services terms apply to ALFRED and the API and prohibit storage,
+caching or archiving service content. API-specific terms additionally prohibit
+access in connection with software/AI development and API-associated storage.
+The FRED `RSAFS` page names Census as the source; it does not establish rights
+to retain FRED/ALFRED content or settle rights for the original Census files.
+Accordingly, do not use FRED/ALFRED for this pilot unless written permission or
+revised terms explicitly allow the intended development and retention.
+
+Concrete proposed approval package: (1) direct Census MARTS original files,
+one verified national seasonally adjusted total-sales row; (2) non-commercial
+internal research with attribution and no redistribution of files or
+row-level values; (3) access-controlled local storage, no Git/CI/log/prompt or
+external-service copies, and 30-day source/value-bearing-artifact retention
+followed by deletion, keeping only rights/citation metadata, hashes and
+sanitized audit results; (4) chronological 60/20/20 development/validation/
+locked holdout, first estimates as primary targets, fixed 1/3/6-month lag-12
+and trailing-mean baselines, and separate revised-value sensitivity; and (5)
+date-only strict-before cutoffs, preserved archive gaps and abstention on
+ambiguous same-day corrections. A proposed 12-month moving-block bootstrap
+requires 60 matched holdout origins per horizon; below that, results would be
+descriptive without a winner claim. These conditions remain proposals, not
+owner authorization or evaluation evidence. No Census source was acquired.
 
 While B-01/B-02 remain open, independent synthetic pilot work now includes
 the normalized vintage selector and the fixed-origin, first-estimate Census

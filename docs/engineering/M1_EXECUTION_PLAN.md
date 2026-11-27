@@ -151,17 +151,23 @@ privacy minimization, private storage, retention/deletion and the exact
 snapshot manifest before the actual UCI workbook can be acquired or
 processed. The UCI pilot cannot satisfy point-in-time acceptance because
 `InvoiceDate` does not prove historical publication. The Census pilot must use
-verified original releases and explicit vintage gaps; ALFRED is conditional on
-free authorized access and adequate archive evidence. M5 remains NO-GO.
+verified original direct Census releases and explicit vintage gaps. The
+2026-11-26 terms review marks FRED/ALFRED NO-GO for the current
+development/archive route: posted FRED Services terms apply to ALFRED and
+prohibit storage/cache/archive, while API terms also prohibit software/AI-
+development use. Reconsider only after St. Louis Fed written authorization or
+changed terms, plus separate source-owner rights clearance. The direct Census
+artifacts still require exact rights and retention review. M5 remains NO-GO.
 
 The A preparation now includes a bounded local reader/evaluator, fixed
 event-time validation/holdout protocol, synthetic-only CLI regressions and
 data/model cards. All such results remain experimental and
 `event_time_retrospective_unverified_availability`; the source terms,
 privacy/storage manifest and original-file compatibility gates remain open.
-The B protocol names official Census archives as preferred and `RSAFS`/ALFRED
-as a conditional alternative, with date-granular vintages handled
-conservatively. No Census or ALFRED data or key has been acquired.
+The B protocol names official original Census archives as preferred. `RSAFS`
+remains discovery metadata only; FRED/ALFRED is not a current data route under
+the posted terms. Date-granular vintages are handled conservatively. No Census
+or ALFRED data or key has been acquired.
 
 The local synthetic Census lane now includes an immutable normalized-vintage
 selector and fixed lag-12/trailing-12 evaluation at 1-, 3- and 6-month

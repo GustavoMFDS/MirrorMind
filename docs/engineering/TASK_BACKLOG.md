@@ -44,7 +44,7 @@ draft.
 | --- | --- | --- | --- |
 | M1 synthetic flow | integrated, experimental | PR #62 is merged at `a456034`; published #52–#59 heads are ancestors. #53–#59 are closed as incorporated and their branches remain available. Synthetic end-to-end integration is complete; empirical/source and production acceptance are not. | B-01, B-02, B-04, B-08 |
 | M1B-01 / M1C-03 | prepared, real-data work blocked | Synthetic UCI evaluator is integrated through PR #62. Exact source terms, attribution, snapshot, privacy, retention and publication-availability evidence remain unresolved; keep tests synthetic and do not acquire/process bytes. | B-01, B-02 |
-| M1B-04 / M1C-04 | independent review | Separate PR #63 branch `codex/m1-census-vintage-adapter` preserves main `a456034` through merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`. Chronology correction `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and revisions published before reference-month close; boundary and public-evaluator regressions pass. The preceding published docs-inclusive head `2764e60e445281d4dbe56715a5f71fd4640c0f1d` passed its exact clean-head local gate at `2026-11-26T18:30:26.772586Z`: 882 tests, zero skips and all six checks; receipt `results/local-quality-gate-2764e60e445281d4dbe56715a5f71fd4640c0f1d.json`. The latest docs-only follow-up's exact head and gate receipt are maintained in the live PR body. Four automatic Actions checks on `2764e60` failed before repository steps under an alternatives-only annotation; see [B-08](BLOCKERS.md). Evaluator remains synthetic; no source parser or real-data processing is included. Independent review remains pending. | B-01, B-02, B-08 |
+| M1B-04 / M1C-04 | independent review | Separate PR #63 branch `codex/m1-census-vintage-adapter` preserves main `a456034` through merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`. Chronology correction `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and revisions published before reference-month close; boundary and public-evaluator regressions pass. Published head `349b77e1fb32cc89956fab15b38d6d9037738079` passed the exact clean-head local gate with 882 tests, zero skips and all six checks; receipt `results/local-quality-gate-349b77e1fb32cc89956fab15b38d6d9037738079-authorized-local.json`. Its four automatic Actions checks failed before repository steps under an alternatives-only annotation; see [B-08](BLOCKERS.md). A source-terms follow-up proposes direct Census MARTS files, explicit rights/storage/retention approval and a fixed temporal evaluation protocol. Its new exact head must pass the local gate before publication. Evaluator remains synthetic; no source parser or real-data processing is included. Independent review remains pending. | B-01, B-02, B-08 |
 | M2-01 | ready for independent review | PR #60 is retargeted to `main`, mergeable and ready at `fafdedae3a76398e0450773065e40384c96d1ed7`; its exact local gate passed 845 tests, zero skips and all six checks. No official CI claim. Await independent review and required protections; do not merge locally. | B-08 |
 | G-01 | ready for independent review | PR #61 is open/non-draft at `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, targets `main`, and preserves its old head plus merge commit `66fc9fa`. Exact gate: 841 tests, zero skips, all six checks; final receipt is in PR body. | B-08 official Actions only |
 | M2-02+ | planned | Start after M2-01 review/integration and independent reviews of #61/#63 are complete. Census status reconciliation is complete in PR #63; keep the active review queue stable and do not stack a new feature now. | M2-01 |
@@ -52,17 +52,27 @@ draft.
 
 ### Pilot due-diligence update — 2026-11-26
 
-Metadata-only review narrows the Census candidate to the direct MARTS archive:
-national retail and food-services total sales, described by the release as
-seasonally adjusted but not price-adjusted (the nominal/current-dollar
-interpretation must be checked against the selected table). The official
-annual-revision index currently exposes January 1992 through August 2026, but
-that is not proof of complete first-release vintages.
-The 2025 removal of nonemployers is a methodology/coverage boundary that must
-be versioned and reviewed before pooling targets. FRED/ALFRED API use is
-deferred because current terms restrict API-associated storage and archiving;
-source-owner rights remain separate. No source file, API response, account or
-credential was acquired. B-01/B-02 remain open; see the detailed
+Metadata-only review proposes direct original MARTS release files for one
+verified national seasonally adjusted Retail and Food Services total. Exact
+table, unit, methodology edition and artifact rights remain for owner review.
+The annual-revision index exposes January 1992 through August 2026 but does
+not prove original first-release completeness; the current advance schedule
+states 8:30 a.m. without a timezone in its table. The April 2025 removal of
+nonemployers is a population-definition boundary.
+
+FRED/ALFRED is NO-GO for this MirrorMind development/archive route under
+currently posted terms: FRED Services terms cover ALFRED and forbid storing,
+caching or archiving service content; API terms additionally prohibit use in
+connection with software/AI development. The separate Census files still need
+artifact-specific rights review. The concrete proposed use is non-commercial
+internal research with attribution, no redistribution, access-controlled
+local storage and 30-day retention/deletion of value-bearing artifacts. The
+temporal proposal fixes a 60/20/20 chronological development/validation/locked
+holdout split before scores, first-estimate targets, 1/3/6-month fixed
+baselines, strict-before date-only availability, gap abstention, and a
+12-month moving-block bootstrap only if each horizon has at least 60 matched
+holdout origins. These decisions remain pending; no source file, API response,
+account or credential was acquired. B-01/B-02 remain open; see the detailed
 [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 
 ## Conventions

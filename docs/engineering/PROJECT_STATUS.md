@@ -14,7 +14,7 @@ available.
 | --- | --- | --- |
 | PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
 | PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
-| PR #63 | Open, non-draft, mergeable and based on `main`; preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Chronology correction `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects normalized releases published before reference-month close. The preceding published docs-inclusive head `2764e60e445281d4dbe56715a5f71fd4640c0f1d` passed the exact local gate at `2026-11-26T18:30:26.772586Z`: 882 tests, zero skips and all six checks; receipt `results/local-quality-gate-2764e60e445281d4dbe56715a5f71fd4640c0f1d.json`. Four automatic Actions checks on that head failed before repository steps; their annotation lists account-payment failure or spending-limit increase as alternatives and does not identify the cause. The live PR body is authoritative for the latest published head and its exact gate receipt. See [B-08](BLOCKERS.md). | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Independent review remains pending. |
+| PR #63 | Open, non-draft, mergeable and based on `main`; preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Chronology correction `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects normalized releases published before reference-month close. The preceding published docs-inclusive head `2764e60e445281d4dbe56715a5f71fd4640c0f1d` passed the exact local gate at `2026-11-26T18:30:26.772586Z`: 882 tests, zero skips and all six checks; receipt `results/local-quality-gate-2764e60e445281d4dbe56715a5f71fd4640c0f1d.json`. Four automatic Actions checks on that head failed before repository steps; their annotation lists account-payment failure or spending-limit increase as alternatives and does not identify the cause. A documentation follow-up now records the current FRED/ALFRED terms and a concrete Census owner-decision package; exact new head/gate evidence must be recorded after its local gate. See [B-08](BLOCKERS.md). | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Independent review remains pending. |
 | PR #64 | Open, non-draft, mergeable and based on `main`; separate ENG-02 example-lint maintenance at `ca97ab61d15347aa271ee9ac8468a0714bdc3402`. Its exact local gate passed 840 tests, zero skips and all six checks; `ruff check examples` passed. Two Actions attempts failed before steps; the pre-start annotation lists account-payment/spending-limit alternatives without identifying the cause. Job records had no steps/logs and combined status was empty; see [B-08](BLOCKERS.md). | No forecast, real-source, API or authorization capability added. Local evidence is not official Actions; independent review remains pending. |
 
 The synthetic M1 evidence-to-decision path is integrated; M1 remains
@@ -31,19 +31,32 @@ isolation and deployment acceptance remain open. GitHub Actions allowance is
 exhausted under the owner's zero-paid-use decision (B-08); no runner,
 protection or workflow change was made.
 
-Metadata-only Census due diligence on 2026-11-26 identifies the direct MARTS
-archive as the preferred pilot source: national retail and food-services total
-sales. Current release text describes it as seasonally adjusted but not
-price-adjusted; the nominal/current-dollar interpretation must be verified
-against the selected table. The official annual-revision index currently
-spans January 1992 through August 2026, but does not prove
-complete first-release vintages. Census documents a 2025 removal of
-nonemployers from the historical series, so methodology edition and coverage
-must be reviewed before combining targets. FRED/ALFRED API retrieval is
-deferred because current terms restrict API-associated storage and archiving;
-the underlying series rights also need review. No source file, API response,
-account, credential, or workbook was acquired. UCI and Census remain
-preparation-only under B-01/B-02; the detailed proposal is in the
+Metadata-only Census due diligence on 2026-11-26 proposes direct MARTS
+original release files for one verified national seasonally adjusted
+retail-and-food-services total. Exact table, unit and methodology edition
+must be checked before use; the annual-revision index spans January 1992
+through August 2026 but does not prove complete first-release vintages. The
+official schedule gives 8:30 a.m. for advance sales without stating a timezone
+in its table; any unorderable same-day correction must remain ambiguous.
+Census documents the April 2025 removal of nonemployers, so methodology and
+coverage comparability must be reviewed before pooling outcomes.
+
+Current FRED Services terms apply to ALFRED and the API, prohibit storage,
+caching or archiving service content, and the API terms prohibit use in
+connection with software/AI development. FRED/ALFRED is therefore NO-GO for
+this development and archival route absent St. Louis Fed written authorization
+or revised terms, and separate clearance of any series-owner rights; this is
+not a finding on the separate original Census files.
+The owner proposal is non-commercial internal research with attribution,
+access-controlled local storage, no redistribution, and 30-day retention of
+value-bearing artifacts followed by deletion. The proposed temporal protocol
+uses a 60/20/20 chronological development/validation/locked holdout, first
+estimates as primary targets, fixed baselines at 1/3/6 horizons, date-only
+strict-before selection, and a 12-month moving-block bootstrap only with at
+least 60 matched holdout origins per horizon. These are proposals requiring
+approval, not authorized use or completed evaluation. No source file, API
+response, account, credential or workbook was acquired. UCI and Census remain
+preparation-only under B-01/B-02; see the
 [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 
 `ruff check examples` separately found five pre-existing findings in three

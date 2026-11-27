@@ -192,9 +192,13 @@ There is no network, filesystem or secret-store access in the module. Tests
 use generated records. The adapter is not an authorization system, byte
 integrity verifier, time-zone parser, publisher authenticator, revision
 completeness proof or hostile-input sandbox. Before a source-specific parser
-is added, review exact Census table or ALFRED series terms, archive coverage,
-release boundary, byte digest, attribution, retention/deletion and privacy.
-FRED/ALFRED is not an automatic substitute for the original Census release.
+is added, review the exact original Census table/artifact rights, archive
+coverage, release boundary, byte digest, attribution, retention/deletion and
+privacy. Current FRED Services terms apply to ALFRED and restrict storage and
+archiving; API terms also restrict software/AI-development use. FRED/ALFRED is
+therefore NO-GO for this research route absent written authorization from the
+St. Louis Fed or changed terms, plus separate series-owner rights clearance.
+It is not an automatic substitute for the original Census release.
 
 ## Regression evidence
 
