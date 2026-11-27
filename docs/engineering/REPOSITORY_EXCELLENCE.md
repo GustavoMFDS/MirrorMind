@@ -9,11 +9,11 @@ Zero paid services; preserve Codex's active checkout and source permissions.
 | REX-01 | Editorial rewrite of both READMEs | Integrated via PR #74 |
 | REX-02 | Visual hierarchy and narrative | Integrated via PR #74; existing SVGs reused |
 | REX-03 | Remote branch inventory | Inventory complete; no deletion authorized |
-| REX-04 | Main protection and integration policy | Baseline verified; policy proposed, server read-back required |
-| REX-05 | CI caching, permissions and compatibility | Candidate prepared; check official CI before integration |
-| REX-06 | Free dependency and secret security checks | Proposed |
-| REX-07 | Issue and PR templates | Proposed |
-| REX-08 | Labels and milestones | Proposed |
+| REX-04 | Main protection and integration policy | Active main-only ruleset 28260524; verified via PR #75 |
+| REX-05 | CI caching, permissions and compatibility | Integrated via PR #75; Python 3.11/3.12/3.13 CI passed |
+| REX-06 | Free dependency and secret security checks | Settings enabled; initial CodeQL analysis pending verification |
+| REX-07 | Issue and PR templates | Candidate ready |
+| REX-08 | Labels and milestones | Server setup and verification tracked in integration PR |
 | REX-09 | Coverage and static analysis | Proposed |
 | REX-10 | Packaging and reproducibility | Proposed |
 | REX-11 | Static Pages demo | Proposed |
