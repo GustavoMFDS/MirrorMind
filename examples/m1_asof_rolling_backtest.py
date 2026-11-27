@@ -8,8 +8,9 @@ Run: python -m examples.m1_asof_rolling_backtest examples/synthetic-asof-weekly-
 from __future__ import annotations
 
 import argparse
-from datetime import timedelta
 import json
+from datetime import date, timedelta
+from itertools import pairwise
 from pathlib import Path
 
 from examples.m1_availability_preflight import asof_batch
@@ -18,6 +19,13 @@ from examples.m1_temporal_backtest import _predict, _score
 
 SCHEMA = "mirrormind.synthetic_asof_backtest.v1"
 MODEL_NAMES = ("seasonal_naive_lag7", "trailing_mean_lag7")
+
+
+def _require_contiguous_days(days: list[date]) -> None:
+    """Reject calendar gaps without filling missing dates with zero demand."""
+    for previous, next_day in pairwise(days):
+        if next_day != previous + timedelta(days=1):
+            raise ValueError("missing event-date record; do not impute demand")
 
 
 def backtest_asof(
@@ -39,9 +47,7 @@ def backtest_asof(
     days = [_day(row["observed_on"], "observed_on") for row in rows]
     if cutoff != days[-1]:
         raise ValueError("evaluation cutoff must be last observed day")
-    for previous, next_day in zip(days, days[1:], strict=False):
-        if next_day != previous + timedelta(days=1):
-            raise ValueError("missing event-date record; do not impute demand")
+    _require_contiguous_days(days)
 
     first_test = len(rows) - holdout_days
     forecast_lists: dict[str, list[float]] = {name: [] for name in MODEL_NAMES}

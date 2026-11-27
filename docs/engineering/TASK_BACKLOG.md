@@ -1,13 +1,54 @@
 # Task backlog — prioritized execution register
 
-**Baseline:** PR #51 merge commit `e4f05a152aefcf68fa8ec22f3baa3b61adb8519d`,
+## Integration candidate - 2026-11-27
+
+The separately reviewed heads of PRs #64 (example maintenance), #60
+(experimental scoped BM25 retrieval), and #61 (in-process current-head
+responder) are included by normal merges, preserving their ancestry. This
+candidate is intended for a single ancestry-preserving PR to main; the
+independent combined gate and merge decision are recorded in its PR.
+Do not infer approval from this document alone. Once integrated, begin M2-02
+against the retrieval interface and continue G-02 only within its scoped
+offline contract. No authenticated RBAC, deployed authority, empirical
+forecast or production readiness is implied.
+
+PR #63 (synthetic Census) and #65 (UCI reader) remain separate. The latter
+records the owner's narrow UCI approval MM-017 through MM-022, a source
+snapshot held privately, and a fail-closed stop above 250,000 product-day
+groups without metrics. No new source processing, partitioning, cap increase
+or Census acquisition is authorized by this integration. Preserve the
+2026-12-26 deletion deadline and see the live PR #65 and its manifest for the
+latest source-specific evidence. B-01/B-02 and B-08 remain open. The
+following dated records retain historical gate and branch information;
+where they differ from this queue, use the live PRs and current evidence.
+
+**Baseline:** PR #62 merge commit `a456034c55ed7634ad4768b26788fec09dab1d08`,
 see [PROJECT_STATUS](PROJECT_STATUS.md). This is
 the maintained task register, not a duplicate roadmap or a promise
 of completion. Read [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
-On resuming work, reconcile with actual branches, open PRs, merged
-commits and independently observed evidence. Do not duplicate work
-already underway.
+On resuming work, reconcile with actual branches, open PRs, merged commits and
+independently observed evidence. Do not duplicate work already underway.
+
+## Current queue reconciliation — 2026-11-26
+
+| Work | Current state | Evidence / next gate |
+| --- | --- | --- |
+| M1 synthetic vertical slice | Integrated experimentally in main `a456034`; PR #52–#59 are incorporated by #62 and their branches are retained. Independent merged-main gate: 835 tests, zero skips, six checks, exact WorldKernel pin. | M1 real-data, empirical forecast and production acceptance remain incomplete; do not close M1 overall. |
+| Census vintage evaluator | Separate PR #63, open/non-draft at `b5e989314bcdcb566df479931794a5f56c07d477`, based on main. Exact local gate: 877 tests, zero skips, six checks. | Await independent review. Synthetic only; no Census/ALFRED bytes or source authorization. |
+| M2-01 retrieval | PR #60, open/non-draft at `fafdedae3a76398e0450773065e40384c96d1ed7`, based on main. Exact local gate: 845 tests, zero skips, six checks. | Await independent review. Retrieval remains experimental and caller-scope is not authenticated authorization. |
+| G-01 responder | PR #61 remains separate on main; the ancestry-preserving sync commit is `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`. Documentation baseline gate `20ce86bde740d5b46d7aeba4d13138884e211dba` passed 841 tests, zero skips and all six checks with the exact WorldKernel pin. | PR #61 is open/non-draft and ready for independent review. Its live body records the latest exact head/receipt; every later commit needs a fresh gate. No route or operational authority. |
+| M2-02 retrieval evaluation | Planned; depends on M2-01. | Start after M2-01 review/integration settles. Use fictional/authorized fixtures; measure citation support, lineage and abstention. |
+| ENG-02 examples lint maintenance | Ready as a separate maintenance item. `ruff check examples` on this branch reports five findings in three example files; none of these files differ from main. | Handle in a separate scoped PR; do not fold cleanup into #60/#61/#63. |
+| Real-source pilots | Preparation only under the approved UCI then aggregate Census/ALFRED sequence. | B-01/B-02 remain open; keep automated tests synthetic and wait for source-specific rights, privacy, snapshot and temporal evidence. |
+
+GitHub Actions remains unavailable under the zero-paid-budget decision. Use
+the exact-clean-head six-check local procedure; receipts are local evidence,
+never official CI. No required check, workflow or branch protection is
+weakened. The PR #62 final comments
+[7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141)
+are the review record for the incorporated M1 baseline and PR ordering.
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -19,22 +60,23 @@ already underway.
 | Pending by dependency | Remaining M1C/M1D/M1E/M1F, M2, M3 and M4 rows marked `planned`. | Start only when named predecessors and acceptance inputs exist. |
 | Blocked by external evidence or approval | M1B-03 and M1C-03 require B-01/B-02 real-source rights, original availability and empirical holdout evidence. G-04 and deployment-related scopes also require B-03/B-06. | Advance synthetic slices independently; preserve blockers and do not claim they are solved by generated fixtures. |
 
-## Current consolidated review candidate — 2026-11-25
+## Merged M1 baseline — 2026-11-26
 
-`codex/m1-engine-provenance`, published as
-[PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) to `main`, contains
-provenance correction commit `74330d811145f10fcaaddadc56c3f95e7c8b7a85` and
-chronology correction `20e7b50f88df046eaf3541c5ea706b2e3b051aad`. It preserves
-the exact published ancestry of #52–#59 and excludes #60/#61. The chronology
-+code head passed 835 tests without skips, plus Ruff, catalog, atlas, evidence
-+and capability checks, with reviewed WorldKernel pin installed. Receipt:
-`results/local-quality-gate-20e7b50f88df046eaf3541c5ea706b2e3b051aad.json`.
-The exact documentation-inclusive head must be gated again and its receipt
-+reported on PR #62; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for gate
-+semantics. PR #59 provenance comment `7174402947` and the newer #62 chronology
-+finding are addressed in code. No branch was merged and `main` was not
-+changed. PR #60 remains a separate M2 draft; PR #61 remains a separate G-01
-+draft.
+PR #62 is integrated at `a456034c55ed7634ad4768b26788fec09dab1d08`. Its
+ancestry preserves the exact published heads of PRs #52–#59; each head was
+verified as an ancestor before the stacked PRs #53–#59 were closed as
+incorporated. PR #52 was already merged. Their branches remain available.
+The independent exact-main gate passed 835 tests, zero skips and all six local
+checks with the reviewed WorldKernel pin. This is not official Actions.
+
+The synthetic M1 evidence-to-decision flow is integrated. M1 remains incomplete
+because real-source permission, temporal provenance, empirical evaluation,
+broader engine isolation and authenticated human review are open. PRs #60
+(M2-01) and #61 (G-01) remain separate. #60 now contains `main` through
+ancestry-preserving merge `a5186a6`; its first integrated local gate passed,
+and the documentation-inclusive head still needs its exact gate before push
+and review. #61 still needs the same sync-and-gate sequence. The Census
+selector/evaluator remains a separate descendant and PR.
 
 ## Conventions
 
@@ -66,6 +108,7 @@ coordination.
 | G-03 | P0 | planned | G-01, G-02 | Actual client/server integration with fictional data, isolated test trust, outages, expiry and failure cases; verify signed remote head mismatch and no permission grants; audit recovery and supplied forks. |
 | G-04 | P1 | blocked | G-03, B-03 | Operational trust review: separately administered storage, key custody, identities, monitoring, authenticated access and restore evidence. Do not deploy or claim independence without approval. |
 | ENG-01 | P1 | ready | None | Keep canonical checkout clean; record exact gates, check remote CI and improve reproducibility without lowering protections. Review dependency and warning changes separately. |
+| ENG-02 | P2 | review | None | Resolve five pre-existing Ruff findings in `examples/` as separate maintenance. Preserve behavior; review RUF007 semantics and add boundary regression coverage. PR #64 is open on `codex/eng-02-examples-ruff`; exact-head local gate passed on `ca97ab6` (840 tests, zero skips, six checks); independent review remains. |
 
 Use the existing [publisher](ATOMIC_GOVERNED_PUBLISHER.md),
 [dual-witness transcript](INTEGRATED_FENCE_TRANSCRIPT.md),
@@ -107,7 +150,7 @@ coverage/selection diagnostic modules merely because they are local.
 
 | ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M2-01 | P1 | planned | M1F-01 | Typed evidence query and retrieval contracts; permission-filtered indexing and citation mapping using authorized or fictional fixtures; deny untrusted instructions. |
+| M2-01 | P1 | review | M1F-01 | PR #60 proposes strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | planned | M2-01 | Retrieval evaluation with a declared test set, citation support and abstention; preserve document lineage and access constraints. |
 | M2-03 | P1 | planned | M1F-02, M2-01 | Typed tool registry and bounded agent orchestration over actual evidence/forecast/simulation tools; provider test double, invalid-tool/input/output and prompt-injection regressions; justified framework choice. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
@@ -153,7 +196,23 @@ If a gate fails, preserve the failure and choose the next safe
 independent slice. A blocker resolved for a synthetic fixture does
 not automatically resolve real-source, deployment or product gates.
 
-## Active claims
+## Current queue — 2026-11-26
+
+| ID | Status | Current state / next action | Blockers |
+| --- | --- | --- | --- |
+| M1B-02 / M1C-01 / M1D-01 / M1E-01–04 / M1F-01–02 | integrated, synthetic scope | PR #62 merged the end-to-end experimental M1 workflow at `a456034`; this completes the synthetic integration slice, not the licensed/empirical M1 acceptance. | B-01, B-02, B-04, B-08 |
+| M1B-01 / M1C-03 | partial / blocked for real evidence | A+B pilot protocols and adapters are prepared; UCI remains event-time retrospective and Census is vintage-based. Do not acquire/process bytes until the source-specific license, privacy, retention and temporal evidence are approved. | B-01, B-02 |
+| M1B-04 / M1C-04 | in_progress | Census descendant `codex/m1-census-vintage-adapter` passed its pre-sync gate at `da540a2`; merge commit `55e91f7` includes `a456034`. Re-run the complete gate on this exact reconciled head, then publish it as a separate PR. | B-01, B-02, B-08 |
+| M2-01 | review preparation | PR #60 includes `main` via `a5186a680b307c4ecd9d56321321a5b27048731d`. Exact sync head and docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0` each passed 845 tests, zero skips and all six checks with pinned WorldKernel; the latter receipt is `results/local-quality-gate-26e45b4620e9e13e12a745db3c99ead196c656d0.json`. This status/evidence refresh needs its exact gate before push, retarget to `main`, and independent review. Keep caller-declared scope and fictional-only limits explicit. | B-08 |
+| G-01 | ready for sync | PR #61 remains independent on its prior base. Merge `a456034` preserving typed clock-failure behavior and M1 contracts, then run the exact full gate before retargeting and preparing independent review. | B-08 |
+| PR queue #52–#59 | reconciled | Exact published heads are ancestors of `a456034`; #52 is merged and #53–#59 are closed as incorporated. All branches are retained. | None for duplicate integration |
+| M2-02+ | planned | Start only after M2-01 review/integration; do not grow the feature queue while #60/#61 and Census remain under consolidation. | M2-01 |
+| ENG-02 | separately tracked | A scoped `ruff check examples` found 5 diagnostics in `m1_asof_rolling_backtest.py` (I001, RUF007), `m1_observation_preflight.py` (I001) and `m1_temporal_backtest.py` (I001, F401). They are outside the local gate's `src`/`tests` Ruff scope and are not failures of the integrated gate. Handle after PR consolidation in a distinct maintenance change. | None |
+
+The older row-level branch claims below are preserved as historical evidence;
+they are not live task ownership or current PR states.
+
+## Historical active claims before PR #62 merge — 2026-11-25
 
 | ID | Status | Owner / branch | Surfaces | PR / commit | Evidence and next action | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |

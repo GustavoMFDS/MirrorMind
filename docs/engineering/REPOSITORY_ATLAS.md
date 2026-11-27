@@ -258,6 +258,7 @@ unavailable history.
 | [`docs/engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md`](datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md) | Dataset generated for testing known-as-of history; no real permission |
 | [`docs/engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md`](model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md) | Evaluation scores on only four synthetic origins, with abstention caveats |
 | [`docs/engineering/changes/MM-M1C-asof-rolling-abstention.md`](changes/MM-M1C-asof-rolling-abstention.md) | Scope, risk and regression acceptance for the experimental slice |
+| [`docs/engineering/changes/ENG_02_EXAMPLES_RUFF_MAINTENANCE.md`](changes/ENG_02_EXAMPLES_RUFF_MAINTENANCE.md) | Impact map, behavior-preserving lint correction, and sequence-boundary regressions |
 
 `synthetic_asof_rolling_backtest` is reported only
 as an **experimental** local program. The real
@@ -789,17 +790,22 @@ delivery is provided, and none of these results grants permission.
 No independently operated current-head service, source permission
 grant, production custody or cross-file atomicity is implied.
 
-## 49. Experimental nonce-challenged remote signed current-head read
+## 49. Experimental nonce-challenged current-head protocol, client and responder
 
 | Tracked file | Reviewed responsibility |
 | --- | --- |
+| [`src/mirrormind/modules/evidence/remote_fence_head_protocol.py`](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py) | One shared response type, signing domain, strict canonical signing message, compact JSON wire encoder and response parser |
 | [`src/mirrormind/modules/evidence/remote_fence_head_client.py`](../../src/mirrormind/modules/evidence/remote_fence_head_client.py) | Fixed HTTPS read, OS-generated nonce, separately verified signed service reply, bounded canonical wire format and exact local signed-registry comparison |
-| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery/clock/packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
+| [`src/mirrormind/modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py) | In-process request responder with typed clock/store operational errors and propagation of unrelated programming errors; no listener, authentication or persistence |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery, typed operational clock/store failure, programming-error propagation, packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
 | [`docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md`](REMOTE_FENCE_HEAD_CLIENT.md) | Request-response contract, trust boundaries, replay resistance and no independently deployed service |
+| [`docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md`](REMOTE_FENCE_HEAD_SERVICE.md) | G-01 source walkthrough, store/request/response contracts, signing flow, reproduction, failure modes and learning exercise |
 | [`docs/engineering/changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md`](changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md) | Scope, acceptance, impact map and deferred service operation |
+| [`docs/engineering/changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md`](changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md) | G-01 acceptance, impact map, compatibility, safety and evidence record |
 
-The client does not grant source rights, publish, ingest data, manage
-real service keys, or claim globally current external authority.
+The client does not grant source rights, publish or ingest data. The responder
+does not provide a live server, managed key custody, durable current state or
+globally current external authority.
 
 ## 50. Composed synthetic retail evidence preflight
 
@@ -945,6 +951,24 @@ ranking, persistence or operational action.
 The evaluator is experimental and synthetic-only in automated use. It does not
 infer publication time from `InvoiceDate`, authenticate a source manifest or
 prove completeness, source rights or predictive performance.
+
+## 59. Permission-filtered fictional evidence retrieval (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/retrieval/__init__.py`](../../src/mirrormind/modules/retrieval/__init__.py) | Namespace only; no import-time indexing or network activity |
+| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | Strict bounded retrieval contracts; recomputes exact UTF-8 excerpt digest during result validation |
+| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | Generated corpus and fixed demo principal/collection |
+| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | Scope-first in-memory BM25 ranking, stable ties and exact citation spans |
+| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | Bounded deterministic CLI over fictional text; no route, writes or arbitrary file access |
+| [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope-before-tokenization, citation integrity, deterministic ranking, bounds and untrusted-text regressions |
+| [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | CLI replay, citation presence, query omission and oversized-input failure |
+| [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Source walkthrough, contracts, BM25, safety, reproduction, tests and exercises |
+| [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance criteria, impact map, compatibility and evidence |
+
+The capability is experimental. Its access context is a caller assertion,
+not authenticated identity; `evidence_and_rag` remains planned and no real
+source permission or retrieval route is provided.
 
 ## Continuous engineering handoff and execution register
 

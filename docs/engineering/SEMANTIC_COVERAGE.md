@@ -59,8 +59,15 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/evidence/sqlite_review_registry.py`](../../src/mirrormind/modules/evidence/sqlite_review_registry.py) | G | Transactional local review log, signed-history revalidation and restart recovery; [guide](SQLITE_REVIEW_REGISTRY.md); no independent head or source permission |
 | [`src/mirrormind/modules/evidence/local_review_registry.py`](../../src/mirrormind/modules/evidence/local_review_registry.py) | G | Thread-safe in-process signed event CAS, terminal revocation; [guide](LOCAL_REVIEW_REGISTRY.md); no persistence or authority |
 | [`src/mirrormind/modules/evidence/review_decisions.py`](../../src/mirrormind/modules/evidence/review_decisions.py) | G | Offline signed reviewer chain, denial and revocation; [guide](SIGNED_SOURCE_REVIEW.md); no ingestion authorization or trusted registry |
+| [`src/mirrormind/modules/evidence/remote_fence_head_protocol.py`](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py) | G | Shared challenged-head record, signing domain, parser and compact wire encoder; [protocol guide](REMOTE_FENCE_HEAD_CLIENT.md); canonical bytes do not establish remote truth |
+| [`src/mirrormind/modules/evidence/remote_fence_head_client.py`](../../src/mirrormind/modules/evidence/remote_fence_head_client.py) | G | Optional fixed-path HTTPS read and local signed-head comparison; [client guide](REMOTE_FENCE_HEAD_CLIENT.md); no deployed authority or access grant |
+| [`src/mirrormind/modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py) | G | Experimental in-process signed response over a read-only `Protocol`; [G-01 service guide](REMOTE_FENCE_HEAD_SERVICE.md); no HTTP transport, persistence, authenticated access or independent custody |
 | [`src/mirrormind/modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py) | G | Bind staged CSV/XLSX digests to caller-declared review refs, never authorize; [guide](SOURCE_INTAKE_REVIEW.md) |
 | [`src/mirrormind/modules/evidence/snapshots.py`](../../src/mirrormind/modules/evidence/snapshots.py) | G | Strict local staging/as-of semantics in [M1 snapshot guide](M1_LOCAL_CSV_STAGING.md); no approved ingestion |
+| [`src/mirrormind/modules/retrieval/__init__.py`](../../src/mirrormind/modules/retrieval/__init__.py) | I | Package namespace for the experimental local retrieval slice |
+| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | G | Frozen strict query, scope, document and citation contracts; [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md); caller scope is not authentication |
+| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | G | Generated fictional documents and a fixed demo scope; [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md) |
+| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | G | Scope-first in-memory BM25, deterministic ties and exact citation mapping; [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md); no persistent or authenticated index |
 | [`src/mirrormind/modules/forecasting/__init__.py`](../../src/mirrormind/modules/forecasting/__init__.py) | I | Offline forecast module marker, no model registry |
 | [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step baselines and a bounded repeated lag-seven profile using the same one-step rule; [method guide](M1_STAGED_ROLLING_BASELINES.md) and [M1F-02 workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) |
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
@@ -123,13 +130,15 @@ of a claimed effect**.
 | Experiment | Status and evidence |
 | --- | --- |
 | [`examples/m1_observation_preflight.py`](../../examples/m1_observation_preflight.py) | **Experimental** standalone CLI; see [M1_DATA_PREFLIGHT](M1_DATA_PREFLIGHT.md) and [unit tests](../../tests/unit/test_m1_observation_preflight.py). This is **not** a new production `src/mirrormind/modules/evidence` implementation. |
+| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | **Experimental** deterministic CLI over generated fictional documents; see [M2_EVIDENCE_RETRIEVAL](M2_EVIDENCE_RETRIEVAL.md), [unit tests](../../tests/unit/test_evidence_retrieval.py) and [CLI integration test](../../tests/integration/test_m2_evidence_retrieval_cli.py). It is not authenticated retrieval or RAG. |
 
 The reviewed capability ledger declares
 `synthetic_observation_preflight` `experimental`;
 all live evidence/RAG and forecasting capabilities remain
-`planned`. The generated catalog still indexes the
-11 production source modules; example scripts are navigated
-through the full repository atlas.
+`planned`. The generated catalog indexes current Python
+declarations; example scripts and the G-01 service boundary are
+navigated through the full repository atlas. These index and guide
+levels do not imply deployment or operational acceptance.
 
 ## M1c local evaluation, not source-model deployment
 
