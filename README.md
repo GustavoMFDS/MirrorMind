@@ -35,6 +35,11 @@ sensitivity, not an instruction to place orders or an optimized policy.
 
 ## Architecture
 
+![MirrorMind experimental architecture and evidence boundaries](docs/assets/mirrormind-architecture.svg)
+
+<details>
+<summary>Diagram source</summary>
+
 ```mermaid
 flowchart TD
     E[Bounded evidence staging] --> T[Temporal eligibility and backtesting]
@@ -47,6 +52,8 @@ flowchart TD
     D --> H[Reviewable conditional comparison]
     R[Scoped fictional BM25 retrieval] -. future orchestration .-> H
 ```
+
+</details>
 
 FastAPI exposes a small typed experimental API. Shared contracts live in
 `core/`, reusable capabilities in `modules/` and domain-specific
@@ -101,6 +108,8 @@ The numbers below are the actual synthetic output, not real retail data.
 | Fixed cycle / fixed quantity | 5,082.5 | 100% | 228 | 4 |
 | Reorder point / fixed quantity | 2,678.5 | 100% | 88 | 2 |
 | Forecast-aware order-up-to | 950.5 | 100% | 9 | 15 |
+
+![Synthetic inventory comparison: mean costs, stock and orders](docs/assets/mirrormind-synthetic-comparison.svg)
 
 The last policy holds less stock but places more orders. These are
 conditional trade-offs under fictional costs and a shared demand stream,
@@ -208,6 +217,8 @@ research is separately scoped; UCI event time is not verified publication
 time, and synthetic Census vintages are not official release archives.
 Original datasets, credentials and customer identifiers must stay out of
 the repository, examples and logs. See [security and evidence handling](docs/SECURITY.md).
+
+[Contribution guide](CONTRIBUTING.md) | [Security policy](SECURITY.md)
 
 ## License
 

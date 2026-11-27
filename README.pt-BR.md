@@ -30,6 +30,11 @@ não uma instrução de compra ou uma política otimizada.
 
 ## Arquitetura
 
+![Arquitetura experimental e limites das evidências](docs/assets/mirrormind-architecture.svg)
+
+<details>
+<summary>Diagrama em Mermaid</summary>
+
 ```mermaid
 flowchart TD
     E[Preparacao limitada de evidencias] --> T[Elegibilidade temporal e backtesting]
@@ -42,6 +47,8 @@ flowchart TD
     D --> H[Comparacao condicional revisavel]
     R[Busca BM25 em documentos ficticios] -. orquestracao futura .-> H
 ```
+
+</details>
 
 A API experimental usa FastAPI e contratos tipados. Os contratos compartilhados
 estão em `core/`, capacidades reutilizáveis em `modules/` e a lógica específica
@@ -88,6 +95,8 @@ duas replicações, horizonte de 28 dias e prazo de entrega base de dois dias.
 | Ciclo fixo / quantidade fixa | 5.082,5 | 100% | 228 | 4 |
 | Ponto de reposição / quantidade fixa | 2.678,5 | 100% | 88 | 2 |
 | Reposição até alvo baseada na previsão | 950,5 | 100% | 9 | 15 |
+
+![Comparação sintética: custos, estoque e pedidos médios](docs/assets/mirrormind-synthetic-comparison.svg)
 
 A terceira regra mantém menos estoque, mas gera mais pedidos. As diferenças
 decorrem de premissas e custos fictícios e não demonstram superioridade
@@ -192,6 +201,8 @@ publicação, e as vintages Census sintéticas não são arquivos oficiais.
 Dados brutos, credenciais e identificadores de clientes devem ficar fora
 do repositório, dos exemplos e dos logs. Veja
 [segurança e tratamento de evidências](docs/SECURITY.md).
+
+[Guia de contribuições](CONTRIBUTING.md) | [Política de segurança](SECURITY.md)
 
 ## Licença
 

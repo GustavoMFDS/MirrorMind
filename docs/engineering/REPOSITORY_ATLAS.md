@@ -1020,3 +1020,10 @@ forecast claims or cross-repository changes.
 
 - [README.md](../../README.md): English public overview, executable synthetic demo and live CI.
 - [README.pt-BR.md](../../README.pt-BR.md): Brazilian Portuguese counterpart with identical demo and evidence boundaries.
+
+## Public portfolio visuals and community policies
+
+- [Architecture artwork](../assets/mirrormind-architecture.svg): editable static SVG of reviewed experimental boundaries.
+- [Synthetic comparison artwork](../assets/mirrormind-synthetic-comparison.svg): measured fictional CLI example; no decision ranking.
+- [CONTRIBUTING.md](../../CONTRIBUTING.md): reporting and contribution boundaries pending license decision.
+- [SECURITY.md](../../SECURITY.md): private disclosure channel and experimental support limits.

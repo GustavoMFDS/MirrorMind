@@ -1,4 +1,17 @@
-# Temporary local quality gate while Actions quota is exhausted
+# Local quality gate and historical Actions fallback
+
+## Current public CI baseline - 2026-11-27
+
+The owner made MirrorMind public. Both standard GitHub-hosted workflows
+succeeded on merged main `6a5966602b26f39fa396928c119b139f6e101e7b`
+([Python CI](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46055536569),
+[documentation](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46055536557)).
+Use current official checks for new integrations; retain the six-check local
+gate as complementary evidence, especially for the private pinned WorldKernel
+extra, which is not installed by the standard public workflow. Keep exact
+head and skip information separate. No paid usage or change to check
+definitions is authorized. The dated quota fallback records below are
+historical, not a claim that standard Actions is currently unavailable.
 
 The repository owner authorized a **temporary** alternative to GitHub Actions
 while the monthly quota is unavailable. This is **not** a claim that the
