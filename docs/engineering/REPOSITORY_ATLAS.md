@@ -1049,3 +1049,5 @@ forecast claims or cross-repository changes.
 
 - [REX plan](REPOSITORY_EXCELLENCE.md): independent maintenance track.
 - [Branch inventory](REX_BRANCH_AUDIT.md): exact-head snapshot and deletion safety boundaries.
+
+- [REX CI governance](REX_CI_GOVERNANCE.md): workflow triggers, compatibility, least privilege and main protection policy.
