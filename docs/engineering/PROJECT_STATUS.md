@@ -29,6 +29,11 @@ passed on that exact PR head. Comment
 responds to the latest independent parser finding. Any later tracked change
 requires its own exact-head gate and PR check observation; do not transfer the
 `35bff78` receipts to a descendant.
+Documentation-only follow-up head
+`d454b48477af4691a363622ecf8b2fd85a7e5a60` also passed 968 tests, zero skips,
+all six local checks and all seven observed GitHub checks, with the same exact
+WorldKernel pin. Its receipt and run links are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+Use live PR metadata for the currently published descendant.
 
 Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
 types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
@@ -65,7 +70,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | --- | --- | --- |
 | PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
-| PR #65 | Open, non-draft; implementation head `35bff78` passed 968 local tests, zero skips, six local checks and all seven official checks. The latest PR comment responds to the parser review; confirm live metadata for any later documentation-only head. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PR #65 | Open, non-draft; implementation head `35bff78` and documentation-only follow-up `d454b48` each passed 968 local tests, zero skips, six local checks and all seven observed GitHub checks. The latest PR comment responds to the parser review; confirm live metadata for any later descendant. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
 | PRs #66–#76 | Closed as merged. #66/#67 consolidate M2-01, G-01, ENG-02 and Census; #68–#74 advance the public portfolio/release evidence; #75 hardens CI; #76 adds security and community workflows. | No source/data or WorldKernel rights grant follows from these changes; no production readiness follows. |
 
 

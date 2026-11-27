@@ -18,10 +18,12 @@
   `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
   and excluded `Description` handling remain covered. The 10 focused second-
 -  round cases and 75 UCI workbook unit/integration tests passed. Published PR
-  head `35bff7824970ebc511e05add240088b2ffd74057` then passed the full local
-  gate (968 tests, zero skips, six checks) with the reviewed WorldKernel pin;
-  all seven observed GitHub checks passed on that exact head. See the exact
-  receipt and run links in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+  head `35bff7824970ebc511e05add240088b2ffd74057` passed the full local gate
+  (968 tests, zero skips, six checks) with the reviewed WorldKernel pin; all
+  seven observed GitHub checks passed on that exact head. Its
+  documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
+  passed the same gate and seven checks. See exact receipts and run links in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
   Reply `7227559961` addresses review finding `7226309300`; obtain independent
   re-review. If documentation changes advance the branch, record their own
   exact-head gate and checks; never transfer the `35bff78` evidence. Do not
@@ -52,9 +54,9 @@ PR #65 remains separate: the UCI source was privately acquired within
 MM-017 through MM-022, but the attempt stopped above 250,000 product-day
 groups without scores. The duplicate-cell, error-cell and ambiguous scalar
 payload findings have synthetic regressions; the latest response is recorded
-in comment `7227559961`. Published head `35bff78` passed its local gate and
-all seven observed exact-head GitHub checks, but still awaits independent
-re-review.
+in comment `7227559961`. Published code head `35bff78` and documentation-only
+descendant `d454b48` passed their exact-head local gates and all seven
+observed GitHub checks; PR still awaits independent re-review.
 No further source processing is authorized. Preserve the 2026-12-26 deletion
 deadline. Historical pre-start check diagnostics remain unexplained despite
 current green public checks; the zero-paid budget remains. The dated branch

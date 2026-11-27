@@ -49,6 +49,25 @@ These results do not transfer to descendants; any
 later tracked change requires a new exact-head gate and check observation.
 PR #65 remains open pending independent review, not merged.
 
+The documentation-only descendant
+`d454b48477af4691a363622ecf8b2fd85a7e5a60` passed at
+`2026-11-27T20:40:28.598238Z`: 968 tests, zero skips and all six local checks,
+with WorldKernel `0.0.1` installed from the same reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-d454b48477af4691a363622ecf8b2fd85a7e5a60.json`.
+All seven observed GitHub checks succeeded on that exact head: `test` and
+Python 3.12/3.13 compatibility in
+[run 46065329990](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46065329990),
+`symbol-catalog` in
+[run 46065330030](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46065330030),
+`Analyze (actions)` and `Analyze (python)` in
+[run 46065326027](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46065326027),
+and `CodeQL` at
+[run 140729286173](https://github.com/GustavoMFDS/MirrorMind/runs/140729286173).
+These checks are public CI; the optional private dependency remains covered by
+the separate local gate. A later documentation-only descendant requires its
+own local gate, publication and exact-head check observation.
+
 ### Pre-latest-main synchronized candidate receipts
 
 Exact head `53a932295c4c981590e6bee105247a65a357eba6` passed at

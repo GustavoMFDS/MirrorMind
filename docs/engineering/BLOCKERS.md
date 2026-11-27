@@ -11,8 +11,8 @@ commit only; check the exact PR head separately after publication. Earlier
 pre-start failures remain historical, and their annotations do not establish
 which account condition caused them. The owner's zero-paid-budget constraint
 still applies. No self-hosted runner is needed: all seven observed public
-checks also succeeded on PR #65 exact head
-`35bff7824970ebc511e05add240088b2ffd74057`. The optional private WorldKernel
+checks also succeeded on PR #65 documentation head
+`d454b48477af4691a363622ecf8b2fd85a7e5a60`. The optional private WorldKernel
 dependency is validated separately by the exact-head local gate.
 
 This register identifies **specific acceptance dependencies**, not
@@ -31,7 +31,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | Historical pre-start failures remain unexplained; their annotations list alternative account conditions without identifying one. Current public checks are operational: all six succeeded on main `2a7641b88b0d97a239d44102d4da9497460f21d1` and all seven observed checks succeeded on PR #65 exact head `35bff7824970ebc511e05add240088b2ffd74057`. No self-hosted runner is needed for those verified checks. The owner still authorizes zero paid usage and no spending-limit increase. Historical cause diagnosis remains open, but it does not block current PR check evidence. | Preserve exact-head check/run evidence; if a future pre-start failure recurs, inspect its annotations and run state without inferring a cause. | GitHub account owner / repository administrator | Continue normal exact-head public checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change workflows/protections, bypass or weaken checks. |
+| B-08 | Historical pre-start failures remain unexplained; their annotations list alternative account conditions without identifying one. Current public checks are operational: all six succeeded on main `2a7641b88b0d97a239d44102d4da9497460f21d1` and all seven observed checks succeeded on PR #65 exact documentation head `d454b48477af4691a363622ecf8b2fd85a7e5a60`. No self-hosted runner is needed for those verified checks. The owner still authorizes zero paid usage and no spending-limit increase. Historical cause diagnosis remains open, but it does not block current PR check evidence. | Preserve exact-head check/run evidence; if a future pre-start failure recurs, inspect its annotations and run state without inferring a cause. | GitHub account owner / repository administrator | Continue normal exact-head public checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change workflows/protections, bypass or weaken checks. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 
@@ -49,7 +49,8 @@ control. The UCI workbook unit and integration suites passed 75 tests; Ruff
 passed on the changed Python files. These are synthetic parser tests. The
 source remains stopped above 250,000 groups; it was not reread and has no
 projection, complete exclusion count or empirical score. The complete local
-gate on published PR head `35bff7824970ebc511e05add240088b2ffd74057` passed
+gate on code head `35bff7824970ebc511e05add240088b2ffd74057` and documented
+head `d454b48477af4691a363622ecf8b2fd85a7e5a60` passed
 (968 tests, zero skips, six checks, reviewed WorldKernel pin), and all seven
 observed GitHub checks succeeded. Comment `7227559961` records the correction
 and evidence for review finding `7226309300`; independent re-review remains

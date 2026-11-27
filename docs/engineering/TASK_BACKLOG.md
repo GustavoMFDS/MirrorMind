@@ -22,16 +22,18 @@ correction for repeated scalar and mixed scalar/inline worksheet payloads.
 Regressions reproduce both review rounds, including both parser passes,
 rich-text compatibility and excluded-field privacy. Focused UCI workbook
 unit/integration suites passed 75 tests, including 10 second-round structural
-cases. Published PR head `35bff7824970ebc511e05add240088b2ffd74057` passed
+cases. Published code head `35bff7824970ebc511e05add240088b2ffd74057` passed
 the exact six-check local gate with 968 tests, zero skips and reviewed
-WorldKernel pin; all seven observed GitHub checks also succeeded. The local
-receipt and exact Actions runs are recorded in
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Comment `7227559961` replies to
-review finding `7226309300` with the correction and test evidence. PR #65
-remains open for independent re-review. This is not empirical pilot evidence:
-the source attempt stopped above the approved group bound. Any later tracked
-change needs a fresh exact-head gate and check observation. Do not merge PR
-#65 or mark review comments resolved before independent acceptance.
+WorldKernel pin; all seven observed GitHub checks also succeeded. Its
+documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60`
+passed the same local gate and all seven checks. Both receipts and exact Actions
+runs are recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Comment
+`7227559961` replies to review finding `7226309300` with correction and test
+evidence. PR #65 remains open for independent re-review. This is not empirical
+pilot evidence: the source attempt stopped above the approved group bound.
+Any later tracked change needs a fresh exact-head gate and check observation.
+Do not merge PR #65 or mark review comments resolved before independent
+acceptance.
 
 The only approved UCI #352 processing attempt stopped above 250,000
 product-day groups without a projection, complete exclusion count or metrics.
@@ -54,7 +56,7 @@ ancestry and must not be replayed as new work. See [PROJECT_STATUS](PROJECT_STAT
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| UCI workbook parser review | Published head `35bff7824970ebc511e05add240088b2ffd74057` includes correction `6df8af1` and current-main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads fail closed in both worksheet passes. Valid inline rich text passes; `Description` remains excluded from selected text callbacks. Exact head passed 968 tests, zero skips, all six local checks and all seven observed GitHub checks. Response `7227559961` addresses review finding `7226309300`. | Obtain independent re-review. For any new tracked commit, repeat the exact-head local gate, publish normally, and verify its own official checks. Keep #65 open and unmerged until review acceptance. |
+| UCI workbook parser review | Published code head `35bff7824970ebc511e05add240088b2ffd74057` includes correction `6df8af1` and current-main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads fail closed in both worksheet passes. Valid inline rich text passes; `Description` remains excluded from selected text callbacks. Code head and documentation-only descendant `d454b48477af4691a363622ecf8b2fd85a7e5a60` passed 968 tests, zero skips, six local checks and seven observed GitHub checks each. Response `7227559961` addresses review finding `7226309300`. | Obtain independent re-review. For any new tracked commit, repeat the exact-head local gate, publish normally, and verify its own official checks. Keep #65 open and unmerged until review acceptance. |
 | UCI empirical pilot | Stopped at approved 250,000 group bound; no projection or metrics. | No further source operation without new owner authorization; preserve deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue only existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
 
