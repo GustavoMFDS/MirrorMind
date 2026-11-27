@@ -25,7 +25,7 @@ No top-level classes or functions.
 
 Source: [`src/mirrormind/api/app.py`](../../../src/mirrormind/api/app.py)
 
-Static imports (including inside functions): `.routes`, `fastapi`
+Static imports (including inside functions): `.routes`, `fastapi`, `mirrormind`
 
 No top-level classes or functions.
 
