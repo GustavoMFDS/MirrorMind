@@ -10,7 +10,7 @@ On resuming work, reconcile with actual branches, open PRs, merged
 commits and independently observed evidence. Do not duplicate work
 already underway.
 
-## PR reconciliation snapshot at `6150bfd` — 2026-11-27 UTC
+## PR reconciliation snapshot at `5c1835f` — 2026-11-27 UTC
 
 PR #52 merged at `e922b03666f04bd8c570a0448466d25838e3f84e`; PRs #53–#59
 closed without individual merges. Local ancestry checks confirm all eight
@@ -33,7 +33,7 @@ implied.
 | [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
 | [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
 | [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
-| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `6150bfd5dea03d68c5c840fc0e33acea995a7ad8` | Open for independent review; no review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `5c1835f8862bbe12b9028707cfa3b9d893b9eda6` | Open for independent review; no review submission or inline thread observed |
 
 ## Historical reconciliation at the PR #51 baseline
 
@@ -110,10 +110,19 @@ the reviewed WorldKernel pin. Receipt:
 One existing `TestClient` deprecation warning remains. The restricted executor
 attempt was interrupted without a result; the recorded pass is from the
 authorized local executor and is not official Actions CI. This confirmation
-does not reduce the prior `>250,000` product-day count or close B-01. The PR
-reconciliation table above records the last remotely observed head before this
-local increment; it does not imply that the local commit had already been
-published.
+does not reduce the prior `>250,000` product-day count or close B-01.
+
+The MM-022 candidate was subsequently published to [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
+at head `5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. Its exact-head local gate
+passed at `2026-11-27T18:10:41.535466+00:00`: 867 tests, zero skips, and all
+six checks passed with the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
+Two automatic Actions runs on this head failed without available job steps or
+logs; the configured connector returned no cause or combined statuses. The
+owner's exhausted-allowance report is separate evidence. No manual retry,
+workflow change or protection change was made. The PR remains open for
+independent review, with no review submission or inline thread observed after
+publication. This does not reduce the source group count or close B-01.
 
 ## Historical consolidated review candidate — 2026-11-25 (PR #62 later integrated)
 

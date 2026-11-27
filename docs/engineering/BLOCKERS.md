@@ -18,6 +18,21 @@ that has not actually been granted.
 | B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
 | B-08 | The owner confirms the GitHub Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. PR #57 diagnostics on `1bf178b` and `1cff92c` show pre-job annotations with the payment/spending-limit alternatives, without identifying the subcondition; those jobs had no repository steps. Official GitHub documentation states self-hosted runner usage is free, but that does not prove a self-hosted job would bypass this account-level pre-start gate. It would require an owner-provided machine; GitHub warns that self-hosted runners can be compromised by workflow code and recommends ephemeral runners for autoscaling. No dedicated disposable host is approved, and a shared workstation is not an acceptable substitute. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage), [self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners) and [secure use](https://docs.github.com/en/actions/reference/security/secure-use). | Official Actions must become available within the existing budget, or the owner must separately approve a zero-cost, dedicated and clean ephemeral host after a security and feasibility review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
 
+### B-08 diagnostics — PR #65 published MM-022 head 5c1835f, 2026-11-27 UTC
+
+PR #65 head `5c1835f8862bbe12b9028707cfa3b9d893b9eda6` passed the local gate
+before publication. Its automatic Python API CI run
+[46047574630](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46047574630)
+and documentation catalog run
+[46047574634](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46047574634)
+completed with failure. Job records identify `test` and `symbol-catalog`;
+the connector returned no steps or logs, and the combined-status endpoint
+returned an empty list. It did not return annotation detail, so the cause is
+undetermined. The owner's report of exhausted allowance and zero paid budget
+is separate and does not establish the cause of these exact runs. No manual
+rerun, workflow change or protection change occurred. Local validation is not
+official CI.
+
 ### B-08 diagnostics — PR #60 and #61 heads, 2026-11-27 UTC
 
 Exact-head diagnostics were read for PR #60 head

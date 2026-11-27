@@ -416,10 +416,17 @@ Starlette/httpx `TestClient` deprecation warning remains. Receipt:
 `results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
 An earlier restricted-executor attempt was interrupted without a result; the
 recorded pass came from the authorized local executor. This is not official
-Actions evidence. At the last remote observation PR #65 still pointed to
-`6150bfd5dea03d68c5c840fc0e33acea995a7ad8`; the candidate is local until the
-documentation-inclusive gate completes and a fast-forward publication occurs.
-Do not retry or partition the source, or raise its cap, under current approval.
+Actions evidence. Documentation follow-up commit
+`5c1835f8862bbe12b9028707cfa3b9d893b9eda6` was fast-forward published to
+PR #65 after passing its own exact-head gate at
+`2026-11-27T18:10:41.535466+00:00`: 867 tests, zero skips and all six checks,
+with WorldKernel at the reviewed commit. Receipt:
+`results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
+Automatic test and symbol-catalog runs failed without returned steps or logs;
+the configured connector yielded no cause or combined statuses. The owner's
+quota report is separate evidence. No official Actions success or review
+approval is claimed. PR #65 remains open for independent review. Do not retry
+or partition the source, or raise its cap, under current approval.
 
 ## 4. Mandatory documentation standard
 

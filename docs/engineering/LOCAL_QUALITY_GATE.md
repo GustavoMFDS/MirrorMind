@@ -276,3 +276,25 @@ MM-021 and exceeded its 250,000-group ceiling. This regression does not reread
 the workbook, generate source counts or metrics, or clear the stop. Never
 retry, partition or enlarge the source call without a new bounded-method
 decision.
+
+### Published documentation-inclusive PR #65 head — 2026-11-27
+
+After the all-prefix code/test commit, documentation updates were committed
+and published on exact head
+`5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. The full local gate passed at
+`2026-11-27T18:10:41.535466+00:00`:
+
+- Pytest: 867 passed, zero skipped; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- Python 3.13.5; WorldKernel `0.0.1` installed from reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
+- Status: `local_gate_passed_not_official_ci`.
+
+Automatic Actions on this exact head produced a test run and a catalog run
+with failure; job steps/logs and combined statuses were unavailable through
+the configured connector. The precise cause is undetermined. This local gate
+does not imply Actions success, integration approval, or completion of the
+stopped real-source evaluation.

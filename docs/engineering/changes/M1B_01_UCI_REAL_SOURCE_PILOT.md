@@ -260,3 +260,14 @@ again. No complete projection, source-level exclusion count, metric or model
 card exists. Do not retry, partition or widen the source call under current
 approval. The local candidate was not yet published when this record was
 written; the preceding remote PR #65 head was `6150bfd5dea03d68c5c840fc0e33acea995a7ad8`.
+
+The documentation-inclusive candidate was subsequently published by
+fast-forward as PR #65 head
+`5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. Its exact-head six-check local
+gate passed at `2026-11-27T18:10:41.535466+00:00`: 867 tests, zero skips and
+all six checks passed with the reviewed WorldKernel pin; receipt:
+`results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
+This remains local evidence, not Actions. The automatic test and catalog
+runs failed with no job steps, logs or combined statuses returned by the
+configured connector; the cause is undetermined and the owner's quota report
+is separate. No official CI pass is claimed.

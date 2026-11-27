@@ -1,14 +1,14 @@
 # Project status — reviewed baseline, not live status
 
 **Main baseline:** `a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62 merge).
-**Verified PR snapshot before this documentation reconciliation:**
+**Verified PR snapshot after publishing MM-022 candidate:**
 2026-11-27 UTC. PRs #60, #61, #63, #64 and #65 were
 open, non-draft, mergeable and based on this main commit. Their exact heads at
 the snapshot are #60 `fafdedae3a76398e0450773065e40384c96d1ed7`, #61
 `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, #63
 `ffd3d770d5c7e9bafba975544de7947bcf20f1fc`, #64
 `ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
-`6150bfd5dea03d68c5c840fc0e33acea995a7ad8`. #60/#61 have the earlier
+`5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. #60/#61 have the earlier
 owner-authored `COMMENTED` reviews whose findings were addressed; no new
 independent review submissions or unresolved inline threads were present. #63–
 #65 had no review submissions or inline threads. Main has not changed.
@@ -17,12 +17,16 @@ review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
 using this document as a general execution report.
 
-The remote PR snapshot above predates local commit
-`2413df151fd6baa9bb4de472c713519f2d69937c`, which adds the MM-022 all-prefix
-synthetic regression and passed its exact local gate. The remote PR head was
-still `6150bfd5dea03d68c5c840fc0e33acea995a7ad8` when independently checked;
-the updated candidate remains pending publication of its documentation
-follow-up and exact-head gate.
+PR #65 now publishes the MM-022 all-prefix synthetic regression and its
+documentation follow-up at exact head
+`5c1835f8862bbe12b9028707cfa3b9d893b9eda6`. This head passed the exact
+temporary six-check local gate with 867 tests, zero skips and WorldKernel at
+reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt:
+`results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
+Automatic test and documentation-catalog Actions runs failed without returned
+steps or logs. Their cause is undetermined; the separate owner report of
+exhausted allowance does not identify it. No review submission or inline
+thread was observed after publication. The local gate is not official CI.
 
 ## Current PR #65 invoice-policy update — 2026-11-27 UTC
 
@@ -139,7 +143,9 @@ excluded both cancellation and unverified-prefix classes before grouping, so
 MM-022 leaves accepted sales rows and the observed `>250,000` product-day count
 unchanged. B-01 remains stopped; no complete projection, source exclusion
 count, evaluation or empirical metric exists. Do not retry, partition or widen
-the approved ceiling without a separate bounded-method decision.
+the approved ceiling without a separate bounded-method decision. The
+documentation-inclusive follow-up was subsequently published as PR #65 head
+`5c1835f8862bbe12b9028707cfa3b9d893b9eda6` and passed its own exact local gate.
 
 ## Pull request reconciliation — 2026-11-27 UTC
 
