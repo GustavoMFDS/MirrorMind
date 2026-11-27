@@ -2,6 +2,7 @@
 
 [![CI Python](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/ci.yml)
 [![Documentação](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/docs.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 [English](README.md)
 
@@ -206,8 +207,7 @@ do repositório, dos exemplos e dos logs. Veja
 
 ## Licença
 
-O repositório é público para visibilidade e revisão. A licença geral do
-software ainda não foi escolhida; visibilidade pública não equivale a
-uma licença open source. Componentes e dados de terceiros mantêm seus
-próprios termos aplicáveis.
-[Orientação do GitHub sobre licenças](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
+O código e a documentação originais do MirrorMind são licenciados sob a
+[Apache License 2.0](LICENSE). Software e dados de terceiros, bem como o motor
+independente WorldKernel, mantêm seus próprios termos aplicáveis. Consulte os
+[limites de licenciamento e dados de terceiros](docs/THIRD_PARTY.md).

@@ -1,10 +1,10 @@
 # Contributing to MirrorMind
 
 MirrorMind is an experimental research and engineering project. Feedback,
-reproducible bug reports and design discussions are welcome. A general
-software license has not yet been selected; discuss proposed code
-contributions with the maintainer before submitting them. Public visibility
-does not constitute permission to redistribute or relicense the project.
+reproducible bug reports and design discussions are welcome. The project is licensed under [Apache 2.0](LICENSE). By intentionally
+submitting contributions for inclusion, you agree to its contribution terms
+(section 5), unless explicitly agreed otherwise. Submit only material you
+have the right to contribute; preserve applicable third-party notices.
 
 ## Report a problem
 

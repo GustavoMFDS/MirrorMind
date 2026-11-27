@@ -1027,3 +1027,8 @@ forecast claims or cross-repository changes.
 - [Synthetic comparison artwork](../assets/mirrormind-synthetic-comparison.svg): measured fictional CLI example; no decision ranking.
 - [CONTRIBUTING.md](../../CONTRIBUTING.md): reporting and contribution boundaries pending license decision.
 - [SECURITY.md](../../SECURITY.md): private disclosure channel and experimental support limits.
+
+## Public licensing
+
+- [LICENSE](../../LICENSE): standard Apache-2.0 license text for original project material.
+- [Third-party licensing](../THIRD_PARTY.md): dependency metadata and separate engine/data boundaries.

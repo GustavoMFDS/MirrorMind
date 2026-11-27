@@ -3,6 +3,7 @@
 [![Python API CI](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/ci.yml)
 [![Documentation checks](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/GustavoMFDS/MirrorMind/actions/workflows/docs.yml)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB)](https://www.python.org/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 [Português (Brasil)](README.pt-BR.md)
 
@@ -222,7 +223,7 @@ the repository, examples and logs. See [security and evidence handling](docs/SEC
 
 ## License
 
-This repository is public for visibility and review. A general software
-license has not been selected; public visibility does not grant an
-open-source license. Third-party components and data retain their own
-applicable terms. See the [GitHub licensing guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
+MirrorMind's original project code and documentation are licensed under the
+[Apache License 2.0](LICENSE). Third-party software, datasets and the independent
+WorldKernel engine retain their own applicable terms. See
+[third-party licensing and data boundaries](docs/THIRD_PARTY.md).
