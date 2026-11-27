@@ -36,18 +36,18 @@ pre-start failures remain unexplained and are not attributed to billing without
 evidence. Preserve zero paid usage and do not register a self-hosted runner or
 weaken, bypass or disable checks.
 
-## MM-024 UCI documentation checkpoint - `6eb612f`
+## PR #78 MM-024 exact-head validation
 
-Exact candidate head
-`6eb612fa76e30b4abf5634f84d31932e2f3aea78` passed the full temporary local
-gate at `2026-11-27T21:34:48.769712Z`: 968 tests, zero skips, all six checks
-and one existing Starlette/httpx `TestClient` deprecation warning. WorldKernel
-`0.0.1` was installed from reviewed source commit
+Published head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the full
+temporary local gate at `2026-11-27T21:38:27.280983Z`: 968 tests, zero skips,
+all six checks and one existing Starlette/httpx `TestClient` deprecation
+warning. WorldKernel `0.0.1` was installed from reviewed source commit
 `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
-`results/local-quality-gate-6eb612fa76e30b4abf5634f84d31932e2f3aea78.json`.
-The receipt explicitly marks official GitHub Actions as not checked by the
-local script. Any later tracked change needs a fresh exact-head gate; the final
-PR body records that head's receipt and official check state separately.
+`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`.
+All nine observed official contexts also succeeded on that exact PR head; the
+live [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) is the source
+of current check status. The local receipt marks GitHub Actions as not checked
+by its script. Any later tracked change requires a fresh exact-head gate.
 
 ## PR #65 synchronized candidate
 

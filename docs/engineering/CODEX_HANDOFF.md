@@ -10,14 +10,14 @@
   public coverage measurement, scoped strict typing, wheel packaging smoke
   tests and CI. Its exact-head local report also records 968 tests, zero skips
   and six local checks. No paid services or protection changes were used.
-- PR #77 reconciles MM-009 with accepted MM-023. Continue the separate MM-024
-  documentation candidate on `codex/mm009-mm023-reconcile-20261127`, now
-  ancestry-merged with `540c474` at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`.
-  Checkpoint `6eb612fa76e30b4abf5634f84d31932e2f3aea78` passed 968 tests,
-  zero skips and all six local checks with the reviewed WorldKernel pin; receipt
-  path is in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The branch changes no
-  parser contract. Re-run the gate after every tracked change and publish only
-  with the final exact-head receipt; report official checks separately.
+- PR #77 reconciles MM-009 with accepted MM-023. MM-024 documentation-only
+  follow-up is open as [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78)
+  on `codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
+  `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact PR head
+  `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed 968 tests, zero skips,
+  six local checks and nine official contexts. The local receipt path is in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The branch changes no parser
+  contract; read live PR #78 after any new push and rerun exact-head checks.
 - The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
   only uppercase `C` plus six digits means cancellation; other single ASCII
   letters plus six digits are excluded before sales grouping and represented
