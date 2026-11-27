@@ -248,9 +248,10 @@ persisted or transferred. That path was replaced by selective OOXML streaming
 with a regression proving excluded-cell text is not sent to Python character
 callbacks. MM-020 authorizes up to 250,000 UCI-only groups. MM-021 governed the
 stopped source attempt: it treated `C`/`c` as cancellations and excluded other
-single-letter ASCII prefixes. The owner later clarified in MM-022 that only
-exact uppercase `C` is a cancellation; lowercase `c` joins other letter
-prefixes in the aggregate unverified class. Synthetic regressions cover this
+single-ASCII-letter-plus-six-digit invoice IDs. The owner later clarified in
+MM-022 that only exact uppercase `C` is a cancellation; lowercase `c` and other
+single-ASCII-letter-plus-six-digit IDs join the aggregate unverified class.
+Synthetic regressions cover this
 current rule. No real-source retry occurred. The earlier call exceeded
 250,000 groups and returned no projection. Do not retry, chunk or widen the cap
 without a new decision. No full projection, complete exclusion count,
@@ -259,7 +260,7 @@ retrospective and availability-unverified.
 
 The synthetic invoice-classification regression now encodes MM-022: six-digit
 IDs continue through the projection, exact uppercase `C` is cancellation, and
-lowercase `c` plus other single-ASCII-letter identifiers are excluded before
+lowercase `c` plus other single-ASCII-letter-plus-six-digit IDs are excluded before
 sales aggregation under one aggregate-only class count. Other formats fail
 closed; generic projection remains unchanged. The real-source attempt used
 MM-021 and was not repeated after this clarification. MM-022 does not raise
@@ -324,6 +325,59 @@ Its four automatic Actions checks failed without retrievable steps or logs;
 the connector could not retrieve annotation text, so no specific cause is
 assigned. The owner separately reports exhausted allowance and zero paid
 budget. Local evidence is not official CI; see [B-08](BLOCKERS.md).
+
+### Verified pre-reconciliation M1 and PR state — 2026-11-27 UTC
+
+Before this documentation-only reconciliation, main was
+`a456034c55ed7634ad4768b26788fec09dab1d08`, with PR #62 integrated and #52–#59
+retained in its ancestry. PRs #60, #61, #63, #64 and #65 were open, non-draft
+and mergeable against that main. Snapshot heads were #60
+`fafdedae3a76398e0450773065e40384c96d1ed7`, #61
+`f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, #63
+`ffd3d770d5c7e9bafba975544de7947bcf20f1fc`, #64
+`ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
+`b1bd7951ecc80988146eb46362eea99940ef7542`. #60/#61 have only the earlier
+owner-authored `COMMENTED` findings, which their branches address; no new
+independent approvals or unresolved inline threads were present. #63–#65 had
+no review submissions or inline threads. Do not merge or close these PRs
+without the separately scheduled review/integration decision.
+
+PR #65 code commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176` implements the
+MM-022 UCI-only correction: exact uppercase `C` means cancellation; lowercase
+`c` and other single-ASCII-letter-plus-six-digit prefixes are excluded as
+unverified before aggregation, with aggregate counts only. The real-source
+attempt used MM-021, exceeded the approved 250,000-group cap and returned no
+projection or metrics. MM-022 has synthetic regressions only. Do not retry,
+chunk or raise the cap under the current decision.
+
+Prior documentation-inclusive PR #65 head
+`b1bd7951ecc80988146eb46362eea99940ef7542`
+passed the exact temporary local six-check gate at
+`2026-11-27T03:17:39.573158Z`: 864 tests, zero skips and all six checks, with
+WorldKernel `0.0.1` installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-b1bd7951ecc80988146eb46362eea99940ef7542.json`.
+This is local evidence, not official Actions. On that same prior head, direct CLI
+replays for both the policy test double and explicit WorldKernel mode were
+byte-identical per mode; each had 28 forecast steps and nine outcomes. The
+WorldKernel result was `exact_match` with a separate parity-oracle record;
+no write or action authorization occurred. This is the fictional experimental
+workflow, not empirical or production acceptance.
+
+Two automatic Actions attempts on `b1bd795` produced four failed pre-start
+checks. The annotation lists recent payment failure **or** a spending-limit
+increase; no job steps, logs or combined statuses were returned, so the
+subcause is not established. The owner separately confirms exhausted quota
+and zero paid budget. No rerun or protections/workflow change was made; see
+the exact IDs in [B-08](BLOCKERS.md). This documentation-only reconciliation
+must pass its own exact-head local gate; record that commit and receipt in the
+latest PR #65 conversation update.
+
+A separate isolated invocation of
+`tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result`
+produced no pytest output within 30 seconds and was interrupted. No stack was
+captured and no cause is assigned. Do not treat that attempt as a pass; the
+exact-head full-gate receipt above remains the independent suite evidence.
 
 ## 4. Mandatory documentation standard
 

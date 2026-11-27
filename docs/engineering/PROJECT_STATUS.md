@@ -1,10 +1,17 @@
 # Project status — reviewed baseline, not live status
 
 **Main baseline:** `a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62 merge).
-**Last verified PR snapshot before this status refresh:** 2026-11-27 UTC. PRs
-#60, #61, #63, #64 and #65 are open, non-draft, mergeable and based on this
-main commit. Their reviewed heads are recorded below or in their live PRs.
-Main has not changed.
+**Verified PR snapshot before this documentation reconciliation:**
+2026-11-27 UTC. PRs #60, #61, #63, #64 and #65 were
+open, non-draft, mergeable and based on this main commit. Their exact heads at
+the snapshot are #60 `fafdedae3a76398e0450773065e40384c96d1ed7`, #61
+`f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, #63
+`ffd3d770d5c7e9bafba975544de7947bcf20f1fc`, #64
+`ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
+`b1bd7951ecc80988146eb46362eea99940ef7542`. #60/#61 have the earlier
+owner-authored `COMMENTED` reviews whose findings were addressed; no new
+independent review submissions or unresolved inline threads were present. #63–
+#65 had no review submissions or inline threads. Main has not changed.
 The detailed sections below preserve the earlier PR #51 baseline and PR #62
 review evidence as historical context. Reconcile them with the current UCI
 pilot state below, Git, open PRs, actual code and exact-head receipts before
@@ -33,6 +40,29 @@ The only real-source attempt used MM-021 and stopped above its approved
 250,000-group cap. MM-022 has synthetic evidence only; no source retry,
 complete projection, exclusion count, score or empirical model card exists.
 Keep B-01 stopped and preserve the existing source-retention deadline.
+
+The prior published PR #65 head was documentation-inclusive commit
+`b1bd7951ecc80988146eb46362eea99940ef7542`; its code-bearing change is
+`94c60b6ee20adbb5023e11aeded9b8fff90b1176`. The exact-head temporary local
+gate passed at `2026-11-27T03:17:39.573158Z`: 864 tests, zero skips and all six
+checks (pytest, Ruff, catalog, atlas, evidence and capabilities), with
+WorldKernel `0.0.1` installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-b1bd7951ecc80988146eb46362eea99940ef7542.json`.
+This is local evidence, not official Actions.
+
+This receipt covers the prior `b1bd795` head, not the documentation-only
+reconciliation in this branch. The current branch tip must pass its own exact
+local gate; its commit and receipt are recorded in the latest PR #65
+conversation update.
+
+An additional synthetic CLI smoke run on that head replayed both the default
+test-double and explicit WorldKernel paths byte-for-byte. Each returned the
+28-day profile and nine conditional outcomes; the WorldKernel result was
+`exact_match` against the separately recorded test-double parity oracle. No
+write or action authorization occurred. This verifies the experimental
+fictional workflow only; it does not close B-01/B-02 or claim empirical retail
+quality.
 
 ## Pull request reconciliation — 2026-11-27 UTC
 
@@ -63,7 +93,8 @@ records hashes, byte sizes, metadata, missingness discrepancy, resource
 profile and deletion deadline. The first projection stopped at the generic
 100,000-group limit. Under MM-021, the source-specific classifier admitted
 six-digit IDs, preserved `C`/`c` cancellations, and counted/excluded other
-single-letter ASCII prefixes without retaining their identifiers. The
+single-ASCII-letter-plus-six-digit prefixes without retaining their
+identifiers. The
 corrected call then exceeded the approved 250,000-group cap and failed closed;
 no complete projection, exclusion count, validation/holdout score or empirical
 model card was produced. The owner later clarified MM-022: only exact

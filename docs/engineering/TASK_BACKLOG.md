@@ -21,6 +21,19 @@ are historical evidence, not open work; no duplicate merge is required.
 Implementation rows below record whether each bounded slice is integrated,
 while source, empirical, production and official-CI gates remain distinct.
 
+The separately reviewable queue was rechecked on 2026-11-27 UTC before this
+documentation-only reconciliation. All five
+remaining PRs are open, non-draft, mergeable and based on the main commit
+above; no merge or independent approval is implied.
+
+| PR | Scope | Verified head | Review state |
+| --- | --- | --- | --- |
+| [#60](https://github.com/GustavoMFDS/MirrorMind/pull/60) | M2-01 scoped lexical retrieval | `fafdedae3a76398e0450773065e40384c96d1ed7` | Earlier owner-authored finding was corrected; independent review pending |
+| [#61](https://github.com/GustavoMFDS/MirrorMind/pull/61) | G-01 current-head responder | `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29` | Earlier owner-authored finding was corrected; independent review pending |
+| [#63](https://github.com/GustavoMFDS/MirrorMind/pull/63) | Synthetic Census vintage evaluator and source protocol | `ffd3d770d5c7e9bafba975544de7947bcf20f1fc` | No review submission or inline thread observed |
+| [#64](https://github.com/GustavoMFDS/MirrorMind/pull/64) | Existing M1 example lint maintenance | `ca97ab61d15347aa271ee9ac8468a0714bdc3402` | No review submission or inline thread observed |
+| [#65](https://github.com/GustavoMFDS/MirrorMind/pull/65) | Bounded UCI #352 workbook pilot | `b1bd7951ecc80988146eb46362eea99940ef7542` | No review submission or inline thread observed |
+
 ## Historical reconciliation at the PR #51 baseline
 
 | State | Items / evidence | Continuation |
@@ -40,24 +53,29 @@ snapshot passed metadata/schema preflight. Its former `openpyxl.values_only`
 reader transiently materialized Description values, so it was replaced with
 selective OOXML streaming that disables Python text callbacks for excluded
 body cells. MM-020 authorized the 250,000 UCI-only group ceiling; MM-021
-authorized aggregate-only exclusion of non-`C` single-letter invoice prefixes.
-The corrected real-source call exceeded 250,000 groups and returned no
-projection or evaluation. The pilot is stopped at that bound; do not chunk,
-retry or widen it without a new decision. Generic defaults/caps remain
-unchanged. See the path-free [snapshot manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json)
-and [B-01](BLOCKERS.md).
+governed the invoice-prefix rule used in the real-source attempt. MM-022
+clarifies the current UCI-only rule: exact uppercase `C` marks cancellation;
+lowercase `c` and other single ASCII-letter plus six-digit identifiers are
+excluded as unverified, with aggregate counts only. The stopped source call
+used MM-021, exceeded 250,000 groups and returned no projection or evaluation.
+MM-022 has synthetic regression evidence only. The pilot remains stopped at
+that bound; do not chunk, retry or widen it without a new decision. Generic
+defaults/caps remain unchanged. See the path-free [snapshot
+manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json) and [B-01](BLOCKERS.md).
 
 The implementation is published as [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65).
-Code-bearing head `9899cffaaf05e5bb9ffcf6fcac02edaa6bd8efa9` passed the full
-temporary local gate (863 tests, zero skips, six checks); its focused UCI
-reader/projection/evaluator/workbook-flow rerun passed 112 tests. The following
-status-sync head `7e478440dc7661ebf35483073bad46ab290051c5` also passed 863
-tests, zero skips and all six checks with WorldKernel installed at the reviewed
-pin. Receipts are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). PR #65 was
-open, non-draft and mergeable at the status snapshot; independent review is
-pending. Actions diagnostics on `7e47844` returned failed checks without
-retrievable steps or logs; cause is not inferred. See B-08. Neither receipt
-clears the 250,000-group source stop or establishes real metrics.
+Code-bearing commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176` passed its
+focused 113-test UCI suite and the exact six-check local gate (864 tests, zero
+skips). The prior documentation-inclusive PR head
+`b1bd7951ecc80988146eb46362eea99940ef7542` also passed the exact six-check gate (864 tests, zero skips) at
+`2026-11-27T03:17:39.573158Z`, with WorldKernel installed at the reviewed pin.
+Its receipt is `results/local-quality-gate-b1bd7951ecc80988146eb46362eea99940ef7542.json`;
+both runs are local evidence, not official CI. Current Actions diagnostics on
+`b1bd795` had four failed pre-start checks with no job steps, logs or combined
+statuses; the exact annotation gave payment-failure **or** spending-limit
+alternatives and does not identify the subcause (B-08). PR #65 remains open
+without independent review. Neither gate clears the 250,000-group stop or
+establishes real metrics.
 
 ## Historical consolidated review candidate — 2026-11-25 (PR #62 later integrated)
 
@@ -98,7 +116,7 @@ coordination.
 
 ## A. Engineering and bounded checkpoint governance
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status (2026-11-27) | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
 | DOC-01 | P0 | ready | None | Reconcile stale introductory status, semantic map and current source/ledger; preserve dated evidence, resolve conflicting instructions, verify linked atlas. |
 | G-01 | P0 | ready | PR #50 | Review existing protocol and implement a minimal testable service-side signed current-head response and independent storage contract; no live deployment. Use existing verifier and canonical signing domain; negative wire/nonce/scope/key tests. |
@@ -119,21 +137,21 @@ the vertical product path.
 
 | ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M1B-01 | P0 | partial | None | Synthetic UCI #352 event-time evaluator and fixed split are implemented; separate aggregate Census/ALFRED protocol is prepared. Owner decisions MM-020–MM-022 authorize a UCI-only 250,000-group call and conservative invoice-prefix classification; MM-022 makes uppercase `C` the sole cancellation prefix and counts lowercase `c` with other unverified ASCII prefixes. The real-source call applied MM-021, exceeded the cap and failed closed with no projection or metrics; MM-022 has synthetic regression coverage only. Keep the lane stopped under current scope; no chunking or larger cap. Source remains private until deletion deadline. |
-| M1B-02 | P0 | partial | None | Compose bounded CSV/workbook staging, review metadata, calendar/release checks and as-of selection into a reusable synthetic evidence flow; deterministic fixture, rejection and abstention tests. |
-| M1B-03 | P0 | blocked | M1B-01, M1B-02, B-01, B-02 | UCI #352 adapter, path-free manifest and metadata preflight are present. Current MM-022 reader excludes lowercase `c` and other single-letter invoice prefixes; only exact uppercase `C` marks cancellation. The bounded source attempt used MM-021 and exceeded 250,000 groups. No complete projection/evaluation exists; MM-022 was not applied to real data. Do not rerun or partition the source without a new scope decision. Keep Census/ALFRED acquisition separate and pending its own exact source/vintage review. |
-| M1C-01 | P0 | partial | M1B-02 | Reuse offline baselines and retail release backtests; build a reproducible synthetic evaluation entrypoint with aligned eligible targets, fixed splits and per-origin receipts. |
+| M1B-01 | P0 | partial | None | Synthetic UCI #352 event-time evaluator and fixed split are implemented; separate aggregate Census/ALFRED protocol is prepared. MM-020 approves the UCI-only 250,000-group ceiling; MM-021 governed invoice classification during the stopped source attempt; MM-022 makes exact uppercase `C` the sole cancellation prefix and classifies lowercase `c` and other single-ASCII-letter-plus-six-digit forms as unverified. The real-source call applied MM-021, exceeded the cap and failed closed with no projection or metrics; MM-022 has synthetic regression coverage only. Keep the lane stopped under current scope; no chunking or larger cap. Source remains private until deletion deadline. |
+| M1B-02 | P0 | integrated (synthetic slice; M1b remains partial) | None | PR #52/#62 integrate bounded CSV/workbook staging, review-only metadata, calendar/release checks and as-of selection into a deterministic synthetic evidence flow. This completes the fictional slice only; no approved real-source ingestion or publisher availability proof is included. |
+| M1B-03 | P0 | blocked | M1B-01, M1B-02, B-01, B-02 | PR #65 contains the UCI #352 adapter, path-free manifest and metadata preflight. Current MM-022 rule excludes lowercase `c` and other single-ASCII-letter-plus-six-digit prefixes as unverified; only exact uppercase `C` marks cancellation. The bounded source attempt used MM-021 and exceeded 250,000 groups. No complete projection/evaluation exists; MM-022 was not applied to real data. Do not rerun or partition the source without a new scope decision. Keep Census/ALFRED acquisition separate and pending its own exact source/vintage review. |
+| M1C-01 | P0 | integrated (synthetic slice) | M1B-02 | PR #53/#62 integrate the offline baselines and retail release backtests into a reproducible synthetic evaluation entrypoint with aligned eligible targets, fixed splits and per-origin receipts. No empirical forecast claim is included. |
 | M1C-02 | P0 | covered_by_existing_code | M1C-01 | Existing seasonal-naive and trailing-mean baselines already share eligible targets; do not add a third candidate without a justified need. Final acceptance remains synthetic until M1C-03 is approved. |
 | M1C-03 | P0 | blocked | M1B-03, M1C-02, B-02 | Run approved empirical holdout, record actual MAE/RMSE/zero-safe metrics, coverage, abstention and model card; no invented accuracy. |
-| M1D-01 | P1 | partial | M1C-01 | Reuse residual envelope, drift and sensitivity code; formalize uncertainty semantics, disjoint calibration/holdout strategy, missing/late data and coverage tests. |
-| M1D-02 | P1 | planned | M1C-03, M1D-01 | Evaluate uncertainty on approved held-out observations, document empirical coverage or explicitly uncalibrated limits and sensitivity. |
-| M1E-01 | P0 | partial | None | Versioned gateway and strict allowlisted WorldKernel request mapping exist in draft PR #55; reject unrepresentable state/interventions/refs and bound mapped runs. This is request construction, not execution. |
-| M1E-02 | P0 | partial | M1E-01 | Optional exact-pin local worker executes the actual registered inventory demo with local timeout/output and result checks; this establishes SDK compatibility for that demo, not the M1 lead-time model or a hostile-code sandbox. Consolidated candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests without skips and all five other checks locally with the reviewed WorldKernel pin installed; official Actions remain unavailable under B-08. This does not establish hostile-code isolation or a production lead-time model. |
-| M1E-03 | P0 | partial | M1C-01 | The paired fictional three-policy test double and shared day transition are implemented and regression-tested; it defines the reference semantics and does not require an external engine. |
-| M1E-04 | P0 | review | M1E-02, M1E-03 | The consolidated PR #62 candidate contains the fixed code-owned WorldKernel policy world using the shared transition, strict versioned mapping, bounded operator fan-out, parent-side state/stream checks, exact synthetic parity and explicit CLI opt-in. HTTP remains on the test double. Exact-pin integration and the full clean integrated gate passed on candidate commit `74330d8`; review production isolation separately under B-04. |
-| M1F-01 | P0 | partial | None | Draft PR #54 provides a versioned decision trace/result contract separating facts, forecasts, simulated outcomes, assumptions, missing evidence, costs and human review; fixture and invalid-reference tests. No authenticated producer or execution is included. |
-| M1F-02 | P0 | review | M1B-02, M1C-01, M1D-01, M1E-03, M1F-01 | Consolidated PR #62 composes synthetic evidence, fixed-baseline evaluation, residual diagnostics, policy simulation and typed decision trace through reproducible CLI/API paths. The API/default CLI use the test double; the local CLI can opt into the fixed WorldKernel policy world. PR #57's synthetic UCI event-time evaluator and aggregate Census protocol are included. Exact integrated six-check gate passed on `74330d8`; approved-source evidence, empirical forecast validation and real/public transport controls remain incomplete. |
-| M1F-02a | P0 | review | M1F-02, M1E-04 | PR #62 resolves the #59 engine-provenance finding: selected engine contract, selected-result source, parity-oracle invocation and exact WorldKernel provenance are independently recorded and validated. Exact replay and adverse reference/digest regressions pass in the integrated gate. B-04 production isolation and B-08 official Actions are outside this synthetic contract. |
+| M1D-01 | P1 | integrated (experimental) | M1C-01 | PR #56/#62 integrate the residual envelope, drift/sensitivity groundwork and disjoint calibration/holdout semantics with missing/late-data regressions. It remains explicitly uncalibrated without approved empirical observations. |
+| M1D-02 | P1 | blocked | M1C-03, M1D-01, B-02 | Evaluate uncertainty on approved held-out observations and document empirical coverage or explicitly uncalibrated limits. The required empirical holdout is unavailable until B-02 is resolved. |
+| M1E-01 | P0 | integrated (mapper) | None | PR #55/#62 integrate the versioned gateway and strict allowlisted WorldKernel request mapping: reject unrepresentable state/interventions/refs and bound mapped runs. Mapping constructs a request; it does not execute the engine. |
+| M1E-02 | P0 | integrated (local runtime) | M1E-01 | PR #55/#62 integrate the optional exact-pin local worker, timeout/output bounds and strict result checks. SDK compatibility is demonstrated for the registered synthetic inventory demo, not hostile-code isolation or a production lead-time model. Broader service acceptance remains under B-04; official Actions remains B-08. |
+| M1E-03 | P0 | integrated (experimental) | M1C-01 | PR #58/#62 integrate the paired fictional three-policy test double and shared day transition; they define synthetic reference semantics and do not establish an empirical policy ranking. |
+| M1E-04 | P0 | integrated (local compatibility) | M1E-02, M1E-03 | PR #62 integrates the fixed code-owned WorldKernel policy world, shared transition, strict versioned mapping, bounded operator fan-out, parent-side state/stream checks, synthetic parity and explicit CLI opt-in. HTTP remains on the test double. B-04 continues to track broader service isolation and deployment acceptance. |
+| M1F-01 | P0 | integrated (contract only) | None | PR #54/#62 integrate the versioned decision trace/result contract separating facts, forecasts, simulated outcomes, assumptions, missing evidence, costs and human review. The contract itself does not authenticate a producer or authorize execution. |
+| M1F-02 | P0 | integrated (synthetic workflow) | M1B-02, M1C-01, M1D-01, M1E-03, M1F-01 | PR #62 integrates the bounded synthetic evidence, fixed-baseline evaluation, residual diagnostics, policy simulation and typed trace through reproducible CLI/API paths. The API/default CLI use the test double; the local CLI can opt into the fixed WorldKernel policy world. Approved-source evidence, empirical forecast validation and production transport controls remain incomplete. |
+| M1F-02a | P0 | integrated | M1F-02, M1E-04 | PR #62 resolves the #59 engine-provenance finding: selected engine contract, selected-result source, parity-oracle invocation and exact WorldKernel provenance are independently recorded and validated. Exact replay and adverse reference/digest regressions pass in the integrated gate. B-04 production isolation and B-08 official Actions are outside this synthetic contract. |
 | M1F-03 | P0 | blocked | M1B-03, M1C-03, M1D-02, M1F-02 | Complete reviewed retail MVP user story using approved observations and evaluated forecasts, actual simulation and documented conditional assumptions; independent replay and review. B-01/B-02/B-04 block this path. |
 
 Read [M1 delivery plan](M1_EXECUTION_PLAN.md), [retail MVP](../RETAIL_MVP.md),
@@ -207,7 +225,7 @@ Current UCI pilot state is recorded above and in B-01.
 | ID | Status | Owner / branch | Surfaces | PR / commit | Evidence and next action | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
 | DOC-01 | integrated | Codex / `codex/m1b-02-synthetic-evidence-flow` | Baseline reconciliation, semantic map, source/learning/docs navigation | [PR #52 merged](https://github.com/GustavoMFDS/MirrorMind/pull/52); ancestry retained in #62 | PR #52 merge `e922b03` and head `b431d11` are ancestors of the integrated #62 head. Exact branch-level local gate and review reply remain historical evidence. | Official Actions remains unresolved under B-08 |
-| M1B-01 / M1C-03 source decision | UCI bounded attempt stopped; empirical evaluation blocked | Codex / `codex/uci352-pilot-20261126`; integrated #52–#59 ancestry in `main` | Synthetic UCI evaluator, approved UCI #352 source preflight, separate Census aggregate-vintage protocol | PR #62 integrated into main at `a456034c`; [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65), code commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176`; [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md); [path-free source manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json) | MM-022's uppercase-`C`-only classification is synthetically tested; the generic projection still rejects lowercase `c`. The real-source call applied MM-021, exceeded MM-020's 250,000-group cap and returned no projection, complete exclusion count, metrics or model card. No Census data or credential was acquired. The exact code commit passed 864 tests, zero skips and all six local checks with the exact WorldKernel pin installed; 113 focused UCI tests passed. Independent review remains pending. Actions diagnostics on `7e47844` returned failed checks without retrievable steps or logs; cause is not inferred (B-08). | B-01: no new UCI processing without a distinct bounded-method decision; B-02 temporal evidence and Census source/vintage review; B-08 official Actions |
+| M1B-01 / M1C-03 source decision | UCI bounded attempt stopped; empirical evaluation blocked | Codex / `codex/uci352-pilot-20261126`; integrated #52–#59 ancestry in `main` | Synthetic UCI evaluator, approved UCI #352 source preflight, separate Census aggregate-vintage protocol | PR #62 integrated into main at `a456034c`; [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65), code commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176`, prior documentation-inclusive head `b1bd7951ecc80988146eb46362eea99940ef7542`; [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md); [path-free source manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json) | MM-022's uppercase-`C`-only cancellation rule is synthetically tested; lowercase `c` and other single-ASCII-letter-plus-six-digit prefixes are aggregate-only exclusions in the UCI adapter, while generic projection still rejects them. The real-source call used MM-021, exceeded MM-020's 250,000-group cap and returned no projection, complete exclusion count, metrics or model card. No Census data or credential was acquired. Prior head `b1bd795` passed 864 tests, zero skips and all six local checks with the exact WorldKernel pin installed; 113 focused UCI tests passed on code commit `94c60b6`. PR #65 has no independent review yet. Four automatic Actions check-runs on `b1bd795` failed before repository steps; the exact annotation lists payment/spending-limit alternatives without identifying the subcause. See B-08. | B-01: no new UCI processing without a distinct bounded-method decision; B-02 temporal evidence and Census source/vintage review; B-08 official Actions |
 | M1B-02 | integrated (synthetic slice) | Codex / `codex/m1b-02-synthetic-evidence-flow` | CSV/XLSX local composition, review packet, calendar/release/as-of checks, tests and docs | [PR #52 merged](https://github.com/GustavoMFDS/MirrorMind/pull/52); exact tested head `b431d11bf0ac841ff30353a06263d23fb901307c`, also ancestor of #62 | Full exact-head local gate passed 696 tests plus Ruff, catalog, atlas, evidence and capability checks at 2026-11-25 03:51:25 UTC. Review reply is recorded; #52 merge is present in main via the #62 ancestry. | Real-source rights/availability remain B-01/B-02; official Actions remains B-08 |
 | M1C-01 | integrated (synthetic slice) | Codex / `codex/m1c-01-synthetic-retail-evaluation` | Prepared UCI-shaped evidence flow, fixed matched-origin baselines, deterministic fictional CLI, per-origin receipts and model/data docs | [PR #53 closed; head integrated via #62](https://github.com/GustavoMFDS/MirrorMind/pull/53), head `79d3679013576c6a209bed9fa031b7f0fabd0d8d` | Full gate passed 700 tests plus Ruff, catalog, atlas, evidence and capability checks at 2026-11-25 04:08:00 UTC. The API suite ran; one existing deprecation warning remains. Current Actions failed before repository steps; exact diagnostic is in B-08. | B-01/B-02 block real-source claims; B-08 blocks official CI evidence |
 | M1F-01 | integrated (contract only) | Codex / `codex/m1f-01-decision-trace-contract` | Versioned immutable result schema, exact-result review binding, synthetic example, tests and learning docs | [PR #54 closed; head integrated via #62](https://github.com/GustavoMFDS/MirrorMind/pull/54), correction `f02459d977fd263b03ddf60264b9069ae08b189b` | Correction reproduced pre-creation review and Decimal-context collision; 28 focused decision-trace tests pass. Published head `4d22006` passed 728 tests plus Ruff, catalog, atlas, evidence and capability checks. Contract remains interface-only, with no producer or execution. | B-08 official Actions; source rights, empirical forecasts and actual engine outputs remain separate gates |
