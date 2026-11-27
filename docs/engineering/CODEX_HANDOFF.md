@@ -31,21 +31,18 @@ execution guidance and does not broaden the agent's permissions.
   `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and
   revisions published inside their reference month; selector-boundary and
   public-evaluator regressions cover the original false-scoring case. The
-  preceding published docs-inclusive head
-  `2764e60e445281d4dbe56715a5f71fd4640c0f1d` passed the
-  exact clean-head gate at `2026-11-26T18:30:26.772586Z`: 882 tests, zero skips
-  and all six checks, with WorldKernel `0.0.1` at the reviewed source pin.
-  Receipt: `results/local-quality-gate-2764e60e445281d4dbe56715a5f71fd4640c0f1d.json`.
-  A restricted-sandbox attempt stalled in Windows asyncio socket-pair setup;
-  faulthandler reproduced the documented executor limitation. That attempt
-  was interrupted without a gate receipt; the same full gate then passed in
-  the authorized local environment, with no checks omitted. Four automatic
-  Actions checks on published head `2764e60` failed before repository steps;
-  the annotation lists payment failure or spending-limit increase as
-  alternatives and does not identify which applies. [B-08](BLOCKERS.md) records
-  exact run/check IDs. The live PR body is authoritative for the latest
-  published head and exact gate receipt. Keep #63 separate from #60/#61/#64
-  pending independent review; no integration decision is implied.
+  published docs candidate `44b128c4f7768117148dc23f7c71b3e2e9cd86a4` passed
+  the exact clean-head gate at `2026-11-27T01:12:07.694019Z`: 882 tests, zero
+  skips and all six checks, with WorldKernel `0.0.1` at the reviewed source
+  pin. Receipt: `results/local-quality-gate-44b128c4f7768117148dc23f7c71b3e2e9cd86a4.json`.
+  One existing Starlette/httpx `TestClient` deprecation warning appeared. Four
+  automatic Actions checks on that head failed before repository steps; the
+  annotation lists payment failure or spending-limit increase as alternatives
+  and does not identify which applies. [B-08](BLOCKERS.md) records exact
+  run/check IDs and no-job/log evidence. The live PR comment will hold the
+  final documentation-only B-08 head and exact gate receipt. Keep #63 separate
+  from #60/#61/#64 pending independent review; no integration decision is
+  implied.
 - PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
   contains only a synthetic Census vintage evaluator. The UCI then aggregate
   Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
