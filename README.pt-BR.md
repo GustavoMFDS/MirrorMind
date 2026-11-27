@@ -67,6 +67,8 @@ por um gateway versionado, não um agente embutido nem um serviço HTTP de simul
 | Pesquisa Census | Avaliação sintética de vintages com alvos de primeira publicação e horizontes de 1, 3 e 6 meses |
 | Orquestração de agentes | Planejada; sem provedor real nem execução de agentes nesta baseline |
 
+[Notas da primeira versão alfa](CHANGELOG.md) | [Guia de reprodução](docs/engineering/ALPHA_RELEASE.md)
+
 ## Início rápido
 
 Requer Python 3.11 ou superior. Na raiz do repositório, em um ambiente virtual:

@@ -73,6 +73,8 @@ versioned gateway, not an embedded agent or an HTTP simulation service.
 | Census research | Synthetic release-vintage evaluation with first-estimate targets and 1/3/6-month horizons |
 | Agent orchestration | Planned; no live provider or agent execution in this baseline |
 
+[First alpha release notes](CHANGELOG.md) | [Release reproduction guide](docs/engineering/ALPHA_RELEASE.md)
+
 ## Quick start
 
 Python 3.11+ is required. From the repository root in a virtual environment:

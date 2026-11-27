@@ -1039,3 +1039,8 @@ forecast claims or cross-repository changes.
 - [HTML template](../../examples/portfolio_demo.html): offline client-side exploration of precomputed cases.
 - [Report tests](../../tests/integration/test_portfolio_demo.py): exact JSON, escaping and failure contracts.
 - [Report guide](PORTFOLIO_DEMO.md) and [change request](changes/PORT_07_LOCAL_INTERACTIVE_REPORT.md): walkthrough, limits and acceptance.
+
+## First public alpha release
+
+- [Changelog](../../CHANGELOG.md): source-release scope and limitations.
+- [Alpha release guide](ALPHA_RELEASE.md): version alignment, reproduction and evidence.
