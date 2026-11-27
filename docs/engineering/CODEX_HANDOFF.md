@@ -2,25 +2,25 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `c7478385f234f4d0965c51cca25f67c47d280778`. PR #66
+- Current `main` is `f6e10e04d3135373c7a9cb60f767b8e655291519`. PR #66
   integrated #60/#61/#64 and PR #67 integrated Census #63; PRs #68–#71 update
-  the public portfolio and original-project license. The exact current-main
-  `test` and `symbol-catalog` Actions checks both succeeded. The owner still
-  authorizes zero paid usage. Preserve protections and distinguish local gate
-  receipts from Actions.
-- Continue PR #65 only. Public head remains `11de60127ab0b31b609d98ada1b764a3dde542f9`
-  until the synchronized branch is pushed. Local merge commit
-  `ab71f54eaae86452acce5f3f20cb6c6546d871b4` preserves current `main`
-  (`c747838`) as its second parent. Latest local code commit `6df8af1`
+  the public portfolio/license, #72 adds an offline synthetic report, #73
+  prepares the source alpha, and #74 records repository excellence and branch
+  inventory. Exact-main `test` and `symbol-catalog` Actions checks succeeded
+  (runs 46060933138 and 46060933090). The owner still authorizes zero paid
+  usage. Preserve protections and distinguish local gate receipts from Actions.
+- Continue PR #65 only. Read its live metadata for the currently published
+  head and checks. Local merge commit
+  `9b5acd403bdaf6ee343fe9c815935c96c8693e66` preserves current `main`
+  (`f6e10e0`) as its second parent. Latest local code commit `6df8af1`
   rejects repeated selected-cell `<v>` payloads and ambiguous
   `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
   and excluded `Description` handling remain covered. The 10 focused second-
   round cases and 75 UCI workbook unit/integration tests passed. Exact
-  documentation/status head `0ead3ec51e6400e9d216250aa6babef75e3a10f8`
-  passed 960 tests, zero skips and six checks with the reviewed WorldKernel
-  pin; its receipt is in `LOCAL_QUALITY_GATE.md`. This is local evidence, not
-  Actions. Re-run the exact gate after recording this receipt, then publish and
-  verify the actual PR head.
+  pre-latest-main head `53a932295c4c981590e6bee105247a65a357eba6` passed 960
+  tests, zero skips and six checks with the reviewed WorldKernel pin; that
+  receipt does not cover `f6e10e0`. Run the gate on the latest-main combined
+  tree, publish normally and verify the actual PR head.
 - Reconcile the shared docs and evidence map after the completed
   ancestry-preserving merge, run the complete six-check gate with the exact
   reviewed WorldKernel pin, then publish normally and report the exact

@@ -2,10 +2,10 @@
 
 ## Current public CI baseline - 2026-11-27
 
-On current main `c7478385f234f4d0965c51cca25f67c47d280778`, standard
+On current main `f6e10e04d3135373c7a9cb60f767b8e655291519`, standard
 GitHub-hosted `test` and `symbol-catalog` checks completed successfully:
-[test run 46057102901](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46057102901)
-and [catalog run 46057102718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46057102718).
+[test run 46060933138](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46060933138)
+and [catalog run 46060933090](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46060933090).
 This verifies workflow availability on that exact commit; it does not transfer
 to a PR's different head. The current PR #65 candidate still needs its own
 required-check observation after publication. The exact six-check local gate
@@ -22,24 +22,32 @@ the specific revision and local environment separately.
 
 ## PR #65 synchronized candidate
 
-The ancestry-preserving merge of current main `c747838` is complete at
-`ab71f54`. The full six-check local gate on the synchronized,
-documentation-inclusive candidate is pending. Earlier receipts are bound to
-their named SHAs and do not validate this merge candidate. After publication,
-verify official checks on that exact PR head; the successful main checks above
-do not transfer.
+The ancestry-preserving merge of current main `f6e10e0` is complete at
+`9b5acd4`. The previous local receipt predates this latest main; it does not
+validate the newly combined tree. Every candidate needs the full six-check
+local gate on the exact synchronized, documentation-inclusive SHA before
+publication. Record that SHA, receipt and later official check state in the
+latest PR #65 discussion entry. Successful main checks do not transfer.
 
-### Synchronized code/status candidate receipt - `0ead3ec`
+### Pre-latest-main synchronized candidate receipts
 
-Exact head `0ead3ec51e6400e9d216250aa6babef75e3a10f8` passed at
+Exact head `53a932295c4c981590e6bee105247a65a357eba6` passed at
+`2026-11-27T20:08:46.341800Z`: 960 tests passed, zero skips, all six checks,
+and one existing Starlette/httpx `TestClient` deprecation warning. WorldKernel
+`0.0.1` was installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-53a932295c4c981590e6bee105247a65a357eba6.json`.
+
+Its immediately preceding exact documentation candidate
+`0ead3ec51e6400e9d216250aa6babef75e3a10f8` passed at
 `2026-11-27T20:06:38.086100Z`: 960 tests passed, zero skips, all six checks,
 and one existing Starlette/httpx `TestClient` deprecation warning. WorldKernel
 `0.0.1` was installed from reviewed source commit
 `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
 `results/local-quality-gate-0ead3ec51e6400e9d216250aa6babef75e3a10f8.json`.
-The result is `local_gate_passed_not_official_ci`; the script did not check
-GitHub Actions. This receipt applies only to the named SHA. Re-run all six
-checks after this documentation update on the exact publication head.
+Both are `local_gate_passed_not_official_ci`; the script did not check GitHub
+Actions. These receipts apply only to their named SHAs and predate the latest
+main merge at `f6e10e0`. Re-run all six checks on the final publication head.
 
 ### Previous PR #65 code-head receipt - `c6c1326`
 

@@ -2,31 +2,32 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `c7478385f234f4d0965c51cca25f67c47d280778`. PR #66
-integrated #60/#61/#64; PR #67 integrated Census #63. PRs #68–#71 complete
-public portfolio and owner-approved project-license documentation. PR #66's
-combined local gate passed 856 tests, zero skips, all six checks and examples
-Ruff. The Census integrated candidate and subsequent public-main local gates
-passed 904 tests, zero skips and six checks. On exact main c747838, official
-`test` and `symbol-catalog` checks also succeeded. Local and remote evidence
-remain separately labeled. No paid budget, runner registration or protection
-change was used.
+Current `main` is `f6e10e04d3135373c7a9cb60f767b8e655291519`. PR #66
+integrated #60/#61/#64; PR #67 integrated Census #63; PRs #68–#71 updated the
+public portfolio/license; #72 added the offline synthetic report; #73
+prepared the source alpha; #74 recorded repository excellence and the branch
+inventory. PR #74's exact local gate passed 912 tests, zero skips and six
+checks. Official `test` and `symbol-catalog` checks passed on exact main
+`f6e10e0` (runs 46060933138 and 46060933090). Local and remote evidence remain
+separately labeled. No paid budget, runner registration or protection change
+was used.
 
-PR #65 remains the active queue item. Published head `11de601` has not yet been
-updated; local branch `codex/uci352-pilot-20261126` now contains merge commit
-`ab71f54`, preserving current main `c747838` as its second parent. It includes
+PR #65 remains the active queue item; use its live metadata for the currently
+published head. Local branch `codex/uci352-pilot-20261126` contains merge commit
+`9b5acd4`, preserving current main `f6e10e0` as its second parent. It includes
 the prior duplicate-coordinate/type/numeric fixes and latest `6df8af1`
 correction for repeated scalar and mixed scalar/inline worksheet payloads.
 Regressions reproduce both review rounds, including both parser passes,
 rich-text compatibility and excluded-field privacy. Focused UCI workbook
 unit/integration suites passed 75 tests, including 10 second-round structural
-cases. The complete exact-clean-head six-check gate, normal publication and
-independent re-review remain required. The synchronized code/status head
-`0ead3ec51e6400e9d216250aa6babef75e3a10f8` passed 960 tests, zero skips and
+cases. The pre-`f6e10e0` code/status candidate
+`53a932295c4c981590e6bee105247a65a357eba6` passed 960 tests, zero skips and
 all six local checks with the reviewed WorldKernel pin; see
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Re-run the gate on the exact
-publication head after recording the receipt. Do not merge PR #65 or mark its
-comments resolved until that evidence and review are complete.
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This does not cover latest main.
+Each candidate requires a fresh exact-head gate before publication. Record the
+actual head, receipt and remote check state in the latest PR discussion entry;
+older receipts do not transfer. Obtain independent re-review; do not merge PR
+#65 or mark its comments resolved until review and acceptance criteria are met.
 
 The only approved UCI #352 processing attempt stopped above 250,000
 product-day groups without a projection, complete exclusion count or metrics.
@@ -38,10 +39,10 @@ incomplete. After #65 is consolidated and independently reviewed, continue the
 existing M2-02/G-02 tasks only within their approved fictional/offline scopes;
 do not add a disconnected feature while this review queue remains active.
 
-**Baseline:** main `c7478385f234f4d0965c51cca25f67c47d280778`. PR #52–#59
+**Baseline:** main `f6e10e04d3135373c7a9cb60f767b8e655291519`. PR #52–#59
 were incorporated through #62; #60/#61/#64 through #66; Census #63 through
-#67. The merged branches preserve their ancestry and must not be replayed as
-new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
+#67; PRs #68–#74 are also integrated. The merged branches preserve their
+ancestry and must not be replayed as new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
@@ -49,7 +50,7 @@ new work. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| UCI workbook parser review | Local source/test changes include `6df8af1`; merge `ab71f54` preserves current main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads now fail closed in both worksheet passes. Valid inline rich text still passes; `Description` remains excluded from selected text callbacks. | Run full exact-clean-head gate with reviewed WorldKernel; publish candidate and local receipt; verify official checks on exact PR head; obtain independent review. |
+| UCI workbook parser review | Local source/test changes include `6df8af1`; merge `9b5acd4` preserves latest main ancestry. Repeated `<v>` values and mixed `<v>`/`<is>` payloads now fail closed in both worksheet passes. Valid inline rich text still passes; `Description` remains excluded from selected text callbacks. | Run full exact-clean-head gate with reviewed WorldKernel; publish candidate and local receipt; verify official checks on exact PR head; obtain independent review. |
 | UCI empirical pilot | Stopped at approved 250,000 group bound; no projection or metrics. | No further source operation without new owner authorization; preserve deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue only existing no-byte due diligence; source acquisition requires separate artifact-specific approval. |
 

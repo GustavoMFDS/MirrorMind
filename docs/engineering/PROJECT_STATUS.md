@@ -2,30 +2,35 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `c7478385f234f4d0965c51cca25f67c47d280778`. It includes PR
+Current `main` is `f6e10e04d3135373c7a9cb60f767b8e655291519`. It includes PR
 #66 (PRs #60, #61 and #64), PR #67 (Census #63), public-portfolio PRs #68–#70,
-and owner-approved Apache-2.0 PR #71. The PR #66 combined local gate passed
-856 tests with zero skips, all six quality checks and `ruff check examples`;
-PR #67 and the later exact public-main candidate gates each reported 904 tests,
-zero skips and six local checks. These are local receipts, not Actions results.
-On exact current main `c747838`, official `test` and `symbol-catalog` checks
-completed successfully. No paid usage or check/protection change occurred.
+owner-approved Apache-2.0 PR #71, PORT-07's local interactive report (#72),
+the first source alpha release preparation (#73), and the repository
+excellence inventory (#74). PR #74's exact local gate passed 912 tests, zero
+skips and six checks. On exact main `f6e10e0`, official `test` and
+`symbol-catalog` checks completed successfully at runs
+[46060933138](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46060933138)
+and [46060933090](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46060933090).
+Earlier PR #66/#67 local receipts remain separately recorded. No paid usage or
+check/protection change occurred.
 
-PR #65 remains open and separate. Its published head is still
-`11de60127ab0b31b609d98ada1b764a3dde542f9`; local branch
-`codex/uci352-pilot-20261126` includes current main `c747838` through the
-ancestry-preserving merge `ab71f54`, plus first-round fixes and the latest
-`6df8af1` structural correction.
+PR #65 remains open and separate; use its live metadata for the latest
+published head. Local branch
+`codex/uci352-pilot-20261126` includes current main `f6e10e0` through the
+ancestry-preserving merge `9b5acd4`, plus first-round fixes and the latest
+`6df8af1` structural correction. The immediately preceding documentation
+candidate `53a9322` passed 960 tests, zero skips and six checks before `f6e10e0`
+was merged; it does not validate this newer combined tree. See
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for that receipt. Re-run the exact
+current-head gate before publication and record its SHA and receipt in the PR
+discussion; older receipts do not transfer.
 Synthetic regressions reproduce duplicate coordinates, unsupported/error cell
 types, malformed numeric encodings, repeated `<v>` payloads and mixed scalar /
 inline payloads. The focused UCI workbook unit and integration suites passed 75
-tests; the 10 second-round structural cases passed. The full exact-clean-head
-gate passed on documentation/status head
-`0ead3ec51e6400e9d216250aa6babef75e3a10f8`: 960 tests, zero skips, all six
-checks, with the reviewed WorldKernel pin. Its receipt is recorded in
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This is local evidence only; the
-receipt update itself needs a fresh exact-head gate before publication. Verify
-Actions on the published PR head separately.
+tests; the 10 second-round structural cases passed. Prior exact-head gate
+receipts are local only and do not validate the current combined tree. Gate
+the exact current head before publication; report the SHA and receipt on PR
+#65. Verify Actions on the published PR head separately.
 
 The approved 250,000-cap UCI #352 source call stopped above its product-day
 group limit and returned no projection or metrics. The UCI-only
@@ -40,11 +45,13 @@ remain open. The owner's zero-paid
 budget remains in force. M2-02 and G-02 can continue only within their existing
 fictional/offline scopes after the PR #65 review candidate is consolidated.
 
-**Current main:** `c7478385f234f4d0965c51cca25f67c47d280778`, descendant of
+**Current main:** `f6e10e04d3135373c7a9cb60f767b8e655291519`, descendant of
 PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
 incorporated through #62; PR #60/#61/#64 are incorporated by #66; Census #63
-is incorporated by #67. PRs #68–#71 update public documentation and the
-original-project license only. WorldKernel and dataset terms remain separate.
+is incorporated by #67. PRs #68–#71 update the public portfolio and original
+project license; #72 adds an offline synthetic report, #73 prepares the source
+alpha release, and #74 records repository excellence/inventory. WorldKernel
+and dataset terms remain separate.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -53,8 +60,8 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | --- | --- | --- |
 | PRs #60, #61, #64 | Closed as merged through PR #66; main ancestry preserved at `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc`. The combined local gate passed 856 tests, zero skips, six checks and examples Ruff. | Retrieval remains experimental and caller scope is not authenticated identity; responder is in-process only; ENG-02 is example lint maintenance. |
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
-| PR #65 | Open, non-draft; public head remains `11de601` until the synchronized candidate is pushed. Local merge `ab71f54` includes current main, and `6df8af1` contains the latest parser-review fix. Full combined candidate gate pending. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
-| PRs #66–#71 | Closed as merged. #66 consolidates #60/#61/#64; #67 adds reviewed Census work; #68–#70 update public portfolio; #71 licenses original project material under Apache-2.0. | No source/data or WorldKernel rights grant follows from #71; no production readiness follows from these docs. |
+| PR #65 | Open, non-draft; live PR metadata is the authority for its published head and checks. Local merge `9b5acd4` includes current main; `6df8af1` contains the latest parser-review fix. See the latest PR discussion entry for exact local-gate evidence. | UCI attempt remains stopped above 250,000 groups; no complete projection or metric. Preserve `2026-12-26` deletion deadline. |
+| PRs #66–#74 | Closed as merged. #66/#67 consolidate M2-01, G-01, ENG-02 and Census; #68–#71 update the public portfolio/license; #72 adds the offline synthetic report; #73 prepares the source alpha; #74 records repository excellence and branch inventory. | No source/data or WorldKernel rights grant follows from these changes; no production readiness follows. |
 
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
