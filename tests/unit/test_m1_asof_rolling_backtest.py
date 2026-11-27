@@ -1,5 +1,6 @@
 """Synthetic integration: every rolling forecast needs published lag-7 history."""
 import json
+from datetime import date
 from math import sqrt
 from pathlib import Path
 
@@ -14,6 +15,25 @@ def fixture():
     return json.loads(
         (ROOT / "examples/synthetic-asof-weekly-sales.json").read_text(encoding="utf-8")
     )
+
+
+@pytest.mark.parametrize(
+    "days",
+    [
+        [],
+        [date(2025, 1, 1)],
+        [date(2025, 1, 1), date(2025, 1, 2)],
+        [date(2025, 1, 1), date(2025, 1, 2), date(2025, 1, 3)],
+    ],
+)
+def test_contiguous_day_guard_preserves_pairwise_boundary_semantics(days):
+    model._require_contiguous_days(days)
+
+
+def test_contiguous_day_guard_rejects_a_gap_without_imputing_a_day():
+    days = [date(2025, 1, 1), date(2025, 1, 3)]
+    with pytest.raises(ValueError, match="missing event-date record; do not impute demand"):
+        model._require_contiguous_days(days)
 
 
 def test_late_weekly_observation_causes_three_safe_abstentions():

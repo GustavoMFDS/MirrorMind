@@ -55,6 +55,7 @@ wall-clock evidence.
 - Current invoice-policy diagnostic: MM-022 makes only exact uppercase `C` plus six digits a cancellation; lowercase `c` and other one-letter ASCII prefixes use one aggregate unverified class. The stopped source attempt used MM-021 and was not rerun because the accepted sales rows and group count are unchanged. Reproduce the changed classification with `tests/unit/test_uci_workbook.py::test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded`; verify the full ASCII grammar and single-counter privacy boundary with `tests/unit/test_uci_workbook.py::test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`. Do not inspect the real workbook or report a source exclusion count.
 - For duplicate OOXML cells or ambiguous values, use generated fixtures only. `test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original` covers repeated coordinates; `test_duplicate_scalar_value_does_not_overwrite_original_quantity` and `test_duplicate_scalar_values_fail_in_both_worksheet_passes` cover repeated `<v>` elements, including the shared-string index scan. `test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes` covers conflicting `<v>`/`<is>` forms for inline and shared-string cells; `test_valid_inline_rich_text_runs_remain_one_stock_code` is the compatibility control. Existing error/unknown-type and malformed-number tests cover decoding. Inspect `_iter_worksheet_rows` payload cardinality and capture state; the excluded Description callback must remain disabled. Errors intentionally omit workbook values; never dump source XML or cell contents into logs.
 - For a point-in-time evaluation that selects a later source revision too early: compare `reference_month` with `published_at`, verify the immutable vintage manifest/hash, then check the official release schedule and the source review's ALFRED real-time boundary. Do not manufacture `available_on=InvoiceDate`; if a release timestamp or vintage is missing, abstain or exclude that origin.
+- For synthetic Census vintage-selection failures: inspect [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), the [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md) and [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py). Check strict `< target_release_on`, publication on or after the first day following `reference_month`, the `(reference_month, published_on)` ambiguity key and release-ID date/digest consistency. The period-close rule is only a lower bound; the adapter validates digest syntax but never verifies source bytes, the actual release schedule or rights.
 
 - For missing or mismatched review packets: inspect [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [the review guide](SOURCE_INTAKE_REVIEW.md) and [synthetic tests](../../tests/unit/test_source_intake_review.py). Share only sanitized refs/digests, never proof documents or raw rows in issues; references alone do not authorize use.
 
@@ -168,6 +169,18 @@ helper and its unit tests for product-day validation and seven-day history
 rules. Do not log the typed projection or identifiers while debugging. A
 stable fixture digest and matching cutoff still do not verify publisher
 availability, source rights or demand completeness.
+
+For a synthetic as-of backtest rejected for a calendar gap, inspect
+`_require_contiguous_days` in
+[`m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py).
+It checks successive parsed dates with `itertools.pairwise`; missing dates
+must keep producing `ValueError("missing event-date record; do not impute demand")`.
+Run `python -m pytest -q tests/unit/test_m1_asof_rolling_backtest.py` and
+compare the empty/singleton/consecutive helper cases with the public
+`test_missing_event_day_not_imputed_even_with_publication_metadata` case.
+Do not repair a fixture by filling an absent date with zero: zero is an
+observed count, while a gap means no record. This synthetic check proves
+calendar labels only, not source availability or authorization.
 
 ## WorldKernel request mapping rejects a retail scenario
 
@@ -309,3 +322,78 @@ checkout passed `test_health` and the complete local gate; preserve both
 observations. Use the owner-approved exact-clean-head gate in an already
 authorized local environment and report its full commit. Do not call a local
 pass GitHub Actions success.
+
+## Synthetic Census vintage evaluation abstains or rejects an origin
+
+Inspect the normalized selector, the evaluation walkthrough and
+tests/unit/test_census_vintage_evaluation.py. Check that each origin's own
+first estimate was published before issued_on and on or after the first day
+following its reference month; each target first estimate follows the issue
+date, and all 12 consecutive reference months are present in the as-of view. A
+publication dated inside its reference month is invalid chronology, even when
+the issue cutoff would otherwise make it visible. The lower bound does not
+verify an official release timestamp. A missing month is an abstention, never a zero. An unrelated
+future reference month is a contract error; a target already published by
+issue is not a future outcome. Compare the per-origin vintage fingerprint and
+sanitized selector receipt before assuming a later revision affected a score.
+If a revision precedes its known first-estimate date, expect chronology
+rejection; a same-day collision is ambiguous at date-only precision. When the
+first-estimate anchor is absent, inspect `unanchored_revision_count` and ensure
+that row changes the full-input fingerprint but not the per-origin feature
+fingerprint or missing-history abstention. To diagnose metric drift, rerun the
+same records under Decimal precision 2 with `ROUND_DOWN` and `ROUND_UP`; exact
+`Fraction` means/aggregates must be identical. For `ValueError` from metric
+conversion, inspect the bounded coefficient/exponent domain and distinguish
+WAPE overflow from positive-result float underflow. Do not replace either with
+infinity, NaN or zero. If only the mean-square is below float range, inspect
+`_sqrt_metric_float`: it scales the exact rational by a power of two before
+converting the mantissa, so a representable RMSE remains available. The result
+is schema v2 because it carries the explicit unanchored count.
+The normalized-input fingerprint is not a publisher-byte digest, and no
+diagnosis resolves source rights, archive completeness or empirical validity.
+
+## Census metrics replay but lineage hashes differ
+
+Check the exact normalized records, including Decimal scale and signed
+zero. The evaluator uses explicit uppercase general formatting in
+`_record_payload`; ambient Decimal capitals must not affect the v2 replay.
+Run the scientific-notation fingerprint regression in
+[the Census guide](CENSUS_VINTAGE_EVALUATION.md). Historical lowercase-context
+hashes are superseded; do not silently rewrite stored receipts.
+
+## Fictional evidence retrieval misses or returns an unexpected citation
+
+Reproduce with [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py)
+and the [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md). For an empty
+result, inspect query tokenization and the fixed collection/principal scope
+before changing the ranker. For a scope regression, run
+[`test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py)
+and verify filtering still precedes tokenization and score construction.
+For a citation mismatch, compare the reported Python code-point slice and
+recompute SHA-256 over its UTF-8 bytes. `RetrievedEvidence` rejects a changed
+excerpt with the old digest and a different well-formed digest. Replacing both
+excerpt and digest can still create a self-consistent untrusted envelope; the
+digest is not source provenance. Never log denied IDs, hidden content or raw
+queries. BM25 scores are ranking values, not relevance probabilities, and a
+caller-declared scope is not authentication.
+
+## In-process challenged-head responder returns an error
+
+The experimental [G-01 responder walkthrough](REMOTE_FENCE_HEAD_SERVICE.md)
+describes `RemoteFenceHeadResponder.respond`; it is not an HTTP route. For
+400/405/406, inspect the method, fixed path, exact `Accept` value and raw
+`nonce=...&packet_sha256=...` ordering in the generated request test. A 404
+means no current record was found for the packet scope or the store returned
+a different packet digest. A bodyless 503 means a typed store/clock
+operational error, invalid record or invalid returned clock was observed.
+Store adapters must translate expected unsafe/unavailable reads to
+`RemoteFenceHeadStoreError`; clock adapters must translate expected time
+service failures to `RemoteFenceHeadClockError`. Inspect sanitized adapter
+diagnostics locally, never expose exception text or source rows in a response.
+Unexpected programming exceptions propagate to the in-process caller. The
+responder does not advance or repair state; use the generated-key round-trip
+and adverse cases in
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+If the client rejects a 200 response, verify the configured service key,
+request nonce, packet/snapshot digest and UTC validity against its existing
+verifier. Do not infer an attack or independent freshness from a mismatch.

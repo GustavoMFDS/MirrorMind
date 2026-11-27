@@ -258,6 +258,7 @@ unavailable history.
 | [`docs/engineering/datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md`](datasets/SYNTHETIC_ASOF_WEEKLY_CARD.md) | Dataset generated for testing known-as-of history; no real permission |
 | [`docs/engineering/model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md`](model_cards/SYNTHETIC_ASOF_WEEKLY_BASELINES.md) | Evaluation scores on only four synthetic origins, with abstention caveats |
 | [`docs/engineering/changes/MM-M1C-asof-rolling-abstention.md`](changes/MM-M1C-asof-rolling-abstention.md) | Scope, risk and regression acceptance for the experimental slice |
+| [`docs/engineering/changes/ENG_02_EXAMPLES_RUFF_MAINTENANCE.md`](changes/ENG_02_EXAMPLES_RUFF_MAINTENANCE.md) | Impact map, behavior-preserving lint correction, and sequence-boundary regressions |
 
 `synthetic_asof_rolling_backtest` is reported only
 as an **experimental** local program. The real
@@ -789,17 +790,22 @@ delivery is provided, and none of these results grants permission.
 No independently operated current-head service, source permission
 grant, production custody or cross-file atomicity is implied.
 
-## 49. Experimental nonce-challenged remote signed current-head read
+## 49. Experimental nonce-challenged current-head protocol, client and responder
 
 | Tracked file | Reviewed responsibility |
 | --- | --- |
+| [`src/mirrormind/modules/evidence/remote_fence_head_protocol.py`](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py) | One shared response type, signing domain, strict canonical signing message, compact JSON wire encoder and response parser |
 | [`src/mirrormind/modules/evidence/remote_fence_head_client.py`](../../src/mirrormind/modules/evidence/remote_fence_head_client.py) | Fixed HTTPS read, OS-generated nonce, separately verified signed service reply, bounded canonical wire format and exact local signed-registry comparison |
-| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery/clock/packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
+| [`src/mirrormind/modules/evidence/remote_fence_head_service.py`](../../src/mirrormind/modules/evidence/remote_fence_head_service.py) | In-process request responder with typed clock/store operational errors and propagation of unrelated programming errors; no listener, authentication or persistence |
+| [`tests/unit/test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py) | Generated-key nonce/replay/forgery, typed operational clock/store failure, programming-error propagation, packet/role/paired rollback tests and fake HTTPS transport; no real endpoint contacted |
 | [`docs/engineering/REMOTE_FENCE_HEAD_CLIENT.md`](REMOTE_FENCE_HEAD_CLIENT.md) | Request-response contract, trust boundaries, replay resistance and no independently deployed service |
+| [`docs/engineering/REMOTE_FENCE_HEAD_SERVICE.md`](REMOTE_FENCE_HEAD_SERVICE.md) | G-01 source walkthrough, store/request/response contracts, signing flow, reproduction, failure modes and learning exercise |
 | [`docs/engineering/changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md`](changes/M1B_CHALLENGED_HTTPS_HEAD_READER.md) | Scope, acceptance, impact map and deferred service operation |
+| [`docs/engineering/changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md`](changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md) | G-01 acceptance, impact map, compatibility, safety and evidence record |
 
-The client does not grant source rights, publish, ingest data, manage
-real service keys, or claim globally current external authority.
+The client does not grant source rights, publish or ingest data. The responder
+does not provide a live server, managed key custody, durable current state or
+globally current external authority.
 
 ## 50. Composed synthetic retail evidence preflight
 
@@ -954,6 +960,55 @@ metrics or complete exclusion counts exist. The evaluator does not infer
 publication time from `InvoiceDate`, authenticate a source manifest or prove
 ledger completeness or predictive performance.
 
+## 59. Synthetic aggregate Census vintage selector (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py) | Provides immutable normalized vintage records and a bounded, pure date-only as-of selector; preserves release IDs and digest strings without authenticating source bytes |
+| [`tests/unit/test_census_vintages.py`](../../tests/unit/test_census_vintages.py) | Regresses strict release cutoff, revision selection, missing history, duplicate ambiguity, metadata conflicts, malformed values, mixed series and input budgets |
+| [`docs/engineering/CENSUS_VINTAGE_ADAPTER.md`](CENSUS_VINTAGE_ADAPTER.md) | Walks through the contract, algorithm, data flow, failure boundaries, examples, test evidence and learning exercises |
+| [`docs/engineering/datasets/SYNTHETIC_CENSUS_VINTAGES.md`](datasets/SYNTHETIC_CENSUS_VINTAGES.md) | Identifies every fixture value as fictional and records that no real source rights, snapshot or retention has been reviewed |
+| [`docs/engineering/changes/M1B_04_CENSUS_VINTAGE_ADAPTER.md`](changes/M1B_04_CENSUS_VINTAGE_ADAPTER.md) | Defines the bounded change request, acceptance criteria, impact map and evidence for a local synthetic-only adapter |
+
+The selector consumes caller-supplied normalized records in memory. It makes no
+source request, reads no file or credential, and cannot establish source
+authenticity, permission, completeness or forecast eligibility.
+
+## 60. Synthetic aggregate Census vintage evaluation (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [src/mirrormind/domains/retail/census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py) | Selects each origin's visible vintage and computes fixed matched monthly baselines, reason-specific abstention and privacy-limited lineage |
+| [tests/unit/test_census_vintage_evaluation.py](../../tests/unit/test_census_vintage_evaluation.py) | Regresses strict origin cutoffs, revisions, first-estimate labels, horizons, zero-safe metrics, missing history and malformed origin schedules |
+| [tests/integration/test_census_vintage_evaluation_cli.py](../../tests/integration/test_census_vintage_evaluation_cli.py) | Replays fictional validation and holdout commands and checks deterministic, disjoint, minimized output |
+| [examples/m1_census_vintage_evaluation.py](../../examples/m1_census_vintage_evaluation.py) | Generates an in-memory 21-month aggregate series, one later revision and fixed non-overlapping synthetic origin splits |
+| [docs/engineering/CENSUS_VINTAGE_EVALUATION.md](CENSUS_VINTAGE_EVALUATION.md) | Explains the source walk, contract, baselines, metric rules, receipt, tests, diagnostics and exercises |
+| [docs/engineering/model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) | Records synthetic split semantics, fixed baselines, no empirical results and real-source review gates |
+| [docs/engineering/changes/M1C_04_CENSUS_SYNTHETIC_VINTAGE_EVALUATION.md](changes/M1C_04_CENSUS_SYNTHETIC_VINTAGE_EVALUATION.md) | Defines the scoped evaluator change, impact map, acceptance and evidence boundary |
+
+The evaluator fingerprints normalized inputs and each selected vintage for
+replay, but these digests do not verify publisher bytes or grant rights.
+Missing targets, visible targets and incomplete history remain explicit
+abstentions. No real source parser or production forecast capability is added.
+
+## 61. Permission-filtered fictional evidence retrieval (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/modules/retrieval/__init__.py`](../../src/mirrormind/modules/retrieval/__init__.py) | Namespace only; no import-time indexing or network activity |
+| [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | Strict bounded retrieval contracts; recomputes exact UTF-8 excerpt digest during result validation |
+| [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | Generated corpus and fixed demo principal/collection |
+| [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | Scope-first in-memory BM25 ranking, stable ties and exact citation spans |
+| [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | Bounded deterministic CLI over fictional text; no route, writes or arbitrary file access |
+| [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope-before-tokenization, citation integrity, deterministic ranking, bounds and untrusted-text regressions |
+| [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | CLI replay, citation presence, query omission and oversized-input failure |
+| [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Source walkthrough, contracts, BM25, safety, reproduction, tests and exercises |
+| [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance criteria, impact map, compatibility and evidence |
+
+The capability is experimental. Its access context is a caller assertion,
+not authenticated identity; `evidence_and_rag` remains planned and no real
+source permission or retrieval route is provided.
+
 ## Continuous engineering handoff and execution register
 
 | Tracked document | Reviewed responsibility |
@@ -968,3 +1023,20 @@ ledger completeness or predictive performance.
 These are engineering planning and navigation documents. They do not
 add a runtime capability or authorize real ingestion, deployment,
 forecast claims or cross-repository changes.
+
+## Public portfolio entrypoints
+
+- [README.md](../../README.md): English public overview, executable synthetic demo and live CI.
+- [README.pt-BR.md](../../README.pt-BR.md): Brazilian Portuguese counterpart with identical demo and evidence boundaries.
+
+## Public portfolio visuals and community policies
+
+- [Architecture artwork](../assets/mirrormind-architecture.svg): editable static SVG of reviewed experimental boundaries.
+- [Synthetic comparison artwork](../assets/mirrormind-synthetic-comparison.svg): measured fictional CLI example; no decision ranking.
+- [CONTRIBUTING.md](../../CONTRIBUTING.md): reporting and contribution boundaries pending license decision.
+- [SECURITY.md](../../SECURITY.md): private disclosure channel and experimental support limits.
+
+## Public licensing
+
+- [LICENSE](../../LICENSE): standard Apache-2.0 license text for original project material.
+- [Third-party licensing](../THIRD_PARTY.md): dependency metadata and separate engine/data boundaries.

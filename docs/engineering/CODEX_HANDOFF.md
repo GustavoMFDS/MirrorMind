@@ -1,5 +1,79 @@
 # Agent handoff — continuous engineering and documentation standard
 
+## Current continuation - 2026-11-27
+
+- Current `main` is `c7478385f234f4d0965c51cca25f67c47d280778`. PR #66
+  integrated #60/#61/#64 and PR #67 integrated Census #63; PRs #68–#71 update
+  the public portfolio and original-project license. The exact current-main
+  `test` and `symbol-catalog` Actions checks both succeeded. The owner still
+  authorizes zero paid usage. Preserve protections and distinguish local gate
+  receipts from Actions.
+- Continue PR #65 only. Public head remains `11de60127ab0b31b609d98ada1b764a3dde542f9`
+  until the synchronized branch is pushed. Latest local code commit
+  `6df8af1` rejects repeated selected-cell `<v>` payloads and ambiguous
+  `<v>`/`<is>` mixtures in both OOXML worksheet passes; valid rich-text runs
+  and excluded `Description` handling remain covered. The 10 focused second-
+  round cases and 75 UCI workbook unit/integration tests passed. The complete
+  exact-head local gate and exact-head Actions observations remain pending.
+- Finish the in-progress ancestry-preserving merge of current main into
+  `codex/uci352-pilot-20261126`, reconcile the shared docs and evidence map,
+  run the complete six-check gate with the exact reviewed WorldKernel pin,
+  then publish normally and report the exact SHA/receipt for independent
+  review. Do not merge #65 or resolve the independent review comments.
+- Do not reread the private UCI workbook. Its sole authorized source call
+  stopped above 250,000 product-day groups without a projection or metric.
+  Do not retry, partition, increase the cap or retrieve Census values. Keep
+  synthetic tests only and preserve the `2026-12-26` deletion deadline.
+- M1 synthetic workflow is integrated; M1 empirical and production acceptance
+  remain incomplete. Keep the queue stable until #65 review; afterward resume
+  existing M2-02/G-02 work only in approved offline scopes. No new unrelated
+  feature is authorized by this continuation.
+
+
+## Historical review reconciliation - 2026-11-27
+
+Main `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc` incorporates #60, #61 and
+#64 through #66. The independent post-merge gate passed 856 tests, zero skips
+and all six checks plus examples Ruff. See [PR #66](https://github.com/GustavoMFDS/MirrorMind/pull/66).
+M2-01, G-01 and ENG-02 are integrated within their experimental scopes.
+The Census review candidate preserves the exact #63 head and adds the
+uppercase Decimal fingerprint fix with a failing-before/passing-after
+regression. The candidate is not accepted until the combined gate and
+merge decision recorded in the integration PR. No actual Census data or
+FRED/ALFRED access is authorized; the direct original Census artifact
+proposal requires separate owner decisions under B-01/B-02.
+
+PR #65 is still separate: the UCI source was privately acquired within
+MM-017 through MM-022, but the attempt stopped above 250,000 product-day
+groups without scores. The duplicate-cell and error-cell parsing findings
+remain with Codex. No further source processing is authorized here.
+Preserve the 2026-12-26 deletion deadline. B-08 remains open with zero
+paid budget. M2-02 and G-02 may advance independently within their
+existing fictional/offline scopes. The dated branch/status records below
+are historical where inconsistent with this reconciliation and live PRs.
+
+## Historical integration candidate - 2026-11-27
+
+The separately reviewed heads of PRs #64 (example maintenance), #60
+(experimental scoped BM25 retrieval), and #61 (in-process current-head
+responder) are included by normal merges, preserving their ancestry. This
+candidate is intended for a single ancestry-preserving PR to main; the
+independent combined gate and merge decision are recorded in its PR.
+Do not infer approval from this document alone. Once integrated, begin M2-02
+against the retrieval interface and continue G-02 only within its scoped
+offline contract. No authenticated RBAC, deployed authority, empirical
+forecast or production readiness is implied.
+
+PR #63 (synthetic Census) and #65 (UCI reader) remain separate. The latter
+records the owner's narrow UCI approval MM-017 through MM-022, a source
+snapshot held privately, and a fail-closed stop above 250,000 product-day
+groups without metrics. No new source processing, partitioning, cap increase
+or Census acquisition is authorized by this integration. Preserve the
+2026-12-26 deletion deadline and see the live PR #65 and its manifest for the
+latest source-specific evidence. B-01/B-02 and B-08 remain open. The
+following dated records retain historical gate and branch information;
+where they differ from this queue, use the live PRs and current evidence.
+
 ## 1. Mission and safe starting point
 
 Continue MirrorMind as a modular, domain-neutral evidence-driven
@@ -14,14 +88,152 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
-## 1.1 Historical owner decisions — 2026-11-25
+## Historical owner-approved continuation — 2026-11-27
+
+- `main` is `a456034c55ed7634ad4768b26788fec09dab1d08`, the
+  ancestry-preserving PR #62 merge. Independent post-merge gate passed 835
+  tests, zero skips and six checks with the exact WorldKernel source pin. PR
+  #52 is merged; #53–#59 are closed as incorporated and their branches remain
+  available. Do not duplicate their integration.
+- PR #60 is separate and ready for independent review at
+  `fafdedae3a76398e0450773065e40384c96d1ed7`; its local gate passed 845 tests,
+  zero skips and six checks. PR #61 is separate and ready at
+  `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; its gate passed 841 tests, zero
+  skips and six checks. Exact #61 receipt, time and pin are in the live PR body.
+- Census remains separate as open PR #63 and preserves merge `55e91f7` from
+  `main` plus the PR #62 ancestry. Follow-up commit
+  `00311c6344e8a70bb72315afc10f4fbd02926d26` rejects first estimates and
+  revisions published inside their reference month; selector-boundary and
+  public-evaluator regressions cover the original false-scoring case. The
+  pre-diagnostic source-policy head
+  `47cdb587b0deab19835acd1435e4bd028ba28519` passed the exact clean-head gate
+  at `2026-11-27T02:38:46.324939Z`: 882 tests, zero skips and all six checks,
+  with WorldKernel `0.0.1` at reviewed source pin
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+  `results/local-quality-gate-47cdb587b0deab19835acd1435e4bd028ba28519.json`;
+  PR comment [7208332106](https://github.com/GustavoMFDS/MirrorMind/pull/63#issuecomment-7208332106)
+  records it. Four automatic Actions checks on that head failed before jobs
+  ran. The annotation lists payment failure or a spending-limit increase as
+  alternatives; diagnostics expose no jobs, steps, logs or combined status, so
+  no cause is inferred. [B-08](BLOCKERS.md) records exact run/check IDs. Keep
+  #63 separate from #60/#61/#64 pending independent review; no integration
+  decision is implied.
+- PR #62 integrated the synthetic UCI event-time evaluator into main. PR #63
+  contains only a synthetic Census vintage evaluator. The UCI then aggregate
+  Census/ALFRED pilot sequence remains preparation-only; no source file, FRED
+  API response or credential was downloaded into the workspace or pilot store.
+  Search previews of public Census release summaries incidentally displayed
+  published aggregate values; none was retained or used in evaluation. No pilot run
+  occurred. B-01/B-02 still require source rights, privacy, retention and
+  time-availability evidence before any real run; see the
+  [Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+- Metadata-first due diligence on 2026-11-27 confirms the direct Census MARTS
+  archive as the preferred no-credential candidate for national retail and
+  food-services sales. Current release text says seasonally adjusted but not
+  price-adjusted; its nominal/current-dollar interpretation still needs exact
+  table verification. The 2026 annual revision index reaches August 2026 but
+  does not establish first-release completeness. The April 2025 removal of
+  nonemployers is a documented definition boundary and must be carried in any
+  reviewed source manifest. The current FRED Services terms apply to ALFRED
+  and the API, forbid storing/caching/archiving FRED content, and the API
+  terms additionally prohibit software/AI-development use. FRED/ALFRED is
+  therefore NO-GO for the current development and archive route absent
+  St. Louis Fed written authorization or changed terms plus separate
+  series-owner rights clearance; this does not decide rights for original
+  Census files. Census citation guidance and its general employee-created-work
+  copyright statement inform the proposal but do not establish rights for a
+  specific MARTS file or embedded third-party content; see the [Census
+  protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md). The proposed source is direct
+  original MARTS release files, subject to project-scope approval, attribution,
+  storage, retention and output review. Proposed retention is 30 days for local
+  value-bearing artifacts, followed by deletion. The proposed fixed evaluation
+  uses a frozen 60/20/20 chronological split, first estimates, 1/3/6-month
+  lag-12 and trailing-mean baselines, strict-before date cutoffs, preserved
+  gaps, and a 12-month moving-block bootstrap only with 60 matched holdout
+  origins per horizon. These are not yet approved. No archive file, API
+  response, key, account or workbook was acquired; keep B-01/B-02 open and
+  tests synthetic. The complete proposal and owner decision checklist are in
+  [the Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+- The owner confirms Actions quota exhaustion and zero paid budget. Use the
+  exact-clean-head local gate, distinguish receipts from CI, and do not
+  register a runner, modify workflows/protections or retry prior start failures.
+- ENG-02 is separate maintenance in [PR #64](https://github.com/GustavoMFDS/MirrorMind/pull/64),
+  head `ca97ab61d15347aa271ee9ac8468a0714bdc3402`; its exact local gate passed
+  840 tests, zero skips and all six checks. Two Actions attempts on this head
+  failed before job steps; the annotation does not identify a specific cause.
+  See [B-08](BLOCKERS.md). M2-02 follows M2-01 (#60) review/integration and
+  independent review of #61/#63. Keep the review queue stable before adding
+  feature work.
+
+## 1.1 Historical owner-approved continuation decisions — 2026-11-25
+
+## Historical independent maintenance — 2026-11-26
+
+- ENG-02 is separate maintenance in [PR #64](https://github.com/GustavoMFDS/MirrorMind/pull/64),
+  branch `codex/eng-02-examples-ruff`, based on post-#62 `main` at `a456034`.
+  The five original `ruff check examples` findings were reproduced. RUF007's
+  `itertools.pairwise` correction has direct empty/singleton/consecutive/gap
+  regressions; no forecast or authorization behavior changed. Exact-head local
+  gate passed on `271f01cae5aacf274d3fa9f9ff2ede34796471ef` with 840 tests,
+  zero skips and six checks; receipt is
+  `results/local-quality-gate-271f01cae5aacf274d3fa9f9ff2ede34796471ef-venv.json`.
+  Actions run `45769344631` has no job steps or retrievable logs, so the cause
+  is unknown. Keep #64 separate from #60/#61/#63.
+
+## Historical owner-approved continuation — 2026-11-26
+
+- Current `main` is `a456034c55ed7634ad4768b26788fec09dab1d08`, the
+  ancestry-preserving PR #62 merge. Independent post-merge verification ran
+  the complete temporary local gate: 835 tests, zero skips, six checks and
+  the exact WorldKernel source pin. The reviewer recommends preserving this
+  merge ancestry. PRs #52–#59 are reconciled as incorporated by #62; retain
+  their branches where useful and do not repeat their merges.
+- The M1 path on main is a synthetic experimental workflow, not a real-data,
+  empirical-forecast or production acceptance. Census remains a separate open
+  PR #63. PR #60 is open/non-draft for independent review. PR #61 has been
+  synchronized with main through ancestry-preserving merge
+  `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21`; its merge-head gate passed 841
+  tests, zero skips and six checks. Documentation refresh commit
+  `47fdceb58a2c3802f8e66e5aea51318a698ffe62` also passed 841 tests, zero skips
+  and all six checks. The documentation baseline
+  `20ce86bde740d5b46d7aeba4d13138884e211dba` passed the exact gate again with
+  841 tests, zero skips and all six checks. PR #61 is now open/non-draft and
+  ready for independent review. Its live PR body carries the current exact
+  SHA and receipt; any subsequent commit needs a fresh gate. Keep #60, #61 and
+  #63 separate.
+- PR #62's final independent comments are
+  [7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+  and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
+  The former approves the experimental synthetic M1 scope and recommends a
+  merge commit; the latter verifies `a456034` and the separate Census
+  descendant. Neither grants production, scientific-data or official-CI
+  approval.
+- The owner confirms Actions quota exhaustion, a zero-paid budget and no limit
+  increase. Follow [LOCAL_QUALITY_GATE.md](LOCAL_QUALITY_GATE.md) on exact
+  clean heads. Local receipts are not CI. Do not register a runner, change a
+  workflow, alter protections, or retry known pre-job failures. No new paid
+  infrastructure is approved.
+- Continue UCI #352 then aggregate Census/ALFRED preparation under B-01/B-02.
+  Automated tests stay synthetic. No source bytes, keys or credentials may be
+  acquired or processed until source-specific rights, privacy, retention,
+  snapshot and temporal-availability conditions are separately satisfied.
+- After the remaining PR review queue is prepared, M2-02 retrieval evaluation
+  is the next M2 slice and depends on M2-01 (#60) review/integration. Do not
+  open disconnected feature work while this queue remains unsettled. ENG-02
+  tracks five pre-existing Ruff findings in `examples/` as separate
+  maintenance; leave those files out of #60/#61/#63.
+
+## Historical continuation decisions — 2026-11-25 (superseded)
 
 - Research preparation proceeds A then B: UCI Online Retail #352 event-time
   retrospective first, then an aggregate Census release-vintage study.
-  ALFRED is conditional on free authorized access, acceptable series terms and
-  adequate archive evidence. This is not approval to acquire or process real
-  data. Keep raw data out of Git, CI, logs, prompts and external services;
-  automated tests remain synthetic.
+  This historical decision did not approve acquisition or processing of real
+  data. The 2026-11-26 terms review supersedes ALFRED as an active data route:
+  current FRED terms block the proposed software-development and local archive
+  use absent St. Louis Fed written authorization or changed terms plus
+  separate series-owner rights clearance. The direct Census candidate
+  also needs source-specific approval. Keep raw data out of Git, CI, logs,
+  prompts and external services; automated tests remain synthetic.
 - Before processing the original UCI workbook, verify original terms,
   attribution/change notice, minimal product/day/positive-quantity projection
   after cancellation classification, private local storage,
@@ -63,6 +275,128 @@ a passing exact-head local gate. Its restricted-sandbox timeout was traced to
 local asyncio socket-pair creation; the same test and full gate passed outside
 that restriction. This does not retroactively explain the historical 8f906b8
 timeout. Preserve both the scope and limits in the blocker register.
+
+## 1.2 Historical resumed state before PR #62 merge — 2026-11-25 (superseded)
+
+GitHub review metadata confirms PR #62 remains open, mergeable and directed at
+`main`, at published head
+`0bed1269613eb689e84ad971c7d8f1878767d6cf`. The branch preserves published
+PR #52–#59 ancestry; #60/#61 remain excluded. The exact docs-inclusive head
+passed all six checks with 835 tests and zero skips under the reviewed optional
+WorldKernel pin. This is local validation, not GitHub Actions or integration
+approval.
+
+The independent branch `codex/m1-census-vintage-adapter` is a local descendant
+of that head via merge `8560ad6`. Independent review comment `7179081819`
+identified four defects across DecisionTrace V2 chronology and the separate
+Census evaluator. The DecisionTrace fix is already included in PR #62. Census
+fixes are kept outside that PR in commit
+`3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6`: exact Decimal-context-independent
+metrics, first-estimate/revision chronology, exclusion and counting of
+unanchored revisions, and fail-closed overflow/underflow. Public regressions
+and technical/learning documentation are included. Its exact clean
+implementation-head gate passed 877 tests with zero skips and all six checks;
+WorldKernel `0.0.1` was installed from
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+One existing Starlette/httpx TestClient deprecation warning appeared. The
+status/backlog/handoff/gate-documentation commit
+`a6e3ed3355a1e52712542e6ae0d80d908885a82b` then passed that exact six-check
+gate with 877 tests and zero skips; receipt:
+`results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+Any later tracked change requires its own exact-clean-head gate. Do not claim
+Actions passed.
+
+Do not push or open a separate Census PR while #62 awaits final independent
+review. Preserve the zero-cost Actions decision and synthetic-only tests. B-01
+and B-02 still gate acquisition or processing of real UCI/Census records; B-08
+still gates official Actions evidence. Continue only no-cost work that directly
+advances the M1 acceptance path without duplicating this stack.
+
+## 1.3 Historical resumed state before #61 sync and PR #63 publication — 2026-11-26 (superseded)
+
+PR #62 is merged at `a456034c55ed7634ad4768b26788fec09dab1d08`. The exact
+published heads of #52–#59 are its ancestors; #53–#59 are closed as
+incorporated and all branches remain available. Independent post-merge
+validation passed 835 tests, zero skips and six checks with the reviewed
+WorldKernel pin; this is local evidence, not Actions.
+
+PR #60 is now open against `main`, ready for review and mergeable at
+`fafdedae3a76398e0450773065e40384c96d1ed7`. Its ancestry-preserving merge
+includes the new main, and its exact local gate passed 845 tests, zero skips
+and all six checks. Receipt and review finding response are on PR #60 and in
+`LOCAL_QUALITY_GATE.md`. Keep it separate from Census and #61; do not merge or
+bypass required checks.
+
+The Census branch `codex/m1-census-vintage-adapter` includes `a456034` through
+merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`. Its exact reconciled gate
+passed 877 tests, zero skips and all six checks with reviewed WorldKernel;
+receipt is in `LOCAL_QUALITY_GATE.md`. The current status/receipt updates need
+their own exact gate before the branch is pushed as a separate PR (#63).
+
+PR #61 remains a separate G-01 slice on its prior base. Synchronize it with
+`a456034` using an ancestry-preserving merge, preserve clock/store failure
+contracts, review conflicts and gate its exact clean head before review. Do not
+fold it into PR #60 or the Census branch.
+
+The owner approved preparation for A+B pilots only: UCI #352 event-time
+retrospective, then aggregate Census publication-vintage evaluation. Do not
+acquire or process real bytes or credentials until exact source rights,
+privacy, retention and temporal evidence are approved under B-01/B-02. Keep
+automated tests synthetic. GitHub Actions is unavailable within the zero-paid
+budget (B-08); do not buy usage, change limits, register a runner or alter
+protections.
+
+ENG-02 tracks five pre-existing Ruff findings in three M1 examples separately
+from the review queue. Do not auto-apply the unsafe RUF007 suggestion.
+Consolidate #60, Census and #61 before expanding M2 beyond M2-01.
+
+## 1.2 Historical resumed state — 2026-11-26
+
+PR #62 is merged into `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08`. Independent post-merge local
+validation passed 835 tests, zero skips and all six checks with the exact
+reviewed WorldKernel pin. This is local evidence only; GitHub Actions remain
+unavailable under the owner's zero-paid-use decision.
+
+The exact published heads of PRs #52–#59 are ancestors of `a456034`. PR #52
+was already merged, and #53–#59 were closed as incorporated after those
+ancestry checks. Their remote branches remain intact; do not merge or delete
+them. PRs #60 and #61 stay separate. PR #60 now includes the new main via
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`; its
+exact sync-head gate passed 845 tests, zero skips and all six checks with the
+reviewed WorldKernel pin. Docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0`
+also passed 845 tests, zero skips and all six checks; its receipt is in
+`LOCAL_QUALITY_GATE.md`. Rerun the gate after this status refresh, then push
+and prepare #60 for independent review. #61 still needs its
+ancestry-preserving sync and exact gate. Report local evidence separately
+from Actions; keep required protections unchanged.
+
+The local Census branch passed its pre-sync gate at `da540a2` (877 tests,
+zero skips and six checks, plus 64 focused tests). Merge commit `55e91f7`
+includes `a456034` without discarding Census history. Re-run the exact local
+gate on that reconciled state, publish it as a separate PR, and do not add it
+to #60 or #61. #60's sync preserved its excerpt-integrity regressions and the
+newer M1 contracts; #61 remains an independent G-01 slice.
+
+The local `ruff check examples` inspection found five existing findings in
+three M1 example files. ENG-02 tracks that cleanup separately; do not silently
+fold it into the queued PRs or apply Ruff's unsafe RUF007 fix without semantic
+review.
+
+The approved A+B pilot order permits preparation only: UCI #352 retrospective
+by event time, then aggregate Census publication-vintage evaluation. No real
+bytes, credentials or source records are authorized until B-01/B-02 are
+resolved. Keep automated fixtures synthetic and preserve privacy, licensing,
+availability-time and retention boundaries. Do not claim empirical forecast
+quality from synthetic results.
+
+M1's synthetic end-to-end flow is now integrated, but M1 is not complete:
+source rights, empirical evaluation, broader engine isolation, authenticated
+review and production controls remain open. M2-01 retrieval is a local
+fictional slice without authentication or an HTTP route. Continue with
+reviewable increments; do not broaden M2 while #60/#61 and Census are still
+being consolidated.
 
 Read in order:
 
@@ -142,7 +476,7 @@ perform destructive operations or relax gates. Ask the owner for
 only the decision or permission needed. Do not manufacture approvals
 or official CI results.
 
-### Historical owner decisions — 2026-11-25
+### Historical owner decisions and evidence through 2026-11-25
 
 Owner comments on [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
 approve preparing two independent research lanes in sequence: A, the narrow
@@ -155,10 +489,14 @@ are handled, verify original terms, attribution/change notice, minimized fields
 local storage, retention/deletion and a source manifest. Do not put raw or
 identifying rows in Git, CI, logs, prompts or external services. Never infer
 publication availability from `InvoiceDate`; retain
-`event_time_retrospective_unverified_availability`. For Census, prefer free
-official archived releases; use ALFRED only if access is free/authorized and
-series terms plus historical-vintage evidence suffice. Do not claim SKU-level
-demand or inventory validation. M5 remains NO-GO; B-01/B-02 remain open.
+`event_time_retrospective_unverified_availability`. For Census, prefer direct
+official archived releases subject to artifact-level review. Current FRED
+Services terms apply to ALFRED and prohibit storing/caching/archiving; API
+terms also prohibit software/AI-development use, so FRED/ALFRED is NO-GO for
+this development/archive route absent St. Louis Fed written authorization or
+changed terms plus separate series-owner rights clearance. Do not claim SKU-level
+demand or inventory validation. M5 remains
+NO-GO; B-01/B-02 remain open.
 
 Owner confirms GitHub Actions allowance is exhausted, with no paid usage or
 spending-limit increase authorized. Follow
@@ -217,257 +555,29 @@ remain independent. The inventory demo's `demo-1` registry label is not
 artifact attestation. The policy world preserves the M1E-03 transition and
 exact parity on synthetic inputs. Do not edit WorldKernel, claim real demand
 or calibrated outcomes, or describe the subprocess as a hostile-code sandbox.
-At the time of PR #62 validation, no real UCI/Census bytes had been accessed.
-PR #60/#61 remained separate then; main has since advanced through the PR #62
-merge. The current baseline and UCI source state follow.
+No real UCI/Census bytes were accessed. PR #60/#61 remain separate, and no
+remote branch or `main` was changed.
 
-### Current owner decisions and local evidence — 2026-11-26
+The separate local branch `codex/m1-census-vintage-adapter` prepares a pure
+synthetic aggregate-vintage selector on top of PR #62. Its source/docs commit
+passed the exact local gate with the reviewed WorldKernel pin installed; a
+documentation-only evidence follow-up is gated on its own exact head. Keep it
+separate from the consolidated candidate and do not publish it until the
+candidate's review state supports a reviewable follow-on. It consumes only caller-supplied normalized records in memory;
+source parsing, downloads, credentials, real values, permissions and forecasts
+remain outside this slice. The selector's evidence must never be presented as
+resolution of B-01/B-02.
 
-Main is `a456034c55ed7634ad4768b26788fec09dab1d08`, where PR #62 is integrated.
-PRs #52–#59 are ancestors of that merge and must not be merged again. PRs #60
-and #61 remain separate. Continue on `codex/uci352-pilot-20261126`; the prior
-`codex/integration-pr63-pr64-349b77e` worktree was preserved.
-
-The owner authorized one local, non-commercial UCI Online Retail #352
-event-time run, a source-specific ZIP profile (192 MiB/member, 224 MiB total,
-while generic defaults stay 64/128 MiB), and faithful `StockCode` handling:
-exact positive five-digit integer cells become decimal text; internal ASCII
-spaces remain untouched opaque category keys. Do not trim, filter or infer
-from `Description`; report units per category, not physical-SKU demand.
-Automated tests must remain synthetic.
-
-The exact source archive and workbook were acquired from the official UCI
-endpoint, hash-recorded, ignored by Git and stored under a verified private
-local ACL. The path-free manifest records source metadata, byte hashes, the
-UCI-reported date range, excluded-field missingness discrepancy, limits and
-the 30-day deadline (`2026-12-26T22:39:45Z`). No raw rows or row-level
-intermediates are in Git or docs. Schema and metadata preflight passed. The
-first reader attempt stopped at the generic 100,000-group ceiling and
-transiently materialized Description values before discarding them; none were
-persisted or transferred. That path was replaced by selective OOXML streaming
-with a regression proving excluded-cell text is not sent to Python character
-callbacks. MM-020 authorizes up to 250,000 UCI-only groups. MM-021 governed the
-stopped source attempt: it treated `C`/`c` as cancellations and excluded other
-single-ASCII-letter-plus-six-digit invoice IDs. The owner later clarified in
-MM-022 that only exact uppercase `C` is a cancellation; lowercase `c` and other
-single-ASCII-letter-plus-six-digit IDs join the aggregate unverified class.
-Synthetic regressions cover this
-current rule. No real-source retry occurred. The earlier call exceeded
-250,000 groups and returned no projection. Do not retry, chunk or widen the cap
-without a new decision. No full projection, complete exclusion count,
-empirical metric or real-source model card exists. Keep all results
-retrospective and availability-unverified.
-
-The synthetic invoice-classification regression now encodes MM-022: six-digit
-IDs continue through the projection, exact uppercase `C` is cancellation, and
-lowercase `c` plus other single-ASCII-letter-plus-six-digit IDs are excluded before
-sales aggregation under one aggregate-only class count. Other formats fail
-closed; generic projection remains unchanged. The real-source attempt used
-MM-021 and was not repeated after this clarification. Because MM-021 also
-excluded lowercase-`c` rows before aggregation, MM-022 only changes aggregate
-classification counts; it cannot reduce the product-day group count or
-resolve the existing cap failure. MM-022 does not raise MM-020's 250,000-group
-ceiling.
-
-Current code-bearing commit for [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65):
-`94c60b6ee20adbb5023e11aeded9b8fff90b1176`, on
-`codex/uci352-pilot-20261126` and based on `main` at
-`a456034c55ed7634ad4768b26788fec09dab1d08`. Its focused UCI reader,
-projection, workbook-flow and event-time suites passed 113 tests. The exact
-clean-head gate passed 864 tests, zero skips and all six checks at
-`2026-11-27T03:09:46.301016Z`; WorldKernel `0.0.1` was installed from reviewed
-commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
-`results/local-quality-gate-94c60b6ee20adbb5023e11aeded9b8fff90b1176.json`.
-This is local evidence, not Actions. The source attempt still reflects MM-021
-and the 250,000-group stop; MM-022 has synthetic-only evidence and no source
-retry or empirical result. A receipt for this code-bearing commit does not
-cover later documentation commits; the exact final PR-head receipt is recorded
-separately in the PR discussion.
-
-Earlier published [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
-candidate was `75da34fc2cb91d3354cfbe49af43aeb40721164d` on
-`codex/uci352-pilot-20261126`, based on main `a456034c55ed7634ad4768b26788fec09dab1d08`.
-It passed the exact clean-head six-check local gate at
-`2026-11-27T00:38:35.670136Z`: 863 tests, zero skips and all six checks.
-Python 3.13.5; WorldKernel `0.0.1` installed from reviewed source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing Starlette/httpx
-deprecation warning. A focused rerun passed 112 workbook, projection,
-event-time and workbook-flow tests. Receipt:
-`results/local-quality-gate-75da34fc2cb91d3354cfbe49af43aeb40721164d.json`.
-PR #65 is open and awaits independent review. Actions diagnostics show only
-automatic pre-start failures with the generic alternatives-only annotation;
-no repository steps ran. Local receipts are not CI evidence. Do not change
-gates, spend or modify the separate Census or WorldKernel repositories. See
-the [change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md),
-[manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
-[source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [B-01/B-02](BLOCKERS.md).
-
-### Separate PR review state — 2026-11-27 UTC
-
-PR #60 is open, non-draft and mergeable against `main` at
-`a456034c55ed7634ad4768b26788fec09dab1d08`; current head is
-`fafdedae3a76398e0450773065e40384c96d1ed7`. Its exact local gate passed 845
-tests, zero skips and all six checks. The review correction and response are
-in the [PR conversation](https://github.com/GustavoMFDS/MirrorMind/pull/60#issuecomment-7151002830).
-
-PR #61 is also open, non-draft and mergeable against the same main; current
-head is `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`. Its exact local gate passed
-841 tests, zero skips and all six checks. Its typed clock-failure correction
-and response are in the [PR conversation](https://github.com/GustavoMFDS/MirrorMind/pull/61#issuecomment-7151371714).
-Both remain separate from the M1/UCI/Census candidates and await independent
-review. Their automatic Actions failed before repository steps under the
-generic alternatives-only annotation; see [B-08](BLOCKERS.md). No official CI
-success or merge is claimed.
-
-The subsequent PR #65 status-sync head
-`7e478440dc7661ebf35483073bad46ab290051c5` passed the exact local gate:
-863 tests, zero skips and all six checks, with reviewed WorldKernel commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` installed. Receipt:
-`results/local-quality-gate-7e478440dc7661ebf35483073bad46ab290051c5.json`.
-Its four automatic Actions checks failed without retrievable steps or logs;
-the connector could not retrieve annotation text, so no specific cause is
-assigned. The owner separately reports exhausted allowance and zero paid
-budget. Local evidence is not official CI; see [B-08](BLOCKERS.md).
-
-### Verified pre-reconciliation M1 and PR state — 2026-11-27 UTC
-
-Before this documentation-only reconciliation, main was
-`a456034c55ed7634ad4768b26788fec09dab1d08`, with PR #62 integrated and #52–#59
-retained in its ancestry. PRs #60, #61, #63, #64 and #65 were open, non-draft
-and mergeable against that main. Snapshot heads were #60
-`fafdedae3a76398e0450773065e40384c96d1ed7`, #61
-`f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`, #63
-`ffd3d770d5c7e9bafba975544de7947bcf20f1fc`, #64
-`ca97ab61d15347aa271ee9ac8468a0714bdc3402` and #65
-`b1bd7951ecc80988146eb46362eea99940ef7542`. #60/#61 have only the earlier
-owner-authored `COMMENTED` findings, which their branches address; no new
-independent approvals or unresolved inline threads were present. #63 and #64
-had no review submissions or inline threads. PR #65 later received an
-owner-authored `COMMENTED` review, with no inline thread. Do not merge or close
-these PRs without the separately scheduled review/integration decision.
-
-PR #65 code commit `94c60b6ee20adbb5023e11aeded9b8fff90b1176` implements the
-MM-022 UCI-only correction: exact uppercase `C` means cancellation; lowercase
-`c` and other single-ASCII-letter-plus-six-digit prefixes are excluded as
-unverified before aggregation, with aggregate counts only. The real-source
-attempt used MM-021, exceeded the approved 250,000-group cap and returned no
-projection or metrics. MM-022 has synthetic regressions only. Do not retry,
-chunk or raise the cap under the current decision.
-
-Prior documentation-inclusive PR #65 head
-`b1bd7951ecc80988146eb46362eea99940ef7542`
-passed the exact temporary local six-check gate at
-`2026-11-27T03:17:39.573158Z`: 864 tests, zero skips and all six checks, with
-WorldKernel `0.0.1` installed from reviewed commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
-`results/local-quality-gate-b1bd7951ecc80988146eb46362eea99940ef7542.json`.
-This is local evidence, not official Actions. On that same prior head, direct CLI
-replays for both the policy test double and explicit WorldKernel mode were
-byte-identical per mode; each had 28 forecast steps and nine outcomes. The
-WorldKernel result was `exact_match` with a separate parity-oracle record;
-no write or action authorization occurred. This is the fictional experimental
-workflow, not empirical or production acceptance.
-
-Two automatic Actions attempts on `b1bd795` produced four failed pre-start
-checks. The annotation lists recent payment failure **or** a spending-limit
-increase; no job steps, logs or combined statuses were returned, so the
-subcause is not established. The owner separately confirms exhausted quota
-and zero paid budget. No rerun or protections/workflow change was made; see
-the exact IDs in [B-08](BLOCKERS.md). Documentation-only follow-up
-`c2410bdbafbb7a522730d31a304faa8a72b1b097` was pushed to PR #65 and passed
-the exact six-check local gate at `2026-11-27T04:25:32.503435Z`: 864 tests,
-zero skips, all six checks and the reviewed WorldKernel pin. Receipt:
-`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097.json`.
-The first sandboxed attempt timed out after 900 seconds in pytest; faulthandler
-and a bounded event-loop child probe isolated the wait to Windows asyncio's
-fallback socket pair before application code. The same SHA passed in the
-authorized local environment without changing tests or code. Preserve the
-timeout record at
-`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097-sandbox-timeout.json`.
-This local pass is not official Actions evidence.
-
-A separate isolated invocation of
-`tests/integration/test_api.py::test_synthetic_retail_decision_route_returns_the_shared_service_result`
-produced no pytest output within 30 seconds and was interrupted. No stack was
-captured and no cause is assigned. Do not treat that attempt as a pass; the
-exact-head full-gate receipt above remains the independent suite evidence.
-
-### MM-022 all-prefix regression and local gate — 2026-11-27 UTC
-
-The owner reconfirmed the UCI-only conservative policy: six-digit invoice
-identifiers are accepted for normal projection, only exact uppercase `C` plus
-six digits denotes cancellation, and any other one-letter ASCII prefix plus
-six digits is excluded as an unverified transaction. The adapter retains only
-an aggregate exclusion count and redacts original invoice identifiers; other
-formats fail closed. The generic projection contract is unchanged.
-
-Commit `2413df151fd6baa9bb4de472c713519f2d69937c` adds a synthetic workbook
-regression spanning all 52 ASCII letters. It verifies the `C`-only cancellation
-rule, one aggregate exclusion counter, no identifier retention and rejection
-of malformed or non-ASCII forms. The MM-021 source attempt was not repeated:
-MM-021 already excluded both cancellation and unverified classes before
-aggregation, so MM-022 cannot reduce the observed `>250,000` product-day count.
-No projection, complete exclusion count, empirical score or model card exists.
-
-The exact clean candidate passed the temporary local gate at
-`2026-11-27T05:47:01.681022+00:00`: 867 tests, zero skips, Ruff, catalog, atlas,
-evidence and capability checks passed. Python 3.13.5 used WorldKernel `0.0.1`
-from reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing
-Starlette/httpx `TestClient` deprecation warning remains. Receipt:
-`results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`.
-An earlier restricted-executor attempt was interrupted without a result; the
-recorded pass came from the authorized local executor. This is not official
-Actions evidence. Documentation follow-up commit
-`5c1835f8862bbe12b9028707cfa3b9d893b9eda6` was fast-forward published to
-PR #65 after passing its own exact-head gate at
-`2026-11-27T18:10:41.535466+00:00`: 867 tests, zero skips and all six checks,
-with WorldKernel at the reviewed commit. Receipt:
-`results/local-quality-gate-5c1835f8862bbe12b9028707cfa3b9d893b9eda6.json`.
-Automatic test and symbol-catalog runs failed without returned steps or logs;
-the configured connector yielded no cause or combined statuses. The owner's
-quota report is separate evidence. No official Actions success or review
-approval is claimed. PR #65 remains open for independent review. Do not retry
-or partition the source, or raise its cap, under current approval.
-
-The next documentation-only head
-`11de60127ab0b31b609d98ada1b764a3dde542f9` passed the exact local six-check
-gate at `2026-11-27T18:17:31.990456+00:00`: 867 tests, zero skips, all six
-checks and the reviewed WorldKernel pin. Receipt:
-`results/local-quality-gate-11de60127ab0b31b609d98ada1b764a3dde542f9.json`.
-Its automatic test and catalog runs failed with no job steps/logs or combined
-statuses returned; no cause was established. The owner's quota report is
-separate. At the time of publication, no new review submission or inline
-thread had been observed; the later owner review is recorded below.
-
-Because the full-category source attempt exceeded the approved group cap, the
-[M1B-01 change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md) now proposes
-a fit-period hash sample capped at 500 categories, whose worst-case 374-day
-grain is 187,000 category-day groups. The proposal is explicitly unapproved,
-unimplemented and unrun. It requests one additional local processing attempt
-on the existing snapshot without a retention extension. No further source
-access is authorized unless the owner approves that method.
-
-### PR #65 owner review correction — 2026-11-27 UTC
-
-The owner submitted a `COMMENTED` review against head
-`11de60127ab0b31b609d98ada1b764a3dde542f9`. It reproduces a duplicate
-`D2` quantity overwriting the original, an OOXML error cell accepted as a
-category, and malformed numeric text falling back to string data. The code
-now rejects duplicate cell coordinates across all schema columns in both
-worksheet passes; selected values use strict field-specific OOXML types and
-numeric lexical parsing. New regressions cover the exact overwrite, duplicate
-header/selected/excluded coordinates, error/unknown types, malformed tokens,
-overflow and underflow. Initial 13 selected cases failed before the fix; a
-nonzero-underflow edge case was added afterward. Post-fix UCI workbook
-unit/integration suites passed 65 tests. Code head
-`c6c1326be9332e51b160931de4dd994d54868793` passed the full local six-check
-gate with 881 tests, zero skips and reviewed WorldKernel pin; see the exact
-receipts and sandbox diagnosis in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
-The restricted run reproduced a `test_health` socket wait; that same test and
-the complete gate passed in the loopback-capable local execution without code
-or test changes. This is not official CI and does not explain historical B-07.
-The documentation-inclusive gate and PR review response are next. No source
-bytes were reread; the 500-category sampling proposal remains unapproved.
+The same local Census pilot branch now also contains an experimental fixed
+baseline evaluator and generated validation/holdout example. It uses the
+normalized selector, records an exact input fingerprint, keeps first-estimate
+targets separate from later revisions, and abstains on incomplete history.
+The focused evaluator, selector and CLI suite passed 28 tests. Implementation
+commit `ce446496616d20a782e0ebcb7e7b0f42cec49e83` passed the exact six-check
+local gate with 860 tests, zero skips and the reviewed WorldKernel pin
+installed; the receipt is recorded in the change request. This is not official
+Actions. The branch remains unpushed, separate from PR #62 and unable to
+resolve real-source blockers. Re-run the exact-head gate after later changes.
 
 ## 4. Mandatory documentation standard
 

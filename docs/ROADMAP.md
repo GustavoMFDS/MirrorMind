@@ -11,7 +11,7 @@ historical development notes, not a second mutable task tracker.
 
 - **MM-M0 — Completed scaffold:** FastAPI, `/health`, `/v1/capabilities`, scenario contract validation, tests, Docker and CI, decision log.
 - **MM-M1 — In progress; acceptance remains open:** synthetic evidence/evaluation slices and a local three-policy test double are available in draft branch proposals. Authorized source ingestion, empirical forecasting/uncertainty, actual WorldKernel execution and the integrated human-review workflow remain open.
-- **MM-M2 — Planned AI application:** evidence/RAG, agent tool workflow, traceable scenario analysis, UI and human review.
+- **MM-M2 — In progress, not accepted:** PR #60 proposes an experimental fictional, in-memory retrieval slice with scope filtering and citations. Authenticated evidence/RAG, retrieval evaluation, tool-using agents, traceable scenario workflow, UI and human review remain open acceptance work.
 - **MM-M3 — Planned engineering:** durable async jobs, token/call and compute budgets enforced, tracing, RBAC, tenant separation, failure recovery and load tests.
 - **MM-M4 — Planned generalization:** at least one *different* domain adapter, versioned contracts and validated WorldKernel integration.
 
@@ -558,6 +558,10 @@ Acceptance gates: working runnable example, tests, clear metrics, provenance, re
   can request a current sequence/digest using a per-request random nonce,
   verify a separate service Ed25519 signature with short UTC validity,
   and compare to the [local separately signed registry](engineering/LOCAL_INTEGRATED_FENCE_REGISTRY.md).
+  The current G-01 draft adds an
+  [in-process response handler and read-only store contract](engineering/REMOTE_FENCE_HEAD_SERVICE.md)
+  that reuse the same canonical signing helpers; it is not wired to an HTTP
+  server and has no persistence or authenticated caller boundary.
   A *genuinely independent honest signer* that reports a newer head could
   detect compatible rollback of both local SQLite files. No real service,
   independent custody, server endpoint, signer deployment, real-source

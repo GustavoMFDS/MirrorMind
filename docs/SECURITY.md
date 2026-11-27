@@ -140,3 +140,16 @@ internally by openpyxl; only the four
 reviewed transaction columns are forwarded
 to the application projection. Its output
 remains business-sensitive, not declassified.
+
+## Fictional evidence retrieval is not access control
+
+The experimental [M2 retrieval library](engineering/M2_EVIDENCE_RETRIEVAL.md)
+uses generated documents and a caller-provided principal/collection context.
+Filtering before indexing is a useful local invariant, but the context is not
+an authenticated identity, tenant boundary or source-use grant. The example
+has a fixed fictional scope, emits excerpts as `untrusted_evidence`, and does
+not expose a retrieval route, fetch URLs, write data or call a model. Never
+pass customer/private content to the example or treat its BM25 score and
+citation digest as proof of truth, origin, rights or freshness. Any persistent
+or served retriever requires reviewed identity, authorization, tenant,
+retention, deletion and prompt-injection controls first.

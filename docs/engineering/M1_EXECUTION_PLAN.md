@@ -4,16 +4,19 @@
 decision workflow while keeping MirrorMind domain-neutral.
 An accepted architecture is not equivalent to implemented AI.
 
-Current state (2026-11-25): the M1 synthetic CLI/API path composes generated
-evidence, fixed historical diagnostics, a 28-day profile, the paired policy
-comparison and a versioned trace. The API and default CLI use the test double;
-an explicit local CLI option can run the same policy rules through a
-MirrorMind-owned registered WorldKernel handler at the reviewed exact pin.
-These remain experimental. Real-source permission, publication-time evidence,
-empirical forecast/uncertainty, authenticated human review, persistent results
-and production service controls remain open. See the current [blockers](BLOCKERS.md)
-and [task claims](TASK_BACKLOG.md) rather than the dated historical entries
-below.
+Current state (2026-11-26): PR #62 is merged at
+`a456034c55ed7634ad4768b26788fec09dab1d08`; it integrates the synthetic M1
+evidence-to-decision flow and preserves PR #52–#59 ancestry. The separate
+Census evaluation is open for review as PR #63, with its current exact head
+and receipt in the PR body. Retrieval PR #60 and G-01 PR #61 remain separate
+review items. The synthetic CLI/API path composes generated evidence, fixed
+historical diagnostics, a 28-day profile, policy comparison and a versioned
+trace. The default API/CLI use the test double; explicit local CLI selection
+uses the pinned MirrorMind-owned WorldKernel policy handler. All remain
+experimental. Approved-source evidence, empirical forecast/uncertainty,
+authenticated human review, persistent results and production service controls
+remain open. See the current [blockers](BLOCKERS.md), [status](PROJECT_STATUS.md)
+and [backlog](TASK_BACKLOG.md) for live review states.
 
 ## 1. Dependency-ordered milestones
 
@@ -26,7 +29,58 @@ below.
 | **M1e — first simulation gateway** | Concrete, optional WorldKernel adapter over explicit version mapping and trusted worlds | SDK contract tests, unsupported input rejections, server-owned budgets, real fixture E2E without fabricating stock | `worldkernel_adapter` may become experimental after tests |
 | **M1f — reviewable decision comparison** | Trace observations, forecasts and conditional scenario outcomes without automatic business writes | Decision trace, approval gates, cost budgets and independent replay | No agentic automation or operational promise until implemented |
 
-## Current synthetic M1 path — 2026-11-25
+## Current baseline after PR #62 merge — 2026-11-26
+
+PR #62 integrates the synthetic M1 flow from PRs #52–#59. Its
+post-merge `main` baseline passed 835 tests with zero skips and all six local
+checks at reviewed WorldKernel source revision
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; this is local evidence, not official
+Actions. M1 is functionally demonstrable on generated data but does not satisfy
+the approved-source, empirical forecast, calibrated uncertainty, human identity
+or production-service gates below.
+
+The separately published Census candidate in PR #63 preserves `main` as the
+second parent of ancestry merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`.
+Its synthetic selector/evaluator and four review corrections passed the exact
+local gate on published head `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf`:
+877 tests, zero skips, six checks, and reviewed WorldKernel pin. The current
+PR body is the source for any later documentation-only head and receipt.
+PR #60 and #61 stay
+separate and await review. Do not stack M2-02 while this review queue remains
+unsettled.
+
+The research order remains UCI Online Retail #352 event-time retrospective,
+then an aggregate Census release-vintage study. This authorizes preparation,
+not source acquisition. UCI transaction dates do not prove publication
+availability; aggregate Census sales do not validate SKU or inventory policy.
+B-01/B-02 keep real-source use and empirical acceptance open. See the
+[source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and
+[Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+### Local CLI smoke on the reconciled candidate
+
+At branch head `bb0d8dbbbc71c174d4c2a3d1ad180a74160cfaaf`, the M1 CLI files
+were unchanged from merged `main`. These deterministic fictional-input runs
+were executed locally with WorldKernel installed from the reviewed pin:
+
+```bash
+python -m examples.m1_retail_decision_workflow --as-of 2011-01-26 --replications 12 --seed 317 --engine test-double
+python -m examples.m1_retail_decision_workflow --as-of 2011-01-26 --replications 12 --seed 317 --engine worldkernel
+python -m examples.m1_retail_decision_workflow --as-of 2011-01-27 --replications 12 --seed 317 --engine test-double
+```
+
+The first two returned `synthetic_comparison_ready_experimental`; the selected
+source was respectively `policy_test_double` and `worldkernel_policy_world`,
+with one selected execution receipt versus a selected plus parity receipt.
+Both kept `action_authorized=false` and `writes_performed=false`. The third
+returned `abstained_required_history_unavailable`, with `trace=null`, the
+policy not invoked, and no authorization or writes. These are local runtime
+smokes, not CI or empirical/source acceptance. Regressions are in
+[`test_retail_synthetic_decision_workflow_cli.py`](../../tests/integration/test_retail_synthetic_decision_workflow_cli.py),
+[`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py),
+and [`test_worldkernel_policy_world_engine.py`](../../tests/integration/test_worldkernel_policy_world_engine.py).
+
+## Historical branch snapshots before PR #62 merge — 2026-11-25 (superseded)
 
 The owner-approved research sequence is A then B: prepare the UCI Online
 Retail #352 event-time retrospective and then an independent aggregate Census
@@ -97,25 +151,45 @@ privacy minimization, private storage, retention/deletion and the exact
 snapshot manifest before the actual UCI workbook can be acquired or
 processed. The UCI pilot cannot satisfy point-in-time acceptance because
 `InvoiceDate` does not prove historical publication. The Census pilot must use
-verified original releases and explicit vintage gaps; ALFRED is conditional on
-free authorized access and adequate archive evidence. M5 remains NO-GO.
+verified original direct Census releases and explicit vintage gaps. The
+2026-11-26 terms review marks FRED/ALFRED NO-GO for the current
+development/archive route: posted FRED Services terms apply to ALFRED and
+prohibit storage/cache/archive, while API terms also prohibit software/AI-
+development use. Reconsider only after St. Louis Fed written authorization or
+changed terms, plus separate source-owner rights clearance. The direct Census
+artifacts still require exact rights and retention review. M5 remains NO-GO.
 
 The A preparation now includes a bounded local reader/evaluator, fixed
 event-time validation/holdout protocol, synthetic-only CLI regressions and
 data/model cards. All such results remain experimental and
 `event_time_retrospective_unverified_availability`; the source terms,
 privacy/storage manifest and original-file compatibility gates remain open.
-The B protocol names official Census archives as preferred and `RSAFS`/ALFRED
-as a conditional alternative, with date-granular vintages handled
-conservatively. No Census or ALFRED data or key has been acquired.
+The B protocol names official original Census archives as preferred. `RSAFS`
+remains discovery metadata only; FRED/ALFRED is not a current data route under
+the posted terms. Date-granular vintages are handled conservatively. No Census
+or ALFRED data or key has been acquired.
 
-In parallel, complete the optional local WorldKernel adapter after the
-existing M1E-01 strict request mapper: pin a reviewed engine commit, invoke
-only its registered synthetic world through local exchange v1, enforce
-MirrorMind's operator limits and timeout, validate result v1, and test
-unavailable/runtime failure paths. This does not authorize an HTTP service,
+The local synthetic Census lane now includes an immutable normalized-vintage
+selector and fixed lag-12/trailing-12 evaluation at 1-, 3- and 6-month
+horizons. It uses disjoint fictional validation/holdout origins and first
+estimates, preserving later revisions as origin-specific history only when
+their publication dates precede the issue boundary. These checks exercise the
+method, not the empirical holdout or archive-coverage gates; B-01/B-02 remain
+open for source acquisition and scoring.
+
+No Census release file, FRED API response, or credential has been downloaded
+or processed. A metadata-search preview incidentally showed a few published
+aggregate values; none was copied into repository artifacts or used for
+evaluation. The disclosure and current source evidence are recorded in the
+[Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+The optional local WorldKernel adapter and code-owned M1 policy world were
+implemented and merged through PR #62 using reviewed WorldKernel commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. This resolves only the narrow
+local compatibility slice of B-04. It does not authorize HTTP execution,
 untrusted code, production deployment or a real retail recommendation. See
-B-04 and the M1E-02 backlog criteria.
+the [gateway gate](WORLDKERNEL_GATEWAY_GATE.md),
+[policy-world walkthrough](WORLDKERNEL_POLICY_WORLD.md) and B-04.
 
 ## 2. Risk and quality gates that cannot be skipped
 

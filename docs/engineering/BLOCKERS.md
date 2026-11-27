@@ -1,5 +1,18 @@
 # Blocker and decision register
 
+## Current B-08 reconciliation - 2026-11-27
+
+Standard GitHub-hosted checks are operational on public main
+`c7478385f234f4d0965c51cca25f67c47d280778`: `test` and `symbol-catalog`
+completed successfully at 19:30 UTC. See the
+[quality gate baseline](LOCAL_QUALITY_GATE.md). This verifies that exact main
+commit only; check the exact PR head separately after publication. Earlier
+pre-start failures remain historical, and their annotations do not establish
+which account condition caused them. The owner's zero-paid-budget constraint
+still applies. No self-hosted runner is registered or needed for the verified
+main checks; the optional private WorldKernel dependency still requires
+separately authorized access and independent local validation.
+
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
 [PROJECT_STATUS](PROJECT_STATUS.md). Task dependencies live in
@@ -9,147 +22,291 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | **UCI source evaluation stopped at the approved 250,000-group ceiling; PR #65 remains under independent review.** The owner approved only the local, non-commercial #352 study, bounded ZIP profile, faithful `StockCode` normalization, and UCI-only group override. MM-022 authorizes six-digit IDs as sales candidates, exact uppercase `C` plus six digits as cancellation, and other single ASCII-letter plus six-digit prefixes as unverified transactions excluded before aggregation. Only aggregate exclusion counts may be retained; original invoice IDs are not. Other formats fail closed, and generic readers remain unchanged. The sole source attempt used MM-021, under which both cancellation and unverified classes were already excluded before grouping. It exceeded the cap and returned no projection, complete group/exclusion counts, metrics or model card. MM-022 was not applied to the source attempt and cannot change its accepted rows or observed group bound; the new all-prefix coverage is synthetic. The workbook was not reread. The path-free [manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json) records the exact source hash and private retention deadline. The current synthetic regression covers all 52 ASCII prefixes, aggregate-only redaction and malformed-input rejection. Commit `2413df151fd6baa9bb4de472c713519f2d69937c` passed the exact six-check local gate with 867 tests, zero skips and the reviewed WorldKernel pin; receipt `results/local-quality-gate-2413df151fd6baa9bb4de472c713519f2d69937c.json`. This is not empirical source evidence or official CI. Do not retry, chunk or widen the ceiling; another method needs a distinct bounded-method decision. Raw source remains private until its 30-day deletion deadline. This does not authorize Census acquisition, customer-level/commercial use or M5; M5 remains NO-GO. | Keep UCI stopped under the current source attempt. Prepare only a concrete, separately bounded method for owner review; continue independent synthetic and Census-protocol work without acquiring data. | Project owner / appropriate rights reviewer | Preserve synthetic tests, generic contracts, aggregate-only handling, the documented fail-closed path and independent work |
-| B-02 | **Still open for point-in-time claims.** UCI #352 remains event-time retrospective with no verified row-level first-publication timestamp, and its bounded source attempt produced no evaluation. Census first-release artifacts and revision histories have not been acquired or verified. The approved UCI lane has now reached a documented stop, so independent Census source/protocol proposals may proceed, but no vintage or API acquisition is authorized by this status alone. | Never derive `available_on` from UCI `InvoiceDate`. For a separately approved Census lane, verify official first-release bytes/timestamps, preserve gaps/revisions, then freeze chronological origins/holdout and matched baselines. | Project owner with evidence/model reviewer | Maintain synthetic temporal regressions; prepare a concrete free official-source proposal without acquiring vintages or fabricating availability |
+| B-01 | Real source rights and privacy remain open. The narrow UCI #352 local research scope was approved in MM-017 through MM-022 (PR #65); the real source attempt stopped above 250,000 product-day groups without projection or metrics. No retry, partitioning or cap increase is authorized; preserve private snapshot deletion deadline 2026-12-26. The separate Census MARTS study remains preparation-only. Direct Census original-release files are the proposed route. Census public-use guidance calls for attribution when deriving estimates, and a general policy says employee-created works are generally not copyright-protected in the United States, with exceptions; neither resolves notices, provenance or third-party rights for a specific MARTS artifact. FRED/ALFRED is NO-GO under current posted FRED Services/API terms for MirrorMind development and local archival use: ALFRED is within the Services terms, which prohibit storage/cache/archive, and the API additionally prohibits software/AI-development use. Reconsider only if the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate series-owner rights are cleared. This does not determine rights for original Census files. M5 remains NO-GO. | Recheck UCI terms/attribution/change notice for the exact snapshot and preserve its approved retention controls. For Census, preflight the public publisher index, landing pages, posted notices and available provenance. Before acquiring any file bytes, the owner must approve one exact direct-from-Census artifact for quarantined local inspection of embedded notices, provenance and schema only; no value parsing or evaluation. Delete the inspection copy immediately after review and no later than the expressly approved retention limit. Then obtain artifact-specific rights review for ambiguity and a separate owner go/no-go for processing, including bounded purpose, attribution, access-controlled storage, proposed 30-day maximum retention/deletion and outputs. Citation guidance is not a file-specific license. Do not create a FRED API key, fetch FRED/ALFRED values or retain service content unless the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate underlying series rights permit the use and retention. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine direct-source manifest, archive completeness checks, deletion checklist and privacy controls without retrieving real Census bytes |
+| B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's annual-revision index spans January 1992 through August 2026 but does not prove first-release completeness. Census's current advance schedule states 8:30 a.m. without a timezone in its table; historical same-day corrections may be ambiguous. The April 2025 annual revision removed nonemployers, creating a source-definition boundary. | For UCI, retain event-time labeling and never derive `available_on` from `InvoiceDate`. Before Census acquisition, approve and inventory original first-release artifacts and exact publication boundaries, methodology edition, and a pre-registered chronological 60/20/20 development/validation/locked-holdout split. Use date-only strict-before cutoffs where timestamps/timezones cannot be authenticated; preserve gaps and abstain. Compare first estimates against fixed lag-12 and trailing-12-month baselines at 1/3/6 horizons; keep later revisions separate. Require 60 matched holdout origins per horizon for proposed 12-month block-bootstrap uncertainty, or report descriptive metrics only. Same-day corrections without orderable timestamps/original bytes remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census release inventory and versioned manifest without fabricating vintages |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
-| B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently reviewed, technically approved and integrated at main commit `a456034c55ed7634ad4768b26788fec09dab1d08`; the owner-reported post-merge gate passed 835 tests, zero skips and six verifiers with the exact engine revision installed. The current local workflow also records WorldKernel selection separately from test-double parity. The integrated local compatibility scope is accepted; broader service acceptance remains open because local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Any future HTTP/service execution needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
+| B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently approved and merged at `a456034`; its post-merge exact-main gate passed 835 tests, zero skips and six checks with the reviewed pin (final review evidence: [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)). Broader service acceptance remains open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Broader service acceptance needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. A separate sandbox run of PR #65 code head `c6c1326be9332e51b160931de4dd994d54868793` timed out in pytest. On that exact SHA, isolated `tests/integration/test_api.py::test_health` waited in the restricted execution; the same test passed in 1.27 seconds with loopback permitted, followed by an 881-test, zero-skip six-check full-gate pass without code/test changes. This supports a loopback restriction for the current reproduction only; it does not explain the historical `8f906b8` timeout. | If the historical timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve both failed and passing receipts, use the already-authorized loopback-capable local procedure where needed, and do not infer the historical cause from this reproduction. |
-| B-08 | The owner confirms the GitHub Actions allowance is exhausted and authorizes no paid usage or spending-limit increase. PR #57 diagnostics on `1bf178b` and `1cff92c` show pre-job annotations with the payment/spending-limit alternatives, without identifying the subcondition; those jobs had no repository steps. Official GitHub documentation states self-hosted runner usage is free, but that does not prove a self-hosted job would bypass this account-level pre-start gate. It would require an owner-provided machine; GitHub warns that self-hosted runners can be compromised by workflow code and recommends ephemeral runners for autoscaling. No dedicated disposable host is approved, and a shared workstation is not an acceptable substitute. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage), [self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners) and [secure use](https://docs.github.com/en/actions/reference/security/secure-use). | Official Actions must become available within the existing budget, or the owner must separately approve a zero-cost, dedicated and clean ephemeral host after a security and feasibility review. Any required remote check remains a separate gate. | GitHub account owner / repository administrator | Use the owner-approved exact-clean-head local six-check procedure and independent review. Do not register a runner, change workflow labels, rerun identical failures, change protections, spend, raise limits, bypass, impersonate or weaken checks. |
+| B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
+| B-08 | The owner reports exhausted allowance and authorizes no paid usage or spending-limit increase. Standard public GitHub-hosted `test` and `symbol-catalog` checks succeeded on exact main `c7478385f234f4d0965c51cca25f67c47d280778` (runs [46057102901](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46057102901) and [46057102718](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46057102718)). This resolves current-main check availability only; historical pre-start failures remain unexplained, and PR #65 needs exact-head checks after publication. | Observe required checks on the exact PR head and preserve run/annotation evidence; do not infer historical failure causes from later success. | GitHub account owner / repository administrator | Use the exact-clean-head local six-check gate as complementary evidence; do not spend, raise limits, register a runner, change workflows/protections, bypass or weaken checks. |
 
-### B-01 UCI follow-up method proposal — not approved
+## PR #65 parser-review reconciliation - 2026-11-27
 
-The full-category attempt remains stopped above 250,000 groups. The
-[M1B-01 change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md)
-documents a bounded alternative for owner review: one additional local
-processing attempt over the existing private snapshot, selecting at most 500
-categories by a predeclared SHA-256 rank from positive recognized sales in the
-fixed fit window, then aggregating only that cohort. The source's 374-day
-declared range gives a strict maximum of 187,000 category-day groups, under
-the current 250,000 cap. It retains the existing ZIP and 600,000-row limits,
-does not retain identifiers or digests, and claims sample-only event-time
-metrics.
+The latest independent synthetic review reproduced two structural cases after
+the first correction: a repeated `<v>` inside one selected quantity cell could
+overwrite the earlier value, and a selected cell could mix scalar `<v>` and
+inline `<is>` payloads. Commit `6df8af1` rejects repeated scalar values and
+ambiguous mixed payloads in both worksheet passes, while preserving valid
+ordered rich-text runs. It does not change the UCI-only invoice policy, generic
+projection contracts, bounds, or excluded `Description` handling.
 
-This proposal grants no permission to read or process the snapshot again. It
-requires synthetic regressions for deterministic fit-only selection,
-row-order/holdout independence, output minimization and bounded scan work,
-followed by an exact local gate. The only requested decision is whether to
-authorize one additional local processing attempt under these constraints
-before the current 2026-12-26 deletion deadline. If declined, leave B-01
-stopped and keep Census acquisition separate.
+The 9 targeted structural regressions failed on the pre-fix parser; the 10
+focused cases passed after correction, including the rich-text compatibility
+control. The UCI workbook unit and integration suites passed 75 tests; Ruff
+passed on the changed Python files. These are synthetic parser tests. The
+source remains stopped above 250,000 groups; it was not reread and has no
+projection, complete exclusion count or empirical score. The complete local
+gate on the synchronized candidate and exact-head Actions checks remain
+pending. See the [reader walkthrough](UCI_WORKBOOK_READER.md),
+[change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md) and
+[PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65).
 
-### B-08 diagnostics — PR #65 head 11de601, 2026-11-27 UTC
+### B-07 PR #65 restricted-sandbox diagnostic - `c6c1326`
 
-Exact PR head `11de60127ab0b31b609d98ada1b764a3dde542f9` passed the local
-six-check gate before publication. Its automatic Python API CI run
-[46048409261](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46048409261)
-and documentation-catalog run
-[46048409192](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46048409192)
-completed with failure. Job records identify `test` and `symbol-catalog`;
-the connector returned no steps or logs, and the combined-status endpoint
-returned an empty list. It returned no annotation detail, so the cause is
-undetermined. The owner's report of exhausted allowance and zero paid budget
-is separate and does not establish the cause of these runs. No manual rerun,
-workflow change or protection change occurred. The local gate is not official
-CI.
+A restricted-sandbox full-gate attempt on exact code head
+`c6c1326be9332e51b160931de4dd994d54868793` timed out in
+`tests/integration/test_api.py::test_health`. An isolated run of that test
+waited in the restricted executor and passed in 1.27 seconds with loopback
+permitted. The unchanged exact SHA then passed its full 881-test, zero-skip
+six-check gate; see the two receipts in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This supports a loopback
+restriction for this reproduction only. It does not explain the historical
+`8f906b8` timeout, GitHub Actions or the newer parser candidate.
 
-### B-08 diagnostics — PR #65 published MM-022 head 5c1835f, 2026-11-27 UTC
+### PR #63 pre-start checks — head `2764e60` — 2026-11-26
 
-PR #65 head `5c1835f8862bbe12b9028707cfa3b9d893b9eda6` passed the local gate
-before publication. Its automatic Python API CI run
-[46047574630](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46047574630)
-and documentation catalog run
-[46047574634](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46047574634)
-completed with failure. Job records identify `test` and `symbol-catalog`;
-the connector returned no steps or logs, and the combined-status endpoint
-returned an empty list. It did not return annotation detail, so the cause is
-undetermined. The owner's report of exhausted allowance and zero paid budget
-is separate and does not establish the cause of these exact runs. No manual
-rerun, workflow change or protection change occurred. Local validation is not
-official CI.
+Two automatic workflow attempts created four failed checks on exact head
+`2764e60e445281d4dbe56715a5f71fd4640c0f1d`:
 
-### B-08 diagnostics — PR #60 and #61 heads, 2026-11-27 UTC
+| Check | Run | Job | Result |
+| --- | --- | --- | --- |
+| `test` | [45876594693](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876594693) | `140105112634` | Failed before repository steps |
+| `symbol-catalog` | [45876594601](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876594601) | `140105111098` | Failed before repository steps |
+| `test` | [45876583141](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876583141) | `140105071567` | Failed before repository steps |
+| `symbol-catalog` | [45876583156](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45876583156) | `140105071542` | Failed before repository steps |
 
-Exact-head diagnostics were read for PR #60 head
-`fafdedae3a76398e0450773065e40384c96d1ed7` and PR #61 head
-`f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`. Each head has four failed
-check-runs across automatic test and symbol-catalog attempts. All eight
-annotations say jobs were not started because recent account payments failed
-**or** the spending limit needed to increase. The connector returned no jobs,
-steps, logs or combined status. This establishes neither which alternative
-applies nor a repository test failure; the owner's quota report is separate.
-No manual rerun was made.
+All four check annotations contain the same message: “The job was not started
+because recent account payments have failed or your spending limit needs to be
+increased. Please check the 'Billing & plans' section in your settings”. This
+states alternatives, not a diagnosis. The owner separately reported exhausted
+Actions quota and a zero-paid budget; do not infer a payment failure or a
+specific account setting from the annotation. Job records have no executed
+steps or log URLs; the commit has no combined status entries. Therefore these
+checks provide no test or catalog execution evidence. The local exact-head
+gate is separate: it passed 882 tests, zero skips and six checks at
+`2026-11-26T18:30:26.772586Z` with WorldKernel at the reviewed source pin;
+receipt `results/local-quality-gate-2764e60e445281d4dbe56715a5f71fd4640c0f1d.json`.
+No manual rerun, paid usage, workflow/protection change or runner registration
+was made.
 
-- PR #60 runs: [45751965277](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45751965277),
-  [45751965252](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45751965252),
-  [45751958433](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45751958433),
-  [45751958487](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45751958487).
-- PR #61 runs: [45756503398](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45756503398),
-  [45756503234](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45756503234),
-  [45756497802](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45756497802),
-  [45756497731](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45756497731).
+### PR #63 exact-head Actions diagnostics — 2026-11-26
 
-### B-08 diagnostics — PR #65 status-sync head `7e47844`
+On head `42a9746d7925e023a97445a6fe6cd4db324173fa`, GitHub returned failed
+test and catalog check-runs in two attempts: [45764104638](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45764104638),
+[45764104610](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45764104610),
+[45764097863](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45764097863),
+and [45764097859](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45764097859).
+The four job records (`139720744840`, `139720745028`, `139720723424`,
+`139720723296`) each have one pre-start annotation with the alternatives quoted
+above, no executed steps, and no retrievable log (`BlobNotFound`). The combined
+status has no entries. This is direct evidence of an account-level pre-start
+gate, but it does not determine whether recent payments or the spending limit
+caused it. Do not claim that repository tests ran or assign one alternative as
+the specific cause. The exact-head local receipt is separate evidence.
 
-The exact PR #65 status-sync head passed the local gate, then produced four
-failed Actions check-runs across two automatic attempts: test runs
-[45925209232](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925209232)
-and [45925213284](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925213284),
+### PR #63 documentation-status head Actions diagnostics — 2026-11-26
+
+On exact head `3bc7162d54ad3ed8a9bdeb158abdb07ccb5b1f66`, GitHub reported two
+attempts for the `Python API CI` and `Engineering documentation catalog`
+workflows:
+[45849519063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849519063),
+[45849519064](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849519064),
+[45849506095](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849506095), and
+[45849506083](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45849506083).
+The associated `test` and `symbol-catalog` check runs were `140011906243`,
+`140011905569`, `140011859186` and `140011859295`. All failed before job
+steps. Each annotation says: “The job was not started because recent account
+payments have failed or your spending limit needs to be increased. Please
+check the 'Billing & plans' section in your settings.” The records contain no
+executed steps, no retrievable logs and no combined status entries. This is
+direct evidence of an account-level pre-start gate, but it does not determine
+which stated alternative applies. The owner separately confirms quota
+exhaustion and zero paid budget; do not attribute these runs to a specific
+payment or spending-limit cause.
+
+### PR #63 latest published-head Actions diagnostics — 2026-11-26
+
+On published head
+`5ec904dc0be6555d3651f947ef1f02fdd6ce20f7`, GitHub returned two attempts
+covering the `Python API CI` and `Engineering documentation catalog`
+workflows: [45851811554](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45851811554),
+[45851811257](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45851811257),
+[45851800821](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45851800821),
+and [45851800917](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45851800917).
+The check runs were `140019827805`, `140019828418`, `140019790347` and
+`140019789961`. All four failed before job steps with the annotation: “The job
+was not started because recent account payments have failed or your spending
+limit needs to be increased. Please check the 'Billing & plans' section in your
+settings.” Their records have no executed steps, no retrievable logs and no
+combined status entries. This does not identify which stated alternative
+applies; the owner's separate report confirms quota exhaustion and a zero-paid
+budget. No repository checks ran in these attempts. The exact-head local gate
+receipt is separate evidence.
+
+### PR #63 Actions diagnostics — head `44b128c` — 2026-11-27 UTC
+
+On documentation commit `44b128c4f7768117148dc23f7c71b3e2e9cd86a4`, two
+automatic workflow attempts produced four failed checks. Runs
+[45921268652](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921268652),
+[45921268535](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921268535),
+[45921262108](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921262108)
+and [45921262111](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921262111)
+reported check runs `140252309005` (`test`), `140252308963` (`symbol-catalog`),
+`140252287687` (`symbol-catalog`) and `140252287561` (`test`). Each annotation
+says the job was not started because recent account payments failed **or**
+the spending limit needed to increase. The annotation does not distinguish
+those alternatives. The diagnostics show no jobs, steps, logs or combined
+status entries; no repository test/catalog command ran. Owner-reported quota
+exhaustion and zero paid budget remain separate evidence. The exact-head local
+gate passed 882 tests, zero skips and all six checks at
+`2026-11-27T01:12:07.694019Z` with WorldKernel `0.0.1` at reviewed source
+commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt
+`results/local-quality-gate-44b128c4f7768117148dc23f7c71b3e2e9cd86a4.json`.
+This is local evidence, not official Actions success. No manual rerun, paid
+use, runner registration, spending-limit change or workflow/protection change
+was made.
+
+### PR #63 Actions diagnostics — pre-source-policy head `0a24c` — 2026-11-27 UTC
+
+On published head `0a24c01c914592a718380a350dc35f56ce59d9ef`, two automatic
+workflow attempts produced four failed checks: test runs
+[45921856066](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921856066)
+and [45921861735](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921861735),
 and symbol-catalog runs
-[45925209273](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925209273)
-and [45925213300](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45925213300).
-The check-run records report one annotation each, but the available connector
-could not retrieve annotation content. All four jobs returned empty step lists,
-null log URLs and log-download 404 responses; the combined-status endpoint
-returned an empty status list. The evidence confirms failed checks without
-repository steps or retrievable logs. It does not establish their cause.
-The owner's report of exhausted Actions allowance and zero paid budget remains
-separate evidence; no billing-specific cause is inferred from these runs.
-No manual rerun was made.
+[45921856041](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921856041)
+and [45921861784](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45921861784).
+Their check runs (`140254188569`, `140254205500`, `140254188611`,
+`140254205791`) each report one annotation. The connected diagnostics could
+not retrieve annotation text. All four jobs returned empty step lists and log
+downloads returned 404; the combined-status endpoint returned no statuses.
+This establishes failed checks without retrievable execution evidence, not a
+specific cause. The owner's allowance report remains separate evidence. No
+manual rerun, paid use, runner registration or workflow/protection change was
+made. PR #63 exact local gate on this head passed 882 tests, zero skips and all
+six checks; its receipt is `results/local-quality-gate-0a24c01c914592a718380a350dc35f56ce59d9ef.json`.
+Local evidence is not official Actions success.
 
-### B-08 diagnostics — PR #65 pre-reconciliation head `b1bd795`
+### PR #63 source-policy head Actions diagnostics — `47cdb58` — 2026-11-27 UTC
 
-Diagnostics were read against exact head
-`b1bd7951ecc80988146eb46362eea99940ef7542`. Two automatic attempts produced
-failed `test` and `symbol-catalog` check-runs: [runs
-45933362603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45933362603),
-[45933362600](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45933362600),
-[45933357995](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45933357995)
-and [45933358029](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45933358029).
-Check-run IDs are `140290841449`, `140290841429`, `140290826897` and
-`140290826195`. All four annotations say the job was not started because
-recent account payments failed **or** the spending limit needed to increase.
-The detail calls returned no job steps, logs, or combined statuses. This
-establishes a pre-start failure, not a repository-test result and not which
-annotation alternative applied. The owner separately confirms quota
-exhaustion and zero paid budget. No manual retry, spending-limit change, paid
-usage, workflow change or protection bypass occurred.
+Two automatic workflow attempts on exact head
+`47cdb587b0deab19835acd1435e4bd028ba28519` produced four failed pre-start
+checks:
 
-### B-08 diagnostics — PR #65 documentation follow-up `c2410bd`
+| Check | Run | Check run |
+| --- | --- | --- |
+| `test` | [45929648150](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45929648150) | `140279056393` |
+| `symbol-catalog` | [45929648298](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45929648298) | `140279056864` |
+| `test` | [45929642603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45929642603) | `140279038223` |
+| `symbol-catalog` | [45929642649](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45929642649) | `140279039566` |
 
-For exact head
-`c2410bdbafbb7a522730d31a304faa8a72b1b097`, automatic runs [45939953770](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939953770), [45939953729](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939953729), [45939948905](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939948905) and [45939948832](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45939948832) failed before repository steps. Check-run IDs are `140311734334`, `140311734200`, `140311718330` and `140311717818`. Each annotation repeats the payment-failure **or** spending-limit message; it does not identify the alternative. Jobs returned no steps or logs, and combined status returned no statuses. The owner's quota report remains separate evidence. No rerun or configuration change was made.
+Each check annotation says the job was not started because recent account
+payments had failed **or** the spending limit needed to increase. It does not
+identify which alternative applies. Diagnostic responses returned no jobs,
+steps, logs or combined status; no repository tests or catalog checks ran.
+The owner separately confirms Actions allowance exhaustion and zero paid
+budget. That is separate evidence, not proof of which annotation condition
+triggered. No cause is inferred. The exact local gate on this SHA passed 882
+tests, zero skips and six checks at `2026-11-27T02:38:46.324939Z`; receipt:
+`results/local-quality-gate-47cdb587b0deab19835acd1435e4bd028ba28519.json`.
+It is local evidence, not official Actions success. No manual rerun, paid use,
+runner registration or workflow/protection change was made.
 
-The sandboxed exact-head local gate timed out in pytest after 900 seconds
-(exit `124`); receipt:
-`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097-sandbox-timeout.json`.
-A 20-second faulthandler trace placed `test_health` in Python 3.13.5's
-Windows asyncio `_fallback_socketpair` waiting at `socket.accept`, before
-application code. A bounded child-process `asyncio.new_event_loop()` probe
-timed out in the sandbox and completed in the authorized local environment.
-The same exact SHA then passed all six local checks: 864 tests, zero skips,
-with the reviewed WorldKernel pin, at `2026-11-27T04:25:32.503435Z`. Receipt:
-`results/local-quality-gate-c2410bdbafbb7a522730d31a304faa8a72b1b097.json`.
-This diagnoses the restricted sandbox for that run; it is not official CI or
-evidence of an application failure.
+### PR #64 exact-head Actions diagnostics — 2026-11-26
+
+On exact head `ca97ab61d15347aa271ee9ac8468a0714bdc3402`, GitHub reported two
+attempts for the `Python API CI` and `Engineering documentation catalog`
+workflows:
+[45769634991](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45769634991),
+[45769634949](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45769634949),
+[45769627687](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45769627687), and
+[45769627689](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45769627689).
+The `test` and `symbol-catalog` check runs were `139738897979`,
+`139738898075`, `139738873183` and `139738873424`. All failed before job
+steps. Each annotation says: “The job was not started because recent account
+payments have failed or your spending limit needs to be increased. Please
+check the 'Billing & plans' section in your settings.” Job records have no
+steps, no retrievable logs and no combined status entries. This is an
+account-level pre-start annotation; it does not establish which stated
+alternative applies. No specific payment or spending-limit cause is inferred.
+
+Metadata-only review of the official Census archives on 2026-11-26 found a
+2022 annual-revision notice that its sales spreadsheet was updated at 12:45
+p.m. after the 10:00 a.m. release. This confirms that a same-day corrected file
+cannot be ordered safely by date alone. Preserve original and corrected file
+versions separately and abstain when timestamps cannot distinguish them. No
+Census release file was downloaded; see the [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+### B-01/B-02 source proposal update — 2026-11-27 UTC
+
+The reviewed direct-source candidate is the original Census MARTS historical
+release file for national seasonally adjusted Retail and Food Services total
+sales. The exact table row, units, source notices and rights must be verified
+from the selected artifact before processing. A concrete inspection candidate
+is the September 2026 first-release PDF [`adv2609.pdf`](https://www2.census.gov/retail/releases/historical/marts/adv2609.pdf),
+linked from the official archive and dated October 15, 2026 in release
+metadata. It is a one-file inspection proposal only, not rights clearance or
+approval to process values or acquire a vintage set. Census's index lists known
+missing releases and an interval when advance sales were not produced; its
+current release schedule says 8:30 a.m. but does not state a timezone in the
+table. Index and search-result excerpts are not an artifact-specific license
+or complete vintage inventory.
+
+Official Census [citation guidance](https://www.census.gov/about/policies/citation.html)
+directs users who derive estimates from disseminated tables to cite Census as
+the source of the original data and says analytical conclusions are the user's
+responsibility. The [Research Transparency and Public Access policy](https://www2.census.gov/foia/ds_policies/ds027.pdf)
+states that Census employee-created works are generally not protected by U.S.
+copyright, while noting exceptions for foreign copyright and non-Census
+creators. These sources support a concrete attribution pattern, but do not
+establish the creator or notices of a selected MARTS file and do not grant
+third-party rights. Search previews displayed published release content, but
+no exact artifact was downloaded into the workspace or pilot store for review;
+no blanket rights or redistribution claim is made. See the [Census protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md)
+for the artifact review and citation checklist.
+
+Current FRED Services terms apply to ALFRED and the API and prohibit storage,
+caching or archiving service content. API-specific terms additionally prohibit
+access in connection with software/AI development and API-associated storage.
+The FRED `RSAFS` page names Census as the source; it does not establish rights
+to retain FRED/ALFRED content or settle rights for the original Census files.
+Accordingly, do not use FRED/ALFRED for this pilot unless written permission or
+revised terms explicitly allow the intended development and retention.
+
+Concrete proposed approval package: (1) direct Census MARTS original files,
+one verified national seasonally adjusted total-sales row; (2) non-commercial
+internal research with Census attribution and explicit analyst-responsibility
+disclaimer, no redistribution of files or row-level values;
+(3) preflight publisher metadata, then seek explicit owner approval for one exact
+artifact to be fetched into local quarantine for embedded notice, provenance
+and schema inspection only; do no parsing or evaluation, delete it immediately
+after review and no later than the approved retention limit; request artifact-
+specific rights review for ambiguity, then obtain separate owner go/no-go
+before processing;
+(4) access-controlled local storage, no Git/CI/log/prompt or external-service
+copies, and 30-day source/value-bearing-artifact retention followed by
+deletion, keeping only rights/citation metadata, hashes and sanitized audit
+results; (5) chronological 60/20/20 development/validation/locked holdout,
+first estimates as primary targets, fixed 1/3/6-month lag-12 and trailing-mean
+baselines, and separate revised-value sensitivity; and (6) date-only
+strict-before cutoffs, preserved archive gaps and abstention on ambiguous
+same-day corrections. A proposed 12-month moving-block bootstrap requires 60
+matched holdout origins per horizon; below that, results would be descriptive
+without a winner claim. These conditions remain proposals, not owner
+authorization or evaluation evidence. No Census source was acquired.
+
+While B-01/B-02 remain open, independent synthetic pilot work now includes
+the normalized vintage selector and the fixed-origin, first-estimate Census
+baseline evaluator. Both are local and use generated records only. Their
+passing tests do not resolve source rights, source-vintage authenticity,
+archive completeness or empirical validation.
 
 B-04 and B-05 may be resolved if an already authorized compatible
 runtime or provider is available; do not claim they are unavailable
 without checking the relevant evidence. They are prerequisites for
 the named real integration, not a prohibition on design and tests.
 
-## B-08 exact diagnostics and runner assessment — 2026-11-25
+## Historical B-08 diagnostics and runner assessment — 2026-11-25
 
 This point-in-time table records the inspected published heads for
 #52–#61 before the local PR #58 sync. Detail calls for both required checks on
@@ -200,6 +357,28 @@ logs. Each check-run record has one annotation, but its text was not available
 through the current connector. Do not infer that these exact runs carry the
 same alternative account annotation recovered for earlier heads. No remote
 tests are evidenced for `c000ebd`.
+
+### PR #64 exact-head CI observations — 2026-11-26
+
+For head `aec18f6f8a21be7069fab3ed2409fe68540c45a0`, GitHub reported the
+`test` run [45768693223](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45768693223)
+and `symbol-catalog` run
+[45768693542](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45768693542)
+as failed. The job records `139735795282` and `139735795951` have no steps;
+the connector returned no log artifact (`BlobNotFound`). Therefore no
+repository tests or catalog check are evidenced remotely, and this observation
+does not establish a specific failure cause. The owner's separate quota
+decision remains in force, but it is not attributed as the cause of these
+exact runs. No workflow, required check, protection, runner or spending limit
+was changed.
+
+The documentation-only head `271f01cae5aacf274d3fa9f9ff2ede34796471ef`
+also has a failed `Python API CI` run
+[45769344631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/45769344631).
+Its `test` job `139737946303` returned no steps, and the log endpoint returned
+`BlobNotFound`; the combined commit status contained no status entries. This
+second observation likewise exposes no repository test output or specific
+cause. The exact-head local gate passed separately; it is not official CI.
 
 ### Self-hosted runner option
 

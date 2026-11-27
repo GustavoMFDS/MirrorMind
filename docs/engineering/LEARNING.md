@@ -295,42 +295,6 @@ misleading. What rights, source hash,
 privacy review and publication-time
 proof would a real source still need?
 
-## Guided exercise 23 — resource bounds are part of the source contract
-
-Read the [approved UCI #352 snapshot manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
-the [workbook reader guide](UCI_WORKBOOK_READER.md) and
-`read_uci_workbook`'s explicit ZIP limit parameters. Explain why the 192/224 MiB
-source-specific ZIP profile does not change generic defaults, why the unchanged
-100,000 product-day cap refused the incomplete projection, and why a failed
-bounded read cannot yield a partial evaluation. Trace the synthetic tests that
-prove the larger ZIP bounds remain finite and that the StockCode integer/text
-and internal-space representations are handled without trimming or Description
-inference. Finally, explain why units per StockCode category are not verified
-physical-SKU demand and why event time is still not publication availability.
-
-## Guided exercise 24 — reject duplicate and mistyped OOXML cells (35 minutes)
-
-Read [`uci_xlsx_xml.py`](../../src/mirrormind/domains/retail/uci_xlsx_xml.py),
-the [workbook reader guide](UCI_WORKBOOK_READER.md), and the synthetic review
-regressions in [`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py).
-Reproduce the duplicate `D2` quantity that used to replace `2` with `99`.
-Then follow `seen_cell_coordinates` in `_iter_worksheet_rows`: explain why it
-tracks every schema column, including excluded `Description`, and why its set
-is reset per row rather than retained for the whole worksheet. Trace both
-worksheet passes and identify where each invokes the shared iterator.
-
-Next inspect `_DATA_CELL_TYPES` and `_decode_cell`. Predict what happens for an
-error cell (`t="e"`), an unknown type, a numeric token `12_345`, an overflowing
-exponent and an underflowing nonzero value. Run
-`test_duplicate_quantity_cell_is_rejected_instead_of_overwriting_original`,
-`test_duplicate_header_selected_and_excluded_cells_fail_in_both_passes`,
-`test_error_and_unknown_selected_cell_types_fail_without_echo`, and
-`test_malformed_numeric_cell_encodings_fail_without_becoming_stock_codes`.
-Explain why strict lexical parsing prevents a malformed numeric cell from
-falling back into a valid-looking category, and why these invented cases say
-nothing about corruption in the private UCI snapshot or hostile-file
-isolation.
-
 ## Guided exercise — a checksum is not a data use grant (25 minutes)
 
 Read [the source review packet guide](SOURCE_INTAKE_REVIEW.md),
@@ -710,35 +674,195 @@ abstentions. Change a product-day value on a declared complete date; contrast
 the resulting zero assumption with removing that date from the coverage
 declaration. Mutate a holdout value and verify validation metrics stay fixed.
 Finally locate where `InvoiceDate` becomes an event day and explain why a
-verified publication vintage requires a distinct source contract. In the
-workbook-reader fixture, compare a numeric six-digit invoice, exact uppercase
-`C` cancellation, lowercase `c`, another unverified one-letter prefix and a
-malformed multi-letter prefix. Verify that only uppercase `C` is cancelled;
-the UCI reader excludes lowercase `c` and other one-letter prefixes under the
-same aggregate class count. Verify that unknown identifiers do not appear in
-results and generic projection still rejects those forms. Explain how
-excluding such rows can change the fit cohort, zero targets and downstream
-scores and coverage denominators. Run
-`tests/unit/test_uci_workbook.py::test_all_single_ascii_letter_prefixes_have_one_aggregate_exclusion_class`
-to inspect the full ASCII classification and prove that the receipt retains one
-aggregate exclusion count rather than per-letter counters. Do not use real UCI
-rows in this exercise.
+verified publication vintage requires a distinct source contract. Do not use
+real UCI rows in this exercise.
 
-## Guided exercise — trace OOXML cell payload structure
+## Guided exercise — evaluate aggregate Census vintages without lookahead
 
-Read the [bounded workbook reader](UCI_WORKBOOK_READER.md),
-[`uci_xlsx_xml.py`](../../src/mirrormind/domains/retail/uci_xlsx_xml.py),
-and [`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py). Run
-`test_duplicate_scalar_values_fail_in_both_worksheet_passes`, then inspect
-how the iterator counts `<v>` elements even when the first shared-string pass
-does not retain numeric text. Add a second synthetic `<v>` to `D2` and predict
-why traversal-order overwrite would change `2` to `99`; verify the reader now
-fails closed without returning either value. Next run
-`test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes` for both
-inline and shared-string representations. Trace why checking payload starts,
-separate from text capture, catches the conflict in both scans. Finally run
-`test_valid_inline_rich_text_runs_remain_one_stock_code` and explain why two
-ordered `<r><t>` runs inside one `<is>` are valid while a second scalar is not.
-Re-run `test_description_shared_string_is_not_extracted_for_projection` to
-verify the parser still avoids character callbacks for excluded descriptions.
-All examples are generated; never inspect the private source workbook.
+Read the [synthetic evaluation walkthrough](CENSUS_VINTAGE_EVALUATION.md),
+[model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md),
+[aggregate-vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) and
+[implementation](../../src/mirrormind/domains/retail/census_evaluation.py).
+Run both CLI splits and the focused regressions:
+
+    .\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split validation
+    .\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split holdout
+    .\.venv\Scripts\python.exe -m pytest -q tests/unit/test_census_vintage_evaluation.py tests/integration/test_census_vintage_evaluation_cli.py
+
+Trace the December and January validation origins. For each, list the release
+dates admitted by the strict issue cutoff, the 12 complete history months, the
+lag-12 target and first-estimate label. Move a historical revision to the
+second origin's issue date and predict why it leaves the history fingerprint
+unchanged. Remove one month and identify the exact abstention count. Change a
+target first-estimate value and explain why metrics change while the output
+still omits that value and its forecast. Finally explain why a higher or lower
+fictional error is not evidence about Census accuracy, source permission,
+archive coverage or the proposed UCI product-level study.
+Run `test_trailing_mean_and_metrics_ignore_ambient_decimal_context` under both
+ROUND_DOWN and ROUND_UP and trace the `Decimal` to `Fraction` conversion.
+Append a revision dated before its known first estimate, then on the same date;
+identify the chronology error versus the date-only ambiguity error. Remove an
+estimate but retain a later revision, compare `unanchored_revision_count`, the
+full input hash and origin feature hashes, and explain why history remains
+missing. Finally run the public WAPE overflow and positive-metric underflow
+regressions; explain why they raise `ValueError` instead of serializing
+infinity, NaN or zero. Then run
+`test_representable_rmse_does_not_underflow_while_scaling_mean_square` and
+trace how `_sqrt_metric_float` rescales an exact rational before taking its
+square root. The explicit count changes the experimental result envelope to
+schema v2.
+
+## Guided exercise — select an aggregate vintage without lookahead
+
+Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md),
+[synthetic adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md),
+[fixture card](datasets/SYNTHETIC_CENSUS_VINTAGES.md) and
+[`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py).
+Run `python -m pytest -q tests/unit/test_census_vintages.py`. Draw the
+reference month, first-estimate publication date, monthly revision date and
+target-release cutoff for the first regression. Predict which `Decimal` is
+selected, then move the revision to the cutoff date and explain why it is
+excluded. Add two same-day records for one month; explain why input order
+cannot safely break the tie. Remove one reference month and verify it remains
+absent rather than becoming zero. Finally mutate a record's value without
+changing its digest string and identify the missing byte-verification layer.
+Explain why this normalized synthetic selector proves neither a real source
+vintage nor permission, and why UCI `InvoiceDate` cannot supply
+`published_on`.
+Add an anchored revision dated before its first estimate and verify chronology
+rejection; set both dates equal and explain why the date-only ambiguity guard
+also rejects it.
+
+### Regression extension — period-close lower bound
+
+Move a first estimate's publication date into its reference month and run
+`test_evaluator_rejects_first_estimates_published_before_reference_month_closes`.
+Then move it to the first day of the following month and explain why the
+normalized boundary still does not authenticate the official release date.
+
+## Guided exercise — review a temporal source without acquiring its data
+
+Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md), the
+[Census MARTS archive](https://www.census.gov/retail/marts/historic_releases.html),
+the [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html),
+the [current methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html),
+the [release schedule](https://www.census.gov/retail/release_schedule.html),
+and the [FRED Services terms](https://fred.stlouisfed.org/legal/terms/).
+Without opening a release file or calling an API, identify which metadata proves
+that an archive index exists and which evidence is still needed to prove each
+month's first release, original bytes and local retention rights. Explain why
+an API key does not grant the rights of a third-party series owner and why the
+current Services terms apply to ALFRED and prohibit storage/cache/archive,
+while API-specific terms also prohibit software/AI-development access and
+API-associated storage. State why FRED/ALFRED is currently a NO-GO data route
+for MirrorMind's reproducible development study unless written permission or
+changed terms expressly cover these uses. Separate this conclusion from the
+still-open rights review for direct Census artifacts.
+
+Then add `methodology_edition` to a hypothetical source manifest. Trace the
+documented April 2025 removal of nonemployers through the proposed time series:
+state why publication-date eligibility alone cannot prove that values on both
+sides have the same population definition, and design a fail-closed choice
+between a reviewed comparability analysis, separate reporting by edition, or
+abstention. Review the owner's proposed source package: original Census
+MARTS files only, one verified national seasonally adjusted total, internal
+research with attribution, access-controlled local storage, 30-day retention
+of value-bearing artifacts and deletion, and no redistribution. Explain why
+each item requires approval before acquisition. Keep the exercise metadata-
+only; do not retrieve Census values, create an API key, or call the evaluation
+an empirical pilot.
+
+Finally, pre-register a chronological 60/20/20 development/validation/locked-
+holdout split and the fixed 1/3/6-month baselines before looking at scores.
+Explain why date-only publication values require strict-before selection,
+why same-day correction metadata without orderable timestamps requires
+abstention, and why fewer than 60 matched holdout origins per horizon supports
+descriptive metrics only under the proposed 12-month moving-block bootstrap.
+These are proposed acceptance criteria, not executed evidence.
+
+## Guided exercise: fingerprint formatting and numeric replay
+
+Read [the Census walkthrough](CENSUS_VINTAGE_EVALUATION.md), then compare
+`str(Decimal("1.00E+20"))` with `format(Decimal("1.00E+20"), "G")`
+under local Decimal contexts with capitals 0 and 1. Run
+`test_scientific_notation_fingerprints_ignore_decimal_capitals` and
+explain why exact Fraction arithmetic alone did not guarantee identical
+normalized-input fingerprints. Inspect the stored uppercase-default digest;
+no source-byte authenticity or empirical accuracy follows.
+
+## Guided exercise — adjacent-date validation and safe lint changes
+
+Read the [as-of rolling guide](M1_ASOF_ROLLING_EVALUATION.md),
+`_require_contiguous_days` in
+[`m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py),
+and the tests `test_contiguous_day_guard_preserves_pairwise_boundary_semantics`,
+`test_contiguous_day_guard_rejects_a_gap_without_imputing_a_day` and
+`test_missing_event_day_not_imputed_even_with_publication_metadata`.
+Predict the number of adjacent pairs for an empty list, one date, and three
+dates. Compare that with `itertools.pairwise` and the former
+`zip(days, days[1:])` expression. Explain why the Ruff RUF007 autofix is
+marked unsafe in general, why it is equivalent for this sorted `list[date]`
+input and Python 3.11 minimum, and why a missing day must raise instead of
+being represented as zero demand. Re-run the three regressions and
+`ruff check examples`; confirm imports and lint cleanup did not change any
+forecast, output or authorization contract.
+
+## Guided exercise — verify scope-first evidence retrieval (35 minutes)
+
+Read the [M2 evidence retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md),
+[`contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py),
+[`index.py`](../../src/mirrormind/modules/retrieval/index.py) and
+[`fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py).
+Trace how `EvidenceAccessContext` filters documents before `_token_spans`
+builds the index. Run
+`python -m pytest -q tests/unit/test_evidence_retrieval.py` and predict what
+the denied-record test would observe if tokenization moved before filtering.
+For one result, verify that the cited Python string slice equals the excerpt
+and recompute SHA-256 over its UTF-8 bytes. Run
+`test_contract_rejects_same_length_excerpt_tampering` and
+`test_contract_rejects_wrong_well_formed_excerpt_digest`; explain why the
+contract detects excerpt/digest mismatch but cannot authenticate a source
+when both values are replaced. Inspect the injection-like fixture and explain
+why it remains `untrusted_evidence` without creating an instruction or tool
+call. Finally change the fixed demo scope in a practice branch and explain why
+this tests a local input boundary rather than identity or authorization.
+
+## Guided exercise — sign a current-head challenge in process (35 minutes)
+
+Read the [G-01 service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md), the
+[shared wire protocol](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py),
+the [responder](../../src/mirrormind/modules/evidence/remote_fence_head_service.py)
+and
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+Run all six `test_remote_head_service_*` selectors. Trace the request nonce
+from the raw query into `SignedRemoteFenceHead`, the canonical signing
+message and the existing client verifier. Change one query field and predict
+whether the responder calls the store. Then reuse a protected public key as
+the service signer and explain why initialization fails. Finally, list the
+transport, durable storage and operational evidence that these tests do not
+provide. Make a fake clock raise `RemoteFenceHeadClockError` and verify the
+bodyless 503. Then make the clock and store raise `RuntimeError`; explain why
+those programming failures propagate rather than being mislabeled as routine
+service outages. Describe how a future HTTP adapter can map an unexpected
+exception at its transport boundary without broad catches inside the typed
+responder.
+
+
+## Guided exercise — reject ambiguous worksheet cell payloads
+
+Read the [bounded UCI workbook walkthrough](UCI_WORKBOOK_READER.md) and trace
+`_iter_worksheet_rows` in [`uci_xlsx_xml.py`](../../src/mirrormind/domains/retail/uci_xlsx_xml.py).
+The parser runs this iterator twice: first to discover only referenced shared
+strings, then to decode selected values. Run
+`test_duplicate_scalar_values_fail_in_both_worksheet_passes`,
+`test_mixed_scalar_and_inline_payloads_fail_in_both_worksheet_passes`, and
+`test_valid_inline_rich_text_runs_remain_one_stock_code` from
+[`test_uci_workbook.py`](../../tests/unit/test_uci_workbook.py). Explain why
+counting `<v>` structure matters even when the first pass does not capture
+scalar text, why mixed `<v>` and `<is>` representations are ambiguous, and
+why multiple ordered rich-text runs inside one valid `<is>` payload remain
+supported. Verify that a failed cell produces a fixed redacted error and that
+excluded `Description` text remains outside character callbacks. These
+synthetic tests establish parser behavior only; they do not establish source
+rights, private-workbook anomalies, archive completeness or hostile-file
+isolation. Do not reread the private workbook or infer empirical quality.
