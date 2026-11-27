@@ -1004,7 +1004,7 @@ abstentions. No real source parser or production forecast capability is added.
 | [`examples/m2_evidence_retrieval_evaluation.py`](../../examples/m2_evidence_retrieval_evaluation.py) | Replays the fixed synthetic evaluation set and emits a deterministic query-free JSON report |
 | [`tests/unit/test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py) | Scope-before-tokenization, citation integrity, deterministic ranking, bounds and untrusted-text regressions |
 | [`tests/integration/test_m2_evidence_retrieval_cli.py`](../../tests/integration/test_m2_evidence_retrieval_cli.py) | CLI replay, citation presence, query omission and oversized-input failure |
-| [`tests/unit/test_evidence_retrieval_evaluation.py`](../../tests/unit/test_evidence_retrieval_evaluation.py) | Metric arithmetic, hidden/unknown-hit redaction, scope validation, top-k bound and citation support regressions |
+| [`tests/unit/test_evidence_retrieval_evaluation.py`](../../tests/unit/test_evidence_retrieval_evaluation.py) | Metric arithmetic, bounded-input/type rejection, hidden/unknown-hit redaction, scope validation, exact result/top-k contracts and citation support regressions |
 | [`tests/integration/test_m2_evidence_retrieval_evaluation_cli.py`](../../tests/integration/test_m2_evidence_retrieval_evaluation_cli.py) | Deterministic query-free evaluator CLI replay and metric schema regression |
 | [`docs/engineering/M2_EVIDENCE_RETRIEVAL.md`](M2_EVIDENCE_RETRIEVAL.md) | Source walkthrough, contracts, BM25, safety, reproduction, tests and exercises |
 | [`docs/engineering/changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md`](changes/M2_01_PERMISSION_FILTERED_EVIDENCE_RETRIEVAL.md) | Scoped acceptance criteria, impact map, compatibility and evidence |

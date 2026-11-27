@@ -339,10 +339,12 @@ show behavior on declared negative cases, not a calibrated abstention threshold.
 | `MM-RETR-014` | `tests/unit/test_evidence_retrieval_evaluation.py::test_retrieval_result_cannot_exceed_declared_top_k` | The evaluator rejects a result that violates the case's declared retrieval bound | Behavior of a future alternate retriever not exercised by this test |
 | `MM-RETR-015` | `tests/unit/test_evidence_retrieval_evaluation.py::test_verified_excerpt_requires_exact_source_span_and_digest` | A citation must match the exact source slice and UTF-8 digest to be counted as supported | External publisher identity, rights, freshness or integrity of real source bytes |
 | `MM-RETR-016` | `tests/unit/test_evidence_retrieval_evaluation.py::test_retriever_must_return_exact_result_contract` | An incompatible result object fails closed before report construction | A malicious implementation that returns a valid but fabricated contract result |
+| `MM-RETR-017` | `tests/unit/test_evidence_retrieval_evaluation.py::test_malformed_and_oversized_evaluation_sets_fail_closed` | Empty/oversized inputs, duplicate labels/IDs and unsupported document objects are rejected before scoring | Bounds protect local computation shape only; they do not enforce service quotas or isolate hostile callers |
 
 Other evaluator regressions reject hidden or query-filtered relevance labels,
-duplicate case IDs, empty/oversized sets and duplicate relevance labels. The
-test selectors and limitations are indexed in [EVIDENCE_MAP](EVIDENCE_MAP.json).
+duplicate case IDs/labels, empty case/corpus inputs, more than 100 documents,
+more than 100 cases and non-`EvidenceDocument` values. The test selectors and
+limitations are indexed in [EVIDENCE_MAP](EVIDENCE_MAP.json).
 The evaluator accepts only `EvidenceDocument`, whose source status is a fixed
 `fictional_fixture` literal. That label is still caller supplied and does not
 inspect or prove the content's origin. Keep automated tests and the example on

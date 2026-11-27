@@ -51,8 +51,9 @@ fictional fixtures is not empirical retrieval quality.
   serializing its identifier, source ref, query or content.
 - [ ] Given a relevance label for a missing or out-of-scope document, fail
   closed with a generic error that does not echo the label or hidden content.
-- [ ] Bound corpus and cases; reject empty cases, duplicate IDs, invalid
-  labels and unsupported document types before evaluation.
+- [ ] Bound corpus and cases; reject empty inputs, duplicate IDs, invalid
+  labels, over-limit documents and unsupported document types before
+  evaluation.
 - [ ] Reject a retriever result that is not the exact versioned result
   contract or exceeds the case's declared `top_k`.
 - [ ] Synthetic regressions cover full metric arithmetic, deterministic

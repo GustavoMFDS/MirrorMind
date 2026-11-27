@@ -1510,5 +1510,12 @@
     "test": "tests/unit/test_evidence_retrieval_evaluation.py",
     "function": "test_retriever_must_return_exact_result_contract",
     "limitation": "An incompatible fabricated search return is rejected; a valid-shaped but dishonest result still requires an authenticated retriever and independently verified source."
+  },
+  {
+    "id": "MM-RETR-017",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_malformed_and_oversized_evaluation_sets_fail_closed",
+    "limitation": "Synthetic invalid inputs are rejected before scoring; local model bounds do not enforce a service-wide quota or isolate hostile callers."
   }
 ]

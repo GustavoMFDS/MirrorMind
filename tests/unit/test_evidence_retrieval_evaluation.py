@@ -27,7 +27,10 @@ from mirrormind.modules.retrieval.fictional_fixture import (
     fictional_documents,
     fictional_evaluation_cases,
 )
-from mirrormind.modules.retrieval.index import InMemoryEvidenceIndex
+from mirrormind.modules.retrieval.index import (
+    MAX_INDEX_DOCUMENTS,
+    InMemoryEvidenceIndex,
+)
 
 
 def _case(
@@ -323,8 +326,19 @@ def test_source_lineage_mismatch_is_not_counted_as_supported(monkeypatch):
 
 def test_malformed_and_oversized_evaluation_sets_fail_closed():
     valid = _case()
+    documents = fictional_documents()
     with pytest.raises(ValueError, match="evaluation cases must be non-empty"):
-        run_retrieval_evaluation(fictional_documents(), ())
+        run_retrieval_evaluation(documents, ())
+    with pytest.raises(ValueError, match="evaluation documents must be non-empty"):
+        run_retrieval_evaluation((), (valid,))
+    with pytest.raises(TypeError, match="documents must contain exact EvidenceDocument"):
+        run_retrieval_evaluation((object(),), (valid,))
+    oversized_documents = tuple(
+        documents[0].model_copy(update={"document_id": f"oversized-{index}"})
+        for index in range(MAX_INDEX_DOCUMENTS + 1)
+    )
+    with pytest.raises(ValueError, match="document limit exceeded"):
+        run_retrieval_evaluation(oversized_documents, (valid,))
     with pytest.raises(ValueError, match="evaluation case identifiers must be unique"):
         run_retrieval_evaluation(
             fictional_documents(), (valid, valid.model_copy(update={"case_id": "case-one"}))
