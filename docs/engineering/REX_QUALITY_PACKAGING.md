@@ -48,6 +48,12 @@ sdist, then install the wheel in a fresh environment outside the checkout.
 Verify package/API versions, license metadata and synthetic execution.
 The examples and offline HTML generator remain source-checkout tools.
 
+The clean wheel smoke on the initial candidate failed at API import: the
+synthetic fixture module imports openpyxl, previously declared only in
+extras. Declare the existing openpyxl range as a runtime dependency;
+retain the uci extra for compatibility. This fixes package metadata, not
+source behavior or source-data permission.
+
 No wheel or sdist is published by this change. The optional private
 WorldKernel direct Git reference remains unchanged; it may prevent PyPI
 publication and must be resolved independently before any upload.
