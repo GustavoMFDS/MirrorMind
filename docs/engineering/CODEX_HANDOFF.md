@@ -256,11 +256,16 @@ count, empirical metric or real-source model card exists. Keep all results
 retrospective and availability-unverified.
 
 The focused UCI workbook/projection/event-time and CLI regressions passed 114
-tests in 4.14 seconds after MM-021. Targeted Ruff also passed. Documentation
-and generated-catalog reconciliation remain in progress; the exact clean-head
-six-check gate is pending. GitHub Actions remains unavailable under the
-zero-cost decision; local results are not CI evidence. Do not change gates,
-spend or modify the separate Census or WorldKernel repositories. See
+tests after MM-021. Code candidate
+`5ff334230b9a5f222993d626dbe76c385a2c92d1` then passed the exact clean-head
+six-check gate at `2026-11-27T00:33:13.845213Z`: 863 tests, zero skips and all
+six checks. Python 3.13.5; WorldKernel `0.0.1` was installed from the exact
+reviewed source commit; one existing Starlette/httpx deprecation warning.
+Receipt: `results/local-quality-gate-5ff334230b9a5f222993d626dbe76c385a2c92d1.json`.
+The local receipt is not CI evidence. Rerun the full gate on the final
+documentation-inclusive head before publishing a review PR. GitHub Actions
+remains unavailable under the zero-cost decision. Do not change gates, spend
+or modify the separate Census or WorldKernel repositories. See
 the [change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md),
 [manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
 [source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [B-01/B-02](BLOCKERS.md).

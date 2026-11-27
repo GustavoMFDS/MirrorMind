@@ -168,3 +168,26 @@ and gate-documentation update that records it. Rerun the six-check gate on the
 exact clean documentation-inclusive SHA before publishing the branch. Preserve
 that final SHA and receipt in the PR discussion; never treat either local
 receipt as official Actions or integration approval.
+
+### UCI #352 bounded reader candidate — 2026-11-27
+
+Code candidate `5ff334230b9a5f222993d626dbe76c385a2c92d1` passed the exact
+clean-head local gate at `2026-11-27T00:33:13.845213+00:00`:
+
+- Pytest: 863 passed, zero skipped; one existing Starlette/httpx `TestClient`
+  deprecation warning.
+- Ruff, source catalog, repository atlas, evidence and capability checks: all
+  passed.
+- Python 3.13.5; WorldKernel `0.0.1` installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-5ff334230b9a5f222993d626dbe76c385a2c92d1.json`.
+- Status: `local_gate_passed_not_official_ci`; GitHub Actions was not checked.
+
+This gate verifies the code candidate and its synthetic regression suite; it
+does not mean the real workbook projection completed. The approved UCI call
+exceeded 250,000 product-day groups and returned no projection or metrics. The
+source remains private under its deletion deadline. The status, backlog,
+handoff and this gate record were updated afterward, so run all six checks
+again on the exact clean documentation-inclusive head before publishing the
+review candidate. Preserve that receipt separately; do not call it official
+Actions or use it to bypass required checks.

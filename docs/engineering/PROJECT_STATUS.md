@@ -32,9 +32,15 @@ owner decision. The former `openpyxl.values_only` reader transiently
 materialized excluded `Description` values without persistence or transfer;
 the new selective OOXML path disables Python text callbacks for excluded body
 cells and has synthetic shared-string regressions. Reader defaults remain
-2,000 groups, generic projection remains capped at 100,000. The exact-clean-
-head six-check gate is pending after documentation/catalog reconciliation. No
-official Actions result is claimed.
+2,000 groups, generic projection remains capped at 100,000. Code candidate
+`5ff334230b9a5f222993d626dbe76c385a2c92d1` passed the exact clean-head local
+gate at `2026-11-27T00:33:13.845213Z`: 863 tests, zero skips and all six
+checks. Python 3.13.5; exact WorldKernel source pin installed; one existing
+Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-5ff334230b9a5f222993d626dbe76c385a2c92d1.json`.
+This is local evidence only; Actions was not checked. Rerun the full gate on
+the final documentation-inclusive head before review publication. No official
+Actions result is claimed.
 
 **Verified baseline on e4f05a1:** 691 pytest tests passed, one existing
 Starlette/httpx deprecation warning. Six local gate checks passed

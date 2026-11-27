@@ -165,8 +165,10 @@ intended use, projection, retention period, or point-in-time claim.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: implementation branch and review publication pending; no PR
-  is represented as complete by this local snapshot record.
+- Commit / PR: code candidate `5ff334230b9a5f222993d626dbe76c385a2c92d1`
+  implements the bounded reader and records the stopped UCI attempt. Review
+  publication follows the documentation-inclusive exact-head gate; no PR is
+  represented as merged or complete by this local snapshot record.
 - Modified symbols: `read_uci_workbook`, `_normalize_uci_workbook_invoice`,
   `iter_uci_projection_rows`, the selected OOXML/shared-string streaming
   helpers, the private projection sentinel and UCI-only group ceiling, and
@@ -175,9 +177,17 @@ intended use, projection, retention period, or point-in-time claim.
   assertions, privacy metadata, current stop reason and deletion deadline:
   recorded in the path-free manifest. No aggregate evaluation counts, split
   metrics or empirical model card exist.
-- Tests: 114 focused UCI workbook/projection/evaluator/CLI tests passed in
-  4.14 seconds after MM-021; targeted Ruff passed. The exact-clean-head
-  six-check gate remains pending. Never claim a real-data run is a test.
+- Tests: 114 focused UCI workbook/projection/evaluator/CLI tests passed after
+  MM-021. The complete exact-clean-head gate passed on code candidate
+  `5ff334230b9a5f222993d626dbe76c385a2c92d1` at
+  `2026-11-27T00:33:13.845213Z`: 863 tests, zero skips, all six checks
+  (pytest, Ruff, catalog, atlas, evidence and capabilities). Python 3.13.5;
+  WorldKernel `0.0.1` installed from reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing Starlette/httpx
+  deprecation warning. Receipt:
+  `results/local-quality-gate-5ff334230b9a5f222993d626dbe76c385a2c92d1.json`.
+  This is local evidence, not Actions. The documentation-inclusive revision
+  must receive its own gate. Never claim a real-data run is a test.
 - Official Actions: unavailable under B-08; no CI claim.
 - Known limitation: event-time metrics do not establish when observations
   became available, latent demand, stockouts, lead times, causal effect,
