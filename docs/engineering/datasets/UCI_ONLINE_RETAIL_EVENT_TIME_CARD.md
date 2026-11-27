@@ -59,11 +59,14 @@ IDs and aggregate:
 - normalize only exact positive five-digit integer `StockCode` cells to their
   decimal string; preserve approved internal ASCII-space strings exactly as
   opaque category keys. Do not trim, filter or infer from `Description`;
-- process exact six-digit integer/text invoice IDs; preserve `C`/`c` plus six
-  digits as the cancellation class; exclude other single ASCII-letter plus
-  six-digit IDs as `unverified_invoice_prefix` before grouping, recording only
-  an aggregate count. Reject every other invoice format. Never retain the
-  excluded identifier or use it to group, deduplicate or select rows;
+- process exact six-digit integer/text invoice IDs; only uppercase `C` plus
+  six digits is the cancellation class. Exclude lowercase `c` and every other
+  single ASCII-letter plus six-digit ID as `unverified_invoice_prefix` before
+  grouping, recording only the aggregate class count. Reject every other
+  invoice format. Never retain an excluded identifier or use it to group,
+  deduplicate or select rows. MM-022 supersedes MM-021's lowercase-`c` rule;
+  this synthetic-verified clarification was not applied to the stopped real
+  source attempt, which was not repeated;
 - aggregate eligible positive quantities by `StockCode` category and calendar
   day, and emit only ordinal category summaries plus aggregate metrics;
 - do not materialize a missing day as zero unless source completeness and
@@ -110,11 +113,14 @@ The study design is fixed before source inspection or model tuning:
 
 The protocol is implemented and its regression fixtures remain synthetic.
 The approved source preflight verified schema compatibility. After MM-020 and
-MM-021, the corrected call applied the conservative invoice classification but
-exceeded the 250,000 product-day cap. It returned no partial projection and no
-metrics or model card were produced. The lane is stopped under the current
-scope. Excluding unverified invoice-prefix rows can reduce category-day totals,
-change which categories enter the fit cohort, alter zero-valued targets and
+MM-021, the corrected call applied the then-approved conservative invoice
+classification but exceeded the 250,000 product-day cap. It returned no
+partial projection and no metrics or model card were produced. MM-022 later
+made uppercase `C` the sole cancellation marker and was verified with
+synthetic tests only; the real source was not read again. The lane is stopped
+under the current scope. Excluding unverified invoice-prefix rows can reduce
+category-day totals, change which categories enter the fit cohort, alter
+zero-valued targets and
 change every downstream score. Any future metric would describe only records
 with recognized invoice IDs and must retain the aggregate exclusion count;
 coverage would still mean eligible pairs on dates declared complete by the UCI

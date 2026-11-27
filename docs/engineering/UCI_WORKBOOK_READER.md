@@ -54,7 +54,10 @@ required-field, event-date and StockCode preflight. The first call stopped at
 the generic 100,000-group ceiling. The corrected MM-021 invoice classifier
 then exceeded the approved UCI-only 250,000-group ceiling. Both calls failed
 closed without partial projections or metrics; the exact count was not
-retained. Reader defaults remain 10,000 rows/2,000 groups, and direct/generic
+retained. MM-022 later narrowed the classifier to treat only uppercase `C` as
+cancellation; lowercase `c` is now synthetically tested as unverified. This
+clarification was not applied to the source, and does not authorize another
+read. Reader defaults remain 10,000 rows/2,000 groups, and direct/generic
 projection remains capped at 100,000. Generic ZIP defaults remain 64/128 MiB.
 The larger ZIP profile is an explicit per-call request within the supported
 192/224 MiB ceilings. Do not retry or partition this source under the current
@@ -72,8 +75,27 @@ scope.
 | `_selected_shared_string_indices(...)` | First worksheet pass collects shared-string indexes only from the eight header cells and data columns A, B, D and E | The data `Description` column is not selected; only its header name is checked as schema metadata |
 | `_read_required_shared_strings(archive, indexes)` | Streams the shared-string table and retains only referenced strings, with finite per-string/count/total byte limits | Python character callbacks are disabled for unreferenced strings, including Description-only strings |
 | `_iter_worksheet_rows(...)` / `_decode_cell(...)` | Expat scans worksheet XML and captures header cells plus the four approved projection columns; selected Excel serial dates use the workbook epoch/style | Character callbacks are disabled for nonselected body cells; XML bytes and structure are still parsed, but excluded cell text is not delivered to Python application code |
-| `_normalize_uci_workbook_invoice(value)` | Accepts six-digit numeric IDs, normalizes `C`/`c` cancellation prefixes, and maps other one-letter ASCII prefixes to a private sentinel | Only non-C prefixes are counted/excluded; original ID is discarded before grouping. Every other format fails closed. |
+| `_normalize_uci_workbook_invoice(value)` | Accepts six-digit numeric IDs, preserves only exact uppercase `C` plus six digits as the cancellation class, and maps lowercase `c` or another one-letter ASCII prefix to a private sentinel | Only the aggregate unverified-prefix count survives; original IDs are discarded before grouping. Every other format fails closed. |
 | `read_uci_workbook(stream, expected_sha256, sheet_name='Online Retail', max_rows, max_groups, max_zip_entry_bytes, max_zip_total_bytes)` | Verifies hash and ZIP bounds, classifies the scoped invoice forms, then streams approved projection fields into the bounded transaction projection | UCI-only invoice policy and 250,000-group cap; generic behavior remains unchanged. ZIP overrides are exact integers within 192/224 MiB supported ceilings. Parsing is not hostile-file isolation. |
+
+The source-specific classification occurs at the workbook adapter boundary;
+the shared row projector remains strict and unchanged:
+
+```mermaid
+flowchart LR
+    A[Caller stream and expected digest] --> B[Bounded read, hash, ZIP checks]
+    B --> C[Selective OOXML projection]
+    C --> D{Invoice form}
+    D -->|Six digits| E[Normal invoice processing]
+    D -->|Uppercase C plus six digits| F[Cancellation class]
+    D -->|Other ASCII letter plus six digits| G[Unverified sentinel]
+    D -->|Any other form| H[Redacted ValueError]
+    E --> I[Bounded product-day aggregation]
+    F --> I
+    G --> J[Aggregate unverified count only]
+    J --> I
+    I --> K[Minimized receipt or evaluator]
+```
 
 The data path has two worksheet passes. The first obtains the shared-string
 indexes required by selected columns without retaining data values. The
@@ -99,11 +121,15 @@ normalizes exact positive five-digit integer cells to decimal text and, only
 for this source policy, accepts bounded internal ASCII spaces without
 trimming. It does not infer keys from `Description`; results describe units per
 category, not verified physical-SKU demand. Six-digit invoice IDs enter the
-existing projection; `C`/`c` plus six digits remain cancellation records;
-other one-letter ASCII prefixes plus six digits are excluded before grouping
-and recorded only as an aggregate `unverified_invoice_prefix_rows` count.
-Other invoice formats fail closed. This UCI policy does not alter generic row
-projection behavior. Excluding those rows may lower category-day totals,
+existing projection; only uppercase `C` plus six digits remains a cancellation
+record. Lowercase `c` and other one-letter ASCII prefixes plus six digits are
+excluded before grouping and recorded only in the aggregate
+`unverified_invoice_prefix_rows` count. Other invoice formats fail closed.
+This MM-022 clarification supersedes MM-021's lowercase-`c` cancellation rule
+for the UCI reader only; it does not change generic row projection behavior.
+The synthetic generic rejection regression is
+`tests/unit/test_uci_retail_projection.py::test_invalid_invoice_format_does_not_get_treated_as_regular_sale`.
+Excluding those rows may lower category-day totals,
 change the fit cohort and alter zero targets and metrics. The workbook may
 contain personal data; the reader cannot verify customer-data rights.
 
@@ -183,6 +209,7 @@ required before another run or partitioning strategy.
 | **MM-XLSX-004** | `tests/integration/test_uci_workbook_flow.py::test_synthetic_local_xlsx_file_to_product_day_projection` | No real dataset used; `InvoiceDate` is **not** proven first availability or a true point-in-time feature |
 | **MM-XLSX-005** | `tests/unit/test_uci_workbook.py::test_description_shared_string_is_not_extracted_for_projection` | The synthetic tracker proves excluded Description text is not delivered to application character callbacks; Expat still scans worksheet structure, and this does not prove source permission or hostile-file isolation |
 | **MM-XLSX-006** | `tests/unit/test_uci_workbook.py::test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded`; `tests/unit/test_uci_workbook.py::test_uci_invoice_formats_outside_scoped_classes_fail_without_echo` | Synthetic fixtures prove the approved source-specific classification, aggregate-only exclusion and fail-closed remainder; no empirical run completed and generic callers remain unchanged |
+| **MM-XLSX-007** | `tests/unit/test_uci_retail_projection.py::test_invalid_invoice_format_does_not_get_treated_as_regular_sale` | A synthetic generic-row regression confirms lowercase `c` remains invalid and is not echoed outside the UCI reader; it does not establish source rights or real-dataset behavior |
 | **MM-UCIE-004** | `tests/unit/test_uci_event_time.py::test_event_time_evaluator_accepts_approved_uci_group_limit` | A synthetic 100,001-group projection exercises the evaluator bound; the real workbook exceeded 250,000 groups, so this does not prove full-source compatibility |
 | **MM-UCIE-005** | `tests/unit/test_uci_event_time.py::test_event_time_result_exposes_aggregate_unverified_invoice_exclusions` | Synthetic output preserves a count and target semantics only; no complete real-source exclusion count or empirical score exists |
 | ZIP profile regressions | `tests/unit/test_uci_workbook.py::test_zip_expansion_profile_is_explicit_bounded_and_defaults_stay_unchanged`; `test_zip_expansion_budgets_must_be_exact_bounded_and_consistent` | Verify caller override bounds and unchanged defaults on generated archives only; no runtime resource metering |

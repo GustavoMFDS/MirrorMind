@@ -688,10 +688,11 @@ the resulting zero assumption with removing that date from the coverage
 declaration. Mutate a holdout value and verify validation metrics stay fixed.
 Finally locate where `InvoiceDate` becomes an event day and explain why a
 verified publication vintage requires a distinct source contract. In the
-workbook-reader fixture, compare a numeric six-digit invoice, a `C`-prefixed
-cancellation, an unverified one-letter prefix and a malformed multi-letter
-prefix. Verify that only the UCI reader produces the aggregate exclusion count,
-the unknown identifier does not appear in results, and generic projection
-still rejects that form. Explain how excluding such rows can change the fit
-cohort, zero targets and downstream scores. Do not use real UCI rows in this
-exercise.
+workbook-reader fixture, compare a numeric six-digit invoice, exact uppercase
+`C` cancellation, lowercase `c`, another unverified one-letter prefix and a
+malformed multi-letter prefix. Verify that only uppercase `C` is cancelled;
+the UCI reader excludes lowercase `c` and other one-letter prefixes under the
+same aggregate class count. Verify that unknown identifiers do not appear in
+results and generic projection still rejects those forms. Explain how
+excluding such rows can change the fit cohort, zero targets and downstream
+scores. Do not use real UCI rows in this exercise.

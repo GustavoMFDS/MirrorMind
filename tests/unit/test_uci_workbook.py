@@ -216,19 +216,21 @@ def test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded():
     raw = fictional_workbook(
         invoice(536365, "SKU-A", 2),
         invoice("C536366", "SKU-A", 3),
+        invoice("c536367", "SKU-A", 5),
         invoice("A123456", "SKU-A", 7),
     )
 
     result = stage(raw)
 
-    assert result.projection.processed_rows == 3
+    assert result.projection.processed_rows == 4
     assert result.projection.accepted_rows == 1
     assert result.projection.cancelled_rows == 1
-    assert result.receipt()["unverified_invoice_prefix_rows"] == 1
+    assert result.receipt()["unverified_invoice_prefix_rows"] == 2
     assert len(result.projection.days) == 1
     assert result.projection.days[0].units == 2
     assert "A123456" not in str(result)
     assert "C536366" not in str(result)
+    assert "c536367" not in str(result)
 
 
 @pytest.mark.parametrize("invoice_number", ["AB123456", "X12345", "12345", "1234567"])

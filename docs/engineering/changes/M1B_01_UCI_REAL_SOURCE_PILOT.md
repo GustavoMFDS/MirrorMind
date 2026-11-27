@@ -46,12 +46,13 @@ The project owner authorized this exact scope in the Codex conversation on
   opinion or a grant of rights beyond that source and intended use.
 - Use a private local snapshot. Keep raw source bytes and row-level
   intermediates out of Git, CI, logs, prompts, and external services.
-- Use only the reviewed minimal projection. Under MM-021, process exact
-  six-digit integer/text invoice IDs normally; preserve `C`/`c` plus six
-  digits as cancellations; exclude other single ASCII-letter plus six-digit
-  forms before aggregation and report only one aggregate count. All other
-  formats fail closed. Never retain identifiers. `CustomerID` is never used by
-  the projection, evaluator, output or tests. Aggregate by the required
+- Use only the reviewed minimal projection. Under the current MM-022 rule,
+  process exact six-digit integer/text invoice IDs normally; only uppercase
+  `C` plus six digits marks cancellation. Exclude lowercase `c` and other
+  single ASCII-letter plus six-digit forms before aggregation and report only
+  one aggregate class count. All other formats fail closed. Never retain
+  identifiers. `CustomerID` is never used by the projection, evaluator, output
+  or tests. Aggregate by the required
   product key and event date; expose only aggregate receipts and stable
   product ordinals.
 - The owner separately approved a source-specific bounded archive profile:
@@ -66,13 +67,13 @@ The project owner authorized this exact scope in the Codex conversation on
   without padding, and preserve internal ASCII-space strings exactly as
   opaque keys. Do not trim, filter, inspect `Description`, or merge keys. The
   result describes units per `StockCode` category, not physical SKU demand.
-- Under MM-021, process exact six-digit integer/text invoice IDs, normalize
-  `C`/`c` plus six digits to the existing cancellation class, and exclude any
-  other single ASCII-letter plus six-digit identifier as an unverified
-  transaction class before aggregation. Record one aggregate exclusion count;
-  never retain identifiers. Every other format fails closed. This exception is
-  private to the approved UCI workbook path; generic row projection behavior
-  remains unchanged.
+- MM-022 clarifies the invoice rule for the UCI reader: process exact
+  six-digit integer/text invoice IDs; only uppercase `C` plus six digits is a
+  cancellation. Exclude lowercase `c` and other single ASCII-letter plus
+  six-digit identifiers as one unverified transaction class before sales
+  aggregation. Record only its aggregate count; never retain identifiers.
+  Every other format fails closed. This exception is private to the approved
+  UCI workbook path; generic row projection behavior remains unchanged.
 - Delete source bytes and any row-level intermediate within 30 days. The run
   must record a deletion deadline and later verify deletion.
 - The approved UCI workbook call may explicitly select at most 250,000 groups
@@ -85,6 +86,36 @@ The project owner authorized this exact scope in the Codex conversation on
   `available_on` from `InvoiceDate`.
 - Process no other source and do not begin Census before this UCI lane reaches
   a documented stop or completion state.
+
+## Approved clarification MM-022 — 2026-11-27
+
+The owner's later instruction makes uppercase `C` the sole cancellation
+prefix. Lowercase `c` is now grouped with other ASCII-letter-plus-six-digit
+forms as an unverified transaction class. This supersedes only MM-021's
+case-insensitive prefix rule. No source read, retry, chunking or limit change is
+authorized by this clarification.
+
+Acceptance criteria: (1) the UCI workbook reader treats exact uppercase `C`
+plus six digits as cancellation; (2) lowercase `c` and other single ASCII
+letters plus six digits are excluded before aggregation and increment only the
+aggregate unverified-class count; (3) original IDs do not appear in results or
+errors; (4) all other malformed forms fail closed; (5) generic projections
+retain their existing contract; (6) synthetic tests cover the uppercase and
+lowercase cases. A real-source re-run is prohibited under the existing
+250,000-group stop.
+
+Impact map: `_normalize_uci_workbook_invoice` changes only the explicit UCI
+reader; `project_uci_retail_rows` and generic callers do not change. The UCI
+regression remains in `tests/unit/test_uci_workbook.py`; a lowercase-`c`
+compatibility case was added to
+`tests/unit/test_uci_retail_projection.py::test_invalid_invoice_format_does_not_get_treated_as_regular_sale`.
+Evidence IDs MM-XLSX-006 and MM-XLSX-007 cite these tests. Reader/projection
+walkthroughs, dataset card, decision log, status, debugging and learning
+materials explain the revised rule. No
+public capability, external contract, source permission, metric or group
+budget changes. If an invoice value falls outside the reviewed ASCII-prefix
+shape, the reader raises the existing redacted `ValueError` without echoing
+the value.
 
 Before processing, verify the official UCI terms and exact artifact URL again.
 Stop if the archive layout, workbook sheet/header, row count, fields used by

@@ -246,21 +246,24 @@ first reader attempt stopped at the generic 100,000-group ceiling and
 transiently materialized Description values before discarding them; none were
 persisted or transferred. That path was replaced by selective OOXML streaming
 with a regression proving excluded-cell text is not sent to Python character
-callbacks. MM-020 authorizes up to 250,000 UCI-only groups. MM-021 authorizes
-six-digit invoice IDs, the existing `C`/`c` cancellation class, and aggregate
-exclusion of other single-letter ASCII prefixes plus six digits; malformed
-remainder still fails closed. The corrected call applied this policy but
-exceeded 250,000 groups and returned no projection. Do not retry, chunk or
-widen the cap without a new decision. No full projection, complete exclusion
-count, empirical metric or real-source model card exists. Keep all results
+callbacks. MM-020 authorizes up to 250,000 UCI-only groups. MM-021 governed the
+stopped source attempt: it treated `C`/`c` as cancellations and excluded other
+single-letter ASCII prefixes. The owner later clarified in MM-022 that only
+exact uppercase `C` is a cancellation; lowercase `c` joins other letter
+prefixes in the aggregate unverified class. Synthetic regressions cover this
+current rule. No real-source retry occurred. The earlier call exceeded
+250,000 groups and returned no projection. Do not retry, chunk or widen the cap
+without a new decision. No full projection, complete exclusion count,
+empirical metric or real-source model card exists. Keep all results
 retrospective and availability-unverified.
 
-The synthetic invoice-classification regressions and docs already encode
-MM-021: six-digit IDs continue through the projection, `C`/`c` are classified
-as cancellations, and other single-ASCII-letter plus six-digit IDs are
-excluded before grouping with one aggregate-only count. Other formats fail
-closed; generic projection remains unchanged. The exact owner authorization
-does not raise MM-020's 250,000-group ceiling.
+The synthetic invoice-classification regression now encodes MM-022: six-digit
+IDs continue through the projection, exact uppercase `C` is cancellation, and
+lowercase `c` plus other single-ASCII-letter identifiers are excluded before
+sales aggregation under one aggregate-only class count. Other formats fail
+closed; generic projection remains unchanged. The real-source attempt used
+MM-021 and was not repeated after this clarification. MM-022 does not raise
+MM-020's 250,000-group ceiling.
 
 The published [PR #65](https://github.com/GustavoMFDS/MirrorMind/pull/65)
 candidate is `75da34fc2cb91d3354cfbe49af43aeb40721164d` on

@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated on 2026-11-26 against main commit `a456034c55ed7634ad4768b26788fec09dab1d08` plus the isolated UCI pilot worktree. Bounded CSV/XLSX staging, retrospective UCI evaluation, the paired policy test double, the synthetic decision workflow and exact-pin local engine adapters remain experimental. The approved UCI #352 snapshot passed metadata preflight; the corrected reader applied the approved invoice-prefix exclusion policy but exceeded the UCI-only 250,000 product-day group cap and returned no projection. No empirical scores exist. UCI results remain event-time retrospective with unverified publication availability and describe units per recognized `StockCode` category, not verified physical-SKU demand. The decision trace result schema remains interface-only as a general capability; its M1F-02 v2 producer is synthetic and non-authorizing. On the explicit WorldKernel CLI path, each outcome links the selected engine result and a separate parity-oracle execution record. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, production ingestion, agents or production forecasts are deployed.
+Updated on 2026-11-27 against main commit `a456034c55ed7634ad4768b26788fec09dab1d08` plus the UCI pilot branch. Bounded CSV/XLSX staging, retrospective UCI evaluation, the paired policy test double, the synthetic decision workflow and exact-pin local engine adapters remain experimental. The approved UCI #352 snapshot passed metadata preflight; the corrected reader applied the approved invoice-prefix exclusion policy but exceeded the UCI-only 250,000 product-day group cap and returned no projection. No empirical scores exist. UCI results remain event-time retrospective with unverified publication availability and describe units per recognized `StockCode` category, not verified physical-SKU demand. The decision trace result schema remains interface-only as a general capability; its M1F-02 v2 producer is synthetic and non-authorizing. On the explicit WorldKernel CLI path, each outcome links the selected engine result and a separate parity-oracle execution record. The upstream inventory demo and fixed MirrorMind policy handler execute only through the local worker; no HTTP engine execution, production ingestion, agents or production forecasts are deployed.
 
 ## Current request path
 
@@ -23,6 +23,18 @@ The evaluator requires caller-declared complete dates before treating an
 absent product-day as zero, freezes its product cohort from fit dates, and
 returns ordinal-only product summaries. This path does not fetch real source
 bytes and does not convert `InvoiceDate` into publication availability.
+
+The approved local UCI workbook profile is a separate caller-provided stream
+path: `read_uci_workbook` verifies the expected digest and finite ZIP limits,
+the selective OOXML scanner yields only reviewed projection fields, and
+`_normalize_uci_workbook_invoice` classifies the invoice form before the
+bounded `project_uci_retail_rows` aggregation. Under MM-022, only exact
+uppercase `C` plus six digits marks cancellation; lowercase `c` and other
+single ASCII-letter prefixes map to one unverified class whose aggregate count
+survives. Other forms fail closed, identifiers do not reach the output, and
+generic projection defaults remain unchanged. The real-source attempt used
+MM-021 and stopped above the approved group cap; MM-022 is verified by
+synthetic regressions only and was not applied to source data.
 
 Current supported routes: `GET /health`, `GET /v1/capabilities`,
 `POST /v1/scenarios/validate`, and the experimental

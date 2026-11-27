@@ -163,11 +163,13 @@ def test_invalid_quantity_fails_closed_even_on_cancelled_invoice(quantity):
         project_uci_retail_rows([row(invoice="C536365", quantity=quantity)])
 
 
-@pytest.mark.parametrize("invoice", ["", "X536365", "=ABC", "C1", "123", True,
+@pytest.mark.parametrize("invoice", ["", "X536365", "c536365", "=ABC", "C1", "123", True,
                                      536365.0, None, -1])
 def test_invalid_invoice_format_does_not_get_treated_as_regular_sale(invoice):
-    with pytest.raises(ValueError, match="invoice number"):
+    with pytest.raises(ValueError, match="invoice number") as caught:
         project_uci_retail_rows([row(invoice=invoice)])
+    if str(invoice):
+        assert str(invoice) not in str(caught.value)
 
 
 @pytest.mark.parametrize("stock", ["", "=FORMULA", "SKU SPACE", None, True,

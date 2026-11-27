@@ -1134,6 +1134,13 @@
     "limitation": "Synthetic rows prove the UCI-only aggregate exclusion and identifier minimization; they do not establish the full source exclusion count, evaluation, or any change to generic projection behavior."
   },
   {
+    "id": "MM-XLSX-007",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_retail_projection.py",
+    "function": "test_invalid_invoice_format_does_not_get_treated_as_regular_sale",
+    "limitation": "Synthetic generic rows prove lowercase c-prefixed invoice IDs remain invalid and are not echoed outside the UCI workbook adapter; they do not establish source rights or real-dataset behavior."
+  },
+  {
     "id": "MM-UCIE-001",
     "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
     "test": "tests/integration/test_uci_event_time_cli.py",

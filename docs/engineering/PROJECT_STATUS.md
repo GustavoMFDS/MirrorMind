@@ -37,13 +37,16 @@ official record and stored outside Git under a private ACL. Its path-free
 [snapshot manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json)
 records hashes, byte sizes, metadata, missingness discrepancy, resource
 profile and deletion deadline. The first projection stopped at the generic
-100,000-group limit. After MM-021, the source-specific classifier admitted
+100,000-group limit. Under MM-021, the source-specific classifier admitted
 six-digit IDs, preserved `C`/`c` cancellations, and counted/excluded other
 single-letter ASCII prefixes without retaining their identifiers. The
 corrected call then exceeded the approved 250,000-group cap and failed closed;
 no complete projection, exclusion count, validation/holdout score or empirical
-model card was produced. Do not retry, chunk or widen the cap without a new
-owner decision. The former `openpyxl.values_only` reader transiently
+model card was produced. The owner later clarified MM-022: only exact
+uppercase `C` is a cancellation marker; lowercase `c` is an unverified prefix.
+The synthetic regression covers this current rule; the source was not rerun.
+Do not retry, chunk or widen the cap without a new owner decision. The former
+`openpyxl.values_only` reader transiently
 materialized excluded `Description` values without persistence or transfer;
 the new selective OOXML path disables Python text callbacks for excluded body
 cells and has synthetic shared-string regressions. Reader defaults remain

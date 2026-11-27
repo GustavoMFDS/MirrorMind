@@ -81,6 +81,12 @@ aggregate counter before grouping. Other invoice formats still fail closed;
 the generic projection contract is unchanged. The original IDs are not
 retained.
 
+The owner later clarified this rule in MM-022: exact uppercase `C` is the only
+cancellation marker, while lowercase `c` joins other letter prefixes in the
+unverified class. This distinction has synthetic regression coverage only;
+the real-source attempt used MM-021 and was not repeated. No real exclusion
+count or empirical metric exists.
+
 The preflight passed the owner-approved 192 MiB/member and 224 MiB/total ZIP
 profile while retaining the generic 64/128 MiB defaults and the 32 MiB
 compressed-input, 200:1 ratio and 600,000-row bounds. It stopped at the

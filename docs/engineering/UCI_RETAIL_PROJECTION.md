@@ -132,15 +132,17 @@ The approved workbook reader applies source-specific representation rules
 before invoking the bounded internal projector: exact positive five-digit
 integer cells become decimal text, and approved internal-ASCII-space strings
 remain unchanged. The public generic projector does not expose this option.
-Six-digit invoice IDs continue through normal classification;
-`C`/`c` plus six digits are cancellation rows; other one-letter ASCII prefixes
-plus six digits are replaced by a private sentinel and excluded before the
-projector reads stock code, quantity or event date. Only an aggregate
+Six-digit invoice IDs continue through normal classification; only uppercase
+`C` plus six digits is a cancellation row. Lowercase `c` and other one-letter
+ASCII prefixes plus six digits are replaced by a private sentinel and
+excluded from sales aggregation. Only an aggregate
 `unverified_invoice_prefix_rows` count survives. Every other invoice format
-fails closed. Generic row callers cannot enable this behavior through the
-public function. Excluding these rows can change category cohorts, observed
-totals, zero targets and downstream scores; any future evaluation would cover
-only recognized invoice IDs. The adapter does not inspect `Description` to
+fails closed. This MM-022 clarification supersedes MM-021's lowercase-`c`
+rule for the UCI workbook reader; generic row callers cannot enable this
+behavior through the public function. Excluding these rows can change category
+cohorts, observed totals, zero targets and downstream scores; any future
+evaluation would cover only recognized invoice IDs. The adapter does not
+inspect `Description` to
 infer categories. Results describe units per `StockCode` category, not
 physical-SKU demand. The reader's ZIP and UCI-specific group overrides are
 separate from generic row budgets; defaults and generic ceilings remain

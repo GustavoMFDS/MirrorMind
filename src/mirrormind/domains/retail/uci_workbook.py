@@ -135,14 +135,14 @@ def _normalize_workbook_stock_code(value: object) -> str:
 
 
 def _normalize_uci_workbook_invoice(value: object) -> object:
-    """Classify publisher-shaped invoice IDs without retaining unknown prefixes."""
+    """Classify scoped invoice IDs; only exact uppercase C marks cancellation."""
     if type(value) is int and 100_000 <= value <= 999_999:
         return value
     if type(value) is not str:
         raise ValueError("invalid UCI workbook invoice number")
     if re.fullmatch(r"[0-9]{6}", value):
         return value
-    if re.fullmatch(r"[Cc][0-9]{6}", value):
+    if re.fullmatch(r"C[0-9]{6}", value):
         return f"C{value[1:]}"
     if re.fullmatch(r"[A-Za-z][0-9]{6}", value):
         return _UCI_UNVERIFIED_INVOICE_PREFIX
