@@ -789,3 +789,60 @@ under local Decimal contexts with capitals 0 and 1. Run
 explain why exact Fraction arithmetic alone did not guarantee identical
 normalized-input fingerprints. Inspect the stored uppercase-default digest;
 no source-byte authenticity or empirical accuracy follows.
+
+## Guided exercise — adjacent-date validation and safe lint changes
+
+Read the [as-of rolling guide](M1_ASOF_ROLLING_EVALUATION.md),
+`_require_contiguous_days` in
+[`m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py),
+and the tests `test_contiguous_day_guard_preserves_pairwise_boundary_semantics`,
+`test_contiguous_day_guard_rejects_a_gap_without_imputing_a_day` and
+`test_missing_event_day_not_imputed_even_with_publication_metadata`.
+Predict the number of adjacent pairs for an empty list, one date, and three
+dates. Compare that with `itertools.pairwise` and the former
+`zip(days, days[1:])` expression. Explain why the Ruff RUF007 autofix is
+marked unsafe in general, why it is equivalent for this sorted `list[date]`
+input and Python 3.11 minimum, and why a missing day must raise instead of
+being represented as zero demand. Re-run the three regressions and
+`ruff check examples`; confirm imports and lint cleanup did not change any
+forecast, output or authorization contract.
+
+## Guided exercise — verify scope-first evidence retrieval (35 minutes)
+
+Read the [M2 evidence retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md),
+[`contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py),
+[`index.py`](../../src/mirrormind/modules/retrieval/index.py) and
+[`fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py).
+Trace how `EvidenceAccessContext` filters documents before `_token_spans`
+builds the index. Run
+`python -m pytest -q tests/unit/test_evidence_retrieval.py` and predict what
+the denied-record test would observe if tokenization moved before filtering.
+For one result, verify that the cited Python string slice equals the excerpt
+and recompute SHA-256 over its UTF-8 bytes. Run
+`test_contract_rejects_same_length_excerpt_tampering` and
+`test_contract_rejects_wrong_well_formed_excerpt_digest`; explain why the
+contract detects excerpt/digest mismatch but cannot authenticate a source
+when both values are replaced. Inspect the injection-like fixture and explain
+why it remains `untrusted_evidence` without creating an instruction or tool
+call. Finally change the fixed demo scope in a practice branch and explain why
+this tests a local input boundary rather than identity or authorization.
+
+## Guided exercise — sign a current-head challenge in process (35 minutes)
+
+Read the [G-01 service walkthrough](REMOTE_FENCE_HEAD_SERVICE.md), the
+[shared wire protocol](../../src/mirrormind/modules/evidence/remote_fence_head_protocol.py),
+the [responder](../../src/mirrormind/modules/evidence/remote_fence_head_service.py)
+and
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+Run all six `test_remote_head_service_*` selectors. Trace the request nonce
+from the raw query into `SignedRemoteFenceHead`, the canonical signing
+message and the existing client verifier. Change one query field and predict
+whether the responder calls the store. Then reuse a protected public key as
+the service signer and explain why initialization fails. Finally, list the
+transport, durable storage and operational evidence that these tests do not
+provide. Make a fake clock raise `RemoteFenceHeadClockError` and verify the
+bodyless 503. Then make the clock and store raise `RuntimeError`; explain why
+those programming failures propagate rather than being mislabeled as routine
+service outages. Describe how a future HTTP adapter can map an unexpected
+exception at its transport boundary without broad catches inside the typed
+responder.

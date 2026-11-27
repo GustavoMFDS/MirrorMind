@@ -167,6 +167,18 @@ rules. Do not log the typed projection or identifiers while debugging. A
 stable fixture digest and matching cutoff still do not verify publisher
 availability, source rights or demand completeness.
 
+For a synthetic as-of backtest rejected for a calendar gap, inspect
+`_require_contiguous_days` in
+[`m1_asof_rolling_backtest.py`](../../examples/m1_asof_rolling_backtest.py).
+It checks successive parsed dates with `itertools.pairwise`; missing dates
+must keep producing `ValueError("missing event-date record; do not impute demand")`.
+Run `python -m pytest -q tests/unit/test_m1_asof_rolling_backtest.py` and
+compare the empty/singleton/consecutive helper cases with the public
+`test_missing_event_day_not_imputed_even_with_publication_metadata` case.
+Do not repair a fixture by filling an absent date with zero: zero is an
+observed count, while a gap means no record. This synthetic check proves
+calendar labels only, not source availability or authorization.
+
 ## WorldKernel request mapping rejects a retail scenario
 
 Read the [mapping walkthrough](WORLDKERNEL_MAPPING_WALKTHROUGH.md) and
@@ -345,3 +357,40 @@ zero. The evaluator uses explicit uppercase general formatting in
 Run the scientific-notation fingerprint regression in
 [the Census guide](CENSUS_VINTAGE_EVALUATION.md). Historical lowercase-context
 hashes are superseded; do not silently rewrite stored receipts.
+
+## Fictional evidence retrieval misses or returns an unexpected citation
+
+Reproduce with [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py)
+and the [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md). For an empty
+result, inspect query tokenization and the fixed collection/principal scope
+before changing the ranker. For a scope regression, run
+[`test_evidence_retrieval.py`](../../tests/unit/test_evidence_retrieval.py)
+and verify filtering still precedes tokenization and score construction.
+For a citation mismatch, compare the reported Python code-point slice and
+recompute SHA-256 over its UTF-8 bytes. `RetrievedEvidence` rejects a changed
+excerpt with the old digest and a different well-formed digest. Replacing both
+excerpt and digest can still create a self-consistent untrusted envelope; the
+digest is not source provenance. Never log denied IDs, hidden content or raw
+queries. BM25 scores are ranking values, not relevance probabilities, and a
+caller-declared scope is not authentication.
+
+## In-process challenged-head responder returns an error
+
+The experimental [G-01 responder walkthrough](REMOTE_FENCE_HEAD_SERVICE.md)
+describes `RemoteFenceHeadResponder.respond`; it is not an HTTP route. For
+400/405/406, inspect the method, fixed path, exact `Accept` value and raw
+`nonce=...&packet_sha256=...` ordering in the generated request test. A 404
+means no current record was found for the packet scope or the store returned
+a different packet digest. A bodyless 503 means a typed store/clock
+operational error, invalid record or invalid returned clock was observed.
+Store adapters must translate expected unsafe/unavailable reads to
+`RemoteFenceHeadStoreError`; clock adapters must translate expected time
+service failures to `RemoteFenceHeadClockError`. Inspect sanitized adapter
+diagnostics locally, never expose exception text or source rows in a response.
+Unexpected programming exceptions propagate to the in-process caller. The
+responder does not advance or repair state; use the generated-key round-trip
+and adverse cases in
+[`test_atomic_governed_publisher.py`](../../tests/unit/test_atomic_governed_publisher.py).
+If the client rejects a 200 response, verify the configured service key,
+request nonce, packet/snapshot digest and UTC validity against its existing
+verifier. Do not infer an attack or independent freshness from a mismatch.

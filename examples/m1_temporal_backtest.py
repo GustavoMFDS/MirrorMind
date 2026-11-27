@@ -7,7 +7,6 @@ Run: python -m examples.m1_temporal_backtest examples/synthetic-weekly-sales.jso
 from __future__ import annotations
 
 import argparse
-from datetime import date
 import json
 from math import sqrt
 from pathlib import Path

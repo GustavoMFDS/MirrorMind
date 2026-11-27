@@ -75,6 +75,26 @@ authenticated publisher vintages, or establish forecast calibration.
 When quota is available, rerun both official workflows against the exact
 integrated changes and investigate any discrepancy.
 
+## PR #60 integration receipts — 2026-11-26
+
+The M2-01 branch was synchronized with PR #62's merged `main` using the
+ancestry-preserving merge `a5186a680b307c4ecd9d56321321a5b27048731d`. The
+exact merge head passed 845 tests with zero skips, Ruff, source catalog,
+repository atlas, evidence and capability checks at
+`2026-11-26T03:43:45.974393+00:00`. WorldKernel was installed from reviewed
+source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-a5186a680b307c4ecd9d56321321a5b27048731d.json`.
+
+The docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0` passed the same
+exact-head gate at `2026-11-26T03:51:23.258821+00:00`: 845 tests, zero skips,
+all six checks, and one existing Starlette/httpx `TestClient` deprecation
+warning. Receipt:
+`results/local-quality-gate-26e45b4620e9e13e12a745db3c99ead196c656d0.json`.
+Both receipts say `local_gate_passed_not_official_ci`; Actions were not checked
+by these scripts. The installed WorldKernel source revision was
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Any subsequent tracked change
+requires another exact-head gate before publication or review.
+
 The [local-gate regressions](../../tests/unit/test_local_quality_gate.py)
 verify fail-closed SHA checking, dirty-tree refusal, ordered manifest,
 failure/timeouts, and honesty of the receipt. The source
@@ -311,3 +331,45 @@ The final acceptance-marker commit receives its own exact-head gate before
 publication; the current PR head and final receipt are recorded in PR #63.
 Neither local result establishes GitHub Actions success, real-source rights,
 publisher authenticity or empirical forecast quality.
+
+### PR #62 merge and separate review branches — 2026-11-26
+
+Independent final review of PR #62 head `0bed1269613eb689e84ad971c7d8f1878767d6cf`
+passed the exact six-check local gate with WorldKernel pin
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: 835 tests, zero skips, one
+existing warning. The ancestry-preserving merge `a456034c55ed7634ad4768b26788fec09dab1d08`
+was independently compared to the reviewed head with no tree differences and
+passed 835 tests, zero skips, six checks. The post-merge receipt is
+`%TEMP%\mirrormind-independent-main-a456034c.json` at
+`2026-11-26T03:11:16.900697+00:00`.
+
+Exact published main-based review heads also have these complete local gates:
+
+| PR / head | Pytest | Other checks | Receipt / status |
+| --- | --- | --- | --- |
+| #60 `fafded...` | 845 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed. | `results/local-quality-gate-fafdedae3a76398e0450773065e40384c96d1ed7.json`; `local_gate_passed_not_official_ci`. |
+| #63 `b5e989314bcdcb566df479931794a5f56c07d477` | 877 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed with the exact WorldKernel pin installed. | `results/local-quality-gate-b5e989314bcdcb566df479931794a5f56c07d477.json`; `local_gate_passed_not_official_ci`. |
+| #61 merge head `66fc9fa001eaa6bd3adbc8f8d1606f3743239d21` | 841 passed, zero skips; one existing TestClient deprecation warning. | Ruff, catalog, atlas, evidence and capabilities passed with the exact WorldKernel pin installed. | `results/local-quality-gate-66fc9fa001eaa6bd3adbc8f8d1606f3743239d21.json`; `local_gate_passed_not_official_ci`. |
+
+PR #61 documentation refresh commit
+`47fdceb58a2c3802f8e66e5aea51318a698ffe62` passed its exact six-check gate
+at `2026-11-26T04:30:28.981947+00:00`: 841 tests, zero skips, Ruff, symbol
+catalog, atlas, evidence and capability checks. The one existing warning is
+the Starlette/httpx TestClient deprecation. WorldKernel `0.0.1` was installed
+from source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-47fdceb58a2c3802f8e66e5aea51318a698ffe62.json`;
+status `local_gate_passed_not_official_ci`.
+
+The status/documentation follow-up `20ce86bde740d5b46d7aeba4d13138884e211dba`
+also passed the exact six-check gate at `2026-11-26T04:34:17.237663+00:00`:
+841 tests, zero skips, all checks passed and one existing TestClient
+deprecation warning. The same exact WorldKernel pin was installed. Receipt:
+`results/local-quality-gate-20ce86bde740d5b46d7aeba4d13138884e211dba.json`;
+status `local_gate_passed_not_official_ci`. The #61 PR body carries the latest
+head and receipt; re-run the gate after any additional tracked change.
+
+These receipts cover only the named exact revisions. A later documentation
+commit on PR #61 requires a fresh exact-head gate. GitHub Actions was not
+checked by these local runs. No runner, paid usage, workflow change or
+protection bypass was used. The independent #62 review also recommends keeping
+the Census changes separate and retaining #52–#59 as ancestors of the merge.
