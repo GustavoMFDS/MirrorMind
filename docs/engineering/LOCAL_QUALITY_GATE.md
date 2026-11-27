@@ -74,7 +74,10 @@ the sandbox with one Starlette deprecation warning. The unchanged full gate
 then passed on the exact candidate: 989 tests, zero skips, and all six checks.
 Its receipt is
 `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`.
-This is local-only evidence, not GitHub Actions. Run a new receipt for the
+The subsequent exact-head gate on `4ccff24cbc73045a4d01fdc9a5aa299d69e59038`
+also passed 989 tests, zero skips and all six checks; its receipt is
+`results/local-quality-gate-4ccff24cbc73045a4d01fdc9a5aa299d69e59038-workspace.json`.
+Both are local-only evidence, not GitHub Actions. Run a new receipt for the
 final PR head after any subsequent tracked changes, and verify that PR's
 official checks independently.
 

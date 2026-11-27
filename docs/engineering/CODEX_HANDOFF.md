@@ -46,14 +46,14 @@
   drafted and all five focused static checks pass; the targeted retrieval
   suites pass 22 tests. Regression coverage now rejects empty/oversized
   corpora and unsupported document objects before scoring. The clean
-  six-check gate passed on exact candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`:
+  six-check gate passed on exact candidate `4ccff24cbc73045a4d01fdc9a5aa299d69e59038`:
   989 tests, zero skips and all six checks; receipt is in
-  `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`.
-  The first sandboxed attempt timed out in TestClient's local socketpair setup;
-  the same unchanged gate passed outside the sandbox. See [B-07](BLOCKERS.md).
-  A fresh receipt is required for the final PR head after this evidence-doc
-  update. Local mypy is absent; rely on the candidate's official quality job
-  for strict retrieval typing and record its exact head/status.
+  `results/local-quality-gate-4ccff24cbc73045a4d01fdc9a5aa299d69e59038-workspace.json`.
+  Earlier, the same gate on `e3e55d4` timed out only when sandboxed at
+  TestClient's local socketpair setup; unchanged runs outside the sandbox passed.
+  See [B-07](BLOCKERS.md). Any final PR head after subsequent tracked changes
+  needs its own exact receipt. Local mypy is absent; rely on the candidate's
+  official quality job for strict retrieval typing and record its exact status.
 - Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
   new UCI source processing remain unauthorized. M1 synthetic workflow is
   integrated; empirical and production acceptance remain open. Preserve the
