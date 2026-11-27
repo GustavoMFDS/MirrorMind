@@ -2,14 +2,24 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `5100ebf42265e01b65856e7ba91b659ff1b487c7`, after the
-  curated portfolio/index update. PR #77 merged at `540c474`; nine official
+- Current `main` is `7efced55a6821bb1de84190eab5ab3db654da4b8`, after the
+  normal PR #80 merge. PR #79's portfolio/index update merged at `5100ebf`;
+  PR #77 merged at `540c474`; nine official
   contexts passed on exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`.
   PR #78 / MM-024 merged normally at `291562a`; its final head
   `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed 968 tests, zero skips,
   six local checks and six observed official jobs. Those jobs are in runs
   `46072345590`, `46072345631` and `46072345603`; combined status for the merge
   and current main was empty, so keep claims scoped to their exact PR heads.
+- PR #79 exact head `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970
+  tests, zero skips and six local checks; seven observed workflow jobs
+  succeeded and the guarded deploy job was skipped. PR #80 exact head
+  `e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips
+  and six local checks; eight observed jobs succeeded across five workflows,
+  with main-only deployment and manual rehearsal skipped. See
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); merge SHA `7efced5` has no
+  combined-status entries. PR #80's benchmark is synthetic and release prep
+  does not create a release.
 - The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
   only uppercase `C` plus six digits means cancellation; other single ASCII
   letters plus six digits are excluded before sales grouping and represented
@@ -21,8 +31,9 @@
   changes an exclusion label, not the set of sales rows or group cardinality.
   Do not reread, chunk, sample or raise the cap. Preserve local snapshot
   deletion by `2026-12-26`; no empirical score is available.
-- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`, based on the
-  current main tip. Its scope is a bounded offline evaluator for the existing
+- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`. It includes
+  commit `fc43935` and ancestry-preserving merge `f74d286` of current main
+  `7efced5`. Its scope is a bounded offline evaluator for the existing
   fictional M2-01 index. It must keep `evidence_and_rag` planned and local
   retrieval experimental; no route, auth, real data, persistence or RAG claim.
   Source walkthrough, debugging/learning, evidence/atlas/catalog updates are

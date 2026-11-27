@@ -1,5 +1,43 @@
 # Local quality gate and historical Actions fallback
 
+## Current baseline and recent merged PR heads - 2026-11-27
+
+Current `main` is `7efced55a6821bb1de84190eab5ab3db654da4b8`, normal merge of
+[PR #80](https://github.com/GustavoMFDS/MirrorMind/pull/80) after
+[PR #79](https://github.com/GustavoMFDS/MirrorMind/pull/79) at
+`5100ebf42265e01b65856e7ba91b659ff1b487c7`. PR #79 head
+`b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970 tests, zero skips and
+six local checks; its receipt is `%TEMP%/mm-rex-public-portal.json` at
+`2026-11-27T21:48:33.983163+00:00`. Seven observed PR workflow jobs succeeded:
+quality/package in
+[46072708700](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708700),
+symbol catalog in
+[46072708733](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708733),
+Python API test/compatibility in
+[46072708789](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708789),
+and site build in
+[46072708801](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708801);
+the guarded `deploy` job was skipped.
+
+PR #80 head `e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero
+skips and six local checks; its receipt is `%TEMP%/mm-rex-benchmark-release.json`
+at `2026-11-27T22:17:07.127571+00:00`. Eight observed PR workflow jobs
+succeeded: symbol catalog in
+[46075726159](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726159),
+benchmark in
+[46075726114](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726114),
+site build in
+[46075726057](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726057),
+quality/package in
+[46075726238](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726238),
+and Python API test/compatibility in
+[46075726059](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726059).
+The main-only Pages deployment and manual release rehearsal were skipped by
+their workflow conditions. Combined-status queries for both PR heads, both
+merge commits and current `main` returned no individual entries, so preserve
+the evidence at each exact PR head. These results do not transfer to the M2-02
+candidate.
+
 ## Current public CI baseline - 2026-11-27
 
 PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
@@ -24,7 +62,7 @@ six checks, one known warning and its temporary receipt
 strict typing passed on four retrieval files while whole-package mypy found
 62 diagnostic errors across 16 files; wheel/sdist build and clean installed
 wheel smoke passed on Python 3.13.5. These are PR-head results and do not
-validate the current documentation candidate. The pre-PR #77 exact-main
+validate later commits or the current M2-02 candidate. The pre-PR #77 exact-main
 `51c90d2` receipt passed 968 tests, zero skips and six local checks with the
 reviewed WorldKernel pin; historic receipt is described below.
 
