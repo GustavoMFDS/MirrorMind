@@ -4,7 +4,7 @@
 Which replenishment policy best balances stockout risk, storage/ordering cost and service level over the next 28 days?
 
 ## Dataset
-Start with a **bounded** subset of the historical M5 Forecasting dataset (product-store sales, price and calendar); obey dataset usage terms. This is *historical sales*, not current stock or internal Walmart inventory. Lead times, stock, operational constraints and unmet demand will require explicit **synthetic assumptions** unless a permitted source is available.
+No real dataset is currently cleared for this user story. M5 remains **NO-GO** under [B-01](engineering/BLOCKERS.md). The owner-approved UCI Online Retail #352 lane is preparation-only and supports an event-time retrospective, not verified historical availability or inventory facts. The separate Census/ALFRED lane is aggregate and cannot validate SKU-level demand or a replenishment policy. Neither source establishes current stock, stockouts, lead times, operational constraints or unmet demand. Keep the full retail decision story synthetic until a source-specific review approves a fit-for-purpose dataset; label any synthetic assumptions explicitly.
 
 ## Evaluation plan
 1. Define a date cutoff and temporal train/validation/test splits; no future information as features.

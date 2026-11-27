@@ -52,6 +52,7 @@ wall-clock evidence.
 - For bounded local XLSX input failures: inspect [`domains/retail/uci_workbook.py`](../../src/mirrormind/domains/retail/uci_workbook.py), [the workbook guide](UCI_WORKBOOK_READER.md) and [ZIP/schema tests](../../tests/unit/test_uci_workbook.py). Never paste original workbook bytes or customer fields in an issue.
 - For event-time UCI evaluation failures: inspect [`domains/retail/uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), the [fixed-protocol walkthrough](M1_UCI_EVENT_TIME_RESEARCH.md), and [synthetic regressions](../../tests/unit/test_uci_event_time.py). Separate target-date coverage from seven-day history coverage; only synthetic declared-complete dates may justify a zero in the fixture. The result is never point-in-time evidence.
 - For a point-in-time evaluation that selects a later source revision too early: compare `reference_month` with `published_at`, verify the immutable vintage manifest/hash, then check the official release schedule and the source review's ALFRED real-time boundary. Do not manufacture `available_on=InvoiceDate`; if a release timestamp or vintage is missing, abstain or exclude that origin.
+- For synthetic Census vintage-selection failures: inspect [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), the [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md) and [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py). Check strict `< target_release_on`, publication on or after the first day following `reference_month`, the `(reference_month, published_on)` ambiguity key and release-ID date/digest consistency. The period-close rule is only a lower bound; the adapter validates digest syntax but never verifies source bytes, the actual release schedule or rights.
 
 - For missing or mismatched review packets: inspect [`modules/evidence/intake_review.py`](../../src/mirrormind/modules/evidence/intake_review.py), [the review guide](SOURCE_INTAKE_REVIEW.md) and [synthetic tests](../../tests/unit/test_source_intake_review.py). Share only sanitized refs/digests, never proof documents or raw rows in issues; references alone do not authorize use.
 
@@ -318,6 +319,44 @@ checkout passed `test_health` and the complete local gate; preserve both
 observations. Use the owner-approved exact-clean-head gate in an already
 authorized local environment and report its full commit. Do not call a local
 pass GitHub Actions success.
+
+## Synthetic Census vintage evaluation abstains or rejects an origin
+
+Inspect the normalized selector, the evaluation walkthrough and
+tests/unit/test_census_vintage_evaluation.py. Check that each origin's own
+first estimate was published before issued_on and on or after the first day
+following its reference month; each target first estimate follows the issue
+date, and all 12 consecutive reference months are present in the as-of view. A
+publication dated inside its reference month is invalid chronology, even when
+the issue cutoff would otherwise make it visible. The lower bound does not
+verify an official release timestamp. A missing month is an abstention, never a zero. An unrelated
+future reference month is a contract error; a target already published by
+issue is not a future outcome. Compare the per-origin vintage fingerprint and
+sanitized selector receipt before assuming a later revision affected a score.
+If a revision precedes its known first-estimate date, expect chronology
+rejection; a same-day collision is ambiguous at date-only precision. When the
+first-estimate anchor is absent, inspect `unanchored_revision_count` and ensure
+that row changes the full-input fingerprint but not the per-origin feature
+fingerprint or missing-history abstention. To diagnose metric drift, rerun the
+same records under Decimal precision 2 with `ROUND_DOWN` and `ROUND_UP`; exact
+`Fraction` means/aggregates must be identical. For `ValueError` from metric
+conversion, inspect the bounded coefficient/exponent domain and distinguish
+WAPE overflow from positive-result float underflow. Do not replace either with
+infinity, NaN or zero. If only the mean-square is below float range, inspect
+`_sqrt_metric_float`: it scales the exact rational by a power of two before
+converting the mantissa, so a representable RMSE remains available. The result
+is schema v2 because it carries the explicit unanchored count.
+The normalized-input fingerprint is not a publisher-byte digest, and no
+diagnosis resolves source rights, archive completeness or empirical validity.
+
+## Census metrics replay but lineage hashes differ
+
+Check the exact normalized records, including Decimal scale and signed
+zero. The evaluator uses explicit uppercase general formatting in
+`_record_payload`; ambient Decimal capitals must not affect the v2 replay.
+Run the scientific-notation fingerprint regression in
+[the Census guide](CENSUS_VINTAGE_EVALUATION.md). Historical lowercase-context
+hashes are superseded; do not silently rewrite stored receipts.
 
 ## Fictional evidence retrieval misses or returns an unexpected citation
 

@@ -1,4 +1,105 @@
-# Project status — reviewed baseline, not live status
+# Project status — current baseline, 2026-11-27
+
+## Current review reconciliation - 2026-11-27
+
+Main `4efba1e830f2836b6d4f9c9b4f5ed776126e55cc` incorporates #60, #61 and
+#64 through #66. The independent post-merge gate passed 856 tests, zero skips
+and all six checks plus examples Ruff. See [PR #66](https://github.com/GustavoMFDS/MirrorMind/pull/66).
+M2-01, G-01 and ENG-02 are integrated within their experimental scopes.
+The Census review candidate preserves the exact #63 head and adds the
+uppercase Decimal fingerprint fix with a failing-before/passing-after
+regression. The candidate is not accepted until the combined gate and
+merge decision recorded in the integration PR. No actual Census data or
+FRED/ALFRED access is authorized; the direct original Census artifact
+proposal requires separate owner decisions under B-01/B-02.
+
+PR #65 is still separate: the UCI source was privately acquired within
+MM-017 through MM-022, but the attempt stopped above 250,000 product-day
+groups without scores. The duplicate-cell and error-cell parsing findings
+remain with Codex. No further source processing is authorized here.
+Preserve the 2026-12-26 deletion deadline. B-08 remains open with zero
+paid budget. M2-02 and G-02 may advance independently within their
+existing fictional/offline scopes. The dated branch/status records below
+are historical where inconsistent with this reconciliation and live PRs.
+
+**Merged main:** `a456034c55ed7634ad4768b26788fec09dab1d08`, PR #62's
+ancestry-preserving merge. Independent post-merge gate passed 835 tests,
+zero skips and all six checks with WorldKernel at reviewed source revision
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Final PR #62 review and
+post-merge evidence are recorded in [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
+and [comment 7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
+This is local validation, not official Actions. PR #52 is merged; #53–#59
+were closed as incorporated after ancestry checks, and their branches remain
+available.
+
+| Review item | Current exact state | Limits |
+| --- | --- | --- |
+| PR #60 | Open, non-draft, based on `main`, head `fafdedae3a76398e0450773065e40384c96d1ed7`; exact gate: 845 tests, zero skips, six checks. | Experimental fictional/in-memory retrieval; caller scope is not authenticated identity or persistent authorization. |
+| PR #61 | Open, non-draft, based on `main`, head `f30556ecb9219c1bc4eb0eb720f9c59c3a729b29`; exact gate: 841 tests, zero skips, six checks. | Read-only responder only; no route, persistence, authentication or deployed authority. Final receipt and source pin are in its PR body. |
+| PR #63 | Open, non-draft, mergeable and based on `main`; preserves merge `55e91f7d73c67867edaf1aa790242f6cdbc611b9`, whose second parent is `a456034`. Its pre-diagnostic source-policy head `47cdb587b0deab19835acd1435e4bd028ba28519` passed the full local gate at `2026-11-27T02:38:46.324939Z`: 882 tests, zero skips and all six checks with WorldKernel at reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; receipt `results/local-quality-gate-47cdb587b0deab19835acd1435e4bd028ba28519.json`; PR comment [7208332106](https://github.com/GustavoMFDS/MirrorMind/pull/63#issuecomment-7208332106) records it. Four automatic Actions checks failed before jobs ran. Their annotation lists recent payment failure or spending-limit increase as alternatives and identifies neither cause; no jobs, steps, logs or combined statuses were available. See [B-08](BLOCKERS.md). | Synthetic vintage evaluator; no Census/ALFRED source files, API responses or credentials were acquired or processed; no source authorization or empirical results. Independent review remains pending. |
+| PR #64 | Open, non-draft, mergeable and based on `main`; separate ENG-02 example-lint maintenance at `ca97ab61d15347aa271ee9ac8468a0714bdc3402`. Its exact local gate passed 840 tests, zero skips and all six checks; `ruff check examples` passed. Two Actions attempts failed before steps; the pre-start annotation lists account-payment/spending-limit alternatives without identifying the cause. Job records had no steps/logs and combined status was empty; see [B-08](BLOCKERS.md). | No forecast, real-source, API or authorization capability added. Local evidence is not official Actions; independent review remains pending. |
+
+The synthetic M1 evidence-to-decision path is integrated; M1 remains
+incomplete. Approved pilot order is UCI #352 retrospective by event time,
+then aggregate Census/ALFRED release-vintage evaluation. PR #62 integrated the
+synthetic UCI evaluator; PR #63 keeps Census work separate. No source file,
+FRED API response or credential was downloaded or processed. A search-result
+preview of the public FRED `RSAFS` table incidentally displayed a few published
+aggregate values; none was copied into repository artifacts or used in an
+evaluation. No pilot run occurred. B-01/B-02 still require exact rights,
+privacy, retention and temporal-evidence review. B-04 is resolved for
+the narrow reviewed local WorldKernel compatibility slice only; service
+isolation and deployment acceptance remain open. GitHub Actions allowance is
+exhausted under the owner's zero-paid-use decision (B-08); no runner,
+protection or workflow change was made.
+
+Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
+original release files for one verified national seasonally adjusted
+retail-and-food-services total. Exact table, unit and methodology edition
+must be checked before use; the annual-revision index spans January 1992
+through August 2026 but does not prove complete first-release vintages. The
+official schedule gives 8:30 a.m. for advance sales without stating a timezone
+in its table; any unorderable same-day correction must remain ambiguous.
+Census documents the April 2025 removal of nonemployers, so methodology and
+coverage comparability must be reviewed before pooling outcomes.
+
+The [Census citation guidance](https://www.census.gov/about/policies/citation.html)
+supports attribution when deriving estimates from disseminated tables and
+assigns analytical conclusions to the analyst. Its [research transparency
+policy](https://www2.census.gov/foia/ds_policies/ds027.pdf) states that works
+created by Census employees generally are not subject to U.S. copyright, with
+foreign and non-Census creator exceptions. These are general policy statements,
+not file-specific clearance for MARTS release artifacts. The source proposal
+now distinguishes project-scope approval from artifact-rights review; see the
+[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md). No Census file
+was downloaded into the workspace or pilot store. Search previews incidentally
+displayed published aggregate values; none was retained or used in evaluation.
+
+Current FRED Services terms apply to ALFRED and the API, prohibit storage,
+caching or archiving service content, and the API terms prohibit use in
+connection with software/AI development. FRED/ALFRED is therefore NO-GO for
+this development and archival route absent St. Louis Fed written authorization
+or revised terms, and separate clearance of any series-owner rights; this is
+not a finding on the separate original Census files.
+The owner proposal is non-commercial internal research with attribution,
+access-controlled local storage, no redistribution, and 30-day retention of
+value-bearing artifacts followed by deletion. The proposed temporal protocol
+uses a 60/20/20 chronological development/validation/locked holdout, first
+estimates as primary targets, fixed baselines at 1/3/6 horizons, date-only
+strict-before selection, and a 12-month moving-block bootstrap only with at
+least 60 matched holdout origins per horizon. These are proposals requiring
+approval, not authorized use or completed evaluation. No source file, API
+response, account, credential or workbook was acquired. UCI and Census remain
+preparation-only under B-01/B-02; see the
+[Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+`ruff check examples` separately found five pre-existing findings in three
+M1 examples (I001, RUF007, F401). ENG-02 is published separately in PR #64;
+its pairwise change has empty/singleton/consecutive/gap regressions, preserves
+the missing-day failure, and passed `ruff check examples`. The change does not
+alter forecast results or capability claims.
+
+## Historical PR #51 baseline — 2026-11-23
 
 ## Integration candidate - 2026-11-27
 
@@ -100,6 +201,47 @@ docs candidate `26e45b4620e9e13e12a745db3c99ead196c656d0` also passed the same
 gate; its receipt is recorded in `LOCAL_QUALITY_GATE.md`. The current status
 refresh still needs its exact gate before push and independent review. #61
 still needs synchronization and an exact gate.
+
+## Historical consolidated M1 candidate before PR #62 merge — 2026-11-25
+
+The published candidate is branch `codex/m1-engine-provenance`, PR #62 against
+`main`, at head `0bed1269613eb689e84ad971c7d8f1878767d6cf`. GitHub metadata
+verified on 2026-11-26 UTC reports it open and mergeable. Its history preserves
+the published ancestry of PRs #52–#59; #60 and #61 are excluded. Commit
+`74330d8` fixes selected-engine provenance, and `20e7b50` rejects DecisionTrace
+V2 execution evidence later than trace creation. The exact docs-inclusive #62
+head passed its six-check local gate with 835 tests, zero skips and the
+reviewed WorldKernel pin; receipt:
+`results/local-quality-gate-0bed1269613eb689e84ad971c7d8f1878767d6cf.json`.
+This is local evidence, not official Actions or merge approval. No real source
+bytes were acquired and `main` was not changed.
+
+The local branch `codex/m1-census-vintage-adapter` descends from the published
+#62 head through merge `8560ad6`. Its Census corrections remain outside PR #62
+and are not pushed as a separate PR while the consolidated candidate awaits
+review. Independent review comment
+[7179081819](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7179081819)
+reproduced Decimal-context drift, invalid release chronology, unanchored
+revisions entering features, and non-finite/underflowing metrics. Commit
+`3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6` fixes those cases, advances the
+experimental result envelope to `mirrormind.census.vintage_backtest.v2`, and
+adds public evaluator, selector and CLI regressions. The focused Census suite
+passed 42 tests. Its exact clean-head six-check local gate passed 877 tests,
+zero skips, with WorldKernel `0.0.1` installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`; one existing Starlette/httpx
+TestClient deprecation warning appeared. Receipt:
+`results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+These synthetic results do not establish source rights, archive completeness
+or forecast quality. B-01/B-02 still gate real-source work, and B-08 keeps
+official Actions unavailable under the zero-cost decision. The status,
+backlog, handoff and gate-documentation commit
+`a6e3ed3355a1e52712542e6ae0d80d908885a82b` then passed the exact six-check
+gate with 877 tests, zero skips and the reviewed WorldKernel pin. Receipt:
+`results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+This is local evidence only; any later tracked change needs a gate on its own
+exact clean SHA.
+
+## Historical branch evidence — 2026-11-25
 
 The merged M1 path is a complete **synthetic experimental** evidence-to-
 comparison flow: fixed retail evidence, evaluation, residual diagnostics,

@@ -677,6 +677,119 @@ Finally locate where `InvoiceDate` becomes an event day and explain why a
 verified publication vintage requires a distinct source contract. Do not use
 real UCI rows in this exercise.
 
+## Guided exercise — evaluate aggregate Census vintages without lookahead
+
+Read the [synthetic evaluation walkthrough](CENSUS_VINTAGE_EVALUATION.md),
+[model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md),
+[aggregate-vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) and
+[implementation](../../src/mirrormind/domains/retail/census_evaluation.py).
+Run both CLI splits and the focused regressions:
+
+    .\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split validation
+    .\.venv\Scripts\python.exe -m examples.m1_census_vintage_evaluation --split holdout
+    .\.venv\Scripts\python.exe -m pytest -q tests/unit/test_census_vintage_evaluation.py tests/integration/test_census_vintage_evaluation_cli.py
+
+Trace the December and January validation origins. For each, list the release
+dates admitted by the strict issue cutoff, the 12 complete history months, the
+lag-12 target and first-estimate label. Move a historical revision to the
+second origin's issue date and predict why it leaves the history fingerprint
+unchanged. Remove one month and identify the exact abstention count. Change a
+target first-estimate value and explain why metrics change while the output
+still omits that value and its forecast. Finally explain why a higher or lower
+fictional error is not evidence about Census accuracy, source permission,
+archive coverage or the proposed UCI product-level study.
+Run `test_trailing_mean_and_metrics_ignore_ambient_decimal_context` under both
+ROUND_DOWN and ROUND_UP and trace the `Decimal` to `Fraction` conversion.
+Append a revision dated before its known first estimate, then on the same date;
+identify the chronology error versus the date-only ambiguity error. Remove an
+estimate but retain a later revision, compare `unanchored_revision_count`, the
+full input hash and origin feature hashes, and explain why history remains
+missing. Finally run the public WAPE overflow and positive-metric underflow
+regressions; explain why they raise `ValueError` instead of serializing
+infinity, NaN or zero. Then run
+`test_representable_rmse_does_not_underflow_while_scaling_mean_square` and
+trace how `_sqrt_metric_float` rescales an exact rational before taking its
+square root. The explicit count changes the experimental result envelope to
+schema v2.
+
+## Guided exercise — select an aggregate vintage without lookahead
+
+Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md),
+[synthetic adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md),
+[fixture card](datasets/SYNTHETIC_CENSUS_VINTAGES.md) and
+[`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py).
+Run `python -m pytest -q tests/unit/test_census_vintages.py`. Draw the
+reference month, first-estimate publication date, monthly revision date and
+target-release cutoff for the first regression. Predict which `Decimal` is
+selected, then move the revision to the cutoff date and explain why it is
+excluded. Add two same-day records for one month; explain why input order
+cannot safely break the tie. Remove one reference month and verify it remains
+absent rather than becoming zero. Finally mutate a record's value without
+changing its digest string and identify the missing byte-verification layer.
+Explain why this normalized synthetic selector proves neither a real source
+vintage nor permission, and why UCI `InvoiceDate` cannot supply
+`published_on`.
+Add an anchored revision dated before its first estimate and verify chronology
+rejection; set both dates equal and explain why the date-only ambiguity guard
+also rejects it.
+
+### Regression extension — period-close lower bound
+
+Move a first estimate's publication date into its reference month and run
+`test_evaluator_rejects_first_estimates_published_before_reference_month_closes`.
+Then move it to the first day of the following month and explain why the
+normalized boundary still does not authenticate the official release date.
+
+## Guided exercise — review a temporal source without acquiring its data
+
+Read the [Census/ALFRED protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md), the
+[Census MARTS archive](https://www.census.gov/retail/marts/historic_releases.html),
+the [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html),
+the [current methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html),
+the [release schedule](https://www.census.gov/retail/release_schedule.html),
+and the [FRED Services terms](https://fred.stlouisfed.org/legal/terms/).
+Without opening a release file or calling an API, identify which metadata proves
+that an archive index exists and which evidence is still needed to prove each
+month's first release, original bytes and local retention rights. Explain why
+an API key does not grant the rights of a third-party series owner and why the
+current Services terms apply to ALFRED and prohibit storage/cache/archive,
+while API-specific terms also prohibit software/AI-development access and
+API-associated storage. State why FRED/ALFRED is currently a NO-GO data route
+for MirrorMind's reproducible development study unless written permission or
+changed terms expressly cover these uses. Separate this conclusion from the
+still-open rights review for direct Census artifacts.
+
+Then add `methodology_edition` to a hypothetical source manifest. Trace the
+documented April 2025 removal of nonemployers through the proposed time series:
+state why publication-date eligibility alone cannot prove that values on both
+sides have the same population definition, and design a fail-closed choice
+between a reviewed comparability analysis, separate reporting by edition, or
+abstention. Review the owner's proposed source package: original Census
+MARTS files only, one verified national seasonally adjusted total, internal
+research with attribution, access-controlled local storage, 30-day retention
+of value-bearing artifacts and deletion, and no redistribution. Explain why
+each item requires approval before acquisition. Keep the exercise metadata-
+only; do not retrieve Census values, create an API key, or call the evaluation
+an empirical pilot.
+
+Finally, pre-register a chronological 60/20/20 development/validation/locked-
+holdout split and the fixed 1/3/6-month baselines before looking at scores.
+Explain why date-only publication values require strict-before selection,
+why same-day correction metadata without orderable timestamps requires
+abstention, and why fewer than 60 matched holdout origins per horizon supports
+descriptive metrics only under the proposed 12-month moving-block bootstrap.
+These are proposed acceptance criteria, not executed evidence.
+
+## Guided exercise: fingerprint formatting and numeric replay
+
+Read [the Census walkthrough](CENSUS_VINTAGE_EVALUATION.md), then compare
+`str(Decimal("1.00E+20"))` with `format(Decimal("1.00E+20"), "G")`
+under local Decimal contexts with capitals 0 and 1. Run
+`test_scientific_notation_fingerprints_ignore_decimal_capitals` and
+explain why exact Fraction arithmetic alone did not guarantee identical
+normalized-input fingerprints. Inspect the stored uppercase-default digest;
+no source-byte authenticity or empirical accuracy follows.
+
 ## Guided exercise — adjacent-date validation and safe lint changes
 
 Read the [as-of rolling guide](M1_ASOF_ROLLING_EVALUATION.md),

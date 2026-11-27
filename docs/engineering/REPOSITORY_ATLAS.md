@@ -952,7 +952,38 @@ The evaluator is experimental and synthetic-only in automated use. It does not
 infer publication time from `InvoiceDate`, authenticate a source manifest or
 prove completeness, source rights or predictive performance.
 
-## 59. Permission-filtered fictional evidence retrieval (experimental)
+## 59. Synthetic aggregate Census vintage selector (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [`src/mirrormind/domains/retail/census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py) | Provides immutable normalized vintage records and a bounded, pure date-only as-of selector; preserves release IDs and digest strings without authenticating source bytes |
+| [`tests/unit/test_census_vintages.py`](../../tests/unit/test_census_vintages.py) | Regresses strict release cutoff, revision selection, missing history, duplicate ambiguity, metadata conflicts, malformed values, mixed series and input budgets |
+| [`docs/engineering/CENSUS_VINTAGE_ADAPTER.md`](CENSUS_VINTAGE_ADAPTER.md) | Walks through the contract, algorithm, data flow, failure boundaries, examples, test evidence and learning exercises |
+| [`docs/engineering/datasets/SYNTHETIC_CENSUS_VINTAGES.md`](datasets/SYNTHETIC_CENSUS_VINTAGES.md) | Identifies every fixture value as fictional and records that no real source rights, snapshot or retention has been reviewed |
+| [`docs/engineering/changes/M1B_04_CENSUS_VINTAGE_ADAPTER.md`](changes/M1B_04_CENSUS_VINTAGE_ADAPTER.md) | Defines the bounded change request, acceptance criteria, impact map and evidence for a local synthetic-only adapter |
+
+The selector consumes caller-supplied normalized records in memory. It makes no
+source request, reads no file or credential, and cannot establish source
+authenticity, permission, completeness or forecast eligibility.
+
+## 60. Synthetic aggregate Census vintage evaluation (experimental)
+
+| Tracked path | Reviewed responsibility |
+| --- | --- |
+| [src/mirrormind/domains/retail/census_evaluation.py](../../src/mirrormind/domains/retail/census_evaluation.py) | Selects each origin's visible vintage and computes fixed matched monthly baselines, reason-specific abstention and privacy-limited lineage |
+| [tests/unit/test_census_vintage_evaluation.py](../../tests/unit/test_census_vintage_evaluation.py) | Regresses strict origin cutoffs, revisions, first-estimate labels, horizons, zero-safe metrics, missing history and malformed origin schedules |
+| [tests/integration/test_census_vintage_evaluation_cli.py](../../tests/integration/test_census_vintage_evaluation_cli.py) | Replays fictional validation and holdout commands and checks deterministic, disjoint, minimized output |
+| [examples/m1_census_vintage_evaluation.py](../../examples/m1_census_vintage_evaluation.py) | Generates an in-memory 21-month aggregate series, one later revision and fixed non-overlapping synthetic origin splits |
+| [docs/engineering/CENSUS_VINTAGE_EVALUATION.md](CENSUS_VINTAGE_EVALUATION.md) | Explains the source walk, contract, baselines, metric rules, receipt, tests, diagnostics and exercises |
+| [docs/engineering/model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) | Records synthetic split semantics, fixed baselines, no empirical results and real-source review gates |
+| [docs/engineering/changes/M1C_04_CENSUS_SYNTHETIC_VINTAGE_EVALUATION.md](changes/M1C_04_CENSUS_SYNTHETIC_VINTAGE_EVALUATION.md) | Defines the scoped evaluator change, impact map, acceptance and evidence boundary |
+
+The evaluator fingerprints normalized inputs and each selected vintage for
+replay, but these digests do not verify publisher bytes or grant rights.
+Missing targets, visible targets and incomplete history remain explicit
+abstentions. No real source parser or production forecast capability is added.
+
+## 61. Permission-filtered fictional evidence retrieval (experimental)
 
 | Tracked path | Reviewed responsibility |
 | --- | --- |

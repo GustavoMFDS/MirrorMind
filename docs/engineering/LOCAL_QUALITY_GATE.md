@@ -167,6 +167,41 @@ same exact-head command with `--receipt results/local-quality-gate-<head>.json`.
 claim it as a repository artifact or official CI. Record the actual final
 head and outcome in the PR discussion.
 
+### Census review corrections — descendant implementation head — 2026-11-25
+
+Commit `3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6` is a Census-only follow-up
+on local descendant branch `codex/m1-census-vintage-adapter`. It contains the
+four reproduced review corrections: Decimal-context-independent metrics,
+first-estimate/revision chronology and unanchored-revision exclusion, plus
+fail-closed metric overflow/underflow. The test suite remains synthetic-only.
+With WorldKernel `0.0.1` installed from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`, its exact clean-head six-check gate
+passed at `2026-11-26T01:48:54Z`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence map and capability ledger:
+  all passed.
+- Receipt: `results/local-quality-gate-3c7603677a9ca7fb9f00bc0e959986e5fbb5a3f6.json`.
+- Status: `local_gate_passed_not_official_ci`; GitHub Actions was not checked.
+
+This receipt covers the implementation and feature-documentation commit. The
+subsequent status, backlog, handoff and gate-documentation edits require a new
+exact clean-head gate. The branch is not pushed and has no separate PR while
+consolidated PR #62 remains open; these Census fixes are not part of PR #62.
+
+### Status-documentation-inclusive descendant — 2026-11-25
+
+After the status, backlog, handoff, change-request and gate-receipt updates,
+exact clean commit `a6e3ed3355a1e52712542e6ae0d80d908885a82b` passed all six
+checks with 877 tests and zero skips. WorldKernel `0.0.1` remained pinned to
+reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. One existing
+Starlette/httpx TestClient deprecation warning appeared. Receipt:
+`results/local-quality-gate-a6e3ed3355a1e52712542e6ae0d80d908885a82b.json`.
+Status is `local_gate_passed_not_official_ci`; Actions remains unchecked. This
+record does not include later edits to the gate record itself; gate any newer
+tracked head separately.
+
 ### DecisionTrace V2 chronology correction — 2026-11-25
 
 The independent PR #62 review reproduced acceptance of execution evidence
@@ -188,6 +223,114 @@ and gate-documentation update that records it. Rerun the six-check gate on the
 exact clean documentation-inclusive SHA before publishing the branch. Preserve
 that final SHA and receipt in the PR discussion; never treat either local
 receipt as official Actions or integration approval.
+
+## Published Census PR #63 baseline — 2026-11-26
+
+The separate Census branch includes merged `main` at
+`a456034c55ed7634ad4768b26788fec09dab1d08` through ancestry-preserving merge
+`55e91f7d73c67867edaf1aa790242f6cdbc611b9` (main is the second parent). The
+exact merged candidate passed all six checks at
+`2026-11-26T03:58:32.075461+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks:
+  all passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-55e91f7d73c67867edaf1aa790242f6cdbc611b9.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions were not checked by the
+  local script.
+
+The candidate was published as the separate open PR #63 at head
+`b5e989314bcdcb566df479931794a5f56c07d477`. Pilot-status reconciliation
+commit `162268ded05eb8ba291025b6cc98e5658ae2e0a1` passed the exact six-check
+gate at `2026-11-26T04:49:09.425850+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks:
+  all passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-162268ded05eb8ba291025b6cc98e5658ae2e0a1.json`.
+- Status: `local_gate_passed_not_official_ci`; the script records Actions as
+  `not_checked_by_this_script`.
+
+The follow-up documentation head `941d72956d9d00f6fd281fd3a3039a1786777c70`
+passed the exact six-check gate at `2026-11-26T04:52:25.496219+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx TestClient
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks all
+  passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-941d72956d9d00f6fd281fd3a3039a1786777c70.json`.
+- Status: `local_gate_passed_not_official_ci`; the script records Actions as
+  `not_checked_by_this_script`.
+
+The previously published baseline-documentation head
+`42a9746d7925e023a97445a6fe6cd4db324173fa` passed the exact gate at
+`2026-11-26T05:49:17.262178Z`: 877 tests, zero skips and all six checks. Its
+receipt is `results/local-quality-gate-42a9746d7925e023a97445a6fe6cd4db324173fa.json`.
+The current status refresh has a separate exact-head gate; its final receipt
+is maintained in PR #63. This is local evidence, not official CI; no source
+bytes, credential or licensed-data permission is implied. See
+[B-08](BLOCKERS.md) for the exact pre-start Actions annotations and their
+unresolved alternatives.
+
+### PR #63 published head — 2026-11-26
+
+The exact clean head `5ec904dc0be6555d3651f947ef1f02fdd6ce20f7` passed the
+complete temporary local gate at `2026-11-26T15:42:29.443936+00:00`:
+
+- Pytest: 877 passed, zero skipped; one existing Starlette/httpx
+  `TestClient` deprecation warning.
+- Ruff, source catalog, repository atlas, evidence and capability checks: all
+  passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-5ec904dc0be6555d3651f947ef1f02fdd6ce20f7-authorized-local.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions were not checked by the
+  local script.
+
+The exact-head Actions attempts and unresolved alternatives-only annotation
+are recorded in [B-08](BLOCKERS.md). This result covers local synthetic tests
+and source guards. It does not establish real-source permission, empirical
+accuracy, official Actions success or production readiness.
+
+### Census period-close chronology correction — 2026-11-26
+
+Code and feature-documentation commit
+`00311c6344e8a70bb72315afc10f4fbd02926d26` rejects any normalized first
+estimate or revision published before its reference month closes. The focused
+Census selector/evaluator/CLI suite passed 47 tests. Its exact clean-head gate
+passed at `2026-11-26T17:35:07.989722+00:00`:
+
+- Pytest: 882 passed, zero skipped; one existing Starlette/httpx `TestClient`
+  deprecation warning appeared.
+- Ruff, source catalog, repository atlas, evidence and capability checks: all
+  passed.
+- WorldKernel `0.0.1` was installed from reviewed source commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`.
+- Receipt: `results/local-quality-gate-00311c6344e8a70bb72315afc10f4fbd02926d26.json`.
+- Status: `local_gate_passed_not_official_ci`; Actions were not checked.
+
+The restricted sandbox run stalled in `socket.accept` during Windows
+`asyncio` self-pipe creation for `tests/integration/test_api.py::test_health`.
+A bounded faulthandler reproduction confirmed the known executor limitation;
+the interrupted run emitted no gate receipt. The same exact clean SHA then
+passed the full gate in the authorized local environment, with all checks
+enabled. Status, handoff, backlog and gate-documentation commit
+`a09b4c332519547c3ebc81890170873d4bfeee27` passed the same exact-head gate at
+`2026-11-26T17:41:09.165939+00:00`: 882 tests, zero skips and all six checks.
+Receipt:
+`results/local-quality-gate-a09b4c332519547c3ebc81890170873d4bfeee27.json`.
+The final acceptance-marker commit receives its own exact-head gate before
+publication; the current PR head and final receipt are recorded in PR #63.
+Neither local result establishes GitHub Actions success, real-source rights,
+publisher authenticity or empirical forecast quality.
 
 ### PR #62 merge and separate review branches — 2026-11-26
 

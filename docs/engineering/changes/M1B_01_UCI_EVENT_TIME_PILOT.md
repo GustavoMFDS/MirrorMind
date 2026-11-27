@@ -1,6 +1,11 @@
 # Change request — M1B-01 UCI event-time retrospective pilot
 
-**Status:** implementation prepared against synthetic data; exact-head local gate passed; independent review of this diff remains pending.
+**Status:** the synthetic event-time implementation is integrated in `main`
+through PR #62, which incorporated PR #57's published history. Independent
+review of the consolidated synthetic M1 scope approved exact head
+`0bed1269613eb689e84ad971c7d8f1878767d6cf`; the merged-main gate passed 835
+tests with zero skips and all six checks. Real-source rights, availability and
+empirical evaluation remain open under B-01/B-02.
 
 ## 1. Goal in plain language
 
@@ -31,8 +36,8 @@
 - [x] Existing small default limits remain; any larger explicit caps remain finite and are not represented as verified original-file support.
 - [x] Source review and dataset/model cards make permission and availability limits explicit.
 - [x] Exact clean-commit local quality gate passes all six checks (`a42c3e13f73e9499dd505560d2809573fd1a7005`, 712 tests, 2026-11-25 15:24:49 UTC; local only).
-- [ ] Independent reviewer inspects the committed diff and exact-head receipt.
-- [ ] External reviewer/owner determines separately whether PR #57 is ready; this request does not mark it ready or merge it.
+- [x] Independent reviewer inspected the consolidated PR #62 diff and exact-head receipt for the synthetic M1 scope.
+- [x] PR #57's implementation history was incorporated by PR #62; the original feature branch is not a pending merge. Real-source use remains a separate owner decision under B-01/B-02.
 
 ## 3. Impact map
 
@@ -66,7 +71,7 @@ The focused regression set passed in the current working tree: 87 tests, includi
 
 ## 6. Evidence after implementation
 
-- Commit / PR: implementation `a42c3e13f73e9499dd505560d2809573fd1a7005`; PR #57 remains a draft, with review and integration decisions separate.
+- Commit / PR: implementation `a42c3e13f73e9499dd505560d2809573fd1a7005`; published PR #57 history is incorporated by the merged PR #62 at `a456034c55ed7634ad4768b26788fec09dab1d08`.
 - Modified symbols and files: `uci_transactions`, `uci_workbook`, new `uci_event_time`, synthetic example and associated tests/docs.
 - Tests and environment: Python 3.13.5; 87 focused tests and exact-head full gate of 712 tests plus all five non-test checks passed; official CI not checked by the script.
 - Claim IDs: `MM-UCI-EVAL-001` through `MM-UCI-EVAL-003`, with named functions and limitations in `EVIDENCE_MAP.json`.
