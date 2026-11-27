@@ -18,7 +18,7 @@ e reproduzível. Sua primeira aplicação é o planejamento de estoques no
 varejo, mas a arquitetura modular foi pensada para atender outros domínios
 ao longo do desenvolvimento.
 
-[Experimente a demonstração](#experimente-o-mirrormind) · [Versão alfa](https://github.com/GustavoMFDS/MirrorMind/releases/tag/v0.1.0-alpha.1) · [Arquitetura](#arquitetura) · [Primeiros passos](#primeiros-passos) · [Documentação](#documentação)
+[Site](https://gustavomfds.github.io/MirrorMind/) · [Experimente a demonstração](#experimente-o-mirrormind) · [Versão alfa](https://github.com/GustavoMFDS/MirrorMind/releases/tag/v0.1.0-alpha.1) · [Arquitetura](#arquitetura) · [Primeiros passos](#primeiros-passos) · [Documentação](#documentação)
 
 ## Experimente o MirrorMind
 
