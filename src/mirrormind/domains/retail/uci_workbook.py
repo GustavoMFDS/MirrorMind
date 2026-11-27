@@ -1,8 +1,8 @@
-"""Bounded optional XLSX reader for *trusted, approved* UCI-shaped sources.
+"""Bounded optional reader for the approved UCI-shaped OOXML subset.
 
-No source permission is granted by parsing. Original UCI data, customer
-identifiers, release vintages, full workbook support and model fitness remain
-outside this experimental in-memory fixture-based reader.
+Parsing grants no source permission. Only approved projection columns are
+materialized; descriptions, customer identifiers and other excluded values
+remain outside the in-memory result.
 """
 from __future__ import annotations
 
@@ -15,18 +15,22 @@ from typing import BinaryIO
 from zipfile import BadZipFile, ZipFile
 
 from mirrormind.domains.retail.uci_transactions import (
+    _UCI_UNVERIFIED_INVOICE_PREFIX,
     MAX_GROUPS,
     MAX_ROWS,
-    MAX_SUPPORTED_GROUPS,
     MAX_SUPPORTED_ROWS,
+    MAX_SUPPORTED_UCI_WORKBOOK_GROUPS,
     UciRetailProjection,
-    project_uci_retail_rows,
+    _project_uci_retail_rows,
+    is_valid_uci_stock_code,
 )
 
 MAX_WORKBOOK_BYTES = 32 * 1024 * 1024
 MAX_ZIP_MEMBERS = 256
 MAX_ZIP_ENTRY_BYTES = 64 * 1024 * 1024
 MAX_ZIP_TOTAL_BYTES = 128 * 1024 * 1024
+MAX_SUPPORTED_ZIP_ENTRY_BYTES = 192 * 1024 * 1024
+MAX_SUPPORTED_ZIP_TOTAL_BYTES = 224 * 1024 * 1024
 MAX_ZIP_COMPRESSION_RATIO = 200
 UCI_HEADER = (
     "InvoiceNo", "StockCode", "Description", "Quantity",
@@ -52,6 +56,9 @@ class UciWorkbookReadResult:
             **self.projection.receipt(),
             "status": "uci_xlsx_projection_not_authorized",
             "workbook_sha256": self.sha256_hex,
+            "unverified_invoice_prefix_rows": (
+                self.projection.unverified_invoice_prefix_rows
+            ),
         }
 
 
@@ -80,7 +87,10 @@ def _bounded_read(stream: BinaryIO) -> bytes:
     return b"".join(chunks)
 
 
-def _check_zip_members(raw: bytes) -> None:
+def _check_zip_members(
+    raw: bytes, *, max_entry_bytes: int = MAX_ZIP_ENTRY_BYTES,
+    max_total_bytes: int = MAX_ZIP_TOTAL_BYTES,
+) -> None:
     """Reject excessive/active archive entries before workbook XML processing."""
     try:
         with ZipFile(BytesIO(raw)) as archive:
@@ -88,8 +98,12 @@ def _check_zip_members(raw: bytes) -> None:
             if not 1 <= len(members) <= MAX_ZIP_MEMBERS:
                 raise ValueError("workbook has an unsupported entry count")
             total = 0
+            seen_names: set[str] = set()
             for item in members:
                 name = item.filename.replace("\\", "/").lower()
+                if name in seen_names:
+                    raise ValueError("workbook contains duplicate archive entries")
+                seen_names.add(name)
                 if (
                     name.startswith("/")
                     or any(part in ("", ".", "..") for part in name.split("/"))
@@ -97,10 +111,10 @@ def _check_zip_members(raw: bytes) -> None:
                     or item.flag_bits & 1
                 ):
                     raise ValueError("workbook contains unsupported archive features")
-                if item.file_size > MAX_ZIP_ENTRY_BYTES:
+                if item.file_size > max_entry_bytes:
                     raise ValueError("workbook archive entry exceeds byte budget")
                 total += item.file_size
-                if total > MAX_ZIP_TOTAL_BYTES:
+                if total > max_total_bytes:
                     raise ValueError("workbook archive uncompressed size exceeds budget")
                 if item.file_size and (
                     item.compress_size == 0
@@ -111,16 +125,47 @@ def _check_zip_members(raw: bytes) -> None:
         raise ValueError("invalid ZIP workbook") from None
 
 
+def _normalize_workbook_stock_code(value: object) -> str:
+    """Normalize only the exact UCI workbook's reviewed cell encodings."""
+    if type(value) is int and 10_000 <= value <= 99_999:
+        return str(value)
+    if is_valid_uci_stock_code(value, allow_internal_spaces=True):
+        return value
+    raise ValueError("invalid product stock code")
+
+
+def _normalize_uci_workbook_invoice(value: object) -> object:
+    """Classify publisher-shaped invoice IDs without retaining unknown prefixes."""
+    if type(value) is int and 100_000 <= value <= 999_999:
+        return value
+    if type(value) is not str:
+        raise ValueError("invalid UCI workbook invoice number")
+    if re.fullmatch(r"[0-9]{6}", value):
+        return value
+    if re.fullmatch(r"[Cc][0-9]{6}", value):
+        return f"C{value[1:]}"
+    if re.fullmatch(r"[A-Za-z][0-9]{6}", value):
+        return _UCI_UNVERIFIED_INVOICE_PREFIX
+    raise ValueError("invalid UCI workbook invoice number")
+
+
 def read_uci_workbook(
     stream: BinaryIO, *, expected_sha256: str,
     sheet_name: str = "Online Retail",
     max_rows: int = MAX_ROWS,
     max_groups: int = MAX_GROUPS,
+    max_zip_entry_bytes: int = MAX_ZIP_ENTRY_BYTES,
+    max_zip_total_bytes: int = MAX_ZIP_TOTAL_BYTES,
 ) -> UciWorkbookReadResult:
     """Project a small, already-authorized local workbook through strict UCI schema.
 
     The **caller** selects and approves source access. This code never opens a
     path, downloads data, verifies a license or invents publication timestamps.
+    Archive expansion limits default to the conservative local profile. A
+    caller may request a larger, still finite profile only after separate
+    review of a trusted local source; the explicit supported ceilings remain
+    192 MiB per member and 224 MiB total. Compressed bytes and compression
+    ratio limits are unchanged.
     """
     if type(expected_sha256) is not str or not re.fullmatch(
         r"[0-9a-f]{64}", expected_sha256
@@ -130,49 +175,67 @@ def read_uci_workbook(
         raise ValueError("unsupported workbook sheet selection")
     if type(max_rows) is not int or not 1 <= max_rows <= MAX_SUPPORTED_ROWS:
         raise ValueError("invalid bounded workbook row limit")
-    if type(max_groups) is not int or not 1 <= max_groups <= MAX_SUPPORTED_GROUPS:
+    if (
+        type(max_groups) is not int
+        or not 1 <= max_groups <= MAX_SUPPORTED_UCI_WORKBOOK_GROUPS
+    ):
         raise ValueError("invalid bounded workbook group limit")
+    if (
+        type(max_zip_entry_bytes) is not int
+        or not 1 <= max_zip_entry_bytes <= MAX_SUPPORTED_ZIP_ENTRY_BYTES
+    ):
+        raise ValueError("invalid bounded workbook ZIP entry limit")
+    if (
+        type(max_zip_total_bytes) is not int
+        or not 1 <= max_zip_total_bytes <= MAX_SUPPORTED_ZIP_TOTAL_BYTES
+    ):
+        raise ValueError("invalid bounded workbook ZIP total limit")
+    if max_zip_entry_bytes > max_zip_total_bytes:
+        raise ValueError("invalid bounded workbook ZIP limits")
     raw = _bounded_read(stream)
     digest = sha256(raw).hexdigest()
     if not compare_digest(digest, expected_sha256):
         raise ValueError("workbook bytes do not match expected digest")
-    _check_zip_members(raw)
+    _check_zip_members(
+        raw,
+        max_entry_bytes=max_zip_entry_bytes,
+        max_total_bytes=max_zip_total_bytes,
+    )
     try:
-        from openpyxl import load_workbook
+        import openpyxl.utils.datetime  # noqa: F401 - optional OOXML date conversion
     except ImportError:
         raise RuntimeError("optional XLSX support requires the uci extra") from None
     try:
-        book = load_workbook(
-            BytesIO(raw), read_only=True, data_only=False, keep_links=False
-        )
-    except Exception:  # noqa: BLE001 - sanitize third-party parser errors that may include input
-        raise ValueError("invalid or unsupported XLSX structure") from None
-    try:
-        if book.sheetnames != ["Online Retail"]:
-            raise ValueError("unsupported workbook sheet layout")
-        rows = iter(book["Online Retail"].iter_rows(values_only=True))
-        header = next(rows, None)
-        if tuple(header or ()) != UCI_HEADER:
-            raise ValueError("unsupported workbook header layout")
+        from mirrormind.domains.retail.uci_xlsx_xml import iter_uci_projection_rows
 
-        def selected_rows():
-            for values in rows:
-                if len(values) != len(UCI_HEADER):
-                    raise ValueError("unsupported workbook transaction row")
-                yield {
-                    "InvoiceNo": values[0],
-                    "StockCode": values[1],
-                    "Quantity": values[3],
-                    "InvoiceDate": values[4],
-                }
+        with ZipFile(BytesIO(raw)) as archive:
+            selected_rows = iter_uci_projection_rows(
+                archive, sheet_name=sheet_name, max_rows=max_rows,
+                expected_header=UCI_HEADER,
+            )
 
-        projection = project_uci_retail_rows(
-            selected_rows(), max_rows=max_rows, max_groups=max_groups
-        )
+            def normalized_rows():
+                for row in selected_rows:
+                    invoice = _normalize_uci_workbook_invoice(row["InvoiceNo"])
+                    row["InvoiceNo"] = invoice
+                    if invoice is _UCI_UNVERIFIED_INVOICE_PREFIX:
+                        yield row
+                        continue
+                    row["StockCode"] = _normalize_workbook_stock_code(
+                        row["StockCode"]
+                    )
+                    yield row
+
+            projection = _project_uci_retail_rows(
+                normalized_rows(), max_rows=max_rows, max_groups=max_groups,
+                max_groups_ceiling=MAX_SUPPORTED_UCI_WORKBOOK_GROUPS,
+                allow_internal_stock_code_spaces=True,
+                allow_unverified_invoice_prefix=True,
+            )
+    except ImportError:
+        raise RuntimeError("optional XLSX support requires the uci extra") from None
     except (ValueError, TypeError):
         raise
-    except Exception:  # noqa: BLE001 - do not expose workbook cell contents in errors
+    except Exception:  # noqa: BLE001 - sanitize XML/ZIP parser errors
         raise ValueError("invalid workbook row structure") from None
-    finally:
-        book.close()
     return UciWorkbookReadResult(digest, projection)

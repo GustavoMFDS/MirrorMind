@@ -1,0 +1,150 @@
+{
+  "manifest_version": "mirrormind.dataset_snapshot.v1",
+  "status": "approved_bounded_attempt_stopped_at_group_limit",
+  "dataset": {
+    "name": "Online Retail",
+    "publisher": "UCI Machine Learning Repository",
+    "dataset_id": "352",
+    "doi": "10.24432/C5BW33",
+    "record_url": "https://archive.ics.uci.edu/dataset/352/online-retail",
+    "artifact_url": "https://archive.ics.uci.edu/static/public/352/online%2Bretail.zip",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33",
+    "intended_use": "One local, non-commercial retrospective event-time study; not point-in-time validation or SKU demand validation",
+    "owner_scope_approval_date": "2026-11-26"
+  },
+  "acquisition": {
+    "acquired_at_utc": "2026-11-26T22:39:45.519741Z",
+    "archive_last_write_utc": "2026-11-26T22:41:00.386307Z",
+    "archive_filename": "OnlineRetail.zip",
+    "archive_bytes": 23715478,
+    "archive_sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+    "workbook_filename": "Online Retail.xlsx",
+    "workbook_bytes": 23715344,
+    "workbook_sha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+    "local_path_recorded": false,
+    "git_ignored": true,
+    "private_acl_verified": true,
+    "external_transfer": false
+  },
+  "source_metadata": {
+    "worksheet": "Online Retail",
+    "header": [
+      "InvoiceNo",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "UnitPrice",
+      "CustomerID",
+      "Country"
+    ],
+    "data_rows": 541909,
+    "event_date_min": "2010-12-01",
+    "event_date_max": "2011-12-09",
+    "required_projection_fields_complete": true,
+    "excluded_field_blank_counts": {
+      "CustomerID": 135080,
+      "Description": 1454
+    },
+    "publisher_metadata_says_no_missing_values": true,
+    "missingness_discrepancy": "The downloaded workbook contains blank cells in excluded CustomerID and Description columns despite the UCI page's no-missing-values statement. These fields are not projected, used for row selection, or emitted. No Description text is retained or included in results."
+  },
+  "archive_preflight": {
+    "zip_members": 10,
+    "advertised_uncompressed_total_bytes": 184964794,
+    "largest_member": "xl/worksheets/sheet1.xml",
+    "largest_member_uncompressed_bytes": 184640367,
+    "maximum_member_compression_ratio": 7.8116,
+    "approved_call_profile": {
+      "compressed_input_max_bytes": 33554432,
+      "member_uncompressed_max_bytes": 201326592,
+      "total_uncompressed_max_bytes": 234881024,
+      "maximum_compression_ratio": 200
+    },
+    "generic_defaults_preserved": {
+      "member_uncompressed_max_bytes": 67108864,
+      "total_uncompressed_max_bytes": 134217728
+    },
+    "row_limit_max": 600000,
+    "generic_group_limit_max": 100000,
+    "reader_default_group_limit": 2000,
+    "approved_uci_workbook_call_group_limit": 250000,
+    "group_limit_decision": "MM-020; owner approved 2026-11-26"
+  },
+  "invoice_number_handling": {
+    "decision": "MM-021; owner approved 2026-11-26",
+    "standard_identifiers": "Exact six-digit integer cells or six-digit ASCII digit strings enter the existing projection.",
+    "cancellation_identifiers": "C or c followed by six ASCII digits is normalized to the existing cancellation marker and counted as cancelled.",
+    "unverified_prefix_identifiers": "Any other single ASCII letter followed by six ASCII digits is excluded before aggregation and counted in one aggregate unverified-prefix category.",
+    "unsupported_formats": "All other formats fail closed without echoing the value.",
+    "generic_projection_unchanged": true,
+    "identifier_values_retained": false
+  },
+  "stock_code_contract": {
+    "positive_five_digit_integer_cells": 487036,
+    "accepted_string_tokens": 54836,
+    "internal_ascii_space_string_tokens": 37,
+    "integer_cell_normalization": "Convert exact positive five-digit integer cells to their decimal string; do not pad or infer from another column.",
+    "internal_space_handling": "Preserve exactly as opaque category keys; no trim, filter, merge, or Description-based interpretation.",
+    "interpretation": "Units per StockCode category; not verified physical SKU demand."
+  },
+  "excluded_field_handling": {
+    "initial_reader_attempts": {
+      "implementation": "openpyxl read-only iter_rows(values_only=True)",
+      "description_values_materialized_in_transient_memory": true,
+      "description_values_persisted": false,
+      "description_values_transferred_externally": false,
+      "correction": "Replaced with selective Expat OOXML streaming that does not capture or decode Description body values."
+    },
+    "current_reader": {
+      "description_body_character_callbacks_delivered_to_python": false,
+      "worksheet_xml_structure_still_scanned": true,
+      "regression": "tests/unit/test_uci_workbook.py::test_description_shared_string_is_not_extracted_for_projection"
+    }
+  },
+  "processing": {
+    "reader_preflight_passed": true,
+    "selective_ooxml_reader_materializes_only_header_and_approved_columns": true,
+    "full_projection_completed": false,
+    "stop_reason": "The approved 250000 product-day group ceiling was exceeded; the reader failed closed before returning a projection.",
+    "observed_group_count": "greater_than_250000; exact count not retained",
+    "evaluation_run": false,
+    "metrics_produced": false,
+    "row_level_intermediates_persisted": false,
+    "source_values_or_identifiers_in_manifest": false,
+    "attempts": [
+      {
+        "group_cap": 100000,
+        "result": "stopped_fail_closed",
+        "reason": "The pre-MM-020 projection exceeded the generic 100000 group cap.",
+        "partial_projection_returned": false,
+        "metrics_produced": false
+      },
+      {
+        "group_cap": 250000,
+        "result": "stopped_fail_closed",
+        "reason": "The approved call exceeded its product-day group cap after applying the MM-021 unverified-prefix exclusion.",
+        "exact_group_count_retained": false,
+        "unverified_prefix_exclusion_count_retained": false,
+        "partial_projection_returned": false,
+        "metrics_produced": false,
+        "local_runtime": "Python 3.13.5; openpyxl 3.1.5"
+      }
+    ],
+    "next_action": "Do not retry, chunk, or widen the cap under this approval. Any alternative requires a separate scope decision; proceed with independent approved research preparation."
+  },
+  "retention": {
+    "maximum_retention_days": 30,
+    "delete_by_utc": "2026-12-26T22:39:45Z",
+    "deletion_verified_at_utc": null
+  },
+  "interpretation_limits": [
+    "InvoiceDate is transaction event time, not first-publication availability.",
+    "UCI provides no verified row-level publication vintage for this protocol.",
+    "The publisher's stated date coverage is a completeness assertion, not an independently audited retailer ledger.",
+    "Excluded field missingness differs from UCI page metadata and remains disclosed.",
+    "No empirical score, forecast skill, latent demand, inventory, lead-time, causal, commercial, or point-in-time claim is established."
+  ]
+}

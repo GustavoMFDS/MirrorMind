@@ -88,6 +88,17 @@ def test_retained_row_is_not_automatically_proof_of_merchandise_or_true_demand()
     assert result.receipt()["status"].endswith("not_authorized")
 
 
+def test_internal_ascii_space_policy_is_not_public_on_generic_projection():
+    source_row = row(code="SPECIAL ITEM")
+    with pytest.raises(ValueError, match="invalid product stock code"):
+        project_uci_retail_rows([source_row])
+
+    with pytest.raises(TypeError, match="unexpected keyword"):
+        project_uci_retail_rows(
+            [source_row], allow_internal_stock_code_spaces=True
+        )
+
+
 @pytest.mark.parametrize("bad", [True, 0, -2, MAX_SUPPORTED_ROWS + 1, 1.5, "10"])
 def test_invalid_row_budgets_fail_before_consuming_rows(bad):
     with pytest.raises(ValueError, match="max_rows"):

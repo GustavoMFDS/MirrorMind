@@ -1,6 +1,10 @@
-# MM-M1b — UCI-shaped transaction projection (synthetic only)
+# MM-M1b — UCI-shaped transaction projection (bounded experimental)
 
-**Status:** experimental domain-specific offline transformation.
+**Status:** experimental domain-specific offline transformation. Automated
+tests remain synthetic-only. The one approved UCI snapshot did not finish
+projection because the corrected output exceeded the approved 250,000-group
+ceiling; there are no empirical results. The UCI source-specific exception
+does not alter the generic projection contract.
 **Not:** authorized data ingestion, an XLSX reader, a validated
 forecast, an inventory engine, a real retailer adapter, or a
 WorldKernel dependency.
@@ -47,10 +51,13 @@ this narrowly tested contract:
   ASCII digits with an optional leading `C`
   for cancellation. Other invoice conventions
   are unsupported and rejected.
-- `StockCode`: nonempty ASCII code using the
-  strict `[A-Za-z0-9][A-Za-z0-9._-]{0,31}`
-  grammar. A valid code does **not** mean the
-  source entry is necessarily a merchandise item.
+- `StockCode`: the public generic projection accepts a nonempty ASCII code
+  using `[A-Za-z0-9][A-Za-z0-9._-]{0,31}`. Only the private UCI workbook
+  adapter can invoke the bounded internal-space grammar, with no
+  leading/trailing whitespace and alphanumeric endpoints. It does not trim or
+  normalize strings. Public row callers remain strict and cannot opt in.
+  A valid code does **not** mean the source entry is necessarily a physical
+  merchandise SKU.
 - `Quantity`: exact signed Python integer,
   between -1 billion and +1 billion per line.
   A float or boolean is rejected, never
@@ -72,7 +79,9 @@ The return value is immutable
 `UciRetailProjection`, with a sorted tuple of
 `ProductDayUnits(stock_code, observed_on, units)`
 and counts of processed/accepted/cancelled/
-negative/zero rows. `receipt()` supplies only
+negative/zero rows. The private UCI workbook adapter may also provide one
+aggregate count for authorized unverified-prefix exclusions; the public
+generic projector always keeps this count at zero. `receipt()` supplies only
 aggregate counts and the explicit statuses:
 
 ```json
@@ -101,11 +110,11 @@ projection as a direct input.
 | Symbol | Inputs / outputs | Fail-closed and scientific limits |
 | --- | --- | --- |
 | `ProductDayUnits` | Frozen stock code, date and positive aggregated invoice-line count | No customer/invoice IDs, inventory, latent demand or publication timestamp |
-| `UciRetailProjection` | Frozen grouped days and explicit source row counters | Not a license grant, deduplicated receipt or signed source snapshot |
+| `UciRetailProjection` | Frozen grouped days and explicit source row counters, including the UCI-only unverified-prefix count | The generic projector does not populate that source-only counter; the object is not a license grant, deduplicated receipt or signed source snapshot |
 | `UciRetailProjection.receipt()` | Aggregate counters, `not_authorized` and `publication_time_unknown` signals | Product codes in the internal `days` tuple remain potentially sensitive and need access control |
 | `_invoice_number(value)` | Narrow numeric/string invoice grammar, preserves leading cancellation marker | Unsupported invoice patterns fail rather than being treated as sales |
 | `_transaction_day(value)` | Naive `datetime` to source event date | Cannot establish timezone, business-day cutoff or publication vintage |
-| `project_uci_retail_rows(rows, max_rows, max_groups)` | Bounded single-pass positive-line aggregation by (stock code, event day); defaults are 10,000 rows/2,000 groups and absolute ceilings are 600,000/100,000 | Rejects malformed inputs/budgets and excludes cancellation, negative and zero lines with disclosed counters; higher caps do not certify source support |
+| `project_uci_retail_rows(rows, max_rows, max_groups)` | Bounded single-pass positive-line aggregation by (`StockCode` category, event day); defaults are 10,000 rows/2,000 groups and ceilings are 600,000/100,000 | Rejects malformed inputs/budgets and excludes cancellation, negative and zero lines with disclosed counters; generic invoice and StockCode grammar remain unchanged |
 
 All row fields are validated **before** classifying
 cancellations and negative quantities. An invoice
@@ -118,6 +127,24 @@ No negative number is silently reclassified as
 lost demand. These are **line-based conventions**,
 not proof of financial reconciliation, returns
 policy, successful payment or net/gross revenue.
+
+The approved workbook reader applies source-specific representation rules
+before invoking the bounded internal projector: exact positive five-digit
+integer cells become decimal text, and approved internal-ASCII-space strings
+remain unchanged. The public generic projector does not expose this option.
+Six-digit invoice IDs continue through normal classification;
+`C`/`c` plus six digits are cancellation rows; other one-letter ASCII prefixes
+plus six digits are replaced by a private sentinel and excluded before the
+projector reads stock code, quantity or event date. Only an aggregate
+`unverified_invoice_prefix_rows` count survives. Every other invoice format
+fails closed. Generic row callers cannot enable this behavior through the
+public function. Excluding these rows can change category cohorts, observed
+totals, zero targets and downstream scores; any future evaluation would cover
+only recognized invoice IDs. The adapter does not inspect `Description` to
+infer categories. Results describe units per `StockCode` category, not
+physical-SKU demand. The reader's ZIP and UCI-specific group overrides are
+separate from generic row budgets; defaults and generic ceilings remain
+unchanged.
 
 The source does not include a stable line-item
 identifier in the required projection fields.
@@ -164,7 +191,8 @@ consumer, **not a public API response**.
 | **MM-UCI-004** | `tests/integration/test_uci_retail_projection_flow.py::test_retail_projection_preserves_unknown_release_time_and_cannot_be_staged_directly` | Blocking a fabricated as-of field does not establish authentic historical publication vintages |
 
 Additional tests cover cancelled/nonpositive rows,
-invalid dates and product codes, strict integer
+invalid dates and product codes, opt-in internal ASCII-space codes,
+strict integer
 arithmetic, aggregation overflow, deterministic
 sorting, duplicates and unsupported direct
 staging as verified history.
@@ -196,8 +224,9 @@ projected daily record. Its absence is
 date is not proof of when the transaction
 was first available to a forecaster.
 
-The existing bounded [XLSX reader](UCI_WORKBOOK_READER.md)
+The bounded [XLSX reader](UCI_WORKBOOK_READER.md)
 and [synthetic event-time evaluator](M1_UCI_EVENT_TIME_RESEARCH.md)
-extend this path without authorizing real data. The
-UCI source rights/privacy review remains required
-before original-workbook use.
+extend this path without adding real rows to tests. The owner-approved source
+scope is recorded in the [UCI source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md);
+the corrected source call exceeded the 250,000-group ceiling and is stopped.
+Do not retry, chunk or widen the cap without a new scope decision.

@@ -1120,6 +1120,20 @@
     "limitation": "Fictional local XLSX test does not use real UCI records, independently proven first-availability dates, trained models or WorldKernel."
   },
   {
+    "id": "MM-XLSX-005",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_description_shared_string_is_not_extracted_for_projection",
+    "limitation": "Synthetic tracking proves Description-only shared text is not delivered to Python character callbacks or retained by the reader; Expat still scans worksheet XML, and this does not prove source authorization, publisher completeness or hostile-file isolation."
+  },
+  {
+    "id": "MM-XLSX-006",
+    "guide": "docs/engineering/UCI_WORKBOOK_READER.md",
+    "test": "tests/unit/test_uci_workbook.py",
+    "function": "test_uci_non_c_alpha_invoice_prefixes_are_counted_and_excluded",
+    "limitation": "Synthetic rows prove the UCI-only aggregate exclusion and identifier minimization; they do not establish the full source exclusion count, evaluation, or any change to generic projection behavior."
+  },
+  {
     "id": "MM-UCIE-001",
     "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
     "test": "tests/integration/test_uci_event_time_cli.py",
@@ -1139,5 +1153,19 @@
     "test": "tests/unit/test_uci_event_time.py",
     "function": "test_validation_scores_do_not_depend_on_locked_holdout_values",
     "limitation": "This mutation regression establishes validation independence from later fixture values only. It does not test preprocessing leakage or revised source vintages."
+  },
+  {
+    "id": "MM-UCIE-004",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_event_time_evaluator_accepts_approved_uci_group_limit",
+    "limitation": "A synthetic 100001-group projection exercises the source-specific evaluator bound; the exact UCI source exceeded 250000 groups and produced no projection or metric, so the fixture does not prove full-source compatibility."
+  },
+  {
+    "id": "MM-UCIE-005",
+    "guide": "docs/engineering/M1_UCI_EVENT_TIME_RESEARCH.md",
+    "test": "tests/unit/test_uci_event_time.py",
+    "function": "test_event_time_result_exposes_aggregate_unverified_invoice_exclusions",
+    "limitation": "A synthetic receipt preserves one aggregate exclusion count and recognized-ID semantics; no complete real-source exclusion count or empirical score was produced."
   }
 ]

@@ -1,11 +1,40 @@
 # Project status — reviewed baseline, not live status
 
-**Baseline:** 2026-11-23 (Brazil local date); main
-`e4f05a152aefcf68fa8ec22f3baa3b61adb8519d` (PR #51 merge commit).
-This is the latest confirmed merged-main baseline after the handoff-doc
-update. PR #50 (`036b8d6`) is its parent. This is not the live status of a
-working branch; reconcile active task claims below with Git, open PRs, actual
-code and quality receipts before using this document as an execution report.
+**Baseline:** 2026-11-26 (Brazil local date); main
+`a456034c55ed7634ad4768b26788fec09dab1d08` (PR #62 merge commit).
+The detailed sections below preserve the earlier PR #51 baseline and PR #62
+review evidence as historical context. Reconcile them with the current UCI
+pilot state below, Git, open PRs, actual code and exact-head receipts before
+using this document as a general execution report.
+
+## Current UCI #352 pilot worktree — 2026-11-26
+
+Current branch: `codex/uci352-pilot-20261126`, based directly on the new
+`main` commit above. It is separate from the preserved pre-existing
+integration branch `codex/integration-pr63-pr64-349b77e`; no branch history or
+uncommitted work was discarded. The UCI reader now supports the owner-approved
+per-call ZIP profile, source-specific `StockCode` representation rules and
+UCI-only 250,000-group call cap; the reader default is 2,000 and generic
+projection remains capped at 100,000.
+
+The approved UCI #352 archive was acquired locally, verified against the
+official record and stored outside Git under a private ACL. Its path-free
+[snapshot manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json)
+records hashes, byte sizes, metadata, missingness discrepancy, resource
+profile and deletion deadline. The first projection stopped at the generic
+100,000-group limit. After MM-021, the source-specific classifier admitted
+six-digit IDs, preserved `C`/`c` cancellations, and counted/excluded other
+single-letter ASCII prefixes without retaining their identifiers. The
+corrected call then exceeded the approved 250,000-group cap and failed closed;
+no complete projection, exclusion count, validation/holdout score or empirical
+model card was produced. Do not retry, chunk or widen the cap without a new
+owner decision. The former `openpyxl.values_only` reader transiently
+materialized excluded `Description` values without persistence or transfer;
+the new selective OOXML path disables Python text callbacks for excluded body
+cells and has synthetic shared-string regressions. Reader defaults remain
+2,000 groups, generic projection remains capped at 100,000. The exact-clean-
+head six-check gate is pending after documentation/catalog reconciliation. No
+official Actions result is claimed.
 
 **Verified baseline on e4f05a1:** 691 pytest tests passed, one existing
 Starlette/httpx deprecation warning. Six local gate checks passed
@@ -25,7 +54,7 @@ merged baseline. Regenerate counts from the ledger rather than treating
 them as progress percentages. The reviewed API reports a scaffold,
 not a production-ready AI platform.
 
-## Current consolidated M1 candidate — 2026-11-25
+## Historical consolidated M1 candidate — 2026-11-25 (later integrated)
 
 The review candidate is branch `codex/m1-engine-provenance`, published as
 [PR #62](https://github.com/GustavoMFDS/MirrorMind/pull/62) against `main`.
@@ -61,7 +90,7 @@ After this documentation update, the exact clean candidate head must pass the
 same six-check gate; its receipt and full SHA are reported on PR #62. PR #62
 remains awaiting review. `main` was not changed, and #60/#61 remain separate.
 
-## Active branch evidence — 2026-11-25
+## Historical branch evidence — 2026-11-25
 
 The composed synthetic evidence flow is implemented in the history beginning
 at `c51ab30370db47e9f7105c97f870008e4fc442c5`; the latest published PR #52

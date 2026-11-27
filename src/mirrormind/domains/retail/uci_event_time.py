@@ -12,8 +12,9 @@ from datetime import date, timedelta
 from typing import Literal
 
 from mirrormind.domains.retail.uci_transactions import (
-    MAX_SUPPORTED_GROUPS,
+    MAX_SUPPORTED_UCI_WORKBOOK_GROUPS,
     ProductDayUnits,
+    is_valid_uci_stock_code,
 )
 from mirrormind.domains.retail.uci_workbook import UciWorkbookReadResult
 from mirrormind.modules.forecasting.baselines import _predict, _score
@@ -28,7 +29,6 @@ HOLDOUT_ORIGIN_END = date(2011, 12, 8)
 SOURCE_END = HOLDOUT_ORIGIN_END + timedelta(days=1)
 MAX_SOURCE_DAYS = 400
 MAX_EVENT_PRODUCTS = 10_000
-_PRODUCT_CODE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,31}")
 _SHA256 = re.compile(r"[0-9a-f]{64}")
 _BASELINES = (
     ("same_weekday_last_week", "seasonal_naive_lag7"),
@@ -50,14 +50,17 @@ def _snapshot_counts(snapshot: UciWorkbookReadResult) -> dict[tuple[str, date], 
     if type(snapshot.sha256_hex) is not str or not _SHA256.fullmatch(snapshot.sha256_hex):
         raise UciEventTimeEvaluationError("snapshot digest is malformed")
     projection = snapshot.projection
-    if type(projection.days) is not tuple or len(projection.days) > MAX_SUPPORTED_GROUPS:
+    if (
+        type(projection.days) is not tuple
+        or len(projection.days) > MAX_SUPPORTED_UCI_WORKBOOK_GROUPS
+    ):
         raise UciEventTimeEvaluationError("snapshot product-day groups exceed the local bound")
 
     counts: dict[tuple[str, date], int] = {}
     for item in projection.days:
         if not isinstance(item, ProductDayUnits):
             raise UciEventTimeEvaluationError("snapshot contains an invalid product-day record")
-        if type(item.stock_code) is not str or not _PRODUCT_CODE.fullmatch(item.stock_code):
+        if not is_valid_uci_stock_code(item.stock_code, allow_internal_spaces=True):
             raise UciEventTimeEvaluationError("snapshot contains an invalid product code")
         if type(item.observed_on) is not date or not SOURCE_START <= item.observed_on <= SOURCE_END:
             raise UciEventTimeEvaluationError("snapshot event date is outside the reviewed window")
@@ -187,7 +190,9 @@ def evaluate_uci_event_time(
         "evaluation_status": "metrics_available" if pooled_metrics else "abstained",
         "source_status": "caller_supplied_snapshot_not_authorized_by_parser",
         "publication_time_status": "unknown_not_derived_from_invoice_date",
-        "target_semantics": "positive_invoice_line_units_not_latent_demand",
+        "target_semantics": (
+            "positive_invoice_line_units_from_recognized_invoice_ids_not_latent_demand"
+        ),
         "snapshot_sha256": snapshot.sha256_hex,
         "split": split,
         "fit_start": FIT_START.isoformat(),
@@ -205,7 +210,12 @@ def evaluate_uci_event_time(
         "abstentions": abstentions,
         "metrics": pooled_metrics,
         "per_product": tuple(product_scores),
-        "projection_receipt": snapshot.projection.receipt(),
+        "projection_receipt": {
+            **snapshot.projection.receipt(),
+            "unverified_invoice_prefix_rows": (
+                snapshot.projection.unverified_invoice_prefix_rows
+            ),
+        },
         "ingestion_authorized": False,
         "point_in_time_eligible": False,
     }

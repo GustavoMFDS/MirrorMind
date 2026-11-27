@@ -295,6 +295,19 @@ misleading. What rights, source hash,
 privacy review and publication-time
 proof would a real source still need?
 
+## Guided exercise 23 — resource bounds are part of the source contract
+
+Read the [approved UCI #352 snapshot manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
+the [workbook reader guide](UCI_WORKBOOK_READER.md) and
+`read_uci_workbook`'s explicit ZIP limit parameters. Explain why the 192/224 MiB
+source-specific ZIP profile does not change generic defaults, why the unchanged
+100,000 product-day cap refused the incomplete projection, and why a failed
+bounded read cannot yield a partial evaluation. Trace the synthetic tests that
+prove the larger ZIP bounds remain finite and that the StockCode integer/text
+and internal-space representations are handled without trimming or Description
+inference. Finally, explain why units per StockCode category are not verified
+physical-SKU demand and why event time is still not publication availability.
+
 ## Guided exercise — a checksum is not a data use grant (25 minutes)
 
 Read [the source review packet guide](SOURCE_INTAKE_REVIEW.md),
@@ -674,5 +687,11 @@ abstentions. Change a product-day value on a declared complete date; contrast
 the resulting zero assumption with removing that date from the coverage
 declaration. Mutate a holdout value and verify validation metrics stay fixed.
 Finally locate where `InvoiceDate` becomes an event day and explain why a
-verified publication vintage requires a distinct source contract. Do not use
-real UCI rows in this exercise.
+verified publication vintage requires a distinct source contract. In the
+workbook-reader fixture, compare a numeric six-digit invoice, a `C`-prefixed
+cancellation, an unverified one-letter prefix and a malformed multi-letter
+prefix. Verify that only the UCI reader produces the aggregate exclusion count,
+the unknown identifier does not appear in results, and generic projection
+still rejects that form. Explain how excluding such rows can change the fit
+cohort, zero targets and downstream scores. Do not use real UCI rows in this
+exercise.

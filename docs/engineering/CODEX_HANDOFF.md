@@ -14,7 +14,7 @@ be working simultaneously. Read [AGENTS.md](../../AGENTS.md) before
 any edits; the owner controls approvals. This document supplies
 execution guidance and does not broaden the agent's permissions.
 
-## 1.1 Owner-approved continuation decisions — 2026-11-25
+## 1.1 Historical owner decisions — 2026-11-25
 
 - Research preparation proceeds A then B: UCI Online Retail #352 event-time
   retrospective first, then an aggregate Census release-vintage study.
@@ -142,7 +142,7 @@ perform destructive operations or relax gates. Ask the owner for
 only the decision or permission needed. Do not manufacture approvals
 or official CI results.
 
-### Current owner decisions — 2026-11-25
+### Historical owner decisions — 2026-11-25
 
 Owner comments on [PR #57](https://github.com/GustavoMFDS/MirrorMind/pull/57)
 approve preparing two independent research lanes in sequence: A, the narrow
@@ -217,8 +217,53 @@ remain independent. The inventory demo's `demo-1` registry label is not
 artifact attestation. The policy world preserves the M1E-03 transition and
 exact parity on synthetic inputs. Do not edit WorldKernel, claim real demand
 or calibrated outcomes, or describe the subprocess as a hostile-code sandbox.
-No real UCI/Census bytes were accessed. PR #60/#61 remain separate, and no
-remote branch or `main` was changed.
+At the time of PR #62 validation, no real UCI/Census bytes had been accessed.
+PR #60/#61 remained separate then; main has since advanced through the PR #62
+merge. The current baseline and UCI source state follow.
+
+### Current owner decisions and local evidence — 2026-11-26
+
+Main is `a456034c55ed7634ad4768b26788fec09dab1d08`, where PR #62 is integrated.
+PRs #52–#59 are ancestors of that merge and must not be merged again. PRs #60
+and #61 remain separate. Continue on `codex/uci352-pilot-20261126`; the prior
+`codex/integration-pr63-pr64-349b77e` worktree was preserved.
+
+The owner authorized one local, non-commercial UCI Online Retail #352
+event-time run, a source-specific ZIP profile (192 MiB/member, 224 MiB total,
+while generic defaults stay 64/128 MiB), and faithful `StockCode` handling:
+exact positive five-digit integer cells become decimal text; internal ASCII
+spaces remain untouched opaque category keys. Do not trim, filter or infer
+from `Description`; report units per category, not physical-SKU demand.
+Automated tests must remain synthetic.
+
+The exact source archive and workbook were acquired from the official UCI
+endpoint, hash-recorded, ignored by Git and stored under a verified private
+local ACL. The path-free manifest records source metadata, byte hashes, the
+UCI-reported date range, excluded-field missingness discrepancy, limits and
+the 30-day deadline (`2026-12-26T22:39:45Z`). No raw rows or row-level
+intermediates are in Git or docs. Schema and metadata preflight passed. The
+first reader attempt stopped at the generic 100,000-group ceiling and
+transiently materialized Description values before discarding them; none were
+persisted or transferred. That path was replaced by selective OOXML streaming
+with a regression proving excluded-cell text is not sent to Python character
+callbacks. MM-020 authorizes up to 250,000 UCI-only groups. MM-021 authorizes
+six-digit invoice IDs, the existing `C`/`c` cancellation class, and aggregate
+exclusion of other single-letter ASCII prefixes plus six digits; malformed
+remainder still fails closed. The corrected call applied this policy but
+exceeded 250,000 groups and returned no projection. Do not retry, chunk or
+widen the cap without a new decision. No full projection, complete exclusion
+count, empirical metric or real-source model card exists. Keep all results
+retrospective and availability-unverified.
+
+The focused UCI workbook/projection/event-time and CLI regressions passed 114
+tests in 4.14 seconds after MM-021. Targeted Ruff also passed. Documentation
+and generated-catalog reconciliation remain in progress; the exact clean-head
+six-check gate is pending. GitHub Actions remains unavailable under the
+zero-cost decision; local results are not CI evidence. Do not change gates,
+spend or modify the separate Census or WorldKernel repositories. See
+the [change request](changes/M1B_01_UCI_REAL_SOURCE_PILOT.md),
+[manifest](datasets/UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json),
+[source review](datasets/UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [B-01/B-02](BLOCKERS.md).
 
 ## 4. Mandatory documentation standard
 

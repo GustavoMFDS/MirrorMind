@@ -1,15 +1,16 @@
-# Proposed dataset card — UCI Online Retail #352 event-time study
+# Dataset card — UCI Online Retail #352 event-time study
 
-**Status:** proposal only; no source file acquired or processed. This card
-records the reviewed scope and the controls needed before a source-specific
-run. It is not a license opinion, permission grant, immutable snapshot record
-or empirical model card.
+**Status:** owner-approved local research scope; source acquired and metadata
+preflighted; the corrected projection exceeded the approved 250,000 product-day
+group cap and stopped fail-closed, so no evaluation was completed. This card is
+not a legal opinion, general permission grant or empirical model card. Exact snapshot details are in the path-free
+[manifest](UCI_ONLINE_RETAIL_352_SNAPSHOT_MANIFEST.json).
 
 ## Purpose and intended use
 
-Prepare a local, research-only retrospective comparison of product-level daily
-positive-quantity proxies. The study evaluates forecasting baselines on
-transaction event time. It does not validate latent demand, available stock,
+Prepare a local, research-only retrospective comparison of daily quantities
+per `StockCode` category. The study evaluates forecasting baselines on
+transaction event time. It does not validate physical-SKU demand, available stock,
 lost sales, lead times or replenishment-policy quality. Commercial use is
 outside this proposal.
 
@@ -25,13 +26,17 @@ is a minimization measure, not proof of anonymization.
 | --- | --- |
 | Dataset / source ID | UCI Online Retail / 352 |
 | Author and citation | Chen, D. (2015), DOI `10.24432/C5BW33`; verify against the source page at acquisition time |
-| License shown by publisher | CC BY 4.0; exact file terms and attribution still require source-specific review |
-| File name / format | Publisher lists `Online Retail.xlsx`; no local file acquired |
-| Source URL | Official UCI record linked above; capture final download URL only in a private local manifest |
-| Snapshot SHA-256 | Not available; must be computed from approved bytes before parsing |
-| Acquisition time / operator | Not available; must be recorded locally with the manifest |
-| Retained source version | Not selected; never infer it from a filename alone |
-| Retention / deletion | Owner decision required. Proposal: keep the raw workbook only in access-controlled local storage for the approved study window, delete it when the study closes, and retain no source rows in Git, CI, logs, prompts or external services. Set an explicit maximum retention period before acquisition. |
+| License shown by publisher | CC BY 4.0; exact record, file URL, attribution and change notice were checked before this one local run |
+| File name / format | `Online Retail.xlsx` inside the official `OnlineRetail.zip` archive |
+| Source URL | Official UCI record and publisher-linked archive, recorded in the path-free manifest |
+| Snapshot SHA-256 | Archive and workbook digests are recorded in the path-free manifest |
+| Acquisition time / operator | UTC acquisition time recorded in the manifest; operator identity and local path omitted |
+| Retained source version | Exact downloaded archive and workbook hashes recorded; no mixing with dataset #502 |
+| Retention / deletion | Owner approved local retention up to 30 days; delete by the UTC deadline in the manifest and record verification. Source path remains outside Git under a private ACL. |
+
+The archive and workbook sizes, publisher metadata comparison, ZIP bounds,
+ACL and ignore verification are recorded in the manifest. The source was not
+uploaded or sent to an external service.
 
 No field in this table is filled with invented snapshot metadata. A future
 private manifest should bind the exact source URL, bytes, SHA-256, acquisition
@@ -40,69 +45,100 @@ manifest if it contains local paths or sensitive operational metadata.
 
 ## Proposed data minimization and transformation
 
-The narrowly scoped adapter may read the publisher workbook only after the
-source and privacy review is approved. Keep the minimum required fields inside
-the trusted local process long enough to classify cancellations and aggregate:
+The narrowly scoped adapter reads the approved workbook only inside the local
+process. It keeps the minimum required fields long enough to classify invoice
+IDs and aggregate:
 
-- product key (`StockCode`), transaction event date (`InvoiceDate`),
+- product category key (`StockCode`), transaction event date (`InvoiceDate`),
   `InvoiceNo` only as transient input to the reviewed cancellation rule, and
   signed `Quantity`;
 - discard `CustomerID`, `Description`, `UnitPrice`, `Country`, invoice IDs and
   every other field before creating persisted or externally visible output;
 - classify cancellation/return rows using a predeclared rule; do not treat a
   return as negative demand or silently discard it without a count;
-- aggregate eligible positive quantities by product and calendar day, and
-  emit only ordinal product summaries plus aggregate metrics;
+- normalize only exact positive five-digit integer `StockCode` cells to their
+  decimal string; preserve approved internal ASCII-space strings exactly as
+  opaque category keys. Do not trim, filter or infer from `Description`;
+- process exact six-digit integer/text invoice IDs; preserve `C`/`c` plus six
+  digits as the cancellation class; exclude other single ASCII-letter plus
+  six-digit IDs as `unverified_invoice_prefix` before grouping, recording only
+  an aggregate count. Reject every other invoice format. Never retain the
+  excluded identifier or use it to group, deduplicate or select rows;
+- aggregate eligible positive quantities by `StockCode` category and calendar
+  day, and emit only ordinal category summaries plus aggregate metrics;
 - do not materialize a missing day as zero unless source completeness and
   date coverage are independently established and approved;
 - record `event_time_retrospective_unverified_availability`; never set
   `available_on = InvoiceDate` or claim point-in-time replay.
 
-The exact projection, cancellation classification, field lifetime, storage
-location and deletion evidence remain approval gates. The existing automated
-tests and deterministic workbook example must remain synthetic-only.
+These are owner-approved constraints for the one local scope. A `StockCode`
+category is not verified to be a physical sellable SKU. The projection does not
+capture `Description` cell text; the XML parser still scans the worksheet
+structure while excluded-cell character callbacks are disabled. No raw
+identifiers are persisted. Automated tests and the deterministic workbook
+example remain synthetic-only.
 
-## Evaluation protocol prepared in PR #57
+The downloaded workbook metadata matched the published 541,909 rows and the
+2010-12-01 through 2011-12-09 event-date range; required projection fields were
+complete. Preflight found blank cells in excluded `CustomerID` and
+`Description` fields even though the UCI record states no missing values. This
+discrepancy is disclosed in the manifest. Excluded fields are not used for row
+selection or evaluation.
+
+The initial source attempts used a parser that transiently materialized
+`Description` values before discarding them. This violated the minimized-read
+boundary; no values were persisted or transferred. The implementation was
+replaced by selective OOXML parsing, with a synthetic regression for shared
+and inline strings. The next source attempt uses the corrected parser.
+
+## Fixed evaluation protocol prepared in PR #57
 
 The study design is fixed before source inspection or model tuning:
 
-1. Freeze the product cohort using fit history ending 2011-08-30.
+1. Freeze the `StockCode`-category cohort using fit history ending 2011-08-30.
 2. Use validation origins 2011-08-31 through 2011-09-30.
 3. Lock one-day-ahead holdout origins 2011-10-01 through 2011-12-08, with
    targets through the catalog end date 2011-12-09.
 4. Compare same-weekday lag-7 and trailing-seven-calendar-day baselines on
-   identical eligible product/origin pairs.
+   identical eligible category/origin pairs.
 5. Report MAE, RMSE, zero-safe WAPE, coverage, abstentions and the exact
    denominator. A zero target is eligible only if approved snapshot coverage
    proves the date complete; otherwise abstain.
-6. Publish only aggregate metrics and ordinal product summaries. Do not tune
+6. Publish only aggregate metrics and ordinal category summaries. Do not tune
    on locked holdout results or claim that transaction event time was
    historically available.
 
-The protocol is implemented against synthetic fixtures in draft PR #57. Its
-synthetic regressions verify transformation and metric rules; they do not
-verify actual workbook compatibility, rights, source completeness or
-predictive skill. See the [source review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md)
-and [event-time evaluator evidence](../EVIDENCE_MAP.json).
+The protocol is implemented and its regression fixtures remain synthetic.
+The approved source preflight verified schema compatibility. After MM-020 and
+MM-021, the corrected call applied the conservative invoice classification but
+exceeded the 250,000 product-day cap. It returned no partial projection and no
+metrics or model card were produced. The lane is stopped under the current
+scope. Excluding unverified invoice-prefix rows can reduce category-day totals,
+change which categories enter the fit cohort, alter zero-valued targets and
+change every downstream score. Any future metric would describe only records
+with recognized invoice IDs and must retain the aggregate exclusion count;
+coverage would still mean eligible pairs on dates declared complete by the UCI
+snapshot assertion. Synthetic regressions do not verify source rights,
+independent ledger completeness or empirical predictive skill. See the
+[source review](UCI_ONLINE_RETAIL_SOURCE_REVIEW.md) and [event-time evaluator
+evidence](../EVIDENCE_MAP.json).
 
 ## Privacy, security and permissions gate
 
-Before downloading or processing real bytes, an accountable reviewer must:
+For the approved UCI run, the owner authorized the narrow local scope and the
+snapshot-specific controls recorded in the manifest. The corrected call
+exceeded the approved group cap and stopped; this source lane must remain
+closed unless a new scope decision authorizes another bounded method. Do not
+retry, partition or raise the ceiling under MM-020.
 
-- recheck the original UCI terms, attribution, license link and change notice
-  for the exact snapshot and intended local research use;
-- approve the field projection, cancellation rule, access-controlled storage,
-  retention deadline and deletion process;
-- approve a private source manifest with hash and acquisition time;
-- confirm that raw rows, workbook bytes, local paths and identifying fields
-  cannot enter Git, CI, test fixtures, logs, prompts, support artifacts or
-  external services;
-- complete and review this card and the forecast model card before running
-  the approved study.
+The source and any intermediates remain subject to deletion by the manifest
+deadline. No source rows, workbook bytes, local paths or identifiers may enter
+Git, CI, fixtures, logs, prompts, support artifacts or external services.
 
-The project owner has approved preparing this card and adapter design only.
-No real source acquisition, processing, external transfer or commercial use
-is authorized here. B-01 and B-02 remain open; M5 remains NO-GO.
+No complete projection or evaluation has been produced. B-01 is stopped at the
+current call ceiling; B-02 remains open because no publication-vintage evidence
+exists. No external transfer or commercial use is authorized. M5 remains
+NO-GO.
 
 ## Reproduction, tests and maintenance
 
