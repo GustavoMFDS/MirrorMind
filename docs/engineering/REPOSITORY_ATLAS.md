@@ -1287,3 +1287,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_modular.py](../../src/mirrormind/domains/retail/census_modular.py) | Exact modular subset PMFs and bounded closure |
 | [tests/unit/test_census_modular.py](../../tests/unit/test_census_modular.py) | Independent graph oracle and composition/projection |
 | [docs/engineering/changes/M1C_04_CENSUS_MODULAR.md](changes/M1C_04_CENSUS_MODULAR.md) | Scoped acceptance and impact map |
+
+### Modular posterior sampling research
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_modular_sampling.py](../../src/mirrormind/domains/retail/census_modular_sampling.py) | Bounded trajectory sampling and event precision |
+| [tests/unit/test_census_modular_sampling.py](../../tests/unit/test_census_modular_sampling.py) | Exact reference and finite-look tests |
+| [docs/engineering/changes/M1C_04_CENSUS_MODULAR_SAMPLING.md](changes/M1C_04_CENSUS_MODULAR_SAMPLING.md) | Scoped acceptance and impact map |

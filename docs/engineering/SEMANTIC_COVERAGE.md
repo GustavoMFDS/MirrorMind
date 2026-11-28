@@ -394,3 +394,8 @@ The [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
 has guided exact bounded graph integration, composition and projection
 in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not automatic
 port discovery, arbitrary-horizon scalability or empirical skill.
+
+The [sampling engine](../../src/mirrormind/domains/retail/census_modular_sampling.py)
+has bounded empirical subset PMFs and simultaneous conditional
+event error arithmetic in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md),
+not empirical calibration, full-distribution certification or authority.

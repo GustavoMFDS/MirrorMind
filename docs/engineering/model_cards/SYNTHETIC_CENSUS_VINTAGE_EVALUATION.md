@@ -227,3 +227,8 @@ Modular exact queries compose explicitly supplied candidate scopes
 over 2..12 binary axes and at most two future steps. They do not
 identify causal connections or establish empirical forecast skill.
 Queries beyond declared closure bounds are rejected.
+
+Modular trajectory sampling supports bounded 12-axis and 12-step
+synthetic simulations. Finite-look event intervals quantify only
+conditional Monte Carlo error under ideal iid draws. No empirical
+calibration, full PMF guarantee, causal claim or operational authority.

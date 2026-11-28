@@ -1150,3 +1150,42 @@ See [change request](changes/M1C_04_CENSUS_MODULAR.md).
 Candidate ports are supplied, not learned or causal. No empirical
 skill, calibration, scalability beyond bounds, deployment or
 authority. Independent review pending.
+
+## Modular trajectory sampling and finite-look event precision
+The [sampling engine](../../src/mirrormind/domains/retail/census_modular_sampling.py)
+shares the exact modular engine's observed history, partition,
+candidate ports and local priors. It draws one local parent subset
+per child using integer categorical weights, then propagates the
+same graph across each trajectory with independent local
+Beta-Bernoulli urn updates. Draws are synchronous; hypothetical
+counts are private to each trajectory. Explicit seeds in 0..2**32-1,
+128..8192 draws, horizon 1..12, dimensions 2..12, 1..4 queried
+axes. No automatic approximation fallback. Empirical PMFs are
+sorted rational frequencies, not exact posterior integration.
+
+The event contract fixes up to four distinct cumulative threshold
+vectors, alpha (1/100..1/10) and tolerance (1/100..1/10) before drawing.
+Each event is a conjunction of lower thresholds. A single stream
+counts events at 512, 2048 and 8192 draws. At each look, choose
+the least integer k with 2*M*3/2**k <= alpha, and round
+sqrt(k/(2*n)) upward to a 1/10000 grid using integer arithmetic.
+Under ideal iid model-posterior draws, Hoeffding and a union bound
+give simultaneous absolute event error bounds over all declared
+events and looks. Clip intervals to [0,1]. Return precision_met
+at the first qualifying look, otherwise abstained. This is a
+predetermined sample-size criterion, not data-dependent stopping.
+The bound is conservative, not a full-PMF TV bound, PRNG certificate,
+real-world prediction guarantee or causal identification.
+Frozen in-process result objects include attempts, seed, events,
+alpha and tolerance; not externally authenticated receipts.
+
+Proposed MM-CEN-044: `test_sampling_exact_reference` compares
+empirical frequencies with the exact modular query across both
+priors and horizons 1/2 on bounded connected synthetic fixtures.
+Proposed MM-CEN-045: `test_sampling_streamed_looks` confirms exact
+checkpoint parity with independent prefix replays and abstention.
+Additional tests cover rational bound arithmetic, replay, projection,
+twelve-axis long horizon and invalid inputs. Run
+`python -m pytest -q tests/unit/test_census_modular_sampling.py`.
+See [change request](changes/M1C_04_CENSUS_MODULAR_SAMPLING.md).
+Independent review pending.

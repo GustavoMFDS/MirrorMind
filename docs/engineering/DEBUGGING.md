@@ -605,3 +605,9 @@ Use complete disjoint modules, directed candidate ports and ordered
 distinct query axes. Closure errors mean the bounded exact contract
 cannot answer; do not silently prune allowed parents or substitute
 marginal means. Fraction results are local, not wire payloads.
+
+### Modular sample precision
+Provide an explicit seed and bounded sample budget. Sample PMFs
+are empirical. Event estimates stream fixed looks; abstained means
+the requested conditional sampling tolerance is not met. Do not
+reinterpret intervals as real-world forecast confidence.
