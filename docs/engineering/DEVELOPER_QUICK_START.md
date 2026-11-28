@@ -17,7 +17,10 @@ Activate with `. .venv/bin/activate` on Linux/macOS, or
 restricted, use the environment's Python executable directly.
 
 ```bash
-python -m pip install -e ".[dev,quality]"
+python scripts/check_public_lock.py
+python -m pip install --require-hashes --only-binary=:all: -r requirements/public-dev.txt
+python -m pip install --no-deps --no-build-isolation -e ".[dev,quality,uci,review]"
+python -m pip check
 python -m pytest -q -rs
 python -m ruff check src tests examples
 python -m mypy --strict src/mirrormind/modules/retrieval

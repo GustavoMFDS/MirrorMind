@@ -20,7 +20,7 @@ ROOT_FILES = {
     "Dockerfile", "compose.yml", "pyproject.toml", ".dockerignore",
     "README.pt-BR.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "LICENSE",
 }
-TRACKED_DIRS = ("src/", "tests/", "scripts/", "examples/", "docs/", ".github/")
+TRACKED_DIRS = ("src/", "tests/", "scripts/", "examples/", "docs/", ".github/", "requirements/")
 
 
 def tracked_paths(root: Path) -> set[str]:

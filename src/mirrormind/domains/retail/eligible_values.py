@@ -101,17 +101,15 @@ def compare_eligible_retail_values(
         raise ValueError("minimum_coverage_percent must be an exact integer in 1..100")
 
     earlier_end = evaluation_on - timedelta(days=window_days)
-    common = {
-        "stock_code": stock_code,
-        "holdout_days": window_days,
-        "calibration_days": calibration_days,
-        "min_calibration_residuals": min_calibration_residuals,
-    }
     earlier = evaluate_retail_residual_envelopes(
-        projection, releases, evaluation_on=earlier_end, **common
+        projection, releases, evaluation_on=earlier_end,
+        stock_code=stock_code, holdout_days=window_days,
+        calibration_days=calibration_days, min_calibration_residuals=min_calibration_residuals,
     )
     later = evaluate_retail_residual_envelopes(
-        projection, releases, evaluation_on=evaluation_on, **common
+        projection, releases, evaluation_on=evaluation_on,
+        stock_code=stock_code, holdout_days=window_days,
+        calibration_days=calibration_days, min_calibration_residuals=min_calibration_residuals,
     )
     values = {
         day.observed_on: day.units
@@ -125,9 +123,12 @@ def compare_eligible_retail_values(
         unpublished = report["abstained_unpublished_target"]
         history = report["abstained_forecast_history"]
         calibration = report["abstained_calibration"]
-        assert all(type(n) is int for n in (
-            requested, eligible, missing, unpublished, history, calibration
-        ))
+        assert type(requested) is int
+        assert type(eligible) is int
+        assert type(missing) is int
+        assert type(unpublished) is int
+        assert type(history) is int
+        assert type(calibration) is int
         assert requested == eligible + missing + unpublished + history + calibration
         audit = report["origin_audit"]
         assert isinstance(audit, tuple)
@@ -146,8 +147,15 @@ def compare_eligible_retail_values(
         and a[1] * 100 >= a[0] * minimum_coverage_percent
         and b[1] * 100 >= b[0] * minimum_coverage_percent
     )
-    am = sum(a[6]) / a[1] if ready else None
-    bm = sum(b[6]) / b[1] if ready else None
+    am: float | None
+    bm: float | None
+    difference: float | None
+    if ready:
+        am = sum(a[6]) / a[1]
+        bm = sum(b[6]) / b[1]
+        difference = bm - am
+    else:
+        am = bm = difference = None
     return EligibleRetailValueComparison(
         earlier_requested=a[0], later_requested=b[0],
         earlier_eligible=a[1], later_eligible=b[1],
@@ -160,7 +168,7 @@ def compare_eligible_retail_values(
         status=("eligible_subset_descriptive_comparison_only" if ready
                 else "insufficient_comparable_coverage_abstained"),
         earlier_mean=am, later_mean=bm,
-        later_minus_earlier_mean=bm - am if ready else None,
+        later_minus_earlier_mean=difference,
         earlier_median=float(median(a[6])) if ready else None,
         later_median=float(median(b[6])) if ready else None,
     )

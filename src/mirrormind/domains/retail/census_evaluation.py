@@ -109,6 +109,7 @@ def _validate_metric_input(value: Decimal) -> None:
     parts = value.as_tuple()
     if (
         len(parts.digits) > _MAX_DECIMAL_DIGITS
+        or type(parts.exponent) is not int
         or not _MIN_DECIMAL_EXPONENT <= parts.exponent <= _MAX_DECIMAL_EXPONENT
         or (
             not value.is_zero()

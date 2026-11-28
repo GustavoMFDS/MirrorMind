@@ -76,17 +76,15 @@ def audit_retail_eligibility_drift(
     if type(window_days) is not int or not 2 <= window_days <= 30:
         raise ValueError("window_days must be an exact integer in 2..30")
     earlier_cutoff = evaluation_on - timedelta(days=window_days)
-    common = {
-        "stock_code": stock_code,
-        "holdout_days": window_days,
-        "calibration_days": calibration_days,
-        "min_calibration_residuals": min_calibration_residuals,
-    }
     earlier = evaluate_retail_residual_envelopes(
-        projection, releases, evaluation_on=earlier_cutoff, **common
+        projection, releases, evaluation_on=earlier_cutoff,
+        stock_code=stock_code, holdout_days=window_days,
+        calibration_days=calibration_days, min_calibration_residuals=min_calibration_residuals,
     )
     later = evaluate_retail_residual_envelopes(
-        projection, releases, evaluation_on=evaluation_on, **common
+        projection, releases, evaluation_on=evaluation_on,
+        stock_code=stock_code, holdout_days=window_days,
+        calibration_days=calibration_days, min_calibration_residuals=min_calibration_residuals,
     )
 
     def number(report: dict[str, object], key: str) -> int:
