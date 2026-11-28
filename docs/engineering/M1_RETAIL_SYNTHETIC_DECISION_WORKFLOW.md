@@ -67,7 +67,9 @@ flowchart TD
 | `api/routes/decisions.py` | Expose one bounded local route calling the same service | No file upload, URL fetch, database, writes, tool selection or action authority |
 | `examples/m1_retail_decision_workflow.py` | Provide a deterministic command-line entrypoint | Uses generated fixture data only |
 
-The service makes two evidence-flow instances from the same canonical fixture.
+The service generates canonical fictional workbook bytes once per request, then
+creates two independent evidence-flow instances using fresh streams and their
+respective cutoff dates. No cache or parsed result is shared across requests.
 The historical diagnostics end seven calendar days before the forecast cutoff.
 For the default `as_of=2011-01-26`, both evaluation cutoffs are 2011-01-19 and
 their seven-target window is 2011-01-13 through 2011-01-19. The forecast feature

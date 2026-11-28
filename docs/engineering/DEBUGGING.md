@@ -424,3 +424,10 @@ unchanged `bm25_lexical_v1` ranking and use only generated fixtures. The report
 contains verified refs but no query or excerpt; its fixed `fictional_fixture`
 label is caller supplied, so it is not a control against passing private data.
 Never paste private queries or user records into this evaluator or its logs.
+
+## Synthetic workflow fixture performance
+
+If timings regress, profile the fixture generator separately from the reader
+and policy engine. The two cutoff audits must remain independent. Compare
+complete output hashes before claiming a speedup; never reuse a parsed
+release audit from a different cutoff or cache real-source bytes.

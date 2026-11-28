@@ -921,3 +921,10 @@ the stable query-free JSON. Finally, change a gold label to a visible but
 irrelevant document and predict which metric numerators change. Do not infer
 real-corpus quality, confidence calibration or production authorization from
 the fixture's perfect scores.
+
+## Exercise: fixture reuse without temporal leakage
+
+Run the synthetic workflow reuse regression and trace the two calls through
+separate fresh BytesIO streams. Explain why shared immutable bytes do not
+imply a shared release audit. Compare full result hashes at different cutoffs
+and after a day-35 mutation; no real source is needed.

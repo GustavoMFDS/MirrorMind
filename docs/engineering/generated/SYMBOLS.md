@@ -360,15 +360,16 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 
 Source: [`src/mirrormind/domains/retail/synthetic_fixtures.py`](../../../src/mirrormind/domains/retail/synthetic_fixtures.py)
 
-Static imports (including inside functions): `__future__`, `datetime`, `hashlib`, `io`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.evidence_flow`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.evidence.intake_review`, `openpyxl`, `re`, `zipfile`
+Static imports (including inside functions): `__future__`, `collections.abc`, `datetime`, `hashlib`, `io`, `mirrormind.domains.retail.declared_releases`, `mirrormind.domains.retail.evaluation_flow`, `mirrormind.domains.retail.evidence_flow`, `mirrormind.domains.retail.uci_workbook`, `mirrormind.modules.evidence.intake_review`, `openpyxl`, `re`, `zipfile`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `fixture_day` | function | `def fixture_day(index: int) -> date` | Return a one-based calendar day in the generated fixture. | [L34](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L34) |
-| `_canonical_xlsx` | function | `def _canonical_xlsx(data: bytes) -> bytes` | Normalize ZIP order, timestamps and compression for a stable digest. | [L41](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L41) |
-| `_synthetic_workbook` | function | `def _synthetic_workbook(*, future_units: int) -> bytes` | — | [L71](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L71) |
-| `build_synthetic_evidence_flow` | function | `def build_synthetic_evidence_flow(*, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> RetailUciEvidenceFlow` | Build a bounded fictional workbook with explicit fixture release dates. | [L101](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L101) |
-| `run_synthetic_evaluation` | function | `def run_synthetic_evaluation(*, holdout_days: int=7, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> dict[str, object]` | Build the fixture and run the existing local evidence evaluation. | [L162](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L162) |
+| `fixture_day` | function | `def fixture_day(index: int) -> date` | Return a one-based calendar day in the generated fixture. | [L35](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L35) |
+| `_canonical_xlsx` | function | `def _canonical_xlsx(data: bytes) -> bytes` | Normalize ZIP order, timestamps and compression for a stable digest. | [L42](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L42) |
+| `_synthetic_workbook` | function | `def _synthetic_workbook(*, future_units: int) -> bytes` | — | [L72](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L72) |
+| `build_synthetic_evidence_flow` | function | `def build_synthetic_evidence_flow(*, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> RetailUciEvidenceFlow` | Build a bounded fictional workbook with explicit fixture release dates. | [L102](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L102) |
+| `_synthetic_evidence_flow_builder` | function | `def _synthetic_evidence_flow_builder(*, future_units: int, all_unpublished: bool) -> Callable[[date], RetailUciEvidenceFlow]` | Reuse generated immutable bytes only inside one local fixture composition. | [L119](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L119) |
+| `run_synthetic_evaluation` | function | `def run_synthetic_evaluation(*, holdout_days: int=7, future_units: int=9, all_unpublished: bool=False, evaluation_on: date=EVALUATION_ON) -> dict[str, object]` | Build the fixture and run the existing local evidence evaluation. | [L179](../../../src/mirrormind/domains/retail/synthetic_fixtures.py#L179) |
 
 ## `mirrormind.domains.retail.uci_event_time`
 
