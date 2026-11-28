@@ -163,6 +163,20 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using each origin's visible vintage. | [L423](../../../src/mirrormind/domains/retail/census_evaluation.py#L423) |
 | `evaluate_census_vintage_descriptive` | function | `def evaluate_census_vintage_descriptive(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Opt-in fictional paired losses; never authorize statistical inference. | [L436](../../../src/mirrormind/domains/retail/census_evaluation.py#L436) |
 
+## `mirrormind.domains.retail.census_split`
+
+Source: [`src/mirrormind/domains/retail/census_split.py`](../../../src/mirrormind/domains/retail/census_split.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `datetime`, `hashlib`, `hmac`, `itertools`, `json`, `mirrormind.domains.retail.census_evaluation`, `mirrormind.domains.retail.census_vintages`, `re`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `CensusOriginSchedule` | class | `class CensusOriginSchedule` | Caller-declared schedule, not a signed registration. | [L30](../../../src/mirrormind/domains/retail/census_split.py#L30) |
+| `_ordinal` | function | `def _ordinal(value: date) -> int` | — | [L37](../../../src/mirrormind/domains/retail/census_split.py#L37) |
+| `_partition` | function | `def _partition(plan: CensusOriginSchedule) -> tuple[tuple[CensusForecastOrigin, ...], ...]` | — | [L41](../../../src/mirrormind/domains/retail/census_split.py#L41) |
+| `census_schedule_sha256` | function | `def census_schedule_sha256(plan: CensusOriginSchedule) -> str` | Fingerprint validated schedule and fixed partition policy. | [L75](../../../src/mirrormind/domains/retail/census_split.py#L75) |
+| `evaluate_frozen_census_split` | function | `def evaluate_frozen_census_split(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, expected_schedule_sha256: str, split: Literal['validation', 'holdout']) -> dict[str, object]` | Compare a caller-retained schedule digest before fictional scoring. | [L93](../../../src/mirrormind/domains/retail/census_split.py#L93) |
+
 ## `mirrormind.domains.retail.census_vintages`
 
 Source: [`src/mirrormind/domains/retail/census_vintages.py`](../../../src/mirrormind/domains/retail/census_vintages.py)

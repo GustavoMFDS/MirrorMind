@@ -1114,3 +1114,11 @@ forecast claims or cross-repository changes.
 | Path | Responsibility |
 |---|---|
 | [docs/engineering/changes/M1C_04_CENSUS_DESCRIPTIVE.md](changes/M1C_04_CENSUS_DESCRIPTIVE.md) | Scoped experimental paired-loss receipt, acceptance and impact map |
+
+### Census split preparation
+
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_split.py](../../src/mirrormind/domains/retail/census_split.py) | Experimental schedule fingerprint, split boundaries and descriptive evaluation wrapper |
+| [tests/unit/test_census_split.py](../../tests/unit/test_census_split.py) | Synthetic partition, fingerprint, embargo and replay regressions |
+| [docs/engineering/changes/M1C_04_CENSUS_FROZEN_SPLIT.md](changes/M1C_04_CENSUS_FROZEN_SPLIT.md) | Scoped acceptance and impact map |

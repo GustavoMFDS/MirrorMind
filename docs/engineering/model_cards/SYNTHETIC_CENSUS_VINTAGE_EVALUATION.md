@@ -109,3 +109,8 @@ It explicitly abstains from inferential comparison and winner selection.
 A caller-supplied split does not prove cross-split disjointness or a frozen
 holdout. No uncertainty calibration or empirical performance is claimed.
 See [paired loss walkthrough](../CENSUS_VINTAGE_EVALUATION.md).
+
+The experimental predeclared schedule wrapper uses cumulative 60/80%
+floor cuts and rejects cross-split target reach or late/missing prior
+labels. This is local caller-retained digest matching only. It neither
+verifies an independent holdout lock nor authorizes empirical evaluation.

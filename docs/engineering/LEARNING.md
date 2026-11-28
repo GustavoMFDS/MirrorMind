@@ -979,3 +979,9 @@ the 20 - 115/6 difference with Fraction, then remove the target label
 and observe a missing row, not a zero error. Explain why a holdout label
 and a report digest do not establish independent observations, locked
 selection or calibrated confidence.
+
+### Exercise: predeclared split boundaries
+Use `test_frozen_split_binds_schedule_and_preserves_abstention` to
+inspect the 6/2/2 partition. Move an earlier target publication to the
+next split's issue date and observe rejection. Explain why a digest
+comparison is not independent registration or a one-use holdout lock.
