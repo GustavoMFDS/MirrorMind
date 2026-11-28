@@ -10,11 +10,12 @@ has been claimed. The current local candidate
 `codex/m2-05-usable-decision-workflow-20261128` advances M2-05 with an
 abstention-safe offline report and opt-in scripted orchestration preview.
 The documentation-inclusive candidate is [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-Its preceding published head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`
-passed 1,032 tests, zero skips and all six local checks; GitHub reported 12
-successful official check-runs and two conditional skips on that SHA. The live
-PR body carries the current SHA and exact gate/check state; gate every later
-commit before publication.
+Immediately before this status refresh, its published head was
+`5c23efa819644b76fe87bd1ab40c4cb2225df029`; that exact SHA passed 1,032 tests,
+zero skips and all six local checks, plus 12 official successes and two
+conditional skips. The exact-head CLI smoke covered success and
+history-unavailable abstention. The live PR body carries the current SHA and
+exact gate/check state; gate every later commit before publication.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -22,11 +23,11 @@ commit before publication.
 | PRs #60/#61 | Merged into main; GitHub reports merge commits `8c871adeef3b7f74e0c30cd20be49c86105dca78` and `eea114554615509d8a0286621b81c323c2779c7a`. | Treat as incorporated; do not replay their commits or refer to them as open. |
 | M1C-04 Census research stack (#93–#98, #100) | Seven open, mergeable PRs in a linear stack; #93 is ready for independent review and #94–#98/#100 remain drafts. Source audit found no confirmed defect, but no independent review exists. Local six-check gates passed on exact #98 and integrated #100 trees using matching-tree scratch commits (1,116 and 1,162 tests; zero skips); #93 has 12 successful official checks plus two conditional skips. The other PRs target parent branches and receive no workflow runs because current `pull_request` triggers filter target branch `main`. | Keep changes synthetic. Obtain independent review and owner integration decision in topological order; B-01/B-02 prohibit real bytes or empirical claims pending source-specific rights and temporal evidence. Do not treat local tree-equivalent runs or missing CI as official validation. |
 | M1 synthetic vertical slice | Integrated through PR #62; remains experimental. | Keep M1 empirical and production criteria open until source rights, availability evidence, temporal evaluation and service controls pass. |
-| UCI #352 pilot | MM-024 invoice classification is present; 11 synthetic regressions pass. Earlier approved source attempt already excluded unverified prefixes before aggregation but stopped above 250,000 product-day groups, with no projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
+| UCI #352 pilot | MM-024 invoice classification is present; 11 dedicated synthetic regressions pass. A focused rerun collected 18 cases across four regression functions and passed. The earlier approved source attempt already excluded unverified prefixes before aggregation but stopped above 250,000 product-day groups, with no projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
 | B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. The current inspection-only proposal is the October 2026 Advance MARTS report (CB26-181), dated November 17; the public historical index excludes the current release and lists through September. FRED/ALFRED remains NO-GO under posted development and retention terms. | Obtain owner approval for this exact single report PDF for quarantine/notice/provenance/schema inspection only. That approval must not be treated as permission to parse values or acquire other vintages; then obtain separate artifact rights and processing approval. Continue the fixed synthetic-only evaluation protocol. |
 | M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
-| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. The preceding published head `756fe3d` passed 1,032 tests, zero skips, six local checks and 12 successful official checks; two conditional checks were skipped. | Address independent review; the live PR body carries the current exact head and evidence. Gate each later head. Do not merge or claim a production capability from this experimental local report. |
-| B-08 Actions | Owner reports included allowance exhausted, but exact heads #93 (`76f0402`) and #99 (`ef32ef4`) had 12 successful checks and two conditional skips each. PRs #94–#98/#100 target parent branches and receive no runs because all current `pull_request` triggers filter `main`; this explains those missing runs, not historical pre-start failures or account allowance. | Use authorized temporary local quality gate for stacked branches. Do not spend, alter workflow filters, protections, checks or runners, or infer a billing cause for historical failures. |
+| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Immediately before this status refresh, head `5c23efa` passed 1,032 tests, zero skips, six local checks, 12 official successes and two conditional skips. Exact-head CLI smoke covered completed experimental output and abstention. | Address independent review; the live PR body carries the current exact head and evidence. Gate each later head. Do not merge or claim a production capability from this experimental local report. |
+| B-08 Actions | Owner reports included allowance exhausted. Exact PR #93 head (`76f0402`) and, immediately before this status refresh, PR #99 head (`5c23efa`) had 12 successful checks and two conditional skips each. PRs #94–#98/#100 target parent branches and receive no runs because all current `pull_request` triggers filter `main`; this explains those missing runs, not historical pre-start failures or account allowance. | Use authorized temporary local quality gate for stacked branches. Do not spend, alter workflow filters, protections, checks or runners, or infer a billing cause for historical failures. |
 
 ## Historical pre-#87 checkpoint - 2026-11-28
 

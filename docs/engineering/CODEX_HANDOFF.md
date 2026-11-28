@@ -17,12 +17,14 @@
   blocked the Windows Proactor loopback socketpair at `test_health`; the same
   test and complete gate passed outside that restriction with no code changes.
   Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-  Its preceding published head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`
-  passed 1,032 tests, zero skips and all six local checks; GitHub recorded 12
-  successful check-runs and two conditional skips (`deploy`,
-  `release-rehearsal`). Those results apply only to that SHA. The live PR body
-  is authoritative for the current head and evidence; re-run the full local
-  gate after any commit.
+  Immediately before this status refresh, its published head was
+  `5c23efa819644b76fe87bd1ab40c4cb2225df029`. That exact SHA passed 1,032
+  tests, zero skips, all six local checks and 12 official check-runs; two
+  conditional checks (`deploy`, `release-rehearsal`) were skipped. A manual
+  CLI smoke parsed both the completed experimental report and
+  history-unavailable abstention, with no action authority. These results
+  apply only to that SHA. The live PR body is authoritative for the current
+  head and evidence; re-run the full local gate after any commit.
   See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
 - PRs #60 and #61 have since merged into main at
   `8c871adeef3b7f74e0c30cd20be49c86105dca78` and
@@ -51,9 +53,10 @@
   single ASCII-letter prefixes are excluded under one aggregate count, and
   other formats fail closed. The stopped attempt already excluded these rows
   before aggregation, so the clarification does not change its group count.
-  Do not retry, chunk, sample or raise the cap; retain snapshot deletion
-  deadline `2026-12-26`. Census/ALFRED bytes remain gated by B-01/B-02;
-  WorldKernel service isolation remains B-04.
+  A focused rerun of four synthetic regression functions collected 18 cases
+  and passed; no private source was reread. Do not retry, chunk, sample or
+  raise the cap; retain snapshot deletion deadline `2026-12-26`. Census/ALFRED
+  bytes remain gated by B-01/B-02; WorldKernel service isolation remains B-04.
 - Census metadata was refreshed on 2026-11-28. The proposed one-file
   inspection target is the October 2026 Advance MARTS report (CB26-181),
   released November 17; the historical archive omits current data and presently
@@ -66,7 +69,8 @@
   [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
   remains. Current exact-head queries found 12 successes and two conditional
-  skips on #93 (`76f0402`) and #99 (`ef32ef4`). Missing runs on #94–#98/#100
+  skips on #93 (`76f0402`) and #99 (`5c23efa`, last queried before this
+  status refresh). Missing runs on #94–#98/#100
   are explained by the current `pull_request.branches: [main]` filters: those
   PRs target parent feature branches. This does not explain historical
   pre-start failures or reveal current allowance. Use the temporary local gate

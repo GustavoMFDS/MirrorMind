@@ -7,7 +7,8 @@ of PR #92. PRs #87–#92 are integrated; #87 delivers the
 bounded M2-03 orchestration correction at merge commit
 `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. Earlier local and hosted results
 remain scoped to their recorded PR heads. No complete local gate has yet been
-run on `843fc5f` itself; this branch's final exact-head gate is pending.
+run on `843fc5f` itself; the separate M2-05 PR-head gate below does not
+transfer to `main`.
 
 The current local candidate is
 `codex/m2-05-usable-decision-workflow-20261128`, based on `843fc5f` through
@@ -31,12 +32,15 @@ evidence, not official Actions. Any later documentation commit needs its own
 exact-head gate before publication; the final PR body carries the published
 SHA and receipt.
 PR #99 is open against `main`, mergeable and ready for independent review.
-Its preceding published head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`
-passed the full local gate (1,032 tests, zero skips, six checks) and had 12
-successful official check-runs plus two workflow-conditional skips (`deploy`
-and `release-rehearsal`). These results apply only to that SHA. The live PR
-body is authoritative for the current head and its gate after this status
-update.
+Immediately before this status refresh, its published head was
+`5c23efa819644b76fe87bd1ab40c4cb2225df029`. That exact SHA passed 1,032 tests,
+zero skips and all six local checks, with WorldKernel installed at the reviewed
+pin. Its exact GitHub query returned 12 successful check-runs and two
+workflow-conditional skips (`deploy` and `release-rehearsal`); no failures or
+pending checks. The local CLI smoke rendered both the successful experimental
+report and the missing-history abstention with no action authority. These
+results apply only to that SHA. The live PR body is authoritative for the
+current head and gate after this status-only update.
 
 The open M1C-04 Census stack contains #93, #94, #95, #96, #97, #98 and #100.
 They remain linearly dependent (#94 on #93 through #98, then #100 on #98),
@@ -72,7 +76,9 @@ MM-024 classification is implemented and its synthetic regression set passed
 means cancellation, other single ASCII-letter prefixes are excluded under one
 aggregate class, and other forms fail closed. The earlier attempt already
 excluded those rows before aggregation and exceeded the 250,000 product-day
-group ceiling; no complete projection or metrics exist. Do not retry, chunk,
+group ceiling; no complete projection or metrics exist. A focused rerun of
+four synthetic regression functions collected 18 cases and passed; no private
+source was reread. Do not retry, chunk,
 sample or expand the cap. Delete the private snapshot by `2026-12-26`.
 B-01/B-02 still gate Census/ALFRED source bytes and empirical temporal claims;
 B-04 remains a separate WorldKernel production-isolation gate.
