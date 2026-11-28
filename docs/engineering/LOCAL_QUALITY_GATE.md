@@ -14,12 +14,43 @@ inside the restricted sandbox timed out in `test_health`; faulthandler showed
 Python 3.13's Windows Proactor blocked while accepting the local half of its
 asyncio socketpair. The unchanged test passed in 1.38s outside the sandbox,
 and the unchanged complete gate passed in 45.01s with loopback available. This
-is local environment evidence, not official Actions. Repeat the gate on the
-documentation-inclusive exact SHA before publishing; record that SHA and its
-receipt in the live PR body. The local result must not be transferred to
-`main` or represented as CI. The owner's Actions allowance exhaustion and
-zero paid spend remain constraints. No workflow, check, protection, runner or
-spending setting was changed.
+is local environment evidence, not official Actions. The documentation-
+inclusive initial PR head was also gated as recorded below. Every later commit
+requires a fresh gate; the live PR body carries the current SHA and receipt.
+Do not transfer local results to `main` or present them as CI. The owner's
+Actions allowance exhaustion and zero paid spend remain constraints. No
+workflow, check, protection, runner or spending setting was changed.
+
+### PR #99 local gate — initial exact head `62912e11`
+
+The documentation-inclusive initial PR head
+`62912e1174c84cefe3f17009c695600b315072d3` passed the six-check local gate:
+1,032 pytest tests, zero skips, and successful Ruff, catalog, atlas, evidence,
+and capability checks. Runtime was Python 3.13.5; WorldKernel `0.0.1` came from
+reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Runtime was 46.20
+seconds with one existing Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-62912e1174c84cefe3f17009c695600b315072d3-workspace.json`.
+This local validation is independent from official PR-head checks below.
+
+### PR #99 official checks — initial exact head `62912e11`
+
+The initial published PR #99 head
+`62912e1174c84cefe3f17009c695600b315072d3` returned 14 check-runs: 12
+concluded `success` and two concluded `skipped` under workflow conditions.
+The skipped jobs were `deploy` and `release-rehearsal`. The successful checks
+were `test`, Python 3.12 and 3.13 compatibility, `quality`, `package`,
+`container-smoke`, `symbol-catalog`, `build-site`, `benchmark`, CodeQL, and
+`Analyze (actions)` / `Analyze (python)`. Exact run records: [test and
+compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603884),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603895),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603994),
+[site build and conditional deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603934),
+[benchmark and conditional rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603902),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140870088636), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109602633).
+These results are scoped to the initial PR head and do not replace the local
+gate or transfer to later commits. The [live PR](https://github.com/GustavoMFDS/MirrorMind/pull/99)
+is authoritative for the current SHA and check state.
 
 The previous paragraphs below are historical exact-SHA records. Their results
 must not be transferred to current `main` or the M2-05 candidate.

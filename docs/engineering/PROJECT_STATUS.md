@@ -30,6 +30,12 @@ and full gate passed with loopback available. This is local environment
 evidence, not official Actions. Any later documentation commit needs its own
 exact-head gate before publication; the final PR body carries the published
 SHA and receipt.
+PR #99 is open against `main`, mergeable and awaiting independent review. On
+its initial exact head `62912e1174c84cefe3f17009c695600b315072d3`, GitHub
+reported 12 successful checks and two conditional skips (`deploy` and
+`release-rehearsal`); see [the PR](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+These results apply only to that head. The live PR body and checks are
+authoritative after any later commit.
 
 The user-approved UCI #352 local reader profile remains tightly scoped. Its
 prior attempt exceeded the 250,000 product-day group ceiling without a complete

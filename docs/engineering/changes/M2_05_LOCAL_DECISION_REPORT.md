@@ -57,11 +57,11 @@ M2 decision-tool replication limit above three.
 - [x] Add normal, abstention, invalid-bound and escaping regressions; update the
   walkthrough, change request, system map, debugging/learning docs, evidence,
   capability ledger, atlas and generated symbols as applicable.
-- [ ] Run the full documented local quality gate on the documentation-inclusive
-  final head. Feature commit
-  `2d592bd50b15c3b0d463c94e58a70be78553e8a6` already passed the complete gate
-  (1,032 tests, zero skips, six checks); the final SHA and fresh receipt must
-  be recorded in the review PR.
+- [x] Run the full documented local quality gate on exact published head
+  `62912e1174c84cefe3f17009c695600b315072d3`: 1,032 tests, zero skips, six
+  checks. The initial PR head also has 12 successful official check-runs and
+  two conditional skips. Later commits require a fresh exact-head gate; the
+  live PR body records current evidence.
 
 ## 3. Impact map
 
@@ -113,18 +113,19 @@ browser isolation or screen-reader certification.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: feature commit `2d592bd50b15c3b0d463c94e58a70be78553e8a6` on local candidate `codex/m2-05-usable-decision-workflow-20261128`; documentation-inclusive final gate and review PR pending.
+- Commit / PR: [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99), initially published at `62912e1174c84cefe3f17009c695600b315072d3` on `codex/m2-05-usable-decision-workflow-20261128`; open and awaiting independent review.
 - Modified symbols: `ScriptedSyntheticProvider.__init__`, `next_turn`,
   `build_report`, `_script_json`, `main`, `renderAgent` and `renderWorkflow`.
 - Tests executed, result, environment: focused command
   `python -m pytest -q tests/integration/test_portfolio_demo.py tests/integration/test_m2_tool_orchestration_cli.py`
-  passed 13 tests. The complete gate on feature commit
-  `2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed 1,032 tests, zero skips
-  and all six checks in 45.01 seconds with Python 3.13.5 and the exact pinned
+  passed 13 tests. The complete gate on published head
+  `62912e1174c84cefe3f17009c695600b315072d3` passed 1,032 tests, zero skips
+  and all six checks in 46.20 seconds with Python 3.13.5 and the exact pinned
   WorldKernel. A restricted-sandbox attempt timed out in the Windows Proactor
   loopback socketpair during `test_health`; the unchanged isolated test passed
   outside that sandbox in 1.38 seconds. This diagnosis does not replace the
-  required gate on the documentation-inclusive final commit.
+  required fresh gate after later commits. Exact-head official checks: 12
+  success and two conditional skips; see [LOCAL_QUALITY_GATE](../LOCAL_QUALITY_GATE.md).
 - Claim IDs and cited test path/function: `MM-PORT-001` through `MM-PORT-005`
   cite `tests/integration/test_portfolio_demo.py` and named top-level functions
   in `EVIDENCE_MAP.json`.

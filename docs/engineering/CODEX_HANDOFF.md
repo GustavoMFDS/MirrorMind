@@ -16,8 +16,12 @@
   in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The restricted sandbox
   blocked the Windows Proactor loopback socketpair at `test_health`; the same
   test and complete gate passed outside that restriction with no code changes.
-  Run a fresh gate on the documentation-inclusive exact head before publishing
-  a review PR. See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
+  Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+  Initial PR head `62912e1174c84cefe3f17009c695600b315072d3` also returned 12
+  successful official check-runs and two conditional skips (`deploy`,
+  `release-rehearsal`). Those results apply only to that SHA. The live PR body
+  carries current head evidence; re-run the full local gate after any commit.
+  See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
 - No public API, capability status, live provider, persistence, data source or
   authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep
   generated fixtures in automated tests.

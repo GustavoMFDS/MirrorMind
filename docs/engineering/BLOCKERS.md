@@ -31,6 +31,14 @@ local gate remains fail-closed and unchanged; see the exact receipt in
 [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Preserve zero paid spend and do
 not infer official Actions state from this local result.
 
+PR #99 was opened against `main` with exact initial head
+`62912e1174c84cefe3f17009c695600b315072d3`. Its check query returned 12
+completed successes and two workflow-conditional skips (`deploy`,
+`release-rehearsal`), with no failed or pending result at query time. This
+demonstrates execution on that PR SHA only and does not establish a billing
+cause or a result for subsequent commits. The current head and check state
+remain in the [live PR](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+
 ## Historical pre-#87 B-07/B-08 reconciliation - 2026-11-28
 
 PR #88 merged the cryptography 50 lock update at exact `main` commit

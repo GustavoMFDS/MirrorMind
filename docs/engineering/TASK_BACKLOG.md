@@ -11,8 +11,11 @@ has been claimed. The current local candidate
 abstention-safe offline report and opt-in scripted orchestration preview.
 Feature commit `2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed 1,032 tests,
 zero skips and all six local checks with the pinned WorldKernel. The
-documentation-inclusive exact-head gate remains required before opening the
-review PR; exact final-SHA evidence belongs in that PR body.
+documentation-inclusive candidate was published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+Its initial head `62912e1174c84cefe3f17009c695600b315072d3` passed the full
+gate and received 12 successful exact-head checks plus two conditional skips.
+Any later commit needs a fresh local gate; use the live PR body for the
+current SHA and check state.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -21,7 +24,7 @@ review PR; exact final-SHA evidence belongs in that PR body.
 | UCI #352 pilot | Approved local attempt stopped above 250,000 product-day groups without a complete projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
 | B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. | Continue no-byte preparation; artifact-specific rights and source-owner approval precede acquisition. |
 | M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
-| M2-05 | Feature code complete on local candidate; exact feature commit `2d592bd` passed 1,032 tests, zero skips and all six local checks. Reuses M1F-02 and M2-03 without API changes. | Gate the documentation-inclusive final SHA, record its receipt and prepare the candidate for independent review. |
+| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Initial head `62912e1` passed 1,032 tests, zero skips, six local checks and 12 successful official checks; two conditional checks were skipped. | Address independent review; gate each later exact head. Do not merge or claim a production capability from this experimental local report. |
 | B-08 Actions | Owner reports included allowance exhausted; cause of historical pre-start failures remains unverified. | Use authorized temporary local quality gate; do not spend, alter protections, checks or runners, or infer billing cause. |
 
 ## Historical pre-#87 checkpoint - 2026-11-28
