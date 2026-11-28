@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 from random import Random
-from typing import Any
+from typing import Any, cast
 
 from .policy_simulation import (
     HORIZON_DAYS,
@@ -144,7 +144,8 @@ def mirrormind_retail_policy_step(
             if type(policy_state) is not dict:
                 raise ValueError("policy-world inventory state is invalid")
             next_policy_states[lead_key][policy_id] = advance_retail_policy_day(
-                policy_state,
+                # advance_retail_policy_day validates the complete state before use.
+                cast(RetailPolicySimulationState, policy_state),
                 policy_id=policy_id,
                 day_index=day_index,
                 demand_units=demand,

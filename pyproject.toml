@@ -57,3 +57,8 @@ precision = 2
 
 [tool.mypy]
 python_version = "3.11"
+
+# These external libraries do not provide usable type metadata in the public environment.
+[[tool.mypy.overrides]]
+module = ["openpyxl", "openpyxl.*", "worldkernel", "worldkernel.*"]
+ignore_missing_imports = true

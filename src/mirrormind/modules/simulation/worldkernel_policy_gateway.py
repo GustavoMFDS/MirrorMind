@@ -14,6 +14,7 @@ from ...domains.retail.policy_simulation import (
     RetailPolicyAssumptions,
     RetailPolicyComparisonRequest,
     _build_demand_streams,
+    _DemandStream,
     _lead_time_scenarios,
     compare_synthetic_retail_policies,
     finalize_retail_policy_metrics,
@@ -178,7 +179,7 @@ def _summarize_engine_runs(
     *,
     final_states: list[dict[str, Any]],
     request: RetailPolicyComparisonRequest,
-    expected_streams: tuple[dict[str, Any], ...],
+    expected_streams: tuple[_DemandStream, ...],
 ) -> list[dict[str, object]]:
     scenarios: list[dict[str, object]] = []
     for lead_time in _lead_time_scenarios(request.assumptions.lead_time_days):

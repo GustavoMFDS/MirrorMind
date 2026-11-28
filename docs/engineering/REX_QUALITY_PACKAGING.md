@@ -136,3 +136,33 @@ or output schema; no blanket suppressions. Same full-package diagnostic:
 XML parser, engine and governance contracts requiring separate review.
 The [lock tests](../../tests/unit/test_public_lock.py) check input drift
 and private-engine exclusion. They do not attest artifact safety.
+
+## Third typing pass: whole-package gate
+
+On main c8b93da2 the same diagnostic reported 18 errors across eight
+files. The follow-up resolves 17 findings using existing validated data:
+Expat XMLParserType, exact scalar/style narrowing, typed capture lists,
+validated enrollment expiration, NoReturn for the verifier that always
+refuses publication, explicit exchange identity/count/mapping checks,
+typed demand streams and a narrow state cast immediately before the
+existing exhaustive transition validator. The workflow checks exact
+integer execution counts before creating outcomes.
+
+One intentional compatibility exception remains: DecisionTraceV2 inherits
+DecisionTrace but changes its immutable schema_version literal. A single
+assignment-specific ignore preserves the legacy Python subtype and each
+Pydantic schema's exact version discriminator. The regression test
+test_trace_version_literals_remain_exact_and_v2_retains_legacy_subtype
+checks subtype, both schema constants and refusal of a V1 version in V2.
+Do not broaden the version literal or silently change inheritance merely
+to satisfy a checker.
+
+The same whole-package mypy target now reports zero unsuppressed
+diagnostics in 66 source files with --warn-unused-ignores. Missing type
+metadata exemptions are limited to openpyxl and the optional WorldKernel
+package (including submodules), not all imports. Strict retrieval remains
+a separate stronger check. This is not whole-package strict typing, does
+not eliminate all Any values, and is not proof of runtime safety.
+The new quality job step fails on new unsuppressed diagnostics or unused
+ignores; the existing server-required contexts remain unchanged.
+No source read, external engine change, new dependency, or authorization.
