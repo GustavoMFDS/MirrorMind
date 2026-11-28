@@ -9,12 +9,12 @@ remains scoped to its exact recorded SHA; no complete gate on current `main`
 has been claimed. The current local candidate
 `codex/m2-05-usable-decision-workflow-20261128` advances M2-05 with an
 abstention-safe offline report and opt-in scripted orchestration preview.
-The documentation-inclusive candidate is [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99),
-currently at `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`. Its exact-head local
-gate passed 1,032 tests, zero skips and all six checks; GitHub reports 12
-successful official check-runs and two conditional skips. Any later commit
-needs a fresh local gate; the live PR body is authoritative for current SHA
-and check state.
+The documentation-inclusive candidate is [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+Its preceding published head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`
+passed 1,032 tests, zero skips and all six local checks; GitHub reported 12
+successful official check-runs and two conditional skips on that SHA. The live
+PR body carries the current SHA and exact gate/check state; gate every later
+commit before publication.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -25,7 +25,7 @@ and check state.
 | UCI #352 pilot | MM-024 invoice classification is present; 11 synthetic regressions pass. Earlier approved source attempt already excluded unverified prefixes before aggregation but stopped above 250,000 product-day groups, with no projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
 | B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. | Continue no-byte preparation; artifact-specific rights and source-owner approval precede acquisition. |
 | M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
-| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Current exact head `756fe3d` passed 1,032 tests, zero skips, six local checks and 12 successful official checks; two conditional checks were skipped. | Address independent review; gate each later exact head. Do not merge or claim a production capability from this experimental local report. |
+| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. The preceding published head `756fe3d` passed 1,032 tests, zero skips, six local checks and 12 successful official checks; two conditional checks were skipped. | Address independent review; the live PR body carries the current exact head and evidence. Gate each later head. Do not merge or claim a production capability from this experimental local report. |
 | B-08 Actions | Owner reports included allowance exhausted; cause of historical pre-start failures remains unverified. Exact PR heads #93 and #99 had workflow runs; #94–#98/#100 had no PR-triggered workflow runs/statuses at lookup. | Use authorized temporary local quality gate; do not spend, alter protections, checks or runners, or infer current availability or historical billing cause. |
 
 ## Historical pre-#87 checkpoint - 2026-11-28

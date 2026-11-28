@@ -33,7 +33,7 @@ local gate remains fail-closed and unchanged; see the exact receipt in
 [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Preserve zero paid spend and do
 not infer official Actions state from this local result.
 
-PR #99 is open against `main` at exact head
+PR #99's preceding published head was
 `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`. Its local six-check gate passed
 1,032 tests, zero skips and all six checks; GitHub recorded 12 completed
 successes and two workflow-conditional skips (`deploy`,

@@ -31,11 +31,12 @@ evidence, not official Actions. Any later documentation commit needs its own
 exact-head gate before publication; the final PR body carries the published
 SHA and receipt.
 PR #99 is open against `main`, mergeable and ready for independent review.
-Its current exact head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc` passed the
-full local gate (1,032 tests, zero skips, six checks) and has 12 successful
-official check-runs plus two workflow-conditional skips (`deploy` and
-`release-rehearsal`). These results apply only to that SHA; the live PR body is
-authoritative after any later commit.
+Its preceding published head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`
+passed the full local gate (1,032 tests, zero skips, six checks) and had 12
+successful official check-runs plus two workflow-conditional skips (`deploy`
+and `release-rehearsal`). These results apply only to that SHA. The live PR
+body is authoritative for the current head and its gate after this status
+update.
 
 The open M1C-04 Census stack contains #93, #94, #95, #96, #97, #98 and #100.
 They remain linearly dependent (#94 on #93 through #98, then #100 on #98),
