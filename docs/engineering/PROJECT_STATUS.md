@@ -73,6 +73,17 @@ sample or expand the cap. Delete the private snapshot by `2026-12-26`.
 B-01/B-02 still gate Census/ALFRED source bytes and empirical temporal claims;
 B-04 remains a separate WorldKernel production-isolation gate.
 
+Metadata review on 2026-11-28 refreshed the B-01/B-02 artifact candidate to
+the October 2026 Advance MARTS report (CB26-181), released November 17. The
+official sales page exposes the report and tables, while the historical
+archive explicitly omits the most-current data and currently lists through
+September. This is a proposal for one quarantined notice/provenance/schema
+inspection only; it is not source approval. No Census/FRED/ALFRED bytes or
+credentials were acquired. Keep the direct Census artifact behind owner
+approval and a separate rights/processing decision, and keep FRED/ALFRED
+excluded under current service/API terms. See the
+[Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
 Historical continuation text below records the pre-#87-merge baseline and
 must not be read as current PR or branch status.
 

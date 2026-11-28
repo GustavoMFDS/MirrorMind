@@ -19,19 +19,31 @@ This can test release-aware evaluation on aggregate retail dollar sales. It cann
 
 | Candidate | Proposed use and verified public metadata | Conditions before any source acquisition |
 | --- | --- | --- |
-| Direct Census MARTS original releases — preferred | The official [historical-release index](https://www.census.gov/retail/marts/historic_releases.html) serves Excel/PDF releases and lists known missing releases: May 1954, January 1956, August 1956, December 1958, January 1970, December 1973 and August 1991; Advance Retail Sales was not produced from March 1970 through January 1972. The [current schedule](https://www.census.gov/retail/release_schedule.html) gives 8:30 a.m. for the Advance Monthly Retail Trade Report. The current methodology describes early national retail and food-services estimates, released about ten business days after reference-month close and revised one month later by MRTS. | Apply Census attribution guidance to any derived estimates, but do not treat citation guidance as a file-specific license. Preflight the public index, landing-page metadata, terms and available provenance. Before fetching any file, the owner must approve one exact direct-from-Census artifact for local quarantine and embedded notice/provenance/schema inspection only; do not parse values or evaluate in this stage. After that inspection, obtain artifact-specific rights review for any ambiguity and a separate owner go/no-go for processing, including the bounded purpose, local storage, retention/deletion and outputs. Census's general copyright statement does not clear every file or foreign use. The schedule page prints a clock time but does not state a timezone in its table; establish each historical publication boundary from an authoritative release artifact or use a conservative date-only cutoff. Inventory first-release completeness before fixing the study interval. The annual-revision archive is not proof that every original first release is preserved. |
+| Direct Census MARTS original releases — preferred | The official [current sales release page](https://www.census.gov/retail/sales.html) identifies the October 2026 advance release (CB26-181) dated November 17, 2026 and links the advance report and its tables. The [historical-release index](https://www.census.gov/retail/marts/historic_releases.html) explicitly excludes the most-current data; its current 2026 archive list reaches September, so it is not a substitute for the live October artifact. The index lists known missing releases: May 1954, January 1956, August 1956, December 1958, January 1970, December 1973 and August 1991; Advance Retail Sales was not produced from March 1970 through January 1972. The [release schedule](https://www.census.gov/retail/release_schedule.html) gives 8:30 a.m.; the schedule table does not state a timezone. | Apply Census attribution guidance to any derived estimates, but do not treat citation guidance as a file-specific license. Preflight the public index, landing-page metadata, terms and available provenance. Before fetching any file, the owner must approve one exact direct-from-Census artifact for local quarantine and embedded notice/provenance/schema inspection only; do not parse values or evaluate in this stage. After that inspection, obtain artifact-specific rights review for any ambiguity and a separate owner go/no-go for processing, including the bounded purpose, local storage, retention/deletion and outputs. Census's general copyright statement does not clear every file or foreign use. Establish each historical publication boundary from an authoritative release artifact or use a conservative date-only cutoff. Inventory first-release completeness before fixing the study interval. The annual-revision archive is not proof that every original first release is preserved. |
 | FRED/ALFRED `RSAFS` — NO-GO via FRED services under current terms | The FRED series page identifies `RSAFS` as Census-sourced Advance Retail Sales. That metadata is useful for discovery only; it does not establish rights to archive values or prove the series is byte-equivalent to each original release. | FRED's current [Services Terms](https://fred.stlouisfed.org/legal/terms/) explicitly apply to ALFRED and the API. They prohibit storing, caching or archiving FRED Services/Content; the API terms also prohibit API access in connection with software/AI development and API-associated storage/cache/archive use. The series owner may impose separate restrictions. Do not request an API key, fetch values, or use ALFRED as the local vintage archive unless the St. Louis Fed authorizes the intended service/API use in writing or revised terms expressly allow it, and any separate series-owner rights are cleared. |
 
 The FRED series record currently marks its chart data as copyrighted while naming Census as the source. FRED's posted terms state that service access does not override a series owner's rights. Direct Census artifacts therefore remain a separate candidate requiring their own artifact-level review; the FRED restriction is not evidence that Census's original files have the same restriction. No legal conclusion about those direct files is inferred here.
 
-Concrete inspection-only candidate: the September 2026 Advance MARTS release
-PDF, [`adv2609.pdf`](https://www2.census.gov/retail/releases/historical/marts/adv2609.pdf),
-linked from the Census historical-release archive. Public release metadata
-dates it October 15, 2026. It is one candidate artifact for bounded notice,
-provenance and schema inspection after explicit owner approval; it is not
-rights-cleared, does not authorize processing its values or downloading other
-vintages, and cannot establish archive completeness. The file was not
-downloaded into the repository or used in an evaluation.
+## Inspection-only artifact proposal — metadata refresh 2026-11-28
+
+The proposed single artifact is the October 2026 Advance MARTS report, release
+CB26-181, published November 17, 2026. Its exact current PDF candidate is
+[`marts_current.pdf?release=20261117`](https://www.census.gov/retail/marts/www/marts_current.pdf?release=20261117),
+linked from the official [current sales release page](https://www.census.gov/retail/sales.html).
+That page identifies the release date and links the advance report and a
+separate tables artifact; the proposal selects the report PDF only. The
+official schedule lists 8:30 a.m.; the release-specific notice identifies
+Eastern Standard Time. The archived-release page states that its list omits
+the most-current data and currently reaches the September 2026 release. The
+September 2026 `adv2609.pdf` proposal is therefore superseded as the next-file
+candidate, not approved for acquisition.
+
+This is one-file approval preparation only. No report or table file was
+downloaded, opened, parsed, or evaluated. Before any retrieval, the owner must
+approve this exact report artifact for local quarantine and notice, provenance
+and schema inspection only. This approval would not authorize value parsing,
+processing, another artifact, or a vintage set. The candidate is not
+rights-cleared and cannot establish first-release archive completeness.
 
 ## Public-use and copyright boundary — metadata review 2026-11-27
 
@@ -80,7 +92,7 @@ carry over to Census.
 | Decision | Concrete proposal for review | Evidence to retain before processing |
 | --- | --- | --- |
 | Source and target | Direct Census MARTS historical release files only; national retail and food-services total, seasonally adjusted, one stable table row per release. Exclude FRED/ALFRED retrieval. Verify the exact row name, dollar unit/scale and seasonal-adjustment status from original headers before freezing the manifest. | Public publisher index and landing-page links for preflight. After approval for one-file inspection, keep the exact artifact URL, hash, table/header transcription, methodology edition and source-specific rights review ID in the private review record. |
-| Bounded artifact inspection | First obtain approval for one exact direct-from-Census artifact fetched only to inspect embedded notices, provenance, creator/sponsorship and schema. Candidate: [`adv2609.pdf`](https://www2.census.gov/retail/releases/historical/marts/adv2609.pdf), the September 2026 advance release. Store it quarantined and access-controlled; do not parse values, normalize rows or evaluate it. Delete immediately after review and no later than the approved retention limit. This single-file inspection does not authorize other vintages or bulk acquisition. | Exact artifact URL and approval record; file hash and sanitized inspection outcome. If metadata alone identifies restrictions or unresolved provenance, request rights review before fetching. |
+| Bounded artifact inspection | First obtain approval for one exact direct-from-Census artifact fetched only to inspect embedded notices, provenance, creator/sponsorship and schema. Current candidate: October 2026 report PDF, release CB26-181, [`marts_current.pdf?release=20261117`](https://www.census.gov/retail/marts/www/marts_current.pdf?release=20261117). Store it quarantined and access-controlled; do not parse values, normalize rows or evaluate it. Delete immediately after review and no later than the approved retention limit. This single-file inspection does not authorize the separate tables file, other vintages or bulk acquisition. | Exact artifact URL and approval record; file hash and sanitized inspection outcome. If metadata alone identifies restrictions or unresolved provenance, request rights review before fetching. |
 | Purpose and redistribution | Non-commercial internal research and temporal-method evaluation only. Follow Census citation guidance and state that MirrorMind's conclusions are its own; do not publish source files or row-by-row values, redistribute artifacts, or imply Census endorsement. Any wider publication/use requires a separate rights check. | After the inspection stage, require artifact-specific rights clearance and a separate owner go/no-go for processing, bounded purpose and permitted outputs. Citation guidance alone is not permission. |
 | Privacy and storage | Aggregate published values only; no respondent identifiers, microdata, UCI linkage, or attempts to infer a respondent. Store approved original files and parsed values in a designated access-controlled local directory, outside Git, CI, logs, prompts and external services. Verify the storage location and deletion procedure before download. Census methodology describes confidentiality and disclosure-avoidance review for underlying respondent data; this does not itself grant downstream reuse rights. | Named local path recorded privately (never in Git), access check, retention due date, and a tested deletion checklist. |
 | Retention proposal | Retain source files, parsed values and the value-bearing manifest locally for 30 calendar days from approved acquisition; delete those artifacts and local backups at the due date. Keep only citation/rights metadata, retrieval timestamps, file SHA-256 values and sanitized audit outcomes. Retain derived aggregate scores only if the source review explicitly permits it; otherwise delete them too. | Owner approval of this period and the permitted persistent outputs. No retention clock starts because no Census artifact has been acquired. |
@@ -289,15 +301,15 @@ approve processing, purpose, storage, outputs, retention period, temporal split
 and publication-boundary policy. Until both gates are satisfied, tests remain
 synthetic and no Census-data adapter is enabled.
 
-## Current primary references checked 2026-11-27
+## Current primary references checked 2026-11-28
 
-- U.S. Census [monthly retail data](https://www.census.gov/retail/data.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html), [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html), [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html), [release schedule](https://www.census.gov/retail/release_schedule.html), [citation guidance](https://www.census.gov/about/policies/citation.html), and [Research Transparency and Public Access policy](https://www2.census.gov/foia/ds_policies/ds027.pdf).
+- U.S. Census [current monthly sales release](https://www.census.gov/retail/sales.html), [historical release archive](https://www.census.gov/retail/historic_releases.html), [Advance MARTS archive](https://www.census.gov/retail/marts/historic_releases.html), [annual revision archive](https://www.census.gov/retail/mrts/historic_releases.html), [MARTS methodology](https://www.census.gov/retail/marts/how_surveys_are_collected.html), [release schedule](https://www.census.gov/retail/release_schedule.html), [citation guidance](https://www.census.gov/about/policies/citation.html), and [Research Transparency and Public Access policy](https://www2.census.gov/foia/ds_policies/ds027.pdf).
 - St. Louis Fed [RSAFS series record](https://fred.stlouisfed.org/series/RSAFS), [FRED Services terms](https://fred.stlouisfed.org/legal/terms/), [FRED API terms](https://fred.stlouisfed.org/docs/api/terms_of_use.html), and [API observation documentation](https://fred.stlouisfed.org/docs/api/fred/series_observations.html). FRED/ALFRED is currently excluded as a data route for this research because its posted terms cover AI/software development and retention; API endpoint documentation was reviewed but no endpoint or API key was used.
 
-These pages establish the direct archive index, release-schedule metadata and
-currently posted service terms. They do not establish an artifact-specific
-license, complete first-release interval, timezone for every historical
-release, a downloaded snapshot, approved local retention or owner
-authorization. The current Census release page exposed a published figure
-inline; it was not transcribed or retained. No source file, API response or
+These pages establish the direct release landing-page metadata, archive index,
+release schedule and currently posted service terms. They do not establish an
+artifact-specific license, complete first-release interval, timezone for
+every historical release, a downloaded snapshot, approved local retention or
+owner authorization. The current Census page exposed published values inline;
+they were not transcribed or retained. No source file, API response or
 credential was acquired, and no evaluation was run.

@@ -49,6 +49,16 @@
   Do not retry, chunk, sample or raise the cap; retain snapshot deletion
   deadline `2026-12-26`. Census/ALFRED bytes remain gated by B-01/B-02;
   WorldKernel service isolation remains B-04.
+- Census metadata was refreshed on 2026-11-28. The proposed one-file
+  inspection target is the October 2026 Advance MARTS report (CB26-181),
+  released November 17; the historical archive omits current data and presently
+  lists through September. This is still only a candidate: no Census/FRED/
+  ALFRED bytes or credentials were acquired. Request explicit approval before
+  fetching that exact PDF, restrict the first stage to quarantined notice,
+  provenance and schema inspection, then require separate rights and
+  processing decisions. Current FRED Services/API terms prohibit the proposed
+  software-development and archive route; see the updated
+  [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
   remains. Current observations include workflow runs on exact PR heads #93
   and #99, but none returned for #94–#98/#100. This does not establish current
