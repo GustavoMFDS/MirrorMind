@@ -44,7 +44,7 @@ from mirrormind.domains.retail.synthetic_fixtures import (
     LAST_FIXTURE_DAY,
     START,
     SYNTHETIC_STOCK_CODE,
-    build_synthetic_evidence_flow,
+    _synthetic_evidence_flow_builder,
 )
 from mirrormind.domains.retail.worldkernel_policy_world import (
     POLICY_TEST_DOUBLE_CONTRACT_REF,
@@ -647,11 +647,10 @@ def run_synthetic_decision_workflow(
     if type(request) is not SyntheticDecisionWorkflowRequest:
         raise TypeError("request must be a validated SyntheticDecisionWorkflowRequest")
     evaluation_on = request.as_of - timedelta(days=DIAGNOSTIC_HOLDOUT_DAYS)
-    diagnostic_flow = build_synthetic_evidence_flow(
-        future_units=future_units,
-        all_unpublished=all_unpublished,
-        evaluation_on=evaluation_on,
+    build_flow = _synthetic_evidence_flow_builder(
+        future_units=future_units, all_unpublished=all_unpublished
     )
+    diagnostic_flow = build_flow(evaluation_on)
     evaluation = evaluate_retail_evidence_flow(
         diagnostic_flow,
         stock_code=SYNTHETIC_STOCK_CODE,
@@ -668,11 +667,7 @@ def run_synthetic_decision_workflow(
         min_calibration_residuals=5,
     )
 
-    forecast_flow = build_synthetic_evidence_flow(
-        future_units=future_units,
-        all_unpublished=all_unpublished,
-        evaluation_on=request.as_of,
-    )
+    forecast_flow = build_flow(request.as_of)
     observations = _eligible_observation_rows(forecast_flow, as_of=request.as_of)
     by_date = {day: (units, available_on) for day, units, available_on in observations}
     projected_by_date = {

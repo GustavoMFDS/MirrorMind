@@ -386,7 +386,7 @@ def test_incomplete_or_late_history_abstains_without_running_policy_test_double(
         ),
         receipt=lambda: {"status": "synthetic-test-flow"},
     )
-    monkeypatch.setattr(workflow, "build_synthetic_evidence_flow", lambda **_: fake_flow)
+    monkeypatch.setattr(workflow, "_synthetic_evidence_flow_builder", lambda **_: lambda _: fake_flow)
     monkeypatch.setattr(
         workflow,
         "evaluate_retail_evidence_flow",
@@ -475,3 +475,34 @@ def test_trace_version_literals_remain_exact_and_v2_retains_legacy_subtype():
     payload["schema_version"] = "mirrormind.decision_trace.v1"
     with pytest.raises(ValidationError, match="schema_version"):
         DecisionTraceV2.model_validate(payload)
+
+def test_workflow_reuses_only_generated_bytes_with_independent_cutoffs(monkeypatch):
+    from mirrormind.domains.retail import synthetic_fixtures as fixtures
+
+    generated = []
+    audits = []
+    original_generate = fixtures._synthetic_workbook
+    original_prepare = fixtures.prepare_retail_uci_evidence_flow
+
+    def generate(*, future_units):
+        generated.append(future_units)
+        return original_generate(future_units=future_units)
+
+    def prepare(stream, **kwargs):
+        audits.append((stream, kwargs["origin_on"], kwargs["expected_sha256"]))
+        return original_prepare(stream, **kwargs)
+
+    monkeypatch.setattr(fixtures, "_synthetic_workbook", generate)
+    monkeypatch.setattr(fixtures, "prepare_retail_uci_evidence_flow", prepare)
+    request = SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1)
+    first = run_synthetic_decision_workflow(request)
+    second = run_synthetic_decision_workflow(request)
+    assert first == second
+    assert generated == [9, 9]
+    assert [entry[1] for entry in audits] == [AS_OF - timedelta(days=7), AS_OF] * 2
+    assert len({id(entry[0]) for entry in audits}) == 4
+    assert len({entry[2] for entry in audits}) == 1
+    mutated = run_synthetic_decision_workflow(request, future_units=999)
+    assert generated == [9, 9, 999]
+    assert audits[-2][2] == audits[-1][2] != audits[0][2]
+    assert mutated["forecast"]["profile_units"] == first["forecast"]["profile_units"]
