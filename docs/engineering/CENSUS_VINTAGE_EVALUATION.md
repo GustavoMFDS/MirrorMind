@@ -387,3 +387,79 @@ exercise failure before scoring.
 Run `python -m pytest -q tests/unit/test_census_split.py`.
 See [change request](changes/M1C_04_CENSUS_FROZEN_SPLIT.md).
 Independent review pending.
+
+## Experimental identity and complete local replay
+
+The pure [experiment contract](../../src/mirrormind/domains/retail/census_experiment.py)
+uses the public `census_evaluation_manifest_sha256` helper in the evaluator.
+It validates normalized records and numeric bounds, then uses the existing
+v2 manifest serializer without altering the v2 output. Its cutoff parameter
+validates the selection but the hash binds the complete input, not the
+selected view. This helper alone does not establish evaluation eligibility.
+
+`prepare_census_experiment` creates a frozen specification of schedule
+digest, input manifest digest and caller-declared 40-character Git revision.
+`census_experiment_sha256` binds these fields to the fixed protocol and
+evaluation schemas. Retain the expected digest before executing. Execution
+checks it, rederives the specification, calls the existing split wrapper
+and compares the nested full-input manifest. The receipt contains the full
+descriptive result and a SHA-256 over canonical JSON excluding its own digest.
+
+`verify_census_experiment_receipt` accepts exact bytes of canonical JSON
+(sorted keys, compact separators, ASCII escaping, finite numbers; maximum
+4 MiB). It does not parse supplied JSON. It reruns the committed experiment
+and compares the entire expected canonical bytes; changing a loss and
+rehashing the result does not pass. The returned receipt digest is only
+local reproduction evidence. No persistence or external attestation.
+Recomputing a new commitment is possible; a caller-declared revision does
+not authenticate the executing code. No trusted registration timestamp,
+blind access, independent holdout lock or single-use evaluation. Receipts
+contain derived values and are restricted to fictional use.
+
+At the current 250-origin bound and cumulative floor 60/80 split, holdout
+has at most 50 declared origins; the proposed 60-pair inference minimum is
+unreachable. Do not enlarge limits, repartition or promote inference. No
+confidence interval or winner is emitted. B-01/B-02 remain unresolved.
+
+Proposed evidence MM-CEN-020:
+`test_experiment_commitment_and_complete_replay` checks matched identity,
+deterministic replay, distinct split receipts and false authority flags.
+`test_experiment_rejects_changed_inputs_before_evaluation` and
+`test_experiment_rejects_rehashed_forgery` cover changed commitment
+and forged bytes. Run `python -m pytest -q tests/unit/test_census_experiment.py`.
+See [change request](changes/M1C_04_CENSUS_EXPERIMENT.md).
+Independent review pending.
+
+## Local experiment metadata journal (experimental)
+
+[CensusExperimentJournal](../../src/mirrormind/domains/retail/census_experiment_journal.py)
+takes an explicit absolute caller-controlled filesystem path. Register
+recomputes the commitment from normalized records and schedule before
+inserting only the experiment ID, schedule/manifest digests and declared
+revision. Admission invokes the pure replay verifier outside the write
+transaction, then rechecks the stored commitment and inserts only the
+verified digest for the requested split. Identical repeats are idempotent;
+conflicting stored digests fail closed. At most 1000 experiments and two
+split keys per experiment may be written through the adapter.
+
+Each operation opens a short SQLite transaction (BEGIN IMMEDIATE, foreign
+keys, three-second busy timeout), checks application ID, version and exact
+noninternal schema objects, and rolls back on exception. The new schema
+does not migrate unpublished prototype databases. An explicit
+verify_stored replay checks the recorded digest; plain read returns
+metadata with stored_receipts_verified_on_read=false. No submitted body,
+values or losses are persisted. Do not point the adapter at an unrelated
+or untrusted database. This is not hostile-file isolation, independent
+registration, tamper-proof logging, trusted code attestation, a blind
+holdout lock or a power-loss durability guarantee. B-01/B-02 remain open.
+
+Proposed evidence MM-CEN-021:
+`test_journal_reopen_and_replay` checks deterministic admissions, metadata
+only and explicit replay after reopen.
+`test_journal_external_digest_edit_requires_replay` documents the
+difference between plain reads and verification.
+`test_journal_abrupt_exit_and_recovery` checks an uncommitted child-process
+write to a temporary database; not a physical storage failure test.
+Run `python -m pytest -q tests/unit/test_census_experiment_journal.py`.
+See [change request](changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md).
+Independent review pending.

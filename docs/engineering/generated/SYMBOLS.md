@@ -156,12 +156,50 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `_manifest_sha256` | function | `def _manifest_sha256(records: tuple[CensusVintageRecord, ...]) -> str` | — | [L67](../../../src/mirrormind/domains/retail/census_evaluation.py#L67) |
 | `_selection_receipt` | function | `def _selection_receipt(view: CensusVintageView, manifest_sha256: str) -> dict[str, object]` | Summarize a selected vintage without repeating every release identifier. | [L86](../../../src/mirrormind/domains/retail/census_evaluation.py#L86) |
 | `_validate_metric_input` | function | `def _validate_metric_input(value: Decimal) -> None` | — | [L108](../../../src/mirrormind/domains/retail/census_evaluation.py#L108) |
-| `_metric_float` | function | `def _metric_float(value: Fraction) -> float` | — | [L123](../../../src/mirrormind/domains/retail/census_evaluation.py#L123) |
-| `_sqrt_metric_float` | function | `def _sqrt_metric_float(value: Fraction) -> float` | Round a non-negative exact mean square without underflowing its root. | [L137](../../../src/mirrormind/domains/retail/census_evaluation.py#L137) |
-| `_metrics` | function | `def _metrics(forecasts: tuple[Fraction, ...], actuals: tuple[Fraction, ...]) -> dict[str, float \| None]` | — | [L173](../../../src/mirrormind/domains/retail/census_evaluation.py#L173) |
-| `_evaluate_census_vintage_backtest` | function | `def _evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout'], paired_losses: list[dict[str, object]] \| None=None) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L194](../../../src/mirrormind/domains/retail/census_evaluation.py#L194) |
-| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using each origin's visible vintage. | [L423](../../../src/mirrormind/domains/retail/census_evaluation.py#L423) |
-| `evaluate_census_vintage_descriptive` | function | `def evaluate_census_vintage_descriptive(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Opt-in fictional paired losses; never authorize statistical inference. | [L436](../../../src/mirrormind/domains/retail/census_evaluation.py#L436) |
+| `census_evaluation_manifest_sha256` | function | `def census_evaluation_manifest_sha256(records: tuple[CensusVintageRecord, ...], *, series_id: str, cutoff: date) -> str` | Fingerprint validated normalized input, not source bytes or eligibility. | [L123](../../../src/mirrormind/domains/retail/census_evaluation.py#L123) |
+| `_metric_float` | function | `def _metric_float(value: Fraction) -> float` | — | [L133](../../../src/mirrormind/domains/retail/census_evaluation.py#L133) |
+| `_sqrt_metric_float` | function | `def _sqrt_metric_float(value: Fraction) -> float` | Round a non-negative exact mean square without underflowing its root. | [L147](../../../src/mirrormind/domains/retail/census_evaluation.py#L147) |
+| `_metrics` | function | `def _metrics(forecasts: tuple[Fraction, ...], actuals: tuple[Fraction, ...]) -> dict[str, float \| None]` | — | [L183](../../../src/mirrormind/domains/retail/census_evaluation.py#L183) |
+| `_evaluate_census_vintage_backtest` | function | `def _evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout'], paired_losses: list[dict[str, object]] \| None=None) -> dict[str, object]` | Evaluate fixed monthly baselines using only each origin's visible vintage. | [L204](../../../src/mirrormind/domains/retail/census_evaluation.py#L204) |
+| `evaluate_census_vintage_backtest` | function | `def evaluate_census_vintage_backtest(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Evaluate fixed monthly baselines using each origin's visible vintage. | [L433](../../../src/mirrormind/domains/retail/census_evaluation.py#L433) |
+| `evaluate_census_vintage_descriptive` | function | `def evaluate_census_vintage_descriptive(records: tuple[CensusVintageRecord, ...], *, series_id: str, origins: tuple[CensusForecastOrigin, ...], split: Literal['validation', 'holdout']) -> dict[str, object]` | Opt-in fictional paired losses; never authorize statistical inference. | [L446](../../../src/mirrormind/domains/retail/census_evaluation.py#L446) |
+
+## `mirrormind.domains.retail.census_experiment`
+
+Source: [`src/mirrormind/domains/retail/census_experiment.py`](../../../src/mirrormind/domains/retail/census_experiment.py)
+
+Static imports (including inside functions): `__future__`, `dataclasses`, `hashlib`, `hmac`, `json`, `mirrormind.domains.retail.census_evaluation`, `mirrormind.domains.retail.census_split`, `mirrormind.domains.retail.census_vintages`, `re`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `CensusExperimentSpec` | class | `class CensusExperimentSpec` | Caller-retained commitment; declared revision is not attestation. | [L29](../../../src/mirrormind/domains/retail/census_experiment.py#L29) |
+| `_canonical` | function | `def _canonical(payload: dict[str, object]) -> bytes` | — | [L37](../../../src/mirrormind/domains/retail/census_experiment.py#L37) |
+| `_digest` | function | `def _digest(payload: dict[str, object]) -> str` | — | [L43](../../../src/mirrormind/domains/retail/census_experiment.py#L43) |
+| `census_experiment_sha256` | function | `def census_experiment_sha256(spec: CensusExperimentSpec) -> str` | Bind exact input, schedule and declared revision to the fixed protocol. | [L47](../../../src/mirrormind/domains/retail/census_experiment.py#L47) |
+| `prepare_census_experiment` | function | `def prepare_census_experiment(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, declared_code_revision: str) -> CensusExperimentSpec` | Create a local commitment; does not evaluate or register a holdout. | [L70](../../../src/mirrormind/domains/retail/census_experiment.py#L70) |
+| `execute_census_experiment` | function | `def execute_census_experiment(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_experiment_sha256: str, split: Literal['validation', 'holdout'], declared_code_revision: str) -> dict[str, object]` | Evaluate only after matching the caller-retained commitment. | [L86](../../../src/mirrormind/domains/retail/census_experiment.py#L86) |
+| `verify_census_experiment_receipt` | function | `def verify_census_experiment_receipt(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_experiment_sha256: str, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | Compare bounded canonical bytes to local replay, never parse submission. | [L138](../../../src/mirrormind/domains/retail/census_experiment.py#L138) |
+
+## `mirrormind.domains.retail.census_experiment_journal`
+
+Source: [`src/mirrormind/domains/retail/census_experiment_journal.py`](../../../src/mirrormind/domains/retail/census_experiment_journal.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `contextlib`, `hmac`, `mirrormind.domains.retail.census_experiment`, `mirrormind.domains.retail.census_split`, `mirrormind.domains.retail.census_vintages`, `pathlib`, `re`, `sqlite3`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_checked_sha` | function | `def _checked_sha(value: object) -> str` | — | [L40](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L40) |
+| `_objects` | function | `def _objects(db: sqlite3.Connection) -> tuple[tuple[object, ...], ...]` | — | [L46](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L46) |
+| `_check_schema` | function | `def _check_schema(db: sqlite3.Connection) -> None` | — | [L53](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L53) |
+| `CensusExperimentJournal` | class | `class CensusExperimentJournal` | Metadata-only journal on a caller-controlled local filesystem. | [L64](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L64) |
+| `CensusExperimentJournal.__init__` | method | `def __init__(self, path: Path) -> None` | — | [L67](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L67) |
+| `CensusExperimentJournal._transaction` | method | `def _transaction(self, *, initialize: bool=False) -> Iterator[sqlite3.Connection]` | — | [L75](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L75) |
+| `CensusExperimentJournal._read_spec` | method | `def _read_spec(db: sqlite3.Connection, experiment_id: str) -> CensusExperimentSpec` | — | [L100](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L100) |
+| `CensusExperimentJournal.register` | method | `def register(self, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_experiment_sha256: str, declared_code_revision: str) -> str` | — | [L111](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L111) |
+| `CensusExperimentJournal._replay` | method | `def _replay(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> tuple[CensusExperimentSpec, str]` | — | [L140](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L140) |
+| `CensusExperimentJournal.admit` | method | `def admit(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | — | [L159](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L159) |
+| `CensusExperimentJournal.verify_stored` | method | `def verify_stored(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | — | [L186](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L186) |
+| `CensusExperimentJournal.read` | method | `def read(self, experiment_id: str) -> dict[str, object]` | Read unverified metadata; use verify_stored for explicit local replay. | [L210](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L210) |
 
 ## `mirrormind.domains.retail.census_split`
 

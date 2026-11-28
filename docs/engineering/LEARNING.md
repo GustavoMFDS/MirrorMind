@@ -985,3 +985,16 @@ Use `test_frozen_split_binds_schedule_and_preserves_abstention` to
 inspect the 6/2/2 partition. Move an earlier target publication to the
 next split's issue date and observe rejection. Explain why a digest
 comparison is not independent registration or a one-use holdout lock.
+
+### Exercise: reproduce an experiment receipt
+Read [the experiment walkthrough](CENSUS_VINTAGE_EVALUATION.md) and
+`test_experiment_rejects_rehashed_forgery`. Modify one paired loss and
+rehash the payload; compare its bytes to the actual replay. Explain why
+a declared revision and caller-retained digest are not code attestation
+or independent preregistration.
+
+### Exercise: local replay and persistent metadata
+Run `test_journal_external_digest_edit_requires_replay` and
+`test_journal_abrupt_exit_and_recovery`. Explain why atomic persistence
+and exact local replay do not establish independent custody or execution
+attestation. See [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).

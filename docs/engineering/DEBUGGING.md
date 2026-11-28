@@ -462,3 +462,16 @@ just the requested split. Check the last six-month target and the next
 split's first origin/issue date. A missing or same-day earlier target
 cannot qualify. Do not regenerate an expected digest to pass a failed
 comparison; preserve the original experiment plan.
+
+### Census experiment commitment or replay mismatch
+Compare the retained specification and expected hash before evaluating;
+inspect normalized manifest, schedule and declared revision separately.
+Do not rehash a changed commitment or rewrite a submitted receipt to
+force acceptance. Reproduce with the original fictional inputs, exact
+protocol and canonical encoding. A digest match is not source authority.
+
+### Census journal conflict or incompatible database
+Use the original committed fictional records and canonical receipt for
+explicit replay. Preserve a conflicting digest rather than overwriting it.
+Check application ID, version and schema objects if the path is rejected;
+do not migrate or delete an unrelated database. A plain read is not replay.

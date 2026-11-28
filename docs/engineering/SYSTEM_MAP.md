@@ -304,3 +304,16 @@ The local [schedule wrapper](../../src/mirrormind/domains/retail/census_split.py
 checks a caller-retained fingerprint and target/publication embargo before
 calling the descriptive evaluator. No trusted registration or holdout lock
 is asserted. See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Experimental Census experiment commitment
+The [pure contract](../../src/mirrormind/domains/retail/census_experiment.py)
+binds normalized manifest, schedule, protocol and declared code revision,
+executes the split wrapper and compares complete canonical receipt bytes
+on explicit replay. It neither persists nor attests execution.
+
+### Experimental Census experiment journal
+The [SQLite adapter](../../src/mirrormind/domains/retail/census_experiment_journal.py)
+calls the pure commitment and replay contract, writes only identity metadata
+and result digests, and rechecks the registered spec in a transaction after
+replay. No API or independent trust authority. See
+[Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).

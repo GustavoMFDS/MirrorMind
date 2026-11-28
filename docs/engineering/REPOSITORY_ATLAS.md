@@ -1122,3 +1122,19 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_split.py](../../src/mirrormind/domains/retail/census_split.py) | Experimental schedule fingerprint, split boundaries and descriptive evaluation wrapper |
 | [tests/unit/test_census_split.py](../../tests/unit/test_census_split.py) | Synthetic partition, fingerprint, embargo and replay regressions |
 | [docs/engineering/changes/M1C_04_CENSUS_FROZEN_SPLIT.md](changes/M1C_04_CENSUS_FROZEN_SPLIT.md) | Scoped acceptance and impact map |
+
+### Census experiment preparation
+
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_experiment.py](../../src/mirrormind/domains/retail/census_experiment.py) | Pure fictional experiment commitment and exact receipt replay |
+| [tests/unit/test_census_experiment.py](../../tests/unit/test_census_experiment.py) | Synthetic commitment, replay and forgery regressions |
+| [docs/engineering/changes/M1C_04_CENSUS_EXPERIMENT.md](changes/M1C_04_CENSUS_EXPERIMENT.md) | Scoped acceptance and impact map |
+
+### Census experiment journal
+
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_experiment_journal.py](../../src/mirrormind/domains/retail/census_experiment_journal.py) | Local transactional metadata and replay-checked admission |
+| [tests/unit/test_census_experiment_journal.py](../../tests/unit/test_census_experiment_journal.py) | Fictional journal replay, conflict, concurrent writers and recovery |
+| [docs/engineering/changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md](changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md) | Scoped acceptance and impact map |
