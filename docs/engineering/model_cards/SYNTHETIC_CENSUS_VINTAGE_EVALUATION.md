@@ -217,3 +217,8 @@ Experimental local parent posteriors and fixed graph candidates
 support one-step predictive integration under explicit independent
 priors. They do not establish causal effects, calibrated confidence,
 multistep Bayesian predictions or empirical skill.
+
+Bounded persistent Bayesian prediction integrates graph and parameter
+uncertainty over at most three hypothetical steps. The fixed study
+reuses exploratory fixtures; no independent confirmation, calibrated
+inference, causal effect, empirical skill or authority is established.

@@ -593,3 +593,9 @@ Equal evidence ties resolve to the first label in fixed order.
 The conservative evidence rule is not an empirical confidence level.
 Averaging integrates one future state only, not a persistent random
 graph or parameter trajectory over multiple steps.
+
+### Persistent Bayesian study
+Use observed history lengths 8 or 24 and horizons 1..3. Hypothetical
+updates are branch-local. Actual future states must not enter fitting.
+At one step integrated and frozen coincide; later they need not.
+Verify retained commitment and canonical receipt before interpretation.

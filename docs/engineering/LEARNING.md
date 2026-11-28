@@ -1115,3 +1115,9 @@ likelihood, then compare the factored one-step mixture to enumeration
 of all 64 parent graphs. Explain why the one-step identity does not
 justify repeated posterior-averaged transitions as exact multistep
 Bayesian prediction.
+
+### Exercise: persistent versus frozen uncertainty
+Run the [persistent study](../../examples/m1_census_network_bayes_study.py).
+Compare hypothetical posterior updates with repeated mean rows.
+Explain the independent priors and why overlapping synthetic
+targets do not establish statistical superiority.

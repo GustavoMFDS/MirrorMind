@@ -430,3 +430,10 @@ The [network structure module](../../src/mirrormind/domains/retail/census_networ
 estimates local parent posteriors, fixed graph candidates and
 one-step predictive averages, reusing the three-axis matrix/PMF
 contracts without changing ingestion, API, storage or authority.
+
+### Persistent Bayesian prediction
+The [bounded engine](../../src/mirrormind/domains/retail/census_network_bayes.py)
+integrates hypothetical paths under persistent uncertain graph/parameter
+assumptions. The [fixed study](../../examples/m1_census_network_bayes_study.py)
+compares frozen means, MAP and oracle with local replay.
+No ingestion, storage, API or authority.

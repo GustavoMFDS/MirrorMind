@@ -1075,3 +1075,43 @@ ties, shared parents and invalid input boundaries have additional
 tests. Run `python -m pytest -q tests/unit/test_census_network_structure.py`.
 See [change request](changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md).
 Independent review pending.
+
+## Persistent Bayesian prediction
+The [persistent engine](../../src/mirrormind/domains/retail/census_network_bayes.py)
+integrates a fixed uncertain local graph and fixed uncertain binary
+parameters under the local independent priors above. Each hypothetical
+prefix updates its own posterior predictive law; no actual future
+observation is used. The frozen control holds issuance-time posterior
+mean rows constant. Equivalent for one step, generally not for longer
+horizons. Eight or 24 observations, one to three steps, at most 512
+future paths and 64 cumulative cells. Both return bounded canonical
+integer PMFs. No dynamic graph posterior, causal effect or scalability claim.
+
+The [fixed study](../../examples/m1_census_network_bayes_study.py)
+reuses four exploratory scenarios (seeds 161001..4, four paths each,
+origins 48/52/56, windows 8/24, horizons 1/2/3, ring-to-own at
+transition 53). Integrated, frozen, MAP and privileged schedule oracle
+share 288 window-specific targets, 1152 scores, and 144 distinct
+path/origin/horizon events. Exact separate group means and transcript
+digests. Oracle knows future schedule, not outcomes. Reference excess
+is squared distance to generating law. No winner, inference, holdout,
+independent registration, runtime attestation, calibration or authority.
+Fixtures are not independent confirmation.
+
+    python -m examples.m1_census_network_bayes_study prepare --revision REV
+    python -m examples.m1_census_network_bayes_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_network_bayes_study demo --revision REV
+
+Prepare does not score; run requires caller-retained commitment.
+Demo self-generates it. Execution modes replay canonical bytes.
+Verifier bounds receipt to 1 MiB, excluding stdout newline.
+
+Proposed MM-CEN-041: `test_persistent_bayes_graph_oracle` enumerates
+64 persistent graphs and two-step paths, integrating parameters
+sequentially. Run `python -m pytest -q tests/unit/test_census_network_bayes.py`.
+Proposed MM-CEN-042: `test_persistent_study_exact_replay` checks fixed
+digests, replay, group coverage and oracle excess. Additional tests
+reject rehashed forgery and scoring before commitment.
+Run `python -m pytest -q tests/integration/test_census_network_bayes_study.py`.
+See [change request](changes/M1C_04_CENSUS_NETWORK_BAYES.md).
+Independent review pending.

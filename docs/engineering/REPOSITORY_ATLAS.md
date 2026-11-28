@@ -1271,3 +1271,12 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_network_structure.py](../../src/mirrormind/domains/retail/census_network_structure.py) | Exact local evidence, graph fitting and one-step averaging |
 | [tests/unit/test_census_network_structure.py](../../tests/unit/test_census_network_structure.py) | Sequential evidence, graph-mixture oracle and invalid inputs |
 | [docs/engineering/changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md](changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md) | Scoped acceptance and impact map |
+
+### Persistent Bayesian research
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_network_bayes.py](../../src/mirrormind/domains/retail/census_network_bayes.py) | Persistent and frozen prediction |
+| [examples/m1_census_network_bayes_study.py](../../examples/m1_census_network_bayes_study.py) | Fixed fictional commitment and replay |
+| [tests/unit/test_census_network_bayes.py](../../tests/unit/test_census_network_bayes.py) | Persistent graph oracle and input bounds |
+| [tests/integration/test_census_network_bayes_study.py](../../tests/integration/test_census_network_bayes_study.py) | Report replay and commitment |
+| [docs/engineering/changes/M1C_04_CENSUS_NETWORK_BAYES.md](changes/M1C_04_CENSUS_NETWORK_BAYES.md) | Scoped acceptance and impact map |

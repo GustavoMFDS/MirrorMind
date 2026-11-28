@@ -270,6 +270,17 @@ Static imports (including inside functions): `__future__`, `collections`, `itert
 | `factor_matrix` | function | `def factor_matrix(step: FactorStep) -> Matrix3` | Expand a validated factor law into an equivalent joint matrix. | [L116](../../../src/mirrormind/domains/retail/census_network3.py#L116) |
 | `propagate_lineages3` | function | `def propagate_lineages3(start: State3, schedule: tuple[FactorStep, ...]) -> PMF3` | Exact lineage decomposition for bijective parents at each step. | [L129](../../../src/mirrormind/domains/retail/census_network3.py#L129) |
 
+## `mirrormind.domains.retail.census_network_bayes`
+
+Source: [`src/mirrormind/domains/retail/census_network_bayes.py`](../../../src/mirrormind/domains/retail/census_network_bayes.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `fractions`, `math`, `mirrormind.domains.retail.census_network3`, `mirrormind.domains.retail.census_network_structure`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_conditional` | function | `def _conditional(history: tuple[State3, ...], prev: State3) -> tuple[Fraction, ...]` | — | [L21](../../../src/mirrormind/domains/retail/census_network_bayes.py#L21) |
+| `predict_persistent_bayes` | function | `def predict_persistent_bayes(history: tuple[State3, ...], horizon: int, *, frozen: bool=False) -> PMF3` | Integrate persistent graph/parameter uncertainty under local priors. | [L44](../../../src/mirrormind/domains/retail/census_network_bayes.py#L44) |
+
 ## `mirrormind.domains.retail.census_network_structure`
 
 Source: [`src/mirrormind/domains/retail/census_network_structure.py`](../../../src/mirrormind/domains/retail/census_network_structure.py)
