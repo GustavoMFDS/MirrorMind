@@ -128,3 +128,7 @@ blind access or empirical performance. All inference remains abstained.
 The separate fictional runner fixture has 80 invented records,
 deterministic trend and seasonality, and 30/10/10 declared origins with
 embargo gaps. Metrics are descriptive only; inference remains abstained.
+
+The local observatory displays the fixed synthetic runner's descriptive
+metrics and receipt provenance. It does not provide inference, independent
+holdout protection or empirical claims.

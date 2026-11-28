@@ -481,3 +481,8 @@ Check the declared revision, retained digest and absolute path.
 No success JSON is emitted on failure; earlier committed splits may
 remain. Reproduce with the original inputs and split rather than deleting
 the journal or recomputing a commitment after seeing scores.
+
+### Observatory generation failure
+Check the declared revision, selected split and unused absolute .html
+output path. An existing report is not overwritten. Missing metrics are
+unavailable rather than zero. The output is not a historical journal.

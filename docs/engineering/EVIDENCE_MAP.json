@@ -434,6 +434,13 @@
     "limitation": "Fixed fictional CLI replay and descriptive metrics only; no independent registration, source authority, empirical skill, calibrated inference or deployment. Independent review pending."
   },
   {
+    "id": "MM-CEN-023",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_observatory.py",
+    "function": "test_observatory_offline_reproducible_report",
+    "limitation": "Fixed fictional reproducible HTML and offline markup only; no independent registration, empirical inference, browser accessibility audit or deployment. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

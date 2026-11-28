@@ -1004,3 +1004,9 @@ Use prepare then run with a caller-owned journal twice. Compare summary
 and receipt hashes. Explain why a self-generated demo commitment is
 not independent preregistration and lower descriptive MAE is not a
 statistical winner.
+
+### Exercise: inspect a fictional experiment
+Generate the [local observatory](../../examples/m1_census_research_observatory.py)
+twice to new paths. Compare file hashes, inspect horizon metrics and
+receipt provenance. Explain why a reproducible report cannot establish
+independent registration or statistical superiority.

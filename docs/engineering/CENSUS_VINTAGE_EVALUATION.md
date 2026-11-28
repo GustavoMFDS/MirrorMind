@@ -497,3 +497,29 @@ authority flags. Run
 `python -m pytest -q tests/integration/test_census_research_runner.py`.
 See [change request](changes/M1C_04_CENSUS_RESEARCH_RUNNER.md).
 Independent review pending.
+
+## Local fictional Research Observatory
+The [HTML generator](../../examples/m1_census_research_observatory.py)
+runs the fixed fictional demo through the existing runner and temporary
+journal. From the repository root:
+
+    python -m examples.m1_census_research_observatory --revision REV --split both --output ABSOLUTE_HTML_PATH
+
+The output is created exclusively; existing files are not overwritten.
+Validation is the default. The report includes descriptive MAE/RMSE/WAPE,
+coverage, abstention counts and provenance for each selected split.
+Missing metrics are explicitly unavailable, not zero. No arbitrary
+report ingestion, JavaScript, remote resources or server. Dynamic text
+is escaped; native details and tables provide local inspection.
+A matching local report is not independent attestation or calibrated
+inference. The displayed revision is caller-declared. Temporary journal
+is not durable history; the file is a report, not a registry.
+No real data or source rights, no winner or action authority.
+
+Proposed evidence MM-CEN-023:
+`test_observatory_offline_reproducible_report` checks repeatable HTML,
+metric rendering and offline markup. Other integration regressions cover
+missing metrics, escaping and exclusive output. Run
+`python -m pytest -q tests/integration/test_census_research_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_OBSERVATORY.md).
+Independent review pending; markup tests are not a browser accessibility audit.

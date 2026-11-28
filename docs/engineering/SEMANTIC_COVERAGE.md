@@ -307,3 +307,7 @@ trusted registration or source authorization. See
 The [research runner](../../examples/m1_census_research_runner.py)
 is guided experimental local CLI behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical acceptance.
+
+The [observatory example](../../examples/m1_census_research_observatory.py)
+has guided local static report behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not deployment acceptance.

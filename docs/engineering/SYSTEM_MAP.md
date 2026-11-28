@@ -323,3 +323,8 @@ The [local CLI](../../examples/m1_census_research_runner.py) connects
 a generated fixture, commitment, split evaluation and journal replay.
 It emits deterministic summary JSON, not an external service or authority.
 See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Fictional research observatory
+The [static HTML generator](../../examples/m1_census_research_observatory.py)
+renders the runner's freshly replayed synthetic summary. No external
+report input, service, new storage or authority.
