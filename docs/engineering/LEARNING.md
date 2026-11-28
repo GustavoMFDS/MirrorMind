@@ -950,3 +950,10 @@ static checking but does not add runtime validation, and locate the Pydantic
 checks that still define the runtime contract. The exercise uses fictional
 inputs and establishes no identity, provider attestation, approval, network
 isolation or action authority.
+
+## Exercise: fixture reuse without temporal leakage
+
+Run the synthetic workflow reuse regression and trace the two calls through
+separate fresh BytesIO streams. Explain why shared immutable bytes do not
+imply a shared release audit. Compare full result hashes at different cutoffs
+and after a day-35 mutation; no real source is needed.

@@ -67,7 +67,9 @@ flowchart TD
 | `api/routes/decisions.py` | Expose one bounded local route calling the same service | No file upload, URL fetch, database, writes, tool selection or action authority |
 | `examples/m1_retail_decision_workflow.py` | Provide a deterministic command-line entrypoint | Uses generated fixture data only |
 
-The service makes two evidence-flow instances from the same canonical fixture.
+The service generates canonical fictional workbook bytes once per request, then
+creates two independent evidence-flow instances using fresh streams and their
+respective cutoff dates. No cache or parsed result is shared across requests.
 The historical diagnostics end seven calendar days before the forecast cutoff.
 For the default `as_of=2011-01-26`, both evaluation cutoffs are 2011-01-19 and
 their seven-target window is 2011-01-13 through 2011-01-19. The forecast feature
@@ -352,7 +354,10 @@ Curated claims: **MM-MF-001** successful trace separation;
 **MM-MF-004** deterministic CLI replay;
 **MM-MF-005** request-sensitive trace identity;
 **MM-MF-006** complete result digest binding; and
-**MM-MF-007** trace-bound policy-modeling caveats. See the reviewed
+**MM-MF-007** trace-bound policy-modeling caveats;
+**MM-MF-008** per-run fictional byte reuse with independent release audits
+(`test_workflow_reuses_only_generated_bytes_with_independent_cutoffs`).
+See the reviewed
 [evidence map](EVIDENCE_MAP.json) for exact test selectors and limitations.
 The `MM-WKPW-004` claim additionally covers the selected-engine and parity
 execution records.

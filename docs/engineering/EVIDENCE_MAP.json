@@ -854,6 +854,13 @@
     "limitation": "The test binds the local comparator caveat to its profile-aware trace outcome; it does not establish that the half-open target interval is a standard or optimized inventory policy."
   },
   {
+    "id": "MM-MF-008",
+    "guide": "docs/engineering/M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md",
+    "test": "tests/unit/test_synthetic_decision_workflow.py",
+    "function": "test_workflow_reuses_only_generated_bytes_with_independent_cutoffs",
+    "limitation": "Verifies one generated workbook per local call, fresh streams, independent audit dates and synthetic replay/mutation only; does not establish production performance or real-source authorization."
+  },
+  {
     "id": "MM-PBOUND-001",
     "guide": "docs/engineering/ATOMIC_GOVERNED_PUBLISHER.md",
     "test": "tests/unit/test_atomic_governed_publisher.py",
