@@ -159,3 +159,8 @@ validation only, checks legacy losses exactly and reproduces complete
 receipts. No model promotion, holdout execution, inference or empirical
 skill is asserted. A designed validation break is distinct from the
 original post-validation break fixture.
+
+The separate experimental probability core provides exact finite
+discrete mathematical operations. It has no fitted model or predictive
+calibration evidence, does not modify the deterministic protocols and
+does not authorize empirical uncertainty or forecasting claims.

@@ -1039,3 +1039,10 @@ Run the [five-model catalog](../../examples/m1_census_model_comparison.py).
 Compare the two regime fixtures: only the added break occurs inside
 validation. Explain why shared history and exact paired losses matter
 and why deterministic comparisons do not establish statistical superiority.
+
+### Exercise: exact discrete probability
+Run the [probability tests](../../tests/unit/test_census_probability.py).
+Compare CRPS computed by pairwise absolute differences and squared
+CDF differences. Explain why inverse discrete quantiles can give
+coverage above the nominal interval level, and why wide intervals
+alone do not establish useful predictive uncertainty.

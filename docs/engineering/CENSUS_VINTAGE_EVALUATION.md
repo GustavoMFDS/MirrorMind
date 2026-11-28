@@ -704,3 +704,36 @@ legacy parity, late revisions and shared extra-history abstention.
 Run `python -m pytest -q tests/unit/test_census_models.py`.
 See [change request](changes/M1C_04_CENSUS_FIVE_MODELS.md).
 Independent review pending.
+
+## Bounded exact discrete probability primitives
+
+The experimental [probability module](../../src/mirrormind/domains/retail/census_probability.py)
+uses sorted distinct integer support and positive integer weights reduced
+by their greatest common divisor. Inputs are bounded: support -144..144,
+total mass at most 1024 bits, up to six increments in -24..24, increment
+law mass at most 64 bits, and Markov chains with at most nine closed
+states and 65535 canonical weight per transition row. Explicit
+canonical_pmf normalization is required for noncanonical weights.
+There is no general continuous or unbounded distribution interface.
+
+convolve_increments sums independent increment laws. propagate_markov
+conditions on the supplied last state, scales rows by their common
+denominator, propagates integer weights and checks mass conservation.
+discrete_quantile uses the inverse CDF (zero maps to minimum support).
+score_discrete_pmf returns exact CRPS, mean pinball at 0.1/0.5/0.9,
+median absolute error, inclusive interval coverage and width.
+reference_interval_coverage measures interval mass under the supplied
+reference distribution; it does not authenticate that law. Discrete
+central intervals may exceed nominal coverage. A point mass CRPS is
+absolute error. These are mathematical primitives, not a predictive
+model, calibration certificate or new receipt protocol.
+
+Proposed evidence MM-CEN-029:
+`test_crps_against_direct_pair_and_cdf_oracles` checks both independent
+exact CRPS formulations. Other tests enumerate independent sums and
+Markov paths at horizons 1..6, including distinct row denominators,
+and reject invalid types, supports, masses, horizons and transition
+closures. Run `python -m pytest -q tests/unit/test_census_probability.py`.
+See [change request](changes/M1C_04_CENSUS_PROBABILITY.md).
+No new dependencies, API, journal schema, learned model, empirical
+forecasting claim or inference. Independent review pending.

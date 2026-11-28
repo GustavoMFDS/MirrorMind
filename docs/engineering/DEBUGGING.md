@@ -514,3 +514,10 @@ Check the retained method commitment, normalized manifest and declared
 revision. The legacy loss parity check must pass before reporting a
 common pair. An unavailable 13th historical month excludes all models;
 do not substitute zero or change the sample. No holdout execution.
+
+### Probability input rejection
+Check sorted unique support, positive integer weights, canonical GCD,
+mass and horizon bounds. Normalize explicitly with canonical_pmf;
+do not silently clip or drop invalid probability mass. Markov rows
+must cover every reachable state. Coverage under a supplied reference
+law is not evidence that the law is correct.

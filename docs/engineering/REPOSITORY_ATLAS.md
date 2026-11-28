@@ -1187,3 +1187,10 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_model_comparison.py](../../examples/m1_census_model_comparison.py) | Fixed validation-only catalog and structural break |
 | [tests/unit/test_census_models.py](../../tests/unit/test_census_models.py) | Exact forecasts, common sample, temporal and replay regressions |
 | [docs/engineering/changes/M1C_04_CENSUS_FIVE_MODELS.md](changes/M1C_04_CENSUS_FIVE_MODELS.md) | Scoped acceptance and impact map |
+
+### Bounded discrete probability
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_probability.py](../../src/mirrormind/domains/retail/census_probability.py) | Canonical PMFs, exact propagation, quantiles and scores |
+| [tests/unit/test_census_probability.py](../../tests/unit/test_census_probability.py) | Enumeration, scoring oracles and invalid input |
+| [docs/engineering/changes/M1C_04_CENSUS_PROBABILITY.md](changes/M1C_04_CENSUS_PROBABILITY.md) | Scoped acceptance and impact map |
