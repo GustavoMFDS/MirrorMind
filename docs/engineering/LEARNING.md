@@ -1039,3 +1039,21 @@ Run the [five-model catalog](../../examples/m1_census_model_comparison.py).
 Compare the two regime fixtures: only the added break occurs inside
 validation. Explain why shared history and exact paired losses matter
 and why deterministic comparisons do not establish statistical superiority.
+
+### Exercise: exact discrete probability
+Run the [probability tests](../../tests/unit/test_census_probability.py).
+Compare CRPS computed by pairwise absolute differences and squared
+CDF differences. Explain why inverse discrete quantiles can give
+coverage above the nominal interval level, and why wide intervals
+alone do not establish useful predictive uncertainty.
+
+### Exercise: reproduce a probabilistic study
+Use prepare and run in the [probability study](../../examples/m1_census_probability_study.py).
+Compare coverage, width and CRPS for each group. Explain why oracle
+knowledge is privileged and why exact replay is not statistical calibration.
+
+### Exercise: inspect predictive distributions
+Generate the [probabilistic observatory](../../examples/m1_census_probability_observatory.py).
+Compare the fixed example PMFs, quantiles and realized displacement with
+aggregate CRPS, coverage and width. Explain why a single example cannot
+establish calibration and why the oracle is a privileged reference.

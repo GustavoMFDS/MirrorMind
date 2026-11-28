@@ -332,3 +332,15 @@ The [five-model library](../../src/mirrormind/domains/retail/census_models.py)
 has guided experimental exact forecasts, common-sample validation and
 canonical replay in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md).
 No empirical selection or inference.
+
+The [probability core](../../src/mirrormind/domains/retail/census_probability.py)
+has guided exact bounded mathematical behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical calibration.
+
+The [probability study](../../examples/m1_census_probability_study.py)
+has guided fixed fictional design and complete receipt replay in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasts.
+
+The [probabilistic observatory](../../examples/m1_census_probability_observatory.py)
+has guided offline fictional report and replay behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md); no operational acceptance.

@@ -223,6 +223,26 @@ Static imports (including inside functions): `__future__`, `datetime`, `fraction
 | `compare_census_models` | function | `def compare_census_models(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str) -> dict[str, object]` | Compare only the validation partition under a retained model commitment. | [L119](../../../src/mirrormind/domains/retail/census_models.py#L119) |
 | `verify_census_model_comparison` | function | `def verify_census_model_comparison(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str, submitted: bytes) -> str` | Verify bounded complete canonical receipt by local replay; no admission. | [L227](../../../src/mirrormind/domains/retail/census_models.py#L227) |
 
+## `mirrormind.domains.retail.census_probability`
+
+Source: [`src/mirrormind/domains/retail/census_probability.py`](../../../src/mirrormind/domains/retail/census_probability.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `dataclasses`, `fractions`, `math`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_validate` | function | `def _validate(pmf: PMF) -> int` | — | [L19](../../../src/mirrormind/domains/retail/census_probability.py#L19) |
+| `_normalized` | function | `def _normalized(masses: dict[int, int]) -> PMF` | — | [L42](../../../src/mirrormind/domains/retail/census_probability.py#L42) |
+| `canonical_pmf` | function | `def canonical_pmf(weights: PMF) -> PMF` | Normalize sorted unique positive weights; reject invalid input before arithmetic. | [L49](../../../src/mirrormind/domains/retail/census_probability.py#L49) |
+| `_horizon` | function | `def _horizon(horizon: int) -> None` | — | [L73](../../../src/mirrormind/domains/retail/census_probability.py#L73) |
+| `convolve_increments` | function | `def convolve_increments(laws: tuple[PMF, ...]) -> PMF` | Distribution of the sum of up to six independent integer increments. | [L78](../../../src/mirrormind/domains/retail/census_probability.py#L78) |
+| `propagate_markov` | function | `def propagate_markov(last: int, transitions: TransitionRows, horizon: int) -> PMF` | Exact cumulative displacement conditional on a finite observed state. | [L96](../../../src/mirrormind/domains/retail/census_probability.py#L96) |
+| `_quantile` | function | `def _quantile(pmf: PMF, total: int, q: Fraction) -> int` | — | [L140](../../../src/mirrormind/domains/retail/census_probability.py#L140) |
+| `discrete_quantile` | function | `def discrete_quantile(pmf: PMF, q: Fraction) -> int` | Inverse discrete CDF, with q=0 defined as minimum support. | [L149](../../../src/mirrormind/domains/retail/census_probability.py#L149) |
+| `DiscreteScores` | class | `class DiscreteScores` | — | [L164](../../../src/mirrormind/domains/retail/census_probability.py#L164) |
+| `score_discrete_pmf` | function | `def score_discrete_pmf(pmf: PMF, observed: int) -> DiscreteScores` | Exact CRPS and three fixed quantile scores; no calibration claim. | [L175](../../../src/mirrormind/domains/retail/census_probability.py#L175) |
+| `reference_interval_coverage` | function | `def reference_interval_coverage(pmf: PMF, reference: PMF) -> Fraction` | Mass of an explicitly supplied reference law inside inclusive 10/90 bounds. | [L197](../../../src/mirrormind/domains/retail/census_probability.py#L197) |
+
 ## `mirrormind.domains.retail.census_split`
 
 Source: [`src/mirrormind/domains/retail/census_split.py`](../../../src/mirrormind/domains/retail/census_split.py)

@@ -476,6 +476,27 @@
     "limitation": "Five fixed fictional validation scenarios and exact common-sample forecasts/replay only; no holdout execution, empirical skill, independent registration, calibrated inference or winner. Independent review pending."
   },
   {
+    "id": "MM-CEN-029",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_probability.py",
+    "function": "test_crps_against_direct_pair_and_cdf_oracles",
+    "limitation": "Exact bounded discrete mathematical operations and scoring oracles only; no fitted model, reference-law authenticity, empirical calibration, inference or operational forecasting. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-030",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_probability_study.py",
+    "function": "test_study_identity_and_complete_replay",
+    "limitation": "Fixed fictional probability study and complete local replay only; no independent samples, holdout, calibration, empirical skill, runtime attestation or winner. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-031",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_probability_observatory.py",
+    "function": "test_probability_observatory_replayed_metrics_and_examples",
+    "limitation": "Offline fixed fictional replay report and PMF examples only; no empirical calibration, independent registration, accessibility certification or operational forecasting. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

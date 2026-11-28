@@ -361,3 +361,20 @@ adds persistence, seasonal drift and linear trend to the original methods
 in a separate validation-only comparison and canonical replay contract.
 The [example catalog](../../examples/m1_census_model_comparison.py)
 includes a fixed validation break. No changes to legacy receipts or journal.
+
+### Experimental discrete probability core
+The [pure probability module](../../src/mirrormind/domains/retail/census_probability.py)
+provides bounded canonical mass functions, integer convolution and
+Markov propagation, exact quantiles and scores. No connection to
+provider dispatch, source ingestion, legacy evaluation or persistence.
+
+### Fixed fictional probabilistic study
+The [study example](../../examples/m1_census_probability_study.py)
+uses the discrete probability core with a committed fixed design,
+exact aggregate scores and streaming event transcript digests.
+Explicit complete receipt replay; no journal, API or new authority.
+
+### Fictional probabilistic observatory
+The [offline report](../../examples/m1_census_probability_observatory.py)
+renders freshly replayed fixed probability study summaries and fixed
+example distributions. No new core contracts, API, storage or authority.

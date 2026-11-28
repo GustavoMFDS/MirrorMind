@@ -514,3 +514,22 @@ Check the retained method commitment, normalized manifest and declared
 revision. The legacy loss parity check must pass before reporting a
 common pair. An unavailable 13th historical month excludes all models;
 do not substitute zero or change the sample. No holdout execution.
+
+### Probability input rejection
+Check sorted unique support, positive integer weights, canonical GCD,
+mass and horizon bounds. Normalize explicitly with canonical_pmf;
+do not silently clip or drop invalid probability mass. Markov rows
+must cover every reachable state. Coverage under a supplied reference
+law is not evidence that the law is correct.
+
+### Probabilistic study replay mismatch
+Check the declared revision, retained study commitment and exact
+canonical report bytes (without stdout newline). Do not rehash changed
+metrics to force agreement. The oracle is a privileged reference,
+not a deployable method. No automatic holdout evaluation.
+
+### Probability observatory failure
+Check the declared revision and a new absolute HTML output path. A
+replay mismatch prevents report creation. Observed and reference coverage
+are distinct; neither proves operational calibration. Exact rational
+scores appear in expandable details.

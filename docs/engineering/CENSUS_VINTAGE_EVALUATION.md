@@ -704,3 +704,111 @@ legacy parity, late revisions and shared extra-history abstention.
 Run `python -m pytest -q tests/unit/test_census_models.py`.
 See [change request](changes/M1C_04_CENSUS_FIVE_MODELS.md).
 Independent review pending.
+
+## Bounded exact discrete probability primitives
+
+The experimental [probability module](../../src/mirrormind/domains/retail/census_probability.py)
+uses sorted distinct integer support and positive integer weights reduced
+by their greatest common divisor. Inputs are bounded: support -144..144,
+total mass at most 1024 bits, up to six increments in -24..24, increment
+law mass at most 64 bits, and Markov chains with at most nine closed
+states and 65535 canonical weight per transition row. Explicit
+canonical_pmf normalization is required for noncanonical weights.
+There is no general continuous or unbounded distribution interface.
+
+convolve_increments sums independent increment laws. propagate_markov
+conditions on the supplied last state, scales rows by their common
+denominator, propagates integer weights and checks mass conservation.
+discrete_quantile uses the inverse CDF (zero maps to minimum support).
+score_discrete_pmf returns exact CRPS, mean pinball at 0.1/0.5/0.9,
+median absolute error, inclusive interval coverage and width.
+reference_interval_coverage measures interval mass under the supplied
+reference distribution; it does not authenticate that law. Discrete
+central intervals may exceed nominal coverage. A point mass CRPS is
+absolute error. These are mathematical primitives, not a predictive
+model, calibration certificate or new receipt protocol.
+
+Proposed evidence MM-CEN-029:
+`test_crps_against_direct_pair_and_cdf_oracles` checks both independent
+exact CRPS formulations. Other tests enumerate independent sums and
+Markov paths at horizons 1..6, including distinct row denominators,
+and reject invalid types, supports, masses, horizons and transition
+closures. Run `python -m pytest -q tests/unit/test_census_probability.py`.
+See [change request](changes/M1C_04_CENSUS_PROBABILITY.md).
+No new dependencies, API, journal schema, learned model, empirical
+forecasting claim or inference. Independent review pending.
+
+## Fixed fictional probabilistic study protocol
+
+The [probability study example](../../examples/m1_census_probability_study.py)
+uses the bounded discrete probability core. It binds the complete fixed
+design and caller-declared Git revision before scoring. Two groups of
+32 paths, 64 monthly increments including initial zero, origins 48..57,
+horizons 1/3/6. Deterministic SHA-256 counter draws from ASCII
+seed:path:index, first byte modulo four selects -1,0,0,1. Seeds 61001
+and 61002; amplitude four, with amplitude twelve from transition index
+53 in the second scenario. These deterministic fixtures are not a
+cryptographic random or independent statistical sample claim.
+
+Methods: point persistence, narrow fixed iid increments (amplitude two),
+fixed iid increments (amplitude four), iid empirical last 24 increments
+and privileged true-law oracle. The non-oracle methods receive only
+historical increments. The oracle knows the future law, not realized
+increments. Exact rational group means cover CRPS, pinball, median MAE,
+inclusive 10/90 coverage, width and reference coverage. Each group
+includes a streaming digest of all evaluated PMFs, observations and
+scores in fixed path/origin/horizon/model order. No raw paths are
+published. The receipt binds the design, group summaries and transcript
+digests. The digest is not a signed registration or runtime attestation.
+
+    python -m examples.m1_census_probability_study prepare --revision REV
+    python -m examples.m1_census_probability_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_probability_study demo --revision REV
+
+Prepare never scores; run requires a caller-retained commitment; demo
+generates its own. Both execution modes explicitly reproduce the
+complete canonical report before printing. verify_study compares full
+canonical bytes, at most 1 MiB, not just a supplied report hash. The
+canonical bytes exclude the stdout newline. No arbitrary inputs,
+journal admission, holdout, statistical winner, calibration, real data
+or authority. Overlapping origins and horizons are not independent
+replications. The earlier adaptive prototypes remain separate.
+
+Proposed evidence MM-CEN-030:
+`test_study_identity_and_complete_replay` checks fixed digests, complete
+replay and stationary oracle parity. Other tests reject rehashed
+metric forgery and mismatched commitments before scoring, verify
+causal inputs and prepare-only behavior. Run
+`python -m pytest -q tests/integration/test_census_probability_study.py`.
+See [change request](changes/M1C_04_CENSUS_PROBABILITY_STUDY.md).
+Independent review pending.
+
+## Fictional probabilistic observatory
+The [probabilistic observatory](../../examples/m1_census_probability_observatory.py)
+generates a standalone offline HTML report from a freshly executed and
+fully replayed fixed probability study.
+
+    python -m examples.m1_census_probability_observatory --revision REV --output ABSOLUTE_HTML
+
+It shows separate per-group/horizon CRPS, mean pinball, median MAE,
+observed coverage, reference coverage and interval width, with exact
+rational scores available in expandable details. Reference coverage
+uses the supplied simulator law; observed coverage is the fraction of
+simulated outcomes inside the inclusive interval. Neither is an
+operational calibration certificate. The fixed example is path 0,
+origin 52, horizon six in each group, with all five PMFs regenerated
+from the same design, their quantiles, realized displacement and CRPS.
+The example is not an independent experiment or cherry-picked result.
+The oracle is a privileged reference. The study and report digests,
+declared revision and per-group event transcript digests are displayed.
+No arbitrary imported report, scripts, network, server, persistence or
+output overwrite. Self-generated demo commitment only.
+
+Proposed evidence MM-CEN-031:
+`test_probability_observatory_replayed_metrics_and_examples` checks
+reproducible markup, actual report metrics, provenance and internal
+navigation. Other tests check point-mass display, exclusive output and
+replay failure without output. Run
+`python -m pytest -q tests/integration/test_census_probability_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md).
+Independent review pending; markup tests are not accessibility certification.
