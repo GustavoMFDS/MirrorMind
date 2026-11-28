@@ -921,3 +921,11 @@ the stable query-free JSON. Finally, change a gold label to a visible but
 irrelevant document and predict which metric numerators change. Do not infer
 real-corpus quality, confidence calibration or production authorization from
 the fixture's perfect scores.
+
+## Exercise: sparse BM25 frequency lookup
+
+Trace the query terms through binary search of the sorted tuples, then
+calculate inverse document frequency for one visible term. Explain why
+filtering a query to one collection must not change corpus-wide IDF.
+Run the bounded corpus regression and inspect complete result hashes; compare
+a common term and an unknown term without inferring real-data quality.

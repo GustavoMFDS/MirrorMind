@@ -369,3 +369,47 @@ abstention rate (2/2) and citation support (2/2). Change one gold label to a
 visible but irrelevant fixture and predict each affected numerator. Then set
 its collection outside the case scope and verify the evaluator rejects the
 label before scoring without echoing its ID.
+
+## Bounded search performance follow-up
+
+Change request: avoid reconstructing full frequency dictionaries on each
+query. Keep sorted immutable tuples, scope-first indexing, query-term
+order, BM25 arithmetic, citation offsets and public result schema intact.
+Use binary lookup of only requested terms and compute their inverse
+frequency once per search. No new state, dependencies, source data, API
+or capability promotion. Acceptance: complete output parity against
+00e6cf11ac05a94055242573fd3cfc18086bad10 for bounded diverse/repeated
+fictional corpora, no-match and scope filters; regression tests and
+exact-head gates. Compare timing and traced allocations observationally;
+rollback on output mismatch or unjustified complexity. Impact is the
+local index search, existing CLI/evaluator callers and tests only.
+
+### Implementation and bounded evidence
+
+The sorted term-count tuples remain immutable. Binary lookup finds only
+query terms, and inverse document frequency is computed once per present
+term over the entire build-visible corpus, not over the query-selected
+subset. Unknown terms are skipped; an all-unknown query returns no matches.
+The scoring operation order, tie-break, excerpt construction and digest
+are unchanged. No persistent cache or expanded access scope is introduced.
+
+MM-RETR-018: `test_bounded_corpus_search_preserves_full_baseline_results`
+in `tests/unit/test_evidence_retrieval.py` compares complete JSON hashes for
+six queries in each of four corpora against baseline
+`00e6cf11ac05a94055242573fd3cfc18086bad10`. The corpus generator is in the
+test: 10/100 invented documents, 11,991/12,000 characters per document,
+10% excluded collections; Unicode, common/unknown terms, collection
+filter, 50 terms and top-k are represented. Run with
+`python -m pytest -q tests/unit/test_evidence_retrieval.py -k bounded_corpus`.
+This is not real-corpus quality, authorization or production performance evidence.
+
+Local Windows Python 3.12.10 benchmark (five timed builds and 21 timed
+queries each after one warmup, separate traced allocation measurement):
+for the diverse 100-document corpus, median milliseconds before/after
+were common 18.8065/0.7513, absent 19.8767/0.0123, filtered
+16.6933/0.3435, 50 terms 19.2034/2.0128. All four corpus output hashes
+matched. Build is unchanged; its observed timings and allocation peaks
+are not a claimed improvement. Repeated-vocabulary searches show smaller
+gains and some noise; a separate isolated arithmetic probe found a small
+slowdown for a multi-term repeated-vocabulary case. No timing threshold,
+production latency or universal speedup claim.

@@ -424,3 +424,11 @@ unchanged `bm25_lexical_v1` ranking and use only generated fixtures. The report
 contains verified refs but no query or excerpt; its fixed `fictional_fixture`
 label is caller supplied, so it is not a control against passing private data.
 Never paste private queries or user records into this evaluator or its logs.
+
+## Local BM25 search performance
+
+Distinguish corpus construction from repeated searches on one immutable index.
+Profile diverse and repeated synthetic vocabularies separately; compare full
+result digests (scores, ties, excerpts and citations), not only hit counts.
+The bounded corpus regression covers the previous implementation's output
+without a timing threshold. Do not widen limits or expose denied documents.

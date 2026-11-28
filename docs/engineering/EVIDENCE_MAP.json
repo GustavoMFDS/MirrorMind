@@ -1517,5 +1517,12 @@
     "test": "tests/unit/test_evidence_retrieval_evaluation.py",
     "function": "test_malformed_and_oversized_evaluation_sets_fail_closed",
     "limitation": "Synthetic invalid inputs are rejected before scoring; local model bounds do not enforce a service-wide quota or isolate hostile callers."
+  },
+  {
+    "id": "MM-RETR-018",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_bounded_corpus_search_preserves_full_baseline_results",
+    "limitation": "Full response digest parity across four generated bounded corpora and six queries each only; no proof of real-corpus quality, authenticated scope or production latency."
   }
 ]

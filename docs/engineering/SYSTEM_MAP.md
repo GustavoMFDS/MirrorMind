@@ -263,3 +263,7 @@ availability nor source permission.
 ## Experimental offline portfolio report
 
 The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision workflow once and embeds its exact result in a new local HTML file. Browser interactions only select existing cases; no extra server route, live simulation, external dependency or production claim.
+
+The experimental local BM25 index performs binary lookups on immutable sorted
+frequency tables for query terms only. It retains the original corpus-wide
+statistics and scope-first build; see [M2 retrieval](M2_EVIDENCE_RETRIEVAL.md).
