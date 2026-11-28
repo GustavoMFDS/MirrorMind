@@ -317,3 +317,27 @@ calls the pure commitment and replay contract, writes only identity metadata
 and result digests, and rechecks the registered spec in a transaction after
 replay. No API or independent trust authority. See
 [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Fictional Census research runner
+The [local CLI](../../examples/m1_census_research_runner.py) connects
+a generated fixture, commitment, split evaluation and journal replay.
+It emits deterministic summary JSON, not an external service or authority.
+See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Fictional research observatory
+The [static HTML generator](../../examples/m1_census_research_observatory.py)
+renders the runner's freshly replayed synthetic summary. No external
+report input, service, new storage or authority.
+
+### Closed fictional scenario catalog
+The [runner](../../examples/m1_census_research_runner.py) generates four
+fixed value sequences with the same temporal schedule. Each normalized
+manifest binds its scenario to a distinct experiment commitment. The
+[observatory](../../examples/m1_census_research_observatory.py) displays
+the selected scenario. No new core models or authority.
+
+### Comparative fictional observatory
+The [observatory](../../examples/m1_census_research_observatory.py) also
+supports an explicit all-catalog mode with independent scenario receipts,
+per-split comparison tables and separate provenance. Temporary journal,
+no persistent history or new core contracts.

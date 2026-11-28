@@ -998,3 +998,26 @@ Run `test_journal_external_digest_edit_requires_replay` and
 `test_journal_abrupt_exit_and_recovery`. Explain why atomic persistence
 and exact local replay do not establish independent custody or execution
 attestation. See [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Exercise: complete fictional experiment
+Use prepare then run with a caller-owned journal twice. Compare summary
+and receipt hashes. Explain why a self-generated demo commitment is
+not independent preregistration and lower descriptive MAE is not a
+statistical winner.
+
+### Exercise: inspect a fictional experiment
+Generate the [local observatory](../../examples/m1_census_research_observatory.py)
+twice to new paths. Compare file hashes, inspect horizon metrics and
+receipt provenance. Explain why a reproducible report cannot establish
+independent registration or statistical superiority.
+
+### Exercise: descriptive comparison across fictional scenarios
+Compare both baselines on the four fixed fixtures using the same horizon.
+Explain the difference between zero error, unavailable metrics, scored-origin
+coverage and inferential coverage. These designed scenarios are not
+independent stochastic samples; no pooled statistical conclusion follows.
+
+### Exercise: compare designed scenarios
+Generate the all-scenarios observatory with both splits. Inspect metrics
+by horizon, then each scenario's manifest and receipt. Explain why
+identical schedules do not make these independent samples.

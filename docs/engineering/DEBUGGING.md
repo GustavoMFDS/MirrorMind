@@ -475,3 +475,24 @@ Use the original committed fictional records and canonical receipt for
 explicit replay. Preserve a conflicting digest rather than overwriting it.
 Check application ID, version and schema objects if the path is rejected;
 do not migrate or delete an unrelated database. A plain read is not replay.
+
+### Fictional runner failure
+Check the declared revision, retained digest and absolute path.
+No success JSON is emitted on failure; earlier committed splits may
+remain. Reproduce with the original inputs and split rather than deleting
+the journal or recomputing a commitment after seeing scores.
+
+### Observatory generation failure
+Check the declared revision, selected split and unused absolute .html
+output path. An existing report is not overwritten. Missing metrics are
+unavailable rather than zero. The output is not a historical journal.
+
+### Scenario commitment mismatch
+Use the same allowlisted scenario and declared revision in prepare and
+run. A different scenario changes the input manifest, even though its
+schedule is identical. Do not recompute the commitment after seeing results.
+
+### Comparative observatory
+Use --scenario all with a new absolute HTML output path. If a scenario
+fails, no success report is written. Inspect individual scenarios with
+the same declared revision; do not pool or replace missing results.

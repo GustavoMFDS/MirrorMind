@@ -463,3 +463,124 @@ write to a temporary database; not a physical storage failure test.
 Run `python -m pytest -q tests/unit/test_census_experiment_journal.py`.
 See [change request](changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md).
 Independent review pending.
+
+## Runnable fictional research experiment
+
+The [research runner](../../examples/m1_census_research_runner.py) composes
+the pure experiment contract and local journal without a network or
+arbitrary data input. Its fixed fixture generates 80 monthly records,
+value 100 + 2*i + 3*(i mod 12), 50 origins partitioned 30/10/10 and
+predeclared embargo gaps. All values and releases are invented.
+
+From the repository root (REV is a declared 40-character Git SHA):
+
+    python -m examples.m1_census_research_runner demo --revision REV --split both
+    python -m examples.m1_census_research_runner prepare --revision REV
+    python -m examples.m1_census_research_runner run --revision REV --expected DIGEST --journal ABSOLUTE_PATH
+
+Demo computes its own commitment and uses a temporary journal.
+Prepare prints the commitment without scoring or opening a database.
+Run requires the retained digest and caller-owned absolute path.
+Validation is default; holdout or both require explicit selection.
+Each split registers, evaluates, admits, reopens and explicitly replays.
+Summary JSON includes actual per-horizon MAE/RMSE/WAPE, coverage,
+abstentions, receipt digests and provenance; no paired loss rows.
+The summary fingerprint excludes its own field. A later split failure
+does not undo an earlier committed receipt; digest mismatch before
+journal construction cannot create the journal. No independent
+registration, blind holdout, code attestation, inference or authority.
+
+Proposed evidence MM-CEN-022:
+`test_runner_demo_replays_both_splits_and_reports_actual_metrics`
+checks deterministic CLI replay, actual fictional metrics and false
+authority flags. Run
+`python -m pytest -q tests/integration/test_census_research_runner.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_RUNNER.md).
+Independent review pending.
+
+## Local fictional Research Observatory
+The [HTML generator](../../examples/m1_census_research_observatory.py)
+runs the fixed fictional demo through the existing runner and temporary
+journal. From the repository root:
+
+    python -m examples.m1_census_research_observatory --revision REV --split both --output ABSOLUTE_HTML_PATH
+
+The output is created exclusively; existing files are not overwritten.
+Validation is the default. The report includes descriptive MAE/RMSE/WAPE,
+coverage, abstention counts and provenance for each selected split.
+Missing metrics are explicitly unavailable, not zero. No arbitrary
+report ingestion, JavaScript, remote resources or server. Dynamic text
+is escaped; native details and tables provide local inspection.
+A matching local report is not independent attestation or calibrated
+inference. The displayed revision is caller-declared. Temporary journal
+is not durable history; the file is a report, not a registry.
+No real data or source rights, no winner or action authority.
+
+Proposed evidence MM-CEN-023:
+`test_observatory_offline_reproducible_report` checks repeatable HTML,
+metric rendering and offline markup. Other integration regressions cover
+missing metrics, escaping and exclusive output. Run
+`python -m pytest -q tests/integration/test_census_research_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_OBSERVATORY.md).
+Independent review pending; markup tests are not a browser accessibility audit.
+
+## Closed fictional scenario catalog
+The [runner](../../examples/m1_census_research_runner.py) and
+[observatory](../../examples/m1_census_research_observatory.py) accept
+`--scenario`. The default trend-seasonal fixture is unchanged, including
+its commitment and report fingerprints for the same declared revision.
+The catalog fixes 80 months and the same 30/10/10 origin schedule:
+- fictional-trend-seasonal-v1: 100 + 2*i + 3*(i mod 12).
+- fictional-flat-v1: 150.
+- fictional-volatile-v1: 150 + ((37*i*i + 17*i + 11) mod 101) - 50.
+- fictional-regime-shift-v1: 100 + 3*(i mod 12) + 80 when i >= 68
+  (otherwise no additional 80).
+
+These are deterministic illustrations, not sampled distributions or
+independent replications. Each normalized input manifest and experiment
+identity is distinct; the schedule digest is shared. Reusing a commitment
+with another scenario fails before journal creation. Use the same scenario
+on prepare and run. Example:
+
+    python -m examples.m1_census_research_runner demo --revision REV --scenario fictional-regime-shift-v1 --split both
+
+The observatory labels its scenario. Do not pool errors, select winners,
+or treat evaluation coverage as confidence interval calibration. All
+inference remains abstained. No real data, source authorization or
+independent holdout lock.
+
+Proposed evidence MM-CEN-024:
+`test_scenario_full_replay_and_expected_metrics` covers the four fixtures,
+both splits, exact replay and expected descriptive errors.
+`test_scenario_catalog_preserves_default_and_separates_commitments` and
+`test_scenario_cross_commitment_rejected_before_journal` verify identity
+and failure before storage. Run
+`python -m pytest -q tests/integration/test_census_research_scenarios.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md).
+Independent review pending.
+
+## Comparative fictional Research Observatory
+Use the explicit all-scenarios mode of the
+[local observatory](../../examples/m1_census_research_observatory.py):
+
+    python -m examples.m1_census_research_observatory --revision REV --scenario all --split both --output ABSOLUTE_HTML_PATH
+
+All four scenario commitments are prepared before scoring. The existing
+runner independently admits and replays each selected split in a shared
+temporary metadata journal. Comparison tables separate validation and
+holdout and display MAE, RMSE, WAPE and scored/requested counts. Each
+scenario retains its own provenance, coverage and abstention details.
+There is no pooling or ranking; four designed sequences are not random
+independent samples. The default single-scenario mode remains available.
+Output is deterministic, exclusively created, offline HTML; no scripts,
+external resources, imported report files or persistent history. All
+commitments are self-generated demo identities, not independent registration.
+
+Proposed evidence MM-CEN-025:
+`test_comparative_observatory_replays_all_scenarios_and_unique_anchors`
+checks eight split receipts, distinct experiment identities, anchors and
+deterministic markup. Separate tests cover prepare-before-score order
+and failed generation without output. Run
+`python -m pytest -q tests/integration/test_census_research_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md).
+Independent review pending; no accessibility certification.

@@ -303,3 +303,19 @@ The [Census journal](../../src/mirrormind/domains/retail/census_experiment_journ
 has guided experimental metadata persistence and replay admission, not
 trusted registration or source authorization. See
 [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+The [research runner](../../examples/m1_census_research_runner.py)
+is guided experimental local CLI behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical acceptance.
+
+The [observatory example](../../examples/m1_census_research_observatory.py)
+has guided local static report behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not deployment acceptance.
+
+The closed runner/observatory scenario catalog has guided fictional
+identity and comparison behavior in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md).
+No empirical model selection or inference.
+
+The all-scenarios observatory is guided fictional comparison and local
+replay behavior in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md);
+no inference or operational acceptance.

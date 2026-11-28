@@ -124,3 +124,21 @@ proposed 60 matched-pair minimum; inference remains abstained.
 The experimental journal persists only the local experiment identity and
 replayed result digest. It does not establish independent preregistration,
 blind access or empirical performance. All inference remains abstained.
+
+The separate fictional runner fixture has 80 invented records,
+deterministic trend and seasonality, and 30/10/10 declared origins with
+embargo gaps. Metrics are descriptive only; inference remains abstained.
+
+The local observatory displays the fixed synthetic runner's descriptive
+metrics and receipt provenance. It does not provide inference, independent
+holdout protection or empirical claims.
+
+The experimental catalog adds flat, deterministic volatile and abrupt
+level-shift fixtures to the original trend-seasonal example. These fixed
+designed sequences share the origin schedule but have distinct manifests.
+They are not independent random draws, a calibration study or evidence
+of empirical forecasting skill.
+
+The comparative observatory retains separate results and identities for
+the four deterministic fictional scenarios, with no pooled metric,
+ranking, inference or empirical model selection.

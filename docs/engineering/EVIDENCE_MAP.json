@@ -427,6 +427,34 @@
     "limitation": "Fictional local metadata persistence and explicit canonical replay only; plain read is unverified, no independent registration, attestation, blind holdout, power-loss durability or empirical inference. Independent review pending."
   },
   {
+    "id": "MM-CEN-022",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_runner.py",
+    "function": "test_runner_demo_replays_both_splits_and_reports_actual_metrics",
+    "limitation": "Fixed fictional CLI replay and descriptive metrics only; no independent registration, source authority, empirical skill, calibrated inference or deployment. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-023",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_observatory.py",
+    "function": "test_observatory_offline_reproducible_report",
+    "limitation": "Fixed fictional reproducible HTML and offline markup only; no independent registration, empirical inference, browser accessibility audit or deployment. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-024",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_scenarios.py",
+    "function": "test_scenario_full_replay_and_expected_metrics",
+    "limitation": "Four fixed fictional scenarios and descriptive replay only; no stochastic replication, empirical skill, calibrated inference or independent holdout. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-025",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_observatory.py",
+    "function": "test_comparative_observatory_replays_all_scenarios_and_unique_anchors",
+    "limitation": "Fictional comparison and local deterministic replay only; no independent registration, empirical skill, calibrated inference, browser accessibility certification or deployment. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",
