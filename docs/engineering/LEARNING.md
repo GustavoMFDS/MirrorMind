@@ -1021,3 +1021,9 @@ independent stochastic samples; no pooled statistical conclusion follows.
 Generate the all-scenarios observatory with both splits. Inspect metrics
 by horizon, then each scenario's manifest and receipt. Explain why
 identical schedules do not make these independent samples.
+
+### Exercise: stored metadata versus replay
+Run two fictional experiments in the same caller-owned journal. Generate
+the [history report](../../examples/m1_census_research_history.py) before
+and after explicitly replaying a stored split. Explain why a unique
+commitment is not a count of executions or a timestamp.

@@ -496,3 +496,10 @@ schedule is identical. Do not recompute the commitment after seeing results.
 Use --scenario all with a new absolute HTML output path. If a scenario
 fails, no success report is written. Inspect individual scenarios with
 the same declared revision; do not pool or replace missing results.
+
+### History replay mismatch
+Check the existing absolute journal path, selected commitment and recorded
+split. A stored digest may be syntactically valid but fail explicit replay.
+Do not replace the original receipt or recreate the journal to make replay
+pass. Current code may differ from the declared revision. Unknown fixtures
+are not reconstructed. Use a fresh HTML output path.

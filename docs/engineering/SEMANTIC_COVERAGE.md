@@ -319,3 +319,7 @@ No empirical model selection or inference.
 The all-scenarios observatory is guided fictional comparison and local
 replay behavior in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md);
 no inference or operational acceptance.
+
+The [history example](../../examples/m1_census_research_history.py) has
+guided read-only metadata and explicit local replay behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md); not trusted audit history.

@@ -200,6 +200,7 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `c
 | `CensusExperimentJournal.admit` | method | `def admit(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | — | [L159](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L159) |
 | `CensusExperimentJournal.verify_stored` | method | `def verify_stored(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | — | [L186](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L186) |
 | `CensusExperimentJournal.read` | method | `def read(self, experiment_id: str) -> dict[str, object]` | Read unverified metadata; use verify_stored for explicit local replay. | [L210](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L210) |
+| `read_census_journal_snapshot` | function | `def read_census_journal_snapshot(path: Path) -> tuple[dict[str, object], ...]` | Read existing caller-owned metadata in one bounded read-only transaction. | [L237](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L237) |
 
 ## `mirrormind.domains.retail.census_split`
 

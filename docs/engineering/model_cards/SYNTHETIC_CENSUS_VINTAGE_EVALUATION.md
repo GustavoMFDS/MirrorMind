@@ -142,3 +142,8 @@ of empirical forecasting skill.
 The comparative observatory retains separate results and identities for
 the four deterministic fictional scenarios, with no pooled metric,
 ranking, inference or empirical model selection.
+
+The experimental history view displays stored commitment metadata without
+scoring by default. Explicit replay checks one recorded digest using current
+code and the known fictional catalog. No chronology, independent attestation,
+empirical validation or inference is claimed.

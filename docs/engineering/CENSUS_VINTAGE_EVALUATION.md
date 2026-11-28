@@ -584,3 +584,36 @@ and failed generation without output. Run
 `python -m pytest -q tests/integration/test_census_research_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md).
 Independent review pending; no accessibility certification.
+
+## Local fictional experiment history
+The [history example](../../examples/m1_census_research_history.py)
+uses `read_census_journal_snapshot` in the existing journal module.
+It opens an existing absolute caller-owned path in SQLite read-only mode,
+sets query_only and reads a consistent transaction, checking schema,
+identity and digest syntax. Maximum 1000 commitments and 2000 receipts.
+No migration, initialization, or admission. Unknown fixtures remain
+unknown; known names match both schedule and manifest to the current
+closed catalog. Plain snapshots do not score or verify receipt content.
+
+    python -m examples.m1_census_research_history --journal ABSOLUTE_DB --output ABSOLUTE_HTML
+    python -m examples.m1_census_research_history --journal ABSOLUTE_DB --output ANOTHER_HTML --replay-experiment DIGEST --split validation
+
+Explicit replay of one recorded split regenerates the known fictional
+fixture, checks the commitment and compares the current result digest
+against the snapshot. It never writes a receipt or executes an unselected
+split. Holdout requires explicit selection. The report distinguishes stored
+metadata from explicit replay. The revision is declared, not historical code
+attestation; current code may not reproduce old results. Unknown fixture,
+missing split or conflicting digest rejects replay. No chronology or
+execution counts: there are no timestamps and repeated runs are idempotent.
+Snapshot SHA-256 is a local fingerprint, not a trusted timestamp or seal.
+Existing output is never overwritten. No real data, inference or new trust.
+
+Proposed evidence MM-CEN-026:
+`test_history_snapshot_replay_does_not_write` checks deterministic metadata,
+explicit replay and unchanged journal bytes. Other regressions cover
+capacity, missing/foreign files, schema identity, tampered receipts and
+exclusive output. Run
+`python -m pytest -q tests/integration/test_census_research_history.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_HISTORY.md).
+Independent review pending. Read-only SQLite is not hostile-file isolation.

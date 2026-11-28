@@ -1165,3 +1165,10 @@ forecast claims or cross-repository changes.
 | Path | Responsibility |
 |---|---|
 | [docs/engineering/changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md](changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md) | Scoped comparative mode acceptance and impact map |
+
+### Fictional experiment history
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_research_history.py](../../examples/m1_census_research_history.py) | Offline metadata snapshot and explicitly selected replay |
+| [tests/integration/test_census_research_history.py](../../tests/integration/test_census_research_history.py) | Read-only snapshot, replay and failure regressions |
+| [docs/engineering/changes/M1C_04_CENSUS_RESEARCH_HISTORY.md](changes/M1C_04_CENSUS_RESEARCH_HISTORY.md) | Scoped acceptance and impact map |
