@@ -441,3 +441,8 @@ Profile diverse and repeated synthetic vocabularies separately; compare full
 result digests (scores, ties, excerpts and citations), not only hit counts.
 The bounded corpus regression covers the previous implementation's output
 without a timing threshold. Do not widen limits or expose denied documents.
+
+When comparing compact-index memory, allocate the generated corpus before
+starting tracemalloc and measure build separately from searches. Check
+Unicode casefold and earliest-offset regressions before changing token
+representation. Traced allocations are not total process RAM.

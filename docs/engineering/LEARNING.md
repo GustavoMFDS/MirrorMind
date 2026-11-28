@@ -965,3 +965,8 @@ calculate inverse document frequency for one visible term. Explain why
 filtering a query to one collection must not change corpus-wide IDF.
 Run the bounded corpus regression and inspect complete result hashes; compare
 a common term and an unknown term without inferring real-data quality.
+
+For compact retrieval, explain why BM25 needs total token count rather
+than distinct term count, and why the earliest source occurrence among
+matched terms suffices for the unchanged excerpt window. Compare a
+reversed query and a casefold-expanding word with the citation regression.
