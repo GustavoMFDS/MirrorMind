@@ -180,6 +180,27 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `hashl
 | `execute_census_experiment` | function | `def execute_census_experiment(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_experiment_sha256: str, split: Literal['validation', 'holdout'], declared_code_revision: str) -> dict[str, object]` | Evaluate only after matching the caller-retained commitment. | [L86](../../../src/mirrormind/domains/retail/census_experiment.py#L86) |
 | `verify_census_experiment_receipt` | function | `def verify_census_experiment_receipt(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_experiment_sha256: str, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | Compare bounded canonical bytes to local replay, never parse submission. | [L138](../../../src/mirrormind/domains/retail/census_experiment.py#L138) |
 
+## `mirrormind.domains.retail.census_experiment_journal`
+
+Source: [`src/mirrormind/domains/retail/census_experiment_journal.py`](../../../src/mirrormind/domains/retail/census_experiment_journal.py)
+
+Static imports (including inside functions): `__future__`, `collections.abc`, `contextlib`, `hmac`, `mirrormind.domains.retail.census_experiment`, `mirrormind.domains.retail.census_split`, `mirrormind.domains.retail.census_vintages`, `pathlib`, `re`, `sqlite3`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_checked_sha` | function | `def _checked_sha(value: object) -> str` | — | [L40](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L40) |
+| `_objects` | function | `def _objects(db: sqlite3.Connection) -> tuple[tuple[object, ...], ...]` | — | [L46](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L46) |
+| `_check_schema` | function | `def _check_schema(db: sqlite3.Connection) -> None` | — | [L53](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L53) |
+| `CensusExperimentJournal` | class | `class CensusExperimentJournal` | Metadata-only journal on a caller-controlled local filesystem. | [L64](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L64) |
+| `CensusExperimentJournal.__init__` | method | `def __init__(self, path: Path) -> None` | — | [L67](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L67) |
+| `CensusExperimentJournal._transaction` | method | `def _transaction(self, *, initialize: bool=False) -> Iterator[sqlite3.Connection]` | — | [L75](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L75) |
+| `CensusExperimentJournal._read_spec` | method | `def _read_spec(db: sqlite3.Connection, experiment_id: str) -> CensusExperimentSpec` | — | [L100](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L100) |
+| `CensusExperimentJournal.register` | method | `def register(self, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_experiment_sha256: str, declared_code_revision: str) -> str` | — | [L111](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L111) |
+| `CensusExperimentJournal._replay` | method | `def _replay(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> tuple[CensusExperimentSpec, str]` | — | [L140](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L140) |
+| `CensusExperimentJournal.admit` | method | `def admit(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | — | [L159](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L159) |
+| `CensusExperimentJournal.verify_stored` | method | `def verify_stored(self, experiment_id: str, records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, split: Literal['validation', 'holdout'], declared_code_revision: str, submitted: bytes) -> str` | — | [L186](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L186) |
+| `CensusExperimentJournal.read` | method | `def read(self, experiment_id: str) -> dict[str, object]` | Read unverified metadata; use verify_stored for explicit local replay. | [L210](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L210) |
+
 ## `mirrormind.domains.retail.census_split`
 
 Source: [`src/mirrormind/domains/retail/census_split.py`](../../../src/mirrormind/domains/retail/census_split.py)

@@ -429,3 +429,37 @@ deterministic replay, distinct split receipts and false authority flags.
 and forged bytes. Run `python -m pytest -q tests/unit/test_census_experiment.py`.
 See [change request](changes/M1C_04_CENSUS_EXPERIMENT.md).
 Independent review pending.
+
+## Local experiment metadata journal (experimental)
+
+[CensusExperimentJournal](../../src/mirrormind/domains/retail/census_experiment_journal.py)
+takes an explicit absolute caller-controlled filesystem path. Register
+recomputes the commitment from normalized records and schedule before
+inserting only the experiment ID, schedule/manifest digests and declared
+revision. Admission invokes the pure replay verifier outside the write
+transaction, then rechecks the stored commitment and inserts only the
+verified digest for the requested split. Identical repeats are idempotent;
+conflicting stored digests fail closed. At most 1000 experiments and two
+split keys per experiment may be written through the adapter.
+
+Each operation opens a short SQLite transaction (BEGIN IMMEDIATE, foreign
+keys, three-second busy timeout), checks application ID, version and exact
+noninternal schema objects, and rolls back on exception. The new schema
+does not migrate unpublished prototype databases. An explicit
+verify_stored replay checks the recorded digest; plain read returns
+metadata with stored_receipts_verified_on_read=false. No submitted body,
+values or losses are persisted. Do not point the adapter at an unrelated
+or untrusted database. This is not hostile-file isolation, independent
+registration, tamper-proof logging, trusted code attestation, a blind
+holdout lock or a power-loss durability guarantee. B-01/B-02 remain open.
+
+Proposed evidence MM-CEN-021:
+`test_journal_reopen_and_replay` checks deterministic admissions, metadata
+only and explicit replay after reopen.
+`test_journal_external_digest_edit_requires_replay` documents the
+difference between plain reads and verification.
+`test_journal_abrupt_exit_and_recovery` checks an uncommitted child-process
+write to a temporary database; not a physical storage failure test.
+Run `python -m pytest -q tests/unit/test_census_experiment_journal.py`.
+See [change request](changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md).
+Independent review pending.

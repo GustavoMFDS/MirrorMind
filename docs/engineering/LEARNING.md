@@ -992,3 +992,9 @@ Read [the experiment walkthrough](CENSUS_VINTAGE_EVALUATION.md) and
 rehash the payload; compare its bytes to the actual replay. Explain why
 a declared revision and caller-retained digest are not code attestation
 or independent preregistration.
+
+### Exercise: local replay and persistent metadata
+Run `test_journal_external_digest_edit_requires_replay` and
+`test_journal_abrupt_exit_and_recovery`. Explain why atomic persistence
+and exact local replay do not establish independent custody or execution
+attestation. See [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).

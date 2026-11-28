@@ -120,3 +120,7 @@ schedule and declared code revision. Replay compares complete canonical
 receipt bytes; no empirical source or independent code attestation.
 The current schedule permits at most 50 holdout origins, below the
 proposed 60 matched-pair minimum; inference remains abstained.
+
+The experimental journal persists only the local experiment identity and
+replayed result digest. It does not establish independent preregistration,
+blind access or empirical performance. All inference remains abstained.

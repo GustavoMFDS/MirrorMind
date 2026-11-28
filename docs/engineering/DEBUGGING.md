@@ -469,3 +469,9 @@ inspect normalized manifest, schedule and declared revision separately.
 Do not rehash a changed commitment or rewrite a submitted receipt to
 force acceptance. Reproduce with the original fictional inputs, exact
 protocol and canonical encoding. A digest match is not source authority.
+
+### Census journal conflict or incompatible database
+Use the original committed fictional records and canonical receipt for
+explicit replay. Preserve a conflicting digest rather than overwriting it.
+Check application ID, version and schema objects if the path is rejected;
+do not migrate or delete an unrelated database. A plain read is not replay.

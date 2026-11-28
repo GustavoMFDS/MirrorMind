@@ -420,6 +420,13 @@
     "limitation": "Fictional normalized manifest and full canonical replay only; no independent registration, trusted code attestation, blind holdout, persistence or empirical inference. Independent review pending."
   },
   {
+    "id": "MM-CEN-021",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_experiment_journal.py",
+    "function": "test_journal_reopen_and_replay",
+    "limitation": "Fictional local metadata persistence and explicit canonical replay only; plain read is unverified, no independent registration, attestation, blind holdout, power-loss durability or empirical inference. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",
