@@ -1,37 +1,48 @@
-# Project status — current baseline, 2026-11-27
+# Project status — current baseline, 2026-11-28
 
-## Current review reconciliation - 2026-11-27
+## Current review reconciliation - 2026-11-28
 
-Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal
-PR #81 merge after PR #80's synthetic benchmark/release preparation and PR
-#79's curated portfolio/index update. PR #77
-integrated at `540c47411898cc820ac651c19430017ecd8c20fe` over PR #65 merge
-`51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #77
-(`df7c450523a8f3475e0a8161936f6ac80e705720`) adds measured public
-coverage, strict typing for retrieval, wheel build/install smoke checks and
-repository quality CI; it also reconciles MM-009 with accepted decision MM-023.
-All nine observed official contexts on that exact PR head succeeded: `test`,
-compatibility 3.12/3.13, `symbol-catalog`, `Analyze (actions)`,
-`Analyze (python)`, `quality`, `package` and `CodeQL` (runs
-[46066734014](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734014),
-[46066733925](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066733925),
-[46066734009](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734009),
-[46066732130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066732130)
-and [140733898759](https://github.com/GustavoMFDS/MirrorMind/runs/140733898759)).
-This evidence applies to the PR head; the combined-status query for merge
-commit `540c474` returned no individual entries, so no exact-merge official
-result is claimed here. PR #77 merged normally; no protection or required check
-was bypassed, and no paid services were used.
+Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
+PR #88 as a direct child
+of `d41e661d298255957979779691c2f9f4dbf36461`. Its change is limited to the
+cryptography 50 dependency constraints, public lock and related supply-chain
+documentation. The exact commit has 11 completed GitHub check-runs, all
+successful; those results apply only to `00e6cf1`. PR #87 was open and
+unmerged at published head `48fc51d` when synchronization began. The local
+M2-03 branch now includes `main` through ancestry-preserving merge
+`66b591317b375a270b5d0ed682c94e161d52a956`, with no conflicts. The full local
+six-check gate on that exact merge commit passed 1,014 tests, zero skips and
+all six checks. Receipt:
+`results/local-quality-gate-66b591317b375a270b5d0ed682c94e161d52a956-workspace.json`.
 
-The PR #77 exact-head report records a separate local gate of 968 tests, zero
-skips and six local checks, alongside its coverage, typing and package results;
-see [REX-09/10](REX_QUALITY_PACKAGING.md) and
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The pre-PR #77 exact-main gate at
-`51c90d2` also passed 968 tests, zero skips and six checks with reviewed
-WorldKernel `0.0.1` at source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. These historical receipts do not
-validate the current M2-02 branch; its exact-head gate must be run before
-publication and recorded in that PR's review evidence.
+The restricted-sandbox attempt at `66b5913` stalled in the API `TestClient`
+startup and was interrupted before its timeout; it emitted no receipt and is
+not counted as a gate result. The same clean SHA passed unchanged in the
+authorized local environment with loopback access in 34.21 seconds. One
+existing Starlette/httpx deprecation warning remains. This matches the known
+Windows sandbox limitation in [B-07](BLOCKERS.md). That `66b5913` receipt was
+created while the local venv still had `cryptography 46.0.7`. The venv has now
+been aligned to the synchronized `50.0.0` dependency. Do not reuse the earlier
+receipt as evidence for that runtime; the live PR body holds the exact
+documentation-inclusive receipt and current PR check status. The exact-main
+checks on `00e6cf1` are separate evidence. Recheck after any later push. See
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) and [B-08](BLOCKERS.md).
+
+M2-03 remains bounded to a typed local registry, fixed fictional retrieval
+and decision tools, and a scripted provider test double. The provider cannot
+author forecasts, simulations, writes or business actions; no live provider,
+route, persistence or authenticated identity is present. The prior published
+head `b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate with
+1,014 tests and zero skips; 12 of 14 exact-head official check-runs succeeded
+and `deploy` plus `release-rehearsal` were skipped by conditions. Independent
+review reproduced Pydantic `model_copy(update=...)` bypasses in nested
+provider turns. Correction commit `48e7efe98aae2df3811302fbf7875a2bd8a48dc4`
+revalidates each exact turn from plain data before dispatch or draft handling,
+with regressions for malformed fields, invariants and missing payloads. Its
+full local gate passed 1,019 tests, zero skips and six checks. Current
+published SHA and official check-run state are recorded in the live PR #87;
+independent re-review remains pending. Local
+Docker remains unavailable. Never transfer evidence between SHAs.
 
 The bounded UCI reader and MM-024 classification are already implemented in
 main with synthetic regressions. The approved source call stopped above the
@@ -61,7 +72,9 @@ returned no entries; the PR workflow runs are scoped to the PR head only. This
 increment changes no parser contract and did not reread the private workbook.
 Its exact local receipt is
 `results/local-quality-gate-8c8f8627a7162cb766a70d264569d3fcc2d442c8.json`.
-Continue existing fictional/offline M2-02/G-02 work independently.
+PR #82 has since integrated M2-02's fictional/offline retrieval evaluator into
+main. Continue on the separate M2-03 orchestration slice and other existing
+G-02 criteria without claiming production retrieval or real-source quality.
 
 PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`. Its exact head
 `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970 tests, zero skips and
@@ -86,13 +99,19 @@ unavailable for that authoring run, so only the official CI container-smoke
 job is evidence. Combined-status queries for the exact PR head and merge SHA
 returned no individual entries.
 
-**Current main:** `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, descendant of
-PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
+**Current main:** `d41e661d298255957979779691c2f9f4dbf36461`, after PR #82 merged
+normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #52–#59 remain
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 PRs #68–#81 through their existing merges, including MM-024 (#78), the curated
-portfolio/index (#79) and synthetic benchmarks/read-only release preparation
-(#80), and developer onboarding/container smoke (#81). WorldKernel and dataset
-terms remain separate.
+portfolio/index (#79), synthetic benchmarks/read-only release preparation
+(#80), and developer onboarding/container smoke (#81). PR #82 adds the bounded
+fictional M2-02 retrieval evaluator. The later `128c266` commit reduces typing
+debt and establishes a public coverage floor; `c8b93da` locks public
+development dependencies and narrows evaluation types. Commit `d41e661` closes
+remaining package typing diagnostics and adds whole-package typing to the
+quality workflow; no exact-current-main check result is asserted here.
+WorldKernel and dataset terms remain separate. No combined-status or exact-main
+gate result is inferred from PR-head checks.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -107,7 +126,9 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #79 / REX-11/12 | Merged normally at `5100ebf`; exact head `b5c1bcc` passed 970 tests, six local checks and seven observed successful workflow jobs; guarded deployment was skipped. | Static site and curated index only; no live model, source processing or automatic deployment. |
 | PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
-| M2-02 retrieval evaluation / PR #82 | Open for independent review at initial head `d542e5e`; ancestry-synced with main `10b94c9` by merges `f74d286` and `0b4881f`. Exact local gate passed 989 tests, zero skips and six checks with the pinned WorldKernel. The exact PR head also passed 12 official checks, including coverage and strict retrieval typing; two guarded jobs were skipped. | Independent review remains pending. The current PR head must be rechecked after each follow-up commit. The initial head has a non-blocking Node.js 20 deprecation warning; metrics remain fictional and experimental. |
+| PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
+| PR #88 / cryptography 50 lock | Merged at `00e6cf11ac05a94055242573fd3cfc18086bad10`; 11 completed exact-SHA official check-runs succeeded. | Updates public dependency constraints and lock; does not infer account billing state or explain historical pre-start failures. |
+| M2-03 bounded tool orchestration / [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) | The ancestry-synced branch includes `main` `00e6cf1` through merge `66b5913`. Commit `48e7efe` fixes the nested Pydantic `model_copy(update=...)` bypass. | Exact correction commit passed 1,019 tests, zero skips and six local checks. Current published SHA and official checks are in the live PR; independent re-review remains pending. Provider is scripted; tools are fixed/fictional. No route, persistence or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

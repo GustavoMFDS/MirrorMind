@@ -921,3 +921,32 @@ the stable query-free JSON. Finally, change a gold label to a visible but
 irrelevant document and predict which metric numerators change. Do not infer
 real-corpus quality, confidence calibration or production authorization from
 the fixture's perfect scores.
+
+## Guided exercise — trace a bounded scripted tool call (45 minutes)
+
+Read the [M2-03 orchestration walkthrough](M2_TOOL_ORCHESTRATION.md), then
+trace `AgentRunRequest` through `run_bounded_tool_orchestration`, the immutable
+`ToolRegistry.invoke`, the existing fictional retriever and the M1F-02
+decision adapter. Run
+`tests/unit/test_bounded_tool_orchestration.py::test_injection_like_evidence_cannot_expand_the_tool_registry`
+and
+`tests/unit/test_bounded_tool_orchestration.py::test_unobserved_citation_is_refused_as_unsupported_evidence`.
+Explain which boundary each regression proves and why neither proves that a
+live model follows instructions or that a citation semantically entails a
+summary. Then corrupt a valid `AgentDraft` and `AgentTurn` with
+`model_copy(update=...)` and run
+`test_provider_turn_revalidates_nested_draft_fields_before_consumption`,
+`test_provider_turn_revalidates_nested_status_and_citation_invariants`,
+`test_provider_turn_revalidates_nested_tool_call_before_dispatch`, and both
+`test_provider_turn_with_missing_*_payload_fails_closed` tests. Explain why
+dumping the exact model to plain Python data before strict reconstruction
+re-runs field and model validators, and verify malformed tool calls are
+refused before a tool attempt is counted. Then inspect the provider-mode
+failure test, attempt to mutate the registry, and run
+`python -m examples.m2_bounded_tool_orchestration` twice to compare query-free
+receipts. Inspect the private `_SyntheticWorkflowResult`
+`TypedDict` against the M1F-02 return construction. Explain why it assists
+static checking but does not add runtime validation, and locate the Pydantic
+checks that still define the runtime contract. The exercise uses fictional
+inputs and establishes no identity, provider attestation, approval, network
+isolation or action authority.

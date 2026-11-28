@@ -1,9 +1,38 @@
 # Task backlog — prioritized execution register
 
-## Current review reconciliation - 2026-11-27
+## Current checkpoint - 2026-11-28
 
-Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, PR #81's normal
-merge after PR #79. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
+Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
+PR #88 as a child of `d41e661`; its exact SHA has 11 successful official check-runs.
+At sync start, PR #87 was open and unmerged at published head
+`48fc51db949cf5626b50d3f97b5304388a9b1076`. The latest synchronized
+published head before the review correction was `b931bbe2279dd0865f535e0f56e5165ed402ef96`.
+The local `codex/m2-03-tool-orchestration-20261127` branch preserves that
+history and incorporates `main` through merge `66b591317b375a270b5d0ed682c94e161d52a956`.
+The exact merge checkpoint passed the full local gate: 1,014 tests, zero
+skips, six checks. That earlier receipt used cryptography 46.0.7. The local
+venv is now aligned to 50.0.0. Exact `b931bbe` then passed the local gate with
+1,014 tests and zero skips; its exact check query returned 12 successes and
+two workflow-conditional skips. Independent review found a `model_copy`
+validation bypass. The current M2-03 candidate adds strict plain-data
+revalidation and regression coverage; use the live PR for its exact commit,
+gate receipt and check state. Correction commit `48e7efe` passed 1,019 tests,
+zero skips and six local checks. Re-query after each later push.
+
+| Work | Current state | Next acceptance gate |
+| --- | --- | --- |
+| M1 synthetic vertical slice | Integrated experimentally through PR #62; M1 empirical evaluation and production acceptance remain incomplete. | Keep claims synthetic until approved source rights, availability evidence, empirical evaluation and service controls are satisfied. |
+| UCI #352 empirical pilot | Blocked after the approved call exceeded the 250,000 product-day group limit; no complete projection, exclusion counts or metrics. MM-024 invoice classification is already implemented and documented. | Do not reread, chunk, sample or increase limits. Preserve private-snapshot deletion by `2026-12-26`. |
+| B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte diligence. Exact Census artifact rights and owner decisions precede even file-byte inspection; FRED/ALFRED remains NO-GO absent written permission and series rights. |
+| [PR #87 / M2-03 bounded orchestration](https://github.com/GustavoMFDS/MirrorMind/pull/87) | Main sync completed at `66b5913`; independent review correction revalidates nested provider turns before dispatch. Regression tests, walkthrough, debug/learning docs and evidence map are updated. | Exact candidate gate/check status is in the live PR. Obtain independent re-review; keep #87 unmerged until normal review and protections approve. |
+| M2-05 usable decision workflow | Planned; depends on M1F-02 and M2-03. | After #87 review/integration, advance the local/API/UI workflow: run status, reproducible report, uncertainty and human review across normal/failure paths. Keep M2-04 real-provider work gated on B-05. |
+
+## Historical review reconciliation - 2026-11-27
+
+Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following PR #82's
+normal merge at `c31ecd6dbf3f68be8726bdba2b23a813226c2618` and the subsequent
+typing-debt/public-coverage-floor commit `128c266`, public dependency-lock
+commit `c8b93da` and package-typing gate commit `d41e661`. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
 with the curated portfolio/index update; PR #80 adds bounded synthetic
 benchmarks and read-only release preparation. PR #77 merged normally at
 `540c474`, preserving reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`;
@@ -58,7 +87,7 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`. PR #52–#59 were
+**Baseline:** main `d41e661d298255957979779691c2f9f4dbf36461`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 #77–#81 are integrated. The portfolio/index, synthetic benchmark/release
 preparation and developer-onboarding updates are present. Merged branches
@@ -73,7 +102,8 @@ preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.
 | PR #78 / MM-024 UCI policy | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. | Preserve the no-reread/no-partition/no-cap-increase stop and snapshot deletion deadline. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| M2-02 retrieval evaluation / PR #82 | Open for independent review at initial head `d542e5e` on `codex/m2-02-retrieval-evaluation-20261127`, ancestry-synced with main `10b94c9`. The evaluator rejects empty/oversized corpora and unsupported document objects. Exact local gate: 989 passed, zero skips, six checks, pinned WorldKernel. Initial PR head passed 12 official checks, including coverage and strict retrieval typing; two guarded jobs were skipped. | Await independent review. Re-run the exact local gate and inspect official checks for each subsequent head. Keep the non-blocking Node.js 20 warning visible; do not change workflows as part of M2-02. |
+| M2-02 retrieval evaluation / PR #82 | Merged normally at `c31ecd6` into main `d41e661`. Exact PR head `f6fa2ed` passed 989 local tests, zero skips, six checks and 12 official head checks; two guarded jobs were skipped. | M2-02 slice delivered as fictional/experimental. Preserve exact-head evidence; do not infer a check result for the merge SHA or later main. |
+| [PR #87 / M2-03 bounded tool orchestration](https://github.com/GustavoMFDS/MirrorMind/pull/87) | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through main `d41e661`; PR is open and unmerged. Exact local gate at `2d71d39` passed 1,014 tests, zero skips and all six checks. Code-identical `07a6cdc0` passed 86.92% coverage, whole-package/strict-retrieval mypy and package wheel smoke. | At exact PR head `2d71d39`, 12 official check-runs succeeded and deploy/release rehearsal were skipped by conditions; container smoke passed. Re-query any later head. No live provider, route, persistence or action authority. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
@@ -201,7 +231,7 @@ coordination.
 
 ## A. Engineering and bounded checkpoint governance
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
 | DOC-01 | P0 | ready | None | Reconcile stale introductory status, semantic map and current source/ledger; preserve dated evidence, resolve conflicting instructions, verify linked atlas. |
 | G-01 | P0 | ready | PR #50 | Review existing protocol and implement a minimal testable service-side signed current-head response and independent storage contract; no live deployment. Use existing verifier and canonical signing domain; negative wire/nonce/scope/key tests. |
@@ -221,25 +251,25 @@ the vertical product path.
 
 ## B. M1 — evidence, forecasts and runnable decision comparison
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M1B-01 | P0 | in_progress | None | Synthetic UCI #352 event-time evaluator, fixed validation/holdout protocol, privacy-minimized output and separate aggregate Census/ALFRED vintage protocol are implemented locally. Both lanes are represented in consolidated candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85`, whose six-check exact-head gate passed 832 tests without skips and all five other checks with the reviewed WorldKernel pin installed. Keep real-source acquisition/processing blocked until exact terms, attribution, snapshot, minimization, retention and permission are reviewed. No source permission or real processing is claimed. |
-| M1B-02 | P0 | partial | None | Compose bounded CSV/workbook staging, review metadata, calendar/release checks and as-of selection into a reusable synthetic evidence flow; deterministic fixture, rejection and abstention tests. |
+| M1B-01 | P0 | integrated (synthetic protocol) | None | PR #62 integrates the UCI #352 event-time evaluator, fixed validation/holdout protocol, privacy-minimized outputs and synthetic aggregate Census/ALFRED vintage protocol. No complete real UCI projection or Census/FRED/ALFRED values exist; B-01/B-02 still gate empirical claims. |
+| M1B-02 | P0 | integrated (synthetic) | None | PR #62 composes bounded CSV/workbook staging, review metadata, calendar/release checks and as-of selection into a deterministic synthetic evidence flow with rejection and abstention coverage. Real-source permission, availability and retention remain separate gates. |
 | M1B-03 | P0 | blocked | M1B-01, M1B-02, B-01, B-02 | Approved real-source adapter with reviewed dataset card, actual source snapshot, permission enforcement, data minimization and provenance; verify temporal availability rather than inventing it. |
-| M1B-04 | P1 | in_progress | M1B-01 | Prepare the second A+B research lane with an immutable normalized aggregate-vintage contract and bounded synthetic as-of selector. Require a strict date-only publication cutoff, per-month latest eligible revision, preserved release metadata, fail-closed ambiguity handling and no zero filling. This local adapter is not a Census/ALFRED parser and does not satisfy B-01/B-02 for real data. |
-| M1C-01 | P0 | partial | M1B-02 | Reuse offline baselines and retail release backtests; build a reproducible synthetic evaluation entrypoint with aligned eligible targets, fixed splits and per-origin receipts. |
+| M1B-04 | P1 | integrated (synthetic) | M1B-01 | PR #67 integrates the immutable aggregate-vintage contract and bounded synthetic as-of selector. It enforces strict date-only publication cutoffs, latest eligible revisions, retained release metadata, fail-closed ambiguity and no zero filling. It is not a Census/ALFRED parser or real-data permission. |
+| M1C-01 | P0 | integrated (synthetic) | M1B-02 | PR #62 provides the reproducible retail evaluation entrypoint with shared eligible targets, fixed splits, per-origin receipts, offline baselines and release backtests. Empirical scores remain blocked by B-01/B-02. |
 | M1C-02 | P0 | covered_by_existing_code | M1C-01 | Existing seasonal-naive and trailing-mean baselines already share eligible targets; do not add a third candidate without a justified need. Final acceptance remains synthetic until M1C-03 is approved. |
 | M1C-03 | P0 | blocked | M1B-03, M1C-02, B-02 | Run approved empirical holdout, record actual MAE/RMSE/zero-safe metrics, coverage, abstention and model card; no invented accuracy. |
-| M1C-04 | P1 | in_progress | M1B-04 | Evaluate fixed lag-12 and trailing-12-month baselines on synthetic publication vintages at horizons 1, 3 and 6. Require strict as-of selection, first-estimate targets, disjoint validation/holdout origins, 12 consecutive visible months, matched metrics, explicit abstention and replay receipts. This proves local temporal mechanics only; B-01/B-02 still block an empirical source evaluation. |
-| M1D-01 | P1 | partial | M1C-01 | Reuse residual envelope, drift and sensitivity code; formalize uncertainty semantics, disjoint calibration/holdout strategy, missing/late data and coverage tests. |
-| M1D-02 | P1 | planned | M1C-03, M1D-01 | Evaluate uncertainty on approved held-out observations, document empirical coverage or explicitly uncalibrated limits and sensitivity. |
-| M1E-01 | P0 | partial | None | Versioned gateway and strict allowlisted WorldKernel request mapping exist in draft PR #55; reject unrepresentable state/interventions/refs and bound mapped runs. This is request construction, not execution. |
-| M1E-02 | P0 | partial | M1E-01 | Optional exact-pin local worker executes the actual registered inventory demo with local timeout/output and result checks; this establishes SDK compatibility for that demo, not the M1 lead-time model or a hostile-code sandbox. Consolidated candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests without skips and all five other checks locally with the reviewed WorldKernel pin installed; official Actions remain unavailable under B-08. This does not establish hostile-code isolation or a production lead-time model. |
-| M1E-03 | P0 | partial | M1C-01 | The paired fictional three-policy test double and shared day transition are implemented and regression-tested; it defines the reference semantics and does not require an external engine. |
-| M1E-04 | P0 | review | M1E-02, M1E-03 | The consolidated PR #62 candidate contains the fixed code-owned WorldKernel policy world using the shared transition, strict versioned mapping, bounded operator fan-out, parent-side state/stream checks, exact synthetic parity and explicit CLI opt-in. HTTP remains on the test double. Exact-pin integration and the full clean integrated gate passed on candidate commit `74330d8`; review production isolation separately under B-04. |
-| M1F-01 | P0 | partial | None | Draft PR #54 provides a versioned decision trace/result contract separating facts, forecasts, simulated outcomes, assumptions, missing evidence, costs and human review; fixture and invalid-reference tests. No authenticated producer or execution is included. |
-| M1F-02 | P0 | review | M1B-02, M1C-01, M1D-01, M1E-03, M1F-01 | Consolidated PR #62 composes synthetic evidence, fixed-baseline evaluation, residual diagnostics, policy simulation and typed decision trace through reproducible CLI/API paths. The API/default CLI use the test double; the local CLI can opt into the fixed WorldKernel policy world. PR #57's synthetic UCI event-time evaluator and aggregate Census protocol are included. Exact integrated six-check gate passed on `74330d8`; approved-source evidence, empirical forecast validation and real/public transport controls remain incomplete. |
-| M1F-02a | P0 | review | M1F-02, M1E-04 | PR #62 resolves the #59 engine-provenance finding: selected engine contract, selected-result source, parity-oracle invocation and exact WorldKernel provenance are independently recorded and validated. Exact replay and adverse reference/digest regressions pass in the integrated gate. B-04 production isolation and B-08 official Actions are outside this synthetic contract. |
+| M1C-04 | P1 | integrated (synthetic) | M1B-04 | PR #67 integrates fixed lag-12 and trailing-12-month baselines over synthetic publication vintages at horizons 1, 3 and 6. It uses strict as-of selection, first-estimate targets, disjoint validation/holdout origins, 12 visible months, matched metrics, abstention and replay receipts. This validates temporal mechanics only; B-01/B-02 still block empirical evaluation. |
+| M1D-01 | P1 | integrated (experimental) | M1C-01 | PR #62 integrates the residual envelope, drift/sensitivity diagnostics and disjoint synthetic calibration/holdout mechanics with explicit uncalibrated limits. No empirical coverage claim is made. |
+| M1D-02 | P1 | blocked | M1C-03, M1D-01, B-02 | Evaluate uncertainty on approved held-out observations, document empirical coverage or explicitly uncalibrated limits and sensitivity. No approved empirical holdout is currently available. |
+| M1E-01 | P0 | integrated (experimental) | None | PR #62 integrates the versioned gateway and strict allowlisted WorldKernel request mapping. It rejects unrepresentable state/interventions/references and bounds mapped runs; mapping alone is not execution or production acceptance. |
+| M1E-02 | P0 | integrated (experimental) | M1E-01 | PR #62 integrates the optional exact-pin local worker with timeout/output/result checks for the registered inventory demo. This proves local compatibility for that demo, not hostile-code isolation or a production lead-time model. |
+| M1E-03 | P0 | integrated (synthetic) | M1C-01 | PR #62 integrates the paired fictional three-policy test double and shared deterministic day transition as the reference semantics. No external engine is required for this test-double path. |
+| M1E-04 | P0 | integrated (experimental) | M1E-02, M1E-03 | PR #62 integrates the code-owned WorldKernel policy world using the shared transition, strict versioned mapping, bounded fan-out, parent-side state/stream checks, exact synthetic parity and explicit local CLI opt-in. HTTP/default CLI remain on the test double; B-04 still gates broader isolation and production acceptance. |
+| M1F-01 | P0 | integrated (experimental contract) | None | PR #62 integrates the versioned decision trace/result contract separating facts, forecasts, simulated outcomes, assumptions, missing evidence, costs and human review. No authenticated producer or approval authority is included. |
+| M1F-02 | P0 | integrated (synthetic) | M1B-02, M1C-01, M1D-01, M1E-03, M1F-01 | PR #62 composes synthetic evidence, fixed-baseline evaluation, residual diagnostics, policy simulation and typed trace through reproducible CLI/API paths. API/default CLI use the test double; the local CLI may opt into the fixed WorldKernel policy world. Empirical forecast, source and production transport gates remain open. |
+| M1F-02a | P0 | integrated (synthetic provenance) | M1F-02, M1E-04 | PR #62 resolves the #59 engine-provenance finding: selected engine contract/result source, parity-oracle invocation and exact WorldKernel provenance are independently recorded and validated. Exact replay and adverse reference/digest regressions pass. B-04 production isolation remains outside this contract. |
 | M1F-03 | P0 | blocked | M1B-03, M1C-03, M1D-02, M1F-02 | Complete reviewed retail MVP user story using approved observations and evaluated forecasts, actual simulation and documented conditional assumptions; independent replay and review. B-01/B-02/B-04 block this path. |
 
 Read [M1 delivery plan](M1_EXECUTION_PLAN.md), [retail MVP](../RETAIL_MVP.md),
@@ -251,11 +281,11 @@ coverage/selection diagnostic modules merely because they are local.
 
 ## C. M2 — grounded AI and usable workflow
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M2-01 | P1 | review | M1F-01 | PR #60 proposes strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
-| M2-02 | P1 | planned | M2-01 | Retrieval evaluation with a declared test set, citation support and abstention; preserve document lineage and access constraints. |
-| M2-03 | P1 | planned | M1F-02, M2-01 | Typed tool registry and bounded agent orchestration over actual evidence/forecast/simulation tools; provider test double, invalid-tool/input/output and prompt-injection regressions; justified framework choice. |
+| M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
+| M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
+| M2-03 | P1 | review correction; re-review pending | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools. Commit `48e7efe` serializes the exact provider `AgentTurn` into plain data and strictly reconstructs nested contracts before use; regressions reproduce empty summaries, status/citation mismatch, malformed tool calls and missing payloads. That exact commit passed 1,019 tests, zero skips and six local checks. Current published SHA and official checks are in the live PR. No live provider, route, persistence or action authority. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
 | M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |

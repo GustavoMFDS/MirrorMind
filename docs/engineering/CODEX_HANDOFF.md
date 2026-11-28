@@ -1,72 +1,61 @@
 # Agent handoff — continuous engineering and documentation standard
 
-## Current continuation - 2026-11-27
+## Current continuation - 2026-11-28
 
-- Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal PR #81
-  merge after PR #80 (`7efced5`). PR #79's portfolio/index update merged at `5100ebf`;
-  PR #77 merged at `540c474`; nine official
-  contexts passed on exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`.
-  PR #78 / MM-024 merged normally at `291562a`; its final head
-  `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed 968 tests, zero skips,
-  six local checks and six observed official jobs. Those jobs are in runs
-  `46072345590`, `46072345631` and `46072345603`; combined status for the merge
-  and current main was empty, so keep claims scoped to their exact PR heads.
-- PR #79 exact head `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970
-  tests, zero skips and six local checks; seven observed workflow jobs
-  succeeded and the guarded deploy job was skipped. PR #80 exact head
-  `e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips
-  and six local checks; eight observed jobs succeeded across five workflows,
-  with main-only deployment and manual rehearsal skipped. See
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); merge SHA `7efced5` has no
-  combined-status entries. PR #80's benchmark is synthetic and release prep
-  does not create a release.
-- PR #81 / REX-15 exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc`
-  passed 977 tests, zero skips and six local checks. Five official workflows
-  completed with nine applicable jobs successful; main-only deployment and
-  release rehearsal were skipped. The CI container smoke passed, although the
-  developer's local Docker daemon was unavailable. The merged `10b94c9` SHA
-  has no combined-status entries; keep evidence scoped to the PR head.
-- The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
-  only uppercase `C` plus six digits means cancellation; other single ASCII
-  letters plus six digits are excluded before sales grouping and represented
-  by one aggregate unverified class; all other formats fail closed. Existing
-  MM-022 code and synthetic regressions already implement this, including
-  identifier redaction and unchanged generic-reader behavior.
-- The UCI source call stopped above the 250,000 product-day group ceiling
-  without a complete projection, full exclusion counts or metrics. MM-024
-  changes an exclusion label, not the set of sales rows or group cardinality.
-  Do not reread, chunk, sample or raise the cap. Preserve local snapshot
-  deletion by `2026-12-26`; no empirical score is available.
-- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`. Its ancestry
-  includes feature commit `fc43935`, merge `f74d286` of main `7efced5`, and
-  merge `0b4881f` of current main `10b94c9`. Its scope is a bounded offline evaluator for the existing
-  fictional M2-01 index. It must keep `evidence_and_rag` planned and local
-  retrieval experimental; no route, auth, real data, persistence or RAG claim.
-  Source walkthrough, debugging/learning, evidence/atlas/catalog updates are
-  drafted and all five focused static checks pass; the targeted retrieval
-  suites pass 22 tests. Regression coverage now rejects empty/oversized
-  corpora and unsupported document objects before scoring. The clean
-  six-check gate passed on exact candidate `4ccff24cbc73045a4d01fdc9a5aa299d69e59038`:
-  989 tests, zero skips and all six checks; receipt is in
-  `results/local-quality-gate-4ccff24cbc73045a4d01fdc9a5aa299d69e59038-workspace.json`.
-  Earlier, the same gate on `e3e55d4` timed out only when sandboxed at
-  TestClient's local socketpair setup; unchanged runs outside the sandbox passed.
-  See [B-07](BLOCKERS.md). Any final PR head after subsequent tracked changes
-  needs its own exact receipt. Local mypy is absent; rely on the candidate's
-  official quality job for strict retrieval typing and record its exact status.
-- PR #82 is open for M2-02. Its initial head
-  `d542e5e129e091dc649e1a187c96e18c59ccc695` passed the local 989-test,
-  six-check gate and 12 exact-head official checks; the guarded deploy and
-  release-rehearsal jobs were skipped. Official quality completed coverage and
-  strict retrieval typing. One non-blocking Node.js 20 deprecation annotation
-  remains. Run IDs, exact SHA scope and the warning are in
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); later heads need separate
-  local and official checks. Independent review and M2-02 acceptance remain
-  pending.
-- Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
-  new UCI source processing remain unauthorized. M1 synthetic workflow is
-  integrated; empirical and production acceptance remain open. Preserve the
-  zero-paid budget and all protected-main checks.
+- Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
+  PR #88. Its cryptography 50 constraint and lock update has 11 successful
+  official check-runs on that exact SHA. This does not explain historical
+  pre-start failures or disclose billing state; keep paid-service spend at
+  zero and preserve all protections.
+- PR #87 / M2-03 was open and unmerged at published head
+  `48fc51db949cf5626b50d3f97b5304388a9b1076` when synchronization began. An
+  independent review later reproduced nested Pydantic `model_copy(update=...)`
+  validation bypasses on published head
+  `b931bbe2279dd0865f535e0f56e5165ed402ef96`; its exact run had 12 successful
+  check-runs and two conditional skips. Correction commit
+  `48e7efe98aae2df3811302fbf7875a2bd8a48dc4` reconstructs provider turns from
+  plain data before dispatch, with regressions for invalid nested drafts/tool
+  calls and missing payloads. That exact commit passed the local six-check
+  gate with 1,019 tests and zero skips. Review remains pending; use the live PR
+  body for current candidate SHA, local receipt and exact check
+  status. Do not transfer earlier gate results. The local
+  branch includes latest `main` through ancestry-preserving merge
+  `66b591317b375a270b5d0ed682c94e161d52a956`.
+  That exact merge checkpoint passed 1,014 tests, zero skips and all six local
+  checks, with one existing Starlette/httpx deprecation warning. The final
+  review-correction candidate's exact gate and check status are recorded in
+  the live PR. The first restricted sandbox attempt
+  stalled in `test_health`, was interrupted before timeout, and produced no
+  receipt. The unchanged gate passed on the same SHA with loopback permitted;
+  see [B-07](BLOCKERS.md) and [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+- The exact `66b5913` local gate ran before the venv update and used
+  `cryptography 46.0.7`. The local venv is now aligned to `50.0.0`, matching
+  PR #88's project constraint. Do not reuse that checkpoint receipt as
+  evidence for the new runtime; use the live PR body for the final
+  documentation-inclusive gate and current exact-head checks. PR #88's
+  exact-main official checks remain separate evidence. Re-query after any
+  later publication.
+- M2-03 remains a local-only orchestration experiment: fixed fictional
+  retrieval and M1F-02 decision tools, immutable registry, strict contracts,
+  scripted provider test double and minimized digest receipts. Provider turns
+  are rebuilt from plain data so nested Pydantic validators run before use.
+  Drafts are untrusted and require human review. No live model, route, persistence,
+  authenticated identity, semantic-entailment check, write tool or business
+  action authority exists. Keep this PR bounded and reviewable.
+- PR #82 / M2-02 is already incorporated; do not replay its commits. Keep
+  retrieval and evaluation fictional and experimental.
+- The owner's MM-024 UCI policy is implemented: six-digit transaction numbers
+  are accepted, uppercase `C` plus six digits means cancellation, other
+  single-ASCII-letter prefixes plus six digits are excluded under an
+  aggregate-only unverified class, and other formats fail closed. The approved
+  source call stopped above 250,000 product-day groups; there is no complete
+  projection or metric. Do not reread, chunk, sample or raise the cap. Preserve
+  deletion by `2026-12-26`.
+- M1's synthetic vertical slice remains integrated. Real-source evaluation
+  remains gated by B-01/B-02 and service acceptance by B-04. After PR #87 is
+  reviewed and integrated, prioritize M2-05's usable local/API/UI decision
+  workflow. M2-04 live-provider work remains gated on B-05. Keep fixtures
+  synthetic, paid spend at zero, and all main protections/checks intact.
 
 
 ## Historical review reconciliation - 2026-11-27
