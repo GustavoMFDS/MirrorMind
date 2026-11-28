@@ -58,9 +58,9 @@ def evaluate_retail_evidence_flow(
             if scored else "declared_retail_evaluation_abstained"
         ),
     }
-    first_target_on = evaluation_on - timedelta(
-        days=backtest["holdout_days"] - 1
-    )
+    requested_origins = backtest["holdout_days"]
+    assert type(requested_origins) is int
+    first_target_on = evaluation_on - timedelta(days=requested_origins - 1)
     return {
         "schema_version": "mirrormind.retail.evidence_evaluation.v1",
         "status": (
@@ -73,7 +73,7 @@ def evaluate_retail_evidence_flow(
             "method": "fixed_last_n_calendar_days",
             "first_target_on": first_target_on.isoformat(),
             "last_target_on": evaluation_on.isoformat(),
-            "requested_origins": backtest["holdout_days"],
+            "requested_origins": requested_origins,
         },
         "evidence_receipt": flow.receipt(),
         "baseline_evaluation": baseline_evaluation,

@@ -10,6 +10,7 @@ import re
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import date, datetime
+from typing import TypeGuard
 
 MAX_ROWS = 10_000
 MAX_GROUPS = 2_000
@@ -79,7 +80,7 @@ def _transaction_day(value: object) -> date:
 
 def is_valid_uci_stock_code(
     value: object, *, allow_internal_spaces: bool = False
-) -> bool:
+) -> TypeGuard[str]:
     """Validate a normalized source code without trimming or coercion.
 
     The normal synthetic row contract remains a compact ASCII token. The

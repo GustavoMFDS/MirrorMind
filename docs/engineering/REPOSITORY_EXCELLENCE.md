@@ -8,7 +8,7 @@ Zero paid services; preserve Codex's active checkout and source permissions.
 | --- | --- | --- |
 | REX-01 | Editorial rewrite of both READMEs | Integrated via PR #74 |
 | REX-02 | Visual hierarchy and narrative | Integrated via PR #74; existing SVGs reused |
-| REX-03 | Remote branch inventory | Inventory complete; no deletion authorized |
+| REX-03 | Remote branch inventory | Refreshed exact-head inventory; deletion pending separate decision |
 | REX-04 | Main protection and integration policy | Active main-only ruleset 28260524; verified via PR #75 |
 | REX-05 | CI caching, permissions and compatibility | Integrated via PR #75; Python 3.11/3.12/3.13 CI passed |
 | REX-06 | Free dependency and secret security checks | Enabled; first Python/Actions analysis passed; PR #76 |
@@ -20,7 +20,7 @@ Zero paid services; preserve Codex's active checkout and source permissions.
 | REX-12 | Documentation portal | Curated public index online; full rendered docs deferred |
 | REX-13 | Reproducible benchmarks | Integrated via PR #80; public benchmark and rehearsal passed |
 | REX-14 | Release automation | Integrated via PR #80; main rehearsal 46076749036 passed; publication manual |
-| REX-15 | Developer experience review | Candidate ready; clean checkout and container smoke evidence pending |
+| REX-15 | Developer experience review | Integrated via PR #81; clean clone and public container smoke passed |
 
 See [branch audit](REX_BRANCH_AUDIT.md) and [CI and governance plan](REX_CI_GOVERNANCE.md). REX-01/02 acceptance is recorded
 in the integration PR, not inferred from this document. Keep the first
@@ -36,7 +36,7 @@ separate worktree.
 ## Remaining maintenance debt
 
 - Branch deletion requires a separate decision and refreshed preservation checks.
-- Full-package typing, coverage floor and dependency locking remain open.
+- Full-package typing reduced from 62 to 49 errors in candidate; 85% public coverage floor candidate; dependency locking remains open.
 - Portal is a curated index; full rendered documentation is deferred.
 - Benchmarks are observational; no regression threshold or new release is authorized.
 - See [developer quick start](DEVELOPER_QUICK_START.md) and the integration PR for acceptance.
