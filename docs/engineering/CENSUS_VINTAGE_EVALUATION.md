@@ -905,3 +905,30 @@ after a replay mismatch.
 Run `python -m pytest -q tests/integration/test_census_bivariate_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md).
 Independent review pending; markup checks are not accessibility certification.
+
+## Bounded joint Markov propagation
+The [joint Markov engine](../../src/mirrormind/domains/retail/census_joint_markov.py)
+propagates a paired sign process on ordered states (-4,-4), (-4,4),
+(4,-4), (4,4). A supplied schedule contains one through six immutable
+4-by-4 transition matrices; rows and columns follow state order.
+Each row contains exact integer weights 0..1024 and positive total,
+normalized independently. Zero transitions and deterministic rows are
+permitted. The output is the canonical joint PMF of cumulative future
+states, excluding the supplied start. The algorithm tracks integer
+mass by cumulative pair and current state, scales row denominators
+by their least common multiple, reduces common factors and checks
+mass conservation before projection. No approximation or cache.
+All nested inputs are checked before propagation. Schedules may
+vary by step, but the engine neither estimates nor authenticates them.
+Four states only; this is not a general dynamic network, fitted model,
+intervention, causal effect or empirical calibration.
+
+Proposed evidence MM-CEN-035:
+`test_joint_markov_enumeration` checks exact equality to direct
+Fraction path enumeration for every start state and horizon 1..6.
+Other tests cover time-varying schedules, unequal row totals,
+deterministic/zero transitions, row scaling, maximum weights and
+invalid nested types. Run
+`python -m pytest -q tests/unit/test_census_joint_markov.py`.
+See [change request](changes/M1C_04_CENSUS_JOINT_MARKOV.md).
+Independent review pending.

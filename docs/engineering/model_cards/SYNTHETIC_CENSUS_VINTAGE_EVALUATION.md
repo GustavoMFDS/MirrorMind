@@ -188,3 +188,8 @@ effects, empirical calibration, holdout or statistical winner.
 The bivariate observatory visualizes a freshly replayed fixed study and
 preselected joint examples, not an operational model or independent
 calibration or causal evidence.
+
+The experimental joint Markov engine adds exact conditional propagation
+for four paired sign states under bounded caller-supplied schedules.
+It does not establish learned dynamics, authentic transitions,
+causal effects, empirical calibration or operational forecasts.

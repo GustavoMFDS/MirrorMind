@@ -551,3 +551,11 @@ scores are expected, not evidence of equal joint predictions.
 Use a new absolute HTML output path. Replay mismatch prevents output.
 The matrices use a common probability scale and exact fractions;
 missing cells are zero probability, not missing observations.
+
+### Joint Markov schedule rejection
+Check the exact paired start state, immutable nested tuples, one to
+six matrices, state ordering and four nonnegative integer weights per
+row with positive total. A zero-weight transition is valid; an
+all-zero row is not. The starting state is excluded from cumulative
+displacement. The engine validates inputs before arithmetic and
+returns an immutable canonical PMF, without a cache.

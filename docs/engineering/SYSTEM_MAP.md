@@ -395,3 +395,10 @@ API, persistence, source or authority.
 The [offline bivariate report](../../examples/m1_census_bivariate_observatory.py)
 renders fixed-study metrics after full replay and regenerates fixed
 joint and marginal examples. No new API, storage or authority.
+
+### Experimental paired-state Markov engine
+The [joint Markov module](../../src/mirrormind/domains/retail/census_joint_markov.py)
+computes bounded conditional cumulative joint distributions from caller
+supplied transition schedules. It reuses the bivariate PMF contract,
+without changing existing independent-in-time convolution, API,
+persistence or authority.

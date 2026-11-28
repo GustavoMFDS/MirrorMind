@@ -220,6 +220,17 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `c
 | `CensusExperimentJournal.read` | method | `def read(self, experiment_id: str) -> dict[str, object]` | Read unverified metadata; use verify_stored for explicit local replay. | [L210](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L210) |
 | `read_census_journal_snapshot` | function | `def read_census_journal_snapshot(path: Path) -> tuple[dict[str, object], ...]` | Read existing caller-owned metadata in one bounded read-only transaction. | [L237](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L237) |
 
+## `mirrormind.domains.retail.census_joint_markov`
+
+Source: [`src/mirrormind/domains/retail/census_joint_markov.py`](../../../src/mirrormind/domains/retail/census_joint_markov.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `math`, `mirrormind.domains.retail.census_bivariate`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_validate` | function | `def _validate(start: State, schedule: tuple[TransitionMatrix, ...]) -> None` | — | [L18](../../../src/mirrormind/domains/retail/census_joint_markov.py#L18) |
+| `propagate_joint_markov` | function | `def propagate_joint_markov(start: State, schedule: tuple[TransitionMatrix, ...]) -> JointPMF` | Conditional sum of future paired states, excluding the start state. | [L41](../../../src/mirrormind/domains/retail/census_joint_markov.py#L41) |
+
 ## `mirrormind.domains.retail.census_models`
 
 Source: [`src/mirrormind/domains/retail/census_models.py`](../../../src/mirrormind/domains/retail/census_models.py)

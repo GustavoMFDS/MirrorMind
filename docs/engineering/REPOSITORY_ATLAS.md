@@ -1229,3 +1229,10 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_bivariate_observatory.py](../../examples/m1_census_bivariate_observatory.py) | Replayed offline joint/marginal visualization |
 | [tests/integration/test_census_bivariate_observatory.py](../../tests/integration/test_census_bivariate_observatory.py) | Report, matrix mass and failure tests |
 | [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Bounded joint Markov engine
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_joint_markov.py](../../src/mirrormind/domains/retail/census_joint_markov.py) | Exact paired-state transition propagation |
+| [tests/unit/test_census_joint_markov.py](../../tests/unit/test_census_joint_markov.py) | Path enumeration, schedule and bounds tests |
+| [docs/engineering/changes/M1C_04_CENSUS_JOINT_MARKOV.md](changes/M1C_04_CENSUS_JOINT_MARKOV.md) | Scoped acceptance and impact map |

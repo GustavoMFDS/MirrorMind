@@ -1075,3 +1075,10 @@ Generate the [bivariate observatory](../../examples/m1_census_bivariate_observat
 Compare joint matrices and the exact marginal tables of the matched
 independent and joint methods. Equal marginals need not imply equal
 joint events or covariance. No causal conclusion follows.
+
+### Exercise: conditional paired-state propagation
+Run the [joint Markov tests](../../tests/unit/test_census_joint_markov.py).
+Compare direct path enumeration with integer mass propagation. Change
+the schedule mid-horizon and explain how the output differs from
+independent-in-time convolution. A supplied transition structure
+does not establish real-world causal effects.

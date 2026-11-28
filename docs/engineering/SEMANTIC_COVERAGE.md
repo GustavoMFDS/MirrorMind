@@ -357,3 +357,8 @@ has guided exact fictional comparison and receipt replay in
 The [bivariate observatory](../../examples/m1_census_bivariate_observatory.py)
 has guided offline report behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasting.
+
+The [joint Markov engine](../../src/mirrormind/domains/retail/census_joint_markov.py)
+has guided exact finite transition behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not fitted dynamics
+or causal identification.
