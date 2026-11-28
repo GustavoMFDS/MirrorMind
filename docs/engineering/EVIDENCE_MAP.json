@@ -406,6 +406,13 @@
     "limitation": "Fictional exact paired losses, v2 parity and digest only; no verified holdout lock, source authenticity, inference calibration or empirical comparison. Independent review pending."
   },
   {
+    "id": "MM-CEN-019",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_split.py",
+    "function": "test_frozen_split_binds_schedule_and_preserves_abstention",
+    "limitation": "Fictional partition and digest replay only; no verified registration, independent data lock, empirical scoring or inference. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

@@ -298,3 +298,9 @@ among matching terms. See [M2 retrieval](M2_EVIDENCE_RETRIEVAL.md).
 and adds matched absolute loss rows plus a complete report fingerprint.
 The original v2 entrypoint does not expose those rows. No API, persistence,
 inference or authority changes. See [evaluation](CENSUS_VINTAGE_EVALUATION.md).
+
+### Experimental predeclared Census split
+The local [schedule wrapper](../../src/mirrormind/domains/retail/census_split.py)
+checks a caller-retained fingerprint and target/publication embargo before
+calling the descriptive evaluator. No trusted registration or holdout lock
+is asserted. See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).

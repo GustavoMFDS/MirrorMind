@@ -455,3 +455,10 @@ the complete descriptive digest excluding its own field. An inference
 abstention is intentional even with enough observations: no temporal
 interval protocol is calibrated or approved. Never remove it to force a
 winner. See [evaluation](CENSUS_VINTAGE_EVALUATION.md).
+
+### Census schedule mismatch or cross-split publication rejection
+Compare the full predeclared origin schedule to the retained digest, not
+just the requested split. Check the last six-month target and the next
+split's first origin/issue date. A missing or same-day earlier target
+cannot qualify. Do not regenerate an expected digest to pass a failed
+comparison; preserve the original experiment plan.

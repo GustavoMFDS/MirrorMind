@@ -289,3 +289,8 @@ The Census evaluation guide also covers its opt-in fictional paired-loss
 collector and explicit inference abstention; default v2, CLI and source
 authority are unchanged. This is guided local behavior, not empirical
 or operational acceptance.
+
+The [Census split wrapper](../../src/mirrormind/domains/retail/census_split.py)
+has guided experimental behavior in [CENSUS_VINTAGE_EVALUATION.md](CENSUS_VINTAGE_EVALUATION.md):
+predeclared partition, digest comparison and strict boundary validation,
+not trusted registration, external authorization or empirical acceptance.

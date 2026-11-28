@@ -343,3 +343,47 @@ malformed ordering and missing history. Run
 `python -m pytest -q tests/unit/test_census_vintage_evaluation.py tests/integration/test_census_vintage_evaluation_cli.py`.
 See [change request](changes/M1C_04_CENSUS_DESCRIPTIVE.md). Independent
 review pending.
+
+## Predeclared chronological schedule (experimental follow-up)
+
+`CensusOriginSchedule` in [census_split.py](../../src/mirrormind/domains/retail/census_split.py)
+holds the series and 10–250 exact origins. The schedule fingerprint binds
+all issue dates, reference months, the three fixed horizons and cumulative
+floor boundaries at 60% and 80%. Partitioning uses declared origins, not
+successful scores. Preserve missing months; a caller must predeclare any
+gaps and cannot silently purge them after evaluation.
+
+A strict embargo requires the latest possible six-month target of each
+earlier split to precede the next split's first origin month. Then every
+earlier split target must have a unique first estimate actually published
+strictly before the next split's first issue date. Missing, same-day or
+later labels reject the wrapper. This conservative rule is a proposed
+experimental protocol, not a source-specific empirical acceptance.
+
+`evaluate_frozen_census_split` verifies the caller-retained expected
+schedule SHA-256 before scoring, checks the boundaries, and invokes the
+descriptive evaluator for only the selected validation or holdout slice.
+Its nested evaluation retains normalized input and as-of fingerprints.
+The outer receipt hashes the complete returned report excluding its own
+digest. It does not compare an independently registered dataset digest,
+prove when the schedule was fixed, prevent a caller from recomputing the
+expected hash, enforce one-time holdout access or attest source rights.
+Both `registration_verified` and `holdout_lock_verified` remain false.
+No winner or confidence interval, no API/CLI, no persistence or real data.
+
+Worked example: 10 declared origins split into 6/2/2. If the last
+development origin is June, its six-month target is December; the next
+validation origin must be January or later, and the December first
+estimate must be available strictly before validation issuance. Do not
+move dates to make a failed run pass.
+
+Proposed evidence MM-CEN-019:
+`test_frozen_split_binds_schedule_and_preserves_abstention` checks split
+sizes, replay and distinct result digests. The regressions
+`test_frozen_split_rejects_schedule_mutation_before_scoring`,
+`test_frozen_split_rejects_overlap_and_invalid_schedule` and
+`test_frozen_split_rejects_late_same_day_and_missing_prior_labels`
+exercise failure before scoring.
+Run `python -m pytest -q tests/unit/test_census_split.py`.
+See [change request](changes/M1C_04_CENSUS_FROZEN_SPLIT.md).
+Independent review pending.
