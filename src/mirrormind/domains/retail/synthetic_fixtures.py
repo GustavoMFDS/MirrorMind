@@ -6,6 +6,7 @@ availability dates. It is not source data, an authorized dataset, or demand.
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
 from datetime import date, datetime, timedelta
 from hashlib import sha256
 from io import BytesIO
@@ -110,53 +111,69 @@ def build_synthetic_evidence_flow(
     regression seam. ``evaluation_on`` is the release-audit cutoff; existing
     example defaults remain unchanged.
     """
+    return _synthetic_evidence_flow_builder(
+        future_units=future_units, all_unpublished=all_unpublished
+    )(evaluation_on)
+
+
+def _synthetic_evidence_flow_builder(
+    *, future_units: int, all_unpublished: bool
+) -> Callable[[date], RetailUciEvidenceFlow]:
+    """Reuse generated immutable bytes only inside one local fixture composition."""
     if type(future_units) is not int or not 1 <= future_units <= 10_000:
         raise ValueError("future_units must be an exact integer in 1..10000")
     if type(all_unpublished) is not bool:
         raise ValueError("all_unpublished must be an exact boolean")
-    if type(evaluation_on) is not date or not START <= evaluation_on <= LAST_FIXTURE_DAY:
-        raise ValueError("evaluation_on must be a fixture date in 2011-01-01..2011-02-04")
+    raw: bytes | None = None
 
-    raw = _synthetic_workbook(future_units=future_units)
-    digest = sha256(raw).hexdigest()
-    releases = []
-    for index in range(1, 36):
-        if index == 33:
-            continue
-        observed_on = fixture_day(index)
-        if all_unpublished:
-            available_on = fixture_day(36)
-        elif index == 27:
-            available_on = fixture_day(30)
-        elif index == 35:
-            available_on = fixture_day(36)
-        else:
-            available_on = observed_on
-        releases.append(
-            DeclaredProductRelease(SYNTHETIC_STOCK_CODE, observed_on, available_on)
+    def build(evaluation_on: date) -> RetailUciEvidenceFlow:
+        if type(evaluation_on) is not date or not START <= evaluation_on <= LAST_FIXTURE_DAY:
+            raise ValueError("evaluation_on must be a fixture date in 2011-01-01..2011-02-04")
+
+        nonlocal raw
+        if raw is None:
+            raw = _synthetic_workbook(future_units=future_units)
+        digest = sha256(raw).hexdigest()
+        releases = []
+        for index in range(1, 36):
+            if index == 33:
+                continue
+            observed_on = fixture_day(index)
+            if all_unpublished:
+                available_on = fixture_day(36)
+            elif index == 27:
+                available_on = fixture_day(30)
+            elif index == 35:
+                available_on = fixture_day(36)
+            else:
+                available_on = observed_on
+            releases.append(
+                DeclaredProductRelease(SYNTHETIC_STOCK_CODE, observed_on, available_on)
+            )
+
+        declaration = SourceReviewDeclaration(
+            source_kind="uci_xlsx",
+            source_record_ref="SYNTHETIC-SOURCE-01",
+            snapshot_sha256=digest,
+            license_evidence_ref="SYNTHETIC-LICENSE-01",
+            permission_evidence_ref="SYNTHETIC-PERMISSION-01",
+            privacy_review_ref="SYNTHETIC-PRIVACY-01",
+            intended_use="research_evaluation",
+            retention_days=30,
+            captured_on=CAPTURED_ON,
+            availability_evidence_ref="SYNTHETIC-AVAILABILITY-01",
+        )
+        return prepare_retail_uci_evidence_flow(
+            BytesIO(raw),
+            expected_sha256=digest,
+            declaration=declaration,
+            inspected_on=INSPECTED_ON,
+            declared_calendar=tuple(fixture_day(i) for i in range(1, 36)),
+            declared_releases=tuple(releases),
+            origin_on=evaluation_on,
         )
 
-    declaration = SourceReviewDeclaration(
-        source_kind="uci_xlsx",
-        source_record_ref="SYNTHETIC-SOURCE-01",
-        snapshot_sha256=digest,
-        license_evidence_ref="SYNTHETIC-LICENSE-01",
-        permission_evidence_ref="SYNTHETIC-PERMISSION-01",
-        privacy_review_ref="SYNTHETIC-PRIVACY-01",
-        intended_use="research_evaluation",
-        retention_days=30,
-        captured_on=CAPTURED_ON,
-        availability_evidence_ref="SYNTHETIC-AVAILABILITY-01",
-    )
-    return prepare_retail_uci_evidence_flow(
-        BytesIO(raw),
-        expected_sha256=digest,
-        declaration=declaration,
-        inspected_on=INSPECTED_ON,
-        declared_calendar=tuple(fixture_day(i) for i in range(1, 36)),
-        declared_releases=tuple(releases),
-        origin_on=evaluation_on,
-    )
+    return build
 
 
 def run_synthetic_evaluation(

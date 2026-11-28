@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated against current `main` `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal PR #81 merge after PR #80's synthetic benchmark/release preparation and PR #79's curated portfolio/index update. PR #81 adds developer onboarding and a constrained container-smoke job; on exact PR head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc`, 977 local tests, zero skips and six local checks passed, alongside nine successful official jobs across five workflows. Its main-only deploy and release-rehearsal jobs were skipped; local Docker was unavailable, so container evidence is CI-only. PR #65's bounded UCI reader is integrated; the approved source call stopped above the unchanged 250,000 product-day-group cap without projection or metrics. PR #66 integrates scoped fictional BM25 retrieval, the read-only in-process current-head responder and example lint maintenance; #67 integrates the synthetic Census vintage selector/evaluator. PR #77 added coverage, scoped strict typing, package smoke and quality CI; nine official contexts passed on exact head `df7c450523a8f3475e0a8161936f6ac80e705720`. PR #78's exact final head `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed 968 tests, zero skips, six local checks and six observed official jobs. PR #79 and #80 exact heads passed their reported local gates; observed PR jobs succeeded, with deployment and release-rehearsal jobs skipped by explicit conditions. Combined-status queries for current merge `10b94c9` returned no entries; keep CI evidence scoped to exact PR heads. PR #82 is open for M2-02's offline fictional retrieval evaluator. Its initial head `d542e5e129e091dc649e1a187c96e18c59ccc695` passed the local six-check gate (989 tests, zero skips, reviewed WorldKernel pin) and 12 official exact-head checks, including coverage and strict retrieval typing; guarded deploy and release-rehearsal jobs were skipped, and one Node.js 20 deprecation warning was non-blocking. The branch contains the evaluator from `fc43935` and ancestry-preserving merges `f74d286` and `0b4881f` to current main; subsequent heads require their own exact gates. No authenticated RBAC, public retrieval/responder route, production data permission, deployment, or production forecast is claimed.
+Updated against current `main` `00e6cf11ac05a94055242573fd3cfc18086bad10` on 2026-11-28. PR #88's exact main commit has 11 successful official check-runs. The M2-03 branch is ancestry-synced with that baseline through merge `66b591317b375a270b5d0ed682c94e161d52a956` and remains open as PR #87. Previous published candidate `b931bbe2279dd0865f535e0f56e5165ed402ef96` passed 1,014 local tests, zero skips and six checks; its exact official result was 12 successes and two conditional skips. Independent review reproduced Pydantic `model_copy(update=...)` bypasses in nested provider turns. The current PR candidate adds plain-data reconstruction and strict validation before dispatch or draft handling, with five regression cases; exact current gate evidence and official check state are in the live PR. Local container smoke remains unavailable because this host has no Docker engine; evidence is always SHA-scoped. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
 
 
 
@@ -18,6 +18,21 @@ engine states and metrics against the in-process reference. M1F-02 composes
 generated evidence and the test double through the experimental HTTP route;
 only the CLI can explicitly select WorldKernel. No path grants decision
 authority.
+
+The local M2-03 orchestration path is separate from HTTP: a strict request
+enters a bounded synchronous loop, admits only the fixed scripted test-double
+mode, invokes an immutable registry of fictional retrieval and M1F-02 decision
+tools, and emits digest-only receipts plus an untrusted draft for human review.
+After each provider turn, the orchestrator serializes the exact `AgentTurn` to
+plain data and strictly reconstructs it before dispatch or final-draft handling;
+this re-runs nested field and model validators that `model_copy(update=...)`
+would otherwise bypass. The adapter statically describes the internal M1F-02
+fields it consumes; Pydantic contracts continue to validate the trace and
+provider-visible result at runtime. Prompt-like retrieved text remains
+untrusted data; it cannot extend the registry. This path has no network
+provider, persistent state, public route, write capability or business-action
+authority. Citation validation checks observed-reference membership, not
+semantic entailment. See the [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md).
 
 The separate UCI event-time CLI builds a deterministic workbook in memory,
 passes it through the bounded XLSX reader and product-day projection, then
@@ -71,7 +86,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | Introduce real evidence connectors/RAG | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md), [data card](DATASET_CARD_TEMPLATE.md) | Separate source-specific permission/provenance tests required |
 | Evaluate local staged rolling baselines | [`modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py), [method guide](M1_STAGED_ROLLING_BASELINES.md) | [unit](../../tests/unit/test_staged_rolling_baselines.py) and [integration](../../tests/integration/test_staged_rolling_flow.py) tests on invented data only |
 | Introduce real forecasting service | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | Approved snapshot, locked independent holdout, calibrated risk and serving/permission tests |
-| Add agents/orchestration | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md) | Tool permissions, cost budgets and audit tests when created |
+| Run bounded local tool orchestration | [`modules/agents/orchestrator.py`](../../src/mirrormind/modules/agents/orchestrator.py), [`modules/agents/registry.py`](../../src/mirrormind/modules/agents/registry.py), [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md) | [unit regressions](../../tests/unit/test_bounded_tool_orchestration.py) and [CLI integration](../../tests/integration/test_m2_tool_orchestration_cli.py) cover static tools, plain-data revalidation against Pydantic `model_copy(update=...)` bypasses, call/turn/byte limits, immutable registry, sanitized refusals, injection resistance and citation membership; scripted provider only, no route, live provider, semantic entailment or action authority |
 
 ## Non-negotiable boundaries
 - General-purpose decision platform; retail is the first reference domain, not a hard-coded limitation.
@@ -263,6 +278,10 @@ availability nor source permission.
 ## Experimental offline portfolio report
 
 The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision workflow once and embeds its exact result in a new local HTML file. Browser interactions only select existing cases; no extra server route, live simulation, external dependency or production claim.
+
+The synthetic retail workflow reuses its generated XLSX bytes within one
+request only. The two release audits and reader invocations remain separate;
+see [the M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
 
 The experimental local BM25 index performs binary lookups on immutable sorted
 frequency tables for query terms only. It retains the original corpus-wide

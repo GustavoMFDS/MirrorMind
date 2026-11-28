@@ -6,7 +6,10 @@ examples in [`m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py
 and [`m2_evidence_retrieval_evaluation.py`](../../examples/m2_evidence_retrieval_evaluation.py).
 It describes deterministic in-memory lexical retrieval and a bounded test-set
 evaluation over generated fictional documents. It does not describe an
-authenticated service, real-source retrieval, RAG with an LLM or agent behavior.
+authenticated service, real-source retrieval, RAG with a live LLM or production
+agent behavior. The separate [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md)
+documents a local scripted-provider composition over only fixed fictional
+retrieval and decision tools; that test-double path remains experimental.
 
 ## 1. Goal and boundary
 
@@ -203,11 +206,14 @@ tie-break.
 
 Future real-source work must add reviewed rights/provenance and a source
 adapter before indexing. The M2-02 fictional evaluation is described below;
-its scores must not be used as real-corpus retrieval quality. M2-03 must
-preserve the untrusted-evidence label and add prompt-injection tests before any
-tool-using model can consume retrieval output. If a persistent index or HTTP
-route is proposed, first add reviewed identity, tenant, retention, deletion and
-authorization contracts.
+its scores must not be used as real-corpus retrieval quality. M2-03's local
+scripted composition preserves the untrusted-evidence label, refuses
+unregistered tools even when retrieved text resembles instructions, and checks
+final citation-reference membership. Those tests prove behavior of the
+scripted provider contract only; they do not establish live-model compliance or
+semantic support of a draft. If a persistent index or HTTP route is proposed,
+first add reviewed identity, tenant, retention, deletion and authorization
+contracts.
 
 ## 9. Learning exercises
 

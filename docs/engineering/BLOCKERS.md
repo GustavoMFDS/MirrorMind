@@ -1,6 +1,52 @@
 # Blocker and decision register
 
-## Current B-08 reconciliation - 2026-11-27
+## Current B-07/B-08 reconciliation - 2026-11-28
+
+PR #88 merged the cryptography 50 lock update at exact `main` commit
+`00e6cf11ac05a94055242573fd3cfc18086bad10`. Its exact-SHA query returned 11
+completed official check-runs, all successful: [test and Python compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094517994),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094518014),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094517959),
+[CodeQL analyses](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094517866),
+[dependency graph](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094523742),
+and [Dependabot](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094626219).
+This is evidence for that exact main SHA only. It does not establish billing
+state or explain earlier pre-start failures. Preserve the owner's zero-paid-
+spend limit and do not change protections, workflow checks or runners.
+
+At sync start, PR #87 was open at published head
+`48fc51db949cf5626b50d3f97b5304388a9b1076`. That exact head had 12
+successful check-runs and two conditional skips
+(`deploy`, `release-rehearsal`). The local branch now contains latest `main`
+through merge `66b591317b375a270b5d0ed682c94e161d52a956`; its full local gate
+passed 1,014 tests, zero skips and all six checks. The sync commit was not yet
+published at that checkpoint. The subsequently published exact head
+`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed its 1,014-test local gate
+and had 12 successful check-runs plus two conditional skips. Independent
+review identified a reproducible nested Pydantic validation bypass; the
+correction commit `48e7efe98aae2df3811302fbf7875a2bd8a48dc4` corrects it with
+regression tests and strict turn reconstruction. Its exact local gate passed
+1,019 tests, zero skips and six checks. Exact current candidate evidence and
+re-review state are in the live PR. Never transfer results between SHAs.
+
+On exact local SHA `66b5913`, the restricted sandbox attempt produced no
+output and was interrupted before the local gate's 900-second limit; no
+receipt was emitted, so this attempt is not a pass or a test failure. The
+unchanged full gate then passed on the same clean SHA with loopback permitted
+in the authorized local environment in 34.21 seconds. This is consistent
+with the known `TestClient`/Windows loopback limitation for this run; it does
+not resolve the separate historical `8f906b8` incident. See [B-07 below](#b-07-pr-65-restricted-sandbox-diagnostic---c6c1326)
+and [the gate record](LOCAL_QUALITY_GATE.md).
+
+## Current B-08 reconciliation - 2026-11-28
+
+The exact published M2-03 head `b931bbe2279dd0865f535e0f56e5165ed402ef96`
+also received 12 successful official check-runs and two conditional skips on
+2026-11-28. These runs show Actions executed on that SHA but do not explain
+historical pre-start failures or identify an account billing cause. B-08's
+historical cause remains unresolved; the current M2-03 review correction is
+not blocked on hosted checks. Do not spend, change spending limits, alter
+protections or infer a remedy from this observation.
 
 GitHub-hosted Actions are operational on reviewed PR head
 `df7c450523a8f3475e0a8161936f6ac80e705720` for PR #77: all nine observed
@@ -33,10 +79,31 @@ completed 12 successful official checks, including strict retrieval typing;
 deployment and release-rehearsal jobs were skipped by their conditions. One
 Node.js 20 deprecation annotation was non-blocking. These results are scoped to
 that PR head, not later commits or `main`.
-The owner's zero-paid-budget decision still applies. No self-hosted runner was
-needed or created, and no required check or protection was bypassed. Continue
-using the local six-check gate for exact candidate and pinned WorldKernel
-validation.
+PR #82 later merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`;
+its 12-check result remains scoped to exact PR head
+`f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, not the merge commit or current
+`main` `d41e661d298255957979779691c2f9f4dbf36461`. Historical pre-start
+failures remain unexplained; no billing cause is established.
+
+The owner-reported included-allowance exhaustion and zero-paid-budget decision
+remain constraints, and no spending setting, paid service, self-hosted runner,
+protection or verifier was changed. However, the exact PR #87 head
+`2d71d3931cff494ddf0788f663de89efc2bc649f` did run on GitHub Actions: 12 of 14
+check-runs succeeded; `deploy` and `release-rehearsal` were skipped by their
+workflow conditions. The successful checks include test, Python 3.12/3.13
+compatibility, repository quality/package, container smoke, symbol catalog,
+site build, benchmark, CodeQL and both CodeQL language analyses. Its workflows
+use public `ubuntu-latest` standard runners; GitHub documents those runners as
+free for public repositories ([billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+This observed run does not reveal account billing state and does not explain
+the historical pre-start failures. The local host still has no Docker engine
+pipe, although the official container-smoke check passed for this exact PR
+head. The exact-head links and local receipts are in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Keep local validation separate
+from check-run evidence; query the exact PR head before recording new status.
+No self-hosted runner or protection change is needed for the observed PR run.
+Preserve the local six-check gate and pinned WorldKernel validation.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
@@ -51,10 +118,10 @@ that has not actually been granted.
 | B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's annual-revision index spans January 1992 through August 2026 but does not prove first-release completeness. Census's current advance schedule states 8:30 a.m. without a timezone in its table; historical same-day corrections may be ambiguous. The April 2025 annual revision removed nonemployers, creating a source-definition boundary. | For UCI, retain event-time labeling and never derive `available_on` from `InvoiceDate`. Before Census acquisition, approve and inventory original first-release artifacts and exact publication boundaries, methodology edition, and a pre-registered chronological 60/20/20 development/validation/locked-holdout split. Use date-only strict-before cutoffs where timestamps/timezones cannot be authenticated; preserve gaps and abstain. Compare first estimates against fixed lag-12 and trailing-12-month baselines at 1/3/6 horizons; keep later revisions separate. Require 60 matched holdout origins per horizon for proposed 12-month block-bootstrap uncertainty, or report descriptive metrics only. Same-day corrections without orderable timestamps/original bytes remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census release inventory and versioned manifest without fabricating vintages |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
 | B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently approved and merged at `a456034`; its post-merge exact-main gate passed 835 tests, zero skips and six checks with the reviewed pin (final review evidence: [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)). Broader service acceptance remains open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Broader service acceptance needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
-| B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
+| B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine official contexts, PR #78 head `8c8f862` passed six observed jobs, PR #79 head `b5c1bcc` passed its applicable jobs, PR #80 head `e6a28ac` passed eight observed jobs across five workflows, PR #81 head `41e6db8` passed nine applicable jobs across five workflows, and PR #82 initial head `d542e5e` passed 12 exact-head checks, including coverage, strict retrieval typing, container smoke and CodeQL. Two guarded jobs (deploy and release rehearsal) were skipped by conditions; one non-blocking Node.js 20 deprecation warning was reported. Combined-status query for merge SHA `10b94c9` returned no entries, so PR-head results are not claimed for that SHA. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for the observed current workflows. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-08 | Historical pre-start failures remain unexplained; alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine contexts, #78 head `8c8f862` six observed jobs, #79 head `b5c1bcc` its applicable jobs, #80 head `e6a28ac` eight jobs, #81 head `41e6db8` nine jobs, #82 head `f6fa2ed` 12 checks, and PR #87 exact head `2d71d39` 12 of 14 check-runs. On #87, deploy and release rehearsal were skipped by workflow conditions; all observed applicable checks passed, including container smoke. These results are scoped to their exact PR heads, not merge commits or later `main`. The owner-reported included-allowance exhaustion and zero-paid-spend decision remain; public standard `ubuntu-latest` runners are documented as free, but account billing was not inspected. | Preserve exact-head evidence; if a pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue the exact-head check-run query and complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 
