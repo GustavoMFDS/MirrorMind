@@ -35,9 +35,9 @@
   modules) and focused Ruff all pass. Exact commit
   `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` passed 1,014 tests, zero skips,
   all six checks and 86.92% coverage; package build and wheel smoke passed.
-  The exact local gate at `17e813cc13aa79bd0d338a558d6743a0ddd1640c` also
+  The exact local gate at `2d71d3931cff494ddf0788f663de89efc2bc649f` also
   passed 1,014 tests, zero skips and all six checks. PR #87 is open; its exact
-  head `17e813c` had 12 successful official check-runs and two jobs skipped by
+  head `2d71d39` had 12 successful official check-runs and two jobs skipped by
   conditions, including successful official container smoke. Re-query after
   any later push; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Local Docker
   smoke remains unavailable on this host.
