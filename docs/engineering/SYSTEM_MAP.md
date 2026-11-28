@@ -317,3 +317,9 @@ calls the pure commitment and replay contract, writes only identity metadata
 and result digests, and rechecks the registered spec in a transaction after
 replay. No API or independent trust authority. See
 [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Fictional Census research runner
+The [local CLI](../../examples/m1_census_research_runner.py) connects
+a generated fixture, commitment, split evaluation and journal replay.
+It emits deterministic summary JSON, not an external service or authority.
+See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).

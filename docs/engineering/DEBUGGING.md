@@ -475,3 +475,9 @@ Use the original committed fictional records and canonical receipt for
 explicit replay. Preserve a conflicting digest rather than overwriting it.
 Check application ID, version and schema objects if the path is rejected;
 do not migrate or delete an unrelated database. A plain read is not replay.
+
+### Fictional runner failure
+Check the declared revision, retained digest and absolute path.
+No success JSON is emitted on failure; earlier committed splits may
+remain. Reproduce with the original inputs and split rather than deleting
+the journal or recomputing a commitment after seeing scores.

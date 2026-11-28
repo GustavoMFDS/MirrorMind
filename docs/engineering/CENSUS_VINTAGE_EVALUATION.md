@@ -463,3 +463,37 @@ write to a temporary database; not a physical storage failure test.
 Run `python -m pytest -q tests/unit/test_census_experiment_journal.py`.
 See [change request](changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md).
 Independent review pending.
+
+## Runnable fictional research experiment
+
+The [research runner](../../examples/m1_census_research_runner.py) composes
+the pure experiment contract and local journal without a network or
+arbitrary data input. Its fixed fixture generates 80 monthly records,
+value 100 + 2*i + 3*(i mod 12), 50 origins partitioned 30/10/10 and
+predeclared embargo gaps. All values and releases are invented.
+
+From the repository root (REV is a declared 40-character Git SHA):
+
+    python -m examples.m1_census_research_runner demo --revision REV --split both
+    python -m examples.m1_census_research_runner prepare --revision REV
+    python -m examples.m1_census_research_runner run --revision REV --expected DIGEST --journal ABSOLUTE_PATH
+
+Demo computes its own commitment and uses a temporary journal.
+Prepare prints the commitment without scoring or opening a database.
+Run requires the retained digest and caller-owned absolute path.
+Validation is default; holdout or both require explicit selection.
+Each split registers, evaluates, admits, reopens and explicitly replays.
+Summary JSON includes actual per-horizon MAE/RMSE/WAPE, coverage,
+abstentions, receipt digests and provenance; no paired loss rows.
+The summary fingerprint excludes its own field. A later split failure
+does not undo an earlier committed receipt; digest mismatch before
+journal construction cannot create the journal. No independent
+registration, blind holdout, code attestation, inference or authority.
+
+Proposed evidence MM-CEN-022:
+`test_runner_demo_replays_both_splits_and_reports_actual_metrics`
+checks deterministic CLI replay, actual fictional metrics and false
+authority flags. Run
+`python -m pytest -q tests/integration/test_census_research_runner.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_RUNNER.md).
+Independent review pending.

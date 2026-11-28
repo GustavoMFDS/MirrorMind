@@ -124,3 +124,7 @@ proposed 60 matched-pair minimum; inference remains abstained.
 The experimental journal persists only the local experiment identity and
 replayed result digest. It does not establish independent preregistration,
 blind access or empirical performance. All inference remains abstained.
+
+The separate fictional runner fixture has 80 invented records,
+deterministic trend and seasonality, and 30/10/10 declared origins with
+embargo gaps. Metrics are descriptive only; inference remains abstained.

@@ -303,3 +303,7 @@ The [Census journal](../../src/mirrormind/domains/retail/census_experiment_journ
 has guided experimental metadata persistence and replay admission, not
 trusted registration or source authorization. See
 [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+The [research runner](../../examples/m1_census_research_runner.py)
+is guided experimental local CLI behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical acceptance.

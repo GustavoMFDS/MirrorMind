@@ -1138,3 +1138,11 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_experiment_journal.py](../../src/mirrormind/domains/retail/census_experiment_journal.py) | Local transactional metadata and replay-checked admission |
 | [tests/unit/test_census_experiment_journal.py](../../tests/unit/test_census_experiment_journal.py) | Fictional journal replay, conflict, concurrent writers and recovery |
 | [docs/engineering/changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md](changes/M1C_04_CENSUS_EXPERIMENT_JOURNAL.md) | Scoped acceptance and impact map |
+
+### Census fictional research runner
+
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_research_runner.py](../../examples/m1_census_research_runner.py) | Fictional prepare, demo, run and replay summary |
+| [tests/integration/test_census_research_runner.py](../../tests/integration/test_census_research_runner.py) | Process-level replay and failure tests |
+| [docs/engineering/changes/M1C_04_CENSUS_RESEARCH_RUNNER.md](changes/M1C_04_CENSUS_RESEARCH_RUNNER.md) | Scoped acceptance and impact map |

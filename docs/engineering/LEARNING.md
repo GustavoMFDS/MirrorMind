@@ -998,3 +998,9 @@ Run `test_journal_external_digest_edit_requires_replay` and
 `test_journal_abrupt_exit_and_recovery`. Explain why atomic persistence
 and exact local replay do not establish independent custody or execution
 attestation. See [Census evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
+
+### Exercise: complete fictional experiment
+Use prepare then run with a caller-owned journal twice. Compare summary
+and receipt hashes. Explain why a self-generated demo commitment is
+not independent preregistration and lower descriptive MAE is not a
+statistical winner.

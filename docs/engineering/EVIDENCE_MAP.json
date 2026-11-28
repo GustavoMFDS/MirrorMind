@@ -427,6 +427,13 @@
     "limitation": "Fictional local metadata persistence and explicit canonical replay only; plain read is unverified, no independent registration, attestation, blind holdout, power-loss durability or empirical inference. Independent review pending."
   },
   {
+    "id": "MM-CEN-022",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_runner.py",
+    "function": "test_runner_demo_replays_both_splits_and_reports_actual_metrics",
+    "limitation": "Fixed fictional CLI replay and descriptive metrics only; no independent registration, source authority, empirical skill, calibrated inference or deployment. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",
