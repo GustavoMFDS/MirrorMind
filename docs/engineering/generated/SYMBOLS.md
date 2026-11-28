@@ -202,6 +202,27 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `c
 | `CensusExperimentJournal.read` | method | `def read(self, experiment_id: str) -> dict[str, object]` | Read unverified metadata; use verify_stored for explicit local replay. | [L210](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L210) |
 | `read_census_journal_snapshot` | function | `def read_census_journal_snapshot(path: Path) -> tuple[dict[str, object], ...]` | Read existing caller-owned metadata in one bounded read-only transaction. | [L237](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L237) |
 
+## `mirrormind.domains.retail.census_models`
+
+Source: [`src/mirrormind/domains/retail/census_models.py`](../../../src/mirrormind/domains/retail/census_models.py)
+
+Static imports (including inside functions): `__future__`, `datetime`, `fractions`, `hashlib`, `hmac`, `json`, `mirrormind.domains.retail.census_evaluation`, `mirrormind.domains.retail.census_experiment`, `mirrormind.domains.retail.census_split`, `mirrormind.domains.retail.census_vintages`, `re`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_Pair` | class | `class _Pair` | — | [L36](../../../src/mirrormind/domains/retail/census_models.py#L36) |
+| `_canonical` | function | `def _canonical(payload: dict[str, object]) -> bytes` | — | [L48](../../../src/mirrormind/domains/retail/census_models.py#L48) |
+| `_digest` | function | `def _digest(payload: dict[str, object]) -> str` | — | [L54](../../../src/mirrormind/domains/retail/census_models.py#L54) |
+| `census_model_comparison_sha256` | function | `def census_model_comparison_sha256(spec: CensusExperimentSpec) -> str` | Distinct method identity; the legacy two-model receipt cannot substitute. | [L58](../../../src/mirrormind/domains/retail/census_models.py#L58) |
+| `predict_census_models` | function | `def predict_census_models(history: tuple[Fraction, ...], horizon: int) -> dict[str, Fraction]` | Predict from 13 ordered consecutive monthly observations ending at origin. | [L67](../../../src/mirrormind/domains/retail/census_models.py#L67) |
+| `_offset` | function | `def _offset(month: date, offset: int) -> date` | — | [L90](../../../src/mirrormind/domains/retail/census_models.py#L90) |
+| `_mapping` | function | `def _mapping(value: object) -> dict[str, object]` | — | [L95](../../../src/mirrormind/domains/retail/census_models.py#L95) |
+| `_sequence` | function | `def _sequence(value: object) -> tuple[object, ...]` | — | [L101](../../../src/mirrormind/domains/retail/census_models.py#L101) |
+| `_string` | function | `def _string(value: object) -> str` | — | [L107](../../../src/mirrormind/domains/retail/census_models.py#L107) |
+| `_integer` | function | `def _integer(value: object) -> int` | — | [L113](../../../src/mirrormind/domains/retail/census_models.py#L113) |
+| `compare_census_models` | function | `def compare_census_models(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str) -> dict[str, object]` | Compare only the validation partition under a retained model commitment. | [L119](../../../src/mirrormind/domains/retail/census_models.py#L119) |
+| `verify_census_model_comparison` | function | `def verify_census_model_comparison(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str, submitted: bytes) -> str` | Verify bounded complete canonical receipt by local replay; no admission. | [L227](../../../src/mirrormind/domains/retail/census_models.py#L227) |
+
 ## `mirrormind.domains.retail.census_split`
 
 Source: [`src/mirrormind/domains/retail/census_split.py`](../../../src/mirrormind/domains/retail/census_split.py)

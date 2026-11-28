@@ -1033,3 +1033,9 @@ Compare exact paired mean differences across the fixed trend, volatility
 and shift grids. Explain why a sign change is descriptive, why levels
 across axes are not comparable physical scales, and why this grid cannot
 establish calibration or a universal model winner.
+
+### Exercise: common-sample model comparison
+Run the [five-model catalog](../../examples/m1_census_model_comparison.py).
+Compare the two regime fixtures: only the added break occurs inside
+validation. Explain why shared history and exact paired losses matter
+and why deterministic comparisons do not establish statistical superiority.

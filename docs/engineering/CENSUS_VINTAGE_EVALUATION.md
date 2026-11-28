@@ -656,3 +656,51 @@ and exclusive HTML output. Run
 `python -m pytest -q tests/integration/test_census_research_sensitivity.py`.
 See [change request](changes/M1C_04_CENSUS_RESEARCH_SENSITIVITY.md).
 Independent review pending.
+
+## Experimental five-model validation protocol
+
+The [model library](../../src/mirrormind/domains/retail/census_models.py)
+has a separate protocol identity. It binds the existing experiment spec,
+five method identifiers, 13-month history requirement, fixed horizons
+and validation-only split. Prepare the retained comparison digest before
+scoring. The two-model evaluator and journal remain unchanged; this
+receipt is not admitted to that journal.
+
+On each legacy-scored pair, use 13 consecutive visible months ending at
+the origin. The original seasonal and trailing mean losses must agree
+exactly with the legacy receipt. Persistence uses the last value.
+Seasonal drift adds current minus current lag-12 to the target lag-12
+value; OLS uses the last 12 observations, intercept and slope estimated
+with exact rational arithmetic, extrapolated h months. Both extrapolated
+models floor negative predictions at zero. No training across origins,
+parameter selection or target-dependent fitting. All five share the
+extra-history eligibility restriction. Fewer than two common observations
+gives unavailable MAE and differences. The difference is model absolute
+loss minus seasonal absolute loss, averaged on matched pairs.
+
+The full receipt binds target and visible-vintage lineage, exact
+forecasts and losses. Explicit replay compares complete canonical bytes
+(up to 4 MiB), not just a caller-provided digest. No independent
+registration, code attestation, empirical claims, confidence interval
+or winner. Value-bearing receipts are fictional-use only.
+
+The [fixed example](../../examples/m1_census_model_comparison.py)
+prepares five commitments before scoring and reproduces each report:
+
+    python -m examples.m1_census_model_comparison --revision REV
+
+The added validation-break fixture has level 150 before index 53 and
+230 from index 53 onward, within the validation origins 48..57.
+The original regime-shift fixture changes only at index 68, after all
+validation targets. Its validation results are pre-break only.
+The five deterministic fixtures are not independent samples. Holdout is
+not executed or used for selection by this protocol.
+
+Proposed evidence MM-CEN-028:
+`test_validation_break_catalog_and_replay` checks five distinct commitments,
+exact pre-break forecasts and known errors. `test_model_commitment_and_receipt_replay`
+rejects a rehashed forgery. The model suite also checks exact linear oracles,
+legacy parity, late revisions and shared extra-history abstention.
+Run `python -m pytest -q tests/unit/test_census_models.py`.
+See [change request](changes/M1C_04_CENSUS_FIVE_MODELS.md).
+Independent review pending.
