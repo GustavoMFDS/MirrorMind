@@ -611,3 +611,10 @@ Provide an explicit seed and bounded sample budget. Sample PMFs
 are empirical. Event estimates stream fixed looks; abstained means
 the requested conditional sampling tolerance is not met. Do not
 reinterpret intervals as real-world forecast confidence.
+
+### Modular interventions
+Schedules must contain unique future-step/axis pairs and binary
+values. Forced values must not update local posterior evidence.
+Compare empty schedules with exact observational predictions.
+Paired contrast intervals cover only conditional simulation error
+under ideal iid pairs and a single fixed look.

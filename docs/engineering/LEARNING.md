@@ -1133,3 +1133,9 @@ Compare [sampling](../../src/mirrormind/domains/retail/census_modular_sampling.p
 with exact subset PMFs at horizons one and two. Explain the difference
 between Monte Carlo error and model misspecification. Compare
 streamed event looks with deterministic prefix replays.
+
+### Exercise: modular interventions
+Use the [intervention engine](../../src/mirrormind/domains/retail/census_modular_interventions.py)
+to compare a forced first transition with an observed first transition.
+Explain why shared simulation randomness does not identify an
+individual counterfactual. Compare paired and independent variances.
