@@ -282,3 +282,7 @@ The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision 
 The synthetic retail workflow reuses its generated XLSX bytes within one
 request only. The two release audits and reader invocations remain separate;
 see [the M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md).
+
+The experimental local BM25 index performs binary lookups on immutable sorted
+frequency tables for query terms only. It retains the original corpus-wide
+statistics and scope-first build; see [M2 retrieval](M2_EVIDENCE_RETRIEVAL.md).

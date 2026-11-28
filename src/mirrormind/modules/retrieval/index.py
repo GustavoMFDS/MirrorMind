@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 import re
+from bisect import bisect_left
 from dataclasses import dataclass
 from hashlib import sha256
 
@@ -121,25 +122,29 @@ class InMemoryEvidenceIndex:
         if not candidates:
             return _empty_result()
 
-        count_by_term = dict(self._document_frequency)
         total_documents = len(self._documents)
-        average_length = sum(len(item.tokens) for item in self._documents) / total_documents
-        average_length = max(average_length, 1.0)
-        ranked: list[tuple[float, _IndexedDocument]] = []
-        for item in candidates:
-            counts = dict(item.term_counts)
-            document_length = len(item.tokens)
-            score = 0.0
-            for term in query_terms:
-                term_frequency = counts.get(term, 0)
-                if term_frequency == 0:
-                    continue
-                document_frequency = count_by_term[term]
+        weighted_terms = []
+        for term in query_terms:
+            document_frequency = _frequency(self._document_frequency, term)
+            if document_frequency:
                 inverse_frequency = math.log(
                     1.0
                     + (total_documents - document_frequency + 0.5)
                     / (document_frequency + 0.5)
                 )
+                weighted_terms.append((term, inverse_frequency))
+        if not weighted_terms:
+            return _empty_result()
+        average_length = sum(len(item.tokens) for item in self._documents) / total_documents
+        average_length = max(average_length, 1.0)
+        ranked: list[tuple[float, _IndexedDocument]] = []
+        for item in candidates:
+            document_length = len(item.tokens)
+            score = 0.0
+            for term, inverse_frequency in weighted_terms:
+                term_frequency = _frequency(item.term_counts, term)
+                if term_frequency == 0:
+                    continue
                 denominator = term_frequency + _BM25_K1 * (
                     1.0 - _BM25_B + _BM25_B * document_length / average_length
                 )
@@ -159,6 +164,14 @@ class InMemoryEvidenceIndex:
             algorithm="bm25_lexical_v1",
             hits=hits,
         )
+
+
+def _frequency(counts: tuple[tuple[str, int], ...], term: str) -> int:
+    """Find one term in the immutable, sorted frequency table."""
+    position = bisect_left(counts, (term, 0))
+    if position < len(counts) and counts[position][0] == term:
+        return counts[position][1]
+    return 0
 
 
 def _empty_result() -> EvidenceRetrievalResult:

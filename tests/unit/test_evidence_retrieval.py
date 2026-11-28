@@ -247,3 +247,43 @@ def test_query_document_and_corpus_bounds_fail_closed():
     )
     with pytest.raises(ValueError, match="document limit"):
         InMemoryEvidenceIndex.build((valid,) * (MAX_INDEX_DOCUMENTS + 1), access)
+
+@pytest.mark.parametrize(
+    ("profile", "count", "expected"),
+    (
+        ("diverse", 10, "65838b9bae1b5bbe5bfa44af63b972d7871413e9be020d01baa1ede6bab3e9b9"),
+        ("diverse", 100, "2f0c2a9c8db8203e626f378dc51b481039933aa43cfb26e6cb5b61aabd9ba959"),
+        ("repeated", 10, "7423364b78d0f7972eee9821e04acda21cf7a595a8df72c8ba7e5f56acca58ef"),
+        ("repeated", 100, "b066ac681fdfd311d37c327b952d5ce1afb7b1a3a9cc11c8db45608f2b0b97a9"),
+    ),
+)
+def test_bounded_corpus_search_preserves_full_baseline_results(profile, count, expected):
+    # Full response digests recorded against the reviewed pre-optimization SHA.
+    documents = []
+    for i in range(count):
+        if profile == "diverse":
+            content = " ".join(f"w{i:03d}x{j:04d}" for j in range(1198)) + " common caf\u00e9"
+        else:
+            content = ("inventory availability caf\u00e9 common forecast policy " * 250)[:12000]
+        documents.append(EvidenceDocument(
+            document_id=f"doc-{i:03d}",
+            collection_id="denied" if i % 10 == 9 else ("alpha" if i % 2 == 0 else "beta"),
+            source_ref=f"synthetic://doc/{i}",
+            snapshot_ref=f"snapshot-{i}",
+            content=content,
+            allowed_principals=("reader",),
+        ))
+    access = EvidenceAccessContext(principal_id="reader", allowed_collection_ids=("alpha", "beta"))
+    index = InMemoryEvidenceIndex.build(tuple(documents), access)
+    queries = (
+        EvidenceQuery(text="common caf\u00e9", top_k=10),
+        EvidenceQuery(text="absent sentinel", top_k=10),
+        EvidenceQuery(text="w000x0000 w050x0100 common", collection_ids=("alpha",)),
+        EvidenceQuery(text=" ".join(f"w000x{j:04d}" for j in range(50)), top_k=10),
+        EvidenceQuery(text="common", collection_ids=("denied",)),
+        EvidenceQuery(text="inventory availability forecast policy", top_k=10),
+    )
+    results = [index.search(query).model_dump(mode="json") for query in queries]
+    assert hashlib.sha256(json.dumps(results, sort_keys=True, ensure_ascii=True).encode()).hexdigest() == expected
+    assert results[1]["status"] == results[4]["status"] == "no_matches"
+    assert all(hit["citation"]["collection_id"] != "denied" for r in results for hit in r["hits"])
