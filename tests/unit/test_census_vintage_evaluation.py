@@ -1,7 +1,9 @@
+import hashlib
 import json
 from dataclasses import replace
 from datetime import date
 from decimal import ROUND_DOWN, ROUND_UP, Decimal, localcontext
+from fractions import Fraction
 
 import pytest
 
@@ -9,6 +11,7 @@ from mirrormind.domains.retail.census_evaluation import (
     MAX_CENSUS_EVALUATION_ORIGINS,
     CensusForecastOrigin,
     evaluate_census_vintage_backtest,
+    evaluate_census_vintage_descriptive,
 )
 from mirrormind.domains.retail.census_vintages import CensusVintageRecord
 
@@ -482,3 +485,63 @@ def test_scientific_notation_fingerprints_ignore_decimal_capitals():
     assert actual["input_manifest_sha256"] == (
         "5e73a712f818d840289f0712b125003b9265aed5be979ceacb9d63940958b4a8"
     )
+
+def test_descriptive_receipt_exact_pairs_and_v2_compatibility():
+    records = _records(values={date(2021, 1, 1): "110", date(2021, 2, 1): "120"})
+    result = evaluate_census_vintage_descriptive(
+        records, series_id="RSAFS", origins=_origins(), split="validation"
+    )
+    assert result["evaluation"] == _evaluate(records)
+    rows = result["paired_losses"]
+    assert len(rows) == 6
+    row = next(
+        r for r in rows
+        if r["reference_month"] == "2021-01-01" and r["horizon_months"] == 1
+    )
+    assert row["seasonal_naive_absolute_loss"] == "20"
+    assert row["trailing_mean_absolute_loss"] == "115/6"
+    assert row["paired_loss_difference"] == "5/6"
+    assert Fraction(row["paired_loss_difference"]) == (
+        Fraction(row["seasonal_naive_absolute_loss"])
+        - Fraction(row["trailing_mean_absolute_loss"])
+    )
+    assert row["as_of_vintage_manifest_sha256"] == (
+        result["evaluation"]["origin_audit"][1]["as_of_vintage_manifest_sha256"]
+    )
+    assert result["inference_status"] == "abstained"
+    assert result["confidence_interval"] is result["winner"] is None
+    assert result["holdout_lock_verified"] is result["action_authorized"] is False
+    digest = result["descriptive_sha256"]
+    payload = {k: v for k, v in result.items() if k != "descriptive_sha256"}
+    assert digest == hashlib.sha256(json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False
+    ).encode("ascii")).hexdigest()
+
+
+def test_descriptive_only_scored_rows_and_split_binding():
+    records = tuple(r for r in _records() if r.reference_month != date(2021, 7, 1))
+    kwargs = {"series_id": "RSAFS", "origins": _origins()}
+    a = evaluate_census_vintage_descriptive(records, **kwargs, split="holdout")
+    b = evaluate_census_vintage_descriptive(records[::-1], **kwargs, split="holdout")
+    assert a == b
+    assert len(a["paired_losses"]) == 5
+    assert all(row["target_month"] != "2021-07-01" for row in a["paired_losses"])
+    c = evaluate_census_vintage_descriptive(records, **kwargs, split="validation")
+    assert a["descriptive_sha256"] != c["descriptive_sha256"]
+    assert a["paired_losses"] == c["paired_losses"]
+    assert a["inference_status"] == c["inference_status"] == "abstained"
+    assert a["holdout_lock_verified"] is False
+
+
+def test_descriptive_reuses_rejection_and_abstention():
+    records = _records()
+    with pytest.raises(ValueError):
+        evaluate_census_vintage_descriptive(
+            records, series_id="RSAFS", origins=_origins()[::-1], split="holdout"
+        )
+    r = evaluate_census_vintage_descriptive(
+        records[1:], series_id="RSAFS", origins=_origins()[:1], split="holdout"
+    )
+    assert r["paired_losses"] == ()
+    assert r["inference_status"] == "abstained"
+    assert r["confidence_interval"] is None

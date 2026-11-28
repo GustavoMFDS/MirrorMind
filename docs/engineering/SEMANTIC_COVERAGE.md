@@ -284,3 +284,8 @@ cover revisions, same-day exclusion, matched metrics, zero-safe WAPE, split
 abstention and no-leakage behavior. The [source walkthrough](CENSUS_VINTAGE_EVALUATION.md)
 and [model card](model_cards/SYNTHETIC_CENSUS_VINTAGE_EVALUATION.md) explain
 that all scores are fixture arithmetic, not empirical forecasting evidence.
+
+The Census evaluation guide also covers its opt-in fictional paired-loss
+collector and explicit inference abstention; default v2, CLI and source
+authority are unchanged. This is guided local behavior, not empirical
+or operational acceptance.

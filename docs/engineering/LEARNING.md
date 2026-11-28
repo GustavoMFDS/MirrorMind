@@ -970,3 +970,12 @@ For compact retrieval, explain why BM25 needs total token count rather
 than distinct term count, and why the earliest source occurrence among
 matched terms suffices for the unchanged excerpt window. Compare a
 reversed query and a casefold-expanding word with the citation regression.
+
+### Exercise: exact paired Census errors
+
+Read [the descriptive walkthrough](CENSUS_VINTAGE_EVALUATION.md) and
+`test_descriptive_receipt_exact_pairs_and_v2_compatibility`. Recompute
+the 20 - 115/6 difference with Fraction, then remove the target label
+and observe a missing row, not a zero error. Explain why a holdout label
+and a report digest do not establish independent observations, locked
+selection or calibrated confidence.

@@ -100,3 +100,12 @@ See the source walkthrough (../CENSUS_VINTAGE_EVALUATION.md), vintage selector
 guide (../CENSUS_VINTAGE_ADAPTER.md), aggregate-vintage protocol
 (../CENSUS_ALFRED_VINTAGE_PROTOCOL.md) and synthetic fixture card
 (../datasets/SYNTHETIC_CENSUS_VINTAGES.md).
+
+### Experimental descriptive companion
+
+The optional local descriptive result includes exact paired absolute losses
+for fictional scored origins; the default v2 output remains minimized.
+It explicitly abstains from inferential comparison and winner selection.
+A caller-supplied split does not prove cross-split disjointness or a frozen
+holdout. No uncertainty calibration or empirical performance is claimed.
+See [paired loss walkthrough](../CENSUS_VINTAGE_EVALUATION.md).

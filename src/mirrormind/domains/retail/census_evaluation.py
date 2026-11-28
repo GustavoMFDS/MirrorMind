@@ -191,12 +191,13 @@ def _metrics(
     }
 
 
-def evaluate_census_vintage_backtest(
+def _evaluate_census_vintage_backtest(
     records: tuple[CensusVintageRecord, ...],
     *,
     series_id: str,
     origins: tuple[CensusForecastOrigin, ...],
     split: Literal["validation", "holdout"],
+    paired_losses: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
     """Evaluate fixed monthly baselines using only each origin's visible vintage.
 
@@ -305,6 +306,7 @@ def evaluate_census_vintage_backtest(
         else:
             origin_status = "origin_ready"
 
+        as_of_manifest_sha256 = _manifest_sha256(view.records)
         horizon_audit: list[dict[str, object]] = []
         for horizon in CENSUS_HORIZONS_MONTHS:
             target_month = _month_offset(origin.reference_month, horizon)
@@ -347,6 +349,22 @@ def evaluate_census_vintage_backtest(
                         actuals[horizon].append(Fraction(target.value))
                         per_horizon[horizon]["scored_origins"] += 1
                         status = "scored"
+                        if paired_losses is not None:
+                            actual = Fraction(target.value)
+                            seasonal_loss = abs(predictions[_BASELINES[0]] - actual)
+                            trailing_loss = abs(predictions[_BASELINES[1]] - actual)
+                            paired_losses.append({
+                                "reference_month": origin.reference_month.isoformat(),
+                                "issued_on": origin.issued_on.isoformat(),
+                                "horizon_months": horizon,
+                                "target_month": target_month.isoformat(),
+                                "target_release_id": target.release_id,
+                                "target_snapshot_sha256": target.snapshot_sha256,
+                                "as_of_vintage_manifest_sha256": as_of_manifest_sha256,
+                                "seasonal_naive_absolute_loss": str(seasonal_loss),
+                                "trailing_mean_absolute_loss": str(trailing_loss),
+                                "paired_loss_difference": str(seasonal_loss - trailing_loss),
+                            })
 
             if status != "scored":
                 abstentions = per_horizon[horizon]["abstentions"]
@@ -360,7 +378,6 @@ def evaluate_census_vintage_backtest(
                 "target_snapshot_sha256": target.snapshot_sha256 if target else None,
             })
 
-        as_of_manifest_sha256 = _manifest_sha256(view.records)
         origin_audit.append({
             "reference_month": origin.reference_month.isoformat(),
             "issued_on": origin.issued_on.isoformat(),
@@ -402,3 +419,54 @@ def evaluate_census_vintage_backtest(
         "ingestion_authorized": False,
         "forecast_eligible": False,
     }
+
+def evaluate_census_vintage_backtest(
+    records: tuple[CensusVintageRecord, ...],
+    *,
+    series_id: str,
+    origins: tuple[CensusForecastOrigin, ...],
+    split: Literal["validation", "holdout"],
+) -> dict[str, object]:
+    """Evaluate fixed monthly baselines using each origin's visible vintage."""
+    return _evaluate_census_vintage_backtest(
+        records, series_id=series_id, origins=origins, split=split
+    )
+
+
+def evaluate_census_vintage_descriptive(
+    records: tuple[CensusVintageRecord, ...],
+    *,
+    series_id: str,
+    origins: tuple[CensusForecastOrigin, ...],
+    split: Literal["validation", "holdout"],
+) -> dict[str, object]:
+    """Opt-in fictional paired losses; never authorize statistical inference.
+
+    Errors are value-bearing, not suitable for real-source publication.
+    The split label is caller declared, not a verified locked holdout.
+    """
+    losses: list[dict[str, object]] = []
+    evaluation = _evaluate_census_vintage_backtest(
+        records, series_id=series_id, origins=origins, split=split, paired_losses=losses
+    )
+    result: dict[str, object] = {
+        "schema_version": "mirrormind.census.descriptive.v1",
+        "evaluation": evaluation,
+        "paired_losses": tuple(losses),
+        "loss_encoding": "exact_rational_string",
+        "difference_direction": "seasonal_naive_minus_trailing_mean",
+        "inference_status": "abstained",
+        "inference_reason": "no_validated_temporal_inference_protocol",
+        "confidence_interval": None,
+        "winner": None,
+        "holdout_lock_verified": False,
+        "source_status": "caller_supplied_not_source_verified",
+        "ingestion_authorized": False,
+        "forecast_eligible": False,
+        "action_authorized": False,
+    }
+    canonical = json.dumps(
+        result, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False
+    ).encode("ascii")
+    result["descriptive_sha256"] = hashlib.sha256(canonical).hexdigest()
+    return result

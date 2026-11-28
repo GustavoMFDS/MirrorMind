@@ -299,3 +299,47 @@ This is a normalized-record replay fingerprint, not cross-language
 canonicalization or publisher verification. Evidence claim `MM-CEN-017` uses the public regression
 `test_scientific_notation_fingerprints_ignore_decimal_capitals` checks
 the entire result and pins a historical uppercase-default digest.
+
+## Opt-in descriptive paired losses (experimental, M1C-04)
+
+The in-process function `evaluate_census_vintage_descriptive` calls the
+same private evaluator as the v2 entrypoint; its optional collector runs
+only when both baselines score the same first-estimate target. It returns
+`mirrormind.census.descriptive.v1`, nesting the unchanged v2 result and one
+row per scored origin/horizon. Rows include the origin month, issue date,
+target month/release/snapshot digest, selected-vintage manifest digest,
+absolute losses and their signed difference (seasonal naive minus trailing
+mean). Rational strings preserve exact fractions; positive means larger
+seasonal absolute loss in that observation only. Missing history or a
+missing first estimate has no loss row; inspect the nested v2 audit.
+
+The SHA-256 covers canonical JSON of the complete report excluding the
+digest field itself: sorted keys, compact separators, ASCII escaping,
+no nonfinite values. This binds the supplied manifest, split, full origin
+schedule, v2 aggregate result and loss rows for local replay, not authenticity.
+A caller-declared holdout label does not prove a locked split. Even when
+loss rows exist, `inference_status=abstained`,
+`confidence_interval=null`, `winner=null` and all authority flags are
+false. No API/CLI change or new dependency. The previous v2 contract
+still omits per-origin value-bearing losses by default.
+
+Worked fictional example: seasonal prediction 100, trailing prediction
+100 + 10/12 and first estimate 120 yield losses 20 and 115/6,
+difference 5/6. The paired observations are not independent by definition.
+Exploratory synthetic studies found that a nominal 95% 12-month moving
+block percentile interval and a five-group t interval can undercover
+under persistent or seasonal dependence; neither interval is implemented
+or approved here. Do not use this result for real-source publication:
+errors can disclose derived values and a hash is not anonymization.
+B-01/B-02, locked split evidence and independent statistical review remain
+required before any empirical or inferential promotion.
+
+Proposed evidence MM-CEN-018:
+`test_descriptive_receipt_exact_pairs_and_v2_compatibility` checks
+arithmetic, original output, lineage and canonical digest.
+`test_descriptive_only_scored_rows_and_split_binding` checks omission
+and replay; `test_descriptive_reuses_rejection_and_abstention` checks
+malformed ordering and missing history. Run
+`python -m pytest -q tests/unit/test_census_vintage_evaluation.py tests/integration/test_census_vintage_evaluation_cli.py`.
+See [change request](changes/M1C_04_CENSUS_DESCRIPTIVE.md). Independent
+review pending.

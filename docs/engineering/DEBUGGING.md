@@ -446,3 +446,12 @@ When comparing compact-index memory, allocate the generated corpus before
 starting tracemalloc and measure build separately from searches. Check
 Unicode casefold and earliest-offset regressions before changing token
 representation. Traced allocations are not total process RAM.
+
+### Census descriptive report: missing loss row or abstained inference
+
+Inspect the nested v2 origin/horizon status and selected-vintage digest;
+a missing target or unpublished history never receives a loss. Verify
+the complete descriptive digest excluding its own field. An inference
+abstention is intentional even with enough observations: no temporal
+interval protocol is calibrated or approved. Never remove it to force a
+winner. See [evaluation](CENSUS_VINTAGE_EVALUATION.md).
