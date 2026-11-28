@@ -152,3 +152,10 @@ The one-factor sensitivity example uses 15 fixed cells, 13 unique
 commitments and a shared zero baseline. Exact paired differences are
 descriptive, not inferential. No stochastic replication, model selection,
 empirical validation or independent holdout claim.
+
+The separate five-model experimental protocol adds persistence, seasonal
+drift and OLS trend with a 13-month common history requirement. It uses
+validation only, checks legacy losses exactly and reproduces complete
+receipts. No model promotion, holdout execution, inference or empirical
+skill is asserted. A designed validation break is distinct from the
+original post-validation break fixture.

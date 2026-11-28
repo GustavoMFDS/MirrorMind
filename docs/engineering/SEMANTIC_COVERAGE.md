@@ -327,3 +327,8 @@ guided read-only metadata and explicit local replay behavior in
 The [sensitivity example](../../examples/m1_census_research_sensitivity.py)
 has guided fixed fictional sensitivity and replay behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not statistical inference.
+
+The [five-model library](../../src/mirrormind/domains/retail/census_models.py)
+has guided experimental exact forecasts, common-sample validation and
+canonical replay in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md).
+No empirical selection or inference.

@@ -1179,3 +1179,11 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_research_sensitivity.py](../../examples/m1_census_research_sensitivity.py) | Fixed one-factor grid and replayed JSON/HTML summary |
 | [tests/integration/test_census_research_sensitivity.py](../../tests/integration/test_census_research_sensitivity.py) | Grid identity, exact paired difference and output regressions |
 | [docs/engineering/changes/M1C_04_CENSUS_RESEARCH_SENSITIVITY.md](changes/M1C_04_CENSUS_RESEARCH_SENSITIVITY.md) | Scoped acceptance and impact map |
+
+### Five-model fictional validation
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_models.py](../../src/mirrormind/domains/retail/census_models.py) | Pure five-model prediction, commitment and replay |
+| [examples/m1_census_model_comparison.py](../../examples/m1_census_model_comparison.py) | Fixed validation-only catalog and structural break |
+| [tests/unit/test_census_models.py](../../tests/unit/test_census_models.py) | Exact forecasts, common sample, temporal and replay regressions |
+| [docs/engineering/changes/M1C_04_CENSUS_FIVE_MODELS.md](changes/M1C_04_CENSUS_FIVE_MODELS.md) | Scoped acceptance and impact map |

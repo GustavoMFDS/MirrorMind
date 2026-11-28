@@ -508,3 +508,9 @@ are not reconstructed. Use a fresh HTML output path.
 Check the fixed grid, declared revision and explicit split. A shared zero
 baseline has one identity; do not count repeated cells as replications.
 Use a new absolute HTML path. No external inputs or automatic retries.
+
+### Five-model comparison mismatch
+Check the retained method commitment, normalized manifest and declared
+revision. The legacy loss parity check must pass before reporting a
+common pair. An unavailable 13th historical month excludes all models;
+do not substitute zero or change the sample. No holdout execution.

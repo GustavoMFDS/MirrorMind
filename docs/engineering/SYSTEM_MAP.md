@@ -354,3 +354,10 @@ The [sensitivity example](../../examples/m1_census_research_sensitivity.py)
 prepares a fixed one-factor grid, deduplicates the shared zero baseline,
 executes and replays the existing experiment contract and emits separate
 per-horizon summaries. Temporary journal; no model or API change.
+
+### Experimental five-model comparison
+The [pure model library](../../src/mirrormind/domains/retail/census_models.py)
+adds persistence, seasonal drift and linear trend to the original methods
+in a separate validation-only comparison and canonical replay contract.
+The [example catalog](../../examples/m1_census_model_comparison.py)
+includes a fixed validation break. No changes to legacy receipts or journal.
