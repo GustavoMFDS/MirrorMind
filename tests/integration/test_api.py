@@ -16,6 +16,7 @@ def test_capabilities_do_not_overstate_implementation():
     assert "worldkernel_adapter" not in payload["planned"]
     assert "local_retail_policy_test_double" in payload["experimental"]
     assert "synthetic_retail_decision_workflow" in payload["experimental"]
+    assert "local_synthetic_tool_orchestration" in payload["experimental"]
 
 
 def test_scenario_validation_only():

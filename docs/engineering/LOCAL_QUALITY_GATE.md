@@ -1,6 +1,23 @@
 # Local quality gate and historical Actions fallback
 
-## Current public CI baseline - 2026-11-27
+## Current verified CI baseline - 2026-11-27
+
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, after PR #81.
+The latest open candidate, PR #82 at exact head
+`f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, reports 12 successful official
+checks; its deploy and release-rehearsal jobs were skipped by workflow
+conditions. The live PR has no review submissions or inline threads at this
+reconciliation. These checks apply only to that head, not to `main` or this
+branch. The combined-status query on merge `10b94c9` returned no entries.
+
+The owner-authorized temporary six-check local gate remains complementary for
+exact-head validation and the optional pinned WorldKernel dependency. It is not
+official Actions evidence. Earlier pre-start failures remain unexplained; their
+alternative annotations do not establish a billing cause. Preserve zero paid
+usage and do not register a self-hosted runner, increase spending, weaken,
+bypass or disable any check.
+
+### Historical PR #77 evidence
 
 PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
 main `51c90d2`; reviewed PR head was
@@ -13,28 +30,15 @@ successfully on that exact PR head: `test`, compatibility 3.12/3.13,
 [46066734009](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734009),
 [46066732130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066732130)
 and [140733898759](https://github.com/GustavoMFDS/MirrorMind/runs/140733898759).
-The query for combined status on merge commit `540c474` returned no entries;
-do not conflate PR-head evidence with checks on the merge SHA.
 
 The PR #77 body records its exact-head local gate: 968 tests, zero skips,
-six checks, one known warning and its temporary receipt
+six checks, one known warning and temporary receipt
 `%TEMP%/mm-rex-quality-packaging-final.json` at
-`2026-11-27T20:53:44.941779+00:00`. Separate quality evidence measured
-89.77% statement coverage, 79.58% branch coverage and 87.09% combined coverage;
+`2026-11-27T20:53:44.941779+00:00`. Separate quality evidence measured 89.77%
+statement coverage, 79.58% branch coverage and 87.09% combined coverage;
 strict typing passed on four retrieval files while whole-package mypy found
-62 diagnostic errors across 16 files; wheel/sdist build and clean installed
-wheel smoke passed on Python 3.13.5. These are PR-head results and do not
-validate the current documentation candidate. The pre-PR #77 exact-main
-`51c90d2` receipt passed 968 tests, zero skips and six local checks with the
-reviewed WorldKernel pin; historic receipt is described below.
-
-The owner-authorized temporary six-check local gate remains complementary for
-exact-head validation and the optional pinned WorldKernel dependency. It is
-not official Actions evidence. The PR #77 workflows ran on public GitHub-hosted
-runners without a paid service, budget increase or protection change. Historical
-pre-start failures remain unexplained and are not attributed to billing without
-evidence. Preserve zero paid usage and do not register a self-hosted runner or
-weaken, bypass or disable checks.
+62 diagnostic errors across 16 files; wheel/sdist build and installed-wheel
+smoke passed on Python 3.13.5. These are historical PR-head results.
 
 ## PR #78 MM-024 exact-head validation
 

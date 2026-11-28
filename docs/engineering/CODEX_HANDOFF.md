@@ -2,38 +2,34 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
-  PR #77 merged normally over PR #65 main `51c90d2`. Nine observed official
-  contexts passed on exact PR head `df7c450523a8f3475e0a8161936f6ac80e705720`;
-  a combined-status query for merge commit `540c474` returned no individual
-  entries, so keep the evidence scoped to the reviewed PR head. PR #77 adds
-  public coverage measurement, scoped strict typing, wheel packaging smoke
-  tests and CI. Its exact-head local report also records 968 tests, zero skips
-  and six local checks. No paid services or protection changes were used.
-- PR #77 reconciles MM-009 with accepted MM-023. MM-024 documentation-only
-  follow-up is open as [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78)
-  on `codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
-  `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact PR head
-  `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed 968 tests, zero skips,
-  six local checks and nine official contexts. The local receipt path is in
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The branch changes no parser
-  contract; read live PR #78 after any new push and rerun exact-head checks.
+- Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, after the normal
+  PR #81 merge. PR #78/MM-024 merged at `291562a`; PRs #79–#81 update portfolio,
+  quality and developer-experience surfaces. PR-head checks remain scoped to
+  exact reviewed commits; no result is inferred for merge SHAs without entries.
+- PR #82 is open at exact head
+  `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, based on current `main`. Its
+  exact-head local gate records 989 tests, zero skips and six checks with the
+  reviewed WorldKernel pin; 12 official checks succeeded and two guarded jobs
+  were skipped. No reviews or inline threads are present at this reconciliation.
+  Do not merge or treat these results as evidence for a later head.
 - The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
   only uppercase `C` plus six digits means cancellation; other single ASCII
   letters plus six digits are excluded before sales grouping and represented
   by one aggregate unverified class; all other formats fail closed. Existing
-  MM-022 code and synthetic regressions already implement this, including
-  identifier redaction and unchanged generic-reader behavior.
+  code and synthetic regressions already implement this, including identifier
+  redaction and unchanged generic-reader behavior.
 - The UCI source call stopped above the 250,000 product-day group ceiling
   without a complete projection, full exclusion counts or metrics. MM-024
   changes an exclusion label, not the set of sales rows or group cardinality.
   Do not reread, chunk, sample or raise the cap. Preserve local snapshot
   deletion by `2026-12-26`; no empirical score is available.
-- Proceed with existing source-independent M2-02/G-02 work after the docs
-  candidate is review-ready, without waiting for its review. Keep automated
-  tests synthetic, and keep Census source bytes, FRED/ALFRED and paid usage
-  prohibited under current B-01/B-02 and budget decisions. M1 synthetic
-  workflow is integrated; real-data and production acceptance remain open.
+- M2-03 is active locally on `codex/m2-03-tool-orchestration-20261127`, based
+  directly on `10b94c9`. Its M1F-02 and M2-01 dependencies are integrated. It
+  adds only fixed local synthetic tools, a scripted provider and no API route;
+  complete the exact local gate and prepare a separate review PR without
+  waiting for #82. Keep automated tests synthetic, and keep Census source
+  bytes, live provider credentials, paid usage and business actions outside
+  scope under B-01/B-02/B-05 and the owner's zero-paid decision.
 
 
 ## Historical review reconciliation - 2026-11-27

@@ -2,29 +2,27 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
-PR #77 merged normally over #65 at `540c474`, preserving reviewed PR head
-`df7c450523a8f3475e0a8161936f6ac80e705720`. Nine observed official contexts
-passed on that exact PR head: test, Python 3.12/3.13 compatibility,
-symbol-catalog, both CodeQL analyses, repository quality, package and CodeQL.
-The combined-status query for merge commit `540c474` returned no individual
-entries; do not report PR-head checks as exact-merge checks. PR #77's separate
-local report records 968 tests, zero skips, six local checks and the quality /
-package measurements. Details are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md)
-and [REX_QUALITY_PACKAGING](REX_QUALITY_PACKAGING.md).
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, after the normal
+PR #81 merge. PR #78/MM-024 merged normally at `291562a`; PRs #79 and #80
+integrate the portfolio and synthetic release-rehearsal updates; PR #81 adds
+quality/package checks and developer onboarding. PR-head checks remain scoped
+to their exact reviewed commits; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
 
-PR #77 resolves the MM-009 wording follow-up alongside REX-09/10. The active
-candidate now records the owner's MM-024 UCI clarification. Its branch
-`codex/mm009-mm023-reconcile-20261127` is ancestry-merged with current main
-at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. No parser code is needed:
-MM-022 already implements the approved UCI-only classification, with synthetic
-regressions for supported and rejected formats, aggregate-only exclusion
-counts and redaction. This increment updates the decision, dataset/source
-records, status and learning material. It is published as
-[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78). Exact reviewed
-head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the full local gate
-(968 tests, zero skips, six checks) and all nine observed official contexts.
-Read the live PR for its current head/check state after any subsequent push.
+PR #82 is the open M2-02 synthetic retrieval-evaluation candidate at exact
+head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, based on current `main`.
+Its local gate records 989 tests, zero skips and all six checks with the
+reviewed WorldKernel pin; 12 exact-head official checks succeeded and two
+condition-controlled jobs were skipped. No review submissions or inline
+threads are present as of this reconciliation. It is not merged. The current
+M2-03 branch `codex/m2-03-tool-orchestration-20261127` is an independent
+descendant of `10b94c9`, using integrated M1F-02 and M2-01 dependencies; it
+remains in progress pending its complete gate and review PR.
+
+MM-024's approved UCI classification is already in main and covered by
+synthetic regressions. The one private source attempt remains stopped above
+the fixed group cap; MM-024 changes exclusion classification, not accepted
+sales rows or group cardinality. Do not reread, chunk, sample or increase the
+cap; preserve deletion by `2026-12-26`.
 
 The UCI #352 source call exceeded the owner-approved 250,000 product-day group
 ceiling before returning a complete projection. It produced no complete
@@ -34,7 +32,7 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `540c47411898cc820ac651c19430017ecd8c20fe`. PR #52–#59 were
+**Baseline:** main `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 PRs #68–#77 are integrated. Merged branches preserve ancestry and must not be
 replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
@@ -45,10 +43,11 @@ replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| PR #78 / MM-024 UCI policy | Open docs-only PR; verified head `7059dc5` passed the local gate and all nine observed official contexts. | Obtain independent review; rerun full gate and inspect exact-head checks after every tracked change; merge only through protected `main`. |
+| PR #78 / MM-024 UCI policy | Merged into `main` through merge commit `291562a`; parser behavior and classification were already implemented and synthetic-tested. | Keep the empirical UCI lane stopped under B-01/B-02; no complete projection or metric exists. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| M2-02 retrieval evaluation | M2-01 retrieval is integrated through #66; evaluation work is independent of the source-data blockers. | Proceed with the existing fictional/offline test set; measure citation support, lineage, access-constraint adherence and abstention. Add the behavior walkthrough, tests and evidence-map entry required by the backlog. |
+| PR #82 / M2-02 retrieval evaluation | Open, based on `10b94c9`; exact head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`; local and official checks passed as summarized above; no review threads. | Await independent review; keep synthetic scope and protected-main integration. |
+| M2-03 bounded tool orchestration | Active local branch `codex/m2-03-tool-orchestration-20261127`; M1F-02 and M2-01 are integrated dependencies. Fixed synthetic tools, typed contracts, scripted test double and adverse regressions are in progress. | Finish source walkthrough and repo maps, regenerate symbols, run the full six-check gate on the committed exact head, then prepare a separate review PR. Keep it independent from #82 and do not merge. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26

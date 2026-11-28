@@ -5,7 +5,9 @@ This walkthrough follows the M2-01 source in
 example in [`m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py).
 It describes one deterministic in-memory search over generated fictional
 documents. It does not describe an authenticated service, real-source
-retrieval, RAG with an LLM or agent behavior.
+retrieval or RAG with a live LLM. The separate [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md)
+shows how a local scripted provider can consume this retriever as an explicitly
+untrusted tool result; that composition is experimental and has no public route.
 
 ## 1. Goal and boundary
 
@@ -195,11 +197,14 @@ traced to tokenization, corpus filtering, BM25 constants or the deterministic
 tie-break.
 
 Future real-source work must add reviewed rights/provenance and a source
-adapter before indexing. M2-02 should evaluate recall, abstention and citation
-support using a declared query set. M2-03 must preserve the untrusted-evidence
-label and add prompt-injection tests before any tool-using model can consume
-retrieval output. If a persistent index or HTTP route is proposed, first add
-reviewed identity, tenant, retention, deletion and authorization contracts.
+adapter before indexing. The M2-02 synthetic evaluator and M2-03 local scripted
+composition are separate review slices: M2-03 preserves the untrusted-evidence
+label, requires citation-reference membership and rejects unregistered tools
+even when an excerpt contains injection-like text. These regressions prove
+contract enforcement with a scripted provider, not live model behavior or
+semantic support of generated prose. If a persistent index, live provider or
+HTTP route is proposed, first add reviewed identity, tenant, retention,
+deletion, provider-transfer and authorization contracts.
 
 ## 9. Learning exercises
 

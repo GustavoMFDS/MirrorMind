@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated against current `main` `2a7641b88b0d97a239d44102d4da9497460f21d1` and the synchronized PR #65 candidate. PR #66 integrates scoped fictional BM25 retrieval, the read-only in-process current-head responder and example lint maintenance; PR #67 integrates the synthetic Census vintage selector/evaluator. PRs #68–#74 advance the public portfolio/release evidence; #75 hardens CI for Python 3.11–3.13; #76 establishes security/community workflows. PR #65 remains open and now has local synthetic parser regressions for duplicate coordinates, repeated scalar values, mixed scalar/inline payloads, unsupported types and numeric boundaries. Its one approved private UCI source attempt stopped at the group cap; no empirical UCI metric exists. No authenticated RBAC, public retrieval/responder route, source acquisition permission, production deployment or production forecast is claimed.
+Updated against current `main` `10b94c9d7b01bc7072a18d8124cbc8090a6b1925` (2026-11-27). PR #65 merged with bounded synthetic XLSX regressions; PR #66 integrates scoped fictional BM25 retrieval, the read-only in-process current-head responder and example lint maintenance; PR #67 integrates the synthetic Census vintage selector/evaluator. PR #78/MM-024 reconciles the UCI invoice-class policy; PRs #79–#81 update portfolio, quality and developer experience. PR #82 adds M2-02 synthetic retrieval evaluation and remains under independent review at `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`. This branch implements the separate local M2-03 tool orchestration over integrated M2-01 and M1F-02; it is not yet merged or published. The approved UCI source attempt remains stopped above the 250,000-group limit, with no complete projection or metric. No authenticated RBAC, live provider, public agent route, production deployment or empirical forecast is claimed.
 
 
 
@@ -27,6 +27,16 @@ absent product-day as zero, freezes its product cohort from fit dates, and
 returns ordinal-only product summaries. This path does not fetch real source
 bytes and does not convert `InvoiceDate` into publication availability.
 
+The M2-03 local orchestration path is also separate from HTTP: a trusted
+in-process caller supplies a strict run request and scripted provider to
+`modules/agents/orchestrator.py`. The immutable registry exposes only the
+fixed fictional M2-01 search and the existing M1F-02 workflow. Each successful
+call is type-checked, size-bounded and represented to the next turn as
+untrusted JSON; the final receipt omits questions and raw tool payloads,
+requires observed citation-reference membership for a review draft, and
+always carries false action/write authority. The mode marker is a local
+protocol assertion, not provider attestation. See the [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md).
+
 Current supported routes: `GET /health`, `GET /v1/capabilities`,
 `POST /v1/scenarios/validate`, and the experimental
 `POST /v1/decision-workflows/retail/synthetic`. The latter runs only a bounded
@@ -44,6 +54,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | Change versioned scenario data | `core/contracts.py`, `api/routes/scenarios.py` | `tests/unit/test_contracts.py`, `tests/integration/test_api.py` |
 | Define a reviewable decision result | [`core/decision_trace.py`](../../src/mirrormind/core/decision_trace.py), [result walkthrough](DECISION_TRACE_RESULT.md) | [synthetic contract tests](../../tests/unit/test_decision_trace.py) cover v1 input/reference bounds and review chronology; M1F-02 v2 binds selected-engine/parity evidence and rejects production instants after trace creation; timestamps remain caller-declared logical metadata, with no authenticated producer, trusted engine attestation, public engine API or action execution |
 | Retrieve locally scoped fictional evidence | [`modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py), [M2 walkthrough](M2_EVIDENCE_RETRIEVAL.md) | [scope, citation/digest integrity and untrusted-text tests](../../tests/unit/test_evidence_retrieval.py), plus [CLI replay](../../tests/integration/test_m2_evidence_retrieval_cli.py); experimental local library only, not authenticated authorization or a retrieval route |
+| Orchestrate fixed local evidence and decision tools | [`modules/agents/orchestrator.py`](../../src/mirrormind/modules/agents/orchestrator.py), [`modules/agents/registry.py`](../../src/mirrormind/modules/agents/registry.py), [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md) | [unit regressions](../../tests/unit/test_bounded_tool_orchestration.py) and [CLI replay](../../tests/integration/test_m2_tool_orchestration_cli.py) cover typed bounds, provider refusal, immutable registry, prompt-injection refusal and citation membership; experimental scripted provider only, no API route, live model, authentication, semantic entailment or business action |
 | Evaluate UCI-shaped product-day observations | [`uci_event_time.py`](../../src/mirrormind/domains/retail/uci_event_time.py), [event-time research guide](M1_UCI_EVENT_TIME_RESEARCH.md) | [`test_uci_event_time.py`](../../tests/unit/test_uci_event_time.py) and [`test_uci_event_time_cli.py`](../../tests/integration/test_uci_event_time_cli.py) exercise synthetic coverage, cohort, holdout, metrics and redaction; no real source rights, snapshot completeness or point-in-time availability |
 | Select an aggregate Census vintage before a target release | [`census_vintages.py`](../../src/mirrormind/domains/retail/census_vintages.py), [adapter walkthrough](CENSUS_VINTAGE_ADAPTER.md), [research protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) | [`test_census_vintages.py`](../../tests/unit/test_census_vintages.py) exercises the strict date cutoff, publication-after-reference-month lower bound, first-estimate/revision chronology, per-month latest release, ambiguity rejection, missing-period preservation and unverified receipt using generated records; no source parser, bytes, rights, completeness or forecast scoring |
 | Produce an end-to-end synthetic retail comparison | [`synthetic_decision_workflow.py`](../../src/mirrormind/domains/retail/synthetic_decision_workflow.py), [M1F-02 walkthrough](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) | [`test_synthetic_decision_workflow.py`](../../tests/unit/test_synthetic_decision_workflow.py), API/default CLI test double plus explicit CLI WorldKernel engine regression with linked selected output and parity records; no source authorization, empirical forecast, authenticated review, public transport controls or writes |
@@ -71,7 +82,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | Introduce real evidence connectors/RAG | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md), [data card](DATASET_CARD_TEMPLATE.md) | Separate source-specific permission/provenance tests required |
 | Evaluate local staged rolling baselines | [`modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py), [method guide](M1_STAGED_ROLLING_BASELINES.md) | [unit](../../tests/unit/test_staged_rolling_baselines.py) and [integration](../../tests/integration/test_staged_rolling_flow.py) tests on invented data only |
 | Introduce real forecasting service | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | Approved snapshot, locked independent holdout, calibrated risk and serving/permission tests |
-| Add agents/orchestration | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md) | Tool permissions, cost budgets and audit tests when created |
+| Change bounded tool orchestration | [`modules/agents/`](../../src/mirrormind/modules/agents/), [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md), [change request](changes/M2_03_BOUNDED_TOOL_ORCHESTRATION.md) | [adverse unit tests](../../tests/unit/test_bounded_tool_orchestration.py) and [CLI replay](../../tests/integration/test_m2_tool_orchestration_cli.py); two fixed synthetic tools, local test double, no live-provider or action authority |
 
 ## Non-negotiable boundaries
 - General-purpose decision platform; retail is the first reference domain, not a hard-coded limitation.

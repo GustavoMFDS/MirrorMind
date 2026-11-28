@@ -895,3 +895,18 @@ they do not prove full-source compatibility or empirical forecast quality.
 ## Exercise: inspect a local decision report
 
 Follow the [report walkthrough](PORTFOLIO_DEMO.md), compare selected case metrics with original JSON and explain the difference between display selection and a new seeded workflow execution.
+
+## Guided exercise 12 — trace a bounded tool call without trusting the draft
+
+Read the [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md), then follow
+`AgentRunRequest` through `run_bounded_tool_orchestration`, immutable
+`ToolRegistry.invoke`, the existing fictional retriever and the M1F-02
+workflow adapter. Run
+`tests/unit/test_bounded_tool_orchestration.py::test_injection_like_evidence_cannot_expand_the_tool_registry`
+and
+`tests/unit/test_bounded_tool_orchestration.py::test_unobserved_citation_is_refused_as_unsupported_evidence`.
+Explain which boundary each test enforces and why neither proves that a live
+model follows instructions or that a citation entails the summary. Then try to
+reassign a registry field and inspect the fixed provider refusal when its mode
+property raises. The exercise uses fictional inputs and proves no identity,
+provider attestation, approval, network isolation or action authority.

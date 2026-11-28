@@ -37,6 +37,13 @@
       "notes": "Bounded in-memory BM25 over generated fictional documents filters caller-declared scopes before tokenization and returns untrusted text with exact citation spans. No authentication, real-source permission, persistent index, quality evaluation, LLM or public retrieval route."
     },
     {
+      "id": "local_synthetic_tool_orchestration",
+      "status": "experimental",
+      "source": "src/mirrormind/modules/agents/orchestrator.py",
+      "test": "tests/unit/test_bounded_tool_orchestration.py::test_scripted_provider_runs_fixed_synthetic_tool_sequence",
+      "notes": "A bounded in-process protocol coordinates only fictional M2-01 retrieval and the existing M1F-02 synthetic workflow, with strict tool contracts, digest receipts and mandatory human review. The shipped CLI uses a scripted double; provider mode is self-declared, citation checks prove reference membership only, and no live model, authentication, semantic entailment, persistence, action tool or public agent route exists."
+    },
+    {
       "id": "forecasting",
       "status": "planned",
       "source": null,
