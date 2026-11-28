@@ -1127,3 +1127,9 @@ Use the [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
 to compare a disconnected module product with a joint query.
 Explain why first-step ancestor pruning is exact under independent
 local priors and why a candidate port is not a proven causal edge.
+
+### Exercise: sampled and exact modular queries
+Compare [sampling](../../src/mirrormind/domains/retail/census_modular_sampling.py)
+with exact subset PMFs at horizons one and two. Explain the difference
+between Monte Carlo error and model misspecification. Compare
+streamed event looks with deterministic prefix replays.

@@ -266,6 +266,23 @@ Static imports (including inside functions): `__future__`, `collections`, `fract
 | `_law` | function | `def _law(positive: tuple[Fraction, ...]) -> PMF` | — | [L147](../../../src/mirrormind/domains/retail/census_modular.py#L147) |
 | `predict_modular` | function | `def predict_modular(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, *, balanced: bool=False) -> tuple[PMF, State]` | Return exact cumulative subset PMF and enumerated first-step axes. | [L160](../../../src/mirrormind/domains/retail/census_modular.py#L160) |
 
+## `mirrormind.domains.retail.census_modular_sampling`
+
+Source: [`src/mirrormind/domains/retail/census_modular_sampling.py`](../../../src/mirrormind/domains/retail/census_modular_sampling.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `collections.abc`, `dataclasses`, `fractions`, `itertools`, `math`, `mirrormind.domains.retail.census_modular`, `random`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `EventLook` | class | `class EventLook` | — | [L33](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L33) |
+| `EventPrecision` | class | `class EventPrecision` | — | [L42](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L42) |
+| `_request` | function | `def _request(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, samples: int, seed: int, balanced: bool) -> Scope` | — | [L57](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L57) |
+| `_compile` | function | `def _compile(history: History, scope: Scope, balanced: bool) -> Compiled` | — | [L77](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L77) |
+| `_trajectories` | function | `def _trajectories(start: State, rows: Compiled, axes: State, horizon: int, samples: int, seed: int) -> Iterator[State]` | — | [L103](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L103) |
+| `sample_modular` | function | `def sample_modular(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, *, samples: int, seed: int, balanced: bool=False) -> PMF` | Empirical subset PMF from persistent graph and Beta-Bernoulli paths. | [L135](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L135) |
+| `event_radius` | function | `def event_radius(n: int, m: int, alpha: Fraction) -> tuple[Fraction, int]` | Conservative rational Hoeffding/union bound for three fixed looks. | [L160](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L160) |
+| `estimate_modular_events` | function | `def estimate_modular_events(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, events: tuple[State, ...], *, tolerance: Fraction, alpha: Fraction, seed: int, balanced: bool=False) -> EventPrecision` | Stream nested samples and stop at a predetermined precision look. | [L182](../../../src/mirrormind/domains/retail/census_modular_sampling.py#L182) |
+
 ## `mirrormind.domains.retail.census_network3`
 
 Source: [`src/mirrormind/domains/retail/census_network3.py`](../../../src/mirrormind/domains/retail/census_network3.py)

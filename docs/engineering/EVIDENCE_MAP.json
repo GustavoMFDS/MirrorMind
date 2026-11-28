@@ -581,6 +581,20 @@
     "limitation": "Bounded synthetic independent local graph/parameter priors and explicit candidate ports; exact two-step graph oracle only, no empirical skill, causal identification, automatic port admission or arbitrary scalability. Independent review pending."
   },
   {
+    "id": "MM-CEN-044",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_modular_sampling.py",
+    "function": "test_sampling_exact_reference",
+    "limitation": "Empirical fixed-seed synthetic PMF comparison to bounded exact model only; no general sampling accuracy, empirical skill or causal identification. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-045",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_modular_sampling.py",
+    "function": "test_sampling_streamed_looks",
+    "limitation": "Finite-look conditional event precision under ideal iid draws and fixed query parameters; no PRNG certification, full PMF bound, empirical calibration or operational authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

@@ -442,3 +442,9 @@ No ingestion, storage, API or authority.
 The [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
 consolidates bounded exact subset prediction across explicitly
 partitioned binary axes and candidate ports. No new API or storage.
+
+### Modular posterior sampling
+The [sampling engine](../../src/mirrormind/domains/retail/census_modular_sampling.py)
+uses the exact modular query's priors and declared scopes for bounded
+empirical subset distributions and finite-look event precision.
+No automatic fallback, external API, storage or action authority.
