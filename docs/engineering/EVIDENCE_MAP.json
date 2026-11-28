@@ -1561,6 +1561,34 @@
     "limitation": "Embedded JSON equals the existing synthetic service output and retains nonauthorization flags; this is a static local report, not a live agent, empirical evaluation, browser security certification or production UI."
   },
   {
+    "id": "MM-PORT-002",
+    "guide": "docs/engineering/PORTFOLIO_DEMO.md",
+    "test": "tests/integration/test_portfolio_demo.py",
+    "function": "test_agent_preview_composes_matching_bounded_workflow_and_digest",
+    "limitation": "The opt-in local scripted preview passes matching synthetic parameters, preserves minimized receipts and binds its untrusted draft to the M1 workflow digest; this does not authenticate either execution, prove citation entailment, execute a browser DOM or establish empirical forecast quality."
+  },
+  {
+    "id": "MM-PORT-003",
+    "guide": "docs/engineering/PORTFOLIO_DEMO.md",
+    "test": "tests/integration/test_portfolio_demo.py",
+    "function": "test_abstention_payload_and_renderer_guard_handle_missing_success_fields",
+    "limitation": "The fixture reproduces incomplete seven-day history and the fixed tool_failed refusal; the regression inspects embedded payloads and source guard order, not browser execution, temporal source authenticity or model quality."
+  },
+  {
+    "id": "MM-PORT-004",
+    "guide": "docs/engineering/PORTFOLIO_DEMO.md",
+    "test": "tests/integration/test_portfolio_demo.py",
+    "function": "test_agent_preview_escapes_both_embedded_payloads",
+    "limitation": "Hostile script terminators are escaped in both locally embedded JSON payloads; this regression is not a browser security certification or isolation guarantee."
+  },
+  {
+    "id": "MM-PORT-005",
+    "guide": "docs/engineering/PORTFOLIO_DEMO.md",
+    "test": "tests/integration/test_portfolio_demo.py",
+    "function": "test_agent_preview_rejects_more_than_three_replications_before_output",
+    "limitation": "The preview enforces the existing three-replication tool cap before creating output; this does not impose process-level CPU or memory isolation."
+  },
+  {
     "id": "MM-RETR-009",
     "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
     "test": "tests/unit/test_evidence_retrieval_evaluation.py",

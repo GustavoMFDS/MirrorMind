@@ -1,6 +1,27 @@
 # Task backlog — prioritized execution register
 
-## Current checkpoint - 2026-11-28
+## Current checkpoint after PR #92 - 2026-11-28
+
+Remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, merge commit for
+PR #92. PRs #87–#92 are integrated; PR #87's corrected
+M2-03 implementation is available to downstream work. Earlier gate evidence
+remains scoped to its exact recorded SHA; no complete gate on current `main`
+has been claimed. The current local candidate
+`codex/m2-05-usable-decision-workflow-20261128` advances M2-05 with an
+abstention-safe offline report and opt-in scripted orchestration preview.
+Focused tests pass; full exact-head gate and review PR remain pending.
+
+| Work | Current state | Next acceptance gate |
+| --- | --- | --- |
+| PRs #87–#92 | Integrated normally; #87 fixes nested provider-turn revalidation, and #89–#92 deliver retrieval/search improvements. | Do not replay commits; preserve branches needed by separate work. Do not transfer PR-head gate evidence to merge SHAs. |
+| M1 synthetic vertical slice | Integrated through PR #62; remains experimental. | Keep M1 empirical and production criteria open until source rights, availability evidence, temporal evaluation and service controls pass. |
+| UCI #352 pilot | Approved local attempt stopped above 250,000 product-day groups without a complete projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
+| B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. | Continue no-byte preparation; artifact-specific rights and source-owner approval precede acquisition. |
+| M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
+| M2-05 | In progress on local candidate; reuses M1F-02 and M2-03 without API changes. | Pass abstention/success regressions, docs guards and complete local gate on exact final head, then publish for independent review. |
+| B-08 Actions | Owner reports included allowance exhausted; cause of historical pre-start failures remains unverified. | Use authorized temporary local quality gate; do not spend, alter protections, checks or runners, or infer billing cause. |
+
+## Historical pre-#87 checkpoint - 2026-11-28
 
 Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
 PR #88 as a child of `d41e661`; its exact SHA has 11 successful official check-runs.
@@ -95,7 +116,7 @@ preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
-## Current follow-up queue
+## Historical follow-up queue before PR #87 integration
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -285,9 +306,9 @@ coverage/selection diagnostic modules merely because they are local.
 | --- | --- | --- | --- | --- |
 | M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
-| M2-03 | P1 | review correction; re-review pending | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools. Commit `48e7efe` serializes the exact provider `AgentTurn` into plain data and strictly reconstructs nested contracts before use; regressions reproduce empty summaries, status/citation mismatch, malformed tool calls and missing payloads. That exact commit passed 1,019 tests, zero skips and six local checks. Current published SHA and official checks are in the live PR. No live provider, route, persistence or action authority. |
+| M2-03 | P1 | integrated (experimental) | M1F-02, M2-01 | PR #87 merged normally at `45a84d2`. Typed local orchestration uses fixed fictional retrieval and decision tools. Nested provider turns are rebuilt from plain data and strictly revalidated before use; regression coverage is in `tests/unit/test_bounded_tool_orchestration.py`. No live provider, route, persistence or action authority. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
-| M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
+| M2-05 | P1 | in progress | M1F-02, M2-03 | Optional offline report composes the existing M1 output and scripted M2-03 report with identical bounded inputs, digest linkage, receipts, mandatory review and abstention rendering. API remains unchanged. Complete docs/gates on exact head; then independent review. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |
 
 Security and budget controls cannot be postponed until after an

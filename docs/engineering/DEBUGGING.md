@@ -402,7 +402,7 @@ verifier. Do not infer an attack or independent freshness from a mismatch.
 
 ## Offline report fails to generate or render
 
-Check the bounded workflow options and unused output path, then the browser console and embedded result. See [the report guide](PORTFOLIO_DEMO.md); do not invent missing values or overwrite earlier reports.
+Check the bounded workflow options and unused output path, then inspect the embedded M1 result and (when requested) M2 report. For a missing-history status, compare `trace` and `simulation.result` presence with the abstention object; `renderWorkflow` must take its fallback before any success-only access. Optional M2 preview rejects more than three replications; a tool failure is the fixed `tool_failed` refusal and omits raw exception detail. Reproduce both paths with `tests/integration/test_portfolio_demo.py::test_abstention_payload_and_renderer_guard_handle_missing_success_fields` and read the [report guide](PORTFOLIO_DEMO.md). Do not infer zeros, bypass the cutoff or overwrite earlier reports.
 
 ## Fictional retrieval evaluation reports a metric or citation mismatch
 

@@ -1,18 +1,21 @@
 # Local quality gate and historical Actions fallback
 
-## Current continuation - 2026-11-28
+## Current continuation after PR #92 - 2026-11-28
 
-Latest `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`; its 11 official
-check-runs succeeded on that exact SHA. PR #87's published head is
-`c69f93b5428b0b1bb265c7039e38d1d99ea90d10`. Its exact local gate passed 1,019
-tests, zero skips and all six checks; its official check-run query returned 12
-successes and two workflow-conditional skips. Exact receipts and run links are
-recorded below. The independent review thread remains unresolved, so this is
-validation evidence, not reviewer approval or merge authorization. Re-query
-after any later push. No workflow, required check, protection, runner or
+Current remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, merged
+through PR #92. PRs #87–#92 are integrated. The current
+M2-05 review candidate is built on that baseline; run this documented six-check
+gate against its exact final commit before publication. The result must record
+test count, skips, verifier outcomes, environment and exact SHA. Local results
+and PR-head Actions remain separate evidence; never infer a result for a merge
+commit or later branch. Owner-reported Actions allowance exhaustion and zero
+paid spend remain constraints. No workflow, check, protection, runner or
 spending setting was changed.
 
-## Historical main and exact-head gate status - 2026-11-27
+The previous paragraphs below are historical exact-SHA records. Their results
+must not be transferred to current `main` or the M2-05 candidate.
+
+## Historical main and exact-head gate status before PR #92 - 2026-11-28
 
 Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following the
 normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, the
@@ -56,7 +59,9 @@ container check succeeded for this exact head. A commit-status API query for
 `2d71d39` returned `pending` with no status entries while the check-run API
 returned the 14 completed results; use the check-run collection for these
 workflow claims.
-PR #87 remains open and unmerged. Any later PR head needs its own check query.
+At this historical checkpoint PR #87 had not yet merged; it was later
+integrated at `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. Any later PR head
+needs its own check query.
 
 The synchronized M2-03 worktree initially failed the newly required
 whole-package mypy check with 25 diagnostics in three files. Those diagnostics
@@ -749,7 +754,7 @@ checked by these local runs. No runner, paid usage, workflow change or
 protection bypass was used. The independent #62 review also recommends keeping
 the Census changes separate and retaining #52–#59 as ancestors of the merge.
 
-## PR #87 latest-main synchronization - 2026-11-28
+## Historical PR #87 latest-main synchronization before #92 - 2026-11-28
 
 PR #88 merged cryptography 50 dependency-lock update into `main` at
 `00e6cf11ac05a94055242573fd3cfc18086bad10`. The M2-03 branch incorporates
@@ -835,5 +840,6 @@ The exact check-run query returned 14 jobs: 12 `success` and two conditional
 [CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140847079791) and
 [workflow analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102209976).
 The local Docker engine was unavailable; official container smoke passed.
-The independent review thread remains unresolved and PR #87 remains open and
-unmerged. These exact-SHA results do not transfer to a later commit.
+The independent review thread was unresolved at this checkpoint. PR #87 later
+merged normally at `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. These
+exact-SHA results do not transfer to a later commit.

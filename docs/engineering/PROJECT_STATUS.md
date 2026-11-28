@@ -1,6 +1,37 @@
 # Project status — current baseline, 2026-11-28
 
-## Current review reconciliation - 2026-11-28
+## Current baseline after PR #92 - 2026-11-28
+
+Remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, the normal merge
+of PR #92. PRs #87–#92 are integrated; #87 delivers the
+bounded M2-03 orchestration correction at merge commit
+`45a84d2a4528755a88fccf8d766b5ef18518b9d8`. Earlier local and hosted results
+remain scoped to their recorded PR heads. No complete local gate has yet been
+run on `843fc5f` itself; this branch's final exact-head gate is pending.
+
+The current local candidate is
+`codex/m2-05-usable-decision-workflow-20261128`, based on `843fc5f` through
+ancestry-preserving merges. Its M2-05 change request is
+[M2_05_LOCAL_DECISION_REPORT](changes/M2_05_LOCAL_DECISION_REPORT.md).
+Implementation reuses M1F-02 and M2-03: default offline HTML keeps the exact
+M1 payload; explicit `--agent-preview` adds matching bounded inputs, fixed
+tool receipts and an untrusted digest-linked draft. An incomplete-history
+request renders abstention and sanitized `tool_failed`. No API route, live
+provider, persistence, data source or authorization is added. Capability
+labels remain experimental. Focused regressions pass; full exact-head gate and
+review PR are still pending.
+
+The user-approved UCI #352 local reader profile remains tightly scoped. Its
+prior attempt exceeded the 250,000 product-day group ceiling without a complete
+projection or metrics. Do not retry, chunk, sample or expand the cap; retain
+aggregate-only exclusion data and delete the private snapshot by `2026-12-26`.
+B-01/B-02 still gate Census/ALFRED source bytes and empirical temporal claims;
+B-04 remains a separate WorldKernel production-isolation gate.
+
+Historical continuation text below records the pre-#87-merge baseline and
+must not be read as current PR or branch status.
+
+## Historical pre-#87 review reconciliation - 2026-11-28
 
 Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
 PR #88 as a direct child

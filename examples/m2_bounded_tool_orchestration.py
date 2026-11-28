@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from datetime import date
 from typing import Literal
 
 from mirrormind.modules.agents.contracts import (
@@ -12,7 +13,10 @@ from mirrormind.modules.agents.contracts import (
     ToolCall,
 )
 from mirrormind.modules.agents.orchestrator import run_bounded_tool_orchestration
-from mirrormind.modules.agents.synthetic_tools import EvidenceSearchOutput
+from mirrormind.modules.agents.synthetic_tools import (
+    EvidenceSearchOutput,
+    SyntheticDecisionToolOutput,
+)
 
 
 class ScriptedSyntheticProvider:
@@ -20,8 +24,17 @@ class ScriptedSyntheticProvider:
 
     provider_mode: Literal["test_double"] = "test_double"
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        as_of: date = date(2011, 1, 26),
+        replications: int = 1,
+        seed: int = 17,
+    ) -> None:
         self._turn_index = 0
+        self._as_of = as_of
+        self._replications = replications
+        self._seed = seed
 
     def next_turn(self, request: ProviderRequest, /) -> AgentTurn:
         self._turn_index += 1
@@ -41,9 +54,9 @@ class ScriptedSyntheticProvider:
                     call_id="demo-workflow-1",
                     tool_name="run_synthetic_retail_decision",
                     arguments={
-                        "as_of": "2011-01-26",
-                        "replications": 1,
-                        "seed": 17,
+                        "as_of": self._as_of.isoformat(),
+                        "replications": self._replications,
+                        "seed": self._seed,
                     },
                 ),
             )
@@ -61,7 +74,22 @@ class ScriptedSyntheticProvider:
             if observation is not None
             else None
         )
-        if evidence is None or not evidence.hits:
+        workflow_observation = next(
+            (
+                item
+                for item in request.observations
+                if item.tool_name == "run_synthetic_retail_decision"
+            ),
+            None,
+        )
+        workflow = (
+            SyntheticDecisionToolOutput.model_validate_json(
+                workflow_observation.output_json, strict=True,
+            )
+            if workflow_observation is not None
+            else None
+        )
+        if evidence is None or not evidence.hits or workflow is None:
             return AgentTurn(
                 kind="final",
                 final=AgentDraft(
@@ -75,7 +103,8 @@ class ScriptedSyntheticProvider:
             final=AgentDraft(
                 status="draft_for_human_review",
                 summary=(
-                    "The fictional workflow completed. Review its trace and "
+                    "The fictional workflow completed with result SHA-256 "
+                    f"{workflow.workflow_result_sha256}. Review its trace and "
                     "cited method note before drawing a conclusion."
                 ),
                 citation_refs=(evidence.hits[0].citation_ref,),

@@ -311,3 +311,25 @@ Live providers require B-05 owner approval, explicit data-transfer and spend
 review, a distinct provider/model evaluation, redacted telemetry, server
 budgets and injection/unsupported-evidence evaluation. Do not route a local
 protocol directly into an HTTP endpoint.
+
+## 9. M2-05 presentation composition
+
+The optional `--agent-preview` mode in the
+[offline portfolio report](PORTFOLIO_DEMO.md) composes this existing runner
+with the exact bounded M1F-02 request. The local scripted provider receives the
+same date, seed and one-to-three replication count as the main report. The
+decision tool runs M1F-02 again and the final untrusted draft contains that
+tool result's workflow digest. The report keeps full M1 output and minimized
+M2 output in separate JSON payloads; neither becomes approval or action.
+
+This opt-in path is local CLI presentation only. It adds no API route, provider,
+session storage, identity, external dependency or new tool. If M1F-02 abstains
+for incomplete history, the registry sanitizes its tool exception to
+`tool_failed`; the report displays this fixed refusal and an M1 abstention
+panel. The report's client code handles missing trace and simulation result
+before reading success-only fields. Reproduce both branches and inspect their
+limits in `tests/integration/test_portfolio_demo.py::test_agent_preview_composes_matching_bounded_workflow_and_digest`
+and
+`tests/integration/test_portfolio_demo.py::test_abstention_payload_and_renderer_guard_handle_missing_success_fields`.
+Those tests inspect report payloads and guard order; they do not run a browser
+DOM or certify browser isolation.

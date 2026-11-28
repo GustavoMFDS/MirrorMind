@@ -1,6 +1,30 @@
 # Blocker and decision register
 
-## Current B-07/B-08 reconciliation - 2026-11-28
+## Current B-07/B-08 reconciliation after PR #92 - 2026-11-28
+
+Current `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`; PRs #87–#92 are
+merged. The owner confirms GitHub Actions is unavailable due to
+exhausted included allowance, with no paid spend, purchased capacity or limit
+increase authorized. Historical pre-start failures remain unexplained; this
+is not evidence they were caused by billing. PR-head success on #87 and
+#90–#92 proves those specific workflows ran on their recorded SHAs, not why
+other runs failed or what current account state is.
+
+Use the temporary complete local gate in
+[LOCAL_QUALITY_GATE.md](LOCAL_QUALITY_GATE.md). No check, verifier, branch
+protection or workflow was disabled. A self-hosted runner remains an evaluated
+but unconfigured option: it would require a trusted maintained host, runner
+registration credentials, patch/isolation design and repository-administrator
+action. Current local validation is authorized and sufficient for independent
+review preparation, so no runner registration or external permission is
+needed for this increment. Do not expose registration tokens or attach a
+persistent runner without a separate owner decision.
+
+B-07 remains a host-specific Windows loopback/sandbox diagnostic; do not turn
+an interrupted attempt into a pass or failure. Check exact-SHA receipts and
+preserve zero paid spend.
+
+## Historical pre-#87 B-07/B-08 reconciliation - 2026-11-28
 
 PR #88 merged the cryptography 50 lock update at exact `main` commit
 `00e6cf11ac05a94055242573fd3cfc18086bad10`. Its exact-SHA query returned 11
@@ -33,7 +57,7 @@ with the known `TestClient`/Windows loopback limitation for this run; it does
 not resolve the separate historical `8f906b8` incident. See [B-07 below](#b-07-pr-65-restricted-sandbox-diagnostic---c6c1326)
 and [the gate record](LOCAL_QUALITY_GATE.md).
 
-## Current B-08 reconciliation - 2026-11-28
+## Historical B-08 reconciliation before #87 merge - 2026-11-28
 
 The exact published M2-03 head `c69f93b5428b0b1bb265c7039e38d1d99ea90d10`
 received 12 successful official check-runs and two conditional skips on
@@ -116,7 +140,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | Historical pre-start failures remain unexplained; alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine contexts, #78 head `8c8f862` six observed jobs, #79 head `b5c1bcc` its applicable jobs, #80 head `e6a28ac` eight jobs, #81 head `41e6db8` nine jobs, #82 head `f6fa2ed` 12 checks, and PR #87 exact head `c69f93b` 12 of 14 check-runs. On #87, deploy and release rehearsal were skipped by workflow conditions; all observed applicable checks passed, including container smoke. These results are scoped to their exact PR heads, not merge commits or later `main`. The owner-reported included-allowance exhaustion and zero-paid-spend decision remain; public standard `ubuntu-latest` runners are documented as free, but account billing was not inspected. | Preserve exact-head evidence; if a pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue the exact-head check-run query and complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-08 | GitHub Actions unavailable per owner because included allowance is exhausted; no paid spend or limit increase. Historical pre-start failures still lack a verified cause. Past exact PR-head runs (#87, #90–#92) succeeded on their recorded SHAs; this does not explain prior failures or transfer to current `main`. | Preserve exact-SHA evidence; if a failure recurs, collect the run annotation/state before assigning a cause. | GitHub account owner / repository administrator | Use authorized temporary local full gate. No runner, protection, workflow or verifier changes; do not spend, register runner or infer billing cause. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 

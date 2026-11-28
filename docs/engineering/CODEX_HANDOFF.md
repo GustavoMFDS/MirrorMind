@@ -1,6 +1,32 @@
 # Agent handoff — continuous engineering and documentation standard
 
-## Current continuation - 2026-11-28
+## Current continuation after PR #92 - 2026-11-28
+
+- Current remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2` (PR #92
+  merge). PRs #87–#92 are integrated. M2-03 is available at merge
+  commit `45a84d2a4528755a88fccf8d766b5ef18518b9d8`; never replay its commits.
+  Exact-head gate evidence for prior PRs does not transfer to current `main`.
+- Current branch `codex/m2-05-usable-decision-workflow-20261128` carries
+  M2-05 work on top of current `main`. It keeps default M1 report payload
+  unchanged, adds opt-in `--agent-preview` using existing fixed M2-03 tools,
+  displays digest-linked untrusted drafts and receipts, and handles missing
+  history as abstention plus fixed `tool_failed`. Focused tests pass; run the
+  complete documented local gate against exact final commit before publishing
+  a review PR. See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
+- No public API, capability status, live provider, persistence, data source or
+  authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep
+  generated fixtures in automated tests.
+- The approved UCI #352 local attempt exceeded the 250,000 group ceiling; no
+  complete projection or metrics exist. Do not retry, chunk, sample or raise
+  cap. Retain aggregate-only exclusion handling and snapshot deletion deadline
+  `2026-12-26`. Census/ALFRED byte acquisition remains gated by B-01/B-02;
+  WorldKernel service isolation remains B-04.
+- Owner confirms GitHub Actions quota unavailable; zero paid spend remains.
+  Use temporary local gate. B-08 historical cause remains unverified; past
+  green PR-head checks do not prove cause. Do not edit workflows, spend,
+  register runners or weaken/skip protections.
+
+## Historical pre-#87 continuation - 2026-11-28
 
 - Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
   PR #88. Its cryptography 50 constraint and lock update has 11 successful

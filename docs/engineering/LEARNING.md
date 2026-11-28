@@ -970,3 +970,17 @@ For compact retrieval, explain why BM25 needs total token count rather
 than distinct term count, and why the earliest source occurrence among
 matched terms suffices for the unchanged excerpt window. Compare a
 reversed query and a casefold-expanding word with the citation regression.
+
+## Guided exercise — render a decision run and abstention (35 minutes)
+
+Read the [offline report walkthrough](PORTFOLIO_DEMO.md) and run its success
+and `2011-02-04` abstention commands. Compare M1 `workflow_result_sha256` with
+the digest embedded in the successful M2 draft. Trace the same request values
+through `build_report`, `ScriptedSyntheticProvider` and the existing registered
+decision tool. Run
+`tests/integration/test_portfolio_demo.py::test_abstention_payload_and_renderer_guard_handle_missing_success_fields`
+and explain why the renderer checks `trace` and `simulation.result` before
+touching success-only fields. Inspect the fixed `tool_failed` refusal and
+describe which detail is intentionally omitted. Finally run
+`test_agent_preview_escapes_both_embedded_payloads` and state why source-level
+payload/guard tests do not certify a real browser DOM or accessibility.
