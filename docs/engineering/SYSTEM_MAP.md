@@ -418,3 +418,9 @@ replayed fictional joint scoring. No ingestion, API, journal or authority.
 The [offline temporal report](../../examples/m1_census_temporal_observatory.py)
 renders a replayed fixed temporal study and conditional transition,
 joint and marginal examples. No new API, persistence or authority.
+
+### Experimental three-axis engine
+The [network3 module](../../src/mirrormind/domains/retail/census_network3.py)
+provides exact bounded joint and bijective-lineage propagation with
+a common immutable integer PMF contract. It does not change existing
+bivariate modules, API, persistence, ingestion or authority.

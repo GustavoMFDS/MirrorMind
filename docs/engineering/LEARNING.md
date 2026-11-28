@@ -1100,3 +1100,10 @@ Generate the [temporal observatory](../../examples/m1_census_temporal_observator
 Compare own and cross rows and the resulting conditional cumulative
 joint PMFs. Inspect the six oracle steps and explain the limitations
 of fitting a stationary law across a structural change.
+
+### Exercise: exact lineage decomposition
+Run the [network3 tests](../../tests/unit/test_census_network3.py).
+Trace each initial axis through a bijective changing parent map and
+compare convolved cumulative-vector laws with full joint propagation.
+Explain why shared parents break conditional lineage independence.
+Compare exact distributions before measuring performance.

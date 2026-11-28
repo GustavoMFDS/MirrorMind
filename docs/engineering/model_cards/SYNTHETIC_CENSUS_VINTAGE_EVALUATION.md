@@ -207,3 +207,8 @@ independent holdout or operational forecast is established.
 The offline temporal observatory visualizes a freshly replayed fixed
 study, estimated transition rows and privileged oracle schedules.
 It does not establish causal effects or empirical calibration.
+
+Experimental three-axis propagation adds exact conditional joint
+distributions for bounded supplied schedules, including an alternative
+for bijective parent laws. It does not establish graph learning,
+arbitrary-dimensional scalability, causal effects or empirical skill.

@@ -1018,3 +1018,33 @@ row mass, exclusive output and no output after replay mismatch.
 Run `python -m pytest -q tests/integration/test_census_temporal_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md).
 Independent review pending; markup tests are not accessibility certification.
+
+## Exact bounded three-axis propagation
+The [network3 engine](../../src/mirrormind/domains/retail/census_network3.py)
+supports three binary sign axes (-1,+1), eight lexicographically ordered
+states and one through six future steps. The full joint engine accepts
+immutable 8-by-8 matrices with integer weights 0..15625 and nonempty
+rows. Row denominators are independently normalized via LCM scaling.
+The lineage engine accepts one bijective parent mapping per step and
+three binary conditional laws (integer weights 0..25, nonempty rows);
+each child has one unique parent and innovations are conditionally
+independent. Given a fixed initial state, the three lineages are
+independent and their cumulative-vector laws can be convolved exactly.
+factor_matrix expands the same validated law into a joint matrix.
+Both engines conserve integer mass, reduce common factors and return
+sorted immutable tuples of (cumulative triple, positive canonical weight).
+At most 343 cells and 1024 total-mass bits. Start state excluded.
+No cache or automatic algorithm selection. Shared parents, arbitrary
+graphs and correlated innovations are outside the lineage contract;
+the general joint engine supports any admissible supplied joint matrix.
+No fitted model, authenticated data, causal claim or operational authority.
+
+Proposed evidence MM-CEN-039:
+`test_network3_lineage_parity` compares canonical outputs from both
+engines for all starts and horizons 1..6 under heterogeneous schedules.
+Direct rational path enumeration, deterministic transitions, maximum
+support and nested invalid inputs are covered by additional tests.
+Run `python -m pytest -q tests/unit/test_census_network3.py`.
+See [change request](changes/M1C_04_CENSUS_NETWORK3.md).
+Independent review pending. Performance depends on schedule and
+implementation; no general speed or scalability guarantee.

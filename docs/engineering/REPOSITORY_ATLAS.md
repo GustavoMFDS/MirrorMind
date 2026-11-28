@@ -1257,3 +1257,10 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_temporal_observatory.py](../../examples/m1_census_temporal_observatory.py) | Replayed offline temporal visualization |
 | [tests/integration/test_census_temporal_observatory.py](../../tests/integration/test_census_temporal_observatory.py) | Report, transition row mass and failure tests |
 | [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Experimental three-axis engine
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_network3.py](../../src/mirrormind/domains/retail/census_network3.py) | Exact bounded joint and lineage propagation |
+| [tests/unit/test_census_network3.py](../../tests/unit/test_census_network3.py) | Path oracle, cross-engine parity and input rejection |
+| [docs/engineering/changes/M1C_04_CENSUS_NETWORK3.md](changes/M1C_04_CENSUS_NETWORK3.md) | Scoped acceptance and impact map |

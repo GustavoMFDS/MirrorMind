@@ -578,3 +578,10 @@ Use a new absolute HTML output path. Replay mismatch prevents output.
 Rows represent previous states and columns next states; every row
 sums to one exactly. Oracle matrices are privileged per-step laws,
 not estimated parameters or observed future outcomes.
+
+### Three-axis propagation
+Check ordered signs (-1,+1), immutable schedules, one to six steps,
+eight nonempty integer rows for joint matrices, or bijective parents
+and three binary conditional laws for lineage propagation. Zero
+transitions are valid, all-zero rows are not. Expand a factor step
+with factor_matrix and compare canonical output. No automatic dispatch.

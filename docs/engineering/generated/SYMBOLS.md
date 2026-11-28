@@ -252,6 +252,24 @@ Static imports (including inside functions): `__future__`, `datetime`, `fraction
 | `compare_census_models` | function | `def compare_census_models(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str) -> dict[str, object]` | Compare only the validation partition under a retained model commitment. | [L119](../../../src/mirrormind/domains/retail/census_models.py#L119) |
 | `verify_census_model_comparison` | function | `def verify_census_model_comparison(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str, submitted: bytes) -> str` | Verify bounded complete canonical receipt by local replay; no admission. | [L227](../../../src/mirrormind/domains/retail/census_models.py#L227) |
 
+## `mirrormind.domains.retail.census_network3`
+
+Source: [`src/mirrormind/domains/retail/census_network3.py`](../../../src/mirrormind/domains/retail/census_network3.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `itertools`, `math`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_start` | function | `def _start(start: State3) -> None` | — | [L23](../../../src/mirrormind/domains/retail/census_network3.py#L23) |
+| `_schedule` | function | `def _schedule(schedule: tuple[object, ...]) -> None` | — | [L32](../../../src/mirrormind/domains/retail/census_network3.py#L32) |
+| `_row` | function | `def _row(row: tuple[int, ...], size: int, bound: int) -> None` | — | [L37](../../../src/mirrormind/domains/retail/census_network3.py#L37) |
+| `_reduce` | function | `def _reduce(mass: dict[_K, int], den: int) -> tuple[dict[_K, int], int]` | — | [L47](../../../src/mirrormind/domains/retail/census_network3.py#L47) |
+| `_project` | function | `def _project(mass: dict[State3, int], den: int) -> PMF3` | — | [L54](../../../src/mirrormind/domains/retail/census_network3.py#L54) |
+| `propagate_network3` | function | `def propagate_network3(start: State3, schedule: tuple[Matrix3, ...]) -> PMF3` | Joint Markov law of cumulative future states, excluding the start. | [L61](../../../src/mirrormind/domains/retail/census_network3.py#L61) |
+| `_factor` | function | `def _factor(step: FactorStep) -> None` | — | [L96](../../../src/mirrormind/domains/retail/census_network3.py#L96) |
+| `factor_matrix` | function | `def factor_matrix(step: FactorStep) -> Matrix3` | Expand a validated factor law into an equivalent joint matrix. | [L116](../../../src/mirrormind/domains/retail/census_network3.py#L116) |
+| `propagate_lineages3` | function | `def propagate_lineages3(start: State3, schedule: tuple[FactorStep, ...]) -> PMF3` | Exact lineage decomposition for bijective parents at each step. | [L129](../../../src/mirrormind/domains/retail/census_network3.py#L129) |
+
 ## `mirrormind.domains.retail.census_probability`
 
 Source: [`src/mirrormind/domains/retail/census_probability.py`](../../../src/mirrormind/domains/retail/census_probability.py)

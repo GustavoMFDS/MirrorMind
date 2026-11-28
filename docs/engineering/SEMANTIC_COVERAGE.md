@@ -374,3 +374,8 @@ has guided exact fictional comparison and local replay in
 The [temporal observatory](../../examples/m1_census_temporal_observatory.py)
 has guided offline replayed report behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasting.
+
+The [network3 engine](../../src/mirrormind/domains/retail/census_network3.py)
+has guided exact bounded joint/lineage propagation in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not graph discovery
+or arbitrary network inference.
