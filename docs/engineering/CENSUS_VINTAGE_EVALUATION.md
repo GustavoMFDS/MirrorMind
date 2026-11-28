@@ -1189,3 +1189,40 @@ twelve-axis long horizon and invalid inputs. Run
 `python -m pytest -q tests/unit/test_census_modular_sampling.py`.
 See [change request](changes/M1C_04_CENSUS_MODULAR_SAMPLING.md).
 Independent review pending.
+
+## Modular interventions and paired event contrasts
+The [intervention engine](../../src/mirrormind/domains/retail/census_modular_interventions.py)
+uses the same bounded candidate scopes and independent persistent local
+priors as the modular exact and sampling engines. A schedule is an
+immutable tuple of unique (future step, axis, binary value) triples.
+A forced value replaces its mechanism, does not update that child's
+graph likelihood or conditional parameter counts, and remains a
+lagged parent input to subsequent steps. Exact queries cover horizons
+1..2 with the existing conservative closure bound. Forced outcomes may
+reduce support; no pruning of allowed scope or approximate fallback.
+
+Paired event contrasts cover horizons 1..12 with 128..8192 pairs,
+explicit seed and one cumulative lower-threshold conjunction. Compare
+P(event under B) minus P(event under A). Independent mode draws separate
+graphs and trajectory randomness. Coupled mode shares a graph and
+integer uniform draws across the two paths, with separate hypothetical
+urns. Each marginal law is unchanged. This coupling is a computational
+variance-reduction choice, not an identified individual counterfactual.
+Report the four paired indicator counts, marginal frequencies, contrast,
+unbiased sample variance and clipped conditional sampling interval.
+At a single predeclared look, choose the least k with 2/2**k <= alpha
+and round sqrt(2*k/n) upward on a 1/10000 grid. Under ideal iid pairs
+Hoeffding bounds the absolute error of the contrast, whose individual
+observations lie in [-1,1]. No simultaneous coverage across queries,
+optional stopping, PRNG certification, guaranteed variance reduction,
+empirical causal identification or operational authority.
+
+Proposed MM-CEN-046: `test_intervention_no_forced_update` distinguishes
+a mechanism replacement from treating a forced value as evidence.
+Proposed MM-CEN-047: `test_intervention_paired_reference` compares
+both coupling modes and priors with bounded exact intervention marginals.
+Additional tests cover observational parity, projection, identical
+schedules, forced long paths, integer radius and invalid schedules.
+Run `python -m pytest -q tests/unit/test_census_modular_interventions.py`.
+See [change request](changes/M1C_04_CENSUS_MODULAR_INTERVENTIONS.md).
+Independent review pending.

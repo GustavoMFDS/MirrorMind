@@ -1294,3 +1294,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_modular_sampling.py](../../src/mirrormind/domains/retail/census_modular_sampling.py) | Bounded trajectory sampling and event precision |
 | [tests/unit/test_census_modular_sampling.py](../../tests/unit/test_census_modular_sampling.py) | Exact reference and finite-look tests |
 | [docs/engineering/changes/M1C_04_CENSUS_MODULAR_SAMPLING.md](changes/M1C_04_CENSUS_MODULAR_SAMPLING.md) | Scoped acceptance and impact map |
+
+### Modular intervention research
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_modular_interventions.py](../../src/mirrormind/domains/retail/census_modular_interventions.py) | Exact mechanism replacement and paired contrasts |
+| [tests/unit/test_census_modular_interventions.py](../../tests/unit/test_census_modular_interventions.py) | Forced-update and exact marginal reference checks |
+| [docs/engineering/changes/M1C_04_CENSUS_MODULAR_INTERVENTIONS.md](changes/M1C_04_CENSUS_MODULAR_INTERVENTIONS.md) | Scoped acceptance and impact map |

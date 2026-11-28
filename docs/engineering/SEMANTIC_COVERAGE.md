@@ -399,3 +399,8 @@ The [sampling engine](../../src/mirrormind/domains/retail/census_modular_samplin
 has bounded empirical subset PMFs and simultaneous conditional
 event error arithmetic in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md),
 not empirical calibration, full-distribution certification or authority.
+
+The [intervention engine](../../src/mirrormind/domains/retail/census_modular_interventions.py)
+has bounded exact mechanism replacement and paired conditional event
+contrast tests in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md),
+not empirical causal or individual counterfactual identification.

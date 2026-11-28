@@ -595,6 +595,20 @@
     "limitation": "Finite-look conditional event precision under ideal iid draws and fixed query parameters; no PRNG certification, full PMF bound, empirical calibration or operational authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-046",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_modular_interventions.py",
+    "function": "test_intervention_no_forced_update",
+    "limitation": "Bounded synthetic mechanism replacement under specified persistent local priors; not empirical causal identification or authority. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-047",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_modular_interventions.py",
+    "function": "test_intervention_paired_reference",
+    "limitation": "Fixed-seed paired simulation compared to exact conditional model marginals on bounded fixtures; no general variance reduction, cross-world identification, empirical calibration or authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

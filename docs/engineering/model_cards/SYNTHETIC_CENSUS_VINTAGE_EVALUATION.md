@@ -232,3 +232,8 @@ Modular trajectory sampling supports bounded 12-axis and 12-step
 synthetic simulations. Finite-look event intervals quantify only
 conditional Monte Carlo error under ideal iid draws. No empirical
 calibration, full PMF guarantee, causal claim or operational authority.
+
+Modular interventions replace specified local mechanisms under
+synthetic posterior assumptions. Paired contrast sampling bounds
+are conditional on ideal iid draws, not empirical effect estimates
+or identification of individual counterfactuals. No action authority.

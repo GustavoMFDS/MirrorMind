@@ -448,3 +448,8 @@ The [sampling engine](../../src/mirrormind/domains/retail/census_modular_samplin
 uses the exact modular query's priors and declared scopes for bounded
 empirical subset distributions and finite-look event precision.
 No automatic fallback, external API, storage or action authority.
+
+### Modular mechanism replacements
+The [intervention engine](../../src/mirrormind/domains/retail/census_modular_interventions.py)
+adds explicit model-implied schedules and paired event contrasts to
+the bounded modular posterior engines. No API, storage or authority.

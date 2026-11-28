@@ -266,6 +266,22 @@ Static imports (including inside functions): `__future__`, `collections`, `fract
 | `_law` | function | `def _law(positive: tuple[Fraction, ...]) -> PMF` | — | [L147](../../../src/mirrormind/domains/retail/census_modular.py#L147) |
 | `predict_modular` | function | `def predict_modular(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, *, balanced: bool=False) -> tuple[PMF, State]` | Return exact cumulative subset PMF and enumerated first-step axes. | [L160](../../../src/mirrormind/domains/retail/census_modular.py#L160) |
 
+## `mirrormind.domains.retail.census_modular_interventions`
+
+Source: [`src/mirrormind/domains/retail/census_modular_interventions.py`](../../../src/mirrormind/domains/retail/census_modular_interventions.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `dataclasses`, `fractions`, `math`, `mirrormind.domains.retail.census_modular`, `mirrormind.domains.retail.census_modular_sampling`, `random`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_schedule` | function | `def _schedule(value: Schedule, d: int, horizon: int) -> dict[tuple[int, int], int]` | — | [L32](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L32) |
+| `intervene_modular` | function | `def intervene_modular(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, interventions: Schedule=(), *, balanced: bool=False) -> tuple[PMF, State]` | Exact conditional-model intervention PMF, not identified causal effects. | [L46](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L46) |
+| `_draw` | function | `def _draw(rows: Compiled, rng: Random) -> tuple[tuple[State, ...], Urns]` | — | [L90](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L90) |
+| `_context` | function | `def _context(prev: State, parents: State) -> int` | — | [L102](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L102) |
+| `contrast_radius` | function | `def contrast_radius(n: int, alpha: Fraction) -> tuple[Fraction, int]` | Single fixed-look conservative Hoeffding radius on [-1,1]. | [L109](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L109) |
+| `InterventionContrast` | class | `class InterventionContrast` | — | [L130](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L130) |
+| `compare_modular_interventions` | function | `def compare_modular_interventions(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, event: State, schedule_a: Schedule, schedule_b: Schedule, *, samples: int, seed: int, coupled: bool=True, balanced: bool=False, alpha: Fraction=Fraction(1, 20)) -> InterventionContrast` | Estimate P(event\|B)-P(event\|A) with optional shared random draws. | [L154](../../../src/mirrormind/domains/retail/census_modular_interventions.py#L154) |
+
 ## `mirrormind.domains.retail.census_modular_sampling`
 
 Source: [`src/mirrormind/domains/retail/census_modular_sampling.py`](../../../src/mirrormind/domains/retail/census_modular_sampling.py)
