@@ -113,15 +113,15 @@ requires B-05 approval and a separate security/evaluation review.
 
 - Commit / PR: implementation checkpoint `0922c72`; the open review PR is
   [#87](https://github.com/GustavoMFDS/MirrorMind/pull/87). Exact local gate
-  checkpoints `07a6cdc0` and `7735ae4` passed; independent review and
+  checkpoints `07a6cdc0` and `79f67bc` passed; independent review and
   integration remain separate acceptance decisions.
 - Modified symbols and files: `modules/agents/contracts.py`,
   `modules/agents/registry.py`, `modules/agents/synthetic_tools.py`, the
   focused unit test, and source walkthrough/learning/debugging/evidence docs.
 - Tests executed, result, environment: focused suite passes 21 tests; exact
-  commit `7735ae4` passed 1,014 tests, zero skips and all six local checks with
+  commit `79f67bc` passed 1,014 tests, zero skips and all six local checks with
   the reviewed WorldKernel pin. Code-identical commit `07a6cdc0` passed 86.92%
-  coverage and both mypy jobs. The queried exact PR #87 head `7735ae4` had 12
+  coverage and both mypy jobs. The queried exact PR #87 head `79f67bc` had 12
   successful official check-runs and two conditionally skipped jobs.
 - Claim IDs and cited test path/function: `MM-AGENT-001` through
   `MM-AGENT-009` in `EVIDENCE_MAP.json`.
