@@ -546,6 +546,34 @@
     "limitation": "Offline replayed fixed temporal study and transition examples only; no empirical calibration, causal effects, accessibility certification or operational authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-039",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_network3.py",
+    "function": "test_network3_lineage_parity",
+    "limitation": "Exact bounded three-axis supplied transition schedules and bijective lineage parity only; no graph learning, general speed guarantee, causal effects, empirical calibration or authority. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-040",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_network_structure.py",
+    "function": "test_parent_average_complete_graph_mixture",
+    "limitation": "Exact bounded local parent evidence and one-step integration under independent priors only; no causal identification, multistep Bayesian integration, empirical calibration or authority. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-041",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_network_bayes.py",
+    "function": "test_persistent_bayes_graph_oracle",
+    "limitation": "Exact bounded persistent graph and parameter integration under local priors only; no causal effects, dynamic graph posterior, empirical calibration or general scalability. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-042",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_network_bayes_study.py",
+    "function": "test_persistent_study_exact_replay",
+    "limitation": "Fixed fictional exploratory fixture reuse and canonical local replay; no independent registration, holdout, statistical superiority, calibration, causal claims or authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

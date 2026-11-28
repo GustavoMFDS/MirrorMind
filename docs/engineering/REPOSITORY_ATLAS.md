@@ -1257,3 +1257,26 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_temporal_observatory.py](../../examples/m1_census_temporal_observatory.py) | Replayed offline temporal visualization |
 | [tests/integration/test_census_temporal_observatory.py](../../tests/integration/test_census_temporal_observatory.py) | Report, transition row mass and failure tests |
 | [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Experimental three-axis engine
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_network3.py](../../src/mirrormind/domains/retail/census_network3.py) | Exact bounded joint and lineage propagation |
+| [tests/unit/test_census_network3.py](../../tests/unit/test_census_network3.py) | Path oracle, cross-engine parity and input rejection |
+| [docs/engineering/changes/M1C_04_CENSUS_NETWORK3.md](changes/M1C_04_CENSUS_NETWORK3.md) | Scoped acceptance and impact map |
+
+### Bounded local parent estimation
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_network_structure.py](../../src/mirrormind/domains/retail/census_network_structure.py) | Exact local evidence, graph fitting and one-step averaging |
+| [tests/unit/test_census_network_structure.py](../../tests/unit/test_census_network_structure.py) | Sequential evidence, graph-mixture oracle and invalid inputs |
+| [docs/engineering/changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md](changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md) | Scoped acceptance and impact map |
+
+### Persistent Bayesian research
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_network_bayes.py](../../src/mirrormind/domains/retail/census_network_bayes.py) | Persistent and frozen prediction |
+| [examples/m1_census_network_bayes_study.py](../../examples/m1_census_network_bayes_study.py) | Fixed fictional commitment and replay |
+| [tests/unit/test_census_network_bayes.py](../../tests/unit/test_census_network_bayes.py) | Persistent graph oracle and input bounds |
+| [tests/integration/test_census_network_bayes_study.py](../../tests/integration/test_census_network_bayes_study.py) | Report replay and commitment |
+| [docs/engineering/changes/M1C_04_CENSUS_NETWORK_BAYES.md](changes/M1C_04_CENSUS_NETWORK_BAYES.md) | Scoped acceptance and impact map |

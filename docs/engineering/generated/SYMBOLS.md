@@ -252,6 +252,52 @@ Static imports (including inside functions): `__future__`, `datetime`, `fraction
 | `compare_census_models` | function | `def compare_census_models(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str) -> dict[str, object]` | Compare only the validation partition under a retained model commitment. | [L119](../../../src/mirrormind/domains/retail/census_models.py#L119) |
 | `verify_census_model_comparison` | function | `def verify_census_model_comparison(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str, submitted: bytes) -> str` | Verify bounded complete canonical receipt by local replay; no admission. | [L227](../../../src/mirrormind/domains/retail/census_models.py#L227) |
 
+## `mirrormind.domains.retail.census_network3`
+
+Source: [`src/mirrormind/domains/retail/census_network3.py`](../../../src/mirrormind/domains/retail/census_network3.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `itertools`, `math`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_start` | function | `def _start(start: State3) -> None` | — | [L23](../../../src/mirrormind/domains/retail/census_network3.py#L23) |
+| `_schedule` | function | `def _schedule(schedule: tuple[object, ...]) -> None` | — | [L32](../../../src/mirrormind/domains/retail/census_network3.py#L32) |
+| `_row` | function | `def _row(row: tuple[int, ...], size: int, bound: int) -> None` | — | [L37](../../../src/mirrormind/domains/retail/census_network3.py#L37) |
+| `_reduce` | function | `def _reduce(mass: dict[_K, int], den: int) -> tuple[dict[_K, int], int]` | — | [L47](../../../src/mirrormind/domains/retail/census_network3.py#L47) |
+| `_project` | function | `def _project(mass: dict[State3, int], den: int) -> PMF3` | — | [L54](../../../src/mirrormind/domains/retail/census_network3.py#L54) |
+| `propagate_network3` | function | `def propagate_network3(start: State3, schedule: tuple[Matrix3, ...]) -> PMF3` | Joint Markov law of cumulative future states, excluding the start. | [L61](../../../src/mirrormind/domains/retail/census_network3.py#L61) |
+| `_factor` | function | `def _factor(step: FactorStep) -> None` | — | [L96](../../../src/mirrormind/domains/retail/census_network3.py#L96) |
+| `factor_matrix` | function | `def factor_matrix(step: FactorStep) -> Matrix3` | Expand a validated factor law into an equivalent joint matrix. | [L116](../../../src/mirrormind/domains/retail/census_network3.py#L116) |
+| `propagate_lineages3` | function | `def propagate_lineages3(start: State3, schedule: tuple[FactorStep, ...]) -> PMF3` | Exact lineage decomposition for bijective parents at each step. | [L129](../../../src/mirrormind/domains/retail/census_network3.py#L129) |
+
+## `mirrormind.domains.retail.census_network_bayes`
+
+Source: [`src/mirrormind/domains/retail/census_network_bayes.py`](../../../src/mirrormind/domains/retail/census_network_bayes.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `fractions`, `math`, `mirrormind.domains.retail.census_network3`, `mirrormind.domains.retail.census_network_structure`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_conditional` | function | `def _conditional(history: tuple[State3, ...], prev: State3) -> tuple[Fraction, ...]` | — | [L21](../../../src/mirrormind/domains/retail/census_network_bayes.py#L21) |
+| `predict_persistent_bayes` | function | `def predict_persistent_bayes(history: tuple[State3, ...], horizon: int, *, frozen: bool=False) -> PMF3` | Integrate persistent graph/parameter uncertainty under local priors. | [L44](../../../src/mirrormind/domains/retail/census_network_bayes.py#L44) |
+
+## `mirrormind.domains.retail.census_network_structure`
+
+Source: [`src/mirrormind/domains/retail/census_network_structure.py`](../../../src/mirrormind/domains/retail/census_network_structure.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `fractions`, `itertools`, `math`, `mirrormind.domains.retail.census_network3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_history` | function | `def _history(history: tuple[State3, ...]) -> None` | — | [L19](../../../src/mirrormind/domains/retail/census_network_structure.py#L19) |
+| `_context` | function | `def _context(state: State3, parent: Parent) -> int \| None` | — | [L34](../../../src/mirrormind/domains/retail/census_network_structure.py#L34) |
+| `_counts` | function | `def _counts(history: tuple[State3, ...], child: int, parent: Parent) -> Counter[tuple[int \| None, int]]` | — | [L38](../../../src/mirrormind/domains/retail/census_network_structure.py#L38) |
+| `_evidence` | function | `def _evidence(history: tuple[State3, ...], child: int, parent: Parent) -> Fraction` | — | [L44](../../../src/mirrormind/domains/retail/census_network_structure.py#L44) |
+| `parent_posterior` | function | `def parent_posterior(history: tuple[State3, ...]) -> Posterior` | Equal local structure prior; independent Beta(1,1) context priors. | [L59](../../../src/mirrormind/domains/retail/census_network_structure.py#L59) |
+| `select_parent_graphs` | function | `def select_parent_graphs(history: tuple[State3, ...]) -> tuple[Graph, Graph]` | Fixed MAP and conservative rules; no empirical calibration. | [L71](../../../src/mirrormind/domains/retail/census_network_structure.py#L71) |
+| `fit_parent_matrix` | function | `def fit_parent_matrix(history: tuple[State3, ...], graph: Graph) -> Matrix3` | Smoothed conditional laws for an explicitly supplied local graph. | [L90](../../../src/mirrormind/domains/retail/census_network_structure.py#L90) |
+| `predict_parent_average` | function | `def predict_parent_average(history: tuple[State3, ...], *, uniform: bool=False) -> PMF3` | Integrate local parent choices for exactly one future state. | [L111](../../../src/mirrormind/domains/retail/census_network_structure.py#L111) |
+
 ## `mirrormind.domains.retail.census_probability`
 
 Source: [`src/mirrormind/domains/retail/census_probability.py`](../../../src/mirrormind/domains/retail/census_probability.py)

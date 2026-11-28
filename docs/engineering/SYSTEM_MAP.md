@@ -418,3 +418,22 @@ replayed fictional joint scoring. No ingestion, API, journal or authority.
 The [offline temporal report](../../examples/m1_census_temporal_observatory.py)
 renders a replayed fixed temporal study and conditional transition,
 joint and marginal examples. No new API, persistence or authority.
+
+### Experimental three-axis engine
+The [network3 module](../../src/mirrormind/domains/retail/census_network3.py)
+provides exact bounded joint and bijective-lineage propagation with
+a common immutable integer PMF contract. It does not change existing
+bivariate modules, API, persistence, ingestion or authority.
+
+### Experimental local parent estimators
+The [network structure module](../../src/mirrormind/domains/retail/census_network_structure.py)
+estimates local parent posteriors, fixed graph candidates and
+one-step predictive averages, reusing the three-axis matrix/PMF
+contracts without changing ingestion, API, storage or authority.
+
+### Persistent Bayesian prediction
+The [bounded engine](../../src/mirrormind/domains/retail/census_network_bayes.py)
+integrates hypothetical paths under persistent uncertain graph/parameter
+assumptions. The [fixed study](../../examples/m1_census_network_bayes_study.py)
+compares frozen means, MAP and oracle with local replay.
+No ingestion, storage, API or authority.

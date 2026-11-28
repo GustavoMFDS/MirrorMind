@@ -1018,3 +1018,100 @@ row mass, exclusive output and no output after replay mismatch.
 Run `python -m pytest -q tests/integration/test_census_temporal_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md).
 Independent review pending; markup tests are not accessibility certification.
+
+## Exact bounded three-axis propagation
+The [network3 engine](../../src/mirrormind/domains/retail/census_network3.py)
+supports three binary sign axes (-1,+1), eight lexicographically ordered
+states and one through six future steps. The full joint engine accepts
+immutable 8-by-8 matrices with integer weights 0..15625 and nonempty
+rows. Row denominators are independently normalized via LCM scaling.
+The lineage engine accepts one bijective parent mapping per step and
+three binary conditional laws (integer weights 0..25, nonempty rows);
+each child has one unique parent and innovations are conditionally
+independent. Given a fixed initial state, the three lineages are
+independent and their cumulative-vector laws can be convolved exactly.
+factor_matrix expands the same validated law into a joint matrix.
+Both engines conserve integer mass, reduce common factors and return
+sorted immutable tuples of (cumulative triple, positive canonical weight).
+At most 343 cells and 1024 total-mass bits. Start state excluded.
+No cache or automatic algorithm selection. Shared parents, arbitrary
+graphs and correlated innovations are outside the lineage contract;
+the general joint engine supports any admissible supplied joint matrix.
+No fitted model, authenticated data, causal claim or operational authority.
+
+Proposed evidence MM-CEN-039:
+`test_network3_lineage_parity` compares canonical outputs from both
+engines for all starts and horizons 1..6 under heterogeneous schedules.
+Direct rational path enumeration, deterministic transitions, maximum
+support and nested invalid inputs are covered by additional tests.
+Run `python -m pytest -q tests/unit/test_census_network3.py`.
+See [change request](changes/M1C_04_CENSUS_NETWORK3.md).
+Independent review pending. Performance depends on schedule and
+implementation; no general speed or scalability guarantee.
+
+## Bounded local parent learning
+The [structure estimators](../../src/mirrormind/domains/retail/census_network_structure.py)
+accept exactly eight or 24 observed binary triples. Each child has
+four candidate parent labels (none, 0, 1, 2) with equal prior.
+Independent Beta(1,1) context priors yield exact integrated
+Bernoulli likelihoods, normalized per child. MAP uses fixed tie
+order; conservative accepts a parent only if its evidence exceeds
+twice no-parent evidence and every alternative strictly. This
+threshold is a fixed exploratory rule, not calibrated confidence.
+Explicit graph fitting uses one pseudocount per binary outcome and
+returns a canonical row-weight joint matrix; shared parents allowed.
+One-step posterior averaging integrates the local parent/parameter
+posterior under independent priors and the supplied history.
+Uniform parent averaging is a separate control. Both return exact
+immutable integer PMFs; no multistep Bayesian integration, causal
+identification, authenticated observations, empirical calibration
+or automatic candidate promotion. No public cache.
+
+Proposed evidence MM-CEN-040:
+`test_parent_average_complete_graph_mixture` compares exact
+one-step local averaging to explicit enumeration of all 64 graphs
+for both history lengths and weighting modes. Sequential evidence,
+ties, shared parents and invalid input boundaries have additional
+tests. Run `python -m pytest -q tests/unit/test_census_network_structure.py`.
+See [change request](changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md).
+Independent review pending.
+
+## Persistent Bayesian prediction
+The [persistent engine](../../src/mirrormind/domains/retail/census_network_bayes.py)
+integrates a fixed uncertain local graph and fixed uncertain binary
+parameters under the local independent priors above. Each hypothetical
+prefix updates its own posterior predictive law; no actual future
+observation is used. The frozen control holds issuance-time posterior
+mean rows constant. Equivalent for one step, generally not for longer
+horizons. Eight or 24 observations, one to three steps, at most 512
+future paths and 64 cumulative cells. Both return bounded canonical
+integer PMFs. No dynamic graph posterior, causal effect or scalability claim.
+
+The [fixed study](../../examples/m1_census_network_bayes_study.py)
+reuses four exploratory scenarios (seeds 161001..4, four paths each,
+origins 48/52/56, windows 8/24, horizons 1/2/3, ring-to-own at
+transition 53). Integrated, frozen, MAP and privileged schedule oracle
+share 288 window-specific targets, 1152 scores, and 144 distinct
+path/origin/horizon events. Exact separate group means and transcript
+digests. Oracle knows future schedule, not outcomes. Reference excess
+is squared distance to generating law. No winner, inference, holdout,
+independent registration, runtime attestation, calibration or authority.
+Fixtures are not independent confirmation.
+
+    python -m examples.m1_census_network_bayes_study prepare --revision REV
+    python -m examples.m1_census_network_bayes_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_network_bayes_study demo --revision REV
+
+Prepare does not score; run requires caller-retained commitment.
+Demo self-generates it. Execution modes replay canonical bytes.
+Verifier bounds receipt to 1 MiB, excluding stdout newline.
+
+Proposed MM-CEN-041: `test_persistent_bayes_graph_oracle` enumerates
+64 persistent graphs and two-step paths, integrating parameters
+sequentially. Run `python -m pytest -q tests/unit/test_census_network_bayes.py`.
+Proposed MM-CEN-042: `test_persistent_study_exact_replay` checks fixed
+digests, replay, group coverage and oracle excess. Additional tests
+reject rehashed forgery and scoring before commitment.
+Run `python -m pytest -q tests/integration/test_census_network_bayes_study.py`.
+See [change request](changes/M1C_04_CENSUS_NETWORK_BAYES.md).
+Independent review pending.

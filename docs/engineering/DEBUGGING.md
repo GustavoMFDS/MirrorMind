@@ -578,3 +578,24 @@ Use a new absolute HTML output path. Replay mismatch prevents output.
 Rows represent previous states and columns next states; every row
 sums to one exactly. Oracle matrices are privileged per-step laws,
 not estimated parameters or observed future outcomes.
+
+### Three-axis propagation
+Check ordered signs (-1,+1), immutable schedules, one to six steps,
+eight nonempty integer rows for joint matrices, or bijective parents
+and three binary conditional laws for lineage propagation. Zero
+transitions are valid, all-zero rows are not. Expand a factor step
+with factor_matrix and compare canonical output. No automatic dispatch.
+
+### Local parent estimation
+Use exact tuples of eight or 24 binary triples, with graph labels
+None or integer axes 0..2. Boolean or float axes are invalid.
+Equal evidence ties resolve to the first label in fixed order.
+The conservative evidence rule is not an empirical confidence level.
+Averaging integrates one future state only, not a persistent random
+graph or parameter trajectory over multiple steps.
+
+### Persistent Bayesian study
+Use observed history lengths 8 or 24 and horizons 1..3. Hypothetical
+updates are branch-local. Actual future states must not enter fitting.
+At one step integrated and frozen coincide; later they need not.
+Verify retained commitment and canonical receipt before interpretation.
