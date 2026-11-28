@@ -37,6 +37,17 @@ reported 12 successful checks and two conditional skips (`deploy` and
 These results apply only to that head. The live PR body and checks are
 authoritative after any later commit.
 
+The current open queue also contains seven draft PRs for the synthetic-only
+M1C-04 Census evaluation stack: #93, #94, #95, #96, #97, #98 and #100. GitHub
+metadata confirms their linear ancestry (#94 on #93 through #98, then #100 on
+#98); each is open and mergeable, and review submissions/threads are empty.
+Their PR descriptions report exact local evidence, but that evidence and the
+patches have not been independently audited in this continuation. Keep the
+stack distinct and do not treat draft status as approval. It uses fictional
+observations only; B-01/B-02 still prohibit real-source bytes and empirical
+claims until their rights and temporal-evidence gates are met. PRs #60 and #61
+are already merged into main; do not replay their commits.
+
 The user-approved UCI #352 local reader profile remains tightly scoped. Its
 prior attempt exceeded the 250,000 product-day group ceiling without a complete
 projection or metrics. Do not retry, chunk, sample or expand the cap; retain

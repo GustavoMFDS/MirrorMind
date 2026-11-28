@@ -22,6 +22,15 @@
   `release-rehearsal`). Those results apply only to that SHA. The live PR body
   carries current head evidence; re-run the full local gate after any commit.
   See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
+- PRs #60 and #61 have since merged into main at
+  `8c871adeef3b7f74e0c30cd20be49c86105dca78` and
+  `eea114554615509d8a0286621b81c323c2779c7a`; do not replay them. Seven draft
+  PRs (#93–#98 and #100) now form a linear
+  synthetic M1C-04 stack. They have no review submissions or inline threads;
+  their PR-body gate claims were not audited in this continuation. Hold new
+  increments and inspect the stack topologically before proposing integration.
+  Keep B-01/B-02 closed to real bytes and empirical claims until source rights
+  and historical publication evidence receive the required decisions.
 - No public API, capability status, live provider, persistence, data source or
   authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep
   generated fixtures in automated tests.
