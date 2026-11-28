@@ -9,25 +9,24 @@ remains scoped to its exact recorded SHA; no complete gate on current `main`
 has been claimed. The current local candidate
 `codex/m2-05-usable-decision-workflow-20261128` advances M2-05 with an
 abstention-safe offline report and opt-in scripted orchestration preview.
-Feature commit `2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed 1,032 tests,
-zero skips and all six local checks with the pinned WorldKernel. The
-documentation-inclusive candidate was published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-Its initial head `62912e1174c84cefe3f17009c695600b315072d3` passed the full
-gate and received 12 successful exact-head checks plus two conditional skips.
-Any later commit needs a fresh local gate; use the live PR body for the
-current SHA and check state.
+The documentation-inclusive candidate is [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99),
+currently at `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`. Its exact-head local
+gate passed 1,032 tests, zero skips and all six checks; GitHub reports 12
+successful official check-runs and two conditional skips. Any later commit
+needs a fresh local gate; the live PR body is authoritative for current SHA
+and check state.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
 | PRs #87–#92 | Integrated normally; #87 fixes nested provider-turn revalidation, and #89–#92 deliver retrieval/search improvements. | Do not replay commits; preserve branches needed by separate work. Do not transfer PR-head gate evidence to merge SHAs. |
 | PRs #60/#61 | Merged into main; GitHub reports merge commits `8c871adeef3b7f74e0c30cd20be49c86105dca78` and `eea114554615509d8a0286621b81c323c2779c7a`. | Treat as incorporated; do not replay their commits or refer to them as open. |
-| M1C-04 Census research stack (#93–#98, #100) | Seven open draft PRs, topologically stacked from #93 on main through #100 on #98. GitHub reports each mergeable; no review submissions or threads are present. PR-body validation claims have not been independently audited in this continuation. | Hold new increments. Review the stack in dependency order and keep it synthetic; B-01/B-02 prohibit real bytes or empirical claims pending source-specific rights and temporal-evidence decisions. No merge authorization is inferred from mergeable metadata. |
+| M1C-04 Census research stack (#93–#98, #100) | Seven open, mergeable PRs in a linear stack; #93 is ready for independent review and #94–#98/#100 remain drafts. Source audit found no confirmed defect, but no independent review exists. Local six-check gates passed on exact #98 and integrated #100 trees using matching-tree scratch commits (1,116 and 1,162 tests; zero skips); #93 has 12 successful official checks plus two conditional skips, while no PR-triggered workflows/statuses were returned for #94–#98/#100. | Keep changes synthetic. Obtain independent review and owner integration decision in topological order; B-01/B-02 prohibit real bytes or empirical claims pending source-specific rights and temporal evidence. Do not treat local tree-equivalent runs or mergeable metadata as CI approval. |
 | M1 synthetic vertical slice | Integrated through PR #62; remains experimental. | Keep M1 empirical and production criteria open until source rights, availability evidence, temporal evaluation and service controls pass. |
-| UCI #352 pilot | Approved local attempt stopped above 250,000 product-day groups without a complete projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
+| UCI #352 pilot | MM-024 invoice classification is present; 11 synthetic regressions pass. Earlier approved source attempt already excluded unverified prefixes before aggregation but stopped above 250,000 product-day groups, with no projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
 | B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. | Continue no-byte preparation; artifact-specific rights and source-owner approval precede acquisition. |
 | M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
-| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Initial head `62912e1` passed 1,032 tests, zero skips, six local checks and 12 successful official checks; two conditional checks were skipped. | Address independent review; gate each later exact head. Do not merge or claim a production capability from this experimental local report. |
-| B-08 Actions | Owner reports included allowance exhausted; cause of historical pre-start failures remains unverified. | Use authorized temporary local quality gate; do not spend, alter protections, checks or runners, or infer billing cause. |
+| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Current exact head `756fe3d` passed 1,032 tests, zero skips, six local checks and 12 successful official checks; two conditional checks were skipped. | Address independent review; gate each later exact head. Do not merge or claim a production capability from this experimental local report. |
+| B-08 Actions | Owner reports included allowance exhausted; cause of historical pre-start failures remains unverified. Exact PR heads #93 and #99 had workflow runs; #94–#98/#100 had no PR-triggered workflow runs/statuses at lookup. | Use authorized temporary local quality gate; do not spend, alter protections, checks or runners, or infer current availability or historical billing cause. |
 
 ## Historical pre-#87 checkpoint - 2026-11-28
 

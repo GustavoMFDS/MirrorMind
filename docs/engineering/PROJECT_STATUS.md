@@ -30,28 +30,45 @@ and full gate passed with loopback available. This is local environment
 evidence, not official Actions. Any later documentation commit needs its own
 exact-head gate before publication; the final PR body carries the published
 SHA and receipt.
-PR #99 is open against `main`, mergeable and awaiting independent review. On
-its initial exact head `62912e1174c84cefe3f17009c695600b315072d3`, GitHub
-reported 12 successful checks and two conditional skips (`deploy` and
-`release-rehearsal`); see [the PR](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-These results apply only to that head. The live PR body and checks are
+PR #99 is open against `main`, mergeable and ready for independent review.
+Its current exact head `756fe3d800f0652916d0b2da875eec1f2e2ce7dc` passed the
+full local gate (1,032 tests, zero skips, six checks) and has 12 successful
+official check-runs plus two workflow-conditional skips (`deploy` and
+`release-rehearsal`). These results apply only to that SHA; the live PR body is
 authoritative after any later commit.
 
-The current open queue also contains seven draft PRs for the synthetic-only
-M1C-04 Census evaluation stack: #93, #94, #95, #96, #97, #98 and #100. GitHub
-metadata confirms their linear ancestry (#94 on #93 through #98, then #100 on
-#98); each is open and mergeable, and review submissions/threads are empty.
-Their PR descriptions report exact local evidence, but that evidence and the
-patches have not been independently audited in this continuation. Keep the
-stack distinct and do not treat draft status as approval. It uses fictional
-observations only; B-01/B-02 still prohibit real-source bytes and empirical
-claims until their rights and temporal-evidence gates are met. PRs #60 and #61
-are already merged into main; do not replay their commits.
+The open M1C-04 Census stack contains #93, #94, #95, #96, #97, #98 and #100.
+They remain linearly dependent (#94 on #93 through #98, then #100 on #98),
+open and mergeable. #93 is ready for independent review; #94–#98 and #100
+remain drafts. Review submissions and inline threads were empty at the latest
+query. A source audit of the diffs in dependency order found no confirmed
+defect; this is not independent approval. The exact #93 head has 12 successful
+official check-runs and two conditional skips. No PR-triggered workflow runs
+or combined statuses were returned for #94–#98 or #100.
 
-The user-approved UCI #352 local reader profile remains tightly scoped. Its
-prior attempt exceeded the 250,000 product-day group ceiling without a complete
-projection or metrics. Do not retry, chunk, sample or expand the cap; retain
-aggregate-only exclusion data and delete the private snapshot by `2026-12-26`.
+The full local gate passed on the exact remote #98 tree
+`dda5ebd9ca82cd0b2bbc2b6eec4e330afa3710e1` (1,116 tests, zero skips, six
+checks) and the integrated #100 tree
+`6df9d110c05fb8238d1d0270abcd835c46396b0c` (1,162 tests, zero skips, six
+checks). Both runs used scratch commits with matching tree IDs, not the
+published commit IDs; local-only receipts are
+`results/local-quality-gate-pr98-tree-dda5ebd9ca82cd0b2bbc2b6eec4e330afa3710e1.json`
+and
+`results/local-quality-gate-pr100-tree-6df9d110c05fb8238d1d0270abcd835c46396b0c.json`.
+These are local tree-equivalent results, not official CI or independent
+review. Keep the stack synthetic and
+do not integrate without the separate review/decision. B-01/B-02 still block
+real-source bytes and empirical claims. PRs #60 and #61 are already merged;
+do not replay their commits.
+
+The user-approved UCI #352 local reader profile remains tightly scoped. The
+MM-024 classification is implemented and its synthetic regression set passed
+11 tests: six-digit IDs process normally, exact uppercase `C` plus six digits
+means cancellation, other single ASCII-letter prefixes are excluded under one
+aggregate class, and other forms fail closed. The earlier attempt already
+excluded those rows before aggregation and exceeded the 250,000 product-day
+group ceiling; no complete projection or metrics exist. Do not retry, chunk,
+sample or expand the cap. Delete the private snapshot by `2026-12-26`.
 B-01/B-02 still gate Census/ALFRED source bytes and empirical temporal claims;
 B-04 remains a separate WorldKernel production-isolation gate.
 

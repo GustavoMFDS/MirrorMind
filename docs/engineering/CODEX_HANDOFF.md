@@ -16,33 +16,44 @@
   in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The restricted sandbox
   blocked the Windows Proactor loopback socketpair at `test_health`; the same
   test and complete gate passed outside that restriction with no code changes.
-  Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-  Initial PR head `62912e1174c84cefe3f17009c695600b315072d3` also returned 12
-  successful official check-runs and two conditional skips (`deploy`,
-  `release-rehearsal`). Those results apply only to that SHA. The live PR body
-  carries current head evidence; re-run the full local gate after any commit.
+  Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99),
+  now at `756fe3d800f0652916d0b2da875eec1f2e2ce7dc`. This exact head passed
+  1,032 tests, zero skips and all six local checks; GitHub recorded 12
+  successful check-runs and two conditional skips (`deploy`,
+  `release-rehearsal`). Those results apply only to that SHA. Re-run the full
+  local gate after any commit and keep the live PR body current.
   See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
 - PRs #60 and #61 have since merged into main at
   `8c871adeef3b7f74e0c30cd20be49c86105dca78` and
-  `eea114554615509d8a0286621b81c323c2779c7a`; do not replay them. Seven draft
-  PRs (#93–#98 and #100) now form a linear
-  synthetic M1C-04 stack. They have no review submissions or inline threads;
-  their PR-body gate claims were not audited in this continuation. Hold new
-  increments and inspect the stack topologically before proposing integration.
-  Keep B-01/B-02 closed to real bytes and empirical claims until source rights
-  and historical publication evidence receive the required decisions.
+  `eea114554615509d8a0286621b81c323c2779c7a`; do not replay them. Seven open,
+  mergeable PRs (#93–#98 and #100) form a linear synthetic M1C-04 stack. #93
+  is ready for independent review; #94–#98/#100 remain drafts. Source audit
+  found no confirmed defect, but no independent reviews or threads exist.
+  Local six-check gates passed on the exact #98 and integrated #100 trees
+  using matching-tree scratch commits (1,116 and 1,162 tests, zero skips).
+  Only #93 has official workflow results among that stack: 12 successes and
+  two conditional skips; #94–#98/#100 returned no PR-triggered runs/statuses.
+  Keep the stack synthetic and wait for independent review and the separate
+  integration decision. B-01/B-02 still block real-source bytes and empirical
+  claims pending source-specific rights and temporal-evidence decisions.
 - No public API, capability status, live provider, persistence, data source or
   authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep
   generated fixtures in automated tests.
 - The approved UCI #352 local attempt exceeded the 250,000 group ceiling; no
-  complete projection or metrics exist. Do not retry, chunk, sample or raise
-  cap. Retain aggregate-only exclusion handling and snapshot deletion deadline
-  `2026-12-26`. Census/ALFRED byte acquisition remains gated by B-01/B-02;
+  complete projection or metrics exist. MM-024 is implemented and 11 synthetic
+  regressions pass: only uppercase `C`+six digits is cancellation, other
+  single ASCII-letter prefixes are excluded under one aggregate count, and
+  other formats fail closed. The stopped attempt already excluded these rows
+  before aggregation, so the clarification does not change its group count.
+  Do not retry, chunk, sample or raise the cap; retain snapshot deletion
+  deadline `2026-12-26`. Census/ALFRED bytes remain gated by B-01/B-02;
   WorldKernel service isolation remains B-04.
-- Owner confirms GitHub Actions quota unavailable; zero paid spend remains.
-  Use temporary local gate. B-08 historical cause remains unverified; past
-  green PR-head checks do not prove cause. Do not edit workflows, spend,
-  register runners or weaken/skip protections.
+- Owner reports GitHub Actions included allowance exhausted; zero paid spend
+  remains. Current observations include workflow runs on exact PR heads #93
+  and #99, but none returned for #94–#98/#100. This does not establish current
+  allowance or explain historical pre-start failures. Use temporary local
+  gate. Do not edit workflows, spend, register runners or weaken/skip
+  protections.
 
 ## Historical pre-#87 continuation - 2026-11-28
 
