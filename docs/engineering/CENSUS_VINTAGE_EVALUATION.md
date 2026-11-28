@@ -782,3 +782,33 @@ causal inputs and prepare-only behavior. Run
 `python -m pytest -q tests/integration/test_census_probability_study.py`.
 See [change request](changes/M1C_04_CENSUS_PROBABILITY_STUDY.md).
 Independent review pending.
+
+## Fictional probabilistic observatory
+The [probabilistic observatory](../../examples/m1_census_probability_observatory.py)
+generates a standalone offline HTML report from a freshly executed and
+fully replayed fixed probability study.
+
+    python -m examples.m1_census_probability_observatory --revision REV --output ABSOLUTE_HTML
+
+It shows separate per-group/horizon CRPS, mean pinball, median MAE,
+observed coverage, reference coverage and interval width, with exact
+rational scores available in expandable details. Reference coverage
+uses the supplied simulator law; observed coverage is the fraction of
+simulated outcomes inside the inclusive interval. Neither is an
+operational calibration certificate. The fixed example is path 0,
+origin 52, horizon six in each group, with all five PMFs regenerated
+from the same design, their quantiles, realized displacement and CRPS.
+The example is not an independent experiment or cherry-picked result.
+The oracle is a privileged reference. The study and report digests,
+declared revision and per-group event transcript digests are displayed.
+No arbitrary imported report, scripts, network, server, persistence or
+output overwrite. Self-generated demo commitment only.
+
+Proposed evidence MM-CEN-031:
+`test_probability_observatory_replayed_metrics_and_examples` checks
+reproducible markup, actual report metrics, provenance and internal
+navigation. Other tests check point-mass display, exclusive output and
+replay failure without output. Run
+`python -m pytest -q tests/integration/test_census_probability_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md).
+Independent review pending; markup tests are not accessibility certification.

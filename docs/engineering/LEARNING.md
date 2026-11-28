@@ -1051,3 +1051,9 @@ alone do not establish useful predictive uncertainty.
 Use prepare and run in the [probability study](../../examples/m1_census_probability_study.py).
 Compare coverage, width and CRPS for each group. Explain why oracle
 knowledge is privileged and why exact replay is not statistical calibration.
+
+### Exercise: inspect predictive distributions
+Generate the [probabilistic observatory](../../examples/m1_census_probability_observatory.py).
+Compare the fixed example PMFs, quantiles and realized displacement with
+aggregate CRPS, coverage and width. Explain why a single example cannot
+establish calibration and why the oracle is a privileged reference.

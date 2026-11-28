@@ -373,3 +373,8 @@ The [study example](../../examples/m1_census_probability_study.py)
 uses the discrete probability core with a committed fixed design,
 exact aggregate scores and streaming event transcript digests.
 Explicit complete receipt replay; no journal, API or new authority.
+
+### Fictional probabilistic observatory
+The [offline report](../../examples/m1_census_probability_observatory.py)
+renders freshly replayed fixed probability study summaries and fixed
+example distributions. No new core contracts, API, storage or authority.

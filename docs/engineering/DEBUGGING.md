@@ -527,3 +527,9 @@ Check the declared revision, retained study commitment and exact
 canonical report bytes (without stdout newline). Do not rehash changed
 metrics to force agreement. The oracle is a privileged reference,
 not a deployable method. No automatic holdout evaluation.
+
+### Probability observatory failure
+Check the declared revision and a new absolute HTML output path. A
+replay mismatch prevents report creation. Observed and reference coverage
+are distinct; neither proves operational calibration. Exact rational
+scores appear in expandable details.

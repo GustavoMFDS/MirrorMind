@@ -340,3 +340,7 @@ has guided exact bounded mathematical behavior in
 The [probability study](../../examples/m1_census_probability_study.py)
 has guided fixed fictional design and complete receipt replay in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasts.
+
+The [probabilistic observatory](../../examples/m1_census_probability_observatory.py)
+has guided offline fictional report and replay behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md); no operational acceptance.
