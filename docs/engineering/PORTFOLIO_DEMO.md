@@ -36,6 +36,10 @@ existing fictional fixture configuration.
   script draws the fixed forecast profile, shows diagnostic JSON, facts,
   engine evidence, gaps, flags and full trace. No network requests are needed;
   a restrictive meta CSP disallows connections and external resources.
+  Section links, named keyboard-focusable scroll regions, table captions and
+  headers help navigate the report at narrow widths. A null fill rate is
+  displayed as Not available, not as 0%; zero forecast values remain zero.
+  The embedded result and decision semantics are unchanged.
 - [Workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md): the same request
   validation, synthetic fixture, temporal cutoff, model card, policy engine,
   assumptions and trace contracts remain unchanged. The default engine is

@@ -77,6 +77,25 @@ For simulations: valid WorldKernel contract mapping and bounded local process
 execution do not imply causal or predictive accuracy, arbitrary-code
 containment or a production service.
 
+## Local synthetic tool orchestration remains experimental
+
+`local_synthetic_tool_orchestration` is exposed in `GET /v1/capabilities` as
+an experimental local library capability. Its fixed registry calls only the
+fictional M2-01 retriever and the existing M1F-02 synthetic decision workflow.
+The only provider in the shipped example is a scripted test double. The tool
+registry is immutable after construction; calls, turns, JSON depth and byte
+sizes are bounded; output and provider failures return fixed refusal codes.
+The final receipt requires previously observed citation-reference membership
+and leaves human review required, action authorization false and writes false.
+
+These controls do not authenticate the provider mode, prove semantic support
+for draft prose, create an approval record, enforce server-level quotas or
+isolate arbitrary native code. There is no live model, public agent route,
+real-source input, persistence, token/cost meter or business action. Generic
+`agentic_orchestration` remains `planned`; do not promote it based on this
+scripted local slice. See the [M2-03 source walkthrough](M2_TOOL_ORCHESTRATION.md)
+and its named regressions in the [evidence map](EVIDENCE_MAP.json).
+
 ## 3. How the integrity checks differ
 
 ```bash

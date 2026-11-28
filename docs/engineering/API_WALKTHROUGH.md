@@ -13,7 +13,7 @@ plus the [shared contracts](CONTRACT_WALKTHROUGH.md).
 | --- | --- | --- |
 | `mirrormind.api.app:app` | Creates one FastAPI instance; attaches system, scenario and decision routers | Running a worker, starting an agent, retrieving documents or creating a database |
 | `system.health()` | `GET /health`, HTTP 200 and `{"status":"ok","service":"mirrormind-api"}` | Readiness of a future datastore/forecast/WorldKernel engine |
-| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including the optional pinned WorldKernel adapter and fictional evidence retrieval) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
+| `system.capabilities()` | `GET /v1/capabilities`, reports `status="scaffold"`, two currently implemented API functions, experimental local-library capabilities (including the optional pinned WorldKernel adapter, fictional evidence retrieval and scripted M2-03 orchestration) and planned capabilities | It does not certify that experimental data are authorized, or that planned modules exist or execute |
 | `scenarios.validate_scenario(spec)` | `POST /v1/scenarios/validate`; Pydantic validates v0.1 `ScenarioSpec`, returns a summary with `validated_not_executed` | Forecast, RAG, simulation, approval, audit or budget enforcement |
 | `decisions.compare_synthetic_retail_decisions(request)` | `POST /v1/decision-workflows/retail/synthetic`; invokes one bounded in-memory fictional evidence-to-comparison service with the policy test double and returns an experimental trace or explicit abstention | Real data, source authorization, empirical forecast, calibrated interval, WorldKernel call, policy ranking, persistence, human approval or operational writes |
 
@@ -98,6 +98,14 @@ untrusted excerpts with exact fixture offsets and an excerpt digest. There is
 no retrieval HTTP route, authenticated identity, real-source permission or
 model call. See the [M2 walkthrough](M2_EVIDENCE_RETRIEVAL.md) for the
 contracts, BM25 calculation, tamper regressions and reproducible CLI.
+
+The separate `local_synthetic_tool_orchestration` capability is also
+experimental. A local caller can use the scripted example to connect that
+retriever and the existing M1F-02 synthetic decision workflow through two
+fixed typed tools. `GET /v1/capabilities` reports this library capability; no
+HTTP route starts an agent, accepts a provider, exposes a registry or performs
+an action. See the [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md) for provider,
+tool, size and citation boundaries.
 
 ```bash
 python -m pytest -q tests/integration/test_api.py
