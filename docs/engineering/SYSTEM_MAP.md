@@ -395,3 +395,26 @@ API, persistence, source or authority.
 The [offline bivariate report](../../examples/m1_census_bivariate_observatory.py)
 renders fixed-study metrics after full replay and regenerates fixed
 joint and marginal examples. No new API, storage or authority.
+
+### Experimental paired-state Markov engine
+The [joint Markov module](../../src/mirrormind/domains/retail/census_joint_markov.py)
+computes bounded conditional cumulative joint distributions from caller
+supplied transition schedules. It reuses the bivariate PMF contract,
+without changing existing independent-in-time convolution, API,
+persistence or authority.
+
+### Fixed temporal estimators
+The [temporal model module](../../src/mirrormind/domains/retail/census_temporal_models.py)
+fits four bounded candidate matrices from observed paired states and
+passes each to exact joint Markov propagation. It neither selects
+a model nor changes source ingestion, API, persistence or authority.
+
+### Fictional temporal study
+The [temporal study](../../examples/m1_census_temporal_study.py)
+combines fixed paired-state estimation, exact Markov propagation and
+replayed fictional joint scoring. No ingestion, API, journal or authority.
+
+### Dynamic network observatory
+The [offline temporal report](../../examples/m1_census_temporal_observatory.py)
+renders a replayed fixed temporal study and conditional transition,
+joint and marginal examples. No new API, persistence or authority.

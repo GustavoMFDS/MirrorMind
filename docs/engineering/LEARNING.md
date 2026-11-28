@@ -1075,3 +1075,28 @@ Generate the [bivariate observatory](../../examples/m1_census_bivariate_observat
 Compare joint matrices and the exact marginal tables of the matched
 independent and joint methods. Equal marginals need not imply equal
 joint events or covariance. No causal conclusion follows.
+
+### Exercise: conditional paired-state propagation
+Run the [joint Markov tests](../../tests/unit/test_census_joint_markov.py).
+Compare direct path enumeration with integer mass propagation. Change
+the schedule mid-horizon and explain how the output differs from
+independent-in-time convolution. A supplied transition structure
+does not establish real-world causal effects.
+
+### Exercise: learn paired transition laws
+Run the [temporal estimator tests](../../tests/unit/test_census_temporal_models.py).
+Compare independently smoothed own-axis and cross-axis binary
+conditionals with the full previous-pair estimator. Explain the effect
+of missing contexts and why predictive dependence is not causal identification.
+
+### Exercise: compare temporal structure
+Run the [temporal study](../../examples/m1_census_temporal_study.py)
+and compare joint scores for iid, own, cross and full conditional
+laws. Discuss missing contexts, structural changes and why predictive
+association alone does not establish causality.
+
+### Exercise: inspect temporal transition laws
+Generate the [temporal observatory](../../examples/m1_census_temporal_observatory.py).
+Compare own and cross rows and the resulting conditional cumulative
+joint PMFs. Inspect the six oracle steps and explain the limitations
+of fitting a stationary law across a structural change.

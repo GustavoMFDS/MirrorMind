@@ -188,3 +188,22 @@ effects, empirical calibration, holdout or statistical winner.
 The bivariate observatory visualizes a freshly replayed fixed study and
 preselected joint examples, not an operational model or independent
 calibration or causal evidence.
+
+The experimental joint Markov engine adds exact conditional propagation
+for four paired sign states under bounded caller-supplied schedules.
+It does not establish learned dynamics, authentic transitions,
+causal effects, empirical calibration or operational forecasts.
+
+Experimental temporal estimators learn fixed transition rows from
+24 supplied paired sign states, then propagate conditional joint PMFs.
+No authenticated temporal availability, model selection, empirical
+calibration, causal effects or operational forecasts.
+
+The fixed fictional temporal study compares four estimated transition
+structures under known synthetic mechanisms. The oracle knows the
+future schedule. No causal identification, empirical calibration,
+independent holdout or operational forecast is established.
+
+The offline temporal observatory visualizes a freshly replayed fixed
+study, estimated transition rows and privileged oracle schedules.
+It does not establish causal effects or empirical calibration.

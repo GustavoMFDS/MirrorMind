@@ -220,6 +220,17 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `c
 | `CensusExperimentJournal.read` | method | `def read(self, experiment_id: str) -> dict[str, object]` | Read unverified metadata; use verify_stored for explicit local replay. | [L210](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L210) |
 | `read_census_journal_snapshot` | function | `def read_census_journal_snapshot(path: Path) -> tuple[dict[str, object], ...]` | Read existing caller-owned metadata in one bounded read-only transaction. | [L237](../../../src/mirrormind/domains/retail/census_experiment_journal.py#L237) |
 
+## `mirrormind.domains.retail.census_joint_markov`
+
+Source: [`src/mirrormind/domains/retail/census_joint_markov.py`](../../../src/mirrormind/domains/retail/census_joint_markov.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `math`, `mirrormind.domains.retail.census_bivariate`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_validate` | function | `def _validate(start: State, schedule: tuple[TransitionMatrix, ...]) -> None` | — | [L18](../../../src/mirrormind/domains/retail/census_joint_markov.py#L18) |
+| `propagate_joint_markov` | function | `def propagate_joint_markov(start: State, schedule: tuple[TransitionMatrix, ...]) -> JointPMF` | Conditional sum of future paired states, excluding the start state. | [L41](../../../src/mirrormind/domains/retail/census_joint_markov.py#L41) |
+
 ## `mirrormind.domains.retail.census_models`
 
 Source: [`src/mirrormind/domains/retail/census_models.py`](../../../src/mirrormind/domains/retail/census_models.py)
@@ -274,6 +285,19 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `_partition` | function | `def _partition(plan: CensusOriginSchedule) -> tuple[tuple[CensusForecastOrigin, ...], ...]` | — | [L41](../../../src/mirrormind/domains/retail/census_split.py#L41) |
 | `census_schedule_sha256` | function | `def census_schedule_sha256(plan: CensusOriginSchedule) -> str` | Fingerprint validated schedule and fixed partition policy. | [L75](../../../src/mirrormind/domains/retail/census_split.py#L75) |
 | `evaluate_frozen_census_split` | function | `def evaluate_frozen_census_split(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, expected_schedule_sha256: str, split: Literal['validation', 'holdout']) -> dict[str, object]` | Compare a caller-retained schedule digest before fictional scoring. | [L93](../../../src/mirrormind/domains/retail/census_split.py#L93) |
+
+## `mirrormind.domains.retail.census_temporal_models`
+
+Source: [`src/mirrormind/domains/retail/census_temporal_models.py`](../../../src/mirrormind/domains/retail/census_temporal_models.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `itertools`, `math`, `mirrormind.domains.retail.census_bivariate`, `mirrormind.domains.retail.census_joint_markov`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_row` | function | `def _row(a: int, b: int, c: int, d: int) -> TransitionRow` | — | [L23](../../../src/mirrormind/domains/retail/census_temporal_models.py#L23) |
+| `_matrix` | function | `def _matrix(rows: list[TransitionRow]) -> TransitionMatrix` | — | [L28](../../../src/mirrormind/domains/retail/census_temporal_models.py#L28) |
+| `fit_temporal_models` | function | `def fit_temporal_models(history: tuple[State, ...]) -> dict[str, TransitionMatrix]` | Estimate fixed row laws using only the supplied 24 observed states. | [L33](../../../src/mirrormind/domains/retail/census_temporal_models.py#L33) |
+| `predict_temporal_models` | function | `def predict_temporal_models(history: tuple[State, ...], horizon: int) -> dict[str, JointPMF]` | Propagate each fixed estimated law, without selecting a model. | [L77](../../../src/mirrormind/domains/retail/census_temporal_models.py#L77) |
 
 ## `mirrormind.domains.retail.census_vintages`
 

@@ -1229,3 +1229,31 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_bivariate_observatory.py](../../examples/m1_census_bivariate_observatory.py) | Replayed offline joint/marginal visualization |
 | [tests/integration/test_census_bivariate_observatory.py](../../tests/integration/test_census_bivariate_observatory.py) | Report, matrix mass and failure tests |
 | [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Bounded joint Markov engine
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_joint_markov.py](../../src/mirrormind/domains/retail/census_joint_markov.py) | Exact paired-state transition propagation |
+| [tests/unit/test_census_joint_markov.py](../../tests/unit/test_census_joint_markov.py) | Path enumeration, schedule and bounds tests |
+| [docs/engineering/changes/M1C_04_CENSUS_JOINT_MARKOV.md](changes/M1C_04_CENSUS_JOINT_MARKOV.md) | Scoped acceptance and impact map |
+
+### Fixed temporal estimators
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_temporal_models.py](../../src/mirrormind/domains/retail/census_temporal_models.py) | Fixed paired-state estimation and conditional prediction |
+| [tests/unit/test_census_temporal_models.py](../../tests/unit/test_census_temporal_models.py) | Counting oracle, orientation and input tests |
+| [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_MODELS.md](changes/M1C_04_CENSUS_TEMPORAL_MODELS.md) | Scoped acceptance and impact map |
+
+### Fictional temporal study
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_temporal_study.py](../../examples/m1_census_temporal_study.py) | Fixed temporal study and receipt replay |
+| [tests/integration/test_census_temporal_study.py](../../tests/integration/test_census_temporal_study.py) | Commitment, replay and causal input tests |
+| [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_STUDY.md](changes/M1C_04_CENSUS_TEMPORAL_STUDY.md) | Scoped acceptance and impact map |
+
+### Dynamic network observatory
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_temporal_observatory.py](../../examples/m1_census_temporal_observatory.py) | Replayed offline temporal visualization |
+| [tests/integration/test_census_temporal_observatory.py](../../tests/integration/test_census_temporal_observatory.py) | Report, transition row mass and failure tests |
+| [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md) | Scoped acceptance and impact map |

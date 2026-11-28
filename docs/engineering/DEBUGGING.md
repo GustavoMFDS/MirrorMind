@@ -551,3 +551,30 @@ scores are expected, not evidence of equal joint predictions.
 Use a new absolute HTML output path. Replay mismatch prevents output.
 The matrices use a common probability scale and exact fractions;
 missing cells are zero probability, not missing observations.
+
+### Joint Markov schedule rejection
+Check the exact paired start state, immutable nested tuples, one to
+six matrices, state ordering and four nonnegative integer weights per
+row with positive total. A zero-weight transition is valid; an
+all-zero row is not. The starting state is excluded from cumulative
+displacement. The engine validates inputs before arithmetic and
+returns an immutable canonical PMF, without a cache.
+
+### Temporal estimator input rejection
+Check that history consists of exactly 24 immutable paired sign states
+and horizon is 1, 3 or 6. Conditional models use 23 transitions.
+Unseen contexts are uniform because of pseudocounts. Own-axis and
+cross-axis source indexing differ; inspect the exact row probabilities
+rather than comparing unnormalized weights. No public cache.
+
+### Temporal study replay
+Check the declared revision, retained commitment and exact canonical
+receipt. Switch transition 53 affects the forecast from origin 52;
+origins before the change can target across the change. Oracle has
+privileged future schedule access. No public cache is exposed.
+
+### Temporal observatory
+Use a new absolute HTML output path. Replay mismatch prevents output.
+Rows represent previous states and columns next states; every row
+sums to one exactly. Oracle matrices are privileged per-step laws,
+not estimated parameters or observed future outcomes.

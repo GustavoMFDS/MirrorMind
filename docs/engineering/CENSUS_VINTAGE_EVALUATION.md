@@ -905,3 +905,116 @@ after a replay mismatch.
 Run `python -m pytest -q tests/integration/test_census_bivariate_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md).
 Independent review pending; markup checks are not accessibility certification.
+
+## Bounded joint Markov propagation
+The [joint Markov engine](../../src/mirrormind/domains/retail/census_joint_markov.py)
+propagates a paired sign process on ordered states (-4,-4), (-4,4),
+(4,-4), (4,4). A supplied schedule contains one through six immutable
+4-by-4 transition matrices; rows and columns follow state order.
+Each row contains exact integer weights 0..1024 and positive total,
+normalized independently. Zero transitions and deterministic rows are
+permitted. The output is the canonical joint PMF of cumulative future
+states, excluding the supplied start. The algorithm tracks integer
+mass by cumulative pair and current state, scales row denominators
+by their least common multiple, reduces common factors and checks
+mass conservation before projection. No approximation or cache.
+All nested inputs are checked before propagation. Schedules may
+vary by step, but the engine neither estimates nor authenticates them.
+Four states only; this is not a general dynamic network, fitted model,
+intervention, causal effect or empirical calibration.
+
+Proposed evidence MM-CEN-035:
+`test_joint_markov_enumeration` checks exact equality to direct
+Fraction path enumeration for every start state and horizon 1..6.
+Other tests cover time-varying schedules, unequal row totals,
+deterministic/zero transitions, row scaling, maximum weights and
+invalid nested types. Run
+`python -m pytest -q tests/unit/test_census_joint_markov.py`.
+See [change request](changes/M1C_04_CENSUS_JOINT_MARKOV.md).
+Independent review pending.
+
+## Fixed paired-state temporal estimators
+The [temporal estimators](../../src/mirrormind/domains/retail/census_temporal_models.py)
+fit four fixed candidate matrices from exactly 24 observed paired
+sign states. IID counts all 24 observations; own-axis and cross-axis
+models estimate separately smoothed binary conditional distributions
+and multiply them within each row; full estimates the four-outcome
+conditional law given the previous pair. Conditional models use 23
+consecutive transitions. One pseudocount per outcome gives uniform
+unseen contexts. Weights are reduced by their common divisor; the
+candidate order is fixed. Forecasting propagates each fitted stationary
+matrix from the last observed state at horizons 1/3/6 using the joint
+Markov engine. No target, future observations, scenario identifier,
+adaptive selection or public cache. The history is supplied by the
+caller; the module does not authenticate dates or availability.
+
+Proposed evidence MM-CEN-036:
+`test_temporal_estimators_direct_counting` compares all candidate rows
+against an independent rational counting oracle. Additional tests
+check cross-axis orientation, missing contexts, forecast propagation,
+future invariance, fresh mappings and rejection of invalid histories.
+Run `python -m pytest -q tests/unit/test_census_temporal_models.py`.
+See [change request](changes/M1C_04_CENSUS_TEMPORAL_MODELS.md).
+No empirical model, calibration, causal identification or authority.
+Independent review pending.
+
+## Fixed fictional temporal study
+The [temporal study](../../examples/m1_census_temporal_study.py)
+commits a fixed paired-sign study and declared revision before scoring.
+Four designs: independent, own-state persistence, cross-axis persistence
+and cross-to-own switch at transition 53. Counter-hash seeds
+131001..131004; 16 paths each, 64 states, origins 48..57, horizons
+1/3/6. The two axes update simultaneously from the preceding state;
+copy probability 3/4, independent signs probability 1/2.
+The four fixed fitted candidates use only the last 24 observed states.
+The oracle alone knows the future transition schedule, not realizations.
+All methods share observed cumulative future signed targets.
+Exact group means include joint Brier, reference excess, both marginal
+CRPS scores, event Brier and probability, observed event rate and
+covariance. Each group has a streaming event transcript digest.
+
+    python -m examples.m1_census_temporal_study prepare --revision REV
+    python -m examples.m1_census_temporal_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_temporal_study demo --revision REV
+
+Prepare does not score. Run requires a retained commitment; demo
+self-generates one. Both execution modes replay the report. The
+verifier compares canonical bytes at most 1 MiB, excluding stdout
+newline. Fixed fixtures and overlapping targets are not independent
+statistical samples. No causal effect, authenticated temporal
+availability, independent registration, attestation, empirical data,
+holdout, selection, calibration, confidence interval or winner.
+
+Proposed evidence MM-CEN-037:
+`test_temporal_study_exact_replay` verifies fixed report and study
+digests, complete replay, expected row counts and oracle excess.
+Additional tests reject rehashed forgery, validate commitment before
+scoring, check future invariance and the exact transition boundary.
+Run `python -m pytest -q tests/integration/test_census_temporal_study.py`.
+See [change request](changes/M1C_04_CENSUS_TEMPORAL_STUDY.md).
+Independent review pending.
+
+## Offline dynamic network observatory
+The [temporal observatory](../../examples/m1_census_temporal_observatory.py)
+renders a fresh fixed temporal study only after full local replay.
+
+    python -m examples.m1_census_temporal_observatory --revision REV --output ABSOLUTE_HTML
+
+Separate descriptive scenario/horizon tables expose exact joint and
+marginal scores, event probabilities, covariance, and reference excess.
+Fixed examples (path 0, origin 52, horizon six) show previous/next
+state transition matrices with percentages and exact fractions,
+conditional cumulative joint distributions and marginals. Each fitted
+candidate uses one stationary estimated matrix; the oracle displays
+each of its six privileged future matrices. No additional sample,
+statistical winner, empirical calibration, causal effect, imported
+record, network, script or operational authority. Report includes
+declared revision, study, report and group transcript digests.
+
+Proposed evidence MM-CEN-038:
+`test_temporal_observatory_replay_and_matrices` checks replayed metrics,
+provenance, table counts and internal links. Other tests verify exact
+row mass, exclusive output and no output after replay mismatch.
+Run `python -m pytest -q tests/integration/test_census_temporal_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md).
+Independent review pending; markup tests are not accessibility certification.

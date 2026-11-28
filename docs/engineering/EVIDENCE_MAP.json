@@ -518,6 +518,34 @@
     "limitation": "Offline replayed fixed bivariate report and example matrices only; no empirical calibration, accessibility certification, causal effects or operational forecasting. Independent review pending."
   },
   {
+    "id": "MM-CEN-035",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_joint_markov.py",
+    "function": "test_joint_markov_enumeration",
+    "limitation": "Exact four-state paired Markov propagation of supplied bounded schedules; no transition estimation, reference authenticity, causal effects, empirical calibration or operational authority. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-036",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_temporal_models.py",
+    "function": "test_temporal_estimators_direct_counting",
+    "limitation": "Fixed bounded paired-state transition estimators only; no authenticated availability, causal effects, adaptive selection, empirical calibration or authority. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-037",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_temporal_study.py",
+    "function": "test_temporal_study_exact_replay",
+    "limitation": "Fixed fictional paired-state temporal comparison and local replay only; no independent registration, causal effects, empirical calibration, inference or operational authority. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-038",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_temporal_observatory.py",
+    "function": "test_temporal_observatory_replay_and_matrices",
+    "limitation": "Offline replayed fixed temporal study and transition examples only; no empirical calibration, causal effects, accessibility certification or operational authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",
