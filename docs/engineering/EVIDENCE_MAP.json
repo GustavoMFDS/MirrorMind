@@ -455,6 +455,20 @@
     "limitation": "Fictional comparison and local deterministic replay only; no independent registration, empirical skill, calibrated inference, browser accessibility certification or deployment. Independent review pending."
   },
   {
+    "id": "MM-CEN-026",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_history.py",
+    "function": "test_history_snapshot_replay_does_not_write",
+    "limitation": "Fictional metadata snapshot and explicitly selected local replay only; no chronology, execution counts, independent custody, historical code attestation or inference. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-027",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_sensitivity.py",
+    "function": "test_sensitivity_grid_replays_unique_cells_and_preserves_reference",
+    "limitation": "Fixed fictional one-factor grid and exact descriptive replay only; no independent replications, cross-axis ranking, empirical skill, calibrated inference or independent holdout. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

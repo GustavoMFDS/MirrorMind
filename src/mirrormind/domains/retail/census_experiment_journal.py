@@ -233,3 +233,56 @@ class CensusExperimentJournal:
                 "forecast_eligible": False,
                 "inference_status": "abstained",
             }
+
+def read_census_journal_snapshot(path: Path) -> tuple[dict[str, object], ...]:
+    """Read existing caller-owned metadata in one bounded read-only transaction."""
+    if type(path) is not type(Path()) or not path.is_absolute() or not path.is_file():
+        raise ValueError("existing absolute journal path required")
+    db = sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=3, isolation_level=None)
+    try:
+        db.execute("PRAGMA query_only=ON")
+        db.execute("PRAGMA foreign_keys=ON")
+        db.execute("PRAGMA trusted_schema=OFF")
+        db.execute("BEGIN")
+        _check_schema(db)
+        rows = db.execute(
+            "SELECT id,schedule,manifest,revision FROM experiments ORDER BY id LIMIT ?",
+            (MAX_CENSUS_JOURNAL_EXPERIMENTS + 1,),
+        ).fetchall()
+        if len(rows) > MAX_CENSUS_JOURNAL_EXPERIMENTS:
+            raise ValueError("journal capacity exceeded")
+        entries: dict[str, dict[str, object]] = {}
+        receipts: dict[str, dict[str, str]] = {}
+        for eid, schedule, manifest, revision in rows:
+            eid = _checked_sha(eid)
+            spec = CensusExperimentSpec(schedule, manifest, revision)
+            if census_experiment_sha256(spec) != eid:
+                raise ValueError("stored commitment mismatch")
+            receipts[eid] = {}
+            entries[eid] = {
+                "experiment_sha256": eid,
+                "schedule_sha256": schedule,
+                "input_manifest_sha256": manifest,
+                "declared_code_revision": revision,
+                "receipts": receipts[eid],
+                "stored_receipts_verified_on_read": False,
+                "registration_verified": False,
+                "runtime_code_attested": False,
+                "holdout_lock_verified": False,
+                "inference_status": "abstained",
+                "action_authorized": False,
+            }
+        saved = db.execute(
+            "SELECT experiment_id,split,digest FROM receipts ORDER BY experiment_id,split LIMIT ?",
+            (2 * MAX_CENSUS_JOURNAL_EXPERIMENTS + 1,),
+        ).fetchall()
+        if len(saved) > 2 * MAX_CENSUS_JOURNAL_EXPERIMENTS:
+            raise ValueError("journal receipt capacity exceeded")
+        for eid, split, digest in saved:
+            if eid not in receipts or split not in ("validation", "holdout") or split in receipts[eid]:
+                raise ValueError("invalid stored receipt identity")
+            receipts[eid][split] = _checked_sha(digest)
+        db.commit()
+        return tuple(entries.values())
+    finally:
+        db.close()
