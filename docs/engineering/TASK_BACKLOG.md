@@ -2,27 +2,54 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, after the normal
-PR #81 merge. PR #78/MM-024 merged normally at `291562a`; PRs #79 and #80
-integrate the portfolio and synthetic release-rehearsal updates; PR #81 adds
-quality/package checks and developer onboarding. PR-head checks remain scoped
-to their exact reviewed commits; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+Current `main` is `128c266fc7e8c369141014220cb20b2264c9aa2d`, following PR #82's
+normal merge at `c31ecd6dbf3f68be8726bdba2b23a813226c2618` and the subsequent
+typing-debt/public-coverage-floor commit. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
+with the curated portfolio/index update; PR #80 adds bounded synthetic
+benchmarks and read-only release preparation. PR #77 merged normally at
+`540c474`, preserving reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`;
+nine official contexts passed on that PR head. PR #78's final head
+`8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed the exact local gate (968
+tests, zero skips, six local checks) and six observed official jobs across
+documentation catalog, Python API test/compatibility, and repository
+quality/package workflows (runs [46072345590](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345590),
+[46072345631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345631),
+and [46072345603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345603)).
+Combined-status queries for `540c474`, the #78 merge and current `main` returned
+no entries; do not transfer PR-head results to merge commits. Receipts and
+scope notes remain in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) and
+[REX_QUALITY_PACKAGING](REX_QUALITY_PACKAGING.md).
 
-PR #82 is the open M2-02 synthetic retrieval-evaluation candidate at exact
-head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, based on current `main`.
-Its local gate records 989 tests, zero skips and all six checks with the
-reviewed WorldKernel pin; 12 exact-head official checks succeeded and two
-condition-controlled jobs were skipped. No review submissions or inline
-threads are present as of this reconciliation. It is not merged. The current
-M2-03 branch `codex/m2-03-tool-orchestration-20261127` is an independent
-descendant of `10b94c9`, using integrated M1F-02 and M2-01 dependencies; it
-remains in progress pending its complete gate and review PR.
+PR #79's exact head `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed its
+local gate (970 tests, zero skips, six checks); seven observed workflow jobs
+succeeded and the main-only `deploy` job was skipped. PR #80's exact head
+`e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips and
+six local checks; eight observed jobs succeeded, while only the main-only
+deployment and manual release rehearsal jobs were skipped. Their workflow
+records are linked in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Combined
+status for current merge `7efced5` returned no entries. The benchmark is
+observational, and release preparation does not create or authorize a release.
 
-MM-024's approved UCI classification is already in main and covered by
-synthetic regressions. The one private source attempt remains stopped above
-the fixed group cap; MM-024 changes exclusion classification, not accepted
-sales rows or group cardinality. Do not reread, chunk, sample or increase the
-cap; preserve deletion by `2026-12-26`.
+PR #81's exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977
+tests, zero skips, and six local checks. Nine applicable jobs succeeded across
+five workflows: docs catalog, public site build, quality/package/container
+smoke, API test and Python 3.12/3.13 compatibility, and synthetic research
+benchmark. Main-only deployment and release rehearsal were skipped.
+Combined-status queries for the PR head and merge `10b94c9` returned no
+entries; preserve official workflow evidence at its exact head in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+
+PR #77 resolves the MM-009 wording follow-up alongside REX-09/10. The active
+candidate now records the owner's MM-024 UCI clarification. Its branch
+`codex/mm009-mm023-reconcile-20261127` is ancestry-merged with current main
+at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. No parser code is needed:
+MM-022 already implements the approved UCI-only classification, with synthetic
+regressions for supported and rejected formats, aggregate-only exclusion
+counts and redaction. This increment updates the decision, dataset/source
+records, status and learning material. It is merged through
+[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) at
+`291562a`; its final head `8c8f862` passed the local gate and six observed
+official jobs. It changed no parser contract and did not reread the workbook.
 
 The UCI #352 source call exceeded the owner-approved 250,000 product-day group
 ceiling before returning a complete projection. It produced no complete
@@ -32,10 +59,11 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`. PR #52–#59 were
+**Baseline:** main `128c266fc7e8c369141014220cb20b2264c9aa2d`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
-PRs #68–#77 are integrated. Merged branches preserve ancestry and must not be
-replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
+#77–#81 are integrated. The portfolio/index, synthetic benchmark/release
+preparation and developer-onboarding updates are present. Merged branches
+preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
@@ -43,11 +71,11 @@ replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| PR #78 / MM-024 UCI policy | Merged into `main` through merge commit `291562a`; parser behavior and classification were already implemented and synthetic-tested. | Keep the empirical UCI lane stopped under B-01/B-02; no complete projection or metric exists. |
+| PR #78 / MM-024 UCI policy | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. | Preserve the no-reread/no-partition/no-cap-increase stop and snapshot deletion deadline. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| PR #82 / M2-02 retrieval evaluation | Open, based on `10b94c9`; exact head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`; local and official checks passed as summarized above; no review threads. | Await independent review; keep synthetic scope and protected-main integration. |
-| M2-03 bounded tool orchestration | Active local branch `codex/m2-03-tool-orchestration-20261127`; M1F-02 and M2-01 are integrated dependencies. Fixed synthetic tools, typed contracts, scripted test double and adverse regressions are in progress. | Finish source walkthrough and repo maps, regenerate symbols, run the full six-check gate on the committed exact head, then prepare a separate review PR. Keep it independent from #82 and do not merge. |
+| M2-02 retrieval evaluation / PR #82 | Merged normally at `c31ecd6` into main `128c266`. Exact PR head `f6fa2ed` passed 989 local tests, zero skips, six checks and 12 official head checks; two guarded jobs were skipped. | M2-02 slice delivered as fictional/experimental. Preserve exact-head evidence; do not infer a check result for the merge SHA or later main. |
+| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, with M1F-02 and M2-01/M2-02 dependencies integrated. Fixed synthetic tools, immutable typed registry, scripted provider, refusal/budget controls and educational walkthrough are present. | Reconcile with main `128c266`, rerun focused regressions and the exact clean six-check gate, then prepare a separate review PR. No live provider, route, persistence or action authority. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
@@ -175,7 +203,7 @@ coordination.
 
 ## A. Engineering and bounded checkpoint governance
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
 | DOC-01 | P0 | ready | None | Reconcile stale introductory status, semantic map and current source/ledger; preserve dated evidence, resolve conflicting instructions, verify linked atlas. |
 | G-01 | P0 | ready | PR #50 | Review existing protocol and implement a minimal testable service-side signed current-head response and independent storage contract; no live deployment. Use existing verifier and canonical signing domain; negative wire/nonce/scope/key tests. |
@@ -227,9 +255,9 @@ coverage/selection diagnostic modules merely because they are local.
 
 | ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
-| M2-01 | P1 | review | M1F-01 | PR #60 proposes strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
-| M2-02 | P1 | planned | M2-01 | Retrieval evaluation with a declared test set, citation support and abstention; preserve document lineage and access constraints. |
-| M2-03 | P1 | planned | M1F-02, M2-01 | Typed tool registry and bounded agent orchestration over actual evidence/forecast/simulation tools; provider test double, invalid-tool/input/output and prompt-injection regressions; justified framework choice. |
+| M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
+| M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
+| M2-03 | P1 | in progress | M1F-02, M2-01 | Current branch implements a typed tool registry and bounded local orchestration over fixed synthetic evidence and decision tools; includes scripted test double, invalid-tool/input/output and prompt-injection regressions, immutable registry and justified no-framework choice. Full post-merge exact-head gate and independent review are still pending. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
 | M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |

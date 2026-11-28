@@ -71,3 +71,28 @@ publication and must be resolved independently before any upload.
 Builds use resolved version ranges; the quality tools are pinned but
 this is not a fully locked or bitwise reproducible distribution.
 No third-party engine/data bundle, paid service or deployment.
+
+## Coverage floor and typing debt follow-up
+
+PR #82 exact head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` measured
+86.41% combined public coverage (986 passed, three optional engine skips).
+See [quality CI](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46082420260).
+Introduce an initial 85% combined floor in the public quality job. Keep
+branch measurement and source scope unchanged. This is a conservative
+initial floor, not a per-module or production quality guarantee; the
+existing server-required contexts are unchanged. Future integration reviews
+must check the quality job too.
+
+On the same head, full-package mypy 1.20.2 (Python 3.11 target,
+ignore_missing_imports) found 62 errors in 16 files (66 checked).
+The follow-up uses a TypeGuard for the existing exact stock-code predicate,
+individual exact-int assertions for already validated backtest counters,
+and an explicit string assertion for the conditional winner. The evidence
+flow narrows the already-validated holdout count. No new source scope,
+model, ranking, numeric policy or public result schema; no blanket ignores.
+The same mypy diagnostic now reports 49 errors in 12 files; strict
+retrieval remains a separate CI scope. Remaining issues include typed
+backtest result contracts, Decimal exponent narrowing, runner payload
+types and intentional version/publication inheritance contracts. Review
+those with their existing owners rather than changing contracts to satisfy
+a checker. Re-run the full diagnostic after concurrent changes.

@@ -1510,5 +1510,68 @@
     "test": "tests/integration/test_portfolio_demo.py",
     "function": "test_offline_report_preserves_exact_workflow_result",
     "limitation": "Embedded JSON equals the existing synthetic service output and retains nonauthorization flags; this is a static local report, not a live agent, empirical evaluation, browser security certification or production UI."
+  },
+  {
+    "id": "MM-RETR-009",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_declared_fixture_set_reports_relevance_abstention_and_lineage",
+    "limitation": "Exact counts and rates are established for four fixed generated cases only; they do not establish real-corpus retrieval quality, statistical confidence or calibration."
+  },
+  {
+    "id": "MM-RETR-010",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_out_of_scope_hit_is_counted_without_returning_hidden_metadata",
+    "limitation": "A simulated hidden result is redacted in the report; this does not provide authenticated authorization, prevent a future service leak or prove tenant isolation."
+  },
+  {
+    "id": "MM-RETR-011",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_source_lineage_mismatch_is_not_counted_as_supported",
+    "limitation": "A mismatched source ref is rejected against the visible generated fixture; this does not authenticate an external publisher, source rights, freshness or source bytes."
+  },
+  {
+    "id": "MM-RETR-012",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/integration/test_m2_evidence_retrieval_evaluation_cli.py",
+    "function": "test_retrieval_evaluation_cli_replays_query_free_aggregate_report",
+    "limitation": "The local example deterministically replays a query-free synthetic report; it does not establish a service endpoint, persistence, RAG or retrieval quality outside the fixture."
+  },
+  {
+    "id": "MM-RETR-013",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_unknown_hit_is_counted_without_returning_its_metadata",
+    "limitation": "A fabricated unknown citation is reduced to an aggregate count; this does not authenticate the retriever or prevent private data from being mislabeled as fictional input."
+  },
+  {
+    "id": "MM-RETR-014",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_retrieval_result_cannot_exceed_declared_top_k",
+    "limitation": "The bound is checked for a fabricated contract result in the local evaluator; no alternate or remote retriever is included."
+  },
+  {
+    "id": "MM-RETR-015",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_verified_excerpt_requires_exact_source_span_and_digest",
+    "limitation": "Exact text slice and UTF-8 digest checks detect fixture tampering; a self-consistent digest does not authenticate an external source or prove rights."
+  },
+  {
+    "id": "MM-RETR-016",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_retriever_must_return_exact_result_contract",
+    "limitation": "An incompatible fabricated search return is rejected; a valid-shaped but dishonest result still requires an authenticated retriever and independently verified source."
+  },
+  {
+    "id": "MM-RETR-017",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval_evaluation.py",
+    "function": "test_malformed_and_oversized_evaluation_sets_fail_closed",
+    "limitation": "Synthetic invalid inputs are rejected before scoring; local model bounds do not enforce a service-wide quota or isolate hostile callers."
   }
 ]

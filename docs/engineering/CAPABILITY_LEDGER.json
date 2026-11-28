@@ -27,14 +27,14 @@
       "status": "planned",
       "source": null,
       "test": null,
-      "notes": "No authorized ingestion, authenticated retrieval, provenance verification, persistent RAG or agent execution; only a fictional local retrieval experiment exists."
+      "notes": "No authorized ingestion, authenticated retrieval, external source provenance verification, persistent RAG or agent execution; local citation-lineage checks apply only to generated fixtures."
     },
     {
       "id": "local_fictional_evidence_retrieval",
       "status": "experimental",
       "source": "src/mirrormind/modules/retrieval/index.py",
-      "test": "tests/unit/test_evidence_retrieval.py::test_query_filters_documents_before_ranking_and_never_discloses_denied_records",
-      "notes": "Bounded in-memory BM25 over generated fictional documents filters caller-declared scopes before tokenization and returns untrusted text with exact citation spans. No authentication, real-source permission, persistent index, quality evaluation, LLM or public retrieval route."
+      "test": "tests/unit/test_evidence_retrieval_evaluation.py::test_declared_fixture_set_reports_relevance_abstention_and_lineage",
+      "notes": "Bounded in-memory BM25 over generated fictional documents filters caller-declared scopes before tokenization and returns untrusted text with exact citation spans. A separate bounded synthetic evaluator reports relevance, abstention, scope and citation-support metrics for a fixed fictional query set only. Caller scopes and the fictional source label are not authentication or a private-data guard; no real-source permission, persistent index, generalized quality evidence, LLM or public retrieval route exists."
     },
     {
       "id": "local_synthetic_tool_orchestration",

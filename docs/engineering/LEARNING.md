@@ -896,17 +896,45 @@ they do not prove full-source compatibility or empirical forecast quality.
 
 Follow the [report walkthrough](PORTFOLIO_DEMO.md), compare selected case metrics with original JSON and explain the difference between display selection and a new seeded workflow execution.
 
-## Guided exercise 12 — trace a bounded tool call without trusting the draft
+## Guided exercise — audit the bounded fictional retrieval evaluator (40 minutes)
 
-Read the [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md), then follow
-`AgentRunRequest` through `run_bounded_tool_orchestration`, immutable
+Read the M2-02 section of the [retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md),
+then trace `run_retrieval_evaluation` in
+[`evaluation.py`](../../src/mirrormind/modules/retrieval/evaluation.py),
+`InMemoryEvidenceIndex.build` and `search` in
+[`index.py`](../../src/mirrormind/modules/retrieval/index.py), and the fixed
+cases in [`fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py).
+Run `python -m pytest -q tests/unit/test_evidence_retrieval_evaluation.py`
+and `python -m pytest -q tests/integration/test_m2_evidence_retrieval_evaluation_cli.py`.
+For each case, hand-compute recall, relevant-query hit rate, correct
+abstention, citation support and scope compliance from numerator and
+denominator counts. Explain why a zero denominator is `null`, while
+`abstention_rate` is always defined for a nonempty case set.
+
+Inspect the out-of-scope and unknown-hit regressions. Follow how their IDs and
+refs are replaced by aggregate counts, then explain why this redaction test
+does not create authentication or prevent a caller from mislabeling real data
+as a fictional fixture. Inspect the lineage and exact-span tests; identify
+which source reference, code-point offsets and UTF-8 digest each check binds.
+Run `python -m examples.m2_evidence_retrieval_evaluation` twice and compare
+the stable query-free JSON. Finally, change a gold label to a visible but
+irrelevant document and predict which metric numerators change. Do not infer
+real-corpus quality, confidence calibration or production authorization from
+the fixture's perfect scores.
+
+## Guided exercise — trace a bounded scripted tool call (45 minutes)
+
+Read the [M2-03 orchestration walkthrough](M2_TOOL_ORCHESTRATION.md), then
+trace `AgentRunRequest` through `run_bounded_tool_orchestration`, the immutable
 `ToolRegistry.invoke`, the existing fictional retriever and the M1F-02
-workflow adapter. Run
+decision adapter. Run
 `tests/unit/test_bounded_tool_orchestration.py::test_injection_like_evidence_cannot_expand_the_tool_registry`
 and
 `tests/unit/test_bounded_tool_orchestration.py::test_unobserved_citation_is_refused_as_unsupported_evidence`.
-Explain which boundary each test enforces and why neither proves that a live
-model follows instructions or that a citation entails the summary. Then try to
-reassign a registry field and inspect the fixed provider refusal when its mode
-property raises. The exercise uses fictional inputs and proves no identity,
-provider attestation, approval, network isolation or action authority.
+Explain which boundary each regression proves and why neither proves that a
+live model follows instructions or that a citation semantically entails a
+summary. Then inspect the provider-mode failure test, attempt to mutate the
+registry, and run `python -m examples.m2_bounded_tool_orchestration` twice to
+compare query-free receipts. The exercise uses fictional inputs and establishes
+no identity, provider attestation, approval, network isolation or action
+authority.

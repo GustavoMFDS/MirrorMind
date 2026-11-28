@@ -75,6 +75,7 @@ sources without relying on a manually maintained file-count assertion.
 | [`src/mirrormind/modules/retrieval/contracts.py`](../../src/mirrormind/modules/retrieval/contracts.py) | G | Frozen strict query, scope, document and citation contracts; [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md); caller scope is not authentication |
 | [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py) | G | Generated fictional documents and a fixed demo scope; [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md) |
 | [`src/mirrormind/modules/retrieval/index.py`](../../src/mirrormind/modules/retrieval/index.py) | G | Scope-first in-memory BM25, deterministic ties and exact citation mapping; [M2 retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md); no persistent or authenticated index |
+| [`src/mirrormind/modules/retrieval/evaluation.py`](../../src/mirrormind/modules/retrieval/evaluation.py) | G | Bounded synthetic relevance, abstention, scope, lineage and excerpt-support metrics; [M2-02 walkthrough](M2_EVIDENCE_RETRIEVAL.md); no real-corpus quality inference or authorization |
 | [`src/mirrormind/modules/forecasting/__init__.py`](../../src/mirrormind/modules/forecasting/__init__.py) | I | Offline forecast module marker, no model registry |
 | [`src/mirrormind/modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py) | G | Matched one-step baselines and a bounded repeated lag-seven profile using the same one-step rule; [method guide](M1_STAGED_ROLLING_BASELINES.md) and [M1F-02 workflow](M1_RETAIL_SYNTHETIC_DECISION_WORKFLOW.md) |
 | [`src/mirrormind/modules/simulation/__init__.py`](../../src/mirrormind/modules/simulation/__init__.py) | I | Simulation module namespace |
@@ -102,6 +103,7 @@ sources without relying on a manually maintained file-count assertion.
 | SimulationGateway Protocol | Interface only | A concrete executor and validated engine result; pure request translation now has separate unit evidence |
 | WorldKernel request mapping | Pure local translation only | A pinned optional SDK adapter, registered-world execution, result validation and runtime failure evidence |
 | WorldKernel execution | Experimental local-only | Exact pin, fixed inventory demo and M1 policy worlds, bounded worker, validated results, synthetic parity and local CLI integration; no HTTP, arbitrary handler, CPU/memory sandbox or production claim |
+| Local fictional retrieval and evaluation | Experimental | Generated-fixture unit and CLI regressions; aggregate metrics and verified refs only; no identity, private-data guard, public endpoint or real-corpus quality claim |
 | Evidence ingestion/RAG | Planned | Permission checks, provenance, retention, source-specific tests |
 | Forecasting | Planned | Temporal holdout, leakage prevention, baselines, uncertainty evaluation |
 | Agentic workflow | Planned | Tool privilege boundaries, approval and cost limits, audit |
@@ -144,6 +146,7 @@ of a claimed effect**.
 | --- | --- |
 | [`examples/m1_observation_preflight.py`](../../examples/m1_observation_preflight.py) | **Experimental** standalone CLI; see [M1_DATA_PREFLIGHT](M1_DATA_PREFLIGHT.md) and [unit tests](../../tests/unit/test_m1_observation_preflight.py). This is **not** a new production `src/mirrormind/modules/evidence` implementation. |
 | [`examples/m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py) | **Experimental** deterministic CLI over generated fictional documents; see [M2_EVIDENCE_RETRIEVAL](M2_EVIDENCE_RETRIEVAL.md), [unit tests](../../tests/unit/test_evidence_retrieval.py) and [CLI integration test](../../tests/integration/test_m2_evidence_retrieval_cli.py). It is not authenticated retrieval or RAG. |
+| [`examples/m2_evidence_retrieval_evaluation.py`](../../examples/m2_evidence_retrieval_evaluation.py) | **Experimental** query-free metrics over a fixed declared synthetic set; see [M2_EVIDENCE_RETRIEVAL](M2_EVIDENCE_RETRIEVAL.md), [unit regressions](../../tests/unit/test_evidence_retrieval_evaluation.py) and [CLI integration test](../../tests/integration/test_m2_evidence_retrieval_evaluation_cli.py). The scores do not generalize to another corpus. |
 
 The reviewed capability ledger declares
 `synthetic_observation_preflight` `experimental`;

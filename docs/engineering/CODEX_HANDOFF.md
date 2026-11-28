@@ -2,34 +2,34 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, after the normal
-  PR #81 merge. PR #78/MM-024 merged at `291562a`; PRs #79–#81 update portfolio,
-  quality and developer-experience surfaces. PR-head checks remain scoped to
-  exact reviewed commits; no result is inferred for merge SHAs without entries.
-- PR #82 is open at exact head
-  `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, based on current `main`. Its
-  exact-head local gate records 989 tests, zero skips and six checks with the
-  reviewed WorldKernel pin; 12 official checks succeeded and two guarded jobs
-  were skipped. No reviews or inline threads are present at this reconciliation.
-  Do not merge or treat these results as evidence for a later head.
-- The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
-  only uppercase `C` plus six digits means cancellation; other single ASCII
-  letters plus six digits are excluded before sales grouping and represented
-  by one aggregate unverified class; all other formats fail closed. Existing
-  code and synthetic regressions already implement this, including identifier
-  redaction and unchanged generic-reader behavior.
-- The UCI source call stopped above the 250,000 product-day group ceiling
-  without a complete projection, full exclusion counts or metrics. MM-024
-  changes an exclusion label, not the set of sales rows or group cardinality.
-  Do not reread, chunk, sample or raise the cap. Preserve local snapshot
-  deletion by `2026-12-26`; no empirical score is available.
-- M2-03 is active locally on `codex/m2-03-tool-orchestration-20261127`, based
-  directly on `10b94c9`. Its M1F-02 and M2-01 dependencies are integrated. It
-  adds only fixed local synthetic tools, a scripted provider and no API route;
-  complete the exact local gate and prepare a separate review PR without
-  waiting for #82. Keep automated tests synthetic, and keep Census source
-  bytes, live provider credentials, paid usage and business actions outside
-  scope under B-01/B-02/B-05 and the owner's zero-paid decision.
+- Current `main` is `128c266fc7e8c369141014220cb20b2264c9aa2d`, after PR #82
+  merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #82's exact
+  head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed its 989-test local
+  six-check gate and 12 official checks; those remain exact-PR-head evidence,
+  not a claim about the merge SHA or newer main. See
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+- The active branch `codex/m2-03-tool-orchestration-20261127` now contains a
+  bounded local M2-03 implementation on top of the merged M2-02 baseline.
+  It composes only fixed fictional retrieval and M1F-02 decision tools through
+  strict contracts, an immutable registry and a scripted test double. The
+  receipt is query-free; drafts remain untrusted, require human review and
+  cannot authorize writes or actions. No live model, HTTP route, persistence,
+  authenticated identity or semantic-entailment check exists. The six-check
+  exact-head gate is pending after this merge; re-run focused and full checks on
+  the final clean commit before opening the separate review PR.
+- PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
+  commits. Keep retrieval and its evaluation experimental and fictional.
+- The owner's MM-024 UCI policy is implemented in main: six-digit IDs are
+  normal; uppercase `C` plus six digits means cancellation; other single ASCII
+  letters plus six digits are excluded before aggregation as one unverified
+  class; unsupported formats fail closed. The approved source call stopped
+  above 250,000 product-day groups, yielding no complete projection or metric.
+  Do not reread, chunk, sample or raise the cap. Preserve deletion by
+  `2026-12-26`.
+- M1's synthetic vertical slice remains integrated. Empirical data use,
+  production acceptance, live provider access and external WorldKernel changes
+  remain blocked by their existing decisions. Keep automated fixtures
+  synthetic, paid-service spend at zero, and all main protections/checks intact.
 
 
 ## Historical review reconciliation - 2026-11-27

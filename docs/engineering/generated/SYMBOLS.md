@@ -389,18 +389,18 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
 
-Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `re`
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `re`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L30](../../../src/mirrormind/domains/retail/uci_transactions.py#L30) |
-| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L39](../../../src/mirrormind/domains/retail/uci_transactions.py#L39) |
-| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L50](../../../src/mirrormind/domains/retail/uci_transactions.py#L50) |
-| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L64](../../../src/mirrormind/domains/retail/uci_transactions.py#L64) |
-| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L73](../../../src/mirrormind/domains/retail/uci_transactions.py#L73) |
-| `is_valid_uci_stock_code` | function | `def is_valid_uci_stock_code(value: object, *, allow_internal_spaces: bool=False) -> bool` | Validate a normalized source code without trimming or coercion. | [L80](../../../src/mirrormind/domains/retail/uci_transactions.py#L80) |
-| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L101](../../../src/mirrormind/domains/retail/uci_transactions.py#L101) |
-| `_project_uci_retail_rows` | function | `def _project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int, max_groups: int, max_groups_ceiling: int, allow_internal_stock_code_spaces: bool, allow_unverified_invoice_prefix: bool=False) -> UciRetailProjection` | Internal bounded implementation shared with the UCI workbook adapter. | [L122](../../../src/mirrormind/domains/retail/uci_transactions.py#L122) |
+| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L31](../../../src/mirrormind/domains/retail/uci_transactions.py#L31) |
+| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L40](../../../src/mirrormind/domains/retail/uci_transactions.py#L40) |
+| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L51](../../../src/mirrormind/domains/retail/uci_transactions.py#L51) |
+| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L65](../../../src/mirrormind/domains/retail/uci_transactions.py#L65) |
+| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L74](../../../src/mirrormind/domains/retail/uci_transactions.py#L74) |
+| `is_valid_uci_stock_code` | function | `def is_valid_uci_stock_code(value: object, *, allow_internal_spaces: bool=False) -> TypeGuard[str]` | Validate a normalized source code without trimming or coercion. | [L81](../../../src/mirrormind/domains/retail/uci_transactions.py#L81) |
+| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L102](../../../src/mirrormind/domains/retail/uci_transactions.py#L102) |
+| `_project_uci_retail_rows` | function | `def _project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int, max_groups: int, max_groups_ceiling: int, allow_internal_stock_code_spaces: bool, allow_unverified_invoice_prefix: bool=False) -> UciRetailProjection` | Internal bounded implementation shared with the UCI workbook adapter. | [L123](../../../src/mirrormind/domains/retail/uci_transactions.py#L123) |
 
 ## `mirrormind.domains.retail.uci_workbook`
 
@@ -895,7 +895,7 @@ Static imports (including inside functions): `__future__`, `datetime`, `math`, `
 
 Source: [`src/mirrormind/modules/retrieval/__init__.py`](../../../src/mirrormind/modules/retrieval/__init__.py)
 
-Static imports (including inside functions): `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.index`
+Static imports (including inside functions): `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.evaluation`, `mirrormind.modules.retrieval.index`
 
 No top-level classes or functions.
 
@@ -923,16 +923,38 @@ Static imports (including inside functions): `__future__`, `hashlib`, `pydantic`
 | `EvidenceRetrievalResult` | class | `class EvidenceRetrievalResult` | Versioned result envelope; query text and denied-record metadata are omitted. | [L141](../../../src/mirrormind/modules/retrieval/contracts.py#L141) |
 | `EvidenceRetrievalResult.match_status_to_hits` | method | `def match_status_to_hits(self) -> EvidenceRetrievalResult` | — | [L149](../../../src/mirrormind/modules/retrieval/contracts.py#L149) |
 
+## `mirrormind.modules.retrieval.evaluation`
+
+Source: [`src/mirrormind/modules/retrieval/evaluation.py`](../../../src/mirrormind/modules/retrieval/evaluation.py)
+
+Static imports (including inside functions): `__future__`, `hashlib`, `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.index`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_EvaluationModel` | class | `class _EvaluationModel` | Immutable, non-coercing base for local evaluation contracts. | [L32](../../../src/mirrormind/modules/retrieval/evaluation.py#L32) |
+| `RetrievalEvaluationCase` | class | `class RetrievalEvaluationCase` | One declared fictional query, caller scope and relevant-document set. | [L38](../../../src/mirrormind/modules/retrieval/evaluation.py#L38) |
+| `RetrievalEvaluationCase.require_unique_relevance_labels` | method | `def require_unique_relevance_labels(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L48](../../../src/mirrormind/modules/retrieval/evaluation.py#L48) |
+| `RetrievalCaseOutcome` | class | `class RetrievalCaseOutcome` | Query-free case counts and citation refs verified against visible data. | [L54](../../../src/mirrormind/modules/retrieval/evaluation.py#L54) |
+| `RetrievalCaseOutcome.require_consistent_counts` | method | `def require_consistent_counts(self) -> RetrievalCaseOutcome` | — | [L70](../../../src/mirrormind/modules/retrieval/evaluation.py#L70) |
+| `RetrievalEvaluationReport` | class | `class RetrievalEvaluationReport` | Aggregate retrieval metrics with explicit counts and no query text. | [L88](../../../src/mirrormind/modules/retrieval/evaluation.py#L88) |
+| `RetrievalEvaluationReport.require_consistent_aggregate_counts` | method | `def require_consistent_aggregate_counts(self) -> RetrievalEvaluationReport` | — | [L119](../../../src/mirrormind/modules/retrieval/evaluation.py#L119) |
+| `run_retrieval_evaluation` | function | `def run_retrieval_evaluation(documents: tuple[EvidenceDocument, ...] \| list[EvidenceDocument], cases: tuple[RetrievalEvaluationCase, ...] \| list[RetrievalEvaluationCase]) -> RetrievalEvaluationReport` | Evaluate a bounded declared test set against the fictional lexical index. | [L139](../../../src/mirrormind/modules/retrieval/evaluation.py#L139) |
+| `_is_visible` | function | `def _is_visible(document: EvidenceDocument, case: RetrievalEvaluationCase) -> bool` | Apply both caller-declared access and requested collection scope. | [L289](../../../src/mirrormind/modules/retrieval/evaluation.py#L289) |
+| `_matches_document_lineage` | function | `def _matches_document_lineage(citation: EvidenceCitation, document: EvidenceDocument) -> bool` | Check that a citation names the exact visible fixture and snapshot. | [L301](../../../src/mirrormind/modules/retrieval/evaluation.py#L301) |
+| `_citation_is_supported` | function | `def _citation_is_supported(excerpt: str, citation: EvidenceCitation, document: EvidenceDocument) -> bool` | Verify lineage, code-point span, exact excerpt and UTF-8 digest. | [L313](../../../src/mirrormind/modules/retrieval/evaluation.py#L313) |
+| `_rate` | function | `def _rate(numerator: int, denominator: int) -> float \| None` | Return a stable six-decimal descriptive rate or null if undefined. | [L327](../../../src/mirrormind/modules/retrieval/evaluation.py#L327) |
+
 ## `mirrormind.modules.retrieval.fictional_fixture`
 
 Source: [`src/mirrormind/modules/retrieval/fictional_fixture.py`](../../../src/mirrormind/modules/retrieval/fictional_fixture.py)
 
-Static imports (including inside functions): `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.index`
+Static imports (including inside functions): `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.evaluation`, `mirrormind.modules.retrieval.index`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `fictional_documents` | function | `def fictional_documents() -> tuple[EvidenceDocument, ...]` | Return small, deterministic documents with disjoint fictional scopes. | [L10](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L10) |
-| `build_fictional_index` | function | `def build_fictional_index() -> InMemoryEvidenceIndex` | Build the CLI's fixed fictional scope; this is not an auth mechanism. | [L59](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L59) |
+| `fictional_documents` | function | `def fictional_documents() -> tuple[EvidenceDocument, ...]` | Return small, deterministic documents with disjoint fictional scopes. | [L16](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L16) |
+| `build_fictional_index` | function | `def build_fictional_index() -> InMemoryEvidenceIndex` | Build the CLI's fixed fictional scope; this is not an auth mechanism. | [L68](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L68) |
+| `fictional_evaluation_cases` | function | `def fictional_evaluation_cases() -> tuple[RetrievalEvaluationCase, ...]` | Return a fixed query set with relevant, no-match and denied cases. | [L77](../../../src/mirrormind/modules/retrieval/fictional_fixture.py#L77) |
 
 ## `mirrormind.modules.retrieval.index`
 
