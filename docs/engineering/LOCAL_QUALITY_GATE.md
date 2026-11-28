@@ -808,3 +808,17 @@ could emit an empty abstention summary, raise on missing citations/payloads,
 or assert on a missing final payload. The current candidate reconstructs the
 turn from plain data before use. Run a fresh exact-head gate and exact-SHA
 check query for that correction; the receipt and status live in the PR body.
+
+### PR #87 provider-turn correction — exact commit `48e7efe`
+
+The full owner-authorized local gate passed on exact commit
+`48e7efe98aae2df3811302fbf7875a2bd8a48dc4`: **1,019 tests, zero skips and
+all six checks** (pytest, Ruff, symbol catalog, atlas, evidence map and
+capability ledger). Receipt:
+`results/local-quality-gate-48e7efe98aae2df3811302fbf7875a2bd8a48dc4-workspace.json`.
+One existing Starlette/httpx TestClient deprecation warning remains. The
+focused M2-03 unit suite passed 25 tests; whole-package mypy passed all 71
+source modules. The receipt records official Actions as not checked by the
+local script. Query the live PR for the exact current published SHA and its
+separate official check runs; neither this local receipt nor earlier Actions
+results transfer to another head.

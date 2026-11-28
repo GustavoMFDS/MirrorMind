@@ -24,9 +24,10 @@ published at that checkpoint. The subsequently published exact head
 `b931bbe2279dd0865f535e0f56e5165ed402ef96` passed its 1,014-test local gate
 and had 12 successful check-runs plus two conditional skips. Independent
 review identified a reproducible nested Pydantic validation bypass; the
-current candidate corrects it with regression tests and strict turn
-reconstruction. Exact candidate evidence and re-review state are in the live
-PR. Never transfer results between SHAs.
+correction commit `48e7efe98aae2df3811302fbf7875a2bd8a48dc4` corrects it with
+regression tests and strict turn reconstruction. Its exact local gate passed
+1,019 tests, zero skips and six checks. Exact current candidate evidence and
+re-review state are in the live PR. Never transfer results between SHAs.
 
 On exact local SHA `66b5913`, the restricted sandbox attempt produced no
 output and was interrupted before the local gate's 900-second limit; no

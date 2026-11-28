@@ -95,8 +95,12 @@ must become the fixed `invalid_provider_turn` refusal without echoing details.
 - [x] Update the walkthrough, debugging and learning guides, architecture map,
   repository atlas, evidence map, and handoff/status records; retain the
   experimental capability status and existing no-action boundary.
-- [ ] Run the focused regressions, complete local gate and applicable exact-
-  SHA official checks before requesting re-review.
+- [x] Run the focused regressions and complete local gate on exact commit
+  `48e7efe98aae2df3811302fbf7875a2bd8a48dc4`: 25 focused tests, 1,019 full
+  tests, zero skips and all six checks passed; receipt is recorded in
+  `LOCAL_QUALITY_GATE.md`.
+- [ ] Query applicable official checks for the published correction head and
+  request independent re-review after recording those exact-SHA results.
 
 ## 3. Impact map
 

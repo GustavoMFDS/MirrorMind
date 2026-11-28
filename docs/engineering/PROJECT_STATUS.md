@@ -36,10 +36,12 @@ head `b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate with
 1,014 tests and zero skips; 12 of 14 exact-head official check-runs succeeded
 and `deploy` plus `release-rehearsal` were skipped by conditions. Independent
 review reproduced Pydantic `model_copy(update=...)` bypasses in nested
-provider turns. The current candidate revalidates each exact turn from plain
-data before dispatch or draft handling, with regressions for malformed fields,
-invariants and missing payloads. Its exact gate and check-run state are
-recorded in the live PR #87; independent re-review remains pending. Local
+provider turns. Correction commit `48e7efe98aae2df3811302fbf7875a2bd8a48dc4`
+revalidates each exact turn from plain data before dispatch or draft handling,
+with regressions for malformed fields, invariants and missing payloads. Its
+full local gate passed 1,019 tests, zero skips and six checks. Current
+published SHA and official check-run state are recorded in the live PR #87;
+independent re-review remains pending. Local
 Docker remains unavailable. Never transfer evidence between SHAs.
 
 The bounded UCI reader and MM-024 classification are already implemented in
@@ -126,7 +128,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
 | PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
 | PR #88 / cryptography 50 lock | Merged at `00e6cf11ac05a94055242573fd3cfc18086bad10`; 11 completed exact-SHA official check-runs succeeded. | Updates public dependency constraints and lock; does not infer account billing state or explain historical pre-start failures. |
-| M2-03 bounded tool orchestration / [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) | The ancestry-synced branch includes `main` `00e6cf1` through merge `66b5913`. Independent review found a nested Pydantic `model_copy(update=...)` bypass; the current candidate revalidates provider turns from plain data before use and adds five regressions. | Exact candidate gate and official checks are in the live PR; independent re-review remains pending. Provider is still scripted and tools remain fixed/fictional. No route, persistence or action authority. |
+| M2-03 bounded tool orchestration / [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) | The ancestry-synced branch includes `main` `00e6cf1` through merge `66b5913`. Commit `48e7efe` fixes the nested Pydantic `model_copy(update=...)` bypass. | Exact correction commit passed 1,019 tests, zero skips and six local checks. Current published SHA and official checks are in the live PR; independent re-review remains pending. Provider is scripted; tools are fixed/fictional. No route, persistence or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

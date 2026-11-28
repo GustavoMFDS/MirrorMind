@@ -16,7 +16,8 @@ venv is now aligned to 50.0.0. Exact `b931bbe` then passed the local gate with
 two workflow-conditional skips. Independent review found a `model_copy`
 validation bypass. The current M2-03 candidate adds strict plain-data
 revalidation and regression coverage; use the live PR for its exact commit,
-gate receipt and check state. Re-query after each later push.
+gate receipt and check state. Correction commit `48e7efe` passed 1,019 tests,
+zero skips and six local checks. Re-query after each later push.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -284,7 +285,7 @@ coverage/selection diagnostic modules merely because they are local.
 | --- | --- | --- | --- | --- |
 | M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
-| M2-03 | P1 | review correction; re-review pending | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools. The correction serializes the exact provider `AgentTurn` into plain data and strictly reconstructs nested contracts before use; regressions reproduce empty summaries, status/citation mismatch, malformed tool calls and missing payloads. Exact candidate local gate and official checks are recorded in the live PR. No live provider, route, persistence or action authority. |
+| M2-03 | P1 | review correction; re-review pending | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools. Commit `48e7efe` serializes the exact provider `AgentTurn` into plain data and strictly reconstructs nested contracts before use; regressions reproduce empty summaries, status/citation mismatch, malformed tool calls and missing payloads. That exact commit passed 1,019 tests, zero skips and six local checks. Current published SHA and official checks are in the live PR. No live provider, route, persistence or action authority. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
 | M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |

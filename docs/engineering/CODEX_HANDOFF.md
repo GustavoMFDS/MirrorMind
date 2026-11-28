@@ -12,10 +12,12 @@
   independent review later reproduced nested Pydantic `model_copy(update=...)`
   validation bypasses on published head
   `b931bbe2279dd0865f535e0f56e5165ed402ef96`; its exact run had 12 successful
-  check-runs and two conditional skips. The current candidate reconstructs
-  provider turns from plain data before dispatch, with regressions for invalid
-  nested drafts/tool calls and missing payloads. Review remains pending; use
-  the live PR body for current candidate SHA, local receipt and exact check
+  check-runs and two conditional skips. Correction commit
+  `48e7efe98aae2df3811302fbf7875a2bd8a48dc4` reconstructs provider turns from
+  plain data before dispatch, with regressions for invalid nested drafts/tool
+  calls and missing payloads. That exact commit passed the local six-check
+  gate with 1,019 tests and zero skips. Review remains pending; use the live PR
+  body for current candidate SHA, local receipt and exact check
   status. Do not transfer earlier gate results. The local
   branch includes latest `main` through ancestry-preserving merge
   `66b591317b375a270b5d0ed682c94e161d52a956`.
