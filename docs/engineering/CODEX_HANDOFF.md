@@ -24,19 +24,19 @@
   `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Its receipt is
   `results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`.
   That receipt predates the latest main merge and is not evidence for the
-  current candidate. Re-run the exact gate after this merge and before opening
-  the separate review PR; the receipt is local-only, not official CI.
+  synchronized candidate. Later exact local gates are recorded below; that
+  receipt remains local-only, not official CI.
 - The new `d41e661` package typing gate exposed 25 M2-03 diagnostics. The
   current worktree resolves them using precise nested-container types, explicit
   registry attribute declarations and a static M1F-02 result shape while
   retaining runtime Pydantic validation. Two focused regressions now exercise
   nested built-in JSON acceptance and cycle/size refusal. Current focused
   checks: 21 tests, whole-package mypy (71 modules), strict retrieval mypy (five
-  modules) and focused Ruff all pass. Exact commit `77c9d359cda75bddcaca40e7912b13c693614af9`
-  then passed 1,014 tests, zero skips, all six checks and 86.92% coverage;
-  package build and wheel smoke passed. Current worktree contains validation
-  evidence documentation and needs a new exact-head gate before PR. The local
-  Docker engine is unavailable and official Actions remain unverified.
+  modules) and focused Ruff all pass. Exact commit
+  `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` passed 1,014 tests, zero skips,
+  all six checks and 86.92% coverage; package build and wheel smoke passed.
+  Match every receipt to the final review PR head. The local Docker engine is
+  unavailable and official Actions remain unverified.
 - PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
   commits. Keep retrieval and its evaluation experimental and fictional.
 - The owner's MM-024 UCI policy is implemented in main: six-digit IDs are

@@ -111,14 +111,14 @@ requires B-05 approval and a separate security/evaluation review.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: implementation checkpoint `0922c72`; typing correction
-  `77c9d359cda75bddcaca40e7912b13c693614af9` passed the exact gate. The current
-  documentation follow-up and separate review PR remain pending.
+- Commit / PR: implementation checkpoint `0922c72`; exact gate checkpoint
+  `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` passed. Independent review and
+  integration are required before acceptance.
 - Modified symbols and files: `modules/agents/contracts.py`,
   `modules/agents/registry.py`, `modules/agents/synthetic_tools.py`, the
   focused unit test, and source walkthrough/learning/debugging/evidence docs.
 - Tests executed, result, environment: focused suite passes 21 tests; exact
-  commit `77c9d35` passed 1,014 tests, zero skips and all six checks with the
+  commit `07a6cdc0` passed 1,014 tests, zero skips and all six checks with the
   reviewed WorldKernel pin. Coverage was 86.92%; both mypy jobs passed.
 - Claim IDs and cited test path/function: `MM-AGENT-001` through
   `MM-AGENT-009` in `EVIDENCE_MAP.json`.
@@ -130,7 +130,7 @@ requires B-05 approval and a separate security/evaluation review.
   no public route or persisted schema.
 - Docs updated: M2-03 walkthrough, learning exercise, debugging guide,
   change request, system map, status, backlog, handoff, local gate and evidence
-  map. The current evidence-documentation change still needs an exact-head gate.
+  map; each local validation receipt stays scoped to its exact SHA.
 - Known limitations / follow-up: no live provider or semantic entailment
   checking; M2-04 and M2-05 remain separate.
 - Container/remote validation: local Docker engine unavailable; GitHub Actions

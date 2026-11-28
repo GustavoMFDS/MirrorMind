@@ -21,13 +21,12 @@ shape that retains the existing runtime Pydantic validators. Two nested-JSON
 regressions were added. Focused M2-03 validation currently passes 21 tests,
 whole-package mypy across 71 modules, strict retrieval mypy across five modules
 and focused Ruff. The integrated gate then passed on exact commit
-`77c9d359cda75bddcaca40e7912b13c693614af9`: 1,014 tests, zero skips, all six
+`07a6cdc0f3e1e04a92956027e1aa087d4afe0cca`: 1,014 tests, zero skips, all six
 checks and 86.92% coverage. Whole-package mypy passed across 71 modules and
 strict retrieval mypy across five; package wheel smoke passed outside the
-checkout. The current worktree contains follow-up evidence documentation and
-needs a new exact-head gate. No current PR or official Actions result is
-claimed. Container smoke remains unverified because the local Docker engine is
-unavailable.
+checkout. All receipts remain scoped to their exact SHA. No official Actions
+result is claimed. Container smoke remains unverified because the local Docker
+engine is unavailable.
 
 The bounded UCI reader and MM-024 classification are already implemented in
 main with synthetic regressions. The approved source call stopped above the
@@ -112,7 +111,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
 | PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
-| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through `d41e661`. Commit `77c9d35` passed 1,014 tests, zero skips, six checks and 86.92% coverage; both mypy jobs and package wheel smoke passed. | Re-run exact gate after current documentation-only evidence update. Local container smoke and official Actions are unavailable/unverified. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
+| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through `d41e661`. Exact commit `07a6cdc0` passed 1,014 tests, zero skips, all six checks and 86.92% coverage; both mypy jobs and package wheel smoke passed. | Keep the exact gate receipt matched to the final review PR SHA. Local container smoke and official Actions are unavailable/unverified. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

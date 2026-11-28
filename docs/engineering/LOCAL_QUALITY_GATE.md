@@ -10,10 +10,9 @@ change at `d41e661`. PR #82's final exact head
 `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips,
 six local checks and 12 official exact-head checks; those results do not
 transfer to the merge SHA or later `main`. The M2-03 branch is ancestry-synced
-with that baseline. Checkpoint `a27027e` passed before the latest main merge,
-as recorded below; it does not validate the current candidate. Re-run the
-exact-head gate after synchronization and before review. The owner-authorized
-temporary local gate remains separate from official CI.
+with that baseline. Checkpoint `a27027e` passed before the latest main merge
+and is historical; later synchronized candidate gates are recorded below.
+The owner-authorized temporary local gate remains separate from official CI.
 Do not infer official status for a SHA without querying that exact commit.
 
 The synchronized M2-03 worktree initially failed the newly required
@@ -50,6 +49,19 @@ the owner reports its included allowance is exhausted. These results are local
 only. A later documentation-only candidate needs its own exact-head six-check
 gate before review.
 
+### M2-03 documentation evidence sync — exact commit `07a6cdc0`
+
+The documentation follow-up on exact commit
+`07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` also passed the temporary six-check
+gate: **1,014 tests, zero skips and all six checks**, with one existing
+Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-07a6cdc0f3e1e04a92956027e1aa087d4afe0cca-workspace.json`.
+The exact-SHA CI-equivalent coverage run passed 1,014 tests at **86.92%**;
+whole-package mypy passed all 71 modules and strict retrieval mypy passed five.
+No source code changed after `77c9d35`; wheel build and external-checkout smoke
+results above therefore cover the same package contents. This remains local
+evidence, not GitHub Actions or container-smoke evidence.
+
 ### M2-03 pre-`d41e661` checkpoint — `a27027e`
 
 On exact commit `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a`, the complete local
@@ -62,8 +74,8 @@ Starlette/httpx deprecation warning. The exact receipt is
 it is a local ignored artifact and explicitly records that official GitHub
 Actions status was not checked by the gate. This checkpoint predates the
 `d41e661` main merge and later documentation updates; it is historical evidence
-only. The synchronized current candidate needs a new exact-head gate before
-review.
+only. Later exact-head validation is recorded above; do not transfer this
+receipt to a newer commit.
 
 The preceding main before PR #82 was `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
 [PR #81](https://github.com/GustavoMFDS/MirrorMind/pull/81) after
