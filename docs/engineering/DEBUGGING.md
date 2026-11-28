@@ -566,3 +566,9 @@ and horizon is 1, 3 or 6. Conditional models use 23 transitions.
 Unseen contexts are uniform because of pseudocounts. Own-axis and
 cross-axis source indexing differ; inspect the exact row probabilities
 rather than comparing unnormalized weights. No public cache.
+
+### Temporal study replay
+Check the declared revision, retained commitment and exact canonical
+receipt. Switch transition 53 affects the forecast from origin 52;
+origins before the change can target across the change. Oracle has
+privileged future schedule access. No public cache is exposed.

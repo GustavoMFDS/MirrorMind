@@ -408,3 +408,8 @@ The [temporal model module](../../src/mirrormind/domains/retail/census_temporal_
 fits four bounded candidate matrices from observed paired states and
 passes each to exact joint Markov propagation. It neither selects
 a model nor changes source ingestion, API, persistence or authority.
+
+### Fictional temporal study
+The [temporal study](../../examples/m1_census_temporal_study.py)
+combines fixed paired-state estimation, exact Markov propagation and
+replayed fictional joint scoring. No ingestion, API, journal or authority.

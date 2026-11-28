@@ -1088,3 +1088,9 @@ Run the [temporal estimator tests](../../tests/unit/test_census_temporal_models.
 Compare independently smoothed own-axis and cross-axis binary
 conditionals with the full previous-pair estimator. Explain the effect
 of missing contexts and why predictive dependence is not causal identification.
+
+### Exercise: compare temporal structure
+Run the [temporal study](../../examples/m1_census_temporal_study.py)
+and compare joint scores for iid, own, cross and full conditional
+laws. Discuss missing contexts, structural changes and why predictive
+association alone does not establish causality.

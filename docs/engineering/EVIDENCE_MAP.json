@@ -532,6 +532,13 @@
     "limitation": "Fixed bounded paired-state transition estimators only; no authenticated availability, causal effects, adaptive selection, empirical calibration or authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-037",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_temporal_study.py",
+    "function": "test_temporal_study_exact_replay",
+    "limitation": "Fixed fictional paired-state temporal comparison and local replay only; no independent registration, causal effects, empirical calibration, inference or operational authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

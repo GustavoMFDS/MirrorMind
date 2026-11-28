@@ -366,3 +366,7 @@ or causal identification.
 The [temporal estimators](../../src/mirrormind/domains/retail/census_temporal_models.py)
 have guided bounded exact estimation and forecast behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical skill.
+
+The [temporal study](../../examples/m1_census_temporal_study.py)
+has guided exact fictional comparison and local replay in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical skill.

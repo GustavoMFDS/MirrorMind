@@ -957,3 +957,39 @@ Run `python -m pytest -q tests/unit/test_census_temporal_models.py`.
 See [change request](changes/M1C_04_CENSUS_TEMPORAL_MODELS.md).
 No empirical model, calibration, causal identification or authority.
 Independent review pending.
+
+## Fixed fictional temporal study
+The [temporal study](../../examples/m1_census_temporal_study.py)
+commits a fixed paired-sign study and declared revision before scoring.
+Four designs: independent, own-state persistence, cross-axis persistence
+and cross-to-own switch at transition 53. Counter-hash seeds
+131001..131004; 16 paths each, 64 states, origins 48..57, horizons
+1/3/6. The two axes update simultaneously from the preceding state;
+copy probability 3/4, independent signs probability 1/2.
+The four fixed fitted candidates use only the last 24 observed states.
+The oracle alone knows the future transition schedule, not realizations.
+All methods share observed cumulative future signed targets.
+Exact group means include joint Brier, reference excess, both marginal
+CRPS scores, event Brier and probability, observed event rate and
+covariance. Each group has a streaming event transcript digest.
+
+    python -m examples.m1_census_temporal_study prepare --revision REV
+    python -m examples.m1_census_temporal_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_temporal_study demo --revision REV
+
+Prepare does not score. Run requires a retained commitment; demo
+self-generates one. Both execution modes replay the report. The
+verifier compares canonical bytes at most 1 MiB, excluding stdout
+newline. Fixed fixtures and overlapping targets are not independent
+statistical samples. No causal effect, authenticated temporal
+availability, independent registration, attestation, empirical data,
+holdout, selection, calibration, confidence interval or winner.
+
+Proposed evidence MM-CEN-037:
+`test_temporal_study_exact_replay` verifies fixed report and study
+digests, complete replay, expected row counts and oracle excess.
+Additional tests reject rehashed forgery, validate commitment before
+scoring, check future invariance and the exact transition boundary.
+Run `python -m pytest -q tests/integration/test_census_temporal_study.py`.
+See [change request](changes/M1C_04_CENSUS_TEMPORAL_STUDY.md).
+Independent review pending.

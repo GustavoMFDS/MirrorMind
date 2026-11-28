@@ -1243,3 +1243,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_temporal_models.py](../../src/mirrormind/domains/retail/census_temporal_models.py) | Fixed paired-state estimation and conditional prediction |
 | [tests/unit/test_census_temporal_models.py](../../tests/unit/test_census_temporal_models.py) | Counting oracle, orientation and input tests |
 | [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_MODELS.md](changes/M1C_04_CENSUS_TEMPORAL_MODELS.md) | Scoped acceptance and impact map |
+
+### Fictional temporal study
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_temporal_study.py](../../examples/m1_census_temporal_study.py) | Fixed temporal study and receipt replay |
+| [tests/integration/test_census_temporal_study.py](../../tests/integration/test_census_temporal_study.py) | Commitment, replay and causal input tests |
+| [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_STUDY.md](changes/M1C_04_CENSUS_TEMPORAL_STUDY.md) | Scoped acceptance and impact map |

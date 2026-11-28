@@ -198,3 +198,8 @@ Experimental temporal estimators learn fixed transition rows from
 24 supplied paired sign states, then propagate conditional joint PMFs.
 No authenticated temporal availability, model selection, empirical
 calibration, causal effects or operational forecasts.
+
+The fixed fictional temporal study compares four estimated transition
+structures under known synthetic mechanisms. The oracle knows the
+future schedule. No causal identification, empirical calibration,
+independent holdout or operational forecast is established.
