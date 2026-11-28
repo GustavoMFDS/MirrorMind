@@ -362,3 +362,7 @@ The [joint Markov engine](../../src/mirrormind/domains/retail/census_joint_marko
 has guided exact finite transition behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not fitted dynamics
 or causal identification.
+
+The [temporal estimators](../../src/mirrormind/domains/retail/census_temporal_models.py)
+have guided bounded exact estimation and forecast behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical skill.

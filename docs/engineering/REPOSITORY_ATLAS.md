@@ -1236,3 +1236,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_joint_markov.py](../../src/mirrormind/domains/retail/census_joint_markov.py) | Exact paired-state transition propagation |
 | [tests/unit/test_census_joint_markov.py](../../tests/unit/test_census_joint_markov.py) | Path enumeration, schedule and bounds tests |
 | [docs/engineering/changes/M1C_04_CENSUS_JOINT_MARKOV.md](changes/M1C_04_CENSUS_JOINT_MARKOV.md) | Scoped acceptance and impact map |
+
+### Fixed temporal estimators
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_temporal_models.py](../../src/mirrormind/domains/retail/census_temporal_models.py) | Fixed paired-state estimation and conditional prediction |
+| [tests/unit/test_census_temporal_models.py](../../tests/unit/test_census_temporal_models.py) | Counting oracle, orientation and input tests |
+| [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_MODELS.md](changes/M1C_04_CENSUS_TEMPORAL_MODELS.md) | Scoped acceptance and impact map |

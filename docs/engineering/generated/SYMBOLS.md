@@ -286,6 +286,19 @@ Static imports (including inside functions): `__future__`, `dataclasses`, `datet
 | `census_schedule_sha256` | function | `def census_schedule_sha256(plan: CensusOriginSchedule) -> str` | Fingerprint validated schedule and fixed partition policy. | [L75](../../../src/mirrormind/domains/retail/census_split.py#L75) |
 | `evaluate_frozen_census_split` | function | `def evaluate_frozen_census_split(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, expected_schedule_sha256: str, split: Literal['validation', 'holdout']) -> dict[str, object]` | Compare a caller-retained schedule digest before fictional scoring. | [L93](../../../src/mirrormind/domains/retail/census_split.py#L93) |
 
+## `mirrormind.domains.retail.census_temporal_models`
+
+Source: [`src/mirrormind/domains/retail/census_temporal_models.py`](../../../src/mirrormind/domains/retail/census_temporal_models.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `itertools`, `math`, `mirrormind.domains.retail.census_bivariate`, `mirrormind.domains.retail.census_joint_markov`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_row` | function | `def _row(a: int, b: int, c: int, d: int) -> TransitionRow` | — | [L23](../../../src/mirrormind/domains/retail/census_temporal_models.py#L23) |
+| `_matrix` | function | `def _matrix(rows: list[TransitionRow]) -> TransitionMatrix` | — | [L28](../../../src/mirrormind/domains/retail/census_temporal_models.py#L28) |
+| `fit_temporal_models` | function | `def fit_temporal_models(history: tuple[State, ...]) -> dict[str, TransitionMatrix]` | Estimate fixed row laws using only the supplied 24 observed states. | [L33](../../../src/mirrormind/domains/retail/census_temporal_models.py#L33) |
+| `predict_temporal_models` | function | `def predict_temporal_models(history: tuple[State, ...], horizon: int) -> dict[str, JointPMF]` | Propagate each fixed estimated law, without selecting a model. | [L77](../../../src/mirrormind/domains/retail/census_temporal_models.py#L77) |
+
 ## `mirrormind.domains.retail.census_vintages`
 
 Source: [`src/mirrormind/domains/retail/census_vintages.py`](../../../src/mirrormind/domains/retail/census_vintages.py)

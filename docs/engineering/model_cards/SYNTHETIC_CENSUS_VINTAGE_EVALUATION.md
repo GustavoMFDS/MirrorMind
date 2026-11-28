@@ -193,3 +193,8 @@ The experimental joint Markov engine adds exact conditional propagation
 for four paired sign states under bounded caller-supplied schedules.
 It does not establish learned dynamics, authentic transitions,
 causal effects, empirical calibration or operational forecasts.
+
+Experimental temporal estimators learn fixed transition rows from
+24 supplied paired sign states, then propagate conditional joint PMFs.
+No authenticated temporal availability, model selection, empirical
+calibration, causal effects or operational forecasts.

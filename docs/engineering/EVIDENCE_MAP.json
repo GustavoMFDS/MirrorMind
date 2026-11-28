@@ -525,6 +525,13 @@
     "limitation": "Exact four-state paired Markov propagation of supplied bounded schedules; no transition estimation, reference authenticity, causal effects, empirical calibration or operational authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-036",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_temporal_models.py",
+    "function": "test_temporal_estimators_direct_counting",
+    "limitation": "Fixed bounded paired-state transition estimators only; no authenticated availability, causal effects, adaptive selection, empirical calibration or authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

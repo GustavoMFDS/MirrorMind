@@ -932,3 +932,28 @@ invalid nested types. Run
 `python -m pytest -q tests/unit/test_census_joint_markov.py`.
 See [change request](changes/M1C_04_CENSUS_JOINT_MARKOV.md).
 Independent review pending.
+
+## Fixed paired-state temporal estimators
+The [temporal estimators](../../src/mirrormind/domains/retail/census_temporal_models.py)
+fit four fixed candidate matrices from exactly 24 observed paired
+sign states. IID counts all 24 observations; own-axis and cross-axis
+models estimate separately smoothed binary conditional distributions
+and multiply them within each row; full estimates the four-outcome
+conditional law given the previous pair. Conditional models use 23
+consecutive transitions. One pseudocount per outcome gives uniform
+unseen contexts. Weights are reduced by their common divisor; the
+candidate order is fixed. Forecasting propagates each fitted stationary
+matrix from the last observed state at horizons 1/3/6 using the joint
+Markov engine. No target, future observations, scenario identifier,
+adaptive selection or public cache. The history is supplied by the
+caller; the module does not authenticate dates or availability.
+
+Proposed evidence MM-CEN-036:
+`test_temporal_estimators_direct_counting` compares all candidate rows
+against an independent rational counting oracle. Additional tests
+check cross-axis orientation, missing contexts, forecast propagation,
+future invariance, fresh mappings and rejection of invalid histories.
+Run `python -m pytest -q tests/unit/test_census_temporal_models.py`.
+See [change request](changes/M1C_04_CENSUS_TEMPORAL_MODELS.md).
+No empirical model, calibration, causal identification or authority.
+Independent review pending.

@@ -1082,3 +1082,9 @@ Compare direct path enumeration with integer mass propagation. Change
 the schedule mid-horizon and explain how the output differs from
 independent-in-time convolution. A supplied transition structure
 does not establish real-world causal effects.
+
+### Exercise: learn paired transition laws
+Run the [temporal estimator tests](../../tests/unit/test_census_temporal_models.py).
+Compare independently smoothed own-axis and cross-axis binary
+conditionals with the full previous-pair estimator. Explain the effect
+of missing contexts and why predictive dependence is not causal identification.

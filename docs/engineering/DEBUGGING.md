@@ -559,3 +559,10 @@ row with positive total. A zero-weight transition is valid; an
 all-zero row is not. The starting state is excluded from cumulative
 displacement. The engine validates inputs before arithmetic and
 returns an immutable canonical PMF, without a cache.
+
+### Temporal estimator input rejection
+Check that history consists of exactly 24 immutable paired sign states
+and horizon is 1, 3 or 6. Conditional models use 23 transitions.
+Unseen contexts are uniform because of pseudocounts. Own-axis and
+cross-axis source indexing differ; inspect the exact row probabilities
+rather than comparing unnormalized weights. No public cache.

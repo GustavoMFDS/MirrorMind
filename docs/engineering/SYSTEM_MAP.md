@@ -402,3 +402,9 @@ computes bounded conditional cumulative joint distributions from caller
 supplied transition schedules. It reuses the bivariate PMF contract,
 without changing existing independent-in-time convolution, API,
 persistence or authority.
+
+### Fixed temporal estimators
+The [temporal model module](../../src/mirrormind/domains/retail/census_temporal_models.py)
+fits four bounded candidate matrices from observed paired states and
+passes each to exact joint Markov propagation. It neither selects
+a model nor changes source ingestion, API, persistence or authority.
