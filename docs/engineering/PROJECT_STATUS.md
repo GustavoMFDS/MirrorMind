@@ -41,9 +41,10 @@ Immediately before the status refresh commit, its code head was
 `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that exact SHA passed 1,032 tests,
 zero skips, all six local checks and the documented CLI smoke. The status
 commits `4fa243b654c96e928ea480bd9ee25b4d5157eddc` and
-`34141eba0d4ea6b76b06fdce57a89afddd6743de` also passed 1,032 tests, zero skips
-and all six local checks. The latest receipt is
-`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`.
+`34141eba0d4ea6b76b06fdce57a89afddd6743de` and recorded PR #99 head
+`82962e06e7d76f901092721a32742f59b261cef7` also passed 1,032 tests, zero skips
+and all six local checks. The current receipt is
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`.
 Its exact official query returned 14 check-runs: 12 successes and two
 workflow-conditional skips (`deploy` and `release-rehearsal`), with no failures
 or pending checks. These results apply only to their named SHAs. The live PR
@@ -57,18 +58,24 @@ a safe replacement for public pull-request code: GitHub warns that untrusted
 workflow code can persistently compromise a host. No runner, workflow, check,
 protection or spending setting changed; see [B-08](BLOCKERS.md).
 
-The open M1C-04 Census stack contains #93, #94, #95, #96, #97, #98 and #100.
-They remain linearly dependent (#94 on #93 through #98, then #100 on #98),
-open and mergeable. #93 is ready for independent review; #94–#98 and #100
-remain drafts. Review submissions and inline threads were empty at the latest
-query. A source audit of the diffs in dependency order found no confirmed
-defect; this is not independent approval. The exact #93 head has 12 successful
-official check-runs and two conditional skips. No PR-triggered workflow runs
-or combined statuses were returned for #94–#98 or #100. All repository
+The open M1C-04 Census stack now contains #93–#98 and #100–#103: ten open,
+mergeable PRs with ancestry in order (#94 through #98, then #100, #101, #102
+and #103). #93 is ready for independent review; all descendants remain drafts.
+The review timeline returned no review submissions, inline threads or comments
+for #93–#103. Earlier exact tree gates independently passed on #98 and #100;
+the #101–#103 PR descriptions report local gates, not independently rerun in
+this checkpoint. Only #93 has official check-runs (12 successes, two
+conditional skips); exact queries for #100–#103 returned no checks. All repository
 `pull_request` workflows currently filter target branch `main`; those
 descendant PRs target parent feature branches, so their missing runs follow the
 configured filter rather than establishing a billing cause. Do not treat
 missing checks as validation.
+
+These PRs extend the same synthetic Census research lane with exact bivariate,
+temporal and three-axis probability methods. They add no source acquisition,
+real-data evaluation or M1 production capability. Stop extending this stack;
+keep it synthetic and defer integration until independent review and a
+topological owner decision.
 
 The full local gate passed on the exact remote #98 tree
 `dda5ebd9ca82cd0b2bbc2b6eec4e330afa3710e1` (1,116 tests, zero skips, six

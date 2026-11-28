@@ -26,9 +26,9 @@ commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests,
 zero skips and all six checks; receipt:
 `results/local-quality-gate-4fa243b654c96e928ea480bd9ee25b4d5157eddc-workspace.json`.
 Its exact GitHub query returned 12 successes and two conditional skips.
-Latest documentation head `34141eba0d4ea6b76b06fdce57a89afddd6743de` also
+Published documentation head `82962e06e7d76f901092721a32742f59b261cef7` also
 passed 1,032 tests, zero skips and all six checks; receipt:
-`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`.
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`.
 Its exact GitHub query returned 14 check-runs: 12 successes and two conditional
 skips (`deploy`, `release-rehearsal`). These results apply only to their named
 SHAs. Every later commit requires a fresh gate; the live PR body carries the
@@ -66,9 +66,9 @@ The current `pull_request` triggers in the [CI](../../.github/workflows/ci.yml),
 [pages](../../.github/workflows/pages.yml), and
 [research maintenance](../../.github/workflows/research-maintenance.yml)
 workflows all use `branches: [main]`. [GitHub's event documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
-defines this filter as matching the PR's target branch. PRs #94–#98 and #100
-target parent feature branches, so they produce no workflow runs under the
-current configuration.
+defines this filter as matching the PR's target branch. PRs #94–#98 and
+#100–#103 target parent feature branches, so they produce no workflow runs
+under the current configuration.
 That explains these absent checks; it does not explain earlier pre-start
 failures or establish the owner-reported allowance. No workflow filter,
 protection, check or spending setting was changed. Keep the exact local gate
@@ -79,15 +79,15 @@ links on the two main-targeting heads.
 
 ### PR #99 current exact head and runner assessment — 2026-11-28
 
-On exact head `34141eba0d4ea6b76b06fdce57a89afddd6743de`, GitHub returned 14
+On exact head `82962e06e7d76f901092721a32742f59b261cef7`, GitHub returned 14
 check-runs: 12 `success`, two `skipped` by workflow conditions (`deploy` and
-`release-rehearsal`), none failed or pending. Evidence: [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114857),
-[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114835),
-[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114862),
-[site build and conditional deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114854),
-[benchmark and conditional rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114801),
-[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/141053376183), and
-[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169111446).
+`release-rehearsal`), none failed or pending. Evidence: [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551380),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551300),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551330),
+[site build and conditional deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551347),
+[benchmark and conditional rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551403),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/141057881049), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170546405).
 These are official checks for that PR head, not local-gate evidence.
 
 This public repository ran those jobs on GitHub-hosted runners. GitHub's
@@ -100,6 +100,14 @@ hosts exposed to untrusted pull requests ([secure use](https://docs.github.com/e
 [runner access](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)).
 No self-hosted runner, workflow change or protection change is recommended or
 configured. Preserve the owner-approved local gate for stacked PRs.
+
+The combined discussion timelines for open PRs #93–#103 returned no comments
+or review submissions. Separate review-thread lists for #101–#103 were empty.
+Exact check queries for #100–#103 returned no check-runs; those branches
+target feature branches and are excluded by the repository's current
+main-target filter.
+The PR bodies report local evidence for #101–#103; those exact gates were not
+reproduced in this status update.
 
 ### PR #99 local gate — initial exact head `62912e11`
 

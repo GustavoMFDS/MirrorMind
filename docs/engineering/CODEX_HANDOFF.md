@@ -24,9 +24,10 @@
   Immediately before the documentation status refresh, its code head was
   `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that SHA passed 1,032 tests,
   zero skips, all six local checks and the CLI smoke. Status commits
-  `4fa243b654c96e928ea480bd9ee25b4d5157eddc` and latest documentation head
-  `34141eba0d4ea6b76b06fdce57a89afddd6743de` each passed 1,032 tests, zero
-  skips and all six local checks. The latter's receipt is recorded in
+  `4fa243b654c96e928ea480bd9ee25b4d5157eddc`,
+  `34141eba0d4ea6b76b06fdce57a89afddd6743de` and then-published head
+  `82962e06e7d76f901092721a32742f59b261cef7` each passed 1,032 tests, zero
+  skips and all six local checks. The latest receipt is recorded in
   [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); its exact official query returned
   12 successes and two conditional skips (`deploy`, `release-rehearsal`). A
   manual CLI smoke on code head `b8695a3` parsed both the completed experimental
@@ -36,21 +37,23 @@
   See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
 - PRs #60 and #61 have since merged into main at
   `8c871adeef3b7f74e0c30cd20be49c86105dca78` and
-  `eea114554615509d8a0286621b81c323c2779c7a`; do not replay them. Seven open,
-  mergeable PRs (#93–#98 and #100) form a linear synthetic M1C-04 stack. #93
-  is ready for independent review; #94–#98/#100 remain drafts. Source audit
-  found no confirmed defect, but no independent reviews or threads exist.
-  Local six-check gates passed on the exact #98 and integrated #100 trees
-  using matching-tree scratch commits (1,116 and 1,162 tests, zero skips).
-  Only #93 has official workflow results among that stack: 12 successes and
-  two conditional skips; #94–#98/#100 returned no PR-triggered runs/statuses.
+  `eea114554615509d8a0286621b81c323c2779c7a`; do not replay them. Ten open,
+  mergeable PRs (#93–#98 and #100–#103) form a linear synthetic M1C-04 stack.
+  #93 is ready for independent review; all descendants remain drafts. The
+  review timeline returned no review submissions, inline threads or comments
+  across #93–#103. Local six-check gates passed earlier on exact #98 and #100
+  trees (1,116 and 1,162 tests, zero skips); #101–#103 descriptions report
+  local gates not independently rerun in this checkpoint. Only #93 has
+  official workflow results among the research stack: 12 successes and two
+  conditional skips; exact #100–#103 queries returned no checks.
   All current `pull_request` workflows filter target branch `main`, while
   those descendants target parent feature branches; the filter explains their
   missing runs. This does not explain historical pre-start failures or reveal
   account allowance. Keep local gates for the stack; don't treat absent checks
   as passing CI or change workflow filters without an explicit decision.
   Keep the stack synthetic and wait for independent review and the separate
-  integration decision. B-01/B-02 still block real-source bytes and empirical
+  integration decision. Do not extend synthetic scope while review queue grows.
+  B-01/B-02 still block real-source bytes and empirical
   claims pending source-specific rights and temporal-evidence decisions.
 - No public API, capability status, live provider, persistence, data source or
   authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep
@@ -76,7 +79,7 @@
   software-development and archive route; see the updated
   [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
-  remains. The latest exact PR #99 head (`34141eb`) nevertheless ran 14
+  remains. The latest exact PR #99 head (`82962e0`) nevertheless ran 14
   check-runs on the public repository: 12 succeeded and two were conditionally
   skipped. GitHub documents standard hosted runners as free for public repos;
   this observed run does not explain historical pre-start failures or disclose

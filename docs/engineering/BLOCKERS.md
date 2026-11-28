@@ -9,14 +9,14 @@ receipt is recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This is
 local validation, not official Actions. The owner reports GitHub Actions'
 included allowance exhausted; no paid spend, purchased capacity or limit
 increase is authorized. Current exact-head queries found workflows on #93
-(`76f0402`) and latest #99 (`34141eb`), with 12 successes and two conditional
+(`76f0402`) and recorded #99 (`82962e0`), with 12 successes and two conditional
 skips each. The #99 check-runs executed on GitHub-hosted runners. GitHub
 documents standard hosted runners as free for public repositories
 ([billing](https://docs.github.com/en/actions/concepts/billing-and-usage),
 [runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
 This confirms current workflow execution for that head, not current account
 allowance or the cause of historical pre-start failures. The missing
-runs on #94–#98 and #100 have a separate, source-confirmed explanation: every
+runs on #94–#98 and #100–#103 have a separate, source-confirmed explanation: every
 repository `pull_request` workflow currently filters `branches: [main]` in
 [`ci.yml`](../../.github/workflows/ci.yml),
 [`docs.yml`](../../.github/workflows/docs.yml),
@@ -24,7 +24,7 @@ repository `pull_request` workflow currently filters `branches: [main]` in
 [`pages.yml`](../../.github/workflows/pages.yml), and
 [`research-maintenance.yml`](../../.github/workflows/research-maintenance.yml).
 GitHub evaluates that filter against the PR target/base branch, and #94–#98
-and #100 target parent feature branches. Their missing checks are therefore
+and #100–#103 target parent feature branches. Their missing checks are therefore
 expected from the configured filter; they are not evidence of billing failure
 or successful validation. This does not explain historical pre-start failures
 or establish current account allowance. Preserve the local gate for the
@@ -58,9 +58,9 @@ local gate remains fail-closed and unchanged; see the exact receipt in
 not infer official Actions state from this local result.
 
 PR #99 documentation head is
-`34141eba0d4ea6b76b06fdce57a89afddd6743de`. Its local six-check gate passed
+`82962e06e7d76f901092721a32742f59b261cef7`. Its local six-check gate passed
 1,032 tests, zero skips and all six checks; receipt:
-`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`.
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`.
 The exact official query returned 14 check-runs: 12 completed successes and
 two workflow-conditional skips (`deploy`, `release-rehearsal`). The CLI smoke
 is separately scoped to earlier code head `b8695a3`; it parsed the success and
