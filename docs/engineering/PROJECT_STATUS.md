@@ -40,12 +40,22 @@ PR #99 is open against `main`, mergeable and ready for independent review.
 Immediately before the status refresh commit, its code head was
 `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that exact SHA passed 1,032 tests,
 zero skips, all six local checks and the documented CLI smoke. The status
-refresh commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032
-tests, zero skips and all six local checks. Its exact official query returned
-12 successful check-runs and two workflow-conditional skips (`deploy` and
-`release-rehearsal`), with no failures or pending checks. These results apply
-only to their named SHAs. The live PR body is authoritative for any later
-head and its validation state.
+commits `4fa243b654c96e928ea480bd9ee25b4d5157eddc` and
+`34141eba0d4ea6b76b06fdce57a89afddd6743de` also passed 1,032 tests, zero skips
+and all six local checks. The latest receipt is
+`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`.
+Its exact official query returned 14 check-runs: 12 successes and two
+workflow-conditional skips (`deploy` and `release-rehearsal`), with no failures
+or pending checks. These results apply only to their named SHAs. The live PR
+body is authoritative for any later head and its validation state.
+
+B-08 assessment: this repository is public. The latest PR #99 checks executed
+on GitHub-hosted runners, and GitHub documents standard hosted runners as free
+for public repositories. This observation does not explain historical
+pre-start failures or disclose account allowance. Self-hosted runners are not
+a safe replacement for public pull-request code: GitHub warns that untrusted
+workflow code can persistently compromise a host. No runner, workflow, check,
+protection or spending setting changed; see [B-08](BLOCKERS.md).
 
 The open M1C-04 Census stack contains #93, #94, #95, #96, #97, #98 and #100.
 They remain linearly dependent (#94 on #93 through #98, then #100 on #98),

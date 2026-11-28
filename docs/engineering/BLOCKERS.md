@@ -6,10 +6,16 @@ Current `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`; PRs #87–#92 are
 merged. The complete local gate on this exact integrated SHA passed 1,027
 tests, zero skips and all six checks with the reviewed WorldKernel pin; the
 receipt is recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This is
-local validation, not official Actions. The owner reports GitHub Actions' included allowance exhausted; no
-paid spend, purchased capacity or limit increase is authorized. Current
-exact-head queries found workflows on #93 (`76f0402`) and #99 (`4fa243b`),
-with 12 successes and two conditional skips each. The missing
+local validation, not official Actions. The owner reports GitHub Actions'
+included allowance exhausted; no paid spend, purchased capacity or limit
+increase is authorized. Current exact-head queries found workflows on #93
+(`76f0402`) and latest #99 (`34141eb`), with 12 successes and two conditional
+skips each. The #99 check-runs executed on GitHub-hosted runners. GitHub
+documents standard hosted runners as free for public repositories
+([billing](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+This confirms current workflow execution for that head, not current account
+allowance or the cause of historical pre-start failures. The missing
 runs on #94–#98 and #100 have a separate, source-confirmed explanation: every
 repository `pull_request` workflow currently filters `branches: [main]` in
 [`ci.yml`](../../.github/workflows/ci.yml),
@@ -27,13 +33,18 @@ protections without a separate decision.
 
 Use the temporary complete local gate in
 [LOCAL_QUALITY_GATE.md](LOCAL_QUALITY_GATE.md). No check, verifier, branch
-protection or workflow was disabled. A self-hosted runner remains an evaluated
-but unconfigured option: it would require a trusted maintained host, runner
-registration credentials, patch/isolation design and repository-administrator
-action. Current local validation is authorized and sufficient for independent
-review preparation, so no runner registration or external permission is
-needed for this increment. Do not expose registration tokens or attach a
-persistent runner without a separate owner decision.
+protection or workflow was disabled. This is a public repository, and public
+pull-request workflows execute candidate code. GitHub warns that untrusted
+workflow code may persistently compromise self-hosted runners and advises
+against exposing them to public-repository pull requests
+([secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[runner access](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access),
+[runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)).
+An ephemeral VM can reduce persistence, but still executes untrusted code and
+requires isolated provisioning, teardown and secret/egress controls; no such
+zero-cost trusted environment is established here. Do not register a runner or
+change workflows. The latest exact PR #99 checks ran on hosted runners; this
+does not identify the cause of historical pre-start failures.
 
 B-07 now has a reproduced local boundary: on exact candidate SHA
 `2d592bd50b15c3b0d463c94e58a70be78553e8a6`, pytest stalled in the first
@@ -46,14 +57,16 @@ local gate remains fail-closed and unchanged; see the exact receipt in
 [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Preserve zero paid spend and do
 not infer official Actions state from this local result.
 
-PR #99 status-refresh commit is
-`4fa243b654c96e928ea480bd9ee25b4d5157eddc`. Its local six-check gate passed
-1,032 tests, zero skips and all six checks; GitHub recorded 12 completed
-successes and two workflow-conditional skips (`deploy`,
-`release-rehearsal`). A local CLI smoke on that SHA parsed the success and
-history-abstention reports and confirmed action authority remained false. This
-evidence applies only to that PR SHA and does not establish a billing cause or
-a result for later commits. The live PR body holds current evidence:
+PR #99 documentation head is
+`34141eba0d4ea6b76b06fdce57a89afddd6743de`. Its local six-check gate passed
+1,032 tests, zero skips and all six checks; receipt:
+`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`.
+The exact official query returned 14 check-runs: 12 completed successes and
+two workflow-conditional skips (`deploy`, `release-rehearsal`). The CLI smoke
+is separately scoped to earlier code head `b8695a3`; it parsed the success and
+history-abstention reports and confirmed action authority remained false.
+These results apply only to their named SHAs. The live PR body holds current
+evidence:
 [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
 
 ## Historical pre-#87 B-07/B-08 reconciliation - 2026-11-28

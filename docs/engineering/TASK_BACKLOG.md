@@ -15,11 +15,14 @@ abstention-safe offline report and opt-in scripted orchestration preview.
 The documentation-inclusive candidate is [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
 Immediately before its latest status refresh, code head
 `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b` passed 1,032 tests, zero skips,
-all six local checks and the success/abstention CLI smoke. Status refresh
-commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests,
-zero skips and all six local checks; its exact official query returned 12
-successes and two conditional skips. These results are SHA-specific. The live
-PR body carries the current head and exact evidence; gate each later commit.
+all six local checks and the success/abstention CLI smoke. Status commits
+`4fa243b654c96e928ea480bd9ee25b4d5157eddc` and
+`34141eba0d4ea6b76b06fdce57a89afddd6743de` each passed 1,032 tests, zero
+skips and all six local checks. The latter's receipt is
+`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`;
+its exact official query returned 12 successes and two conditional skips.
+These results are SHA-specific. The live PR body carries the current head and
+exact evidence; gate each later commit.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -30,8 +33,8 @@ PR body carries the current head and exact evidence; gate each later commit.
 | UCI #352 pilot | MM-024 invoice classification is present; 11 dedicated synthetic regressions pass. A focused rerun collected 18 cases across four regression functions and passed. The earlier approved source attempt already excluded unverified prefixes before aggregation but stopped above 250,000 product-day groups, with no projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
 | B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. The current inspection-only proposal is the October 2026 Advance MARTS report (CB26-181), dated November 17; the public historical index excludes the current release and lists through September. FRED/ALFRED remains NO-GO under posted development and retention terms. | Obtain owner approval for this exact single report PDF for quarantine/notice/provenance/schema inspection only. That approval must not be treated as permission to parse values or acquire other vintages; then obtain separate artifact rights and processing approval. Continue the fixed synthetic-only evaluation protocol. |
 | M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
-| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. The documented code head `b8695a3` passed 1,032 tests, zero skips, six local checks and CLI smoke; status commit `4fa243b` passed 1,032 tests, zero skips, all six local checks and 12 official successes plus two conditional skips. | Address independent review; the live PR body carries the current exact head and evidence. Gate each later head. Do not merge or claim a production capability from this experimental local report. |
-| B-08 Actions | Owner reports included allowance exhausted. Exact PR #93 head (`76f0402`) and status-refresh head #99 (`4fa243b`) each had 12 successful checks and two conditional skips. PRs #94–#98/#100 target parent branches and receive no runs because all current `pull_request` triggers filter `main`; this explains those missing runs, not historical pre-start failures or account allowance. | Use authorized temporary local quality gate for stacked branches. Do not spend, alter workflow filters, protections, checks or runners, or infer a billing cause for historical failures. |
+| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Code head `b8695a3` passed 1,032 tests, zero skips, all six local checks and CLI smoke; latest documentation head `34141eb` passed the same six-check gate and has 12 official successes plus two conditional skips. | Address independent review; the live PR body carries the current exact head and evidence. Gate each later head. Do not merge or claim a production capability from this experimental local report. |
+| B-08 Actions | Owner reports included allowance exhausted, but latest exact PR #99 head `34141eb` ran on GitHub-hosted runners: 12 check-runs succeeded and two were conditionally skipped. GitHub documents standard hosted runners as free for public repositories. Missing runs on #94–#98/#100 follow their parent-branch targets and `pull_request.branches: [main]` filters; neither fact explains historical pre-start failures or proves account billing state. | Keep zero spend and all protections. No self-hosted runner: public pull-request code is untrusted, and GitHub warns against exposing persistent self-hosted resources to it. Keep the local gate for stacked branches and do not infer billing cause. |
 
 ## Historical pre-#87 checkpoint - 2026-11-28
 

@@ -23,14 +23,16 @@
   Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
   Immediately before the documentation status refresh, its code head was
   `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that SHA passed 1,032 tests,
-  zero skips, all six local checks and the CLI smoke. Status commit
-  `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests, zero
-  skips, all six local checks and 12 official check-runs; two conditional
-  checks (`deploy`, `release-rehearsal`) were skipped. A manual
-  CLI smoke parsed both the completed experimental report and
-  history-unavailable abstention, with no action authority. These results
-  apply only to that SHA. The live PR body is authoritative for the current
-  head and evidence; re-run the full local gate after any commit.
+  zero skips, all six local checks and the CLI smoke. Status commits
+  `4fa243b654c96e928ea480bd9ee25b4d5157eddc` and latest documentation head
+  `34141eba0d4ea6b76b06fdce57a89afddd6743de` each passed 1,032 tests, zero
+  skips and all six local checks. The latter's receipt is recorded in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); its exact official query returned
+  12 successes and two conditional skips (`deploy`, `release-rehearsal`). A
+  manual CLI smoke on code head `b8695a3` parsed both the completed experimental
+  report and history-unavailable abstention, with no action authority. Results
+  apply only to named SHAs. The live PR body is authoritative for current head
+  and evidence; re-run the full local gate after any commit.
   See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
 - PRs #60 and #61 have since merged into main at
   `8c871adeef3b7f74e0c30cd20be49c86105dca78` and
@@ -74,13 +76,14 @@
   software-development and archive route; see the updated
   [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
-  remains. Current exact-head queries found 12 successes and two conditional
-  skips on #93 (`76f0402`) and #99 (`4fa243b`). Missing runs on #94–#98/#100
-  are explained by the current `pull_request.branches: [main]` filters: those
-  PRs target parent feature branches. This does not explain historical
-  pre-start failures or reveal current allowance. Use the temporary local gate
-  for stacked PRs. Do not edit workflow filters, spend, register runners or
-  weaken/skip protections.
+  remains. The latest exact PR #99 head (`34141eb`) nevertheless ran 14
+  check-runs on the public repository: 12 succeeded and two were conditionally
+  skipped. GitHub documents standard hosted runners as free for public repos;
+  this observed run does not explain historical pre-start failures or disclose
+  account state. Public PR code is untrusted, so GitHub's security guidance
+  makes a persistent self-hosted runner an unsafe substitute. Keep the local
+  gate for stacked PRs. Do not spend, change filters/protections, register a
+  runner or weaken/skip checks. See [B-08](BLOCKERS.md).
 
 ## Historical pre-#87 continuation - 2026-11-28
 

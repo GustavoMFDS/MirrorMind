@@ -26,11 +26,20 @@ commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests,
 zero skips and all six checks; receipt:
 `results/local-quality-gate-4fa243b654c96e928ea480bd9ee25b4d5157eddc-workspace.json`.
 Its exact GitHub query returned 12 successes and two conditional skips.
-These results apply only to their named SHAs. Every later commit requires a
-fresh gate; the live PR body carries the current SHA and receipt.
-Do not transfer local results between `main` and PR heads or present them as CI. The owner's
-Actions allowance exhaustion and zero paid spend remain constraints. No
-workflow, check, protection, runner or spending setting was changed.
+Latest documentation head `34141eba0d4ea6b76b06fdce57a89afddd6743de` also
+passed 1,032 tests, zero skips and all six checks; receipt:
+`results/local-quality-gate-34141eba0d4ea6b76b06fdce57a89afddd6743de-workspace.json`.
+Its exact GitHub query returned 14 check-runs: 12 successes and two conditional
+skips (`deploy`, `release-rehearsal`). These results apply only to their named
+SHAs. Every later commit requires a fresh gate; the live PR body carries the
+current SHA and receipt. Do not transfer local results between `main` and PR
+heads or present them as CI. The owner-reported allowance exhaustion and zero
+paid spend remain constraints, but the latest PR #99 checks did execute on
+GitHub-hosted runners. GitHub documents standard hosted runners as free for
+public repositories ([billing](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+This does not explain historical pre-start failures or disclose account state.
+No workflow, check, protection, runner or spending setting was changed.
 
 ### Integrated main baseline — exact SHA `843fc5f`
 
@@ -47,8 +56,8 @@ evidence for the integrated SHA only.
 
 ### PR stack workflow routing — 2026-11-28
 
-The latest exact-head query before this status refresh returned 14 check-runs
-for PR #93 head `76f04028a53bc1b3d008d500b31ca1f75ceb5a08` and PR #99 head
+The prior exact-head query returned 14 check-runs for PR #93 head
+`76f04028a53bc1b3d008d500b31ca1f75ceb5a08` and PR #99 head
 `4fa243b654c96e928ea480bd9ee25b4d5157eddc`: 12 successes and two conditional
 skips on each. For both heads, `deploy` and `release-rehearsal` were skipped.
 The current `pull_request` triggers in the [CI](../../.github/workflows/ci.yml),
@@ -67,6 +76,30 @@ for these stacked PRs, and never represent a missing workflow as a pass. See
 [PR #93](https://github.com/GustavoMFDS/MirrorMind/pull/93) and
 [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) for the exact run
 links on the two main-targeting heads.
+
+### PR #99 current exact head and runner assessment — 2026-11-28
+
+On exact head `34141eba0d4ea6b76b06fdce57a89afddd6743de`, GitHub returned 14
+check-runs: 12 `success`, two `skipped` by workflow conditions (`deploy` and
+`release-rehearsal`), none failed or pending. Evidence: [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114857),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114835),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114862),
+[site build and conditional deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114854),
+[benchmark and conditional rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169114801),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/141053376183), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46169111446).
+These are official checks for that PR head, not local-gate evidence.
+
+This public repository ran those jobs on GitHub-hosted runners. GitHub's
+billing guidance documents standard hosted runners as free for public
+repositories. This observation establishes neither account allowance nor a
+cause for historical pre-start failures. A self-hosted runner is not a safe
+zero-cost substitute for public pull-request code: the candidate code executes
+on the worker, and GitHub warns about persistent compromise of self-hosted
+hosts exposed to untrusted pull requests ([secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[runner access](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)).
+No self-hosted runner, workflow change or protection change is recommended or
+configured. Preserve the owner-approved local gate for stacked PRs.
 
 ### PR #99 local gate — initial exact head `62912e11`
 
