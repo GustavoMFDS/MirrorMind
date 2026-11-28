@@ -404,3 +404,8 @@ The [intervention engine](../../src/mirrormind/domains/retail/census_modular_int
 has bounded exact mechanism replacement and paired conditional event
 contrast tests in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md),
 not empirical causal or individual counterfactual identification.
+
+The [counterfactual engine](../../src/mirrormind/domains/retail/census_counterfactual.py)
+has bounded supplied-mechanism abduction and response-type
+sensitivity checks in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md),
+not learned SCMs or real-world causal identification.

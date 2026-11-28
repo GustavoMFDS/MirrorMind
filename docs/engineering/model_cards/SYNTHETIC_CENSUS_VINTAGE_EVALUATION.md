@@ -237,3 +237,9 @@ Modular interventions replace specified local mechanisms under
 synthetic posterior assumptions. Paired contrast sampling bounds
 are conditional on ideal iid draws, not empirical effect estimates
 or identification of individual counterfactuals. No action authority.
+
+Structural counterfactuals condition on a complete natural factual
+trajectory and known three-axis mechanisms. Sensitivity bounds apply
+only to independent occurrence-specific binary response types with
+specified marginals. No causal discovery, empirical identification,
+prospective forecast claim or operational authority.

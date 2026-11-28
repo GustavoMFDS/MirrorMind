@@ -160,6 +160,24 @@ Static imports (including inside functions): `__future__`, `collections`, `fract
 | `joint_brier_score` | function | `def joint_brier_score(pmf: JointPMF, observed: tuple[int, int]) -> Fraction` | — | [L109](../../../src/mirrormind/domains/retail/census_bivariate.py#L109) |
 | `reference_joint_brier_excess` | function | `def reference_joint_brier_excess(pmf: JointPMF, reference: JointPMF) -> Fraction` | Squared probability-vector distance to a supplied, unverified reference. | [L121](../../../src/mirrormind/domains/retail/census_bivariate.py#L121) |
 
+## `mirrormind.domains.retail.census_counterfactual`
+
+Source: [`src/mirrormind/domains/retail/census_counterfactual.py`](../../../src/mirrormind/domains/retail/census_counterfactual.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `dataclasses`, `fractions`, `itertools`, `math`, `mirrormind.domains.retail.census_modular`, `mirrormind.domains.retail.census_modular_interventions`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_validate` | function | `def _validate(factual: History, graph: Graph, axes: State) -> int` | — | [L23](../../../src/mirrormind/domains/retail/census_counterfactual.py#L23) |
+| `_sign` | function | `def _sign(prev: State, parents: State) -> int \| None` | — | [L57](../../../src/mirrormind/domains/retail/census_counterfactual.py#L57) |
+| `_positive` | function | `def _positive(factual_sign: int \| None, factual_value: int, alternative_sign: int \| None, theta: F) -> F` | — | [L61](../../../src/mirrormind/domains/retail/census_counterfactual.py#L61) |
+| `_likelihood` | function | `def _likelihood(factual: History, graph: Graph) -> F` | — | [L76](../../../src/mirrormind/domains/retail/census_counterfactual.py#L76) |
+| `_distribution` | function | `def _distribution(factual: History, graph: Graph, axes: State, force: dict[Key, int], theta: Theta) -> PMF` | — | [L87](../../../src/mirrormind/domains/retail/census_counterfactual.py#L87) |
+| `CounterfactualResult` | class | `class CounterfactualResult` | — | [L119](../../../src/mirrormind/domains/retail/census_counterfactual.py#L119) |
+| `counterfactual` | function | `def counterfactual(factual: History, graph: Graph, axes: State, interventions: Schedule=(), *, mechanism: Literal['flip', 'threshold']) -> CounterfactualResult` | Abduct response types from natural factual transitions, then replace mechanisms. | [L128](../../../src/mirrormind/domains/retail/census_counterfactual.py#L128) |
+| `StructuralBounds` | class | `class StructuralBounds` | — | [L155](../../../src/mirrormind/domains/retail/census_counterfactual.py#L155) |
+| `counterfactual_bounds` | function | `def counterfactual_bounds(factual: History, graph: Graph, axes: State, event: State, schedule_a: Schedule, schedule_b: Schedule) -> StructuralBounds` | Sharp contrast bounds over independent occurrence-specific response laws. | [L170](../../../src/mirrormind/domains/retail/census_counterfactual.py#L170) |
+
 ## `mirrormind.domains.retail.census_evaluation`
 
 Source: [`src/mirrormind/domains/retail/census_evaluation.py`](../../../src/mirrormind/domains/retail/census_evaluation.py)

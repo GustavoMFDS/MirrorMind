@@ -1139,3 +1139,10 @@ Use the [intervention engine](../../src/mirrormind/domains/retail/census_modular
 to compare a forced first transition with an observed first transition.
 Explain why shared simulation randomness does not identify an
 individual counterfactual. Compare paired and independent variances.
+
+### Exercise: structural nonidentification
+Use the [counterfactual engine](../../src/mirrormind/domains/retail/census_counterfactual.py)
+to compare the flip and threshold laws on the same factual trajectory.
+Explain why equal transition likelihoods do not identify the
+response-type coupling, and why extrema over independent occurrence
+parameters occur at vertices of the bounded box.
