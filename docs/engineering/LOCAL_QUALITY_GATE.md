@@ -3,16 +3,14 @@
 ## Current continuation - 2026-11-28
 
 Latest `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`; its 11 official
-check-runs succeeded on that exact SHA. PR #87's exact candidate state and
-current gate receipt/check status are maintained in the live PR body. The
-previous published candidate
-`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate and all
-applicable official checks, but independent review reproduced a provider-turn
-validation bypass via Pydantic `model_copy(update=...)`. The current candidate
-revalidates from plain data and adds nested-model/missing-payload regressions.
-Its exact gate and checks were queried separately; none of the earlier results
-below transfer to it. Re-query after any later push. No workflow, required
-check, protection, runner or spending setting was changed.
+check-runs succeeded on that exact SHA. PR #87's published head is
+`c69f93b5428b0b1bb265c7039e38d1d99ea90d10`. Its exact local gate passed 1,019
+tests, zero skips and all six checks; its official check-run query returned 12
+successes and two workflow-conditional skips. Exact receipts and run links are
+recorded below. The independent review thread remains unresolved, so this is
+validation evidence, not reviewer approval or merge authorization. Re-query
+after any later push. No workflow, required check, protection, runner or
+spending setting was changed.
 
 ## Historical main and exact-head gate status - 2026-11-27
 
@@ -819,6 +817,23 @@ capability ledger). Receipt:
 One existing Starlette/httpx TestClient deprecation warning remains. The
 focused M2-03 unit suite passed 25 tests; whole-package mypy passed all 71
 source modules. The receipt records official Actions as not checked by the
-local script. Query the live PR for the exact current published SHA and its
-separate official check runs; neither this local receipt nor earlier Actions
-results transfer to another head.
+local script. Its official check runs were queried separately at the later
+published head; see the exact-head record below.
+
+### PR #87 published head `c69f93b` — documentation-inclusive correction
+
+The exact published head
+`c69f93b5428b0b1bb265c7039e38d1d99ea90d10` passed the complete owner-authorized
+local gate: **1,019 tests, zero skips and all six checks**. Receipt:
+`results/local-quality-gate-c69f93b5428b0b1bb265c7039e38d1d99ea90d10-workspace.json`.
+The exact check-run query returned 14 jobs: 12 `success` and two conditional
+`skipped` (`deploy`, `release-rehearsal`). See [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213546),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213543),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213563),
+[site build](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213498),
+[benchmark](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213579),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140847079791) and
+[workflow analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102209976).
+The local Docker engine was unavailable; official container smoke passed.
+The independent review thread remains unresolved and PR #87 remains open and
+unmerged. These exact-SHA results do not transfer to a later commit.

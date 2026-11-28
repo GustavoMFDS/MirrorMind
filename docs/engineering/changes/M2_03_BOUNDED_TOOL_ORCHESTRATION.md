@@ -99,8 +99,10 @@ must become the fixed `invalid_provider_turn` refusal without echoing details.
   `48e7efe98aae2df3811302fbf7875a2bd8a48dc4`: 25 focused tests, 1,019 full
   tests, zero skips and all six checks passed; receipt is recorded in
   `LOCAL_QUALITY_GATE.md`.
-- [ ] Query applicable official checks for the published correction head and
-  request independent re-review after recording those exact-SHA results.
+- [x] Query applicable official checks and request independent re-review for
+  the published head `c69f93b5428b0b1bb265c7039e38d1d99ea90d10`; 12 checks
+  succeeded and two were skipped by workflow conditions. The review thread is
+  still unresolved, so independent approval and integration remain pending.
 
 ## 3. Impact map
 

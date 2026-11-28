@@ -14,20 +14,15 @@ This is evidence for that exact main SHA only. It does not establish billing
 state or explain earlier pre-start failures. Preserve the owner's zero-paid-
 spend limit and do not change protections, workflow checks or runners.
 
-At sync start, PR #87 was open at published head
-`48fc51db949cf5626b50d3f97b5304388a9b1076`. That exact head had 12
-successful check-runs and two conditional skips
-(`deploy`, `release-rehearsal`). The local branch now contains latest `main`
-through merge `66b591317b375a270b5d0ed682c94e161d52a956`; its full local gate
-passed 1,014 tests, zero skips and all six checks. The sync commit was not yet
-published at that checkpoint. The subsequently published exact head
-`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed its 1,014-test local gate
-and had 12 successful check-runs plus two conditional skips. Independent
-review identified a reproducible nested Pydantic validation bypass; the
-correction commit `48e7efe98aae2df3811302fbf7875a2bd8a48dc4` corrects it with
-regression tests and strict turn reconstruction. Its exact local gate passed
-1,019 tests, zero skips and six checks. Exact current candidate evidence and
-re-review state are in the live PR. Never transfer results between SHAs.
+PR #87 is open at published head
+`c69f93b5428b0b1bb265c7039e38d1d99ea90d10`, which includes the latest `main`
+through merge `66b591317b375a270b5d0ed682c94e161d52a956`, the provider-turn
+correction and its documentation. Its exact local gate passed 1,019 tests,
+zero skips and all six checks. Its exact official query returned 12 successful
+check-runs and two workflow-conditional skips (`deploy`, `release-rehearsal`).
+The independent review thread remains unresolved. These results do not
+constitute reviewer approval or merge authorization; never transfer evidence
+between SHAs.
 
 On exact local SHA `66b5913`, the restricted sandbox attempt produced no
 output and was interrupted before the local gate's 900-second limit; no
@@ -40,8 +35,8 @@ and [the gate record](LOCAL_QUALITY_GATE.md).
 
 ## Current B-08 reconciliation - 2026-11-28
 
-The exact published M2-03 head `b931bbe2279dd0865f535e0f56e5165ed402ef96`
-also received 12 successful official check-runs and two conditional skips on
+The exact published M2-03 head `c69f93b5428b0b1bb265c7039e38d1d99ea90d10`
+received 12 successful official check-runs and two conditional skips on
 2026-11-28. These runs show Actions executed on that SHA but do not explain
 historical pre-start failures or identify an account billing cause. B-08's
 historical cause remains unresolved; the current M2-03 review correction is
@@ -121,7 +116,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | Historical pre-start failures remain unexplained; alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine contexts, #78 head `8c8f862` six observed jobs, #79 head `b5c1bcc` its applicable jobs, #80 head `e6a28ac` eight jobs, #81 head `41e6db8` nine jobs, #82 head `f6fa2ed` 12 checks, and PR #87 exact head `2d71d39` 12 of 14 check-runs. On #87, deploy and release rehearsal were skipped by workflow conditions; all observed applicable checks passed, including container smoke. These results are scoped to their exact PR heads, not merge commits or later `main`. The owner-reported included-allowance exhaustion and zero-paid-spend decision remain; public standard `ubuntu-latest` runners are documented as free, but account billing was not inspected. | Preserve exact-head evidence; if a pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue the exact-head check-run query and complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-08 | Historical pre-start failures remain unexplained; alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine contexts, #78 head `8c8f862` six observed jobs, #79 head `b5c1bcc` its applicable jobs, #80 head `e6a28ac` eight jobs, #81 head `41e6db8` nine jobs, #82 head `f6fa2ed` 12 checks, and PR #87 exact head `c69f93b` 12 of 14 check-runs. On #87, deploy and release rehearsal were skipped by workflow conditions; all observed applicable checks passed, including container smoke. These results are scoped to their exact PR heads, not merge commits or later `main`. The owner-reported included-allowance exhaustion and zero-paid-spend decision remain; public standard `ubuntu-latest` runners are documented as free, but account billing was not inspected. | Preserve exact-head evidence; if a pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue the exact-head check-run query and complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 
