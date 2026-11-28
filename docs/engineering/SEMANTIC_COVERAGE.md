@@ -370,3 +370,7 @@ have guided bounded exact estimation and forecast behavior in
 The [temporal study](../../examples/m1_census_temporal_study.py)
 has guided exact fictional comparison and local replay in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical skill.
+
+The [temporal observatory](../../examples/m1_census_temporal_observatory.py)
+has guided offline replayed report behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasting.

@@ -1250,3 +1250,10 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_temporal_study.py](../../examples/m1_census_temporal_study.py) | Fixed temporal study and receipt replay |
 | [tests/integration/test_census_temporal_study.py](../../tests/integration/test_census_temporal_study.py) | Commitment, replay and causal input tests |
 | [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_STUDY.md](changes/M1C_04_CENSUS_TEMPORAL_STUDY.md) | Scoped acceptance and impact map |
+
+### Dynamic network observatory
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_temporal_observatory.py](../../examples/m1_census_temporal_observatory.py) | Replayed offline temporal visualization |
+| [tests/integration/test_census_temporal_observatory.py](../../tests/integration/test_census_temporal_observatory.py) | Report, transition row mass and failure tests |
+| [docs/engineering/changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md) | Scoped acceptance and impact map |

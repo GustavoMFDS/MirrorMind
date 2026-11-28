@@ -539,6 +539,13 @@
     "limitation": "Fixed fictional paired-state temporal comparison and local replay only; no independent registration, causal effects, empirical calibration, inference or operational authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-038",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_temporal_observatory.py",
+    "function": "test_temporal_observatory_replay_and_matrices",
+    "limitation": "Offline replayed fixed temporal study and transition examples only; no empirical calibration, causal effects, accessibility certification or operational authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

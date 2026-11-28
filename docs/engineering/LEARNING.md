@@ -1094,3 +1094,9 @@ Run the [temporal study](../../examples/m1_census_temporal_study.py)
 and compare joint scores for iid, own, cross and full conditional
 laws. Discuss missing contexts, structural changes and why predictive
 association alone does not establish causality.
+
+### Exercise: inspect temporal transition laws
+Generate the [temporal observatory](../../examples/m1_census_temporal_observatory.py).
+Compare own and cross rows and the resulting conditional cumulative
+joint PMFs. Inspect the six oracle steps and explain the limitations
+of fitting a stationary law across a structural change.

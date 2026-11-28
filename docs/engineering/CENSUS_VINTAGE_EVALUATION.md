@@ -993,3 +993,28 @@ scoring, check future invariance and the exact transition boundary.
 Run `python -m pytest -q tests/integration/test_census_temporal_study.py`.
 See [change request](changes/M1C_04_CENSUS_TEMPORAL_STUDY.md).
 Independent review pending.
+
+## Offline dynamic network observatory
+The [temporal observatory](../../examples/m1_census_temporal_observatory.py)
+renders a fresh fixed temporal study only after full local replay.
+
+    python -m examples.m1_census_temporal_observatory --revision REV --output ABSOLUTE_HTML
+
+Separate descriptive scenario/horizon tables expose exact joint and
+marginal scores, event probabilities, covariance, and reference excess.
+Fixed examples (path 0, origin 52, horizon six) show previous/next
+state transition matrices with percentages and exact fractions,
+conditional cumulative joint distributions and marginals. Each fitted
+candidate uses one stationary estimated matrix; the oracle displays
+each of its six privileged future matrices. No additional sample,
+statistical winner, empirical calibration, causal effect, imported
+record, network, script or operational authority. Report includes
+declared revision, study, report and group transcript digests.
+
+Proposed evidence MM-CEN-038:
+`test_temporal_observatory_replay_and_matrices` checks replayed metrics,
+provenance, table counts and internal links. Other tests verify exact
+row mass, exclusive output and no output after replay mismatch.
+Run `python -m pytest -q tests/integration/test_census_temporal_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_TEMPORAL_OBSERVATORY.md).
+Independent review pending; markup tests are not accessibility certification.

@@ -572,3 +572,9 @@ Check the declared revision, retained commitment and exact canonical
 receipt. Switch transition 53 affects the forecast from origin 52;
 origins before the change can target across the change. Oracle has
 privileged future schedule access. No public cache is exposed.
+
+### Temporal observatory
+Use a new absolute HTML output path. Replay mismatch prevents output.
+Rows represent previous states and columns next states; every row
+sums to one exactly. Oracle matrices are privileged per-step laws,
+not estimated parameters or observed future outcomes.

@@ -413,3 +413,8 @@ a model nor changes source ingestion, API, persistence or authority.
 The [temporal study](../../examples/m1_census_temporal_study.py)
 combines fixed paired-state estimation, exact Markov propagation and
 replayed fictional joint scoring. No ingestion, API, journal or authority.
+
+### Dynamic network observatory
+The [offline temporal report](../../examples/m1_census_temporal_observatory.py)
+renders a replayed fixed temporal study and conditional transition,
+joint and marginal examples. No new API, persistence or authority.

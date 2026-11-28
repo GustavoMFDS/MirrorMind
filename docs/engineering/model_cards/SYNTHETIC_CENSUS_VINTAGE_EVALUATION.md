@@ -203,3 +203,7 @@ The fixed fictional temporal study compares four estimated transition
 structures under known synthetic mechanisms. The oracle knows the
 future schedule. No causal identification, empirical calibration,
 independent holdout or operational forecast is established.
+
+The offline temporal observatory visualizes a freshly replayed fixed
+study, estimated transition rows and privileged oracle schedules.
+It does not establish causal effects or empirical calibration.
