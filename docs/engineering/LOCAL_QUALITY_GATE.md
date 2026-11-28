@@ -15,25 +15,37 @@ Python 3.13's Windows Proactor blocked while accepting the local half of its
 asyncio socketpair. The unchanged test passed in 1.38s outside the sandbox,
 and the unchanged complete gate passed in 45.01s with loopback available. This
 is local environment evidence, not official Actions. The documentation-
-inclusive initial PR head was also gated as recorded below. Immediately before
-this status refresh, published PR #99 head
-`5c23efa819644b76fe87bd1ab40c4cb2225df029` passed the complete local gate:
+inclusive initial PR head was also gated as recorded below. Current published
+PR #99 head `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b` passed the complete local gate:
 1,032 tests, zero skips and all six checks with the exact WorldKernel pin.
-Receipt: `results/local-quality-gate-5c23efa819644b76fe87bd1ab40c4cb2225df029-workspace.json`.
+Receipt: `results/local-quality-gate-b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b-workspace.json`.
 The parsed CLI smoke also confirmed the completed experimental report and
 history-abstention path both keep action authority false. The exact GitHub
 query on that SHA returned 12 successes and two conditional skips. These
 results apply only to that SHA. Every later commit requires a fresh gate; the
 live PR body carries the current SHA and receipt.
-Do not transfer local results to `main` or present them as CI. The owner's
+Do not transfer local results between `main` and PR heads or present them as CI. The owner's
 Actions allowance exhaustion and zero paid spend remain constraints. No
 workflow, check, protection, runner or spending setting was changed.
+
+### Integrated main baseline — exact SHA `843fc5f`
+
+After PR #92, the detached integrated `main` commit
+`843fc5f4ea8310947f2626f486561de56401f3e2` passed the complete local gate on
+2026-11-28. Python 3.13.5 and WorldKernel `0.0.1` from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` were used. Results: 1,027 tests,
+zero skips, and successful pytest, Ruff, symbol catalog, atlas, evidence and
+capability checks. One existing Starlette/httpx deprecation warning appeared.
+Receipt:
+`results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+The receipt explicitly marks GitHub Actions as not checked; this is local
+evidence for the integrated SHA only.
 
 ### PR stack workflow routing — 2026-11-28
 
 The latest exact-head query before this status refresh returned 14 check-runs
 for PR #93 head `76f04028a53bc1b3d008d500b31ca1f75ceb5a08` and PR #99 head
-`5c23efa819644b76fe87bd1ab40c4cb2225df029`: 12 successes and two conditional
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`: 12 successes and two conditional
 skips on each. For both heads, `deploy` and `release-rehearsal` were skipped.
 The current `pull_request` triggers in the [CI](../../.github/workflows/ci.yml),
 [docs](../../.github/workflows/docs.yml),

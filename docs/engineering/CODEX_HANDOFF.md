@@ -5,7 +5,11 @@
 - Current remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2` (PR #92
   merge). PRs #87–#92 are integrated. M2-03 is available at merge
   commit `45a84d2a4528755a88fccf8d766b5ef18518b9d8`; never replay its commits.
-  Exact-head gate evidence for prior PRs does not transfer to current `main`.
+  The complete local gate has passed on this exact integrated main SHA: 1,027
+  tests, zero skips and all six checks with WorldKernel at reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+  `results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+  This is local evidence, not official Actions.
 - Current branch `codex/m2-05-usable-decision-workflow-20261128` carries
   M2-05 work on top of current `main`. It keeps default M1 report payload
   unchanged, adds opt-in `--agent-preview` using existing fixed M2-03 tools,
@@ -17,8 +21,8 @@
   blocked the Windows Proactor loopback socketpair at `test_health`; the same
   test and complete gate passed outside that restriction with no code changes.
   Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-  Immediately before this status refresh, its published head was
-  `5c23efa819644b76fe87bd1ab40c4cb2225df029`. That exact SHA passed 1,032
+  Its current published head is
+  `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`. That exact SHA passed 1,032
   tests, zero skips, all six local checks and 12 official check-runs; two
   conditional checks (`deploy`, `release-rehearsal`) were skipped. A manual
   CLI smoke parsed both the completed experimental report and
@@ -69,8 +73,7 @@
   [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
   remains. Current exact-head queries found 12 successes and two conditional
-  skips on #93 (`76f0402`) and #99 (`5c23efa`, last queried before this
-  status refresh). Missing runs on #94–#98/#100
+  skips on #93 (`76f0402`) and #99 (`b8695a3`). Missing runs on #94–#98/#100
   are explained by the current `pull_request.branches: [main]` filters: those
   PRs target parent feature branches. This does not explain historical
   pre-start failures or reveal current allowance. Use the temporary local gate

@@ -6,9 +6,14 @@ Remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, the normal merge
 of PR #92. PRs #87–#92 are integrated; #87 delivers the
 bounded M2-03 orchestration correction at merge commit
 `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. Earlier local and hosted results
-remain scoped to their recorded PR heads. No complete local gate has yet been
-run on `843fc5f` itself; the separate M2-05 PR-head gate below does not
-transfer to `main`.
+remain scoped to their recorded PR heads. The complete six-check local gate
+has now passed on exact integrated `main` SHA
+`843fc5f4ea8310947f2626f486561de56401f3e2`: 1,027 tests, zero skips, Ruff,
+catalog, atlas, evidence and capabilities. WorldKernel `0.0.1` came from
+reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+One existing Starlette/httpx deprecation warning appeared. This is local
+validation, not official Actions.
 
 The current local candidate is
 `codex/m2-05-usable-decision-workflow-20261128`, based on `843fc5f` through
@@ -32,8 +37,8 @@ evidence, not official Actions. Any later documentation commit needs its own
 exact-head gate before publication; the final PR body carries the published
 SHA and receipt.
 PR #99 is open against `main`, mergeable and ready for independent review.
-Immediately before this status refresh, its published head was
-`5c23efa819644b76fe87bd1ab40c4cb2225df029`. That exact SHA passed 1,032 tests,
+Its current published head is
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`. That exact SHA passed 1,032 tests,
 zero skips and all six local checks, with WorldKernel installed at the reviewed
 pin. Its exact GitHub query returned 12 successful check-runs and two
 workflow-conditional skips (`deploy` and `release-rehearsal`); no failures or
