@@ -389,18 +389,18 @@ Static imports (including inside functions): `__future__`, `collections.abc`, `d
 
 Source: [`src/mirrormind/domains/retail/uci_transactions.py`](../../../src/mirrormind/domains/retail/uci_transactions.py)
 
-Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `re`
+Static imports (including inside functions): `__future__`, `collections.abc`, `dataclasses`, `datetime`, `re`, `typing`
 
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
-| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L30](../../../src/mirrormind/domains/retail/uci_transactions.py#L30) |
-| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L39](../../../src/mirrormind/domains/retail/uci_transactions.py#L39) |
-| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L50](../../../src/mirrormind/domains/retail/uci_transactions.py#L50) |
-| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L64](../../../src/mirrormind/domains/retail/uci_transactions.py#L64) |
-| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L73](../../../src/mirrormind/domains/retail/uci_transactions.py#L73) |
-| `is_valid_uci_stock_code` | function | `def is_valid_uci_stock_code(value: object, *, allow_internal_spaces: bool=False) -> bool` | Validate a normalized source code without trimming or coercion. | [L80](../../../src/mirrormind/domains/retail/uci_transactions.py#L80) |
-| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L101](../../../src/mirrormind/domains/retail/uci_transactions.py#L101) |
-| `_project_uci_retail_rows` | function | `def _project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int, max_groups: int, max_groups_ceiling: int, allow_internal_stock_code_spaces: bool, allow_unverified_invoice_prefix: bool=False) -> UciRetailProjection` | Internal bounded implementation shared with the UCI workbook adapter. | [L122](../../../src/mirrormind/domains/retail/uci_transactions.py#L122) |
+| `ProductDayUnits` | class | `class ProductDayUnits` | Positive invoice-line units for a product/event day, not latent demand. | [L31](../../../src/mirrormind/domains/retail/uci_transactions.py#L31) |
+| `UciRetailProjection` | class | `class UciRetailProjection` | Immutable local research projection with no authenticated data rights. | [L40](../../../src/mirrormind/domains/retail/uci_transactions.py#L40) |
+| `UciRetailProjection.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Return only aggregate counters and explicit permission/time uncertainty. | [L51](../../../src/mirrormind/domains/retail/uci_transactions.py#L51) |
+| `_invoice_number` | function | `def _invoice_number(value: object) -> str` | Normalize an invoice code, preserving explicit C-prefixed cancellations. | [L65](../../../src/mirrormind/domains/retail/uci_transactions.py#L65) |
+| `_transaction_day` | function | `def _transaction_day(value: object) -> date` | Accept only timezone-naive Excel-style datetimes as event observations. | [L74](../../../src/mirrormind/domains/retail/uci_transactions.py#L74) |
+| `is_valid_uci_stock_code` | function | `def is_valid_uci_stock_code(value: object, *, allow_internal_spaces: bool=False) -> TypeGuard[str]` | Validate a normalized source code without trimming or coercion. | [L81](../../../src/mirrormind/domains/retail/uci_transactions.py#L81) |
+| `project_uci_retail_rows` | function | `def project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int=MAX_ROWS, max_groups: int=MAX_GROUPS) -> UciRetailProjection` | Summarize strictly positive invoice quantities, never source availability. | [L102](../../../src/mirrormind/domains/retail/uci_transactions.py#L102) |
+| `_project_uci_retail_rows` | function | `def _project_uci_retail_rows(rows: Iterable[Mapping[str, object]], *, max_rows: int, max_groups: int, max_groups_ceiling: int, allow_internal_stock_code_spaces: bool, allow_unverified_invoice_prefix: bool=False) -> UciRetailProjection` | Internal bounded implementation shared with the UCI workbook adapter. | [L123](../../../src/mirrormind/domains/retail/uci_transactions.py#L123) |
 
 ## `mirrormind.domains.retail.uci_workbook`
 

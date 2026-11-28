@@ -1089,3 +1089,5 @@ forecast claims or cross-repository changes.
 
 - [Developer quick start](DEVELOPER_QUICK_START.md): clean public checkout, validation and local container workflow.
 - [Docker context allowlist](../../.dockerignore): restricted local image inputs.
+
+- [REX quality floor change](changes/REX_QUALITY_FLOOR.md): bounded coverage and type-narrowing follow-up.

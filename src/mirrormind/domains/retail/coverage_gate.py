@@ -75,10 +75,13 @@ def assess_retail_backtest_coverage(
     missing = result["abstained_missing_target"]
     unpublished = result["abstained_unpublished_target"]
     history = result["abstained_history"]
-    assert all(type(value) is int for value in (
-        requested, scored, missing, unpublished, history
-    ))
+    assert type(requested) is int
+    assert type(scored) is int
+    assert type(missing) is int
+    assert type(unpublished) is int
+    assert type(history) is int
     assert scored + missing + unpublished + history == requested
+    winner: str | None
     if scored < 2:
         status = "insufficient_scored_origins"
         winner = None
@@ -87,8 +90,9 @@ def assess_retail_backtest_coverage(
         winner = None
     else:
         status = "eligible_for_conditional_comparison_only"
-        winner = result["lower_mae_on_matched_origins_only"]
-        assert winner is not None
+        candidate = result["lower_mae_on_matched_origins_only"]
+        assert isinstance(candidate, str)
+        winner = candidate
     return RetailBacktestCoverageGate(
         requested_origins=requested,
         scored_origins=scored,

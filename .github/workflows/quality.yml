@@ -27,8 +27,8 @@ jobs:
       - name: Measure public test coverage
         run: |
           python -m coverage run -m pytest -q -rs
-          python -m coverage report
           python -m coverage json -o coverage.json
+          python -m coverage report --fail-under=85
       - name: Strict typing for retrieval
         run: python -m mypy --strict src/mirrormind/modules/retrieval
       - uses: actions/upload-artifact@v4
