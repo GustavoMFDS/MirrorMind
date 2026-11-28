@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated against current `main` `d41e661d298255957979779691c2f9f4dbf36461` on 2026-11-27. PR #82 merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, adding M2-02's bounded fictional retrieval evaluator. Its exact PR head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips and six local checks plus 12 official exact-head checks; these results do not transfer to the merge or later main. Current branch `codex/m2-03-tool-orchestration-20261127` contains the separate M2-03 local orchestration slice. Its `a27027e` gate passed before the `d41e661` sync and is historical. Current typing corrections pass 21 focused tests, whole-package mypy (71 modules), strict retrieval typing (five modules) and focused Ruff; the integrated exact-head gate remains pending. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
+Updated against current `main` `d41e661d298255957979779691c2f9f4dbf36461` on 2026-11-27. PR #82 merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, adding M2-02's bounded fictional retrieval evaluator. Its exact PR head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips and six local checks plus 12 official exact-head checks; these results do not transfer to the merge or later main. Current branch `codex/m2-03-tool-orchestration-20261127` contains the separate M2-03 local orchestration slice. Its `a27027e` gate passed before the `d41e661` sync and is historical. Commit `77c9d35` passed the integrated local gate (1,014 tests, zero skips, all six checks), 86.92% coverage, both mypy jobs and package wheel smoke. Current documentation-only evidence updates need a new exact-head gate; local container smoke and official Actions remain unavailable/unverified. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
 
 
 
@@ -25,7 +25,8 @@ mode, invokes an immutable registry of fictional retrieval and M1F-02 decision
 tools, and emits digest-only receipts plus an untrusted draft for human review.
 The adapter statically describes the internal M1F-02 fields it consumes;
 Pydantic contracts continue to validate the trace and provider-visible result
-at runtime.
+at runtime. Exact code commit `77c9d35` passed the six-check gate and 86.92%
+coverage; documentation-only evidence follow-up needs a new exact-head gate.
 Prompt-like retrieved text remains untrusted data; it cannot extend the
 registry. This path has no network provider, persistent state, public route,
 write capability or business-action authority. Citation validation checks

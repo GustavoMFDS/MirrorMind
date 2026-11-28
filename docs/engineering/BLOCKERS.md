@@ -47,6 +47,12 @@ The owner's zero-paid-budget decision remains. No self-hosted runner, spending
 increase, protection change or check bypass is authorized; none is needed to
 continue local M2-03 work. Preserve the local six-check gate and pinned
 WorldKernel validation.
+On M2-03 commit `77c9d359cda75bddcaca40e7912b13c693614af9`, the exact local
+gate passed 1,014 tests, zero skips and all six checks; coverage was 86.92%,
+whole-package and strict-retrieval mypy passed, and the wheel smoke passed.
+The current host has no Docker engine pipe, so container smoke remains
+unverified locally. No exact-PR GitHub result exists yet; required checks and
+branch protections remain unchanged.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is

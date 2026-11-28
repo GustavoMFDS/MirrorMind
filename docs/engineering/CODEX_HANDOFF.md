@@ -32,8 +32,11 @@
   retaining runtime Pydantic validation. Two focused regressions now exercise
   nested built-in JSON acceptance and cycle/size refusal. Current focused
   checks: 21 tests, whole-package mypy (71 modules), strict retrieval mypy (five
-  modules) and focused Ruff all pass. Final coverage and the exact integrated
-  six-check gate are still pending on the committed candidate.
+  modules) and focused Ruff all pass. Exact commit `77c9d359cda75bddcaca40e7912b13c693614af9`
+  then passed 1,014 tests, zero skips, all six checks and 86.92% coverage;
+  package build and wheel smoke passed. Current worktree contains validation
+  evidence documentation and needs a new exact-head gate before PR. The local
+  Docker engine is unavailable and official Actions remain unverified.
 - PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
   commits. Keep retrieval and its evaluation experimental and fictional.
 - The owner's MM-024 UCI policy is implemented in main: six-digit IDs are

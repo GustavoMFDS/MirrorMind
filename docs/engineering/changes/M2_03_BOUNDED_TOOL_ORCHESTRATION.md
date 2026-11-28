@@ -50,24 +50,24 @@ contracts cannot provide.
 
 ## 2. Acceptance criteria
 
-- [ ] A fixed, immutable registry exposes only fictional evidence search and
+- [x] A fixed, immutable registry exposes only fictional evidence search and
   the existing M1F-02 workflow; it adds no file, URL, command or action tool.
-- [ ] Strict typed inputs, exact result contracts and bounded JSON/context
+- [x] Strict typed inputs, exact result contracts and bounded JSON/context
   sizes are enforced before a tool result reaches the provider.
-- [ ] Provider turns, unique tool calls and total tool calls are bounded; an
+- [x] Provider turns, unique tool calls and total tool calls are bounded; an
   unknown or caller-disallowed tool is refused without execution.
-- [ ] Invalid tool arguments, invalid tool output, provider errors, duplicate
+- [x] Invalid tool arguments, invalid tool output, provider errors, duplicate
   calls, unsupported citation refs and exhausted budgets fail closed without
   exposing raw exception details.
-- [ ] An injection-like retrieved excerpt remains explicitly untrusted; a
+- [x] An injection-like retrieved excerpt remains explicitly untrusted; a
   provider attempt to use a nonexistent private-data/action tool is refused.
   This proves registry enforcement, not immunity of a live model to injection.
-- [ ] Forecast and policy numbers come only from the existing M1F-02 service;
+- [x] Forecast and policy numbers come only from the existing M1F-02 service;
   the provider cannot replace numeric computation. The report is synthetic,
   query-free, non-persisting, human-review-required and non-authorizing.
-- [ ] The adapter's consumed M1F-02 result shape passes whole-package mypy
+- [x] The adapter's consumed M1F-02 result shape passes whole-package mypy
   without replacing or bypassing its runtime Pydantic contract validation.
-- [ ] The CLI example replays deterministically with the scripted provider;
+- [x] The CLI example replays deterministically with the scripted provider;
   unit and integration regressions cover normal and adverse paths.
 - [ ] Source walkthrough, architecture map, debugging guide, learning
   exercise, backlog/status/handoff, atlas, symbol catalog, evidence map and
@@ -111,13 +111,15 @@ requires B-05 approval and a separate security/evaluation review.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: implementation checkpoint `0922c72`; current candidate commit
-  and separate review PR remain pending.
+- Commit / PR: implementation checkpoint `0922c72`; typing correction
+  `77c9d359cda75bddcaca40e7912b13c693614af9` passed the exact gate. The current
+  documentation follow-up and separate review PR remain pending.
 - Modified symbols and files: `modules/agents/contracts.py`,
   `modules/agents/registry.py`, `modules/agents/synthetic_tools.py`, the
   focused unit test, and source walkthrough/learning/debugging/evidence docs.
-- Tests executed, result, environment: focused suite passes 21 tests; current
-  exact integrated gate and public coverage remain pending.
+- Tests executed, result, environment: focused suite passes 21 tests; exact
+  commit `77c9d35` passed 1,014 tests, zero skips and all six checks with the
+  reviewed WorldKernel pin. Coverage was 86.92%; both mypy jobs passed.
 - Claim IDs and cited test path/function: `MM-AGENT-001` through
   `MM-AGENT-009` in `EVIDENCE_MAP.json`.
 - Evidence/provenance/cutoff and uncertainty: fictional fixtures; M1F-02
@@ -128,9 +130,12 @@ requires B-05 approval and a separate security/evaluation review.
   no public route or persisted schema.
 - Docs updated: M2-03 walkthrough, learning exercise, debugging guide,
   change request, system map, status, backlog, handoff, local gate and evidence
-  map; final exact gate receipt is pending.
+  map. The current evidence-documentation change still needs an exact-head gate.
 - Known limitations / follow-up: no live provider or semantic entailment
   checking; M2-04 and M2-05 remain separate.
+- Container/remote validation: local Docker engine unavailable; GitHub Actions
+  unavailable under the owner's exhausted-included-allowance decision. Neither
+  protection nor verifier is bypassed; the PR must retain any required checks.
 - Independent explanation: this increment aligns the previously delivered M2-03
   code with main's new whole-package typing gate. Exact built-in containers are
   still traversed recursively and bounded; type annotations and casts are

@@ -22,7 +22,33 @@ are resolved without changing runtime contracts. Focused M2-03 validation now
 passes 21 tests, `mypy --warn-unused-ignores src/mirrormind` (71 modules),
 `mypy --strict src/mirrormind/modules/retrieval` (five modules), and focused
 Ruff. These are worktree checks, not an exact committed gate. Coverage and the
-owner-authorized six-check gate remain pending for the final clean SHA.
+owner-authorized six-check gate were subsequently run on the exact committed
+SHA below.
+
+### M2-03 typing correction — exact commit `77c9d359`
+
+On exact commit `77c9d359cda75bddcaca40e7912b13c693614af9`, the temporary
+local gate passed **1,014 tests, zero skips and all six checks** (pytest, Ruff,
+catalog, atlas, evidence and capability ledger). One existing
+Starlette/httpx deprecation warning appeared. Receipt:
+`results/local-quality-gate-77c9d359cda75bddcaca40e7912b13c693614af9-workspace.json`.
+WorldKernel `0.0.1` remained installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. The CI-equivalent coverage run
+passed all 1,014 tests with **86.92% combined coverage** against the 85% floor;
+whole-package mypy passed 71 modules and strict retrieval mypy passed five.
+
+The source distribution and wheel built with `build 1.6.1`, existing
+`setuptools 84.2.1` and `wheel 0.48.0` using `--no-isolation`. Isolated build
+dependency installation was unavailable because DNS/network access to the
+package index failed; no build source step had run in that attempt. The built
+wheel was installed to a temporary target and smoke-tested from outside the
+checkout with already installed `.venv` runtime dependencies: license/version,
+API import and the non-authorizing synthetic decision workflow passed. The
+Docker client is installed, but its Linux engine pipe is absent, so container
+smoke was not run locally. GitHub Actions status was not checked for this SHA;
+the owner reports its included allowance is exhausted. These results are local
+only. A later documentation-only candidate needs its own exact-head six-check
+gate before review.
 
 ### M2-03 pre-`d41e661` checkpoint — `a27027e`
 
