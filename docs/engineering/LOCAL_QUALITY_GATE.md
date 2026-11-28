@@ -15,15 +15,19 @@ Python 3.13's Windows Proactor blocked while accepting the local half of its
 asyncio socketpair. The unchanged test passed in 1.38s outside the sandbox,
 and the unchanged complete gate passed in 45.01s with loopback available. This
 is local environment evidence, not official Actions. The documentation-
-inclusive initial PR head was also gated as recorded below. Current published
-PR #99 head `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b` passed the complete local gate:
+inclusive initial PR head was also gated as recorded below. Immediately before
+the latest documentation status refresh, PR #99 code head
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b` passed the complete local gate:
 1,032 tests, zero skips and all six checks with the exact WorldKernel pin.
 Receipt: `results/local-quality-gate-b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b-workspace.json`.
 The parsed CLI smoke also confirmed the completed experimental report and
-history-abstention path both keep action authority false. The exact GitHub
-query on that SHA returned 12 successes and two conditional skips. These
-results apply only to that SHA. Every later commit requires a fresh gate; the
-live PR body carries the current SHA and receipt.
+history-abstention path both keep action authority false. Documentation status
+commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests,
+zero skips and all six checks; receipt:
+`results/local-quality-gate-4fa243b654c96e928ea480bd9ee25b4d5157eddc-workspace.json`.
+Its exact GitHub query returned 12 successes and two conditional skips.
+These results apply only to their named SHAs. Every later commit requires a
+fresh gate; the live PR body carries the current SHA and receipt.
 Do not transfer local results between `main` and PR heads or present them as CI. The owner's
 Actions allowance exhaustion and zero paid spend remain constraints. No
 workflow, check, protection, runner or spending setting was changed.
@@ -45,7 +49,7 @@ evidence for the integrated SHA only.
 
 The latest exact-head query before this status refresh returned 14 check-runs
 for PR #93 head `76f04028a53bc1b3d008d500b31ca1f75ceb5a08` and PR #99 head
-`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`: 12 successes and two conditional
+`4fa243b654c96e928ea480bd9ee25b4d5157eddc`: 12 successes and two conditional
 skips on each. For both heads, `deploy` and `release-rehearsal` were skipped.
 The current `pull_request` triggers in the [CI](../../.github/workflows/ci.yml),
 [docs](../../.github/workflows/docs.yml),

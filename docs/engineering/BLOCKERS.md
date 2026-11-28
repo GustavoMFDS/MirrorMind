@@ -8,7 +8,7 @@ tests, zero skips and all six checks with the reviewed WorldKernel pin; the
 receipt is recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This is
 local validation, not official Actions. The owner reports GitHub Actions' included allowance exhausted; no
 paid spend, purchased capacity or limit increase is authorized. Current
-exact-head queries found workflows on #93 (`76f0402`) and #99 (`b8695a3`),
+exact-head queries found workflows on #93 (`76f0402`) and #99 (`4fa243b`),
 with 12 successes and two conditional skips each. The missing
 runs on #94–#98 and #100 have a separate, source-confirmed explanation: every
 repository `pull_request` workflow currently filters `branches: [main]` in
@@ -46,8 +46,8 @@ local gate remains fail-closed and unchanged; see the exact receipt in
 [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Preserve zero paid spend and do
 not infer official Actions state from this local result.
 
-PR #99's current published head is
-`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`. Its local six-check gate passed
+PR #99 status-refresh commit is
+`4fa243b654c96e928ea480bd9ee25b4d5157eddc`. Its local six-check gate passed
 1,032 tests, zero skips and all six checks; GitHub recorded 12 completed
 successes and two workflow-conditional skips (`deploy`,
 `release-rehearsal`). A local CLI smoke on that SHA parsed the success and
@@ -172,7 +172,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | The owner reports included allowance exhaustion, but exact PR head #93 (`76f0402`) and PR #99 head `b8695a3` each had 12 successful runs and two conditional skips. Current `pull_request` workflows filter target branch `main`; #94–#98/#100 target parent branches and therefore have no workflow runs under these filters. This explains those missing runs, but not historical pre-start failures or account allowance. No paid spend or limit increase is authorized. | Preserve exact-SHA evidence; if a failure recurs, collect the run annotation/state before assigning a cause. | GitHub account owner / repository administrator | Use authorized temporary local full gate for stacked branches. No runner, protection, workflow or verifier changes; do not spend, register runner or infer billing cause. |
+| B-08 | The owner reports included allowance exhaustion, but exact PR head #93 (`76f0402`) and PR #99 status-refresh head `4fa243b` each had 12 successful runs and two conditional skips. Current `pull_request` workflows filter target branch `main`; #94–#98/#100 target parent branches and therefore have no workflow runs under these filters. This explains those missing runs, but not historical pre-start failures or account allowance. No paid spend or limit increase is authorized. | Preserve exact-SHA evidence; if a failure recurs, collect the run annotation/state before assigning a cause. | GitHub account owner / repository administrator | Use authorized temporary local full gate for stacked branches. No runner, protection, workflow or verifier changes; do not spend, register runner or infer billing cause. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 
@@ -531,37 +531,38 @@ Its `test` job `139737946303` returned no steps, and the log endpoint returned
 second observation likewise exposes no repository test output or specific
 cause. The exact-head local gate passed separately; it is not official CI.
 
-### Self-hosted runner option
+### Self-hosted runner option — public-repository reassessment, 2026-11-28
 
-The repository API reported this repository as private at the time of review.
-GitHub still warns that private/internal repositories require caution because
-read-access users may fork and submit pull requests that compromise a
-persistent self-hosted runner, its workspace, secrets or token. GitHub
-recommends self-hosted runners for private repositories over public ones, but
-its security guide does not treat a private repository as an isolated trust
-boundary. See [GitHub's secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-and [runner setup guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners).
+The current repository API reports this repository as public; the earlier
+private-repository premise in this assessment is stale. All current
+`pull_request` workflows target `main` and execute candidate code on
+`ubuntu-latest`. For example, `ci.yml` installs dependencies and runs pytest
+and Ruff, while `quality.yml` runs pytest, mypy, package builds and a container
+smoke. Checkout disables persisted Git credentials and the PR jobs have
+read-only repository permissions, but this does not protect a self-hosted host
+from malicious code executed by a public pull request. The manual `main` Pages
+deployment job also requests `pages: write` and `id-token: write`; a persistent
+shared runner could carry compromise from an untrusted PR job into a later
+privileged job.
 
-If the account owner chooses this path, the candidate design is one
-just-in-time runner in a disposable VM per check, destroyed after the job;
-no persistent workstation or shared runner. Keep the existing job IDs,
-commands, test selection and required-check names. Restrict assignment to this
-repository and the two required workflows; accept only `pull_request` jobs,
-never run pull-request code through `pull_request_target`; provide no
-repository secrets and a read-only short-lived `GITHUB_TOKEN`; block access to
-host credentials, sibling projects, Docker control sockets and private
-networks; allow only dependency/artifact endpoints required by the existing
-workflows; retain an auditable image, egress and teardown record. A clean
-single-use VM is a proposed containment boundary, not a demonstrated security
-guarantee or a confirmed way to clear the current account-level start gate.
-Cloud runner costs, repository-admin setup, fork policy and billing behavior
-remain unverified. GitHub documents that self-hosted runners do not incur its
-per-minute Actions charge, but the owner still pays for compute and operation.
-No evidence shows that changing runner type clears the observed pre-job account
-gate. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+GitHub recommends using self-hosted runners only with private repositories
+because public forks can submit workflows that execute dangerous code. Its
+security reference says self-hosted runners are not guaranteed to use clean,
+ephemeral VMs and can be persistently compromised. See [runner-group guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)
+and [secure-use guidance](https://docs.github.com/en/actions/reference/security/secure-use).
+
+Therefore, do **not** register a self-hosted runner as a zero-cost workaround
+for this public repository. A just-in-time single-job runner in a disposable
+VM, with no secrets, a short-lived read-only token, restricted egress and
+verified destruction, could reduce cross-job persistence; it would still run
+untrusted PR code and would require a trusted VM provisioner, registration
+credentials, patching, logs, teardown and compute. No such zero-cost isolated
+host or account-level runner policy has been verified. Changing runner type
+also has no evidence of clearing a GitHub account-level start gate. Continue
+the owner-authorized local six-check gate. No workflow, check, protection,
+runner or spending setting was changed and no runner was registered. See the
 [self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
-and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
-No self-hosted runner or workflow change was made.
+for its one-job ephemeral option and limits.
 
 ### PR #57 owner continuation and exact-head evidence
 

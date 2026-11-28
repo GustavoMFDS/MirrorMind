@@ -37,15 +37,15 @@ evidence, not official Actions. Any later documentation commit needs its own
 exact-head gate before publication; the final PR body carries the published
 SHA and receipt.
 PR #99 is open against `main`, mergeable and ready for independent review.
-Its current published head is
-`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`. That exact SHA passed 1,032 tests,
-zero skips and all six local checks, with WorldKernel installed at the reviewed
-pin. Its exact GitHub query returned 12 successful check-runs and two
-workflow-conditional skips (`deploy` and `release-rehearsal`); no failures or
-pending checks. The local CLI smoke rendered both the successful experimental
-report and the missing-history abstention with no action authority. These
-results apply only to that SHA. The live PR body is authoritative for the
-current head and gate after this status-only update.
+Immediately before the status refresh commit, its code head was
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that exact SHA passed 1,032 tests,
+zero skips, all six local checks and the documented CLI smoke. The status
+refresh commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032
+tests, zero skips and all six local checks. Its exact official query returned
+12 successful check-runs and two workflow-conditional skips (`deploy` and
+`release-rehearsal`), with no failures or pending checks. These results apply
+only to their named SHAs. The live PR body is authoritative for any later
+head and its validation state.
 
 The open M1C-04 Census stack contains #93, #94, #95, #96, #97, #98 and #100.
 They remain linearly dependent (#94 on #93 through #98, then #100 on #98),

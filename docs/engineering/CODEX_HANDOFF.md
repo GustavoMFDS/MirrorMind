@@ -21,10 +21,12 @@
   blocked the Windows Proactor loopback socketpair at `test_health`; the same
   test and complete gate passed outside that restriction with no code changes.
   Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
-  Its current published head is
-  `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`. That exact SHA passed 1,032
-  tests, zero skips, all six local checks and 12 official check-runs; two
-  conditional checks (`deploy`, `release-rehearsal`) were skipped. A manual
+  Immediately before the documentation status refresh, its code head was
+  `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that SHA passed 1,032 tests,
+  zero skips, all six local checks and the CLI smoke. Status commit
+  `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests, zero
+  skips, all six local checks and 12 official check-runs; two conditional
+  checks (`deploy`, `release-rehearsal`) were skipped. A manual
   CLI smoke parsed both the completed experimental report and
   history-unavailable abstention, with no action authority. These results
   apply only to that SHA. The live PR body is authoritative for the current
@@ -73,7 +75,7 @@
   [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
   remains. Current exact-head queries found 12 successes and two conditional
-  skips on #93 (`76f0402`) and #99 (`b8695a3`). Missing runs on #94–#98/#100
+  skips on #93 (`76f0402`) and #99 (`4fa243b`). Missing runs on #94–#98/#100
   are explained by the current `pull_request.branches: [main]` filters: those
   PRs target parent feature branches. This does not explain historical
   pre-start failures or reveal current allowance. Use the temporary local gate
