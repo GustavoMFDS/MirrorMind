@@ -166,3 +166,28 @@ not eliminate all Any values, and is not proof of runtime safety.
 The new quality job step fails on new unsuppressed diagnostics or unused
 ignores; the existing server-required contexts remain unchanged.
 No source read, external engine change, new dependency, or authorization.
+
+## Cryptography security update
+
+GitHub Dependabot reported four open advisories for the public development
+lock at version 46.0.7 (three high, one medium):
+GHSA-537c-gmf6-5ccf (first fixed 48.0.1), GHSA-jwv3-5hgf-82ww and
+GHSA-m2h6-j472-rp4c (first fixed 49.0.0), and GHSA-g6cj-pr64-35w5
+(first fixed 50.0.0). The original PR #85 failed the direct-input drift
+guard because it changed the lock inputs without synchronizing pyproject.
+Do not bypass that guard.
+
+Update both review/dev ranges to >=50,<51 and regenerate the universal
+public lock using uv 0.11.21 with --upgrade-package cryptography==50.0.0.
+Only the cryptography requirement block changes; the other 37 pinned
+package blocks are unchanged. Version 50.0.0 is outside all four reported
+affected ranges. The installed package declares Apache-2.0 OR BSD-3-Clause.
+The application imports Ed25519 and serialization primitives; no change
+to signing algorithms, trust roots, keys, or authorization. Existing
+synthetic signature, replay, and governance tests remain mandatory.
+
+Confirm all exact-head official checks and then the dependency graph and
+live alert states after merge. A patched version does not establish absence
+of other vulnerabilities or remediation of previously distributed artifacts.
+The existing alpha tag and artifacts remain immutable; no private engine
+resolution or paid service.

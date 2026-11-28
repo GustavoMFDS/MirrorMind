@@ -23,6 +23,11 @@ Version ranges in [pyproject.toml](../pyproject.toml) may resolve differently.
 | Ruff | 0.17.6 | MIT |
 | WorldKernel (optional, independent) | 0.0.1 | No license declared in inspected package metadata |
 
+Security follow-up: the reviewed cryptography 50.0.0 package declares
+Apache-2.0 OR BSD-3-Clause, unchanged from the historical inspection above.
+See [security maintenance](engineering/REX_QUALITY_PACKAGING.md) for the
+resolved lock and advisory scope.
+
 The public default installation does not install WorldKernel. Dependencies
 are installed separately rather than vendored by this change. Preserve
 their license texts, copyright notices and applicable obligations if
