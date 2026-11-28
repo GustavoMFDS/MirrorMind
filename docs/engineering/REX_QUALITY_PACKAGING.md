@@ -96,3 +96,43 @@ backtest result contracts, Decimal exponent narrowing, runner payload
 types and intentional version/publication inheritance contracts. Review
 those with their existing owners rather than changing contracts to satisfy
 a checker. Re-run the full diagnostic after concurrent changes.
+
+## Hash-verified public development environment
+
+The [public input](../../requirements/public-dev.in) includes base, dev,
+quality, uci, review and build requirements. The [resolved lock](../../requirements/public-dev.txt)
+contains 38 pinned package entries and distribution hashes. It excludes the
+private optional engine and is not a lock for production Docker images.
+It was generated with uv 0.11.21:
+
+```bash
+python scripts/check_public_lock.py
+uv pip compile --universal --python-version 3.11 --generate-hashes --no-header --no-annotate --output-file requirements/public-dev.txt requirements/public-dev.in
+```
+
+When metadata changes, update the input to match, regenerate deliberately,
+review the diff and verify clean installations. No credentials, private
+sources or source data belong in either file. The checker detects direct
+input drift, not arbitrary lock-file tampering or resolver correctness.
+The primary and compatibility CI jobs use hash verification and wheel-only
+dependencies, install the reviewed local checkout without extra resolution
+or build isolation, and run pip check. The separate quality and package
+jobs retain their independently resolved environments to detect compatible
+range and packaging regressions. Other workflows are not locked yet.
+A Windows 3.13.5 rehearsal installed all 38 entries, passed 20 focused
+tests and generated the synthetic report; official Linux compatibility
+evidence is tracked in the integration PR. This is not bitwise build
+reproducibility or a guarantee of package availability/security.
+
+## Second typing pass
+
+The follow-up uses explicit typed keyword arguments rather than heterogeneous
+kwargs dictionaries in eligibility drift, eligible values and selection
+sensitivity. Exact integer assertions and non-optional arithmetic are scoped
+to the existing ready branch. Census finite Decimal exponent handling is
+explicitly narrowed. No changed comparison formula, cutoff, coverage rule,
+or output schema; no blanket suppressions. Same full-package diagnostic:
+49 errors/12 files to 18 errors/8 files (66 checked), with the remaining
+XML parser, engine and governance contracts requiring separate review.
+The [lock tests](../../tests/unit/test_public_lock.py) check input drift
+and private-engine exclusion. They do not attest artifact safety.

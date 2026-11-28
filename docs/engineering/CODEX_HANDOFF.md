@@ -2,11 +2,12 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `128c266fc7e8c369141014220cb20b2264c9aa2d`, after PR #82
+- Current `main` is `c8b93da2c60442e680280aa232a9620fa2279f11`, after PR #82
   merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #82's exact
   head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed its 989-test local
   six-check gate and 12 official checks; those remain exact-PR-head evidence,
-  not a claim about the merge SHA or newer main. See
+  not a claim about the merge SHA or newer main. Main then added a public
+  dependency hash lock and narrowed evaluation types at `c8b93da`. See
   [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
 - The active branch `codex/m2-03-tool-orchestration-20261127` now contains a
   bounded local M2-03 implementation on top of the merged M2-02 baseline.

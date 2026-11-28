@@ -2,9 +2,10 @@
 
 ## Current main and exact-head gate status - 2026-11-27
 
-Current `main` is `128c266fc7e8c369141014220cb20b2264c9aa2d`, following the
-normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618` and a
-typing-debt/public-coverage-floor follow-up. PR #82's final exact head
+Current `main` is `c8b93da2c60442e680280aa232a9620fa2279f11`, following the
+normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, the
+typing-debt/public-coverage-floor follow-up at `128c266`, and a public
+dependency lock/evaluation-type follow-up. PR #82's final exact head
 `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips,
 six local checks and 12 official exact-head checks; those results do not
 transfer to the merge SHA or later `main`. The current M2-03 branch is being

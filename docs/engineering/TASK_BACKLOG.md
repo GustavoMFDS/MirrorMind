@@ -2,9 +2,10 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `128c266fc7e8c369141014220cb20b2264c9aa2d`, following PR #82's
+Current `main` is `c8b93da2c60442e680280aa232a9620fa2279f11`, following PR #82's
 normal merge at `c31ecd6dbf3f68be8726bdba2b23a813226c2618` and the subsequent
-typing-debt/public-coverage-floor commit. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
+typing-debt/public-coverage-floor commit `128c266` and public dependency-lock
+commit `c8b93da`. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
 with the curated portfolio/index update; PR #80 adds bounded synthetic
 benchmarks and read-only release preparation. PR #77 merged normally at
 `540c474`, preserving reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`;
@@ -59,7 +60,7 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `128c266fc7e8c369141014220cb20b2264c9aa2d`. PR #52–#59 were
+**Baseline:** main `c8b93da2c60442e680280aa232a9620fa2279f11`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 #77–#81 are integrated. The portfolio/index, synthetic benchmark/release
 preparation and developer-onboarding updates are present. Merged branches
@@ -74,8 +75,8 @@ preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.
 | PR #78 / MM-024 UCI policy | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. | Preserve the no-reread/no-partition/no-cap-increase stop and snapshot deletion deadline. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| M2-02 retrieval evaluation / PR #82 | Merged normally at `c31ecd6` into main `128c266`. Exact PR head `f6fa2ed` passed 989 local tests, zero skips, six checks and 12 official head checks; two guarded jobs were skipped. | M2-02 slice delivered as fictional/experimental. Preserve exact-head evidence; do not infer a check result for the merge SHA or later main. |
-| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, with M1F-02 and M2-01/M2-02 dependencies integrated. Fixed synthetic tools, immutable typed registry, scripted provider, refusal/budget controls and educational walkthrough are present. | Reconcile with main `128c266`, rerun focused regressions and the exact clean six-check gate, then prepare a separate review PR. No live provider, route, persistence or action authority. |
+| M2-02 retrieval evaluation / PR #82 | Merged normally at `c31ecd6` into main `c8b93da`. Exact PR head `f6fa2ed` passed 989 local tests, zero skips, six checks and 12 official head checks; two guarded jobs were skipped. | M2-02 slice delivered as fictional/experimental. Preserve exact-head evidence; do not infer a check result for the merge SHA or later main. |
+| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127` and ancestry-synced with main `c8b93da`. The focused unit/CLI suite passes 19 tests; focused Ruff and catalog/atlas/evidence/capability checks pass. | Run the exact clean six-check gate on the merged candidate, reconcile its receipt and then prepare a separate review PR. No live provider, route, persistence or action authority. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
@@ -223,7 +224,7 @@ the vertical product path.
 
 ## B. M1 — evidence, forecasts and runnable decision comparison
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
 | M1B-01 | P0 | in_progress | None | Synthetic UCI #352 event-time evaluator, fixed validation/holdout protocol, privacy-minimized output and separate aggregate Census/ALFRED vintage protocol are implemented locally. Both lanes are represented in consolidated candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85`, whose six-check exact-head gate passed 832 tests without skips and all five other checks with the reviewed WorldKernel pin installed. Keep real-source acquisition/processing blocked until exact terms, attribution, snapshot, minimization, retention and permission are reviewed. No source permission or real processing is claimed. |
 | M1B-02 | P0 | partial | None | Compose bounded CSV/workbook staging, review metadata, calendar/release checks and as-of selection into a reusable synthetic evidence flow; deterministic fixture, rejection and abstention tests. |
@@ -253,7 +254,7 @@ coverage/selection diagnostic modules merely because they are local.
 
 ## C. M2 — grounded AI and usable workflow
 
-| ID | Priority | Initial status | Dependencies | Deliverable and acceptance |
+| ID | Priority | Current status | Dependencies | Deliverable and acceptance |
 | --- | --- | --- | --- | --- |
 | M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |

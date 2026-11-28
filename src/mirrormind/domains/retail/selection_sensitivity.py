@@ -110,17 +110,15 @@ def _collect_eligible_window_totals(
     if evaluation_on.toordinal() <= 2 * window_days + calibration_days + 7:
         raise ValueError("evaluation calendar precedes supported two-window history")
     earlier_cutoff = evaluation_on - timedelta(days=window_days)
-    kwargs = {
-        "stock_code": stock_code,
-        "holdout_days": window_days,
-        "calibration_days": calibration_days,
-        "min_calibration_residuals": min_calibration_residuals,
-    }
     earlier = evaluate_retail_residual_envelopes(
-        projection, releases, evaluation_on=earlier_cutoff, **kwargs
+        projection, releases, evaluation_on=earlier_cutoff,
+        stock_code=stock_code, holdout_days=window_days,
+        calibration_days=calibration_days, min_calibration_residuals=min_calibration_residuals,
     )
     later = evaluate_retail_residual_envelopes(
-        projection, releases, evaluation_on=evaluation_on, **kwargs
+        projection, releases, evaluation_on=evaluation_on,
+        stock_code=stock_code, holdout_days=window_days,
+        calibration_days=calibration_days, min_calibration_residuals=min_calibration_residuals,
     )
     observed = {
         row.observed_on: row.units
@@ -152,20 +150,28 @@ def _scenario_from_eligible_totals(
     a_n, a_ok, a_total = earlier
     b_n, b_ok, b_total = later
     ready = a_ok >= 2 and b_ok >= 2
-    a_low = a_total / a_n if ready else None
-    b_low = b_total / b_n if ready else None
-    a_high = (a_total + (a_n - a_ok) * excluded_value_ceiling) / a_n if ready else None
-    b_high = (b_total + (b_n - b_ok) * excluded_value_ceiling) / b_n if ready else None
-    diff_low = b_low - a_high if ready else None
-    diff_high = b_high - a_low if ready else None
-    if not ready:
-        direction = "abstained_insufficient_eligible_reference"
-    elif diff_low > 0:
-        direction = "positive_under_declared_counterfactual_bounds_only"
-    elif diff_high < 0:
-        direction = "negative_under_declared_counterfactual_bounds_only"
+    a_low: float | None
+    b_low: float | None
+    a_high: float | None
+    b_high: float | None
+    diff_low: float | None
+    diff_high: float | None
+    if ready:
+        a_low = a_total / a_n
+        b_low = b_total / b_n
+        a_high = (a_total + (a_n - a_ok) * excluded_value_ceiling) / a_n
+        b_high = (b_total + (b_n - b_ok) * excluded_value_ceiling) / b_n
+        diff_low = b_low - a_high
+        diff_high = b_high - a_low
+        if diff_low > 0:
+            direction = "positive_under_declared_counterfactual_bounds_only"
+        elif diff_high < 0:
+            direction = "negative_under_declared_counterfactual_bounds_only"
+        else:
+            direction = "direction_not_robust_to_declared_counterfactual_bounds"
     else:
-        direction = "direction_not_robust_to_declared_counterfactual_bounds"
+        a_low = b_low = a_high = b_high = diff_low = diff_high = None
+        direction = "abstained_insufficient_eligible_reference"
     return ExcludedTargetSensitivity(
         earlier_requested=a_n, later_requested=b_n,
         earlier_eligible=a_ok, later_eligible=b_ok,

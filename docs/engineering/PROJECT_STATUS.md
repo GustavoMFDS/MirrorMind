@@ -88,16 +88,17 @@ unavailable for that authoring run, so only the official CI container-smoke
 job is evidence. Combined-status queries for the exact PR head and merge SHA
 returned no individual entries.
 
-**Current main:** `128c266fc7e8c369141014220cb20b2264c9aa2d`, after PR #82 merged
+**Current main:** `c8b93da2c60442e680280aa232a9620fa2279f11`, after PR #82 merged
 normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #52–#59 remain
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 PRs #68–#81 through their existing merges, including MM-024 (#78), the curated
 portfolio/index (#79), synthetic benchmarks/read-only release preparation
 (#80), and developer onboarding/container smoke (#81). PR #82 adds the bounded
 fictional M2-02 retrieval evaluator. The later `128c266` commit reduces typing
-debt and establishes a public coverage floor. WorldKernel and dataset terms
-remain separate. No combined-status or exact-main gate result is inferred from
-PR-head checks.
+debt and establishes a public coverage floor; `c8b93da` locks public
+development dependencies and narrows evaluation types. WorldKernel and dataset
+terms remain separate. No combined-status or exact-main gate result is
+inferred from PR-head checks.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -113,8 +114,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
 | PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
-| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, now being reconciled with main `128c266`; candidate code, regressions and source walkthrough are present. | Full exact-head gate and independent review remain pending. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
-| M2-02 retrieval evaluation / PR #82 | Open for independent review at initial head `d542e5e`; ancestry-synced with main `10b94c9` by merges `f74d286` and `0b4881f`. Exact local gate passed 989 tests, zero skips and six checks with the pinned WorldKernel. The exact PR head also passed 12 official checks, including coverage and strict retrieval typing; two guarded jobs were skipped. | Independent review remains pending. The current PR head must be rechecked after each follow-up commit. The initial head has a non-blocking Node.js 20 deprecation warning; metrics remain fictional and experimental. |
+| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127` and ancestry-synced with main `c8b93da`; focused tests, Ruff and documentation checks pass. | Full exact-head gate and independent review remain pending. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

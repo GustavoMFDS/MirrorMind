@@ -1104,3 +1104,7 @@ forecast claims or cross-repository changes.
 - [CLI integration regression](../../tests/integration/test_m2_tool_orchestration_cli.py): output minimization and deterministic replay.
 - [Technical and learning walkthrough](M2_TOOL_ORCHESTRATION.md): architecture, contracts, data flow, security, tests and exercises.
 - [Scoped change request](changes/M2_03_BOUNDED_TOOL_ORCHESTRATION.md): acceptance criteria and impact map.
+
+- [Public dependency input](../../requirements/public-dev.in), [hash lock](../../requirements/public-dev.txt), [input drift checker](../../scripts/check_public_lock.py): reproducible public developer environment.
+
+- [Public lock tests](../../tests/unit/test_public_lock.py): input drift and private-source exclusion.
