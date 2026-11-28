@@ -367,3 +367,9 @@ The [pure probability module](../../src/mirrormind/domains/retail/census_probabi
 provides bounded canonical mass functions, integer convolution and
 Markov propagation, exact quantiles and scores. No connection to
 provider dispatch, source ingestion, legacy evaluation or persistence.
+
+### Fixed fictional probabilistic study
+The [study example](../../examples/m1_census_probability_study.py)
+uses the discrete probability core with a committed fixed design,
+exact aggregate scores and streaming event transcript digests.
+Explicit complete receipt replay; no journal, API or new authority.

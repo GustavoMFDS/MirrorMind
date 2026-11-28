@@ -521,3 +521,9 @@ mass and horizon bounds. Normalize explicitly with canonical_pmf;
 do not silently clip or drop invalid probability mass. Markov rows
 must cover every reachable state. Coverage under a supplied reference
 law is not evidence that the law is correct.
+
+### Probabilistic study replay mismatch
+Check the declared revision, retained study commitment and exact
+canonical report bytes (without stdout newline). Do not rehash changed
+metrics to force agreement. The oracle is a privileged reference,
+not a deployable method. No automatic holdout evaluation.

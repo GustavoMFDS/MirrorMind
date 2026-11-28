@@ -483,6 +483,13 @@
     "limitation": "Exact bounded discrete mathematical operations and scoring oracles only; no fitted model, reference-law authenticity, empirical calibration, inference or operational forecasting. Independent review pending."
   },
   {
+    "id": "MM-CEN-030",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_probability_study.py",
+    "function": "test_study_identity_and_complete_replay",
+    "limitation": "Fixed fictional probability study and complete local replay only; no independent samples, holdout, calibration, empirical skill, runtime attestation or winner. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

@@ -164,3 +164,8 @@ The separate experimental probability core provides exact finite
 discrete mathematical operations. It has no fitted model or predictive
 calibration evidence, does not modify the deterministic protocols and
 does not authorize empirical uncertainty or forecasting claims.
+
+The separate fixed probability study evaluates five methods (including
+a privileged reference) under two deterministic synthetic designs.
+Exact scores and local receipt replay do not establish calibration,
+empirical skill, independent registration or a statistical winner.

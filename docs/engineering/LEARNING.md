@@ -1046,3 +1046,8 @@ Compare CRPS computed by pairwise absolute differences and squared
 CDF differences. Explain why inverse discrete quantiles can give
 coverage above the nominal interval level, and why wide intervals
 alone do not establish useful predictive uncertainty.
+
+### Exercise: reproduce a probabilistic study
+Use prepare and run in the [probability study](../../examples/m1_census_probability_study.py).
+Compare coverage, width and CRPS for each group. Explain why oracle
+knowledge is privileged and why exact replay is not statistical calibration.

@@ -336,3 +336,7 @@ No empirical selection or inference.
 The [probability core](../../src/mirrormind/domains/retail/census_probability.py)
 has guided exact bounded mathematical behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical calibration.
+
+The [probability study](../../examples/m1_census_probability_study.py)
+has guided fixed fictional design and complete receipt replay in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasts.

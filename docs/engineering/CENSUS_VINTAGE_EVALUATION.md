@@ -737,3 +737,48 @@ closures. Run `python -m pytest -q tests/unit/test_census_probability.py`.
 See [change request](changes/M1C_04_CENSUS_PROBABILITY.md).
 No new dependencies, API, journal schema, learned model, empirical
 forecasting claim or inference. Independent review pending.
+
+## Fixed fictional probabilistic study protocol
+
+The [probability study example](../../examples/m1_census_probability_study.py)
+uses the bounded discrete probability core. It binds the complete fixed
+design and caller-declared Git revision before scoring. Two groups of
+32 paths, 64 monthly increments including initial zero, origins 48..57,
+horizons 1/3/6. Deterministic SHA-256 counter draws from ASCII
+seed:path:index, first byte modulo four selects -1,0,0,1. Seeds 61001
+and 61002; amplitude four, with amplitude twelve from transition index
+53 in the second scenario. These deterministic fixtures are not a
+cryptographic random or independent statistical sample claim.
+
+Methods: point persistence, narrow fixed iid increments (amplitude two),
+fixed iid increments (amplitude four), iid empirical last 24 increments
+and privileged true-law oracle. The non-oracle methods receive only
+historical increments. The oracle knows the future law, not realized
+increments. Exact rational group means cover CRPS, pinball, median MAE,
+inclusive 10/90 coverage, width and reference coverage. Each group
+includes a streaming digest of all evaluated PMFs, observations and
+scores in fixed path/origin/horizon/model order. No raw paths are
+published. The receipt binds the design, group summaries and transcript
+digests. The digest is not a signed registration or runtime attestation.
+
+    python -m examples.m1_census_probability_study prepare --revision REV
+    python -m examples.m1_census_probability_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_probability_study demo --revision REV
+
+Prepare never scores; run requires a caller-retained commitment; demo
+generates its own. Both execution modes explicitly reproduce the
+complete canonical report before printing. verify_study compares full
+canonical bytes, at most 1 MiB, not just a supplied report hash. The
+canonical bytes exclude the stdout newline. No arbitrary inputs,
+journal admission, holdout, statistical winner, calibration, real data
+or authority. Overlapping origins and horizons are not independent
+replications. The earlier adaptive prototypes remain separate.
+
+Proposed evidence MM-CEN-030:
+`test_study_identity_and_complete_replay` checks fixed digests, complete
+replay and stationary oracle parity. Other tests reject rehashed
+metric forgery and mismatched commitments before scoring, verify
+causal inputs and prepare-only behavior. Run
+`python -m pytest -q tests/integration/test_census_probability_study.py`.
+See [change request](changes/M1C_04_CENSUS_PROBABILITY_STUDY.md).
+Independent review pending.
