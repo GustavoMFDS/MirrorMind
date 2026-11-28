@@ -3,13 +3,22 @@
 ## Current continuation after PR #92 - 2026-11-28
 
 Current remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, merged
-through PR #92. PRs #87–#92 are integrated. The current
-M2-05 review candidate is built on that baseline; run this documented six-check
-gate against its exact final commit before publication. The result must record
-test count, skips, verifier outcomes, environment and exact SHA. Local results
-and PR-head Actions remain separate evidence; never infer a result for a merge
-commit or later branch. Owner-reported Actions allowance exhaustion and zero
-paid spend remain constraints. No workflow, check, protection, runner or
+through PR #92. PRs #87–#92 are integrated. Feature commit
+`2d592bd50b15c3b0d463c94e58a70be78553e8a6` on the M2-05 candidate passed the
+complete six-check local gate with 1,032 tests and zero skips. WorldKernel
+`0.0.1` was installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-2d592bd50b15c3b0d463c94e58a70be78553e8a6-workspace.json`.
+One existing Starlette/httpx deprecation warning appeared. An initial run
+inside the restricted sandbox timed out in `test_health`; faulthandler showed
+Python 3.13's Windows Proactor blocked while accepting the local half of its
+asyncio socketpair. The unchanged test passed in 1.38s outside the sandbox,
+and the unchanged complete gate passed in 45.01s with loopback available. This
+is local environment evidence, not official Actions. Repeat the gate on the
+documentation-inclusive exact SHA before publishing; record that SHA and its
+receipt in the live PR body. The local result must not be transferred to
+`main` or represented as CI. The owner's Actions allowance exhaustion and
+zero paid spend remain constraints. No workflow, check, protection, runner or
 spending setting was changed.
 
 The previous paragraphs below are historical exact-SHA records. Their results

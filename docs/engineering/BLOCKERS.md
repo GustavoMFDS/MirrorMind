@@ -20,9 +20,16 @@ review preparation, so no runner registration or external permission is
 needed for this increment. Do not expose registration tokens or attach a
 persistent runner without a separate owner decision.
 
-B-07 remains a host-specific Windows loopback/sandbox diagnostic; do not turn
-an interrupted attempt into a pass or failure. Check exact-SHA receipts and
-preserve zero paid spend.
+B-07 now has a reproduced local boundary: on exact candidate SHA
+`2d592bd50b15c3b0d463c94e58a70be78553e8a6`, pytest stalled in the first
+`TestClient` request while Python 3.13's Windows Proactor created its local
+socketpair (`socket.accept`). The same isolated `test_health` passed in 1.38s
+outside the restricted sandbox, and the unchanged complete gate passed
+1,032 tests, zero skips and all six checks in 45.01s with loopback available.
+The sandbox timeout is not attributed to product behavior. The permanent
+local gate remains fail-closed and unchanged; see the exact receipt in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Preserve zero paid spend and do
+not infer official Actions state from this local result.
 
 ## Historical pre-#87 B-07/B-08 reconciliation - 2026-11-28
 

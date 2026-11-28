@@ -10,8 +10,13 @@
   M2-05 work on top of current `main`. It keeps default M1 report payload
   unchanged, adds opt-in `--agent-preview` using existing fixed M2-03 tools,
   displays digest-linked untrusted drafts and receipts, and handles missing
-  history as abstention plus fixed `tool_failed`. Focused tests pass; run the
-  complete documented local gate against exact final commit before publishing
+  history as abstention plus fixed `tool_failed`. Feature commit
+  `2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed 1,032 tests, zero skips
+  and all six local checks with the pinned WorldKernel; its receipt is recorded
+  in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The restricted sandbox
+  blocked the Windows Proactor loopback socketpair at `test_health`; the same
+  test and complete gate passed outside that restriction with no code changes.
+  Run a fresh gate on the documentation-inclusive exact head before publishing
   a review PR. See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
 - No public API, capability status, live provider, persistence, data source or
   authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep

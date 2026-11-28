@@ -18,8 +18,18 @@ M1 payload; explicit `--agent-preview` adds matching bounded inputs, fixed
 tool receipts and an untrusted digest-linked draft. An incomplete-history
 request renders abstention and sanitized `tool_failed`. No API route, live
 provider, persistence, data source or authorization is added. Capability
-labels remain experimental. Focused regressions pass; full exact-head gate and
-review PR are still pending.
+labels remain experimental. Feature commit
+`2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed the complete local gate:
+1,032 tests, zero skips and all six checks, with the exact WorldKernel pin.
+The receipt is
+`results/local-quality-gate-2d592bd50b15c3b0d463c94e58a70be78553e8a6-workspace.json`.
+That SHA had one existing Starlette/httpx deprecation warning. A sandboxed
+attempt timed out in `test_health` because the Windows Proactor loopback
+socketpair blocked inside the restricted sandbox; the unchanged isolated test
+and full gate passed with loopback available. This is local environment
+evidence, not official Actions. Any later documentation commit needs its own
+exact-head gate before publication; the final PR body carries the published
+SHA and receipt.
 
 The user-approved UCI #352 local reader profile remains tightly scoped. Its
 prior attempt exceeded the 250,000 product-day group ceiling without a complete

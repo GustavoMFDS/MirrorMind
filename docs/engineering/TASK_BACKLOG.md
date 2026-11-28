@@ -9,7 +9,10 @@ remains scoped to its exact recorded SHA; no complete gate on current `main`
 has been claimed. The current local candidate
 `codex/m2-05-usable-decision-workflow-20261128` advances M2-05 with an
 abstention-safe offline report and opt-in scripted orchestration preview.
-Focused tests pass; full exact-head gate and review PR remain pending.
+Feature commit `2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed 1,032 tests,
+zero skips and all six local checks with the pinned WorldKernel. The
+documentation-inclusive exact-head gate remains required before opening the
+review PR; exact final-SHA evidence belongs in that PR body.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -18,7 +21,7 @@ Focused tests pass; full exact-head gate and review PR remain pending.
 | UCI #352 pilot | Approved local attempt stopped above 250,000 product-day groups without a complete projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
 | B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. | Continue no-byte preparation; artifact-specific rights and source-owner approval precede acquisition. |
 | M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
-| M2-05 | In progress on local candidate; reuses M1F-02 and M2-03 without API changes. | Pass abstention/success regressions, docs guards and complete local gate on exact final head, then publish for independent review. |
+| M2-05 | Feature code complete on local candidate; exact feature commit `2d592bd` passed 1,032 tests, zero skips and all six local checks. Reuses M1F-02 and M2-03 without API changes. | Gate the documentation-inclusive final SHA, record its receipt and prepare the candidate for independent review. |
 | B-08 Actions | Owner reports included allowance exhausted; cause of historical pre-start failures remains unverified. | Use authorized temporary local quality gate; do not spend, alter protections, checks or runners, or infer billing cause. |
 
 ## Historical pre-#87 checkpoint - 2026-11-28
