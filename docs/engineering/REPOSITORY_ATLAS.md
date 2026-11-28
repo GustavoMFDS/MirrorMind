@@ -1154,3 +1154,9 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_research_observatory.py](../../examples/m1_census_research_observatory.py) | Offline HTML report of freshly replayed fictional experiment |
 | [tests/integration/test_census_research_observatory.py](../../tests/integration/test_census_research_observatory.py) | HTML reproducibility, metrics, escaping and output tests |
 | [docs/engineering/changes/M1C_04_CENSUS_RESEARCH_OBSERVATORY.md](changes/M1C_04_CENSUS_RESEARCH_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Fictional scenario catalog
+| Path | Responsibility |
+|---|---|
+| [tests/integration/test_census_research_scenarios.py](../../tests/integration/test_census_research_scenarios.py) | Scenario identity, compatibility and full replay regressions |
+| [docs/engineering/changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md](changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md) | Scoped acceptance and impact map |

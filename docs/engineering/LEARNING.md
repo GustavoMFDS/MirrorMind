@@ -1010,3 +1010,9 @@ Generate the [local observatory](../../examples/m1_census_research_observatory.p
 twice to new paths. Compare file hashes, inspect horizon metrics and
 receipt provenance. Explain why a reproducible report cannot establish
 independent registration or statistical superiority.
+
+### Exercise: descriptive comparison across fictional scenarios
+Compare both baselines on the four fixed fixtures using the same horizon.
+Explain the difference between zero error, unavailable metrics, scored-origin
+coverage and inferential coverage. These designed scenarios are not
+independent stochastic samples; no pooled statistical conclusion follows.

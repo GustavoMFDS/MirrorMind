@@ -311,3 +311,7 @@ is guided experimental local CLI behavior in
 The [observatory example](../../examples/m1_census_research_observatory.py)
 has guided local static report behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not deployment acceptance.
+
+The closed runner/observatory scenario catalog has guided fictional
+identity and comparison behavior in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md).
+No empirical model selection or inference.

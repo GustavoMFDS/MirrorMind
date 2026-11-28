@@ -441,6 +441,13 @@
     "limitation": "Fixed fictional reproducible HTML and offline markup only; no independent registration, empirical inference, browser accessibility audit or deployment. Independent review pending."
   },
   {
+    "id": "MM-CEN-024",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_scenarios.py",
+    "function": "test_scenario_full_replay_and_expected_metrics",
+    "limitation": "Four fixed fictional scenarios and descriptive replay only; no stochastic replication, empirical skill, calibrated inference or independent holdout. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

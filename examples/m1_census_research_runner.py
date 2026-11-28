@@ -30,17 +30,36 @@ SCHEMA = "mirrormind.census.fictional_research_run.v1"
 FIXTURE = "fictional-trend-seasonal-v1"
 SERIES = "FICTIONAL_RETAIL"
 Split = Literal["validation", "holdout"]
+SCENARIOS = (FIXTURE, "fictional-flat-v1", "fictional-volatile-v1", "fictional-regime-shift-v1")
+
+
+def _scenario_value(i: int, scenario: str) -> int:
+    if scenario == FIXTURE:
+        return 100 + 2 * i + 3 * (i % 12)
+    if scenario == "fictional-flat-v1":
+        return 150
+    if scenario == "fictional-volatile-v1":
+        return 150 + ((37 * i * i + 17 * i + 11) % 101) - 50
+    if scenario == "fictional-regime-shift-v1":
+        return 100 + 3 * (i % 12) + (80 if i >= 68 else 0)
+    raise ValueError("unknown fictional scenario")
+
+
+def _validate_scenario(scenario: str) -> None:
+    if type(scenario) is not str or scenario not in SCENARIOS:
+        raise ValueError("unknown fictional scenario")
 
 
 def _month(i: int) -> date:
     return date(2000 + i // 12, i % 12 + 1, 1)
 
 
-def build_fixture() -> tuple[tuple[CensusVintageRecord, ...], CensusOriginSchedule]:
+def build_fixture(scenario: str = FIXTURE) -> tuple[tuple[CensusVintageRecord, ...], CensusOriginSchedule]:
     """Invent every release and value; no source or input-file access."""
+    _validate_scenario(scenario)
     rows = tuple(
         CensusVintageRecord(
-            SERIES, _month(i), Decimal(100 + 2 * i + 3 * (i % 12)),
+            SERIES, _month(i), Decimal(_scenario_value(i, scenario)),
             _month(i + 1), "first_estimate", f"fictional-{i}", f"{i:064x}",
         )
         for i in range(80)
@@ -59,18 +78,18 @@ def _canonical(value: dict[str, object]) -> bytes:
     ).encode("ascii")
 
 
-def _prepare(revision: str) -> tuple[
+def _prepare(revision: str, scenario: str = FIXTURE) -> tuple[
     tuple[CensusVintageRecord, ...], CensusOriginSchedule, CensusExperimentSpec, str
 ]:
-    rows, plan = build_fixture()
+    rows, plan = build_fixture(scenario)
     spec = prepare_census_experiment(rows, plan=plan, declared_code_revision=revision)
     return rows, plan, spec, census_experiment_sha256(spec)
 
 
-def _identity(spec: CensusExperimentSpec, eid: str) -> dict[str, object]:
+def _identity(spec: CensusExperimentSpec, eid: str, scenario: str = FIXTURE) -> dict[str, object]:
     return {
         "experiment_sha256": eid,
-        "fixture": FIXTURE,
+        "fixture": scenario,
         "schedule_sha256": spec.schedule_sha256,
         "input_manifest_sha256": spec.input_manifest_sha256,
         "declared_code_revision": spec.declared_code_revision,
@@ -85,9 +104,9 @@ def _identity(spec: CensusExperimentSpec, eid: str) -> dict[str, object]:
     }
 
 
-def prepare_report(revision: str) -> dict[str, object]:
-    _, _, spec, eid = _prepare(revision)
-    return dict(_identity(spec, eid), schema_version=SCHEMA, status="prepared_not_executed")
+def prepare_report(revision: str, scenario: str = FIXTURE) -> dict[str, object]:
+    _, _, spec, eid = _prepare(revision, scenario)
+    return dict(_identity(spec, eid, scenario), schema_version=SCHEMA, status="prepared_not_executed")
 
 
 def run_research(
@@ -97,13 +116,14 @@ def run_research(
     expected: str,
     splits: tuple[Split, ...],
     commitment_mode: Literal["caller_retained", "self_generated_demo"],
+    scenario: str = FIXTURE,
 ) -> dict[str, object]:
     """Fixed fictional run; each split admits and replays independently."""
     if splits not in (("validation",), ("holdout",), ("validation", "holdout")):
         raise ValueError("invalid split selection")
     if commitment_mode not in ("caller_retained", "self_generated_demo"):
         raise ValueError("invalid commitment mode")
-    rows, plan, spec, eid = _prepare(revision)
+    rows, plan, spec, eid = _prepare(revision, scenario)
     if type(expected) is not str or not expected.isascii() or not hmac.compare_digest(expected, eid):
         raise ValueError("experiment fingerprint mismatch")
     journal = CensusExperimentJournal(journal_path)
@@ -148,7 +168,7 @@ def run_research(
             "confidence_interval": None, "winner": None,
         })
     report = dict(
-        _identity(spec, eid), schema_version=SCHEMA, status="synthetic_run_replayed",
+        _identity(spec, eid, scenario), schema_version=SCHEMA, status="synthetic_run_replayed",
         commitment_mode=commitment_mode, splits=summaries,
     )
     report["report_sha256"] = hashlib.sha256(_canonical(report)).hexdigest()
@@ -161,6 +181,7 @@ def main() -> int:
     for command in ("prepare", "demo", "run"):
         sub = commands.add_parser(command)
         sub.add_argument("--revision", required=True, help="Caller-declared Git revision")
+        sub.add_argument("--scenario", choices=SCENARIOS, default=FIXTURE)
         if command != "prepare":
             sub.add_argument("--split", choices=("validation", "holdout", "both"), default="validation")
         if command == "run":
@@ -169,23 +190,24 @@ def main() -> int:
     args = parser.parse_args()
     try:
         if args.command == "prepare":
-            report = prepare_report(args.revision)
+            report = prepare_report(args.revision, args.scenario)
         else:
             splits: tuple[Split, ...] = (
                 ("validation", "holdout") if args.split == "both"
                 else ("holdout",) if args.split == "holdout" else ("validation",)
             )
             if args.command == "demo":
-                _, _, _, eid = _prepare(args.revision)
+                _, _, _, eid = _prepare(args.revision, args.scenario)
                 with TemporaryDirectory(prefix="mm-fictional-research-") as tmp:
                     report = run_research(
                         args.revision, journal_path=Path(tmp) / "journal.sqlite",
                         expected=eid, splits=splits, commitment_mode="self_generated_demo",
+                        scenario=args.scenario,
                     )
             else:
                 report = run_research(
                     args.revision, journal_path=args.journal, expected=args.expected,
-                    splits=splits, commitment_mode="caller_retained",
+                    splits=splits, commitment_mode="caller_retained", scenario=args.scenario,
                 )
         output = _canonical(report).decode("ascii")
     except (ValueError, TypeError, OSError, sqlite3.Error):

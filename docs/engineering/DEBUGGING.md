@@ -486,3 +486,8 @@ the journal or recomputing a commitment after seeing scores.
 Check the declared revision, selected split and unused absolute .html
 output path. An existing report is not overwritten. Missing metrics are
 unavailable rather than zero. The output is not a historical journal.
+
+### Scenario commitment mismatch
+Use the same allowlisted scenario and declared revision in prepare and
+run. A different scenario changes the input manifest, even though its
+schedule is identical. Do not recompute the commitment after seeing results.

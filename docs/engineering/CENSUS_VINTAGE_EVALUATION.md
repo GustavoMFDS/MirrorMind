@@ -523,3 +523,38 @@ missing metrics, escaping and exclusive output. Run
 `python -m pytest -q tests/integration/test_census_research_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_RESEARCH_OBSERVATORY.md).
 Independent review pending; markup tests are not a browser accessibility audit.
+
+## Closed fictional scenario catalog
+The [runner](../../examples/m1_census_research_runner.py) and
+[observatory](../../examples/m1_census_research_observatory.py) accept
+`--scenario`. The default trend-seasonal fixture is unchanged, including
+its commitment and report fingerprints for the same declared revision.
+The catalog fixes 80 months and the same 30/10/10 origin schedule:
+- fictional-trend-seasonal-v1: 100 + 2*i + 3*(i mod 12).
+- fictional-flat-v1: 150.
+- fictional-volatile-v1: 150 + ((37*i*i + 17*i + 11) mod 101) - 50.
+- fictional-regime-shift-v1: 100 + 3*(i mod 12) + 80 when i >= 68
+  (otherwise no additional 80).
+
+These are deterministic illustrations, not sampled distributions or
+independent replications. Each normalized input manifest and experiment
+identity is distinct; the schedule digest is shared. Reusing a commitment
+with another scenario fails before journal creation. Use the same scenario
+on prepare and run. Example:
+
+    python -m examples.m1_census_research_runner demo --revision REV --scenario fictional-regime-shift-v1 --split both
+
+The observatory labels its scenario. Do not pool errors, select winners,
+or treat evaluation coverage as confidence interval calibration. All
+inference remains abstained. No real data, source authorization or
+independent holdout lock.
+
+Proposed evidence MM-CEN-024:
+`test_scenario_full_replay_and_expected_metrics` covers the four fixtures,
+both splits, exact replay and expected descriptive errors.
+`test_scenario_catalog_preserves_default_and_separates_commitments` and
+`test_scenario_cross_commitment_rejected_before_journal` verify identity
+and failure before storage. Run
+`python -m pytest -q tests/integration/test_census_research_scenarios.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md).
+Independent review pending.

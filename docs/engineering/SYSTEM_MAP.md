@@ -328,3 +328,10 @@ See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).
 The [static HTML generator](../../examples/m1_census_research_observatory.py)
 renders the runner's freshly replayed synthetic summary. No external
 report input, service, new storage or authority.
+
+### Closed fictional scenario catalog
+The [runner](../../examples/m1_census_research_runner.py) generates four
+fixed value sequences with the same temporal schedule. Each normalized
+manifest binds its scenario to a distinct experiment commitment. The
+[observatory](../../examples/m1_census_research_observatory.py) displays
+the selected scenario. No new core models or authority.

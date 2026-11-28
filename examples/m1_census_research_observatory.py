@@ -8,7 +8,13 @@ from html import escape
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from examples.m1_census_research_runner import Split, prepare_report, run_research
+from examples.m1_census_research_runner import (
+    FIXTURE,
+    SCENARIOS,
+    Split,
+    prepare_report,
+    run_research,
+)
 
 _STYLE = """
 :root{color-scheme:dark;--bg:#101722;--panel:#182331;--line:#344559;--text:#edf3fa;
@@ -111,15 +117,17 @@ def _render_split(value: object) -> str:
     )
 
 
-def build_observatory(revision: str, splits: tuple[Split, ...]) -> str:
+def build_observatory(
+    revision: str, splits: tuple[Split, ...], scenario: str = FIXTURE
+) -> str:
     """Render only a freshly generated fictional demo; no external report input."""
-    expected = prepare_report(revision)["experiment_sha256"]
+    expected = prepare_report(revision, scenario)["experiment_sha256"]
     if not isinstance(expected, str):
         raise TypeError("invalid experiment identity")
     with TemporaryDirectory(prefix="mm-observatory-") as tmp:
         report = run_research(
             revision, journal_path=Path(tmp) / "journal.sqlite", expected=expected,
-            splits=splits, commitment_mode="self_generated_demo",
+            splits=splits, commitment_mode="self_generated_demo", scenario=scenario,
         )
     values = report["splits"]
     if not isinstance(values, list):
@@ -141,7 +149,8 @@ def build_observatory(revision: str, splits: tuple[Split, ...]) -> str:
         '<title>MirrorMind | Research Observatory</title><style>' + _STYLE + '</style></head>'
         '<body><a class="skip" href="#main">Skip to report</a><main id="main">'
         '<header><p class="eyebrow">MIRRORMIND / EXPERIMENTAL RESEARCH</p>'
-        '<h1>Research Observatory</h1><p class="muted">Fixed fictional Census experiment</p></header>'
+        '<h1>Research Observatory</h1><p class="muted">Fixed fictional Census experiment</p>'
+        f'<p>Scenario: <code>{_text(report["fixture"])}</code></p></header>'
         '<aside class="notice"><strong>Synthetic only · Inference abstained</strong>'
         '<p>No statistical winner or calibrated interval. No real data, independent registration, '
         'holdout lock or runtime attestation. No action authorized.</p></aside>'
@@ -160,6 +169,7 @@ def build_observatory(revision: str, splits: tuple[Split, ...]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate fictional research observatory HTML")
     parser.add_argument("--revision", required=True)
+    parser.add_argument("--scenario", choices=SCENARIOS, default=FIXTURE)
     parser.add_argument("--split", choices=("validation", "holdout", "both"), default="validation")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -170,7 +180,7 @@ def main() -> int:
             ("validation", "holdout") if args.split == "both"
             else ("holdout",) if args.split == "holdout" else ("validation",)
         )
-        html = build_observatory(args.revision, splits)
+        html = build_observatory(args.revision, splits, args.scenario)
         with args.output.open("x", encoding="utf-8", newline="\n") as handle:
             handle.write(html)
     except (ValueError, TypeError, OSError, sqlite3.Error):

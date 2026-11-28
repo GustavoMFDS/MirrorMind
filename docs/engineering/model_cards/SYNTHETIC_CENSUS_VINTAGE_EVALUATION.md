@@ -132,3 +132,9 @@ embargo gaps. Metrics are descriptive only; inference remains abstained.
 The local observatory displays the fixed synthetic runner's descriptive
 metrics and receipt provenance. It does not provide inference, independent
 holdout protection or empirical claims.
+
+The experimental catalog adds flat, deterministic volatile and abrupt
+level-shift fixtures to the original trend-seasonal example. These fixed
+designed sequences share the origin schedule but have distinct manifests.
+They are not independent random draws, a calibration study or evidence
+of empirical forecasting skill.
