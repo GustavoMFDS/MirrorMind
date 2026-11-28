@@ -1108,3 +1108,9 @@ forecast claims or cross-repository changes.
 - [Public dependency input](../../requirements/public-dev.in), [hash lock](../../requirements/public-dev.txt), [input drift checker](../../scripts/check_public_lock.py): reproducible public developer environment.
 
 - [Public lock tests](../../tests/unit/test_public_lock.py): input drift and private-source exclusion.
+
+### M1C-04 descriptive follow-up
+
+| Path | Responsibility |
+|---|---|
+| [docs/engineering/changes/M1C_04_CENSUS_DESCRIPTIVE.md](changes/M1C_04_CENSUS_DESCRIPTIVE.md) | Scoped experimental paired-loss receipt, acceptance and impact map |

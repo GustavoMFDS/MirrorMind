@@ -399,6 +399,13 @@
     "limitation": "Synthetic full-result replay and historical uppercase-default input digest under Decimal capitals 0/1; no cross-language canonicalization or verified publisher bytes."
   },
   {
+    "id": "MM-CEN-018",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_vintage_evaluation.py",
+    "function": "test_descriptive_receipt_exact_pairs_and_v2_compatibility",
+    "limitation": "Fictional exact paired losses, v2 parity and digest only; no verified holdout lock, source authenticity, inference calibration or empirical comparison. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

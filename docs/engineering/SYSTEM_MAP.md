@@ -291,3 +291,10 @@ The compact local retrieval index retains total token counts and sorted
 term frequency/first code-point offset triples, not every token occurrence.
 The original excerpt selection is equivalent to the minimum first offset
 among matching terms. See [M2 retrieval](M2_EVIDENCE_RETRIEVAL.md).
+
+### Census descriptive companion (M1C-04 experimental)
+
+`evaluate_census_vintage_descriptive` shares the existing scoring pass
+and adds matched absolute loss rows plus a complete report fingerprint.
+The original v2 entrypoint does not expose those rows. No API, persistence,
+inference or authority changes. See [evaluation](CENSUS_VINTAGE_EVALUATION.md).
