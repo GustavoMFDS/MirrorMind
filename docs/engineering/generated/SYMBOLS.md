@@ -458,6 +458,119 @@ Source: [`src/mirrormind/modules/__init__.py`](../../../src/mirrormind/modules/_
 
 No top-level classes or functions.
 
+## `mirrormind.modules.agents.__init__`
+
+Source: [`src/mirrormind/modules/agents/__init__.py`](../../../src/mirrormind/modules/agents/__init__.py)
+
+Static imports (including inside functions): `.orchestrator`
+
+No top-level classes or functions.
+
+## `mirrormind.modules.agents.contracts`
+
+Source: [`src/mirrormind/modules/agents/contracts.py`](../../../src/mirrormind/modules/agents/contracts.py)
+
+Static imports (including inside functions): `__future__`, `hashlib`, `math`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_AgentModel` | class | `class _AgentModel` | — | [L35](../../../src/mirrormind/modules/agents/contracts.py#L35) |
+| `AgentRunRequest` | class | `class AgentRunRequest` | One caller-declared local run; scope is not authenticated identity. | [L39](../../../src/mirrormind/modules/agents/contracts.py#L39) |
+| `AgentRunRequest.reject_question_controls` | method | `def reject_question_controls(cls, value: str) -> str` | — | [L57](../../../src/mirrormind/modules/agents/contracts.py#L57) |
+| `AgentRunRequest.require_unique_tools` | method | `def require_unique_tools(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L64](../../../src/mirrormind/modules/agents/contracts.py#L64) |
+| `ToolCall` | class | `class ToolCall` | Untrusted provider request to invoke one named tool with JSON inputs. | [L70](../../../src/mirrormind/modules/agents/contracts.py#L70) |
+| `ToolCall.require_bounded_json_values` | method | `def require_bounded_json_values(cls, value: dict[str, object]) -> dict[str, object]` | — | [L79](../../../src/mirrormind/modules/agents/contracts.py#L79) |
+| `AgentDraft` | class | `class AgentDraft` | Provider text remains a draft; citations are checked for membership only. | [L130](../../../src/mirrormind/modules/agents/contracts.py#L130) |
+| `AgentDraft.require_unique_citations` | method | `def require_unique_citations(cls, value: tuple[str, ...]) -> tuple[str, ...]` | — | [L142](../../../src/mirrormind/modules/agents/contracts.py#L142) |
+| `AgentDraft.match_status_to_citations` | method | `def match_status_to_citations(self) -> AgentDraft` | — | [L148](../../../src/mirrormind/modules/agents/contracts.py#L148) |
+| `AgentTurn` | class | `class AgentTurn` | Exactly one provider action: request one tool or return a bounded draft. | [L156](../../../src/mirrormind/modules/agents/contracts.py#L156) |
+| `AgentTurn.require_matching_payload` | method | `def require_matching_payload(self) -> AgentTurn` | — | [L164](../../../src/mirrormind/modules/agents/contracts.py#L164) |
+| `ToolDescriptor` | class | `class ToolDescriptor` | Safe static tool help sent to the provider; never contains a handler. | [L172](../../../src/mirrormind/modules/agents/contracts.py#L172) |
+| `ToolObservation` | class | `class ToolObservation` | Immutable JSON tool bytes, digest and trust boundary for one provider turn. | [L180](../../../src/mirrormind/modules/agents/contracts.py#L180) |
+| `ToolObservation.verify_output_digest` | method | `def verify_output_digest(self) -> ToolObservation` | — | [L193](../../../src/mirrormind/modules/agents/contracts.py#L193) |
+| `ProviderRequest` | class | `class ProviderRequest` | Bounded provider context; observations remain explicitly untrusted. | [L199](../../../src/mirrormind/modules/agents/contracts.py#L199) |
+| `ToolReceipt` | class | `class ToolReceipt` | Minimized successful-call record; raw arguments and outputs are omitted. | [L211](../../../src/mirrormind/modules/agents/contracts.py#L211) |
+| `AgentRunReport` | class | `class AgentRunReport` | Query-free, non-persisted receipt; a completed draft is never approval. | [L240](../../../src/mirrormind/modules/agents/contracts.py#L240) |
+| `AgentRunReport.require_consistent_run_state` | method | `def require_consistent_run_state(self) -> AgentRunReport` | — | [L259](../../../src/mirrormind/modules/agents/contracts.py#L259) |
+| `AgentProvider` | class | `class AgentProvider` | Only deterministic test doubles are admitted by this M2-03 slice. | [L278](../../../src/mirrormind/modules/agents/contracts.py#L278) |
+| `AgentProvider.next_turn` | method | `def next_turn(self, request: ProviderRequest, /) -> object` | — | [L283](../../../src/mirrormind/modules/agents/contracts.py#L283) |
+
+## `mirrormind.modules.agents.orchestrator`
+
+Source: [`src/mirrormind/modules/agents/orchestrator.py`](../../../src/mirrormind/modules/agents/orchestrator.py)
+
+Static imports (including inside functions): `.contracts`, `.registry`, `.synthetic_tools`, `__future__`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `run_bounded_tool_orchestration` | function | `def run_bounded_tool_orchestration(request: AgentRunRequest, provider: AgentProvider, *, registry: ToolRegistry \| None=None) -> AgentRunReport` | Run only a test double over fixed tools and return a minimized receipt. | [L21](../../../src/mirrormind/modules/agents/orchestrator.py#L21) |
+| `_revalidate_provider_turn` | function | `def _revalidate_provider_turn(value: object) -> AgentTurn \| None` | Rebuild the provider value from plain data before trusting its fields. | [L187](../../../src/mirrormind/modules/agents/orchestrator.py#L187) |
+| `_observed_citation_refs` | function | `def _observed_citation_refs(observations: list[ToolObservation]) -> frozenset[str]` | — | [L203](../../../src/mirrormind/modules/agents/orchestrator.py#L203) |
+| `_refused` | function | `def _refused(code: RefusalCode, *, provider_mode: Literal['test_double', 'rejected'], provider_turn_count: int=0, tool_call_count: int=0, tool_receipts: tuple[ToolReceipt, ...]=()) -> AgentRunReport` | — | [L218](../../../src/mirrormind/modules/agents/orchestrator.py#L218) |
+
+## `mirrormind.modules.agents.registry`
+
+Source: [`src/mirrormind/modules/agents/registry.py`](../../../src/mirrormind/modules/agents/registry.py)
+
+Static imports (including inside functions): `.contracts`, `__future__`, `collections.abc`, `dataclasses`, `hashlib`, `json`, `pydantic`, `re`, `types`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `ToolInvocationError` | class | `class ToolInvocationError` | Sanitized failure code; never retains input or handler exception text. | [L31](../../../src/mirrormind/modules/agents/registry.py#L31) |
+| `ToolInvocationError.__init__` | method | `def __init__(self, code: RefusalCode, *, input_sha256: str \| None=None) -> None` | — | [L34](../../../src/mirrormind/modules/agents/registry.py#L34) |
+| `ToolDefinition` | class | `class ToolDefinition` | Trusted local handler plus exact Pydantic input and output classes. | [L41](../../../src/mirrormind/modules/agents/registry.py#L41) |
+| `ToolDefinition.__post_init__` | method | `def __post_init__(self) -> None` | — | [L50](../../../src/mirrormind/modules/agents/registry.py#L50) |
+| `_ToolExecution` | class | `class _ToolExecution` | — | [L62](../../../src/mirrormind/modules/agents/registry.py#L62) |
+| `ToolRegistry` | class | `class ToolRegistry` | Read-only map of reviewed local functions; no run-time registration API. | [L67](../../../src/mirrormind/modules/agents/registry.py#L67) |
+| `ToolRegistry.__init__` | method | `def __init__(self, definitions: tuple[ToolDefinition[Any, Any], ...]) -> None` | — | [L74](../../../src/mirrormind/modules/agents/registry.py#L74) |
+| `ToolRegistry.__setattr__` | method | `def __setattr__(self, name: str, value: object) -> None` | — | [L89](../../../src/mirrormind/modules/agents/registry.py#L89) |
+| `ToolRegistry.__delattr__` | method | `def __delattr__(self, name: str) -> None` | — | [L92](../../../src/mirrormind/modules/agents/registry.py#L92) |
+| `ToolRegistry.names` | method | `def names(self) -> tuple[str, ...]` | — | [L96](../../../src/mirrormind/modules/agents/registry.py#L96) |
+| `ToolRegistry.contains` | method | `def contains(self, name: str) -> bool` | — | [L99](../../../src/mirrormind/modules/agents/registry.py#L99) |
+| `ToolRegistry.describe` | method | `def describe(self, names: tuple[str, ...]) -> tuple[ToolDescriptor, ...]` | — | [L102](../../../src/mirrormind/modules/agents/registry.py#L102) |
+| `ToolRegistry.invoke` | method | `def invoke(self, call: ToolCall) -> _ToolExecution` | — | [L114](../../../src/mirrormind/modules/agents/registry.py#L114) |
+| `provider_context_size` | function | `def provider_context_size(request: ProviderRequest) -> int` | Measure canonical UTF-8 bytes before the provider receives a context. | [L182](../../../src/mirrormind/modules/agents/registry.py#L182) |
+| `_canonical_json` | function | `def _canonical_json(value: object) -> bytes` | — | [L187](../../../src/mirrormind/modules/agents/registry.py#L187) |
+
+## `mirrormind.modules.agents.synthetic_tools`
+
+Source: [`src/mirrormind/modules/agents/synthetic_tools.py`](../../../src/mirrormind/modules/agents/synthetic_tools.py)
+
+Static imports (including inside functions): `.registry`, `__future__`, `datetime`, `hashlib`, `json`, `mirrormind.core.decision_trace`, `mirrormind.domains.retail.synthetic_decision_workflow`, `mirrormind.modules.retrieval.contracts`, `mirrormind.modules.retrieval.fictional_fixture`, `pydantic`, `typing`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_WorkflowMeanMetrics` | class | `class _WorkflowMeanMetrics` | — | [L39](../../../src/mirrormind/modules/agents/synthetic_tools.py#L39) |
+| `_WorkflowReplication` | class | `class _WorkflowReplication` | — | [L48](../../../src/mirrormind/modules/agents/synthetic_tools.py#L48) |
+| `_WorkflowPolicy` | class | `class _WorkflowPolicy` | — | [L52](../../../src/mirrormind/modules/agents/synthetic_tools.py#L52) |
+| `_WorkflowScenario` | class | `class _WorkflowScenario` | — | [L63](../../../src/mirrormind/modules/agents/synthetic_tools.py#L63) |
+| `_WorkflowComparison` | class | `class _WorkflowComparison` | — | [L69](../../../src/mirrormind/modules/agents/synthetic_tools.py#L69) |
+| `_WorkflowReferenceParity` | class | `class _WorkflowReferenceParity` | — | [L85](../../../src/mirrormind/modules/agents/synthetic_tools.py#L85) |
+| `_WorkflowSimulation` | class | `class _WorkflowSimulation` | — | [L89](../../../src/mirrormind/modules/agents/synthetic_tools.py#L89) |
+| `_WorkflowForecast` | class | `class _WorkflowForecast` | — | [L96](../../../src/mirrormind/modules/agents/synthetic_tools.py#L96) |
+| `_SyntheticWorkflowResult` | class | `class _SyntheticWorkflowResult` | Static shape consumed from the existing M1F-02 workflow result. | [L108](../../../src/mirrormind/modules/agents/synthetic_tools.py#L108) |
+| `_ToolModel` | class | `class _ToolModel` | — | [L128](../../../src/mirrormind/modules/agents/synthetic_tools.py#L128) |
+| `EvidenceSearchInput` | class | `class EvidenceSearchInput` | — | [L132](../../../src/mirrormind/modules/agents/synthetic_tools.py#L132) |
+| `EvidenceSearchInput.reject_query_controls` | method | `def reject_query_controls(cls, value: str) -> str` | — | [L138](../../../src/mirrormind/modules/agents/synthetic_tools.py#L138) |
+| `EvidenceSearchHit` | class | `class EvidenceSearchHit` | — | [L144](../../../src/mirrormind/modules/agents/synthetic_tools.py#L144) |
+| `EvidenceSearchHit.match_citation_digest` | method | `def match_citation_digest(self) -> EvidenceSearchHit` | — | [L151](../../../src/mirrormind/modules/agents/synthetic_tools.py#L151) |
+| `EvidenceSearchOutput` | class | `class EvidenceSearchOutput` | — | [L157](../../../src/mirrormind/modules/agents/synthetic_tools.py#L157) |
+| `EvidenceSearchOutput.match_status` | method | `def match_status(self) -> EvidenceSearchOutput` | — | [L165](../../../src/mirrormind/modules/agents/synthetic_tools.py#L165) |
+| `SyntheticDecisionToolInput` | class | `class SyntheticDecisionToolInput` | — | [L171](../../../src/mirrormind/modules/agents/synthetic_tools.py#L171) |
+| `SyntheticDecisionToolInput.require_date` | method | `def require_date(cls, value: date) -> date` | — | [L178](../../../src/mirrormind/modules/agents/synthetic_tools.py#L178) |
+| `SyntheticForecastSummary` | class | `class SyntheticForecastSummary` | — | [L184](../../../src/mirrormind/modules/agents/synthetic_tools.py#L184) |
+| `SyntheticPolicyMeanMetrics` | class | `class SyntheticPolicyMeanMetrics` | — | [L194](../../../src/mirrormind/modules/agents/synthetic_tools.py#L194) |
+| `SyntheticPolicyMeanMetrics.require_nonnegative_metric` | method | `def require_nonnegative_metric(cls, value: float) -> float` | — | [L210](../../../src/mirrormind/modules/agents/synthetic_tools.py#L210) |
+| `SyntheticPolicySummary` | class | `class SyntheticPolicySummary` | — | [L216](../../../src/mirrormind/modules/agents/synthetic_tools.py#L216) |
+| `SyntheticPolicyScenario` | class | `class SyntheticPolicyScenario` | — | [L226](../../../src/mirrormind/modules/agents/synthetic_tools.py#L226) |
+| `SyntheticPolicyScenario.validate_pairing_and_policy_set` | method | `def validate_pairing_and_policy_set(self) -> SyntheticPolicyScenario` | — | [L233](../../../src/mirrormind/modules/agents/synthetic_tools.py#L233) |
+| `SyntheticSimulationSummary` | class | `class SyntheticSimulationSummary` | — | [L239](../../../src/mirrormind/modules/agents/synthetic_tools.py#L239) |
+| `SyntheticDecisionToolOutput` | class | `class SyntheticDecisionToolOutput` | — | [L256](../../../src/mirrormind/modules/agents/synthetic_tools.py#L256) |
+| `_citation_ref` | function | `def _citation_ref(citation: EvidenceCitation) -> str` | — | [L274](../../../src/mirrormind/modules/agents/synthetic_tools.py#L274) |
+| `_search_synthetic_evidence` | function | `def _search_synthetic_evidence(request: EvidenceSearchInput) -> EvidenceSearchOutput` | — | [L285](../../../src/mirrormind/modules/agents/synthetic_tools.py#L285) |
+| `_summarize_workflow` | function | `def _summarize_workflow(request: SyntheticDecisionToolInput) -> SyntheticDecisionToolOutput` | — | [L301](../../../src/mirrormind/modules/agents/synthetic_tools.py#L301) |
+| `build_synthetic_tool_registry` | function | `def build_synthetic_tool_registry() -> ToolRegistry` | Create only the fixed retrieval and composed M1 decision tools. | [L396](../../../src/mirrormind/modules/agents/synthetic_tools.py#L396) |
+
 ## `mirrormind.modules.evidence.__init__`
 
 Source: [`src/mirrormind/modules/evidence/__init__.py`](../../../src/mirrormind/modules/evidence/__init__.py)
