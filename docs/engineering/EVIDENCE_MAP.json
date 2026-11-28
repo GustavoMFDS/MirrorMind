@@ -1524,5 +1524,12 @@
     "test": "tests/unit/test_evidence_retrieval.py",
     "function": "test_bounded_corpus_search_preserves_full_baseline_results",
     "limitation": "Full response digest parity across four generated bounded corpora and six queries each only; no proof of real-corpus quality, authenticated scope or production latency."
+  },
+  {
+    "id": "MM-RETR-019",
+    "guide": "docs/engineering/M2_EVIDENCE_RETRIEVAL.md",
+    "test": "tests/unit/test_evidence_retrieval.py",
+    "function": "test_compact_index_uses_earliest_source_offset_not_query_order",
+    "limitation": "Fictional Unicode offset and excerpt-window regression only; no source authenticity, access authorization or production memory claim."
   }
 ]

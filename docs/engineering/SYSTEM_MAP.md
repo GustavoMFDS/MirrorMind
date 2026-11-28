@@ -267,3 +267,8 @@ The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision 
 The experimental local BM25 index performs binary lookups on immutable sorted
 frequency tables for query terms only. It retains the original corpus-wide
 statistics and scope-first build; see [M2 retrieval](M2_EVIDENCE_RETRIEVAL.md).
+
+The compact local retrieval index retains total token counts and sorted
+term frequency/first code-point offset triples, not every token occurrence.
+The original excerpt selection is equivalent to the minimum first offset
+among matching terms. See [M2 retrieval](M2_EVIDENCE_RETRIEVAL.md).

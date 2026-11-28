@@ -287,3 +287,27 @@ def test_bounded_corpus_search_preserves_full_baseline_results(profile, count, e
     assert hashlib.sha256(json.dumps(results, sort_keys=True, ensure_ascii=True).encode()).hexdigest() == expected
     assert results[1]["status"] == results[4]["status"] == "no_matches"
     assert all(hit["citation"]["collection_id"] != "denied" for r in results for hit in r["hits"])
+
+@pytest.mark.parametrize("query", ("late STRASSE", "STRASSE late", "strasse strasse late"))
+def test_compact_index_uses_earliest_source_offset_not_query_order(query):
+    prefix = "\U0001f642" * 180
+    content = prefix + "Stra\u00dfe " + "word " * 130 + "late Stra\u00dfe"
+    document = _document(
+        document_id="unicode-offset",
+        collection_id="retail-public",
+        content=content,
+        allowed_principals=("reader",),
+    )
+    access = EvidenceAccessContext(principal_id="reader", allowed_collection_ids=("retail-public",))
+    index = InMemoryEvidenceIndex.build((document,), access)
+    result = index.search(EvidenceQuery(text=query))
+    assert len(result.hits) == 1
+    hit = result.hits[0]
+    assert hit.citation.start_offset == 60
+    assert hit.citation.end_offset == 540
+    assert hit.excerpt == content[60:540]
+    assert hit.citation.excerpt_sha256 == hashlib.sha256(hit.excerpt.encode("utf-8")).hexdigest()
+    assert index.search(EvidenceQuery(text="! _ ?")).status == "no_matches"
+    last = index.search(EvidenceQuery(text="late")).hits[0]
+    assert last.excerpt == content[-480:]
+    assert last.citation.end_offset == len(content)

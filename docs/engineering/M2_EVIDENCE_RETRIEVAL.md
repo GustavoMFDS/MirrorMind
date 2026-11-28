@@ -410,6 +410,41 @@ were common 18.8065/0.7513, absent 19.8767/0.0123, filtered
 16.6933/0.3435, 50 terms 19.2034/2.0128. All four corpus output hashes
 matched. Build is unchanged; its observed timings and allocation peaks
 are not a claimed improvement. Repeated-vocabulary searches show smaller
-gains and some noise; a separate isolated arithmetic probe found a small
-slowdown for a multi-term repeated-vocabulary case. No timing threshold,
+gains and some noise; the last repeated-100 query measured 0.3645 ms
+before and 0.3672 ms after in one comparison. No timing threshold,
 production latency or universal speedup claim.
+
+## Compact per-document token representation
+
+Follow-up to PR #91 at cd0f8b53aed0049086e0b2895013619f9db4a890.
+Goal: retain only the document token count and each term's frequency and
+first source code-point offset. The prior representation stores every
+token occurrence, including offsets never used after construction.
+Stream the same casefolded regex matches and keep temporary mutable
+counters local to build; freeze the sorted triples before returning.
+Select the minimum first offset over matched terms, irrespective of query
+order. All access filtering, corpus-wide statistics, scoring order,
+rounding, excerpt bounds, citation hashing and public contracts remain
+unchanged. No new dependency, API, persistence or authorization.
+Rollback if full output parity or citation offsets differ.
+
+MM-RETR-019: `test_compact_index_uses_earliest_source_offset_not_query_order`
+in `tests/unit/test_evidence_retrieval.py` exercises casefold expansion,
+non-BMP code points, reversed and repeated query terms, punctuation-only
+queries and end-clipped excerpts. The existing MM-RETR-018 four-corpus
+full-output regression is retained. No new capability status is claimed.
+
+Two alternating baseline/candidate rounds on Windows Python 3.12.10:
+100-document diverse construction medians 253.8125/171.355 and
+247.7992/159.9432 ms; repeated vocabulary 217.3687/92.8672 and
+225.396/89.4464 ms. Five timed builds after one warmup, 21 timed
+queries per scenario. Separate tracemalloc peaks in KiB:
+diverse 35822.54/27088.70 and 35822.54/27088.74;
+repeated 21122.16/46.28 in both rounds. These exclude already allocated
+input documents and are not process RSS or service capacity.
+All 24 fixed and 320 seeded extra complete responses matched by grouped
+hashes in each round; seed 317, 80 extra queries per corpus, varying
+top-k, repeated/absent terms and collection filter. No timing gate.
+The first prototype had a construction slowdown and was superseded by
+the streamed tuple and local counter implementation. Independent review
+and exact committed-head gates remain separate.
