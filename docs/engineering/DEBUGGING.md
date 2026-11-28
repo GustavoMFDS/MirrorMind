@@ -533,3 +533,21 @@ Check the declared revision and a new absolute HTML output path. A
 replay mismatch prevents report creation. Observed and reference coverage
 are distinct; neither proves operational calibration. Exact rational
 scores appear in expandable details.
+
+### Joint probability input rejection
+Check sorted distinct support pairs, canonical positive weights, axis
+bounds and total mass. Independent projection can exceed the joint mass
+bound even when the original law is valid; reject rather than approximate
+or silently clip. An out-of-support observation within the allowed
+displacement bounds has zero predicted mass, not an invalid score.
+
+### Bivariate study replay
+Check the declared revision and retained design digest. Verify exact
+canonical receipt bytes, not a rehashed altered report. Compare joint
+and matched product within each scenario and horizon; equal marginal
+scores are expected, not evidence of equal joint predictions.
+
+### Bivariate observatory
+Use a new absolute HTML output path. Replay mismatch prevents output.
+The matrices use a common probability scale and exact fractions;
+missing cells are zero probability, not missing observations.

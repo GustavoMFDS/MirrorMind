@@ -812,3 +812,96 @@ replay failure without output. Run
 `python -m pytest -q tests/integration/test_census_probability_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md).
 Independent review pending; markup tests are not accessibility certification.
+
+## Bounded exact bivariate probability core
+The experimental [bivariate module](../../src/mirrormind/domains/retail/census_bivariate.py)
+represents sorted unique integer pairs with positive canonical integer
+weights. Each axis supports displacement -24..24, at most 2401 cells,
+and total mass at most 512 bits. Convolution accepts up to six
+independent-in-time joint increment laws with each axis in -4..4 and
+mass at most 64 bits per law. It preserves within-step dependence but
+does not model serial dependence. Joint marginal projection reuses the
+univariate canonical PMF contract. The independent projection preserves
+both marginals exactly and rejects results exceeding the mass bound.
+
+Exact covariance, simultaneous-positive event probability, multiclass
+joint Brier (sum of squared probability-vector errors, range 0..2)
+and expected Brier excess under an explicitly supplied reference are
+available. Expected excess equals squared probability-vector distance;
+the reference is not authenticated. Identical marginal distributions
+do not establish correct joint behavior. No fitted model, causal
+effect, dependence detector, confidence interval or calibration claim.
+
+Proposed evidence MM-CEN-032:
+`test_joint_brier_exact_proper_score_identity` verifies the identity
+by enumerating outcomes. Additional tests check joint convolution by
+path enumeration at horizons one through six, marginal preservation,
+covariance and invalid input rejection. Run
+`python -m pytest -q tests/unit/test_census_bivariate.py`.
+See [change request](changes/M1C_04_CENSUS_BIVARIATE.md).
+Independent review pending. No API, journal or univariate changes.
+
+## Fixed fictional bivariate study protocol
+The [bivariate study](../../examples/m1_census_bivariate_study.py)
+commits the fixed design and declared Git revision before scoring.
+Four scenarios (positive, independent, negative and positive-to-negative
+shift at increment 53), seeds 111001..111004, 16 paths each, origins
+48..57, horizons 1/3/6. Counter-hash fixtures use first SHA-256 byte
+modulo eight; paired increments are independent over time with each
+axis +/-4. Compare fixed independent, smoothed joint last24 (one
+pseudocount per cell), its matched independent projection and a
+privileged true-law reference. All use identical observed targets.
+The joint and matched product forecasts have identical marginals.
+Exact group means include multiclass Brier, reference excess, marginal
+CRPS on each axis, simultaneous-positive event Brier and probability,
+observed event rate and covariance. Each group has a streaming event
+transcript digest. No inference or operational calibration claim.
+
+    python -m examples.m1_census_bivariate_study prepare --revision REV
+    python -m examples.m1_census_bivariate_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_bivariate_study demo --revision REV
+
+Prepare does not score. Run requires a caller-retained commitment;
+demo self-generates one. Both execution modes replay the whole report.
+verify_study compares canonical bytes at most 1 MiB, excluding stdout
+newline. No imported records, journal, holdout, winner, independent
+registration, runtime attestation, causal effect or temporal
+autocorrelation. These are deterministic fixtures, not independent
+statistical samples; origins and horizons overlap.
+
+Proposed evidence MM-CEN-033:
+`test_bivariate_study_exact_replay_and_matched_marginals` verifies
+fixed digests, complete replay and exact matched marginal score parity.
+Other tests reject rehashed forgery and mismatched commitment before
+scoring, and test future invariance and invalid inputs.
+See [change request](changes/M1C_04_CENSUS_BIVARIATE_STUDY.md).
+Independent review pending.
+
+Run `python -m pytest -q tests/integration/test_census_bivariate_study.py`.
+
+## Offline multivariate research observatory
+The [bivariate observatory](../../examples/m1_census_bivariate_observatory.py)
+renders a freshly executed and fully replayed fixed bivariate study.
+
+    python -m examples.m1_census_bivariate_observatory --revision REV --output ABSOLUTE_HTML
+
+Separate scenario and horizon tables include exact rational joint Brier,
+reference excess, both marginal CRPS scores, event Brier, predicted and
+observed simultaneous-positive event rates and covariance. Fixed examples
+(path 0, origin 52, horizon six) show joint matrices with explicit axes
+and numeric probability labels, exact cell fractions in titles, and
+marginal tables with visible exact fractions. A common probability
+intensity scale is used across all matrices. The examples do not add
+independent observations. The oracle is privileged. Provenance includes
+study, report and group transcript digests, and declared revision.
+Self-generated demo commitment only; no imported records, network,
+scripts, storage, overwrite or operational authority.
+
+Proposed evidence MM-CEN-034:
+`test_bivariate_observatory_replayed_report_and_matrices` checks
+actual replayed metrics, matrix counts, provenance and internal links.
+Other tests verify exact cell mass, exclusive output and no output
+after a replay mismatch.
+Run `python -m pytest -q tests/integration/test_census_bivariate_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md).
+Independent review pending; markup checks are not accessibility certification.

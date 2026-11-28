@@ -1208,3 +1208,24 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_probability_observatory.py](../../examples/m1_census_probability_observatory.py) | Offline replayed probability report and fixed PMF examples |
 | [tests/integration/test_census_probability_observatory.py](../../tests/integration/test_census_probability_observatory.py) | Report metrics, markup, reproducibility and failure tests |
 | [docs/engineering/changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md](changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Bounded bivariate probability
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_bivariate.py](../../src/mirrormind/domains/retail/census_bivariate.py) | Exact finite joint laws and joint scoring |
+| [tests/unit/test_census_bivariate.py](../../tests/unit/test_census_bivariate.py) | Joint enumeration, marginal parity and rejection |
+| [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE.md](changes/M1C_04_CENSUS_BIVARIATE.md) | Scoped acceptance and impact map |
+
+### Fictional bivariate study
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_bivariate_study.py](../../examples/m1_census_bivariate_study.py) | Fixed study commitment, matched marginal comparison and replay |
+| [tests/integration/test_census_bivariate_study.py](../../tests/integration/test_census_bivariate_study.py) | Exact replay, forgery and causal input tests |
+| [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE_STUDY.md](changes/M1C_04_CENSUS_BIVARIATE_STUDY.md) | Scoped acceptance and impact map |
+
+### Bivariate observatory
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_bivariate_observatory.py](../../examples/m1_census_bivariate_observatory.py) | Replayed offline joint/marginal visualization |
+| [tests/integration/test_census_bivariate_observatory.py](../../tests/integration/test_census_bivariate_observatory.py) | Report, matrix mass and failure tests |
+| [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md) | Scoped acceptance and impact map |

@@ -497,6 +497,27 @@
     "limitation": "Offline fixed fictional replay report and PMF examples only; no empirical calibration, independent registration, accessibility certification or operational forecasting. Independent review pending."
   },
   {
+    "id": "MM-CEN-032",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_bivariate.py",
+    "function": "test_joint_brier_exact_proper_score_identity",
+    "limitation": "Exact bounded bivariate probability operations only; no learned dependence, serial dynamics, reference authenticity, causal effects, calibration or operational forecasting. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-033",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_bivariate_study.py",
+    "function": "test_bivariate_study_exact_replay_and_matched_marginals",
+    "limitation": "Fixed synthetic bivariate study and local replay only; no independent registration, causal effects, serial dependence, empirical calibration or statistical winner. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-034",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_bivariate_observatory.py",
+    "function": "test_bivariate_observatory_replayed_report_and_matrices",
+    "limitation": "Offline replayed fixed bivariate report and example matrices only; no empirical calibration, accessibility certification, causal effects or operational forecasting. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",
