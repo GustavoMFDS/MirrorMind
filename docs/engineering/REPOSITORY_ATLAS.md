@@ -1208,3 +1208,10 @@ forecast claims or cross-repository changes.
 | [examples/m1_census_probability_observatory.py](../../examples/m1_census_probability_observatory.py) | Offline replayed probability report and fixed PMF examples |
 | [tests/integration/test_census_probability_observatory.py](../../tests/integration/test_census_probability_observatory.py) | Report metrics, markup, reproducibility and failure tests |
 | [docs/engineering/changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md](changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md) | Scoped acceptance and impact map |
+
+### Bounded bivariate probability
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_bivariate.py](../../src/mirrormind/domains/retail/census_bivariate.py) | Exact finite joint laws and joint scoring |
+| [tests/unit/test_census_bivariate.py](../../tests/unit/test_census_bivariate.py) | Joint enumeration, marginal parity and rejection |
+| [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE.md](changes/M1C_04_CENSUS_BIVARIATE.md) | Scoped acceptance and impact map |

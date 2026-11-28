@@ -533,3 +533,10 @@ Check the declared revision and a new absolute HTML output path. A
 replay mismatch prevents report creation. Observed and reference coverage
 are distinct; neither proves operational calibration. Exact rational
 scores appear in expandable details.
+
+### Joint probability input rejection
+Check sorted distinct support pairs, canonical positive weights, axis
+bounds and total mass. Independent projection can exceed the joint mass
+bound even when the original law is valid; reject rather than approximate
+or silently clip. An out-of-support observation within the allowed
+displacement bounds has zero predicted mass, not an invalid score.

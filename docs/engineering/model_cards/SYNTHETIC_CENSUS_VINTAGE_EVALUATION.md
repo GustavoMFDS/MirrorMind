@@ -174,3 +174,8 @@ The local probability observatory renders a freshly replayed fixed
 fictional study and one preselected example per group. Reference-law
 coverage, observed coverage and CRPS do not establish empirical
 calibration or a statistical winner.
+
+The separate experimental bivariate core adds bounded joint mathematical
+operations, not a fitted predictor. Equal marginal scores do not
+establish accurate dependence; joint Brier excess is reference-relative.
+No empirical calibration or causal effect is established.

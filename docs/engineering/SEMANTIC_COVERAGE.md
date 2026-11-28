@@ -344,3 +344,8 @@ has guided fixed fictional design and complete receipt replay in
 The [probabilistic observatory](../../examples/m1_census_probability_observatory.py)
 has guided offline fictional report and replay behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md); no operational acceptance.
+
+The [bivariate core](../../src/mirrormind/domains/retail/census_bivariate.py)
+has guided finite exact joint mathematical behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not fitted dependence
+or empirical calibration.

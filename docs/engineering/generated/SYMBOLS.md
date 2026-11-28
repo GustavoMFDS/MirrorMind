@@ -142,6 +142,24 @@ Static imports (including inside functions): `__future__`, `bisect`, `dataclasse
 | `DeclaredCalendarCoverage.receipt` | method | `def receipt(self) -> dict[str, str \| int]` | Keep the unverified calendar and unknown publisher availability explicit. | [L29](../../../src/mirrormind/domains/retail/calendar_coverage.py#L29) |
 | `summarize_declared_calendar_coverage` | function | `def summarize_declared_calendar_coverage(projection: UciRetailProjection, declared_days: tuple[date, ...]) -> DeclaredCalendarCoverage` | Count only absent *declared* dates between observed positive product-days. | [L44](../../../src/mirrormind/domains/retail/calendar_coverage.py#L44) |
 
+## `mirrormind.domains.retail.census_bivariate`
+
+Source: [`src/mirrormind/domains/retail/census_bivariate.py`](../../../src/mirrormind/domains/retail/census_bivariate.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `fractions`, `math`, `mirrormind.domains.retail.census_probability`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_validate` | function | `def _validate(pmf: JointPMF, *, canonical: bool=True) -> int` | — | [L19](../../../src/mirrormind/domains/retail/census_bivariate.py#L19) |
+| `canonical_joint_pmf` | function | `def canonical_joint_pmf(weights: JointPMF) -> JointPMF` | Reduce sorted, unique, positive weights by their common divisor. | [L47](../../../src/mirrormind/domains/retail/census_bivariate.py#L47) |
+| `convolve_joint_increments` | function | `def convolve_joint_increments(laws: tuple[JointPMF, ...]) -> JointPMF` | Sum up to six independent-in-time paired increment laws. | [L54](../../../src/mirrormind/domains/retail/census_bivariate.py#L54) |
+| `joint_marginal` | function | `def joint_marginal(pmf: JointPMF, axis: int) -> PMF` | — | [L77](../../../src/mirrormind/domains/retail/census_bivariate.py#L77) |
+| `independent_joint_projection` | function | `def independent_joint_projection(pmf: JointPMF) -> JointPMF` | Replace dependence with independence, preserving exact marginals. | [L87](../../../src/mirrormind/domains/retail/census_bivariate.py#L87) |
+| `joint_covariance` | function | `def joint_covariance(pmf: JointPMF) -> Fraction` | — | [L97](../../../src/mirrormind/domains/retail/census_bivariate.py#L97) |
+| `joint_positive_probability` | function | `def joint_positive_probability(pmf: JointPMF) -> Fraction` | — | [L104](../../../src/mirrormind/domains/retail/census_bivariate.py#L104) |
+| `joint_brier_score` | function | `def joint_brier_score(pmf: JointPMF, observed: tuple[int, int]) -> Fraction` | — | [L109](../../../src/mirrormind/domains/retail/census_bivariate.py#L109) |
+| `reference_joint_brier_excess` | function | `def reference_joint_brier_excess(pmf: JointPMF, reference: JointPMF) -> Fraction` | Squared probability-vector distance to a supplied, unverified reference. | [L121](../../../src/mirrormind/domains/retail/census_bivariate.py#L121) |
+
 ## `mirrormind.domains.retail.census_evaluation`
 
 Source: [`src/mirrormind/domains/retail/census_evaluation.py`](../../../src/mirrormind/domains/retail/census_evaluation.py)

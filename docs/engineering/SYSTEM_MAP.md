@@ -378,3 +378,9 @@ Explicit complete receipt replay; no journal, API or new authority.
 The [offline report](../../examples/m1_census_probability_observatory.py)
 renders freshly replayed fixed probability study summaries and fixed
 example distributions. No new core contracts, API, storage or authority.
+
+### Experimental bivariate probability core
+The [pure joint module](../../src/mirrormind/domains/retail/census_bivariate.py)
+adds bounded exact two-axis PMFs, convolution, marginal projections and
+joint scoring without modifying the univariate protocol. No connection
+to data ingestion, provider dispatch, learned models or persistence.

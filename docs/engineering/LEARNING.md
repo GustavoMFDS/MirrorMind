@@ -1057,3 +1057,9 @@ Generate the [probabilistic observatory](../../examples/m1_census_probability_ob
 Compare the fixed example PMFs, quantiles and realized displacement with
 aggregate CRPS, coverage and width. Explain why a single example cannot
 establish calibration and why the oracle is a privileged reference.
+
+### Exercise: evaluate dependence
+Run the [bivariate tests](../../tests/unit/test_census_bivariate.py).
+Compare the independent projection with positive and negative joint
+laws sharing both marginals. Explain why marginal scoring alone cannot
+distinguish them and why joint Brier excess depends on the reference.

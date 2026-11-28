@@ -497,6 +497,13 @@
     "limitation": "Offline fixed fictional replay report and PMF examples only; no empirical calibration, independent registration, accessibility certification or operational forecasting. Independent review pending."
   },
   {
+    "id": "MM-CEN-032",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_bivariate.py",
+    "function": "test_joint_brier_exact_proper_score_identity",
+    "limitation": "Exact bounded bivariate probability operations only; no learned dependence, serial dynamics, reference authenticity, causal effects, calibration or operational forecasting. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

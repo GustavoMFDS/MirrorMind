@@ -812,3 +812,31 @@ replay failure without output. Run
 `python -m pytest -q tests/integration/test_census_probability_observatory.py`.
 See [change request](changes/M1C_04_CENSUS_PROBABILITY_OBSERVATORY.md).
 Independent review pending; markup tests are not accessibility certification.
+
+## Bounded exact bivariate probability core
+The experimental [bivariate module](../../src/mirrormind/domains/retail/census_bivariate.py)
+represents sorted unique integer pairs with positive canonical integer
+weights. Each axis supports displacement -24..24, at most 2401 cells,
+and total mass at most 512 bits. Convolution accepts up to six
+independent-in-time joint increment laws with each axis in -4..4 and
+mass at most 64 bits per law. It preserves within-step dependence but
+does not model serial dependence. Joint marginal projection reuses the
+univariate canonical PMF contract. The independent projection preserves
+both marginals exactly and rejects results exceeding the mass bound.
+
+Exact covariance, simultaneous-positive event probability, multiclass
+joint Brier (sum of squared probability-vector errors, range 0..2)
+and expected Brier excess under an explicitly supplied reference are
+available. Expected excess equals squared probability-vector distance;
+the reference is not authenticated. Identical marginal distributions
+do not establish correct joint behavior. No fitted model, causal
+effect, dependence detector, confidence interval or calibration claim.
+
+Proposed evidence MM-CEN-032:
+`test_joint_brier_exact_proper_score_identity` verifies the identity
+by enumerating outcomes. Additional tests check joint convolution by
+path enumeration at horizons one through six, marginal preservation,
+covariance and invalid input rejection. Run
+`python -m pytest -q tests/unit/test_census_bivariate.py`.
+See [change request](changes/M1C_04_CENSUS_BIVARIATE.md).
+Independent review pending. No API, journal or univariate changes.
