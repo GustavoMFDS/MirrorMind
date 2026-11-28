@@ -433,3 +433,16 @@ If timings regress, profile the fixture generator separately from the reader
 and policy engine. The two cutoff audits must remain independent. Compare
 complete output hashes before claiming a speedup; never reuse a parsed
 release audit from a different cutoff or cache real-source bytes.
+
+## Local BM25 search performance
+
+Distinguish corpus construction from repeated searches on one immutable index.
+Profile diverse and repeated synthetic vocabularies separately; compare full
+result digests (scores, ties, excerpts and citations), not only hit counts.
+The bounded corpus regression covers the previous implementation's output
+without a timing threshold. Do not widen limits or expose denied documents.
+
+When comparing compact-index memory, allocate the generated corpus before
+starting tracemalloc and measure build separately from searches. Check
+Unicode casefold and earliest-offset regressions before changing token
+representation. Traced allocations are not total process RAM.

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import math
 import re
+from bisect import bisect_left
+from collections.abc import Iterator
 from dataclasses import dataclass
 from hashlib import sha256
 
@@ -24,25 +26,16 @@ _BM25_B = 0.75
 
 
 @dataclass(frozen=True, slots=True)
-class _TokenSpan:
-    term: str
-    start: int
-    end: int
-
-
-@dataclass(frozen=True, slots=True)
 class _IndexedDocument:
     document: EvidenceDocument
-    tokens: tuple[_TokenSpan, ...]
-    term_counts: tuple[tuple[str, int], ...]
+    token_count: int
+    term_counts: tuple[tuple[str, int, int], ...]
 
 
-def _token_spans(text: str) -> tuple[_TokenSpan, ...]:
-    """Tokenize Unicode words while retaining exact source offsets."""
-    return tuple(
-        _TokenSpan(match.group(0).casefold(), match.start(), match.end())
-        for match in _TOKEN.finditer(text)
-    )
+def _token_spans(text: str) -> Iterator[tuple[str, int]]:
+    """Stream casefolded words with exact starting code-point offsets."""
+    for match in _TOKEN.finditer(text):
+        yield match.group(0).casefold(), match.start()
 
 
 @dataclass(frozen=True, slots=True)
@@ -82,15 +75,22 @@ class InMemoryEvidenceIndex:
         indexed: list[_IndexedDocument] = []
         document_frequency: dict[str, int] = {}
         for document in visible:
-            tokens = _token_spans(document.content)
-            counts: dict[str, int] = {}
-            for token in tokens:
-                counts[token.term] = counts.get(token.term, 0) + 1
+            token_count = 0
+            counts: dict[str, list[int]] = {}
+            for term, start in _token_spans(document.content):
+                token_count += 1
+                entry = counts.get(term)
+                if entry is None:
+                    counts[term] = [1, start]
+                else:
+                    entry[0] += 1
             indexed.append(
                 _IndexedDocument(
                     document=document,
-                    tokens=tokens,
-                    term_counts=tuple(sorted(counts.items())),
+                    token_count=token_count,
+                    term_counts=tuple(sorted(
+                        (term, count, first) for term, (count, first) in counts.items()
+                    )),
                 )
             )
             for term in counts:
@@ -105,7 +105,7 @@ class InMemoryEvidenceIndex:
         """Run deterministic BM25 over pre-filtered documents and return exact citations."""
         if type(query) is not EvidenceQuery:
             raise TypeError("query must be an exact EvidenceQuery")
-        query_terms = tuple(dict.fromkeys(token.term for token in _token_spans(query.text)))
+        query_terms = tuple(dict.fromkeys(term for term, _ in _token_spans(query.text)))
         if not query_terms or not self._documents:
             return _empty_result()
 
@@ -121,25 +121,30 @@ class InMemoryEvidenceIndex:
         if not candidates:
             return _empty_result()
 
-        count_by_term = dict(self._document_frequency)
         total_documents = len(self._documents)
-        average_length = sum(len(item.tokens) for item in self._documents) / total_documents
-        average_length = max(average_length, 1.0)
-        ranked: list[tuple[float, _IndexedDocument]] = []
-        for item in candidates:
-            counts = dict(item.term_counts)
-            document_length = len(item.tokens)
-            score = 0.0
-            for term in query_terms:
-                term_frequency = counts.get(term, 0)
-                if term_frequency == 0:
-                    continue
-                document_frequency = count_by_term[term]
+        weighted_terms = []
+        for term in query_terms:
+            document_frequency = _frequency(self._document_frequency, term)
+            if document_frequency:
                 inverse_frequency = math.log(
                     1.0
                     + (total_documents - document_frequency + 0.5)
                     / (document_frequency + 0.5)
                 )
+                weighted_terms.append((term, inverse_frequency))
+        if not weighted_terms:
+            return _empty_result()
+        average_length = sum(item.token_count for item in self._documents) / total_documents
+        average_length = max(average_length, 1.0)
+        ranked: list[tuple[float, _IndexedDocument]] = []
+        for item in candidates:
+            document_length = item.token_count
+            score = 0.0
+            for term, inverse_frequency in weighted_terms:
+                entry = _term_entry(item.term_counts, term)
+                if entry is None:
+                    continue
+                term_frequency = entry[1]
                 denominator = term_frequency + _BM25_K1 * (
                     1.0 - _BM25_B + _BM25_B * document_length / average_length
                 )
@@ -161,6 +166,24 @@ class InMemoryEvidenceIndex:
         )
 
 
+def _frequency(counts: tuple[tuple[str, int], ...], term: str) -> int:
+    """Find one term in the immutable, sorted frequency table."""
+    position = bisect_left(counts, (term, 0))
+    if position < len(counts) and counts[position][0] == term:
+        return counts[position][1]
+    return 0
+
+
+def _term_entry(
+    counts: tuple[tuple[str, int, int], ...], term: str
+) -> tuple[str, int, int] | None:
+    """Return frequency and earliest code-point offset for a term."""
+    position = bisect_left(counts, (term, 0, 0))
+    if position < len(counts) and counts[position][0] == term:
+        return counts[position]
+    return None
+
+
 def _empty_result() -> EvidenceRetrievalResult:
     return EvidenceRetrievalResult(
         status="no_matches",
@@ -174,9 +197,12 @@ def _make_hit(
     item: _IndexedDocument,
     query_terms: frozenset[str],
 ) -> RetrievedEvidence:
-    matching = next(token for token in item.tokens if token.term in query_terms)
+    first = min(
+        entry[2] for term in query_terms
+        if (entry := _term_entry(item.term_counts, term)) is not None
+    )
     content = item.document.content
-    start = max(0, matching.start - EXCERPT_MAX_CHARS // 4)
+    start = max(0, first - EXCERPT_MAX_CHARS // 4)
     end = min(len(content), start + EXCERPT_MAX_CHARS)
     if end - start < EXCERPT_MAX_CHARS:
         start = max(0, end - EXCERPT_MAX_CHARS)

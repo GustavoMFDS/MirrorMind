@@ -375,3 +375,82 @@ abstention rate (2/2) and citation support (2/2). Change one gold label to a
 visible but irrelevant fixture and predict each affected numerator. Then set
 its collection outside the case scope and verify the evaluator rejects the
 label before scoring without echoing its ID.
+
+## Bounded search performance follow-up
+
+Change request: avoid reconstructing full frequency dictionaries on each
+query. Keep sorted immutable tuples, scope-first indexing, query-term
+order, BM25 arithmetic, citation offsets and public result schema intact.
+Use binary lookup of only requested terms and compute their inverse
+frequency once per search. No new state, dependencies, source data, API
+or capability promotion. Acceptance: complete output parity against
+00e6cf11ac05a94055242573fd3cfc18086bad10 for bounded diverse/repeated
+fictional corpora, no-match and scope filters; regression tests and
+exact-head gates. Compare timing and traced allocations observationally;
+rollback on output mismatch or unjustified complexity. Impact is the
+local index search, existing CLI/evaluator callers and tests only.
+
+### Implementation and bounded evidence
+
+The sorted term-count tuples remain immutable. Binary lookup finds only
+query terms, and inverse document frequency is computed once per present
+term over the entire build-visible corpus, not over the query-selected
+subset. Unknown terms are skipped; an all-unknown query returns no matches.
+The scoring operation order, tie-break, excerpt construction and digest
+are unchanged. No persistent cache or expanded access scope is introduced.
+
+MM-RETR-018: `test_bounded_corpus_search_preserves_full_baseline_results`
+in `tests/unit/test_evidence_retrieval.py` compares complete JSON hashes for
+six queries in each of four corpora against baseline
+`00e6cf11ac05a94055242573fd3cfc18086bad10`. The corpus generator is in the
+test: 10/100 invented documents, 11,991/12,000 characters per document,
+10% excluded collections; Unicode, common/unknown terms, collection
+filter, 50 terms and top-k are represented. Run with
+`python -m pytest -q tests/unit/test_evidence_retrieval.py -k bounded_corpus`.
+This is not real-corpus quality, authorization or production performance evidence.
+
+Local Windows Python 3.12.10 benchmark (five timed builds and 21 timed
+queries each after one warmup, separate traced allocation measurement):
+for the diverse 100-document corpus, median milliseconds before/after
+were common 18.8065/0.7513, absent 19.8767/0.0123, filtered
+16.6933/0.3435, 50 terms 19.2034/2.0128. All four corpus output hashes
+matched. Build is unchanged; its observed timings and allocation peaks
+are not a claimed improvement. Repeated-vocabulary searches show smaller
+gains and some noise; the last repeated-100 query measured 0.3645 ms
+before and 0.3672 ms after in one comparison. No timing threshold,
+production latency or universal speedup claim.
+
+## Compact per-document token representation
+
+Follow-up to PR #91 at cd0f8b53aed0049086e0b2895013619f9db4a890.
+Goal: retain only the document token count and each term's frequency and
+first source code-point offset. The prior representation stores every
+token occurrence, including offsets never used after construction.
+Stream the same casefolded regex matches and keep temporary mutable
+counters local to build; freeze the sorted triples before returning.
+Select the minimum first offset over matched terms, irrespective of query
+order. All access filtering, corpus-wide statistics, scoring order,
+rounding, excerpt bounds, citation hashing and public contracts remain
+unchanged. No new dependency, API, persistence or authorization.
+Rollback if full output parity or citation offsets differ.
+
+MM-RETR-019: `test_compact_index_uses_earliest_source_offset_not_query_order`
+in `tests/unit/test_evidence_retrieval.py` exercises casefold expansion,
+non-BMP code points, reversed and repeated query terms, punctuation-only
+queries and end-clipped excerpts. The existing MM-RETR-018 four-corpus
+full-output regression is retained. No new capability status is claimed.
+
+Two alternating baseline/candidate rounds on Windows Python 3.12.10:
+100-document diverse construction medians 253.8125/171.355 and
+247.7992/159.9432 ms; repeated vocabulary 217.3687/92.8672 and
+225.396/89.4464 ms. Five timed builds after one warmup, 21 timed
+queries per scenario. Separate tracemalloc peaks in KiB:
+diverse 35822.54/27088.70 and 35822.54/27088.74;
+repeated 21122.16/46.28 in both rounds. These exclude already allocated
+input documents and are not process RSS or service capacity.
+All 24 fixed and 320 seeded extra complete responses matched by grouped
+hashes in each round; seed 317, 80 extra queries per corpus, varying
+top-k, repeated/absent terms and collection filter. No timing gate.
+The first prototype had a construction slowdown and was superseded by
+the streamed tuple and local counter implementation. Independent review
+and exact committed-head gates remain separate.
