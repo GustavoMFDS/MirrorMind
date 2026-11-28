@@ -45,7 +45,11 @@ remain drafts. Review submissions and inline threads were empty at the latest
 query. A source audit of the diffs in dependency order found no confirmed
 defect; this is not independent approval. The exact #93 head has 12 successful
 official check-runs and two conditional skips. No PR-triggered workflow runs
-or combined statuses were returned for #94–#98 or #100.
+or combined statuses were returned for #94–#98 or #100. All repository
+`pull_request` workflows currently filter target branch `main`; those
+descendant PRs target parent feature branches, so their missing runs follow the
+configured filter rather than establishing a billing cause. Do not treat
+missing checks as validation.
 
 The full local gate passed on the exact remote #98 tree
 `dda5ebd9ca82cd0b2bbc2b6eec4e330afa3710e1` (1,116 tests, zero skips, six

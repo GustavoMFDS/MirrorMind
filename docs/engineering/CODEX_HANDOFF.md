@@ -34,6 +34,11 @@
   using matching-tree scratch commits (1,116 and 1,162 tests, zero skips).
   Only #93 has official workflow results among that stack: 12 successes and
   two conditional skips; #94–#98/#100 returned no PR-triggered runs/statuses.
+  All current `pull_request` workflows filter target branch `main`, while
+  those descendants target parent feature branches; the filter explains their
+  missing runs. This does not explain historical pre-start failures or reveal
+  account allowance. Keep local gates for the stack; don't treat absent checks
+  as passing CI or change workflow filters without an explicit decision.
   Keep the stack synthetic and wait for independent review and the separate
   integration decision. B-01/B-02 still block real-source bytes and empirical
   claims pending source-specific rights and temporal-evidence decisions.
@@ -60,11 +65,13 @@
   software-development and archive route; see the updated
   [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
 - Owner reports GitHub Actions included allowance exhausted; zero paid spend
-  remains. Current observations include workflow runs on exact PR heads #93
-  and #99, but none returned for #94–#98/#100. This does not establish current
-  allowance or explain historical pre-start failures. Use temporary local
-  gate. Do not edit workflows, spend, register runners or weaken/skip
-  protections.
+  remains. Current exact-head queries found 12 successes and two conditional
+  skips on #93 (`76f0402`) and #99 (`ef32ef4`). Missing runs on #94–#98/#100
+  are explained by the current `pull_request.branches: [main]` filters: those
+  PRs target parent feature branches. This does not explain historical
+  pre-start failures or reveal current allowance. Use the temporary local gate
+  for stacked PRs. Do not edit workflow filters, spend, register runners or
+  weaken/skip protections.
 
 ## Historical pre-#87 continuation - 2026-11-28
 

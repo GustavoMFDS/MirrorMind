@@ -3,14 +3,24 @@
 ## Current B-07/B-08 reconciliation after PR #92 - 2026-11-28
 
 Current `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`; PRs #87–#92 are
-merged. The owner confirms GitHub Actions is unavailable due to exhausted
-included allowance, with no paid spend, purchased capacity or limit increase
-authorized. Historical pre-start failures remain unexplained; this is not
-evidence they were caused by billing. Current queries found official workflow
-runs on exact PR heads #93 and #99 (12 successes and two conditional skips on
-each), but no PR-triggered workflow runs or combined statuses for #94–#98 or
-#100. These observations prove execution only on the named SHAs; they neither
-explain other failures nor establish current account availability.
+merged. The owner reports GitHub Actions' included allowance exhausted; no
+paid spend, purchased capacity or limit increase is authorized. Current
+exact-head queries nevertheless found workflows on #93 (`76f0402`) and #99
+(`ef32ef4`), with 12 successes and two conditional skips each. The missing
+runs on #94–#98 and #100 have a separate, source-confirmed explanation: every
+repository `pull_request` workflow currently filters `branches: [main]` in
+[`ci.yml`](../../.github/workflows/ci.yml),
+[`docs.yml`](../../.github/workflows/docs.yml),
+[`quality.yml`](../../.github/workflows/quality.yml),
+[`pages.yml`](../../.github/workflows/pages.yml), and
+[`research-maintenance.yml`](../../.github/workflows/research-maintenance.yml).
+GitHub evaluates that filter against the PR target/base branch, and #94–#98
+and #100 target parent feature branches. Their missing checks are therefore
+expected from the configured filter; they are not evidence of billing failure
+or successful validation. This does not explain historical pre-start failures
+or establish current account allowance. Preserve the local gate for the
+stacked PRs; do not alter workflow filters, spend, runners, checks or
+protections without a separate decision.
 
 Use the temporary complete local gate in
 [LOCAL_QUALITY_GATE.md](LOCAL_QUALITY_GATE.md). No check, verifier, branch
@@ -158,7 +168,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | GitHub Actions unavailable per owner because included allowance is exhausted; no paid spend or limit increase. Historical pre-start failures still lack a verified cause. Exact PR heads #93 and #99 each have 12 successful runs and two conditional skips; #94–#98/#100 returned no PR-triggered runs or combined statuses at query time. This does not prove current allowance state, explain prior failures or transfer to `main`. | Preserve exact-SHA evidence; if a failure recurs, collect the run annotation/state before assigning a cause. | GitHub account owner / repository administrator | Use authorized temporary local full gate. No runner, protection, workflow or verifier changes; do not spend, register runner or infer billing cause. |
+| B-08 | The owner reports included allowance exhaustion, but exact PR heads #93 (`76f0402`) and #99 (`ef32ef4`) each have 12 successful runs and two conditional skips. Current `pull_request` workflows filter target branch `main`; #94–#98/#100 target parent branches and therefore have no workflow runs under these filters. This explains those missing runs, but not historical pre-start failures or account allowance. No paid spend or limit increase is authorized. | Preserve exact-SHA evidence; if a failure recurs, collect the run annotation/state before assigning a cause. | GitHub account owner / repository administrator | Use authorized temporary local full gate for stacked branches. No runner, protection, workflow or verifier changes; do not spend, register runner or infer billing cause. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 

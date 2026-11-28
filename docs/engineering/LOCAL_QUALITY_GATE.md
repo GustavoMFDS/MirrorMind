@@ -21,6 +21,29 @@ Do not transfer local results to `main` or present them as CI. The owner's
 Actions allowance exhaustion and zero paid spend remain constraints. No
 workflow, check, protection, runner or spending setting was changed.
 
+### PR stack workflow routing — 2026-11-28
+
+The latest exact-head query returned 14 check-runs for PR #93 head
+`76f04028a53bc1b3d008d500b31ca1f75ceb5a08` and PR #99 head
+`ef32ef487e392073f2970a64edec20c2f499190f`: 12 successes and two conditional
+skips on each. For both heads, `deploy` and `release-rehearsal` were skipped.
+The current `pull_request` triggers in the [CI](../../.github/workflows/ci.yml),
+[docs](../../.github/workflows/docs.yml),
+[quality](../../.github/workflows/quality.yml),
+[pages](../../.github/workflows/pages.yml), and
+[research maintenance](../../.github/workflows/research-maintenance.yml)
+workflows all use `branches: [main]`. [GitHub's event documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+defines this filter as matching the PR's target branch. PRs #94–#98 and #100
+target parent feature branches, so they produce no workflow runs under the
+current configuration.
+That explains these absent checks; it does not explain earlier pre-start
+failures or establish the owner-reported allowance. No workflow filter,
+protection, check or spending setting was changed. Keep the exact local gate
+for these stacked PRs, and never represent a missing workflow as a pass. See
+[PR #93](https://github.com/GustavoMFDS/MirrorMind/pull/93) and
+[PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) for the exact run
+links on the two main-targeting heads.
+
 ### PR #99 local gate — initial exact head `62912e11`
 
 The documentation-inclusive initial PR head
