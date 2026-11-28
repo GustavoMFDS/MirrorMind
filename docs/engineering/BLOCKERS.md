@@ -8,11 +8,35 @@ contexts succeeded, including the new `quality` and `package` jobs. See the
 [exact-head run record](LOCAL_QUALITY_GATE.md). PR #77 merged normally as
 `540c47411898cc820ac651c19430017ecd8c20fe`; the combined-status query for
 that merge SHA returned no individual entries, so the PR-head result is not
-presented as exact-merge CI. Earlier pre-start failures remain unexplained;
-their alternative account annotations do not establish a cause. The owner's
-zero-paid-budget decision still applies. No self-hosted runner was needed or
-created, and no required check or protection was bypassed. Continue using the
-local six-check gate for exact candidate and pinned WorldKernel validation.
+presented as exact-merge CI. PR #78's final docs-only head
+`8c8f8627a7162cb766a70d264569d3fcc2d442c8` later passed six observed jobs
+across documentation catalog, Python API test/compatibility and repository
+quality/package workflows (runs `46072345590`, `46072345631` and
+`46072345603`) before merging at `291562a`. Combined-status queries for its
+merge SHA and current `main` returned no entries; keep that evidence scoped to
+the PR head. PR #79's exact head also ran the public site build, docs catalog,
+Python API and quality workflows; all applicable jobs succeeded and the
+main-only deployment was skipped. PR #80's exact head ran docs catalog,
+research benchmark, public site, Python API and quality workflows; all
+observed applicable jobs succeeded, while main-only deployment and manual
+release rehearsal were skipped by their conditions. Exact run links and local
+receipts are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). PR #81's exact
+head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` ran five workflows: all nine
+applicable jobs passed, including repository quality, strict retrieval typing,
+package smoke, container smoke and Python 3.12/3.13 suites. Its main-only
+deployment and release rehearsal were skipped. PR #81 merged normally as
+`10b94c9d7b01bc7072a18d8124cbc8090a6b1925`; the combined-status query for that
+merge SHA returned no entries. Earlier pre-start failures remain unexplained;
+their alternative account annotations do not establish a cause.
+PR #82's initial exact head `d542e5e129e091dc649e1a187c96e18c59ccc695` then
+completed 12 successful official checks, including strict retrieval typing;
+deployment and release-rehearsal jobs were skipped by their conditions. One
+Node.js 20 deprecation annotation was non-blocking. These results are scoped to
+that PR head, not later commits or `main`.
+The owner's zero-paid-budget decision still applies. No self-hosted runner was
+needed or created, and no required check or protection was bypassed. Continue
+using the local six-check gate for exact candidate and pinned WorldKernel
+validation.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
@@ -29,8 +53,8 @@ that has not actually been granted.
 | B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently approved and merged at `a456034`; its post-merge exact-main gate passed 835 tests, zero skips and six checks with the reviewed pin (final review evidence: [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)). Broader service acceptance remains open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Broader service acceptance needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Fake provider, retrieval fixtures, tool contracts, safety and budget tests |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
-| B-07 | The historical full-gate timeout on `8f906b8` remains unexplained. The prior integrated candidate `42560e441f5020a5b4319a0f7b56474ef0485681` passed 828 tests; corrected provenance candidate `74330d811145f10fcaaddadc56c3f95e7c8b7a85` passed 832 tests and all five other local checks with the reviewed WorldKernel pin installed. The old timeout did not recur, but its cause is not resolved. This is historical diagnostic uncertainty, not evidence that current code fails. | If the timeout recurs, capture exact SHA, interpreter/dependency paths, a bounded faulthandler/thread dump and environment before changing anything. Do not increase test timeouts or skip the health test. | Codex execution environment / project maintainer | Preserve prior receipts and continue normal exact-head gates; do not infer the old cause from later passes. |
-| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77's exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720` passed all nine observed official contexts, including `quality` and `package`, before normal merge `540c474`. The merge-SHA combined-status query returned no entries, so the PR-head result is not claimed for the merge commit. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for the observed current workflow. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
+| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine official contexts, PR #78 head `8c8f862` passed six observed jobs, PR #79 head `b5c1bcc` passed its applicable jobs, PR #80 head `e6a28ac` passed eight observed jobs across five workflows, PR #81 head `41e6db8` passed nine applicable jobs across five workflows, and PR #82 initial head `d542e5e` passed 12 exact-head checks, including coverage, strict retrieval typing, container smoke and CodeQL. Two guarded jobs (deploy and release rehearsal) were skipped by conditions; one non-blocking Node.js 20 deprecation warning was reported. Combined-status query for merge SHA `10b94c9` returned no entries, so PR-head results are not claimed for that SHA. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for the observed current workflows. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 

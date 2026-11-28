@@ -2,8 +2,10 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`,
-integrating PR #77 over PR #65 merge
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal
+PR #81 merge after PR #80's synthetic benchmark/release preparation and PR
+#79's curated portfolio/index update. PR #77
+integrated at `540c47411898cc820ac651c19430017ecd8c20fe` over PR #65 merge
 `51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #77
 (`df7c450523a8f3475e0a8161936f6ac80e705720`) adds measured public
 coverage, strict typing for retrieval, wheel build/install smoke checks and
@@ -27,8 +29,9 @@ see [REX-09/10](REX_QUALITY_PACKAGING.md) and
 [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The pre-PR #77 exact-main gate at
 `51c90d2` also passed 968 tests, zero skips and six checks with reviewed
 WorldKernel `0.0.1` at source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Neither receipt validates the
-current documentation candidate; its exact-head gate is recorded separately.
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. These historical receipts do not
+validate the current M2-02 branch; its exact-head gate must be run before
+publication and recorded in that PR's review evidence.
 
 The bounded UCI reader and MM-024 classification are already implemented in
 main with synthetic regressions. The approved source call stopped above the
@@ -42,24 +45,54 @@ cap. Preserve the local snapshot deletion deadline `2026-12-26`. B-01/B-02
 still gate empirical and point-in-time claims; B-04 remains open for broad
 service isolation and deployment acceptance.
 
-The MM-024 documentation-only candidate is published as
-[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) from
-`codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
-`ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact head
-`7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the local gate (968 tests,
-zero skips, six checks) and all nine observed official contexts. Local receipt:
-`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`.
-The PR is not merged; inspect the live link for its current head and checks.
-This increment does not change parser contracts or reread the private workbook.
-Any later tracked change needs a new exact-head gate and official check run.
-Continue existing fictional/offline M2-02/G-02 work independently; do not wait
-for this documentation review.
+The MM-024 documentation-only candidate was merged through
+[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) at
+`291562a5e5358f2ed8327ba611737a33511e2fc9`; its final head was
+`8c8f8627a7162cb766a70d264569d3fcc2d442c8`. That exact head passed the local
+gate (968 tests, zero skips, six checks) and six observed official jobs in
+three workflows: documentation catalog
+([46072345590](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345590)),
+Python API test/compatibility
+([46072345631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345631)),
+and repository quality/package
+([46072345603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345603)).
+Combined-status queries for the #78 head, merge commit and current main
+returned no entries; the PR workflow runs are scoped to the PR head only. This
+increment changes no parser contract and did not reread the private workbook.
+Its exact local receipt is
+`results/local-quality-gate-8c8f8627a7162cb766a70d264569d3fcc2d442c8.json`.
+Continue existing fictional/offline M2-02/G-02 work independently.
 
-**Current main:** `540c47411898cc820ac651c19430017ecd8c20fe`, descendant of
+PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`. Its exact head
+`b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970 tests, zero skips and
+six local checks; seven observed GitHub Actions jobs succeeded, with the
+main-only deployment job skipped. PR #80 merged normally at
+`7efced55a6821bb1de84190eab5ab3db654da4b8`. Its exact head
+`e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips and
+six local checks. Five PR workflows were observed: eight jobs succeeded and
+the main-only Pages deployment and release-rehearsal jobs were skipped by
+their conditions. The release rehearsal only prepares a synthetic bundle;
+no tag or release is created. Combined-status queries for merge commits
+`5100ebf` and `7efced5`, including then-current `main` `7efced5`, returned no
+entries; keep PR-head evidence scoped to those heads. See
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) for run links and timestamps.
+
+PR #81 / REX-15 merged normally at `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`.
+Its exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977 tests,
+zero skips and six local checks; nine applicable jobs succeeded across five
+official workflows, including package and non-root container smoke, with
+main-only deployment and release rehearsal skipped. Local Docker was
+unavailable for that authoring run, so only the official CI container-smoke
+job is evidence. Combined-status queries for the exact PR head and merge SHA
+returned no individual entries.
+
+**Current main:** `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, descendant of
 PR #62 merge `a456034c55ed7634ad4768b26788fec09dab1d08`. PR #52–#59 remain
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
-PRs #68–#76 through their existing merges; PR #77 establishes REX-09/10 quality
-and package checks. WorldKernel and dataset terms remain separate.
+PRs #68–#81 through their existing merges, including MM-024 (#78), the curated
+portfolio/index (#79) and synthetic benchmarks/read-only release preparation
+(#80), and developer onboarding/container smoke (#81). WorldKernel and dataset
+terms remain separate.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -70,7 +103,11 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #63 | Closed as merged through PR #67 at `858211d6f87d483d151013205bc5737cb4585ed2`; exact combined local gate passed 904 tests, zero skips and six checks. | Synthetic Census evaluator only; no Census/ALFRED source bytes, API responses or credentials; no empirical result. |
 | PR #65 | Closed as merged at `51c90d2601b2fba16b03a13a8723df0a54437d92`; exact integrated main passed 968 local tests, zero skips and six checks. | Reader accepted within bounded synthetic scope. UCI attempt remains stopped above 250,000 groups; no projection or metric. Preserve `2026-12-26` deletion deadline. |
 | PR #77 | Closed as merged at `540c47411898cc820ac651c19430017ecd8c20fe`; nine official contexts succeeded on exact reviewed head `df7c450`. | Quality checks measure public coverage, strict retrieval typing and packaging. No release upload, private dependency change, empirical result or production readiness. |
-| PR #78 (MM-024 UCI documentation) | Open on `codex/mm009-mm023-reconcile-20261127`; exact head `7059dc5` passed the local gate and nine official contexts. Existing MM-022 code and synthetic tests implement the approved classification. | Read live PR for current status; obtain independent review and integrate only through protected `main`. The 250,000-group stop still prevents any UCI metric. |
+| PR #78 (MM-024 UCI documentation) | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. Existing MM-022 code and synthetic tests implement the approved classification. | No empirical UCI metric: the approved call stopped above the 250,000-group ceiling. Keep source-processing stop and deletion deadline. |
+| PR #79 / REX-11/12 | Merged normally at `5100ebf`; exact head `b5c1bcc` passed 970 tests, six local checks and seven observed successful workflow jobs; guarded deployment was skipped. | Static site and curated index only; no live model, source processing or automatic deployment. |
+| PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
+| PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
+| M2-02 retrieval evaluation / PR #82 | Open for independent review at initial head `d542e5e`; ancestry-synced with main `10b94c9` by merges `f74d286` and `0b4881f`. Exact local gate passed 989 tests, zero skips and six checks with the pinned WorldKernel. The exact PR head also passed 12 official checks, including coverage and strict retrieval typing; two guarded jobs were skipped. | Independent review remains pending. The current PR head must be rechecked after each follow-up commit. The initial head has a non-blocking Node.js 20 deprecation warning; metrics remain fictional and experimental. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

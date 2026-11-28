@@ -2,22 +2,30 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
-  PR #77 merged normally over PR #65 main `51c90d2`. Nine observed official
-  contexts passed on exact PR head `df7c450523a8f3475e0a8161936f6ac80e705720`;
-  a combined-status query for merge commit `540c474` returned no individual
-  entries, so keep the evidence scoped to the reviewed PR head. PR #77 adds
-  public coverage measurement, scoped strict typing, wheel packaging smoke
-  tests and CI. Its exact-head local report also records 968 tests, zero skips
-  and six local checks. No paid services or protection changes were used.
-- PR #77 reconciles MM-009 with accepted MM-023. MM-024 documentation-only
-  follow-up is open as [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78)
-  on `codex/mm009-mm023-reconcile-20261127`, ancestry-merged with `540c474` at
-  `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. Exact PR head
-  `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed 968 tests, zero skips,
-  six local checks and nine official contexts. The local receipt path is in
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The branch changes no parser
-  contract; read live PR #78 after any new push and rerun exact-head checks.
+- Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal PR #81
+  merge after PR #80 (`7efced5`). PR #79's portfolio/index update merged at `5100ebf`;
+  PR #77 merged at `540c474`; nine official
+  contexts passed on exact reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`.
+  PR #78 / MM-024 merged normally at `291562a`; its final head
+  `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed 968 tests, zero skips,
+  six local checks and six observed official jobs. Those jobs are in runs
+  `46072345590`, `46072345631` and `46072345603`; combined status for the merge
+  and current main was empty, so keep claims scoped to their exact PR heads.
+- PR #79 exact head `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970
+  tests, zero skips and six local checks; seven observed workflow jobs
+  succeeded and the guarded deploy job was skipped. PR #80 exact head
+  `e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips
+  and six local checks; eight observed jobs succeeded across five workflows,
+  with main-only deployment and manual rehearsal skipped. See
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); merge SHA `7efced5` has no
+  combined-status entries. PR #80's benchmark is synthetic and release prep
+  does not create a release.
+- PR #81 / REX-15 exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc`
+  passed 977 tests, zero skips and six local checks. Five official workflows
+  completed with nine applicable jobs successful; main-only deployment and
+  release rehearsal were skipped. The CI container smoke passed, although the
+  developer's local Docker daemon was unavailable. The merged `10b94c9` SHA
+  has no combined-status entries; keep evidence scoped to the PR head.
 - The owner approved MM-024's local UCI #352 policy: six-digit IDs are normal;
   only uppercase `C` plus six digits means cancellation; other single ASCII
   letters plus six digits are excluded before sales grouping and represented
@@ -29,11 +37,36 @@
   changes an exclusion label, not the set of sales rows or group cardinality.
   Do not reread, chunk, sample or raise the cap. Preserve local snapshot
   deletion by `2026-12-26`; no empirical score is available.
-- Proceed with existing source-independent M2-02/G-02 work after the docs
-  candidate is review-ready, without waiting for its review. Keep automated
-  tests synthetic, and keep Census source bytes, FRED/ALFRED and paid usage
-  prohibited under current B-01/B-02 and budget decisions. M1 synthetic
-  workflow is integrated; real-data and production acceptance remain open.
+- Continue M2-02 on `codex/m2-02-retrieval-evaluation-20261127`. Its ancestry
+  includes feature commit `fc43935`, merge `f74d286` of main `7efced5`, and
+  merge `0b4881f` of current main `10b94c9`. Its scope is a bounded offline evaluator for the existing
+  fictional M2-01 index. It must keep `evidence_and_rag` planned and local
+  retrieval experimental; no route, auth, real data, persistence or RAG claim.
+  Source walkthrough, debugging/learning, evidence/atlas/catalog updates are
+  drafted and all five focused static checks pass; the targeted retrieval
+  suites pass 22 tests. Regression coverage now rejects empty/oversized
+  corpora and unsupported document objects before scoring. The clean
+  six-check gate passed on exact candidate `4ccff24cbc73045a4d01fdc9a5aa299d69e59038`:
+  989 tests, zero skips and all six checks; receipt is in
+  `results/local-quality-gate-4ccff24cbc73045a4d01fdc9a5aa299d69e59038-workspace.json`.
+  Earlier, the same gate on `e3e55d4` timed out only when sandboxed at
+  TestClient's local socketpair setup; unchanged runs outside the sandbox passed.
+  See [B-07](BLOCKERS.md). Any final PR head after subsequent tracked changes
+  needs its own exact receipt. Local mypy is absent; rely on the candidate's
+  official quality job for strict retrieval typing and record its exact status.
+- PR #82 is open for M2-02. Its initial head
+  `d542e5e129e091dc649e1a187c96e18c59ccc695` passed the local 989-test,
+  six-check gate and 12 exact-head official checks; the guarded deploy and
+  release-rehearsal jobs were skipped. Official quality completed coverage and
+  strict retrieval typing. One non-blocking Node.js 20 deprecation annotation
+  remains. Run IDs, exact SHA scope and the warning are in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); later heads need separate
+  local and official checks. Independent review and M2-02 acceptance remain
+  pending.
+- Keep automated tests synthetic. Census bytes, FRED/ALFRED, paid usage and
+  new UCI source processing remain unauthorized. M1 synthetic workflow is
+  integrated; empirical and production acceptance remain open. Preserve the
+  zero-paid budget and all protected-main checks.
 
 
 ## Historical review reconciliation - 2026-11-27

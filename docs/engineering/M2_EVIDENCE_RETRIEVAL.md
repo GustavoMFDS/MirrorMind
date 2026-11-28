@@ -1,11 +1,12 @@
-# M2-01 — local fictional evidence retrieval
+# M2-01 / M2-02 — fictional evidence retrieval and evaluation
 
-This walkthrough follows the M2-01 source in
+This walkthrough follows the M2-01 and M2-02 sources in
 [`modules/retrieval`](../../src/mirrormind/modules/retrieval/) and the local
-example in [`m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py).
-It describes one deterministic in-memory search over generated fictional
-documents. It does not describe an authenticated service, real-source
-retrieval, RAG with an LLM or agent behavior.
+examples in [`m2_evidence_retrieval.py`](../../examples/m2_evidence_retrieval.py)
+and [`m2_evidence_retrieval_evaluation.py`](../../examples/m2_evidence_retrieval_evaluation.py).
+It describes deterministic in-memory lexical retrieval and a bounded test-set
+evaluation over generated fictional documents. It does not describe an
+authenticated service, real-source retrieval, RAG with an LLM or agent behavior.
 
 ## 1. Goal and boundary
 
@@ -46,6 +47,12 @@ sequenceDiagram
 scope. `index.py` builds the visible in-memory index, ranks matches, and binds
 each excerpt to source references and exact offsets. The CLI validates one
 query, serializes one result, and exits without network or persistent writes.
+
+The evaluation runner is deliberately separate from the ordinary one-query
+CLI. It constructs a fresh scope-filtered index for every declared case,
+verifies each returned citation against the visible fixture, then emits
+aggregate counts and only verified citation references. It does not tune the
+BM25 ranker or feed evaluation results back into retrieval.
 
 The current source graph also shows the separation from M1 staging:
 `modules/evidence/snapshots.py` accepts caller-provided bytes and
@@ -195,11 +202,12 @@ traced to tokenization, corpus filtering, BM25 constants or the deterministic
 tie-break.
 
 Future real-source work must add reviewed rights/provenance and a source
-adapter before indexing. M2-02 should evaluate recall, abstention and citation
-support using a declared query set. M2-03 must preserve the untrusted-evidence
-label and add prompt-injection tests before any tool-using model can consume
-retrieval output. If a persistent index or HTTP route is proposed, first add
-reviewed identity, tenant, retention, deletion and authorization contracts.
+adapter before indexing. The M2-02 fictional evaluation is described below;
+its scores must not be used as real-corpus retrieval quality. M2-03 must
+preserve the untrusted-evidence label and add prompt-injection tests before any
+tool-using model can consume retrieval output. If a persistent index or HTTP
+route is proposed, first add reviewed identity, tenant, retention, deletion and
+authorization contracts.
 
 ## 9. Learning exercises
 
@@ -217,3 +225,147 @@ reviewed identity, tenant, retention, deletion and authorization contracts.
 5. Write a test proving an empty collection scope cannot produce a hit. Keep
    `evidence_and_rag` planned until authenticated sources, retrieval evaluation
    and a real consumer pass their separate acceptance criteria.
+
+## 10. M2-02 — evaluate a declared synthetic query set
+
+M2-02 adds a local evaluation harness, not a new retrieval algorithm. The
+declared set in `fictional_evaluation_cases()` contains two relevant queries,
+one lexical no-match and one query for a document that the demo principal may
+not access. Expected document IDs act as gold labels for this fixture only.
+Each case is immutable and bounded; duplicate case IDs or relevance labels,
+missing labels, hidden labels and labels outside the query's collection filter
+fail before a score is produced.
+
+```mermaid
+flowchart TD
+  D[Bounded fictional documents] --> P[Preflight type, size and unique IDs]
+  C[Declared cases and visible gold labels] --> V[Validate labels against access and query scope]
+  P --> E[For each case: build a fresh filtered index]
+  V --> E
+  E --> S[Run unchanged BM25 query]
+  S --> R[Check result scope and citation lineage]
+  R --> X[Check source span and UTF-8 digest]
+  X --> M[Aggregate relevance, abstention, support and scope counts]
+  M --> O[Query-free versioned report]
+```
+
+`RetrievalEvaluationCase` binds one stable label, strict access/query
+contracts and its visible gold document IDs. `RetrievalCaseOutcome` contains
+one query-free ordinal, counts, bounds and verified citations.
+`RetrievalEvaluationReport` combines those immutable outcomes into versioned
+counts and finite rates. `_rate` returns a six-decimal descriptive fraction
+or `null` for an undefined denominator.
+
+`run_retrieval_evaluation(documents, cases)` first calls the existing index
+builder with empty scope to reuse type, document-count and duplicate-ID
+checks without tokenizing content. It then validates that every gold label
+resolves inside both the case's caller-declared principal/collection scope
+and its optional query collection filter. For each case, it rebuilds
+`InMemoryEvidenceIndex`; this preserves the existing order where access
+filtering precedes tokenization and document-frequency calculation.
+
+For each hit, `_is_visible` checks the caller scope and query collection
+subset. The evaluator also requires the search implementation to return the
+exact versioned result contract and rejects more hits than the case's declared
+`top_k`. Scope-violating or unknown hits increment one aggregate counter and
+their identifiers and refs are never serialized. Visible citations pass
+`_matches_document_lineage` only when document, collection, source and snapshot
+refs match the exact fixture. `_citation_is_supported` additionally checks
+the Python code-point slice, exact excerpt text and SHA-256 of its UTF-8 bytes.
+Only citations satisfying both checks appear in `verified_citations`; query
+text, excerpt content and input `case_id` are omitted. `case_index` preserves
+the declared order without exposing caller case labels.
+
+The immutable `RetrievalEvaluationReport` uses schema version
+`m2_retrieval_eval_v1` and records numerator counts alongside rates:
+
+| Field | Numerator / denominator | Meaning and undefined case |
+| --- | --- | --- |
+| `recall_at_k` | supported relevant document hits / expected relevant labels | Micro recall over all cases; `null` when test set has no relevant labels |
+| `relevant_query_hit_rate` | relevant cases with at least one supported relevant hit / cases with relevant labels | Query-level hit rate; `null` when no query has relevant labels |
+| `correct_abstention_rate` | expected no-answer cases with no returned hits / expected no-answer cases | Correct empty-result rate; `null` when test set has no no-answer case |
+| `abstention_rate` | cases whose result contains no hit / all cases | Descriptive empty-result frequency; case count is required nonzero |
+| `lineage_match_rate` | hits whose citation refs match the visible source record / all hits | Out-of-scope and unknown hits do not match; `null` when there are no hits |
+| `citation_support_rate` | hits with matching lineage, exact source slice and digest / all hits | A usable supported citation rate; `null` when there are no hits |
+| `scope_compliance_rate` | hits in the declared visible scope / all hits | Out-of-scope and unknown hits count as violations; `null` when there are no hits |
+
+`missed_relevant_query_count` and `unexpected_hit_query_count` make abstention
+failures visible even when a rate is undefined. `_rate` rounds defined
+fractions to six decimal places and uses `null`, not zero, when no denominator
+exists. These are descriptive metrics for the supplied fixed cases; there is
+no confidence interval, significance test, calibration claim or inference to
+another corpus. In particular, an irrelevant visible hit for a no-answer case
+is an unexpected hit, even if the denied document itself was filtered.
+
+### Reproduce and inspect
+
+From the repository root:
+
+```powershell
+uv run --no-sync --extra dev python -m examples.m2_evidence_retrieval_evaluation
+```
+
+The command reads no files and makes no network calls. It emits a stable JSON
+report. A selected excerpt from the generated run is:
+
+```json
+{
+  "case_count": 4,
+  "expected_relevant_document_count": 2,
+  "relevant_retrieved_document_count": 2,
+  "recall_at_k": 1.0,
+  "expected_abstention_count": 2,
+  "correct_abstention_count": 2,
+  "citation_count": 2,
+  "supported_citation_count": 2,
+  "out_of_scope_hit_count": 0
+}
+```
+
+The actual report also contains each case's ordinal, counts, `top_k`, and only
+verified synthetic citation refs. Do not interpret `1.0` on four generated
+cases as a general retrieval-quality estimate. The example's two empty results
+show behavior on declared negative cases, not a calibrated abstention threshold.
+
+### Tests and evidence
+
+| Claim ID | Test | What it establishes | What it does not establish |
+| --- | --- | --- | --- |
+| `MM-RETR-009` | `tests/unit/test_evidence_retrieval_evaluation.py::test_declared_fixture_set_reports_relevance_abstention_and_lineage` | Exact counts/rates for two relevant and two no-answer generated cases; report omits query, case labels and content | Real-corpus ranking quality, calibration or statistical confidence |
+| `MM-RETR-010` | `tests/unit/test_evidence_retrieval_evaluation.py::test_out_of_scope_hit_is_counted_without_returning_hidden_metadata` | A simulated hidden hit increments only aggregate scope violation; hidden IDs, refs and text stay out of the report | Authenticated authorization or a deployed isolation boundary |
+| `MM-RETR-011` | `tests/unit/test_evidence_retrieval_evaluation.py::test_source_lineage_mismatch_is_not_counted_as_supported` | A citation with a mismatched source ref is not a supported result | External publisher identity, permission, freshness or integrity of real source bytes |
+| `MM-RETR-012` | `tests/integration/test_m2_evidence_retrieval_evaluation_cli.py::test_retrieval_evaluation_cli_replays_query_free_aggregate_report` | The example command deterministically replays the versioned report without echoing query or hidden fixture content | A service endpoint, persistence, RAG or retrieval quality outside these fixtures |
+| `MM-RETR-013` | `tests/unit/test_evidence_retrieval_evaluation.py::test_unknown_hit_is_counted_without_returning_its_metadata` | An unknown citation ID and source ref are reduced to an aggregate scope violation | Authentication or prevention of a malicious retrieval implementation |
+| `MM-RETR-014` | `tests/unit/test_evidence_retrieval_evaluation.py::test_retrieval_result_cannot_exceed_declared_top_k` | The evaluator rejects a result that violates the case's declared retrieval bound | Behavior of a future alternate retriever not exercised by this test |
+| `MM-RETR-015` | `tests/unit/test_evidence_retrieval_evaluation.py::test_verified_excerpt_requires_exact_source_span_and_digest` | A citation must match the exact source slice and UTF-8 digest to be counted as supported | External publisher identity, rights, freshness or integrity of real source bytes |
+| `MM-RETR-016` | `tests/unit/test_evidence_retrieval_evaluation.py::test_retriever_must_return_exact_result_contract` | An incompatible result object fails closed before report construction | A malicious implementation that returns a valid but fabricated contract result |
+| `MM-RETR-017` | `tests/unit/test_evidence_retrieval_evaluation.py::test_malformed_and_oversized_evaluation_sets_fail_closed` | Empty/oversized inputs, duplicate labels/IDs and unsupported document objects are rejected before scoring | Bounds protect local computation shape only; they do not enforce service quotas or isolate hostile callers |
+
+Other evaluator regressions reject hidden or query-filtered relevance labels,
+duplicate case IDs/labels, empty case/corpus inputs, more than 100 documents,
+more than 100 cases and non-`EvidenceDocument` values. The test selectors and
+limitations are indexed in [EVIDENCE_MAP](EVIDENCE_MAP.json).
+The evaluator accepts only `EvidenceDocument`, whose source status is a fixed
+`fictional_fixture` literal. That label is still caller supplied and does not
+inspect or prove the content's origin. Keep automated tests and the example on
+the generated fixture; never pass private queries or real records to this demo.
+
+### Debugging and learning
+
+If `recall_at_k` drops while `citation_support_rate` stays high, compare each
+declared relevant label with the case access/query scopes, then inspect BM25
+tokenization, tie-breaking and `top_k`. If citation support drops, inspect in
+order: returned document ID, collection/source/snapshot refs, code-point
+offsets, exact source substring, and UTF-8 digest. A rise in
+`unexpected_hit_query_count` means a declared no-answer case received some
+visible or violating result; it does not mean the ranker was calibrated.
+`out_of_scope_hit_count` must remain zero for the actual index. The regression
+that injects a hidden hit tests report redaction only; it does not make the
+evaluator an authorization mechanism.
+
+Exercise: run `test_declared_fixture_set_reports_relevance_abstention_and_lineage`,
+then hand-calculate recall (2/2), relevant query hit rate (2/2), correct
+abstention rate (2/2) and citation support (2/2). Change one gold label to a
+visible but irrelevant fixture and predict each affected numerator. Then set
+its collection outside the case scope and verify the evaluator rejects the
+label before scoring without echoing its ID.

@@ -1,5 +1,111 @@
 # Local quality gate and historical Actions fallback
 
+## Current baseline and recent merged PR heads - 2026-11-27
+
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
+[PR #81](https://github.com/GustavoMFDS/MirrorMind/pull/81) after
+[PR #80](https://github.com/GustavoMFDS/MirrorMind/pull/80) and
+[PR #79](https://github.com/GustavoMFDS/MirrorMind/pull/79) at
+`5100ebf42265e01b65856e7ba91b659ff1b487c7`. PR #79 head
+`b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed 970 tests, zero skips and
+six local checks; its receipt is `%TEMP%/mm-rex-public-portal.json` at
+`2026-11-27T21:48:33.983163+00:00`. Seven observed PR workflow jobs succeeded:
+quality/package in
+[46072708700](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708700),
+symbol catalog in
+[46072708733](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708733),
+Python API test/compatibility in
+[46072708789](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708789),
+and site build in
+[46072708801](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072708801);
+the guarded `deploy` job was skipped.
+
+PR #80 head `e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero
+skips and six local checks; its receipt is `%TEMP%/mm-rex-benchmark-release.json`
+at `2026-11-27T22:17:07.127571+00:00`. Eight observed PR workflow jobs
+succeeded: symbol catalog in
+[46075726159](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726159),
+benchmark in
+[46075726114](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726114),
+site build in
+[46075726057](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726057),
+quality/package in
+[46075726238](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726238),
+and Python API test/compatibility in
+[46075726059](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46075726059).
+The main-only Pages deployment and manual release rehearsal were skipped by
+their workflow conditions. Combined-status queries recorded for the PR #79/#80
+heads, merge commits `5100ebf` and `7efced5`, and then-current `main` `7efced5`
+returned no individual entries, so preserve the evidence at each exact PR
+head. These results do not transfer to the M2-02 candidate.
+
+PR #81 exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977 tests,
+zero skips and six local checks; its receipt is
+`%TEMP%/mm-rex-developer-experience.json` at
+`2026-11-27T22:29:07.300466+00:00`. Five official workflows completed:
+documentation catalog
+([46076949626](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949626)),
+public site
+([46076949610](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949610)),
+repository quality/package/container smoke
+([46076949702](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949702)),
+Python API test and compatibility
+([46076949561](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949561)),
+and research benchmark
+([46076949612](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46076949612)).
+Nine applicable jobs succeeded. Guarded deployment and release-rehearsal jobs
+were skipped by their conditions. Combined-status queries for PR head `41e6db8`
+and merge/current-main `10b94c9` returned no individual entries, so retain
+workflow evidence only for the exact PR head. This result does not validate the
+M2-02 candidate; its clean exact-head six-check gate and PR workflows remain
+required.
+
+### M2-02 integrated candidate diagnostic - 2026-11-27
+
+Candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3` first timed out only when
+the full gate ran inside the restricted sandbox: `pytest` reached its fixed
+900-second limit and returned `124` (receipt
+`results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`).
+A diagnostic trace localized the wait to Windows asyncio Proactor self-pipe
+startup inside Starlette TestClient/AnyIO (`socket.accept`); a standalone
+`socketpair()` probe did not return in five seconds under the same sandbox.
+Without changing source or tests, the isolated API health test passed outside
+the sandbox with one Starlette deprecation warning. The unchanged full gate
+then passed on the exact candidate: 989 tests, zero skips, and all six checks.
+Its receipt is
+`results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`.
+The subsequent exact-head gate on `4ccff24cbc73045a4d01fdc9a5aa299d69e59038`
+also passed 989 tests, zero skips and all six checks; its receipt is
+`results/local-quality-gate-4ccff24cbc73045a4d01fdc9a5aa299d69e59038-workspace.json`.
+Both are local-only evidence, not GitHub Actions. Run a new receipt for the
+final PR head after any subsequent tracked changes, and verify that PR's
+official checks independently.
+
+PR #82 opened at exact head
+`d542e5e129e091dc649e1a187c96e18c59ccc695`. Diagnostics pinned all results to
+that head. Its local gate passed 989 tests, zero skips and all six checks with
+the reviewed WorldKernel pin; receipt:
+`results/local-quality-gate-d542e5e129e091dc649e1a187c96e18c59ccc695-workspace.json`.
+Twelve official checks succeeded and two condition-controlled jobs were skipped.
+Python API test/compatibility 3.12/3.13 passed in
+[46081696063](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696063);
+quality, package and non-root container smoke passed in
+[46081696099](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696099);
+site build passed and guarded deployment skipped in
+[46081696082](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696082);
+symbol catalog passed in
+[46081696007](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696007);
+synthetic benchmark passed and release rehearsal skipped in
+[46081696075](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081696075);
+and both CodeQL language analyses passed in
+[46081693804](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46081693804).
+The CodeQL check reported no new alerts
+([check details](https://github.com/GustavoMFDS/MirrorMind/runs/140782041800)).
+The quality workflow completed coverage measurement and strict retrieval
+typing. One non-blocking annotation warns that Actions using Node.js 20 are
+being forced onto Node.js 24; it did not fail a check. These are initial
+exact-head PR results only; any later PR head needs its own checks.
+
 ## Current public CI baseline - 2026-11-27
 
 PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
@@ -24,7 +130,7 @@ six checks, one known warning and its temporary receipt
 strict typing passed on four retrieval files while whole-package mypy found
 62 diagnostic errors across 16 files; wheel/sdist build and clean installed
 wheel smoke passed on Python 3.13.5. These are PR-head results and do not
-validate the current documentation candidate. The pre-PR #77 exact-main
+validate later commits or the current M2-02 candidate. The pre-PR #77 exact-main
 `51c90d2` receipt passed 968 tests, zero skips and six local checks with the
 reviewed WorldKernel pin; historic receipt is described below.
 
@@ -38,16 +144,30 @@ weaken, bypass or disable checks.
 
 ## PR #78 MM-024 exact-head validation
 
-Published head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the full
-temporary local gate at `2026-11-27T21:38:27.280983Z`: 968 tests, zero skips,
-all six checks and one existing Starlette/httpx `TestClient` deprecation
-warning. WorldKernel `0.0.1` was installed from reviewed source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
-`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`.
-All nine observed official contexts also succeeded on that exact PR head; the
-live [PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) is the source
-of current check status. The local receipt marks GitHub Actions as not checked
-by its script. Any later tracked change requires a fresh exact-head gate.
+The final published head `8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed
+the full temporary local gate at `2026-11-27T21:45:12.655657Z`: 968 tests,
+zero skips, all six checks and one existing Starlette/httpx `TestClient`
+deprecation warning. WorldKernel `0.0.1` was installed from reviewed source
+commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-8c8f8627a7162cb766a70d264569d3fcc2d442c8.json`.
+Six official jobs succeeded on that exact PR head across three workflows:
+documentation catalog in
+[46072345590](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345590),
+Python API test and compatibility jobs in
+[46072345631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345631),
+and repository quality/package jobs in
+[46072345603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345603).
+Combined-status queries for its merge commit and current `main` returned no
+entries; do not assign those PR-head results to another SHA.
+
+Earlier exact PR head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` also passed
+at `2026-11-27T21:38:27.280983Z` with 968 tests, zero skips, six local checks,
+the same WorldKernel pin and receipt
+`results/local-quality-gate-7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7.json`;
+nine official contexts were observed on that earlier head. Both local receipts
+mark GitHub Actions as not checked by the script. These records document the
+merged docs-only policy change and do not authorize another source read. Any
+later tracked change requires its own exact-head gate.
 
 ## PR #65 synchronized candidate
 

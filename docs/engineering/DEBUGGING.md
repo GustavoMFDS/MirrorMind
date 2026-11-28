@@ -401,3 +401,26 @@ verifier. Do not infer an attack or independent freshness from a mismatch.
 ## Offline report fails to generate or render
 
 Check the bounded workflow options and unused output path, then the browser console and embedded result. See [the report guide](PORTFOLIO_DEMO.md); do not invent missing values or overwrite earlier reports.
+
+## Fictional retrieval evaluation reports a metric or citation mismatch
+
+Reproduce with `python -m examples.m2_evidence_retrieval_evaluation` and
+[`test_evidence_retrieval_evaluation.py`](../../tests/unit/test_evidence_retrieval_evaluation.py).
+First check that the declared gold labels resolve inside both the case access
+scope and query collection filter; a rejected label should produce a generic
+error without echoing its ID. Compare `expected_relevant_document_count` with
+`relevant_retrieved_document_count` before reading `recall_at_k`, then inspect
+the query-level counts separately. For no-answer cases, distinguish a truly
+empty retrieval from an unexpected visible hit; an empty gold set does not
+make every returned result correct.
+
+If citation support is lower than lineage match, compare the Python
+code-point slice, excerpt string and UTF-8 SHA-256. If lineage match is low,
+compare collection/source/snapshot refs with the visible fixture. Scope
+violations include unknown or out-of-scope IDs and must appear only as
+aggregate counts; the redaction regressions do not prove authentication. A
+result containing more hits than `top_k` is a contract violation. Preserve the
+unchanged `bm25_lexical_v1` ranking and use only generated fixtures. The report
+contains verified refs but no query or excerpt; its fixed `fictional_fixture`
+label is caller supplied, so it is not a control against passing private data.
+Never paste private queries or user records into this evaluator or its logs.

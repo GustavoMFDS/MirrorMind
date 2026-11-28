@@ -895,3 +895,29 @@ they do not prove full-source compatibility or empirical forecast quality.
 ## Exercise: inspect a local decision report
 
 Follow the [report walkthrough](PORTFOLIO_DEMO.md), compare selected case metrics with original JSON and explain the difference between display selection and a new seeded workflow execution.
+
+## Guided exercise — audit the bounded fictional retrieval evaluator (40 minutes)
+
+Read the M2-02 section of the [retrieval walkthrough](M2_EVIDENCE_RETRIEVAL.md),
+then trace `run_retrieval_evaluation` in
+[`evaluation.py`](../../src/mirrormind/modules/retrieval/evaluation.py),
+`InMemoryEvidenceIndex.build` and `search` in
+[`index.py`](../../src/mirrormind/modules/retrieval/index.py), and the fixed
+cases in [`fictional_fixture.py`](../../src/mirrormind/modules/retrieval/fictional_fixture.py).
+Run `python -m pytest -q tests/unit/test_evidence_retrieval_evaluation.py`
+and `python -m pytest -q tests/integration/test_m2_evidence_retrieval_evaluation_cli.py`.
+For each case, hand-compute recall, relevant-query hit rate, correct
+abstention, citation support and scope compliance from numerator and
+denominator counts. Explain why a zero denominator is `null`, while
+`abstention_rate` is always defined for a nonempty case set.
+
+Inspect the out-of-scope and unknown-hit regressions. Follow how their IDs and
+refs are replaced by aggregate counts, then explain why this redaction test
+does not create authentication or prevent a caller from mislabeling real data
+as a fictional fixture. Inspect the lineage and exact-span tests; identify
+which source reference, code-point offsets and UTF-8 digest each check binds.
+Run `python -m examples.m2_evidence_retrieval_evaluation` twice and compare
+the stable query-free JSON. Finally, change a gold label to a visible but
+irrelevant document and predict which metric numerators change. Do not infer
+real-corpus quality, confidence calibration or production authorization from
+the fixture's perfect scores.

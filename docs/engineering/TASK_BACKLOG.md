@@ -2,16 +2,41 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is merge commit `540c47411898cc820ac651c19430017ecd8c20fe`.
-PR #77 merged normally over #65 at `540c474`, preserving reviewed PR head
-`df7c450523a8f3475e0a8161936f6ac80e705720`. Nine observed official contexts
-passed on that exact PR head: test, Python 3.12/3.13 compatibility,
-symbol-catalog, both CodeQL analyses, repository quality, package and CodeQL.
-The combined-status query for merge commit `540c474` returned no individual
-entries; do not report PR-head checks as exact-merge checks. PR #77's separate
-local report records 968 tests, zero skips, six local checks and the quality /
-package measurements. Details are in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md)
-and [REX_QUALITY_PACKAGING](REX_QUALITY_PACKAGING.md).
+Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, PR #81's normal
+merge after PR #79. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
+with the curated portfolio/index update; PR #80 adds bounded synthetic
+benchmarks and read-only release preparation. PR #77 merged normally at
+`540c474`, preserving reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`;
+nine official contexts passed on that PR head. PR #78's final head
+`8c8f8627a7162cb766a70d264569d3fcc2d442c8` passed the exact local gate (968
+tests, zero skips, six local checks) and six observed official jobs across
+documentation catalog, Python API test/compatibility, and repository
+quality/package workflows (runs [46072345590](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345590),
+[46072345631](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345631),
+and [46072345603](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46072345603)).
+Combined-status queries for `540c474`, the #78 merge and current `main` returned
+no entries; do not transfer PR-head results to merge commits. Receipts and
+scope notes remain in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md) and
+[REX_QUALITY_PACKAGING](REX_QUALITY_PACKAGING.md).
+
+PR #79's exact head `b5c1bcc3dff7106e2f370c648c836b3251b17f45` passed its
+local gate (970 tests, zero skips, six checks); seven observed workflow jobs
+succeeded and the main-only `deploy` job was skipped. PR #80's exact head
+`e6a28acd5cf0470c8d8628d6ee5957f3815d3f67` passed 976 tests, zero skips and
+six local checks; eight observed jobs succeeded, while only the main-only
+deployment and manual release rehearsal jobs were skipped. Their workflow
+records are linked in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Combined
+status for current merge `7efced5` returned no entries. The benchmark is
+observational, and release preparation does not create or authorize a release.
+
+PR #81's exact head `41e6db8618a00c93f3a00ca6638ed96ab623dcbc` passed 977
+tests, zero skips, and six local checks. Nine applicable jobs succeeded across
+five workflows: docs catalog, public site build, quality/package/container
+smoke, API test and Python 3.12/3.13 compatibility, and synthetic research
+benchmark. Main-only deployment and release rehearsal were skipped.
+Combined-status queries for the PR head and merge `10b94c9` returned no
+entries; preserve official workflow evidence at its exact head in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
 
 PR #77 resolves the MM-009 wording follow-up alongside REX-09/10. The active
 candidate now records the owner's MM-024 UCI clarification. Its branch
@@ -20,11 +45,10 @@ at `ccd74d72b7d30cafaef10d36ac44857c629b6a08`. No parser code is needed:
 MM-022 already implements the approved UCI-only classification, with synthetic
 regressions for supported and rejected formats, aggregate-only exclusion
 counts and redaction. This increment updates the decision, dataset/source
-records, status and learning material. It is published as
-[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78). Exact reviewed
-head `7059dc55f2f5f2d1bf69c5fc26e3bcbc981c44b7` passed the full local gate
-(968 tests, zero skips, six checks) and all nine observed official contexts.
-Read the live PR for its current head/check state after any subsequent push.
+records, status and learning material. It is merged through
+[PR #78](https://github.com/GustavoMFDS/MirrorMind/pull/78) at
+`291562a`; its final head `8c8f862` passed the local gate and six observed
+official jobs. It changed no parser contract and did not reread the workbook.
 
 The UCI #352 source call exceeded the owner-approved 250,000 product-day group
 ceiling before returning a complete projection. It produced no complete
@@ -34,10 +58,11 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `540c47411898cc820ac651c19430017ecd8c20fe`. PR #52–#59 were
+**Baseline:** main `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
-PRs #68–#77 are integrated. Merged branches preserve ancestry and must not be
-replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
+#77–#81 are integrated. The portfolio/index, synthetic benchmark/release
+preparation and developer-onboarding updates are present. Merged branches
+preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
@@ -45,10 +70,10 @@ replayed. See [PROJECT_STATUS](PROJECT_STATUS.md),
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
-| PR #78 / MM-024 UCI policy | Open docs-only PR; verified head `7059dc5` passed the local gate and all nine observed official contexts. | Obtain independent review; rerun full gate and inspect exact-head checks after every tracked change; merge only through protected `main`. |
+| PR #78 / MM-024 UCI policy | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. | Preserve the no-reread/no-partition/no-cap-increase stop and snapshot deletion deadline. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| M2-02 retrieval evaluation | M2-01 retrieval is integrated through #66; evaluation work is independent of the source-data blockers. | Proceed with the existing fictional/offline test set; measure citation support, lineage, access-constraint adherence and abstention. Add the behavior walkthrough, tests and evidence-map entry required by the backlog. |
+| M2-02 retrieval evaluation / PR #82 | Open for independent review at initial head `d542e5e` on `codex/m2-02-retrieval-evaluation-20261127`, ancestry-synced with main `10b94c9`. The evaluator rejects empty/oversized corpora and unsupported document objects. Exact local gate: 989 passed, zero skips, six checks, pinned WorldKernel. Initial PR head passed 12 official checks, including coverage and strict retrieval typing; two guarded jobs were skipped. | Await independent review. Re-run the exact local gate and inspect official checks for each subsequent head. Keep the non-blocking Node.js 20 warning visible; do not change workflows as part of M2-02. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
