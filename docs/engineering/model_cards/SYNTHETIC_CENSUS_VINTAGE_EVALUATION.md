@@ -114,3 +114,9 @@ The experimental predeclared schedule wrapper uses cumulative 60/80%
 floor cuts and rejects cross-split target reach or late/missing prior
 labels. This is local caller-retained digest matching only. It neither
 verifies an independent holdout lock nor authorizes empirical evaluation.
+
+The local experiment contract binds caller-retained normalized manifest,
+schedule and declared code revision. Replay compares complete canonical
+receipt bytes; no empirical source or independent code attestation.
+The current schedule permits at most 50 holdout origins, below the
+proposed 60 matched-pair minimum; inference remains abstained.

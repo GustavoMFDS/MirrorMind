@@ -413,6 +413,13 @@
     "limitation": "Fictional partition and digest replay only; no verified registration, independent data lock, empirical scoring or inference. Independent review pending."
   },
   {
+    "id": "MM-CEN-020",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_experiment.py",
+    "function": "test_experiment_commitment_and_complete_replay",
+    "limitation": "Fictional normalized manifest and full canonical replay only; no independent registration, trusted code attestation, blind holdout, persistence or empirical inference. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

@@ -294,3 +294,7 @@ The [Census split wrapper](../../src/mirrormind/domains/retail/census_split.py)
 has guided experimental behavior in [CENSUS_VINTAGE_EVALUATION.md](CENSUS_VINTAGE_EVALUATION.md):
 predeclared partition, digest comparison and strict boundary validation,
 not trusted registration, external authorization or empirical acceptance.
+
+The [Census experiment contract](../../src/mirrormind/domains/retail/census_experiment.py)
+is guided experimental local identity and replay, not a trusted registry.
+See [evaluation guide](CENSUS_VINTAGE_EVALUATION.md).

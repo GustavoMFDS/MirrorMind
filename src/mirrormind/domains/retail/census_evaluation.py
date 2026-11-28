@@ -120,6 +120,16 @@ def _validate_metric_input(value: Decimal) -> None:
         raise ValueError("aggregate values exceed the supported metric range")
 
 
+def census_evaluation_manifest_sha256(
+    records: tuple[CensusVintageRecord, ...], *, series_id: str, cutoff: date
+) -> str:
+    """Fingerprint validated normalized input, not source bytes or eligibility."""
+    select_census_vintage_as_of(records, series_id=series_id, target_release_on=cutoff)
+    for record in records:
+        _validate_metric_input(record.value)
+    return _manifest_sha256(records)
+
+
 def _metric_float(value: Fraction) -> float:
     if value == 0:
         return 0.0
