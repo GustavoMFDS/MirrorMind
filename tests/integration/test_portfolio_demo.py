@@ -33,6 +33,13 @@ def test_offline_report_preserves_exact_workflow_result():
     assert "innerHTML" not in html
     assert "__MIRRORMIND_RESULT_JSON__" not in html
     assert 'id="lead-time"' in html
+    assert 'aria-label="Report sections"' in html
+    for name in ("Scrollable policy comparison", "Scrollable evidence table"):
+        assert f'tabindex="0" role="region" aria-label="{name}"' in html
+    assert html.count("<caption>") == 2
+    assert html.count('scope="col"') == 10
+    assert 'td.scope = "row"' in html
+    assert 'm.fill_rate_basis_points === null ? "Not available"' in html
 
 
 def test_report_escapes_script_terminators(monkeypatch):
