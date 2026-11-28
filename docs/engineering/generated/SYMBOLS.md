@@ -504,8 +504,9 @@ Static imports (including inside functions): `.contracts`, `.registry`, `.synthe
 | Symbol | Kind | Signature | Docstring first line | Source |
 | --- | --- | --- | --- | --- |
 | `run_bounded_tool_orchestration` | function | `def run_bounded_tool_orchestration(request: AgentRunRequest, provider: AgentProvider, *, registry: ToolRegistry \| None=None) -> AgentRunReport` | Run only a test double over fixed tools and return a minimized receipt. | [L21](../../../src/mirrormind/modules/agents/orchestrator.py#L21) |
-| `_observed_citation_refs` | function | `def _observed_citation_refs(observations: list[ToolObservation]) -> frozenset[str]` | — | [L185](../../../src/mirrormind/modules/agents/orchestrator.py#L185) |
-| `_refused` | function | `def _refused(code: RefusalCode, *, provider_mode: Literal['test_double', 'rejected'], provider_turn_count: int=0, tool_call_count: int=0, tool_receipts: tuple[ToolReceipt, ...]=()) -> AgentRunReport` | — | [L200](../../../src/mirrormind/modules/agents/orchestrator.py#L200) |
+| `_revalidate_provider_turn` | function | `def _revalidate_provider_turn(value: object) -> AgentTurn \| None` | Rebuild the provider value from plain data before trusting its fields. | [L187](../../../src/mirrormind/modules/agents/orchestrator.py#L187) |
+| `_observed_citation_refs` | function | `def _observed_citation_refs(observations: list[ToolObservation]) -> frozenset[str]` | — | [L203](../../../src/mirrormind/modules/agents/orchestrator.py#L203) |
+| `_refused` | function | `def _refused(code: RefusalCode, *, provider_mode: Literal['test_double', 'rejected'], provider_turn_count: int=0, tool_call_count: int=0, tool_receipts: tuple[ToolReceipt, ...]=()) -> AgentRunReport` | — | [L218](../../../src/mirrormind/modules/agents/orchestrator.py#L218) |
 
 ## `mirrormind.modules.agents.registry`
 

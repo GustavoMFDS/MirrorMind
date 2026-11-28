@@ -78,7 +78,8 @@ def run_bounded_tool_orchestration(
                 tool_receipts=tuple(receipts),
             )
         provider_turn_count += 1
-        if type(turn) is not AgentTurn:
+        validated_turn = _revalidate_provider_turn(turn)
+        if validated_turn is None:
             return _refused(
                 "invalid_provider_turn",
                 provider_mode="test_double",
@@ -86,6 +87,7 @@ def run_bounded_tool_orchestration(
                 tool_call_count=tool_call_count,
                 tool_receipts=tuple(receipts),
             )
+        turn = validated_turn
 
         if turn.kind == "final":
             assert turn.final is not None
@@ -180,6 +182,22 @@ def run_bounded_tool_orchestration(
         tool_call_count=tool_call_count,
         tool_receipts=tuple(receipts),
     )
+
+
+def _revalidate_provider_turn(value: object) -> AgentTurn | None:
+    """Rebuild the provider value from plain data before trusting its fields.
+
+    Pydantic ``model_copy(update=...)`` skips validation. Dumping to Python
+    primitives first ensures ``model_validate`` rechecks nested models and
+    model-level invariants instead of accepting existing model instances.
+    """
+    if type(value) is not AgentTurn:
+        return None
+    try:
+        raw_turn = value.model_dump(mode="python")
+        return AgentTurn.model_validate(raw_turn, strict=True)
+    except Exception:  # noqa: BLE001 - malformed provider values must fail closed
+        return None
 
 
 def _observed_citation_refs(observations: list[ToolObservation]) -> frozenset[str]:

@@ -8,8 +8,7 @@ of `d41e661d298255957979779691c2f9f4dbf36461`. Its change is limited to the
 cryptography 50 dependency constraints, public lock and related supply-chain
 documentation. The exact commit has 11 completed GitHub check-runs, all
 successful; those results apply only to `00e6cf1`. PR #87 was open and
-unmerged at published head `48fc51d` when synchronization began; see the live
-PR for its current head and review status. The local
+unmerged at published head `48fc51d` when synchronization began. The local
 M2-03 branch now includes `main` through ancestry-preserving merge
 `66b591317b375a270b5d0ed682c94e161d52a956`, with no conflicts. The full local
 six-check gate on that exact merge commit passed 1,014 tests, zero skips and
@@ -33,12 +32,15 @@ M2-03 remains bounded to a typed local registry, fixed fictional retrieval
 and decision tools, and a scripted provider test double. The provider cannot
 author forecasts, simulations, writes or business actions; no live provider,
 route, persistence or authenticated identity is present. The prior published
-head `48fc51d` had 12 of 14 official check-runs succeed, with deployment and
-release rehearsal skipped by workflow conditions. Those results do not apply
-to the synchronized local branch. Earlier source checkpoints passed the
-whole-package and strict retrieval typing checks, coverage floor and package
-smoke as documented in the PR. Local Docker remains unavailable. Every
-receipt and official check result remains scoped to its exact SHA.
+head `b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate with
+1,014 tests and zero skips; 12 of 14 exact-head official check-runs succeeded
+and `deploy` plus `release-rehearsal` were skipped by conditions. Independent
+review reproduced Pydantic `model_copy(update=...)` bypasses in nested
+provider turns. The current candidate revalidates each exact turn from plain
+data before dispatch or draft handling, with regressions for malformed fields,
+invariants and missing payloads. Its exact gate and check-run state are
+recorded in the live PR #87; independent re-review remains pending. Local
+Docker remains unavailable. Never transfer evidence between SHAs.
 
 The bounded UCI reader and MM-024 classification are already implemented in
 main with synthetic regressions. The approved source call stopped above the
@@ -124,7 +126,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
 | PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
 | PR #88 / cryptography 50 lock | Merged at `00e6cf11ac05a94055242573fd3cfc18086bad10`; 11 completed exact-SHA official check-runs succeeded. | Updates public dependency constraints and lock; does not infer account billing state or explain historical pre-start failures. |
-| M2-03 bounded tool orchestration / [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) | Implemented on `codex/m2-03-tool-orchestration-20261127`. The published head at sync start was `48fc51d`; local branch includes latest `main` `00e6cf1` via merge `66b5913`. That merge checkpoint passed 1,014 tests, zero skips and all six local checks before the local dependency was aligned. | The 12/14 official checks belong to old published head `48fc51d`; consult the live PR description for current exact-head evidence. The local venv is now aligned to cryptography 50.0.0. Never transfer checkpoint results. Provider remains scripted; tools are fixed and fictional, with no route, persistence or action authority. |
+| M2-03 bounded tool orchestration / [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) | The ancestry-synced branch includes `main` `00e6cf1` through merge `66b5913`. Independent review found a nested Pydantic `model_copy(update=...)` bypass; the current candidate revalidates provider turns from plain data before use and adds five regressions. | Exact candidate gate and official checks are in the live PR; independent re-review remains pending. Provider is still scripted and tools remain fixed/fictional. No route, persistence or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

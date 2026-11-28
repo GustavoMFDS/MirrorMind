@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated against current `main` `d41e661d298255957979779691c2f9f4dbf36461` on 2026-11-27. PR #82 merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, adding M2-02's bounded fictional retrieval evaluator. Its exact PR head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips and six local checks plus 12 official exact-head checks; these results do not transfer to the merge or later main. Current branch `codex/m2-03-tool-orchestration-20261127` contains the separate M2-03 local orchestration slice and is published as open PR #87. Exact PR head `2d71d39` passed the local six-check gate (1,014 tests, zero skips) and had 12 successful official check-runs plus two guarded skips, including official container smoke. Code-identical `07a6cdc0` passed 86.92% coverage, both mypy jobs and package wheel smoke. Local container smoke remains unavailable because this host has no Docker engine; all evidence is SHA-scoped. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
+Updated against current `main` `00e6cf11ac05a94055242573fd3cfc18086bad10` on 2026-11-28. PR #88's exact main commit has 11 successful official check-runs. The M2-03 branch is ancestry-synced with that baseline through merge `66b591317b375a270b5d0ed682c94e161d52a956` and remains open as PR #87. Previous published candidate `b931bbe2279dd0865f535e0f56e5165ed402ef96` passed 1,014 local tests, zero skips and six checks; its exact official result was 12 successes and two conditional skips. Independent review reproduced Pydantic `model_copy(update=...)` bypasses in nested provider turns. The current PR candidate adds plain-data reconstruction and strict validation before dispatch or draft handling, with five regression cases; exact current gate evidence and official check state are in the live PR. Local container smoke remains unavailable because this host has no Docker engine; evidence is always SHA-scoped. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
 
 
 
@@ -23,15 +23,16 @@ The local M2-03 orchestration path is separate from HTTP: a strict request
 enters a bounded synchronous loop, admits only the fixed scripted test-double
 mode, invokes an immutable registry of fictional retrieval and M1F-02 decision
 tools, and emits digest-only receipts plus an untrusted draft for human review.
-The adapter statically describes the internal M1F-02 fields it consumes;
-Pydantic contracts continue to validate the trace and provider-visible result
-at runtime. Exact commit `07a6cdc0` passed the six-check gate and 86.92%
-coverage. Keep any review candidate tied to its own gate receipt.
-Prompt-like retrieved text remains untrusted data; it cannot extend the
-registry. This path has no network provider, persistent state, public route,
-write capability or business-action authority. Citation validation checks
-observed-reference membership, not semantic entailment. See the
-[M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md).
+After each provider turn, the orchestrator serializes the exact `AgentTurn` to
+plain data and strictly reconstructs it before dispatch or final-draft handling;
+this re-runs nested field and model validators that `model_copy(update=...)`
+would otherwise bypass. The adapter statically describes the internal M1F-02
+fields it consumes; Pydantic contracts continue to validate the trace and
+provider-visible result at runtime. Prompt-like retrieved text remains
+untrusted data; it cannot extend the registry. This path has no network
+provider, persistent state, public route, write capability or business-action
+authority. Citation validation checks observed-reference membership, not
+semantic entailment. See the [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md).
 
 The separate UCI event-time CLI builds a deterministic workbook in memory,
 passes it through the bounded XLSX reader and product-day projection, then
@@ -85,7 +86,7 @@ must match the reviewed [capability ledger](CAPABILITY_LEDGER.json) and
 | Introduce real evidence connectors/RAG | [ARCHITECTURE](../ARCHITECTURE.md), [SECURITY](../SECURITY.md), [data card](DATASET_CARD_TEMPLATE.md) | Separate source-specific permission/provenance tests required |
 | Evaluate local staged rolling baselines | [`modules/forecasting/baselines.py`](../../src/mirrormind/modules/forecasting/baselines.py), [method guide](M1_STAGED_ROLLING_BASELINES.md) | [unit](../../tests/unit/test_staged_rolling_baselines.py) and [integration](../../tests/integration/test_staged_rolling_flow.py) tests on invented data only |
 | Introduce real forecasting service | [RETAIL_MVP](../RETAIL_MVP.md), [ROADMAP](../ROADMAP.md) | Approved snapshot, locked independent holdout, calibrated risk and serving/permission tests |
-| Run bounded local tool orchestration | [`modules/agents/orchestrator.py`](../../src/mirrormind/modules/agents/orchestrator.py), [`modules/agents/registry.py`](../../src/mirrormind/modules/agents/registry.py), [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md) | [unit regressions](../../tests/unit/test_bounded_tool_orchestration.py) and [CLI integration](../../tests/integration/test_m2_tool_orchestration_cli.py) cover static tools, strict contracts, call/turn/byte limits, immutable registry, sanitized refusals, injection resistance and citation membership; scripted provider only, no route, live provider, semantic entailment or action authority |
+| Run bounded local tool orchestration | [`modules/agents/orchestrator.py`](../../src/mirrormind/modules/agents/orchestrator.py), [`modules/agents/registry.py`](../../src/mirrormind/modules/agents/registry.py), [M2-03 walkthrough](M2_TOOL_ORCHESTRATION.md) | [unit regressions](../../tests/unit/test_bounded_tool_orchestration.py) and [CLI integration](../../tests/integration/test_m2_tool_orchestration_cli.py) cover static tools, plain-data revalidation against Pydantic `model_copy(update=...)` bypasses, call/turn/byte limits, immutable registry, sanitized refusals, injection resistance and citation membership; scripted provider only, no route, live provider, semantic entailment or action authority |
 
 ## Non-negotiable boundaries
 - General-purpose decision platform; retail is the first reference domain, not a hard-coded limitation.

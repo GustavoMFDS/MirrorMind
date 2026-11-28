@@ -176,6 +176,16 @@ class _BadProviderResult:
         return {"kind": "final", "summary": "unvalidated"}
 
 
+class _SuppliedTurnProvider:
+    provider_mode = "test_double"
+
+    def __init__(self, turn: object) -> None:
+        self._turn = turn
+
+    def next_turn(self, request: ProviderRequest) -> object:
+        return self._turn
+
+
 class _RaisingProvider:
     provider_mode: Literal["test_double"] = "test_double"
 
@@ -329,6 +339,96 @@ def test_non_contract_provider_result_fails_closed() -> None:
     assert result.status == "refused"
     assert result.refusal_code == "invalid_provider_turn"
     assert result.draft is None
+
+
+def test_provider_turn_revalidates_nested_draft_fields_before_consumption() -> None:
+    valid_draft = AgentDraft(
+        status="insufficient_evidence",
+        summary="No evidence is available.",
+        citation_refs=(),
+    )
+    invalid_draft = valid_draft.model_copy(update={"summary": ""})
+    invalid_turn = AgentTurn(kind="final", final=valid_draft).model_copy(
+        update={"final": invalid_draft}
+    )
+
+    result = _run(_SuppliedTurnProvider(invalid_turn))  # type: ignore[arg-type]
+
+    assert result.status == "refused"
+    assert result.refusal_code == "invalid_provider_turn"
+    assert result.draft is None
+
+
+def test_provider_turn_revalidates_nested_status_and_citation_invariants() -> None:
+    valid_draft = AgentDraft(
+        status="draft_for_human_review",
+        summary="Review this supported draft.",
+        citation_refs=("a" * 64,),
+    )
+    invalid_draft = valid_draft.model_copy(update={"citation_refs": ()})
+    invalid_turn = AgentTurn(kind="final", final=valid_draft).model_copy(
+        update={"final": invalid_draft}
+    )
+
+    result = _run(_SuppliedTurnProvider(invalid_turn))  # type: ignore[arg-type]
+
+    assert result.status == "refused"
+    assert result.refusal_code == "invalid_provider_turn"
+    assert result.draft is None
+
+
+def test_provider_turn_revalidates_nested_tool_call_before_dispatch() -> None:
+    valid_call = ToolCall(
+        call_id="search-1",
+        tool_name="search_synthetic_evidence",
+        arguments={"query": "baseline", "top_k": 1},
+    )
+    invalid_call = valid_call.model_copy(update={"call_id": ""})
+    invalid_turn = AgentTurn(kind="tool_call", tool_call=valid_call).model_copy(
+        update={"tool_call": invalid_call}
+    )
+
+    result = _run(_SuppliedTurnProvider(invalid_turn))  # type: ignore[arg-type]
+
+    assert result.status == "refused"
+    assert result.refusal_code == "invalid_provider_turn"
+    assert result.tool_call_count == 0
+    assert result.tool_receipts == ()
+
+
+def test_provider_turn_with_missing_matching_payload_fails_closed() -> None:
+    valid_draft = AgentDraft(
+        status="insufficient_evidence",
+        summary="No evidence is available.",
+        citation_refs=(),
+    )
+    invalid_turn = AgentTurn(kind="final", final=valid_draft).model_copy(
+        update={"final": None}
+    )
+
+    result = _run(_SuppliedTurnProvider(invalid_turn))  # type: ignore[arg-type]
+
+    assert result.status == "refused"
+    assert result.refusal_code == "invalid_provider_turn"
+    assert result.draft is None
+
+
+def test_provider_turn_with_missing_tool_payload_fails_closed() -> None:
+    valid_call = ToolCall(
+        call_id="search-1",
+        tool_name="search_synthetic_evidence",
+        arguments={"query": "baseline", "top_k": 1},
+    )
+    invalid_turn = AgentTurn(kind="tool_call", tool_call=valid_call).model_copy(
+        update={"tool_call": None}
+    )
+
+    result = _run(_SuppliedTurnProvider(invalid_turn))  # type: ignore[arg-type]
+
+    assert result.status == "refused"
+    assert result.refusal_code == "invalid_provider_turn"
+    assert result.tool_call_count == 0
+    assert result.tool_receipts == ()
 
 
 def test_provider_error_is_sanitized_from_the_receipt() -> None:

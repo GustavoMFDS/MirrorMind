@@ -63,6 +63,41 @@
     "limitation": "The validator rejects cyclic and oversized exact built-in containers in local request objects; it does not guarantee containment of arbitrary Python objects or bound all transient memory use."
   },
   {
+    "id": "MM-AGENT-010",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_revalidates_nested_draft_fields_before_consumption",
+    "limitation": "A provider draft corrupted with Pydantic model_copy(update=...) is refused after plain-data reconstruction; this verifies one local field-bypass path, not provider isolation or semantic evidence support."
+  },
+  {
+    "id": "MM-AGENT-011",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_revalidates_nested_status_and_citation_invariants",
+    "limitation": "A review draft without citations is refused after nested model validation; matching citations still do not prove that provider prose is semantically supported."
+  },
+  {
+    "id": "MM-AGENT-012",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_revalidates_nested_tool_call_before_dispatch",
+    "limitation": "One malformed nested tool-call field is refused before execution in the in-process registry; Python provider code is not sandboxed."
+  },
+  {
+    "id": "MM-AGENT-013",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_with_missing_matching_payload_fails_closed",
+    "limitation": "A missing final payload created by model_copy(update=...) returns a fixed refusal; this does not cover every malformed object graph."
+  },
+  {
+    "id": "MM-AGENT-014",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_with_missing_tool_payload_fails_closed",
+    "limitation": "A missing tool-call payload created by model_copy(update=...) returns a fixed refusal before dispatch; this does not provide process isolation."
+  },
+  {
     "id": "MM-ANCHOR-001",
     "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
     "test": "tests/unit/test_head_checkpoints.py",

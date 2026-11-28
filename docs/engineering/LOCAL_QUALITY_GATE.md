@@ -1,6 +1,20 @@
 # Local quality gate and historical Actions fallback
 
-## Current main and exact-head gate status - 2026-11-27
+## Current continuation - 2026-11-28
+
+Latest `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`; its 11 official
+check-runs succeeded on that exact SHA. PR #87's exact candidate state and
+current gate receipt/check status are maintained in the live PR body. The
+previous published candidate
+`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate and all
+applicable official checks, but independent review reproduced a provider-turn
+validation bypass via Pydantic `model_copy(update=...)`. The current candidate
+revalidates from plain data and adds nested-model/missing-payload regressions.
+Its exact gate and checks were queried separately; none of the earlier results
+below transfer to it. Re-query after any later push. No workflow, required
+check, protection, runner or spending setting was changed.
+
+## Historical main and exact-head gate status - 2026-11-27
 
 Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following the
 normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, the
@@ -773,3 +787,24 @@ check-run status. Require a fresh gate and check query after every later head;
 never transfer the `00e6cf1` or `66b5913` results to it. Exact-main commit
 `00e6cf1` separately has 11 successful official check-runs. Local and official
 evidence remain distinct.
+
+### PR #87 published head `b931bbe` — pre-correction review candidate
+
+On exact SHA `b931bbe2279dd0865f535e0f56e5165ed402ef96`, the owner-authorized
+temporary gate passed **1,014 tests, zero skips and all six checks** under
+`cryptography 50.0.0`. One existing Starlette/httpx TestClient deprecation
+warning appeared. Receipt:
+`results/local-quality-gate-b931bbe2279dd0865f535e0f56e5165ed402ef96-cryptography50-workspace.json`.
+This exact SHA's check-run query returned 14 jobs: 12 `success` and two
+workflow-conditional `skipped` (`deploy`, `release-rehearsal`). See the live
+PR body for run links. These checks show that Actions executed for that SHA;
+they do not establish why earlier runs failed before job startup or identify a
+billing cause.
+
+An independent review of the same source path reproduced that exact-type
+checking an `AgentTurn` was insufficient because `model_copy(update=...)`
+skips validation for nested drafts and tool calls. The previous implementation
+could emit an empty abstention summary, raise on missing citations/payloads,
+or assert on a missing final payload. The current candidate reconstructs the
+turn from plain data before use. Run a fresh exact-head gate and exact-SHA
+check query for that correction; the receipt and status live in the PR body.

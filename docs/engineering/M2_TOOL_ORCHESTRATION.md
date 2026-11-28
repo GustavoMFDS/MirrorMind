@@ -59,6 +59,7 @@ sequenceDiagram
   C->>O: AgentRunRequest + trusted local provider
   O->>P: bounded question, allowed descriptors, untrusted observations
   P-->>O: typed ToolCall
+  O->>O: dump plain data and revalidate AgentTurn + nested contracts
   O->>R: verify registered name and caller allowlist
   R->>R: validate strict JSON input and size
   alt search_synthetic_evidence
@@ -169,8 +170,17 @@ without adding a second runtime schema or copying the workflow algorithm.
 `run_bounded_tool_orchestration` validates the exact request and registry
 types, reads the provider's declared `test_double` protocol mode inside a
 sanitizing failure boundary and requires an exact built-in string value,
-constructs
-each provider context and enforces its 64 KiB canonical byte limit. It counts
+constructs each provider context and enforces its 64 KiB canonical byte limit.
+After `next_turn`, `_revalidate_provider_turn` requires the exact `AgentTurn`
+class, converts it to plain Python data with `model_dump(mode="python")`, then
+rebuilds it using `AgentTurn.model_validate(..., strict=True)`. This second
+pass checks nested `ToolCall`/`AgentDraft` constraints and model validators
+before the orchestrator reads `kind`, dispatches a tool, or returns a draft.
+Pydantic's `model_copy(update=...)` skips validation; checking the outer
+instance type alone therefore does not establish a valid contract. Any dump or
+validation exception becomes the sanitized `invalid_provider_turn` refusal.
+The provider's raw value and validation detail are never added to the report.
+It counts
 every call attempt, checks the two-call budget, rejects unknown or
 caller-disallowed names, and delegates typed validation/execution to the
 registry. It retains each successful observation only in memory for the next
@@ -189,6 +199,7 @@ The orchestrator returns a draft only when that membership check passes.
 | Unknown tool name | `refused / tool_not_registered` | No handler is looked up or executed |
 | Known tool outside caller allowlist | `refused / tool_not_allowed` | No tool execution |
 | Extra or malformed tool argument | `refused / invalid_tool_input` | No handler call, no raw input in report |
+| Provider returns an invalid `AgentTurn` or nested model | `refused / invalid_provider_turn` | Plain-data revalidation rejects bypassed field/model constraints and missing/mismatched payloads before dispatch; raw exception details are omitted |
 | Handler returns a different model | `refused / invalid_tool_output` | No output is sent to provider |
 | Tool or provider throws | `tool_failed` or `provider_failure` | Raw exception is not returned |
 | Missing citation in retrieved outputs | `refused / unsupported_evidence_reference` | Draft prose and unknown ref are omitted |
@@ -238,6 +249,9 @@ the same JSON; the digests make byte changes visible.
 | `...::test_tool_input_cannot_override_fictional_access_scope` | Strict `extra="forbid"` rejects a provider-supplied principal override before handler execution | Only the fixed local registry is covered |
 | `...::test_unobserved_citation_is_refused_as_unsupported_evidence` | Final citations must resolve to visible prior retrieval outputs | Membership does not prove semantic support or source truth |
 | `...::test_non_contract_provider_result_fails_closed` and `...::test_provider_error_is_sanitized_from_the_receipt` | Invalid provider values and thrown provider details cannot become a successful report | No transport retry, timeout or live-provider error taxonomy |
+| `...::test_provider_turn_revalidates_nested_draft_fields_before_consumption` and `...::test_provider_turn_revalidates_nested_status_and_citation_invariants` | Exact `AgentTurn` instances corrupted with Pydantic `model_copy(update=...)` are rebuilt from plain data; empty summaries and review drafts without citations return `invalid_provider_turn` | Local in-process regressions for declared contracts; they do not isolate a provider or prove semantic citation support |
+| `...::test_provider_turn_revalidates_nested_tool_call_before_dispatch` | A nested call with an empty ID is refused before the tool-attempt counter or registry changes | Proves this malformed call path only; Python provider code is not sandboxed |
+| `...::test_provider_turn_with_missing_matching_payload_fails_closed` and `...::test_provider_turn_with_missing_tool_payload_fails_closed` | `model_copy(update=...)` cannot remove the required payload without a fixed refusal | Covers missing payloads for both turn kinds, not every possible malformed object graph |
 | `...::test_provider_mode_inspection_failure_is_sanitized_and_fails_closed` and `...::test_non_test_double_provider_mode_is_refused_before_dispatch` | A missing/malformed/unreadable mode is refused before any provider turn; the property exception is not echoed | `test_double` remains self-declared and provides no provider identity or attestation |
 | `...::test_provider_turn_budget_stops_before_an_extra_tool_call` and `...::test_tool_call_budget_records_the_refused_attempt_and_never_executes_it` | Turn/call ceilings are enforced and the refused attempt is visible as a count | No concurrent server-level quota |
 | `...::test_duplicate_provider_call_id_is_refused_before_second_invocation` | Duplicate IDs fail before executing the second call and only the first success is receipted | In-process regression only; no distributed job/idempotency guarantee |
@@ -254,8 +268,9 @@ the same JSON; the digests make byte changes visible.
 All cited tests must be run separately; a selector's existence is not a
 passing result. The reviewed selectors and limitations are recorded as
 `MM-AGENT-001`, `MM-AGENT-002`, `MM-AGENT-003`, `MM-AGENT-004`,
-`MM-AGENT-005`, `MM-AGENT-006`, `MM-AGENT-007`, `MM-AGENT-008` and
-`MM-AGENT-009` in the
+`MM-AGENT-005`, `MM-AGENT-006`, `MM-AGENT-007`, `MM-AGENT-008`,
+`MM-AGENT-009`, `MM-AGENT-010`, `MM-AGENT-011`, `MM-AGENT-012`,
+`MM-AGENT-013`, and `MM-AGENT-014` in the
 [`EVIDENCE_MAP.json`](EVIDENCE_MAP.json).
 
 ## 7. Learning exercises

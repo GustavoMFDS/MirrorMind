@@ -73,13 +73,38 @@ contracts cannot provide.
   exercise, backlog/status/handoff, atlas, symbol catalog, evidence map and
   capability ledger are updated; all repository checks pass.
 
+### Independent-review correction — revalidate provider-owned model instances
+
+Review reproduced a Pydantic trust-boundary gap: `model_copy(update=...)`
+does not run validation. A provider can return an exact `AgentTurn` containing
+an `AgentDraft` with an empty summary or a review status with no citations;
+the first was reported as an abstention and the second escaped as an
+uncaught `ValidationError`. A final turn with its payload removed also reached
+an assertion. Before reading any discriminant or nested field, the orchestrator
+must serialize the provider model into plain Python data and validate that
+data again against the strict contract. Serialization or validation errors
+must become the fixed `invalid_provider_turn` refusal without echoing details.
+
+- [x] Revalidate exact `AgentTurn` instances and every nested contract from
+  plain serialized data before dispatch or final-draft handling.
+- [x] Refuse malformed nested values and missing/mismatched payloads with
+  `invalid_provider_turn`; do not expose validation details or raise.
+- [x] Add regressions for empty summary, draft status/citation mismatch,
+  malformed tool call and missing tool/final payloads, each constructed with
+  `model_copy(update=...)`.
+- [x] Update the walkthrough, debugging and learning guides, architecture map,
+  repository atlas, evidence map, and handoff/status records; retain the
+  experimental capability status and existing no-action boundary.
+- [ ] Run the focused regressions, complete local gate and applicable exact-
+  SHA official checks before requesting re-review.
+
 ## 3. Impact map
 
 | Layer | Relevant file/symbol | Change? | Evidence / tests |
 | --- | --- | --- | --- |
 | Contracts | `src/mirrormind/modules/agents/contracts.py` | Add strict run, provider-turn, tool-call, observation and report models | Unit validation and bounds tests |
 | Registry | `src/mirrormind/modules/agents/registry.py` | Add immutable code-owned registry, exact input/output validation and digest receipts | Unknown-tool, invalid-input/output, duplicate and size regressions |
-| Composition | `src/mirrormind/modules/agents/orchestrator.py` | Add synchronous bounded provider loop and citation-reference check | Unit tests for success, refusal, abstention, budgets and provider failures |
+| Composition | `src/mirrormind/modules/agents/orchestrator.py` | Add synchronous bounded provider loop, strict plain-data revalidation of provider turns and citation-reference check | Unit tests for success, refusal, abstention, budgets, provider failures and Pydantic `model_copy` bypass regressions |
 | Tool adapters | `src/mirrormind/modules/agents/synthetic_tools.py` | Wrap existing M2-01 search and M1F-02 workflow; declare the consumed internal response shape for static checking; no copied algorithms | Service-output parity and scope/injection tests; whole-package mypy |
 | Demo | `examples/m2_bounded_tool_orchestration.py` | Add fixed scripted provider and query-free deterministic receipt CLI | CLI replay integration test |
 | API capability | `src/mirrormind/api/routes/system.py` | Advertise only the local experimental capability; no orchestration route | Capability parity and status regression |
@@ -110,6 +135,18 @@ requires B-05 approval and a separate security/evaluation review.
 6. Publish one M2-03 review PR; do not merge it or #82.
 
 ## 6. Evidence after implementation
+
+### Independent-review correction
+
+Independent review reproduced nested Pydantic validation bypasses in the
+provider-returned `AgentTurn` path on the earlier source candidate. The fix
+serializes the exact model into plain Python data and strictly reconstructs
+the complete nested contract before dispatch or draft consumption. Five
+regressions cover an empty summary, a draft status/citation invariant, an
+invalid nested tool call, and missing final/tool payloads. The exact correction
+commit, complete local-gate receipt and current official check state are
+recorded in the live [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87);
+do not transfer prior checkpoint results to that commit.
 
 - Commit / PR: implementation checkpoint `0922c72`; the open review PR is
   [#87](https://github.com/GustavoMFDS/MirrorMind/pull/87). Exact local gate

@@ -8,14 +8,21 @@
   pre-start failures or disclose billing state; keep paid-service spend at
   zero and preserve all protections.
 - PR #87 / M2-03 was open and unmerged at published head
-  `48fc51db949cf5626b50d3f97b5304388a9b1076` when synchronization began; no
-  review submissions or inline threads were present when queried. The local
+  `48fc51db949cf5626b50d3f97b5304388a9b1076` when synchronization began. An
+  independent review later reproduced nested Pydantic `model_copy(update=...)`
+  validation bypasses on published head
+  `b931bbe2279dd0865f535e0f56e5165ed402ef96`; its exact run had 12 successful
+  check-runs and two conditional skips. The current candidate reconstructs
+  provider turns from plain data before dispatch, with regressions for invalid
+  nested drafts/tool calls and missing payloads. Review remains pending; use
+  the live PR body for current candidate SHA, local receipt and exact check
+  status. Do not transfer earlier gate results. The local
   branch includes latest `main` through ancestry-preserving merge
   `66b591317b375a270b5d0ed682c94e161d52a956`.
   That exact merge checkpoint passed 1,014 tests, zero skips and all six local
   checks, with one existing Starlette/httpx deprecation warning. The final
-  documentation-inclusive gate and current exact-head check status are
-  recorded in the live PR. The first restricted sandbox attempt
+  review-correction candidate's exact gate and check status are recorded in
+  the live PR. The first restricted sandbox attempt
   stalled in `test_health`, was interrupted before timeout, and produced no
   receipt. The unchanged gate passed on the same SHA with loopback permitted;
   see [B-07](BLOCKERS.md) and [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
@@ -28,8 +35,9 @@
   later publication.
 - M2-03 remains a local-only orchestration experiment: fixed fictional
   retrieval and M1F-02 decision tools, immutable registry, strict contracts,
-  scripted provider test double and minimized digest receipts. Drafts are
-  untrusted and require human review. No live model, route, persistence,
+  scripted provider test double and minimized digest receipts. Provider turns
+  are rebuilt from plain data so nested Pydantic validators run before use.
+  Drafts are untrusted and require human review. No live model, route, persistence,
   authenticated identity, semantic-entailment check, write tool or business
   action authority exists. Keep this PR bounded and reviewable.
 - PR #82 / M2-02 is already incorporated; do not replay its commits. Keep

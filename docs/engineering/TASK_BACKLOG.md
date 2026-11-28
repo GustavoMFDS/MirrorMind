@@ -5,23 +5,25 @@
 Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
 PR #88 as a child of `d41e661`; its exact SHA has 11 successful official check-runs.
 At sync start, PR #87 was open and unmerged at published head
-`48fc51db949cf5626b50d3f97b5304388a9b1076`; use its live page for current
-head and review state.
+`48fc51db949cf5626b50d3f97b5304388a9b1076`. The latest synchronized
+published head before the review correction was `b931bbe2279dd0865f535e0f56e5165ed402ef96`.
 The local `codex/m2-03-tool-orchestration-20261127` branch preserves that
 history and incorporates `main` through merge `66b591317b375a270b5d0ed682c94e161d52a956`.
 The exact merge checkpoint passed the full local gate: 1,014 tests, zero
 skips, six checks. That earlier receipt used cryptography 46.0.7. The local
-venv is now aligned to 50.0.0; the final documentation-inclusive PR head must
-receive its own exact gate. The prior `48fc51d` results do not transfer to
-`66b5913`; use the live PR for the current published head and exact check
-results, then re-query after any later push.
+venv is now aligned to 50.0.0. Exact `b931bbe` then passed the local gate with
+1,014 tests and zero skips; its exact check query returned 12 successes and
+two workflow-conditional skips. Independent review found a `model_copy`
+validation bypass. The current M2-03 candidate adds strict plain-data
+revalidation and regression coverage; use the live PR for its exact commit,
+gate receipt and check state. Re-query after each later push.
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
 | M1 synthetic vertical slice | Integrated experimentally through PR #62; M1 empirical evaluation and production acceptance remain incomplete. | Keep claims synthetic until approved source rights, availability evidence, empirical evaluation and service controls are satisfied. |
 | UCI #352 empirical pilot | Blocked after the approved call exceeded the 250,000 product-day group limit; no complete projection, exclusion counts or metrics. MM-024 invoice classification is already implemented and documented. | Do not reread, chunk, sample or increase limits. Preserve private-snapshot deletion by `2026-12-26`. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte diligence. Exact Census artifact rights and owner decisions precede even file-byte inspection; FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| [PR #87 / M2-03 bounded orchestration](https://github.com/GustavoMFDS/MirrorMind/pull/87) | Implementation complete for the bounded fictional local slice. Main sync is complete locally at `66b5913`; the remote head at sync start was `48fc51d`. The earlier checkpoint gate ran under cryptography 46.0.7; local venv is now aligned to 50.0.0. | Review the exact published candidate recorded in the live PR; keep #87 unmerged until normal review and protections approve. Re-query after any later push. |
+| [PR #87 / M2-03 bounded orchestration](https://github.com/GustavoMFDS/MirrorMind/pull/87) | Main sync completed at `66b5913`; independent review correction revalidates nested provider turns before dispatch. Regression tests, walkthrough, debug/learning docs and evidence map are updated. | Exact candidate gate/check status is in the live PR. Obtain independent re-review; keep #87 unmerged until normal review and protections approve. |
 | M2-05 usable decision workflow | Planned; depends on M1F-02 and M2-03. | After #87 review/integration, advance the local/API/UI workflow: run status, reproducible report, uncertainty and human review across normal/failure paths. Keep M2-04 real-provider work gated on B-05. |
 
 ## Historical review reconciliation - 2026-11-27
@@ -282,7 +284,7 @@ coverage/selection diagnostic modules merely because they are local.
 | --- | --- | --- | --- | --- |
 | M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
-| M2-03 | P1 | review preparation | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools, with a scripted test double, immutable registry and input/output, prompt-injection, nested-JSON and cycle regressions. Local main-sync checkpoint `66b5913` passed 1,014 tests, zero skips and all six checks under cryptography 46.0.7; the local venv is now aligned to 50.0.0. The final documentation-inclusive gate and current official status are recorded in the live PR. No live provider, route, persistence or action authority. |
+| M2-03 | P1 | review correction; re-review pending | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools. The correction serializes the exact provider `AgentTurn` into plain data and strictly reconstructs nested contracts before use; regressions reproduce empty summaries, status/citation mismatch, malformed tool calls and missing payloads. Exact candidate local gate and official checks are recorded in the live PR. No live provider, route, persistence or action authority. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
 | M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |

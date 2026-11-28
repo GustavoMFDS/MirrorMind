@@ -20,8 +20,13 @@ successful check-runs and two conditional skips
 (`deploy`, `release-rehearsal`). The local branch now contains latest `main`
 through merge `66b591317b375a270b5d0ed682c94e161d52a956`; its full local gate
 passed 1,014 tests, zero skips and all six checks. The sync commit was not yet
-published when this checkpoint was recorded. Use the live PR for current
-head/check-run status; never transfer `48fc51d` results to a later head.
+published at that checkpoint. The subsequently published exact head
+`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed its 1,014-test local gate
+and had 12 successful check-runs plus two conditional skips. Independent
+review identified a reproducible nested Pydantic validation bypass; the
+current candidate corrects it with regression tests and strict turn
+reconstruction. Exact candidate evidence and re-review state are in the live
+PR. Never transfer results between SHAs.
 
 On exact local SHA `66b5913`, the restricted sandbox attempt produced no
 output and was interrupted before the local gate's 900-second limit; no
@@ -32,7 +37,15 @@ with the known `TestClient`/Windows loopback limitation for this run; it does
 not resolve the separate historical `8f906b8` incident. See [B-07 below](#b-07-pr-65-restricted-sandbox-diagnostic---c6c1326)
 and [the gate record](LOCAL_QUALITY_GATE.md).
 
-## Current B-08 reconciliation - 2026-11-27
+## Current B-08 reconciliation - 2026-11-28
+
+The exact published M2-03 head `b931bbe2279dd0865f535e0f56e5165ed402ef96`
+also received 12 successful official check-runs and two conditional skips on
+2026-11-28. These runs show Actions executed on that SHA but do not explain
+historical pre-start failures or identify an account billing cause. B-08's
+historical cause remains unresolved; the current M2-03 review correction is
+not blocked on hosted checks. Do not spend, change spending limits, alter
+protections or infer a remedy from this observation.
 
 GitHub-hosted Actions are operational on reviewed PR head
 `df7c450523a8f3475e0a8161936f6ac80e705720` for PR #77: all nine observed
