@@ -23,6 +23,7 @@ python -m pip install --no-deps --no-build-isolation -e ".[dev,quality,uci,revie
 python -m pip check
 python -m pytest -q -rs
 python -m ruff check src tests examples
+python -m mypy --warn-unused-ignores src/mirrormind
 python -m mypy --strict src/mirrormind/modules/retrieval
 python -m examples.m2_portfolio_demo --replications 2 --seed 317 --output mirror-demo.html
 ```

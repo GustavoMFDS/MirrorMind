@@ -353,8 +353,10 @@ class ConditionalOutcomeV2(ConditionalOutcome):
 class DecisionTraceV2(DecisionTrace):
     """Decision trace with explicit, linked simulation execution provenance."""
 
+    # Keep the legacy subtype and exact Pydantic version discriminator.
+    # V2 intentionally changes the immutable V1 literal, not the shared trace rules.
     schema_version: Literal["mirrormind.decision_trace.v2"] = (
-        "mirrormind.decision_trace.v2"
+        "mirrormind.decision_trace.v2"  # type: ignore[assignment]
     )
     outcomes: tuple[ConditionalOutcomeV2, ...] = Field(
         default=(), max_length=_MAX_TRACE_RECORDS

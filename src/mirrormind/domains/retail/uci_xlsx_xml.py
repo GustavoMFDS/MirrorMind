@@ -46,7 +46,7 @@ def _reject_xml_feature(*_args: object) -> None:
     raise ValueError("unsupported XML features")
 
 
-def _new_xml_parser() -> expat.xmlparser:
+def _new_xml_parser() -> expat.XMLParserType:
     parser = expat.ParserCreate(namespace_separator="}")
     parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
     parser.StartDoctypeDeclHandler = _reject_xml_feature
@@ -283,7 +283,9 @@ def _iter_worksheet_rows(
         elif element == "v" and current_cell and current_cell.get("selected"):
             if current_cell.get("inline_payload_count"):
                 raise ValueError("ambiguous selected workbook cell payload")
-            scalar_value_count = int(current_cell.get("scalar_value_count", 0)) + 1
+            previous_count = current_cell.get("scalar_value_count", 0)
+            assert type(previous_count) is int
+            scalar_value_count = previous_count + 1
             if scalar_value_count > 1:
                 raise ValueError("duplicate selected workbook scalar value")
             current_cell["scalar_value_count"] = scalar_value_count
@@ -324,7 +326,9 @@ def _iter_worksheet_rows(
             capture_kind = None
             capture_parts = []
         elif element == "t" and capture_kind == "t" and current_cell:
-            current_cell.setdefault("raw_parts", []).extend(capture_parts)
+            raw_parts = current_cell.setdefault("raw_parts", [])
+            assert isinstance(raw_parts, list)
+            raw_parts.extend(capture_parts)
             capture_kind = None
             capture_parts = []
         elif element == "is" and current_cell and current_cell.get("selected"):
@@ -334,6 +338,7 @@ def _iter_worksheet_rows(
                 cell = dict(current_cell)
                 raw_parts = cell.pop("raw_parts", [])
                 if raw_parts:
+                    assert isinstance(raw_parts, list)
                     cell["raw"] = "".join(raw_parts)
                 if collect_shared_references:
                     if cell.get("type") == "s" and "raw" in cell:
@@ -528,7 +533,10 @@ def _decode_cell(
             number = int(raw)
     except (DecimalException, OverflowError, ValueError):
         raise ValueError("invalid numeric workbook cell") from None
-    if column == 5 and int(cell.get("style_id", 0)) in date_style_ids:
+    style_id = cell.get("style_id", 0)
+    if column == 5 and type(style_id) is not int:
+        raise ValueError("invalid workbook cell style")
+    if column == 5 and isinstance(style_id, int) and style_id in date_style_ids:
         try:
             from openpyxl.utils.datetime import from_excel
             return from_excel(number, epoch)

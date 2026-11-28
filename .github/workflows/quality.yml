@@ -29,6 +29,8 @@ jobs:
           python -m coverage run -m pytest -q -rs
           python -m coverage json -o coverage.json
           python -m coverage report --fail-under=85
+      - name: Whole-package typing
+        run: python -m mypy --warn-unused-ignores src/mirrormind
       - name: Strict typing for retrieval
         run: python -m mypy --strict src/mirrormind/modules/retrieval
       - uses: actions/upload-artifact@v4

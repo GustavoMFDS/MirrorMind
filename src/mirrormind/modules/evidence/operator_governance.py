@@ -364,8 +364,10 @@ class LocalOperatorGovernance:
                 or len(history) >= _MAX_OPERATORS
             ):
                 raise ValueError("operator key ID/material already used or budget exhausted")
+            expires_on = event.expires_on
+            assert type(expires_on) is date  # validated by _validate_event
             history[event.operator_key_id] = (
-                event.operator_public_key_hex, event.expires_on, False
+                event.operator_public_key_hex, expires_on, False
             )
             used_material.add(event.operator_public_key_hex)
         else:

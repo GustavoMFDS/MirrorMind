@@ -336,6 +336,10 @@ def _policy_outcomes(
     policy_caveat_refs: tuple[str, ...],
 ) -> tuple[ConditionalOutcomeV2, ...]:
     outcomes: list[ConditionalOutcomeV2] = []
+    seed = comparison["seed"]
+    runs = comparison["replications"]
+    if type(seed) is not int or type(runs) is not int:
+        raise TypeError("policy comparison returned invalid execution counts")
     scenarios = comparison["lead_time_sensitivity"]
     if not isinstance(scenarios, list):
         raise TypeError("policy comparison returned an invalid sensitivity result")
@@ -399,8 +403,8 @@ def _policy_outcomes(
                     forecast_refs=forecast_refs,
                     assumption_refs=policy_assumption_refs,
                     metrics=metrics,
-                    seed=comparison["seed"],
-                    runs=comparison["replications"],
+                    seed=seed,
+                    runs=runs,
                 )
             )
     return tuple(outcomes)
