@@ -277,7 +277,7 @@ availability nor source permission.
 
 ## Experimental offline portfolio report
 
-The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision workflow once and embeds its exact result in a new local HTML file. Browser interactions only select existing cases; no extra server route, live simulation, external dependency or production claim.
+The [report generator](PORTFOLIO_DEMO.md) calls the existing synthetic decision workflow and embeds its exact result in a new local HTML file. Optional `--agent-preview` reuses the bounded M2-03 scripted provider and fixed tools with matching request values, then embeds the minimized report and digest-linked untrusted draft separately. The page handles explicit history abstention before reading success-only fields. Browser interactions only select precomputed cases; no new server route, live provider, external dependency or production claim.
 
 The synthetic retail workflow reuses its generated XLSX bytes within one
 request only. The two release audits and reader invocations remain separate;

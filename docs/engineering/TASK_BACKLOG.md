@@ -1,6 +1,43 @@
 # Task backlog — prioritized execution register
 
-## Current checkpoint - 2026-11-28
+## Current checkpoint after PR #92 - 2026-11-28
+
+Remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, merge commit for
+PR #92. PRs #87–#92 are integrated; PR #87's corrected
+M2-03 implementation is available to downstream work. Earlier gate evidence
+remains scoped to its exact recorded SHA. A complete local gate has now passed
+on integrated `main` SHA `843fc5f4ea8310947f2626f486561de56401f3e2`: 1,027
+tests, zero skips and all six checks with WorldKernel at the reviewed pin.
+Receipt: `results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+The current local candidate
+`codex/m2-05-usable-decision-workflow-20261128` advances M2-05 with an
+abstention-safe offline report and opt-in scripted orchestration preview.
+The documentation-inclusive candidate is [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+Immediately before its latest status refresh, code head
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b` passed 1,032 tests, zero skips,
+all six local checks and the success/abstention CLI smoke. Status commits
+`4fa243b654c96e928ea480bd9ee25b4d5157eddc` and
+`34141eba0d4ea6b76b06fdce57a89afddd6743de` and recorded PR #99 head
+`82962e06e7d76f901092721a32742f59b261cef7` each passed 1,032 tests, zero skips
+and all six local checks. The latest receipt is
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`;
+its exact official query returned 12 successes and two conditional skips.
+These results are SHA-specific. The live PR body carries the current head and
+exact evidence; gate each later commit.
+
+| Work | Current state | Next acceptance gate |
+| --- | --- | --- |
+| PRs #87–#92 | Integrated normally; #87 fixes nested provider-turn revalidation, and #89–#92 deliver retrieval/search improvements. | Do not replay commits; preserve branches needed by separate work. Do not transfer PR-head gate evidence to merge SHAs. |
+| PRs #60/#61 | Merged into main; GitHub reports merge commits `8c871adeef3b7f74e0c30cd20be49c86105dca78` and `eea114554615509d8a0286621b81c323c2779c7a`. | Treat as incorporated; do not replay their commits or refer to them as open. |
+| M1C-04 Census research stack (#93–#98, #100–#103) | Ten open, mergeable PRs in a linear synthetic research stack: #93 is ready; #94–#98 and #100–#103 are drafts. No review submissions, inline threads or comments were returned for #93–#103. Exact #98/#100 tree-equivalent gates were independently run earlier (1,116/1,162 tests); #101–#103 descriptions report local gates, not independently rerun in this checkpoint. Only #93 has official checks (12 success, two conditional skips); exact queries for #100–#103 returned no checks because their base branches are feature branches. | Keep all results fictional. Do not extend the stack. Obtain independent review and owner integration decision in topological order; B-01/B-02 prohibit real bytes or empirical claims pending source rights and temporal evidence. Missing checks and PR-body gate claims are not independent validation. |
+| M1 synthetic vertical slice | Integrated through PR #62; remains experimental. | Keep M1 empirical and production criteria open until source rights, availability evidence, temporal evaluation and service controls pass. |
+| UCI #352 pilot | MM-024 invoice classification is present; 11 dedicated synthetic regressions pass. A focused rerun collected 18 cases across four regression functions and passed. The earlier approved source attempt already excluded unverified prefixes before aggregation but stopped above 250,000 product-day groups, with no projection or metrics. | No retry, chunking, sampling or cap increase; preserve aggregate-only exclusions and delete private snapshot by `2026-12-26`. |
+| B-01/B-02 Census lane | Protocol and metadata only; no Census/FRED/ALFRED bytes acquired. The current inspection-only proposal is the October 2026 Advance MARTS report (CB26-181), dated November 17; the public historical index excludes the current release and lists through September. FRED/ALFRED remains NO-GO under posted development and retention terms. | Obtain owner approval for this exact single report PDF for quarantine/notice/provenance/schema inspection only. That approval must not be treated as permission to parse values or acquire other vintages; then obtain separate artifact rights and processing approval. Continue the fixed synthetic-only evaluation protocol. |
+| M2-03 | Integrated by PR #87 as local experimental scripted orchestration. | Preserve fixed tools, budgets, untrusted draft and no-action boundary; live provider remains gated by B-05. |
+| M2-05 | [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) is open against `main`, mergeable and ready for independent review. Code head `b8695a3` passed 1,032 tests, zero skips, all six local checks and CLI smoke; recorded documentation head `82962e0` passed the same gate and had 12 official successes plus two conditional skips. | Await independent review; the live PR body carries current exact head and evidence. Gate each later head. Do not claim a production capability from this experimental local report. |
+| B-08 Actions | Owner reports included allowance exhausted, but recorded PR #99 head `82962e0` ran on GitHub-hosted runners: 12 check-runs succeeded and two were conditionally skipped. GitHub documents standard hosted runners as free for public repositories. Missing runs on #94–#98/#100–#103 follow parent-branch targets and `pull_request.branches: [main]` filters; this neither explains historical pre-start failures nor proves account billing state. | Keep zero spend and protections. No self-hosted runner: public pull-request code is untrusted, and GitHub warns against exposing persistent self-hosted resources to it. Keep local gate for stacked branches. |
+
+## Historical pre-#87 checkpoint - 2026-11-28
 
 Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
 PR #88 as a child of `d41e661`; its exact SHA has 11 successful official check-runs.
@@ -95,7 +132,7 @@ preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.
 [MASTER_EXECUTION_PLAN](MASTER_EXECUTION_PLAN.md),
 [DEFINITION_OF_DONE](DEFINITION_OF_DONE.md) and [BLOCKERS](BLOCKERS.md).
 
-## Current follow-up queue
+## Historical follow-up queue before PR #87 integration
 
 | Work | Current state | Next acceptance gate |
 | --- | --- | --- |
@@ -285,9 +322,9 @@ coverage/selection diagnostic modules merely because they are local.
 | --- | --- | --- | --- | --- |
 | M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
-| M2-03 | P1 | review correction; re-review pending | M1F-02, M2-01 | PR #87 implements typed local orchestration over fixed fictional retrieval and decision tools. Commit `48e7efe` serializes the exact provider `AgentTurn` into plain data and strictly reconstructs nested contracts before use; regressions reproduce empty summaries, status/citation mismatch, malformed tool calls and missing payloads. That exact commit passed 1,019 tests, zero skips and six local checks. Current published SHA and official checks are in the live PR. No live provider, route, persistence or action authority. |
+| M2-03 | P1 | integrated (experimental) | M1F-02, M2-01 | PR #87 merged normally at `45a84d2`. Typed local orchestration uses fixed fictional retrieval and decision tools. Nested provider turns are rebuilt from plain data and strictly revalidated before use; regression coverage is in `tests/unit/test_bounded_tool_orchestration.py`. No live provider, route, persistence or action authority. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
-| M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
+| M2-05 | P1 | in progress | M1F-02, M2-03 | Optional offline report composes the existing M1 output and scripted M2-03 report with identical bounded inputs, digest linkage, receipts, mandatory review and abstention rendering. API remains unchanged. Complete docs/gates on exact head; then independent review. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |
 
 Security and budget controls cannot be postponed until after an

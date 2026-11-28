@@ -1,6 +1,94 @@
 # Agent handoff — continuous engineering and documentation standard
 
-## Current continuation - 2026-11-28
+## Current continuation after PR #92 - 2026-11-28
+
+- Current remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2` (PR #92
+  merge). PRs #87–#92 are integrated. M2-03 is available at merge
+  commit `45a84d2a4528755a88fccf8d766b5ef18518b9d8`; never replay its commits.
+  The complete local gate has passed on this exact integrated main SHA: 1,027
+  tests, zero skips and all six checks with WorldKernel at reviewed commit
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+  `results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+  This is local evidence, not official Actions.
+- Current branch `codex/m2-05-usable-decision-workflow-20261128` carries
+  M2-05 work on top of current `main`. It keeps default M1 report payload
+  unchanged, adds opt-in `--agent-preview` using existing fixed M2-03 tools,
+  displays digest-linked untrusted drafts and receipts, and handles missing
+  history as abstention plus fixed `tool_failed`. Feature commit
+  `2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed 1,032 tests, zero skips
+  and all six local checks with the pinned WorldKernel; its receipt is recorded
+  in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The restricted sandbox
+  blocked the Windows Proactor loopback socketpair at `test_health`; the same
+  test and complete gate passed outside that restriction with no code changes.
+  Published as [PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+  Immediately before the documentation status refresh, its code head was
+  `b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that SHA passed 1,032 tests,
+  zero skips, all six local checks and the CLI smoke. Status commits
+  `4fa243b654c96e928ea480bd9ee25b4d5157eddc`,
+  `34141eba0d4ea6b76b06fdce57a89afddd6743de` and then-published head
+  `82962e06e7d76f901092721a32742f59b261cef7` each passed 1,032 tests, zero
+  skips and all six local checks. The latest receipt is recorded in
+  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md); its exact official query returned
+  12 successes and two conditional skips (`deploy`, `release-rehearsal`). A
+  manual CLI smoke on code head `b8695a3` parsed both the completed experimental
+  report and history-unavailable abstention, with no action authority. Results
+  apply only to named SHAs. The live PR body is authoritative for current head
+  and evidence; re-run the full local gate after any commit.
+  See [change request](changes/M2_05_LOCAL_DECISION_REPORT.md).
+- PRs #60 and #61 have since merged into main at
+  `8c871adeef3b7f74e0c30cd20be49c86105dca78` and
+  `eea114554615509d8a0286621b81c323c2779c7a`; do not replay them. Ten open,
+  mergeable PRs (#93–#98 and #100–#103) form a linear synthetic M1C-04 stack.
+  #93 is ready for independent review; all descendants remain drafts. The
+  review timeline returned no review submissions, inline threads or comments
+  across #93–#103. Local six-check gates passed earlier on exact #98 and #100
+  trees (1,116 and 1,162 tests, zero skips); #101–#103 descriptions report
+  local gates not independently rerun in this checkpoint. Only #93 has
+  official workflow results among the research stack: 12 successes and two
+  conditional skips; exact #100–#103 queries returned no checks.
+  All current `pull_request` workflows filter target branch `main`, while
+  those descendants target parent feature branches; the filter explains their
+  missing runs. This does not explain historical pre-start failures or reveal
+  account allowance. Keep local gates for the stack; don't treat absent checks
+  as passing CI or change workflow filters without an explicit decision.
+  Keep the stack synthetic and wait for independent review and the separate
+  integration decision. Do not extend synthetic scope while review queue grows.
+  B-01/B-02 still block real-source bytes and empirical
+  claims pending source-specific rights and temporal-evidence decisions.
+- No public API, capability status, live provider, persistence, data source or
+  authorization contract changes. Keep M2-03 and M1F-02 experimental. Keep
+  generated fixtures in automated tests.
+- The approved UCI #352 local attempt exceeded the 250,000 group ceiling; no
+  complete projection or metrics exist. MM-024 is implemented and 11 synthetic
+  regressions pass: only uppercase `C`+six digits is cancellation, other
+  single ASCII-letter prefixes are excluded under one aggregate count, and
+  other formats fail closed. The stopped attempt already excluded these rows
+  before aggregation, so the clarification does not change its group count.
+  A focused rerun of four synthetic regression functions collected 18 cases
+  and passed; no private source was reread. Do not retry, chunk, sample or
+  raise the cap; retain snapshot deletion deadline `2026-12-26`. Census/ALFRED
+  bytes remain gated by B-01/B-02; WorldKernel service isolation remains B-04.
+- Census metadata was refreshed on 2026-11-28. The proposed one-file
+  inspection target is the October 2026 Advance MARTS report (CB26-181),
+  released November 17; the historical archive omits current data and presently
+  lists through September. This is still only a candidate: no Census/FRED/
+  ALFRED bytes or credentials were acquired. Request explicit approval before
+  fetching that exact PDF, restrict the first stage to quarantined notice,
+  provenance and schema inspection, then require separate rights and
+  processing decisions. Current FRED Services/API terms prohibit the proposed
+  software-development and archive route; see the updated
+  [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+- Owner reports GitHub Actions included allowance exhausted; zero paid spend
+  remains. The latest exact PR #99 head (`82962e0`) nevertheless ran 14
+  check-runs on the public repository: 12 succeeded and two were conditionally
+  skipped. GitHub documents standard hosted runners as free for public repos;
+  this observed run does not explain historical pre-start failures or disclose
+  account state. Public PR code is untrusted, so GitHub's security guidance
+  makes a persistent self-hosted runner an unsafe substitute. Keep the local
+  gate for stacked PRs. Do not spend, change filters/protections, register a
+  runner or weaken/skip checks. See [B-08](BLOCKERS.md).
+
+## Historical pre-#87 continuation - 2026-11-28
 
 - Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
   PR #88. Its cryptography 50 constraint and lock update has 11 successful

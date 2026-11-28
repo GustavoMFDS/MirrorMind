@@ -341,8 +341,8 @@
       "id": "local_interactive_synthetic_report",
       "status": "experimental",
       "source": "examples/m2_portfolio_demo.py",
-      "test": "tests/integration/test_portfolio_demo.py::test_offline_report_preserves_exact_workflow_result",
-      "notes": "Local CLI generates one new standalone HTML snapshot of the exact fictional workflow, with client-side selection of precomputed lead-time cases. No hosted UI, live recomputation in browser, source ingestion, new engine or business authorization. Optional WorldKernel not invoked."
+      "test": "tests/integration/test_portfolio_demo.py::test_agent_preview_cli_embeds_local_orchestration_result",
+      "notes": "Local CLI generates one new standalone HTML snapshot of the exact fictional workflow; optional --agent-preview composes existing scripted M2-03 tools with matching bounded inputs and displays separate status, minimized receipts and an untrusted digest-linked draft. Missing-history abstention is rendered without success-only fields. No hosted UI, live provider, API change, source ingestion, browser-DOM execution, new engine or business authorization."
     }
   ]
 }

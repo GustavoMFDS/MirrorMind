@@ -1,20 +1,149 @@
 # Local quality gate and historical Actions fallback
 
-## Current continuation - 2026-11-28
+## Current continuation after PR #92 - 2026-11-28
 
-Latest `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`; its 11 official
-check-runs succeeded on that exact SHA. PR #87's exact candidate state and
-current gate receipt/check status are maintained in the live PR body. The
-previous published candidate
-`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate and all
-applicable official checks, but independent review reproduced a provider-turn
-validation bypass via Pydantic `model_copy(update=...)`. The current candidate
-revalidates from plain data and adds nested-model/missing-payload regressions.
-Its exact gate and checks were queried separately; none of the earlier results
-below transfer to it. Re-query after any later push. No workflow, required
-check, protection, runner or spending setting was changed.
+Current remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, merged
+through PR #92. PRs #87–#92 are integrated. Feature commit
+`2d592bd50b15c3b0d463c94e58a70be78553e8a6` on the M2-05 candidate passed the
+complete six-check local gate with 1,032 tests and zero skips. WorldKernel
+`0.0.1` was installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-2d592bd50b15c3b0d463c94e58a70be78553e8a6-workspace.json`.
+One existing Starlette/httpx deprecation warning appeared. An initial run
+inside the restricted sandbox timed out in `test_health`; faulthandler showed
+Python 3.13's Windows Proactor blocked while accepting the local half of its
+asyncio socketpair. The unchanged test passed in 1.38s outside the sandbox,
+and the unchanged complete gate passed in 45.01s with loopback available. This
+is local environment evidence, not official Actions. The documentation-
+inclusive initial PR head was also gated as recorded below. Immediately before
+the latest documentation status refresh, PR #99 code head
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b` passed the complete local gate:
+1,032 tests, zero skips and all six checks with the exact WorldKernel pin.
+Receipt: `results/local-quality-gate-b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b-workspace.json`.
+The parsed CLI smoke also confirmed the completed experimental report and
+history-abstention path both keep action authority false. Documentation status
+commit `4fa243b654c96e928ea480bd9ee25b4d5157eddc` also passed 1,032 tests,
+zero skips and all six checks; receipt:
+`results/local-quality-gate-4fa243b654c96e928ea480bd9ee25b4d5157eddc-workspace.json`.
+Its exact GitHub query returned 12 successes and two conditional skips.
+Published documentation head `82962e06e7d76f901092721a32742f59b261cef7` also
+passed 1,032 tests, zero skips and all six checks; receipt:
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`.
+Its exact GitHub query returned 14 check-runs: 12 successes and two conditional
+skips (`deploy`, `release-rehearsal`). These results apply only to their named
+SHAs. Every later commit requires a fresh gate; the live PR body carries the
+current SHA and receipt. Do not transfer local results between `main` and PR
+heads or present them as CI. The owner-reported allowance exhaustion and zero
+paid spend remain constraints, but the latest PR #99 checks did execute on
+GitHub-hosted runners. GitHub documents standard hosted runners as free for
+public repositories ([billing](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+This does not explain historical pre-start failures or disclose account state.
+No workflow, check, protection, runner or spending setting was changed.
 
-## Historical main and exact-head gate status - 2026-11-27
+### Integrated main baseline — exact SHA `843fc5f`
+
+After PR #92, the detached integrated `main` commit
+`843fc5f4ea8310947f2626f486561de56401f3e2` passed the complete local gate on
+2026-11-28. Python 3.13.5 and WorldKernel `0.0.1` from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a` were used. Results: 1,027 tests,
+zero skips, and successful pytest, Ruff, symbol catalog, atlas, evidence and
+capability checks. One existing Starlette/httpx deprecation warning appeared.
+Receipt:
+`results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+The receipt explicitly marks GitHub Actions as not checked; this is local
+evidence for the integrated SHA only.
+
+### PR stack workflow routing — 2026-11-28
+
+The prior exact-head query returned 14 check-runs for PR #93 head
+`76f04028a53bc1b3d008d500b31ca1f75ceb5a08` and PR #99 head
+`4fa243b654c96e928ea480bd9ee25b4d5157eddc`: 12 successes and two conditional
+skips on each. For both heads, `deploy` and `release-rehearsal` were skipped.
+The current `pull_request` triggers in the [CI](../../.github/workflows/ci.yml),
+[docs](../../.github/workflows/docs.yml),
+[quality](../../.github/workflows/quality.yml),
+[pages](../../.github/workflows/pages.yml), and
+[research maintenance](../../.github/workflows/research-maintenance.yml)
+workflows all use `branches: [main]`. [GitHub's event documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+defines this filter as matching the PR's target branch. PRs #94–#98 and
+#100–#103 target parent feature branches, so they produce no workflow runs
+under the current configuration.
+That explains these absent checks; it does not explain earlier pre-start
+failures or establish the owner-reported allowance. No workflow filter,
+protection, check or spending setting was changed. Keep the exact local gate
+for these stacked PRs, and never represent a missing workflow as a pass. See
+[PR #93](https://github.com/GustavoMFDS/MirrorMind/pull/93) and
+[PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99) for the exact run
+links on the two main-targeting heads.
+
+### PR #99 current exact head and runner assessment — 2026-11-28
+
+On exact head `82962e06e7d76f901092721a32742f59b261cef7`, GitHub returned 14
+check-runs: 12 `success`, two `skipped` by workflow conditions (`deploy` and
+`release-rehearsal`), none failed or pending. Evidence: [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551380),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551300),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551330),
+[site build and conditional deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551347),
+[benchmark and conditional rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170551403),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/141057881049), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46170546405).
+These are official checks for that PR head, not local-gate evidence.
+
+This public repository ran those jobs on GitHub-hosted runners. GitHub's
+billing guidance documents standard hosted runners as free for public
+repositories. This observation establishes neither account allowance nor a
+cause for historical pre-start failures. A self-hosted runner is not a safe
+zero-cost substitute for public pull-request code: the candidate code executes
+on the worker, and GitHub warns about persistent compromise of self-hosted
+hosts exposed to untrusted pull requests ([secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[runner access](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)).
+No self-hosted runner, workflow change or protection change is recommended or
+configured. Preserve the owner-approved local gate for stacked PRs.
+
+The combined discussion timelines for open PRs #93–#103 returned no comments
+or review submissions. Separate review-thread lists for #101–#103 were empty.
+Exact check queries for #100–#103 returned no check-runs; those branches
+target feature branches and are excluded by the repository's current
+main-target filter.
+The PR bodies report local evidence for #101–#103; those exact gates were not
+reproduced in this status update.
+
+### PR #99 local gate — initial exact head `62912e11`
+
+The documentation-inclusive initial PR head
+`62912e1174c84cefe3f17009c695600b315072d3` passed the six-check local gate:
+1,032 pytest tests, zero skips, and successful Ruff, catalog, atlas, evidence,
+and capability checks. Runtime was Python 3.13.5; WorldKernel `0.0.1` came from
+reviewed commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Runtime was 46.20
+seconds with one existing Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-62912e1174c84cefe3f17009c695600b315072d3-workspace.json`.
+This local validation is independent from official PR-head checks below.
+
+### PR #99 official checks — initial exact head `62912e11`
+
+The initial published PR #99 head
+`62912e1174c84cefe3f17009c695600b315072d3` returned 14 check-runs: 12
+concluded `success` and two concluded `skipped` under workflow conditions.
+The skipped jobs were `deploy` and `release-rehearsal`. The successful checks
+were `test`, Python 3.12 and 3.13 compatibility, `quality`, `package`,
+`container-smoke`, `symbol-catalog`, `build-site`, `benchmark`, CodeQL, and
+`Analyze (actions)` / `Analyze (python)`. Exact run records: [test and
+compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603884),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603895),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603994),
+[site build and conditional deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603934),
+[benchmark and conditional rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109603902),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140870088636), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46109602633).
+These results are scoped to the initial PR head and do not replace the local
+gate or transfer to later commits. The [live PR](https://github.com/GustavoMFDS/MirrorMind/pull/99)
+is authoritative for the current SHA and check state.
+
+The previous paragraphs below are historical exact-SHA records. Their results
+must not be transferred to current `main` or the M2-05 candidate.
+
+## Historical main and exact-head gate status before PR #92 - 2026-11-28
 
 Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following the
 normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, the
@@ -58,7 +187,9 @@ container check succeeded for this exact head. A commit-status API query for
 `2d71d39` returned `pending` with no status entries while the check-run API
 returned the 14 completed results; use the check-run collection for these
 workflow claims.
-PR #87 remains open and unmerged. Any later PR head needs its own check query.
+At this historical checkpoint PR #87 had not yet merged; it was later
+integrated at `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. Any later PR head
+needs its own check query.
 
 The synchronized M2-03 worktree initially failed the newly required
 whole-package mypy check with 25 diagnostics in three files. Those diagnostics
@@ -751,7 +882,7 @@ checked by these local runs. No runner, paid usage, workflow change or
 protection bypass was used. The independent #62 review also recommends keeping
 the Census changes separate and retaining #52–#59 as ancestors of the merge.
 
-## PR #87 latest-main synchronization - 2026-11-28
+## Historical PR #87 latest-main synchronization before #92 - 2026-11-28
 
 PR #88 merged cryptography 50 dependency-lock update into `main` at
 `00e6cf11ac05a94055242573fd3cfc18086bad10`. The M2-03 branch incorporates
@@ -819,6 +950,24 @@ capability ledger). Receipt:
 One existing Starlette/httpx TestClient deprecation warning remains. The
 focused M2-03 unit suite passed 25 tests; whole-package mypy passed all 71
 source modules. The receipt records official Actions as not checked by the
-local script. Query the live PR for the exact current published SHA and its
-separate official check runs; neither this local receipt nor earlier Actions
-results transfer to another head.
+local script. Its official check runs were queried separately at the later
+published head; see the exact-head record below.
+
+### PR #87 published head `c69f93b` — documentation-inclusive correction
+
+The exact published head
+`c69f93b5428b0b1bb265c7039e38d1d99ea90d10` passed the complete owner-authorized
+local gate: **1,019 tests, zero skips and all six checks**. Receipt:
+`results/local-quality-gate-c69f93b5428b0b1bb265c7039e38d1d99ea90d10-workspace.json`.
+The exact check-run query returned 14 jobs: 12 `success` and two conditional
+`skipped` (`deploy`, `release-rehearsal`). See [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213546),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213543),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213563),
+[site build](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213498),
+[benchmark](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102213579),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140847079791) and
+[workflow analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46102209976).
+The local Docker engine was unavailable; official container smoke passed.
+The independent review thread was unresolved at this checkpoint. PR #87 later
+merged normally at `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. These
+exact-SHA results do not transfer to a later commit.

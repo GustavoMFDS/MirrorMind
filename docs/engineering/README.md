@@ -143,4 +143,4 @@ These conventions are shared across WorldKernel, MirrorMind and NeuroShift, but 
   No independently trusted currentness or real ingestion permission is
   provided by this repository. See its [change request](changes/G01_CURRENT_HEAD_SERVICE_RESPONSE.md).
 
-- [Offline interactive report](PORTFOLIO_DEMO.md): presentation of existing synthetic results, not a hosted UI.
+- [Offline interactive report](PORTFOLIO_DEMO.md): exact M1 snapshot with an optional bounded M2-03 scripted preview and explicit abstention rendering; not a hosted UI.

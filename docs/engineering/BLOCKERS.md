@@ -1,6 +1,75 @@
 # Blocker and decision register
 
-## Current B-07/B-08 reconciliation - 2026-11-28
+## Current B-07/B-08 reconciliation after PR #92 - 2026-11-28
+
+Current `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`; PRs #87–#92 are
+merged. The complete local gate on this exact integrated SHA passed 1,027
+tests, zero skips and all six checks with the reviewed WorldKernel pin; the
+receipt is recorded in [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). This is
+local validation, not official Actions. The owner reports GitHub Actions'
+included allowance exhausted; no paid spend, purchased capacity or limit
+increase is authorized. Current exact-head queries found workflows on #93
+(`76f0402`) and recorded #99 (`82962e0`), with 12 successes and two conditional
+skips each. The #99 check-runs executed on GitHub-hosted runners. GitHub
+documents standard hosted runners as free for public repositories
+([billing](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+This confirms current workflow execution for that head, not current account
+allowance or the cause of historical pre-start failures. The missing
+runs on #94–#98 and #100–#103 have a separate, source-confirmed explanation: every
+repository `pull_request` workflow currently filters `branches: [main]` in
+[`ci.yml`](../../.github/workflows/ci.yml),
+[`docs.yml`](../../.github/workflows/docs.yml),
+[`quality.yml`](../../.github/workflows/quality.yml),
+[`pages.yml`](../../.github/workflows/pages.yml), and
+[`research-maintenance.yml`](../../.github/workflows/research-maintenance.yml).
+GitHub evaluates that filter against the PR target/base branch, and #94–#98
+and #100–#103 target parent feature branches. Their missing checks are therefore
+expected from the configured filter; they are not evidence of billing failure
+or successful validation. This does not explain historical pre-start failures
+or establish current account allowance. Preserve the local gate for the
+stacked PRs; do not alter workflow filters, spend, runners, checks or
+protections without a separate decision.
+
+Use the temporary complete local gate in
+[LOCAL_QUALITY_GATE.md](LOCAL_QUALITY_GATE.md). No check, verifier, branch
+protection or workflow was disabled. This is a public repository, and public
+pull-request workflows execute candidate code. GitHub warns that untrusted
+workflow code may persistently compromise self-hosted runners and advises
+against exposing them to public-repository pull requests
+([secure use](https://docs.github.com/en/actions/reference/security/secure-use),
+[runner access](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access),
+[runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)).
+An ephemeral VM can reduce persistence, but still executes untrusted code and
+requires isolated provisioning, teardown and secret/egress controls; no such
+zero-cost trusted environment is established here. Do not register a runner or
+change workflows. The latest exact PR #99 checks ran on hosted runners; this
+does not identify the cause of historical pre-start failures.
+
+B-07 now has a reproduced local boundary: on exact candidate SHA
+`2d592bd50b15c3b0d463c94e58a70be78553e8a6`, pytest stalled in the first
+`TestClient` request while Python 3.13's Windows Proactor created its local
+socketpair (`socket.accept`). The same isolated `test_health` passed in 1.38s
+outside the restricted sandbox, and the unchanged complete gate passed
+1,032 tests, zero skips and all six checks in 45.01s with loopback available.
+The sandbox timeout is not attributed to product behavior. The permanent
+local gate remains fail-closed and unchanged; see the exact receipt in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Preserve zero paid spend and do
+not infer official Actions state from this local result.
+
+PR #99 documentation head is
+`82962e06e7d76f901092721a32742f59b261cef7`. Its local six-check gate passed
+1,032 tests, zero skips and all six checks; receipt:
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`.
+The exact official query returned 14 check-runs: 12 completed successes and
+two workflow-conditional skips (`deploy`, `release-rehearsal`). The CLI smoke
+is separately scoped to earlier code head `b8695a3`; it parsed the success and
+history-abstention reports and confirmed action authority remained false.
+These results apply only to their named SHAs. The live PR body holds current
+evidence:
+[PR #99](https://github.com/GustavoMFDS/MirrorMind/pull/99).
+
+## Historical pre-#87 B-07/B-08 reconciliation - 2026-11-28
 
 PR #88 merged the cryptography 50 lock update at exact `main` commit
 `00e6cf11ac05a94055242573fd3cfc18086bad10`. Its exact-SHA query returned 11
@@ -14,20 +83,15 @@ This is evidence for that exact main SHA only. It does not establish billing
 state or explain earlier pre-start failures. Preserve the owner's zero-paid-
 spend limit and do not change protections, workflow checks or runners.
 
-At sync start, PR #87 was open at published head
-`48fc51db949cf5626b50d3f97b5304388a9b1076`. That exact head had 12
-successful check-runs and two conditional skips
-(`deploy`, `release-rehearsal`). The local branch now contains latest `main`
-through merge `66b591317b375a270b5d0ed682c94e161d52a956`; its full local gate
-passed 1,014 tests, zero skips and all six checks. The sync commit was not yet
-published at that checkpoint. The subsequently published exact head
-`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed its 1,014-test local gate
-and had 12 successful check-runs plus two conditional skips. Independent
-review identified a reproducible nested Pydantic validation bypass; the
-correction commit `48e7efe98aae2df3811302fbf7875a2bd8a48dc4` corrects it with
-regression tests and strict turn reconstruction. Its exact local gate passed
-1,019 tests, zero skips and six checks. Exact current candidate evidence and
-re-review state are in the live PR. Never transfer results between SHAs.
+PR #87 is open at published head
+`c69f93b5428b0b1bb265c7039e38d1d99ea90d10`, which includes the latest `main`
+through merge `66b591317b375a270b5d0ed682c94e161d52a956`, the provider-turn
+correction and its documentation. Its exact local gate passed 1,019 tests,
+zero skips and all six checks. Its exact official query returned 12 successful
+check-runs and two workflow-conditional skips (`deploy`, `release-rehearsal`).
+The independent review thread remains unresolved. These results do not
+constitute reviewer approval or merge authorization; never transfer evidence
+between SHAs.
 
 On exact local SHA `66b5913`, the restricted sandbox attempt produced no
 output and was interrupted before the local gate's 900-second limit; no
@@ -38,10 +102,10 @@ with the known `TestClient`/Windows loopback limitation for this run; it does
 not resolve the separate historical `8f906b8` incident. See [B-07 below](#b-07-pr-65-restricted-sandbox-diagnostic---c6c1326)
 and [the gate record](LOCAL_QUALITY_GATE.md).
 
-## Current B-08 reconciliation - 2026-11-28
+## Historical B-08 reconciliation before #87 merge - 2026-11-28
 
-The exact published M2-03 head `b931bbe2279dd0865f535e0f56e5165ed402ef96`
-also received 12 successful official check-runs and two conditional skips on
+The exact published M2-03 head `c69f93b5428b0b1bb265c7039e38d1d99ea90d10`
+received 12 successful official check-runs and two conditional skips on
 2026-11-28. These runs show Actions executed on that SHA but do not explain
 historical pre-start failures or identify an account billing cause. B-08's
 historical cause remains unresolved; the current M2-03 review correction is
@@ -114,14 +178,14 @@ that has not actually been granted.
 
 | ID | Scope / current state | Evidence required to resolve | Decision owner | Safe work while blocked |
 | --- | --- | --- | --- | --- |
-| B-01 | UCI #352 local non-commercial research is owner-approved in MM-017–MM-024, with CC BY 4.0 attribution, local-only retention and a 2026-12-26 deletion deadline. The 2026-11-27 clarification classifies six-digit identifiers as normal, uppercase `C` plus six digits as cancellation, and other single-ASCII-letter-plus-six-digit identifiers as an aggregate-only unverified class; unsupported forms fail closed. The unchanged 250,000 product-day group ceiling was exceeded before a complete projection, so no evaluation or metrics exist. The clarification changes only exclusion counts, not accepted sales rows/group cardinality; it does not permit chunking, sampling or a larger cap. Census remains preparation-only. Direct Census original-release files are the proposed route. Census public-use guidance calls for attribution when deriving estimates, and a general policy says employee-created works are generally not copyright-protected in the United States, with exceptions; neither resolves notices, provenance or third-party rights for a specific MARTS artifact. FRED/ALFRED is NO-GO under current posted FRED Services/API terms for MirrorMind development and local archival use: ALFRED is within the Services terms, which prohibit storage/cache/archive, and the API additionally prohibits software/AI-development use. Reconsider only if the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate series-owner rights are cleared. This does not determine rights for original Census files. M5 remains NO-GO. | Preserve the UCI snapshot controls and do not claim empirical results without a complete projection. Any design that changes the source-call bounds, samples/partitions observations, or resumes after another fail-closed stop needs separate owner approval and model-review acceptance. For Census, preflight the public publisher index, landing pages, posted notices and available provenance. Before acquiring any file bytes, the owner must approve one exact direct-from-Census artifact for quarantined local inspection of embedded notices, provenance and schema only; no value parsing or evaluation. Delete the inspection copy immediately after review and no later than the expressly approved retention limit. Then obtain artifact-specific rights review for ambiguity and a separate owner go/no-go for processing, including bounded purpose, attribution, access-controlled storage, proposed 30-day maximum retention/deletion and outputs. Citation guidance is not a file-specific license. Do not create a FRED API key, fetch FRED/ALFRED values or retain service content unless the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate underlying series rights permit the use and retention. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine direct-source manifest, archive completeness checks, deletion checklist and privacy controls without retrieving real Census bytes |
-| B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's annual-revision index spans January 1992 through August 2026 but does not prove first-release completeness. Census's current advance schedule states 8:30 a.m. without a timezone in its table; historical same-day corrections may be ambiguous. The April 2025 annual revision removed nonemployers, creating a source-definition boundary. | For UCI, retain event-time labeling and never derive `available_on` from `InvoiceDate`. Before Census acquisition, approve and inventory original first-release artifacts and exact publication boundaries, methodology edition, and a pre-registered chronological 60/20/20 development/validation/locked-holdout split. Use date-only strict-before cutoffs where timestamps/timezones cannot be authenticated; preserve gaps and abstain. Compare first estimates against fixed lag-12 and trailing-12-month baselines at 1/3/6 horizons; keep later revisions separate. Require 60 matched holdout origins per horizon for proposed 12-month block-bootstrap uncertainty, or report descriptive metrics only. Same-day corrections without orderable timestamps/original bytes remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census release inventory and versioned manifest without fabricating vintages |
+| B-01 | UCI #352 local non-commercial research is owner-approved in MM-017–MM-024, with CC BY 4.0 attribution, local-only retention and a 2026-12-26 deletion deadline. The 2026-11-27 clarification classifies six-digit identifiers as normal, uppercase `C` plus six digits as cancellation, and other single-ASCII-letter-plus-six-digit identifiers as an aggregate-only unverified class; unsupported forms fail closed. The unchanged 250,000 product-day group ceiling was exceeded before a complete projection, so no evaluation or metrics exist. The clarification changes only exclusion counts, not accepted sales rows/group cardinality; it does not permit chunking, sampling or a larger cap. Census remains preparation-only. Direct Census original-release files are the proposed route; the current one-file inspection candidate is the October 2026 Advance MARTS report PDF (CB26-181, release November 17), with September 2026 now in the historical archive. This identifies a candidate only, not permission. Census public-use guidance calls for attribution when deriving estimates, and a general policy says employee-created works are generally not copyright-protected in the United States, with exceptions; neither resolves notices, provenance or third-party rights for a specific MARTS artifact. FRED/ALFRED is NO-GO under current posted FRED Services/API terms for MirrorMind development and local archival use: ALFRED is within the Services terms, which prohibit storage/cache/archive and software/AI development; the API also prohibits these uses. Reconsider only if the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate series-owner rights are cleared. This does not determine rights for original Census files. M5 remains NO-GO. | Preserve the UCI snapshot controls and do not claim empirical results without a complete projection. Any design that changes the source-call bounds, samples/partitions observations, or resumes after another fail-closed stop needs separate owner approval and model-review acceptance. For Census, preflight the public publisher index, landing pages, posted notices and available provenance. Before acquiring any file bytes, the owner must approve the exact October 2026 report artifact listed in the [Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md) for quarantined local inspection of embedded notices, provenance and schema only; no value parsing or evaluation. Delete the inspection copy immediately after review and no later than the expressly approved retention limit. Then obtain artifact-specific rights review for ambiguity and a separate owner go/no-go for processing, including bounded purpose, attribution, access-controlled storage, proposed 30-day maximum retention/deletion and outputs. Citation guidance is not a file-specific license. Do not create a FRED API key, fetch FRED/ALFRED values or retain service content unless the St. Louis Fed authorizes the intended service/API use in writing or changes its terms, and separate underlying series rights permit the use and retention. | Project owner / appropriate rights reviewer | Keep automated tests synthetic; refine direct-source manifest, archive completeness checks, deletion checklist and privacy controls without retrieving real Census bytes |
+| B-02 | Point-in-time availability and empirical evaluation remain open. UCI `InvoiceDate` is event time with no verified first-publication field; all UCI output stays `event_time_retrospective_unverified_availability`. Census's annual-revision index spans January 1992 through August 2026 but does not prove first-release completeness. The current Census sales page identifies the October 2026 advance release dated November 17, while the historical release page explicitly omits current data and presently lists September as its newest month; neither establishes a complete first-release vintage set. The schedule says 8:30 a.m.; the current release-specific metadata indicates Eastern Standard Time, but historical same-day corrections may still be ambiguous. The April 2025 annual revision removed nonemployers, creating a source-definition boundary. | For UCI, retain event-time labeling and never derive `available_on` from `InvoiceDate`. Before Census acquisition, approve and inventory original first-release artifacts and exact publication boundaries, methodology edition, and a pre-registered chronological 60/20/20 development/validation/locked-holdout split. Use date-only strict-before cutoffs where timestamps/timezones cannot be authenticated; preserve gaps and abstain. Compare first estimates against fixed lag-12 and trailing-12-month baselines at 1/3/6 horizons; keep later revisions separate. Require 60 matched holdout origins per horizon for proposed 12-month block-bootstrap uncertainty, or report descriptive metrics only. Same-day corrections without orderable timestamps/original bytes remain ambiguous. | Project owner with evidence/model reviewer | Maintain synthetic delay, missingness, leakage and holdout regressions; refine the Census release inventory and versioned manifest without fabricating vintages |
 | B-03 | Independent checkpoint authority operation | G-01–03 implementation evidence, actual separately protected storage, signer key custody, operator identity/access policy, monitoring, recovery and audit review | Owner / infrastructure and security operator | Local test service, generated keys, fake/loopback transport, bounded CAS, restore and fork tests; no external deployment |
 | B-04 | The narrow local M1 runtime is implemented against reviewed WorldKernel commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`: M1E-02 runs its synthetic inventory demo and M1E-04 adds a fixed MirrorMind-owned policy world through the same optional worker. PR #62 was independently approved and merged at `a456034`; its post-merge exact-main gate passed 835 tests, zero skips and six checks with the reviewed pin (final review evidence: [comment 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)). Broader service acceptance remains open: local process bounds do not provide hostile-code isolation, CPU/memory quotas, deployment controls or a general plugin contract. No WorldKernel repository edit is in scope. | Broader service acceptance needs its own contract, admission, authentication and operational isolation review; any external-repository change needs separate authorization. | Project owner / engine maintainer | Keep the dependency optional and policy world code-owned; use synthetic tests and document broader service limitations |
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | Historical pre-start failures remain unexplained; alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine contexts, #78 head `8c8f862` six observed jobs, #79 head `b5c1bcc` its applicable jobs, #80 head `e6a28ac` eight jobs, #81 head `41e6db8` nine jobs, #82 head `f6fa2ed` 12 checks, and PR #87 exact head `2d71d39` 12 of 14 check-runs. On #87, deploy and release rehearsal were skipped by workflow conditions; all observed applicable checks passed, including container smoke. These results are scoped to their exact PR heads, not merge commits or later `main`. The owner-reported included-allowance exhaustion and zero-paid-spend decision remain; public standard `ubuntu-latest` runners are documented as free, but account billing was not inspected. | Preserve exact-head evidence; if a pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue the exact-head check-run query and complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-08 | The owner reports included allowance exhaustion, but exact PR head #93 (`76f0402`) and PR #99 status-refresh head `4fa243b` each had 12 successful runs and two conditional skips. Current `pull_request` workflows filter target branch `main`; #94–#98/#100 target parent branches and therefore have no workflow runs under these filters. This explains those missing runs, but not historical pre-start failures or account allowance. No paid spend or limit increase is authorized. | Preserve exact-SHA evidence; if a failure recurs, collect the run annotation/state before assigning a cause. | GitHub account owner / repository administrator | Use authorized temporary local full gate for stacked branches. No runner, protection, workflow or verifier changes; do not spend, register runner or infer billing cause. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 
@@ -480,37 +544,38 @@ Its `test` job `139737946303` returned no steps, and the log endpoint returned
 second observation likewise exposes no repository test output or specific
 cause. The exact-head local gate passed separately; it is not official CI.
 
-### Self-hosted runner option
+### Self-hosted runner option — public-repository reassessment, 2026-11-28
 
-The repository API reported this repository as private at the time of review.
-GitHub still warns that private/internal repositories require caution because
-read-access users may fork and submit pull requests that compromise a
-persistent self-hosted runner, its workspace, secrets or token. GitHub
-recommends self-hosted runners for private repositories over public ones, but
-its security guide does not treat a private repository as an isolated trust
-boundary. See [GitHub's secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-and [runner setup guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners).
+The current repository API reports this repository as public; the earlier
+private-repository premise in this assessment is stale. All current
+`pull_request` workflows target `main` and execute candidate code on
+`ubuntu-latest`. For example, `ci.yml` installs dependencies and runs pytest
+and Ruff, while `quality.yml` runs pytest, mypy, package builds and a container
+smoke. Checkout disables persisted Git credentials and the PR jobs have
+read-only repository permissions, but this does not protect a self-hosted host
+from malicious code executed by a public pull request. The manual `main` Pages
+deployment job also requests `pages: write` and `id-token: write`; a persistent
+shared runner could carry compromise from an untrusted PR job into a later
+privileged job.
 
-If the account owner chooses this path, the candidate design is one
-just-in-time runner in a disposable VM per check, destroyed after the job;
-no persistent workstation or shared runner. Keep the existing job IDs,
-commands, test selection and required-check names. Restrict assignment to this
-repository and the two required workflows; accept only `pull_request` jobs,
-never run pull-request code through `pull_request_target`; provide no
-repository secrets and a read-only short-lived `GITHUB_TOKEN`; block access to
-host credentials, sibling projects, Docker control sockets and private
-networks; allow only dependency/artifact endpoints required by the existing
-workflows; retain an auditable image, egress and teardown record. A clean
-single-use VM is a proposed containment boundary, not a demonstrated security
-guarantee or a confirmed way to clear the current account-level start gate.
-Cloud runner costs, repository-admin setup, fork policy and billing behavior
-remain unverified. GitHub documents that self-hosted runners do not incur its
-per-minute Actions charge, but the owner still pays for compute and operation.
-No evidence shows that changing runner type clears the observed pre-job account
-gate. See [billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+GitHub recommends using self-hosted runners only with private repositories
+because public forks can submit workflows that execute dangerous code. Its
+security reference says self-hosted runners are not guaranteed to use clean,
+ephemeral VMs and can be persistently compromised. See [runner-group guidance](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access)
+and [secure-use guidance](https://docs.github.com/en/actions/reference/security/secure-use).
+
+Therefore, do **not** register a self-hosted runner as a zero-cost workaround
+for this public repository. A just-in-time single-job runner in a disposable
+VM, with no secrets, a short-lived read-only token, restricted egress and
+verified destruction, could reduce cross-job persistence; it would still run
+untrusted PR code and would require a trusted VM provisioner, registration
+credentials, patching, logs, teardown and compute. No such zero-cost isolated
+host or account-level runner policy has been verified. Changing runner type
+also has no evidence of clearing a GitHub account-level start gate. Continue
+the owner-authorized local six-check gate. No workflow, check, protection,
+runner or spending setting was changed and no runner was registered. See the
 [self-hosted runner reference](https://docs.github.com/en/actions/reference/runners/self-hosted-runners)
-and [JIT runner removal](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/remove-runners).
-No self-hosted runner or workflow change was made.
+for its one-job ephemeral option and limits.
 
 ### PR #57 owner continuation and exact-head evidence
 

@@ -1051,7 +1051,7 @@ forecast claims or cross-repository changes.
 - [Generator](../../examples/m2_portfolio_demo.py): bounded request, exact result embedding and explicit new HTML file.
 - [HTML template](../../examples/portfolio_demo.html): offline client-side exploration of precomputed cases.
 - [Report tests](../../tests/integration/test_portfolio_demo.py): exact JSON, escaping and failure contracts.
-- [Report guide](PORTFOLIO_DEMO.md) and [change request](changes/PORT_07_LOCAL_INTERACTIVE_REPORT.md): walkthrough, limits and acceptance.
+- [Report guide](PORTFOLIO_DEMO.md), [original report change request](changes/PORT_07_LOCAL_INTERACTIVE_REPORT.md) and [M2-05 composition/abstention change request](changes/M2_05_LOCAL_DECISION_REPORT.md): architecture, limits, acceptance and evidence.
 
 ## First public alpha release
 

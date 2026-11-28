@@ -1,6 +1,125 @@
 # Project status — current baseline, 2026-11-28
 
-## Current review reconciliation - 2026-11-28
+## Current baseline after PR #92 - 2026-11-28
+
+Remote `main` is `843fc5f4ea8310947f2626f486561de56401f3e2`, the normal merge
+of PR #92. PRs #87–#92 are integrated; #87 delivers the
+bounded M2-03 orchestration correction at merge commit
+`45a84d2a4528755a88fccf8d766b5ef18518b9d8`. Earlier local and hosted results
+remain scoped to their recorded PR heads. The complete six-check local gate
+has now passed on exact integrated `main` SHA
+`843fc5f4ea8310947f2626f486561de56401f3e2`: 1,027 tests, zero skips, Ruff,
+catalog, atlas, evidence and capabilities. WorldKernel `0.0.1` came from
+reviewed source commit `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Receipt:
+`results/local-quality-gate-main-843fc5f4ea8310947f2626f486561de56401f3e2-workspace.json`.
+One existing Starlette/httpx deprecation warning appeared. This is local
+validation, not official Actions.
+
+The current local candidate is
+`codex/m2-05-usable-decision-workflow-20261128`, based on `843fc5f` through
+ancestry-preserving merges. Its M2-05 change request is
+[M2_05_LOCAL_DECISION_REPORT](changes/M2_05_LOCAL_DECISION_REPORT.md).
+Implementation reuses M1F-02 and M2-03: default offline HTML keeps the exact
+M1 payload; explicit `--agent-preview` adds matching bounded inputs, fixed
+tool receipts and an untrusted digest-linked draft. An incomplete-history
+request renders abstention and sanitized `tool_failed`. No API route, live
+provider, persistence, data source or authorization is added. Capability
+labels remain experimental. Feature commit
+`2d592bd50b15c3b0d463c94e58a70be78553e8a6` passed the complete local gate:
+1,032 tests, zero skips and all six checks, with the exact WorldKernel pin.
+The receipt is
+`results/local-quality-gate-2d592bd50b15c3b0d463c94e58a70be78553e8a6-workspace.json`.
+That SHA had one existing Starlette/httpx deprecation warning. A sandboxed
+attempt timed out in `test_health` because the Windows Proactor loopback
+socketpair blocked inside the restricted sandbox; the unchanged isolated test
+and full gate passed with loopback available. This is local environment
+evidence, not official Actions. Any later documentation commit needs its own
+exact-head gate before publication; the final PR body carries the published
+SHA and receipt.
+PR #99 is open against `main`, mergeable and ready for independent review.
+Immediately before the status refresh commit, its code head was
+`b8695a37ccb8ec68aebc75003f5d3c0ed3879e5b`; that exact SHA passed 1,032 tests,
+zero skips, all six local checks and the documented CLI smoke. The status
+commits `4fa243b654c96e928ea480bd9ee25b4d5157eddc` and
+`34141eba0d4ea6b76b06fdce57a89afddd6743de` and recorded PR #99 head
+`82962e06e7d76f901092721a32742f59b261cef7` also passed 1,032 tests, zero skips
+and all six local checks. The current receipt is
+`results/local-quality-gate-82962e06e7d76f901092721a32742f59b261cef7-workspace.json`.
+Its exact official query returned 14 check-runs: 12 successes and two
+workflow-conditional skips (`deploy` and `release-rehearsal`), with no failures
+or pending checks. These results apply only to their named SHAs. The live PR
+body is authoritative for any later head and its validation state.
+
+B-08 assessment: this repository is public. The latest PR #99 checks executed
+on GitHub-hosted runners, and GitHub documents standard hosted runners as free
+for public repositories. This observation does not explain historical
+pre-start failures or disclose account allowance. Self-hosted runners are not
+a safe replacement for public pull-request code: GitHub warns that untrusted
+workflow code can persistently compromise a host. No runner, workflow, check,
+protection or spending setting changed; see [B-08](BLOCKERS.md).
+
+The open M1C-04 Census stack now contains #93–#98 and #100–#103: ten open,
+mergeable PRs with ancestry in order (#94 through #98, then #100, #101, #102
+and #103). #93 is ready for independent review; all descendants remain drafts.
+The review timeline returned no review submissions, inline threads or comments
+for #93–#103. Earlier exact tree gates independently passed on #98 and #100;
+the #101–#103 PR descriptions report local gates, not independently rerun in
+this checkpoint. Only #93 has official check-runs (12 successes, two
+conditional skips); exact queries for #100–#103 returned no checks. All repository
+`pull_request` workflows currently filter target branch `main`; those
+descendant PRs target parent feature branches, so their missing runs follow the
+configured filter rather than establishing a billing cause. Do not treat
+missing checks as validation.
+
+These PRs extend the same synthetic Census research lane with exact bivariate,
+temporal and three-axis probability methods. They add no source acquisition,
+real-data evaluation or M1 production capability. Stop extending this stack;
+keep it synthetic and defer integration until independent review and a
+topological owner decision.
+
+The full local gate passed on the exact remote #98 tree
+`dda5ebd9ca82cd0b2bbc2b6eec4e330afa3710e1` (1,116 tests, zero skips, six
+checks) and the integrated #100 tree
+`6df9d110c05fb8238d1d0270abcd835c46396b0c` (1,162 tests, zero skips, six
+checks). Both runs used scratch commits with matching tree IDs, not the
+published commit IDs; local-only receipts are
+`results/local-quality-gate-pr98-tree-dda5ebd9ca82cd0b2bbc2b6eec4e330afa3710e1.json`
+and
+`results/local-quality-gate-pr100-tree-6df9d110c05fb8238d1d0270abcd835c46396b0c.json`.
+These are local tree-equivalent results, not official CI or independent
+review. Keep the stack synthetic and
+do not integrate without the separate review/decision. B-01/B-02 still block
+real-source bytes and empirical claims. PRs #60 and #61 are already merged;
+do not replay their commits.
+
+The user-approved UCI #352 local reader profile remains tightly scoped. The
+MM-024 classification is implemented and its synthetic regression set passed
+11 tests: six-digit IDs process normally, exact uppercase `C` plus six digits
+means cancellation, other single ASCII-letter prefixes are excluded under one
+aggregate class, and other forms fail closed. The earlier attempt already
+excluded those rows before aggregation and exceeded the 250,000 product-day
+group ceiling; no complete projection or metrics exist. A focused rerun of
+four synthetic regression functions collected 18 cases and passed; no private
+source was reread. Do not retry, chunk,
+sample or expand the cap. Delete the private snapshot by `2026-12-26`.
+B-01/B-02 still gate Census/ALFRED source bytes and empirical temporal claims;
+B-04 remains a separate WorldKernel production-isolation gate.
+
+Metadata review on 2026-11-28 refreshed the B-01/B-02 artifact candidate to
+the October 2026 Advance MARTS report (CB26-181), released November 17. The
+official sales page exposes the report and tables, while the historical
+archive explicitly omits the most-current data and currently lists through
+September. This is a proposal for one quarantined notice/provenance/schema
+inspection only; it is not source approval. No Census/FRED/ALFRED bytes or
+credentials were acquired. Keep the direct Census artifact behind owner
+approval and a separate rights/processing decision, and keep FRED/ALFRED
+excluded under current service/API terms. See the
+[Census vintage protocol](CENSUS_ALFRED_VINTAGE_PROTOCOL.md).
+
+Historical continuation text below records the pre-#87-merge baseline and
+must not be read as current PR or branch status.
+
+## Historical pre-#87 review reconciliation - 2026-11-28
 
 Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
 PR #88 as a direct child

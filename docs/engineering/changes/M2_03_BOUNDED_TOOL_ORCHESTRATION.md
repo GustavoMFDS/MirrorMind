@@ -99,8 +99,12 @@ must become the fixed `invalid_provider_turn` refusal without echoing details.
   `48e7efe98aae2df3811302fbf7875a2bd8a48dc4`: 25 focused tests, 1,019 full
   tests, zero skips and all six checks passed; receipt is recorded in
   `LOCAL_QUALITY_GATE.md`.
-- [ ] Query applicable official checks for the published correction head and
-  request independent re-review after recording those exact-SHA results.
+- [x] Query applicable official checks and request independent re-review for
+  the published head `c69f93b5428b0b1bb265c7039e38d1d99ea90d10`; 12 checks
+  succeeded and two were skipped by workflow conditions. PR #87 was later
+  integrated into `main` at merge commit
+  `45a84d2a4528755a88fccf8d766b5ef18518b9d8`; this change request records the
+  delivered experimental capability, not a claim of live-provider readiness.
 
 ## 3. Impact map
 
@@ -136,7 +140,8 @@ requires B-05 approval and a separate security/evaluation review.
 4. Add the deterministic demo and source-linked technical/learning guide.
 5. Regenerate the symbol catalog, stage new paths before checking atlas
    coverage, and run the complete local quality gate.
-6. Publish one M2-03 review PR; do not merge it or #82.
+6. Publish one M2-03 review PR and allow integration only through its ordinary
+   review and repository protections; do not replay already integrated #82.
 
 ## 6. Evidence after implementation
 
@@ -152,14 +157,14 @@ commit, complete local-gate receipt and current official check state are
 recorded in the live [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87);
 do not transfer prior checkpoint results to that commit.
 
-- Commit / PR: implementation checkpoint `0922c72`; the open review PR is
-  [#87](https://github.com/GustavoMFDS/MirrorMind/pull/87). Exact local gate
-  checkpoints `07a6cdc0` and `2d71d39` passed; independent review and
-  integration remain separate acceptance decisions.
+- Commit / PR: implementation checkpoint `0922c72`; delivered through
+  [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) at merge commit
+  `45a84d2a4528755a88fccf8d766b5ef18518b9d8`. The review correction is part
+  of the integrated baseline.
 - Modified symbols and files: `modules/agents/contracts.py`,
   `modules/agents/registry.py`, `modules/agents/synthetic_tools.py`, the
   focused unit test, and source walkthrough/learning/debugging/evidence docs.
-- Tests executed, result, environment: focused suite passes 21 tests; exact
+- Tests executed, result, environment: focused suite passed 21 tests; exact
   commit `2d71d39` passed 1,014 tests, zero skips and all six local checks with
   the reviewed WorldKernel pin. Code-identical commit `07a6cdc0` passed 86.92%
   coverage and both mypy jobs. The queried exact PR #87 head `2d71d39` had 12
@@ -176,7 +181,8 @@ do not transfer prior checkpoint results to that commit.
   change request, system map, status, backlog, handoff, local gate and evidence
   map; each local validation receipt stays scoped to its exact SHA.
 - Known limitations / follow-up: no live provider or semantic entailment
-  checking; M2-04 and M2-05 remain separate.
+  checking; M2-04 remains separate and M2-05 composes this experimental path
+  only in the optional offline report.
 - Container/remote validation: local Docker engine unavailable, while the
   exact PR #87 head's official container-smoke check passed. The owner-reported
   included-allowance exhaustion and zero-paid budget remain unchanged; public
