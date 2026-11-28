@@ -354,7 +354,10 @@ Curated claims: **MM-MF-001** successful trace separation;
 **MM-MF-004** deterministic CLI replay;
 **MM-MF-005** request-sensitive trace identity;
 **MM-MF-006** complete result digest binding; and
-**MM-MF-007** trace-bound policy-modeling caveats. See the reviewed
+**MM-MF-007** trace-bound policy-modeling caveats;
+**MM-MF-008** per-run fictional byte reuse with independent release audits
+(`test_workflow_reuses_only_generated_bytes_with_independent_cutoffs`).
+See the reviewed
 [evidence map](EVIDENCE_MAP.json) for exact test selectors and limitations.
 The `MM-WKPW-004` claim additionally covers the selected-engine and parity
 execution records.
