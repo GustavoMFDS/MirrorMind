@@ -15,6 +15,7 @@ from datetime import date
 from hashlib import sha256
 from hmac import compare_digest
 from pathlib import Path
+from typing import NoReturn
 
 from mirrormind.modules.evidence.intake_review import SourceReviewPacket
 from mirrormind.modules.evidence.local_checkpoint_publisher import (
@@ -95,7 +96,7 @@ class _HistoricalSignatureVerifier(LocalCheckpointPublisher):
         self._operators = dict(operator_keys)
         self._bootstrap = bootstrap
 
-    def publish(self, *args: object, **kwargs: object) -> None:
+    def publish(self, *args: object, **kwargs: object) -> NoReturn:
         raise ValueError("integrated verifier cannot publish outside policy transaction")
 
 

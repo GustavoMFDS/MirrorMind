@@ -329,15 +329,17 @@ def _parse_result(raw: bytes) -> dict[str, object]:
 def _validate_mapped_exchange_request(request: dict[str, object]) -> None:
     if type(request) is not dict or set(request) != _EXCHANGE_REQUEST_FIELDS:
         raise WorldKernelMappingError("mapped request fields do not match exchange v1")
+    world = request.get("world")
+    world_version = request.get("world_version")
     if (
         request.get("schema_version") != "worldkernel.simulation.v1"
-        or type(request.get("world")) is not str
-        or not request["world"].strip()
-        or type(request.get("world_version")) is not str
-        or not request["world_version"].strip()
+        or type(world) is not str
+        or not world.strip()
+        or type(world_version) is not str
+        or not world_version.strip()
     ):
         raise WorldKernelMappingError("mapped request identity is invalid")
-    if _ALLOWED_EXCHANGE_WORLDS.get(request["world"]) != request["world_version"]:
+    if _ALLOWED_EXCHANGE_WORLDS.get(world) != world_version:
         raise WorldKernelMappingError("mapped request world revision is not allowlisted")
     for field, minimum in (("steps", 1), ("runs", 1), ("seed", 0)):
         value = request.get(field)
@@ -354,19 +356,20 @@ def _validate_mapped_exchange_request(request: dict[str, object]) -> None:
         WorldKernelOperatorLimits(**limits)
     except (TypeError, ValueError) as exc:
         raise WorldKernelMappingError("mapped request limits exceed local ceilings") from exc
+    steps = request["steps"]
+    runs = request["runs"]
+    assert type(steps) is int and type(runs) is int  # validated above
     if (
-        request["steps"] > limits["max_steps"]
-        or request["runs"] > limits["max_runs"]
-        or request["steps"] * request["runs"]
+        steps > limits["max_steps"]
+        or runs > limits["max_runs"]
+        or steps * runs
         > limits["max_total_transitions"]
     ):
         raise WorldKernelMappingError("mapped request exceeds its declared limits")
-    if any(
-        type(request[field]) is not dict
-        or any(type(key) is not str for key in request[field])
-        for field in ("initial_state", "parameters")
-    ):
-        raise WorldKernelMappingError("mapped request state and parameters must be objects")
+    for field in ("initial_state", "parameters"):
+        mapping = request[field]
+        if type(mapping) is not dict or any(type(key) is not str for key in mapping):
+            raise WorldKernelMappingError("mapped request state and parameters must be objects")
 
 
 def _validate_exchange_result_envelope(
@@ -434,7 +437,12 @@ def _validate_result(
         new_sold = state["sold"] - starting_sold
         if starting_stock + new_orders * reorder_quantity != state["stock"] + new_sold:
             raise WorldKernelRunnerError("WorldKernel result violates inventory balance")
-        normalized_states.append({key: state[key] for key in sorted(state)})
+        normalized: dict[str, int] = {}
+        for key in sorted(state):
+            value = state[key]
+            assert type(value) is int  # validated above
+            normalized[key] = value
+        normalized_states.append(normalized)
     return normalized_states, assumptions
 
 

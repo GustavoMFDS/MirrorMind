@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 from pydantic import ValidationError
 
-from mirrormind.core.decision_trace import DecisionTraceV2
+from mirrormind.core.decision_trace import DecisionTrace, DecisionTraceV2
 from mirrormind.domains.retail.declared_releases import DeclaredProductRelease
 from mirrormind.domains.retail.synthetic_decision_workflow import (
     SyntheticDecisionWorkflowRequest,
@@ -457,3 +457,21 @@ def test_incomplete_or_late_history_abstains_without_running_policy_test_double(
 def test_workflow_request_rejects_out_of_range_and_untyped_options(payload):
     with pytest.raises(ValueError):
         SyntheticDecisionWorkflowRequest.model_validate(payload)
+
+
+def test_trace_version_literals_remain_exact_and_v2_retains_legacy_subtype():
+    result = run_synthetic_decision_workflow(
+        SyntheticDecisionWorkflowRequest(as_of=AS_OF, replications=1, seed=17)
+    )
+    trace = DecisionTraceV2.model_validate(result["trace"])
+    assert isinstance(trace, DecisionTrace)
+    assert DecisionTrace.model_json_schema()["properties"]["schema_version"]["const"] == (
+        "mirrormind.decision_trace.v1"
+    )
+    assert DecisionTraceV2.model_json_schema()["properties"]["schema_version"]["const"] == (
+        "mirrormind.decision_trace.v2"
+    )
+    payload = trace.model_dump(mode="python")
+    payload["schema_version"] = "mirrormind.decision_trace.v1"
+    with pytest.raises(ValidationError, match="schema_version"):
+        DecisionTraceV2.model_validate(payload)
