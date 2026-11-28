@@ -1063,3 +1063,9 @@ Run the [bivariate tests](../../tests/unit/test_census_bivariate.py).
 Compare the independent projection with positive and negative joint
 laws sharing both marginals. Explain why marginal scoring alone cannot
 distinguish them and why joint Brier excess depends on the reference.
+
+### Exercise: reproduce dependence estimates
+Run the [bivariate study](../../examples/m1_census_bivariate_study.py).
+Compare matched marginal CRPS, joint Brier and reference excess under
+stable association, independence and a change in dependence. Discuss
+why the oracle is privileged and why association is not causal effect.

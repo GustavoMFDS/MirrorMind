@@ -349,3 +349,7 @@ The [bivariate core](../../src/mirrormind/domains/retail/census_bivariate.py)
 has guided finite exact joint mathematical behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not fitted dependence
 or empirical calibration.
+
+The [bivariate study](../../examples/m1_census_bivariate_study.py)
+has guided exact fictional comparison and receipt replay in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical skill.

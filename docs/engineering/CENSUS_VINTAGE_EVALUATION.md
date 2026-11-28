@@ -840,3 +840,41 @@ covariance and invalid input rejection. Run
 `python -m pytest -q tests/unit/test_census_bivariate.py`.
 See [change request](changes/M1C_04_CENSUS_BIVARIATE.md).
 Independent review pending. No API, journal or univariate changes.
+
+## Fixed fictional bivariate study protocol
+The [bivariate study](../../examples/m1_census_bivariate_study.py)
+commits the fixed design and declared Git revision before scoring.
+Four scenarios (positive, independent, negative and positive-to-negative
+shift at increment 53), seeds 111001..111004, 16 paths each, origins
+48..57, horizons 1/3/6. Counter-hash fixtures use first SHA-256 byte
+modulo eight; paired increments are independent over time with each
+axis +/-4. Compare fixed independent, smoothed joint last24 (one
+pseudocount per cell), its matched independent projection and a
+privileged true-law reference. All use identical observed targets.
+The joint and matched product forecasts have identical marginals.
+Exact group means include multiclass Brier, reference excess, marginal
+CRPS on each axis, simultaneous-positive event Brier and probability,
+observed event rate and covariance. Each group has a streaming event
+transcript digest. No inference or operational calibration claim.
+
+    python -m examples.m1_census_bivariate_study prepare --revision REV
+    python -m examples.m1_census_bivariate_study run --revision REV --expected STUDY_SHA256
+    python -m examples.m1_census_bivariate_study demo --revision REV
+
+Prepare does not score. Run requires a caller-retained commitment;
+demo self-generates one. Both execution modes replay the whole report.
+verify_study compares canonical bytes at most 1 MiB, excluding stdout
+newline. No imported records, journal, holdout, winner, independent
+registration, runtime attestation, causal effect or temporal
+autocorrelation. These are deterministic fixtures, not independent
+statistical samples; origins and horizons overlap.
+
+Proposed evidence MM-CEN-033:
+`test_bivariate_study_exact_replay_and_matched_marginals` verifies
+fixed digests, complete replay and exact matched marginal score parity.
+Other tests reject rehashed forgery and mismatched commitment before
+scoring, and test future invariance and invalid inputs.
+See [change request](changes/M1C_04_CENSUS_BIVARIATE_STUDY.md).
+Independent review pending.
+
+Run `python -m pytest -q tests/integration/test_census_bivariate_study.py`.

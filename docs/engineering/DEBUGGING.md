@@ -540,3 +540,9 @@ bounds and total mass. Independent projection can exceed the joint mass
 bound even when the original law is valid; reject rather than approximate
 or silently clip. An out-of-support observation within the allowed
 displacement bounds has zero predicted mass, not an invalid score.
+
+### Bivariate study replay
+Check the declared revision and retained design digest. Verify exact
+canonical receipt bytes, not a rehashed altered report. Compare joint
+and matched product within each scenario and horizon; equal marginal
+scores are expected, not evidence of equal joint predictions.

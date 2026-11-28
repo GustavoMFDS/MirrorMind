@@ -384,3 +384,9 @@ The [pure joint module](../../src/mirrormind/domains/retail/census_bivariate.py)
 adds bounded exact two-axis PMFs, convolution, marginal projections and
 joint scoring without modifying the univariate protocol. No connection
 to data ingestion, provider dispatch, learned models or persistence.
+
+### Fictional bivariate study
+The [bivariate study](../../examples/m1_census_bivariate_study.py)
+uses the exact joint core, fixed counter-hash scenarios, matched
+marginals, exact joint scores and full local receipt replay. No new
+API, persistence, source or authority.

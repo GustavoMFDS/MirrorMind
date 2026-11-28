@@ -504,6 +504,13 @@
     "limitation": "Exact bounded bivariate probability operations only; no learned dependence, serial dynamics, reference authenticity, causal effects, calibration or operational forecasting. Independent review pending."
   },
   {
+    "id": "MM-CEN-033",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_bivariate_study.py",
+    "function": "test_bivariate_study_exact_replay_and_matched_marginals",
+    "limitation": "Fixed synthetic bivariate study and local replay only; no independent registration, causal effects, serial dependence, empirical calibration or statistical winner. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

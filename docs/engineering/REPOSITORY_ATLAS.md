@@ -1215,3 +1215,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_bivariate.py](../../src/mirrormind/domains/retail/census_bivariate.py) | Exact finite joint laws and joint scoring |
 | [tests/unit/test_census_bivariate.py](../../tests/unit/test_census_bivariate.py) | Joint enumeration, marginal parity and rejection |
 | [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE.md](changes/M1C_04_CENSUS_BIVARIATE.md) | Scoped acceptance and impact map |
+
+### Fictional bivariate study
+| Path | Responsibility |
+|---|---|
+| [examples/m1_census_bivariate_study.py](../../examples/m1_census_bivariate_study.py) | Fixed study commitment, matched marginal comparison and replay |
+| [tests/integration/test_census_bivariate_study.py](../../tests/integration/test_census_bivariate_study.py) | Exact replay, forgery and causal input tests |
+| [docs/engineering/changes/M1C_04_CENSUS_BIVARIATE_STUDY.md](changes/M1C_04_CENSUS_BIVARIATE_STUDY.md) | Scoped acceptance and impact map |

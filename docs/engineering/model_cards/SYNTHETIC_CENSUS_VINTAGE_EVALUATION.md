@@ -179,3 +179,8 @@ The separate experimental bivariate core adds bounded joint mathematical
 operations, not a fitted predictor. Equal marginal scores do not
 establish accurate dependence; joint Brier excess is reference-relative.
 No empirical calibration or causal effect is established.
+
+The fixed fictional bivariate study estimates contemporaneous dependence
+from observed pairs and compares matched independent forecasts. It uses
+independent-in-time increments and a privileged reference; no causal
+effects, empirical calibration, holdout or statistical winner.
