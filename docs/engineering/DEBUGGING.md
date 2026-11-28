@@ -491,3 +491,8 @@ unavailable rather than zero. The output is not a historical journal.
 Use the same allowlisted scenario and declared revision in prepare and
 run. A different scenario changes the input manifest, even though its
 schedule is identical. Do not recompute the commitment after seeing results.
+
+### Comparative observatory
+Use --scenario all with a new absolute HTML output path. If a scenario
+fails, no success report is written. Inspect individual scenarios with
+the same declared revision; do not pool or replace missing results.

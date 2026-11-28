@@ -85,3 +85,79 @@ def test_observatory_cli_exclusive_output(tmp_path):
     assert invoke(args).returncode == 2
     assert target.read_bytes() == original
     assert invoke(args[:-1] + ["relative.html"]).returncode == 2
+
+
+def test_comparative_observatory_replays_all_scenarios_and_unique_anchors():
+    from examples.m1_census_research_runner import SCENARIOS, prepare_report
+
+    html = observatory.build_comparative_observatory(REV, ("validation", "holdout"))
+    assert html == observatory.build_comparative_observatory(REV, ("validation", "holdout"))
+    parser = ReportParser()
+    parser.feed(html)
+    ids = [attrs["id"] for _, attrs in parser.attrs if "id" in attrs]
+    assert len(ids) == len(set(ids))
+    for _, attrs in parser.attrs:
+        if attrs.get("href", "").startswith("#"):
+            assert attrs["href"][1:] in ids
+        if "aria-labelledby" in attrs:
+            assert attrs["aria-labelledby"] in ids
+    assert parser.tags.count("article") == 4
+    assert parser.tags.count("meter") == 24
+    assert parser.tags.count("table") == 18
+    assert parser.tags.count("details") == 16
+    assert not {"script", "iframe", "form", "link", "img"}.intersection(parser.tags)
+    for scenario in SCENARIOS:
+        assert scenario in ids
+        assert scenario + "-validation" in ids
+        assert scenario + "-holdout" in ids
+        assert prepare_report(REV, scenario)["experiment_sha256"] in html
+    assert "Replayed split receipts<strong>8</strong>" in html
+    assert "No statistical winner" in html
+    assert "no cross-scenario pooling or ranking" in html
+    assert "80.00" in html and "64.20" in html
+    assert "0.00" in html
+    assert "paired_losses" not in html
+
+
+def test_comparative_prepares_catalog_before_scoring(monkeypatch):
+    from examples.m1_census_research_runner import SCENARIOS
+
+    events = []
+    prepare = observatory.prepare_report
+    run = observatory.run_research
+
+    def prepare_spy(revision, scenario):
+        events.append(("prepare", scenario))
+        return prepare(revision, scenario)
+
+    def run_spy(revision, **kwargs):
+        events.append(("run", kwargs["scenario"]))
+        return run(revision, **kwargs)
+
+    monkeypatch.setattr(observatory, "prepare_report", prepare_spy)
+    monkeypatch.setattr(observatory, "run_research", run_spy)
+    html = observatory.build_comparative_observatory(REV, ("validation",))
+    assert events == [("prepare", s) for s in SCENARIOS] + [("run", s) for s in SCENARIOS]
+    assert 'id="compare-validation"' in html
+    assert 'id="compare-holdout"' not in html
+    assert "Replayed split receipts<strong>4</strong>" in html
+
+
+def test_comparative_cli_no_partial_output_on_failure(tmp_path, monkeypatch):
+    target = tmp_path / "comparison.html"
+    run = observatory.run_research
+
+    def fail_second(revision, **kwargs):
+        if kwargs["scenario"] == "fictional-flat-v1":
+            raise ValueError("synthetic failure")
+        return run(revision, **kwargs)
+
+    monkeypatch.setattr(observatory, "run_research", fail_second)
+    monkeypatch.setattr(sys, "argv", [
+        "observatory", "--revision", REV, "--scenario", "all",
+        "--split", "both", "--output", str(target),
+    ])
+    with pytest.raises(SystemExit) as exc:
+        observatory.main()
+    assert exc.value.code == 2
+    assert not target.exists()

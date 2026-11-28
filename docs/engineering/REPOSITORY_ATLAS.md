@@ -1160,3 +1160,8 @@ forecast claims or cross-repository changes.
 |---|---|
 | [tests/integration/test_census_research_scenarios.py](../../tests/integration/test_census_research_scenarios.py) | Scenario identity, compatibility and full replay regressions |
 | [docs/engineering/changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md](changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md) | Scoped acceptance and impact map |
+
+### Comparative observatory change
+| Path | Responsibility |
+|---|---|
+| [docs/engineering/changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md](changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md) | Scoped comparative mode acceptance and impact map |

@@ -1016,3 +1016,8 @@ Compare both baselines on the four fixed fixtures using the same horizon.
 Explain the difference between zero error, unavailable metrics, scored-origin
 coverage and inferential coverage. These designed scenarios are not
 independent stochastic samples; no pooled statistical conclusion follows.
+
+### Exercise: compare designed scenarios
+Generate the all-scenarios observatory with both splits. Inspect metrics
+by horizon, then each scenario's manifest and receipt. Explain why
+identical schedules do not make these independent samples.

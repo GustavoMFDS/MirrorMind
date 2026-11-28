@@ -448,6 +448,13 @@
     "limitation": "Four fixed fictional scenarios and descriptive replay only; no stochastic replication, empirical skill, calibrated inference or independent holdout. Independent review pending."
   },
   {
+    "id": "MM-CEN-025",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_research_observatory.py",
+    "function": "test_comparative_observatory_replays_all_scenarios_and_unique_anchors",
+    "limitation": "Fictional comparison and local deterministic replay only; no independent registration, empirical skill, calibrated inference, browser accessibility certification or deployment. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

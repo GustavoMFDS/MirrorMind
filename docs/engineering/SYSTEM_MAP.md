@@ -335,3 +335,9 @@ fixed value sequences with the same temporal schedule. Each normalized
 manifest binds its scenario to a distinct experiment commitment. The
 [observatory](../../examples/m1_census_research_observatory.py) displays
 the selected scenario. No new core models or authority.
+
+### Comparative fictional observatory
+The [observatory](../../examples/m1_census_research_observatory.py) also
+supports an explicit all-catalog mode with independent scenario receipts,
+per-split comparison tables and separate provenance. Temporary journal,
+no persistent history or new core contracts.

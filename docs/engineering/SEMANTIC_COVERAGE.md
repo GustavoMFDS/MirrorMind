@@ -315,3 +315,7 @@ has guided local static report behavior in
 The closed runner/observatory scenario catalog has guided fictional
 identity and comparison behavior in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md).
 No empirical model selection or inference.
+
+The all-scenarios observatory is guided fictional comparison and local
+replay behavior in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md);
+no inference or operational acceptance.

@@ -138,3 +138,7 @@ level-shift fixtures to the original trend-seasonal example. These fixed
 designed sequences share the origin schedule but have distinct manifests.
 They are not independent random draws, a calibration study or evidence
 of empirical forecasting skill.
+
+The comparative observatory retains separate results and identities for
+the four deterministic fictional scenarios, with no pooled metric,
+ranking, inference or empirical model selection.

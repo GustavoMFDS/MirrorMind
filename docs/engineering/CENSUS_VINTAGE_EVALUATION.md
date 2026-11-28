@@ -558,3 +558,29 @@ and failure before storage. Run
 `python -m pytest -q tests/integration/test_census_research_scenarios.py`.
 See [change request](changes/M1C_04_CENSUS_RESEARCH_SCENARIOS.md).
 Independent review pending.
+
+## Comparative fictional Research Observatory
+Use the explicit all-scenarios mode of the
+[local observatory](../../examples/m1_census_research_observatory.py):
+
+    python -m examples.m1_census_research_observatory --revision REV --scenario all --split both --output ABSOLUTE_HTML_PATH
+
+All four scenario commitments are prepared before scoring. The existing
+runner independently admits and replays each selected split in a shared
+temporary metadata journal. Comparison tables separate validation and
+holdout and display MAE, RMSE, WAPE and scored/requested counts. Each
+scenario retains its own provenance, coverage and abstention details.
+There is no pooling or ranking; four designed sequences are not random
+independent samples. The default single-scenario mode remains available.
+Output is deterministic, exclusively created, offline HTML; no scripts,
+external resources, imported report files or persistent history. All
+commitments are self-generated demo identities, not independent registration.
+
+Proposed evidence MM-CEN-025:
+`test_comparative_observatory_replays_all_scenarios_and_unique_anchors`
+checks eight split receipts, distinct experiment identities, anchors and
+deterministic markup. Separate tests cover prepare-before-score order
+and failed generation without output. Run
+`python -m pytest -q tests/integration/test_census_research_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_COMPARATIVE_OBSERVATORY.md).
+Independent review pending; no accessibility certification.
