@@ -69,7 +69,7 @@ contracts cannot provide.
   without replacing or bypassing its runtime Pydantic contract validation.
 - [x] The CLI example replays deterministically with the scripted provider;
   unit and integration regressions cover normal and adverse paths.
-- [ ] Source walkthrough, architecture map, debugging guide, learning
+- [x] Source walkthrough, architecture map, debugging guide, learning
   exercise, backlog/status/handoff, atlas, symbol catalog, evidence map and
   capability ledger are updated; all repository checks pass.
 
@@ -111,15 +111,18 @@ requires B-05 approval and a separate security/evaluation review.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: implementation checkpoint `0922c72`; exact gate checkpoint
-  `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` passed. Independent review and
-  integration are required before acceptance.
+- Commit / PR: implementation checkpoint `0922c72`; the open review PR is
+  [#87](https://github.com/GustavoMFDS/MirrorMind/pull/87). Exact local gate
+  checkpoints `07a6cdc0` and `7735ae4` passed; independent review and
+  integration remain separate acceptance decisions.
 - Modified symbols and files: `modules/agents/contracts.py`,
   `modules/agents/registry.py`, `modules/agents/synthetic_tools.py`, the
   focused unit test, and source walkthrough/learning/debugging/evidence docs.
 - Tests executed, result, environment: focused suite passes 21 tests; exact
-  commit `07a6cdc0` passed 1,014 tests, zero skips and all six checks with the
-  reviewed WorldKernel pin. Coverage was 86.92%; both mypy jobs passed.
+  commit `7735ae4` passed 1,014 tests, zero skips and all six local checks with
+  the reviewed WorldKernel pin. Code-identical commit `07a6cdc0` passed 86.92%
+  coverage and both mypy jobs. The queried exact PR #87 head `7735ae4` had 12
+  successful official check-runs and two conditionally skipped jobs.
 - Claim IDs and cited test path/function: `MM-AGENT-001` through
   `MM-AGENT-009` in `EVIDENCE_MAP.json`.
 - Evidence/provenance/cutoff and uncertainty: fictional fixtures; M1F-02
@@ -133,9 +136,11 @@ requires B-05 approval and a separate security/evaluation review.
   map; each local validation receipt stays scoped to its exact SHA.
 - Known limitations / follow-up: no live provider or semantic entailment
   checking; M2-04 and M2-05 remain separate.
-- Container/remote validation: local Docker engine unavailable; GitHub Actions
-  unavailable under the owner's exhausted-included-allowance decision. Neither
-  protection nor verifier is bypassed; the PR must retain any required checks.
+- Container/remote validation: local Docker engine unavailable, while the
+  exact PR #87 head's official container-smoke check passed. The owner-reported
+  included-allowance exhaustion and zero-paid budget remain unchanged; public
+  `ubuntu-latest` runs were observed and no billing setting was changed. Neither
+  protection nor verifier is bypassed.
 - Independent explanation: this increment aligns the previously delivered M2-03
   code with main's new whole-package typing gate. Exact built-in containers are
   still traversed recursively and bounded; type annotations and casts are

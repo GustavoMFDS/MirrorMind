@@ -10,9 +10,11 @@ typing gate at `d41e661`. PR #82's exact head
 official checks; its results remain scoped to that PR head. No exact-current-
 main CI result is inferred. The quality workflow now includes an 85% public
 coverage floor, whole-package mypy and strict retrieval typing. This branch
-contains M2-03 and is ancestry-synced through `d41e661`; the previous complete
-local gate at `a27027e` predates the latest sync and does not validate this
-candidate. See [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+contains M2-03 and is ancestry-synced through `d41e661`; PR #87 is open against
+`main`. At the latest queried PR head `7735ae4`, 12 of 14 official check-runs
+passed and the guarded deployment and release rehearsal were skipped. Those
+checks apply only to that exact head; any later head must be queried again.
+See [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
 
 The new whole-package typing gate found 25 diagnostics in the M2-03 contracts,
 registry and M1F-02 adapter. The candidate now resolves these with explicit
@@ -24,9 +26,12 @@ and focused Ruff. The integrated gate then passed on exact commit
 `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca`: 1,014 tests, zero skips, all six
 checks and 86.92% coverage. Whole-package mypy passed across 71 modules and
 strict retrieval mypy across five; package wheel smoke passed outside the
-checkout. All receipts remain scoped to their exact SHA. No official Actions
-result is claimed. Container smoke remains unverified because the local Docker
-engine is unavailable.
+checkout. Exact local gate at `7735ae4` passed 1,014 tests, zero skips and all
+six checks. The exact PR #87 head also had 12 successful official check-runs
+and two conditionally skipped jobs, including a successful container smoke;
+these results remain scoped to `7735ae4`. Local container smoke remains
+unavailable because the host has no Docker engine. All receipts are scoped to
+their exact SHA.
 
 The bounded UCI reader and MM-024 classification are already implemented in
 main with synthetic regressions. The approved source call stopped above the
@@ -111,7 +116,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
 | PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
-| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through `d41e661`. Exact commit `07a6cdc0` passed 1,014 tests, zero skips, all six checks and 86.92% coverage; both mypy jobs and package wheel smoke passed. | Keep the exact gate receipt matched to the final review PR SHA. Local container smoke and official Actions are unavailable/unverified. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
+| M2-03 bounded tool orchestration / [PR #87](https://github.com/GustavoMFDS/MirrorMind/pull/87) | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through `d41e661`; PR remains open and unmerged. Exact commit `7735ae4` passed 1,014 tests, zero skips and all six local checks; code-identical commit `07a6cdc0` passed 86.92% coverage and both mypy jobs; the wheel smoke passed. | The queried PR head `7735ae4` had 12 successful official checks and two conditionally skipped jobs; official container smoke passed. Re-query each later head. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

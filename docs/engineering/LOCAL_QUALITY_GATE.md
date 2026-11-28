@@ -15,6 +15,36 @@ and is historical; later synchronized candidate gates are recorded below.
 The owner-authorized temporary local gate remains separate from official CI.
 Do not infer official status for a SHA without querying that exact commit.
 
+### M2-03 PR #87 official checks — exact head `7735ae4c`
+
+The exact PR #87 head `7735ae4c7b4b92e21a6d48146ffe34c3dcbcb6c0` returned 14
+GitHub check-runs: 12 concluded `success` and two concluded `skipped` under
+their workflow conditions. Successful checks were `test`, compatibility for
+Python 3.12 and 3.13, `quality`, `package`, `container-smoke`,
+`symbol-catalog`, `build-site`, `benchmark`, `CodeQL`, and `Analyze (actions)` /
+`Analyze (python)`. The skipped checks were the main-only `deploy` and manual
+`release-rehearsal`. Run records: [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094267500),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094267652),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094267616),
+[site build and guarded deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094267572),
+[benchmark and guarded release rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094267517),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140822064374), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094264478).
+
+This head ran on the public repository's `ubuntu-latest` standard runners.
+GitHub's billing documentation lists standard hosted runners for public
+repositories as free ([billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+No spending setting or service was changed, and the account billing state was
+not inspected. This observed execution does not establish a cause for the
+historical pre-start failures or supersede the owner's zero-paid-spend limit.
+The local six-check receipt remains a separate result; local container smoke
+is unavailable because this host has no Docker engine, although the official
+container check succeeded for this exact head. A commit-status API query
+returned `pending` with no status entries while the check-run API returned the
+14 completed results; use the check-run collection for these workflow claims.
+PR #87 remains open and unmerged. Any later PR head needs its own check query.
+
 The synchronized M2-03 worktree initially failed the newly required
 whole-package mypy check with 25 diagnostics in three files. Those diagnostics
 are resolved without changing runtime contracts. Focused M2-03 validation now
@@ -43,11 +73,11 @@ package index failed; no build source step had run in that attempt. The built
 wheel was installed to a temporary target and smoke-tested from outside the
 checkout with already installed `.venv` runtime dependencies: license/version,
 API import and the non-authorizing synthetic decision workflow passed. The
-Docker client is installed, but its Linux engine pipe is absent, so container
-smoke was not run locally. GitHub Actions status was not checked for this SHA;
-the owner reports its included allowance is exhausted. These results are local
-only. A later documentation-only candidate needs its own exact-head six-check
-gate before review.
+The Docker client is installed, but its Linux engine pipe is absent, so
+container smoke was not run locally. At this historical checkpoint, official
+Actions was not queried. The owner reports the included allowance exhausted;
+the later exact PR #87 check-run observation is recorded above. These local
+results remain scoped to this SHA.
 
 ### M2-03 documentation evidence sync — exact commit `07a6cdc0`
 

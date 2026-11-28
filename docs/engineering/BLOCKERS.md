@@ -34,26 +34,30 @@ deployment and release-rehearsal jobs were skipped by their conditions. One
 Node.js 20 deprecation annotation was non-blocking. These results are scoped to
 that PR head, not later commits or `main`.
 PR #82 later merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`;
-the 12-check result remains evidence for exact PR head
+its 12-check result remains scoped to exact PR head
 `f6fa2edd80b38b42c3374813816929c2c9d8b2cc`, not the merge commit or current
-`main` `d41e661d298255957979779691c2f9f4dbf36461`. The historical pre-start
+`main` `d41e661d298255957979779691c2f9f4dbf36461`. Historical pre-start
 failures remain unexplained; no billing cause is established.
-The owner has since confirmed that GitHub Actions is unavailable because its
-included allowance is exhausted. This current operating status does not
-establish the cause of historical pre-start failures. Keep zero paid spend and
-use the authorized temporary local gate; no self-hosted runner or protection
-change is authorized or needed for the current local M2-03 work.
-The owner's zero-paid-budget decision remains. No self-hosted runner, spending
-increase, protection change or check bypass is authorized; none is needed to
-continue local M2-03 work. Preserve the local six-check gate and pinned
-WorldKernel validation.
-On M2-03 commit `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca`, the exact local
-gate passed 1,014 tests, zero skips and all six checks; coverage was 86.92%,
-whole-package and strict-retrieval mypy passed, and the wheel smoke passed.
-The current host has no Docker engine pipe, so container smoke remains
-unverified locally. For M2-03, query official checks against the exact PR head
-before recording their status; a local receipt is not CI evidence. Required
-checks and branch protections remain unchanged.
+
+The owner-reported included-allowance exhaustion and zero-paid-budget decision
+remain constraints, and no spending setting, paid service, self-hosted runner,
+protection or verifier was changed. However, the exact PR #87 head
+`7735ae4c7b4b92e21a6d48146ffe34c3dcbcb6c0` did run on GitHub Actions: 12 of 14
+check-runs succeeded; `deploy` and `release-rehearsal` were skipped by their
+workflow conditions. The successful checks include test, Python 3.12/3.13
+compatibility, repository quality/package, container smoke, symbol catalog,
+site build, benchmark, CodeQL and both CodeQL language analyses. Its workflows
+use public `ubuntu-latest` standard runners; GitHub documents those runners as
+free for public repositories ([billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+This observed run does not reveal account billing state and does not explain
+the historical pre-start failures. The local host still has no Docker engine
+pipe, although the official container-smoke check passed for this exact PR
+head. The exact-head links and local receipts are in
+[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Keep local validation separate
+from check-run evidence; query the exact PR head before recording new status.
+No self-hosted runner or protection change is needed for the observed PR run.
+Preserve the local six-check gate and pinned WorldKernel validation.
 
 This register identifies **specific acceptance dependencies**, not
 reasons to suspend all development. Baseline is
@@ -71,7 +75,7 @@ that has not actually been granted.
 | B-05 | Live LLM/provider use and spend | Explicit credentials, permitted provider/data transfer, price/budget approval, evaluation and safe tool access; keep secrets out of Git | Project owner | Local M2-03 scripted provider, fixed synthetic retrieval/decision tools, strict contracts, refusal and prompt-injection regressions; no live provider or provider-data transfer |
 | B-06 | Production environment and release | Approved hosting, identities/tenancy, security and privacy review, budget, operational targets, measured load/failure/backup/restore evidence and license/release decision | Project owner / deployment operator | Local integration, reproducibility, auth/isolation, job/monitoring/recovery tests |
 | B-07 | The historical timeout on `8f906b8` remains unexplained. On integrated candidate `e3e55d4635a2ee0dd355de995ff704cca4afe0e3`, the sandboxed gate timed out in `pytest` at its 900-second limit (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3.json`). A diagnostic faulthandler trace on `tests/integration/test_api.py::test_health` stopped in Starlette TestClient -> AnyIO -> Windows asyncio Proactor self-pipe initialization at `socket.accept`; an isolated `socketpair()` probe also failed to return within five seconds in the sandbox. Without source or test changes, that exact test passed outside the sandbox (one existing Starlette deprecation warning), and the complete exact-head gate passed 989 tests, zero skips and all six checks (receipt `results/local-quality-gate-e3e55d4635a2ee0dd355de995ff704cca4afe0e3-workspace.json`). This reproduces a sandbox loopback-socket restriction for this run; it does not explain the earlier `8f906b8` incident or establish an application defect. | If the symptom recurs, capture the exact SHA, interpreter/dependency paths and a bounded faulthandler/thread dump. Run the unchanged gate with local loopback access only after confirming tests do not use external services; do not raise its 900-second check timeout or skip the health test. | Codex execution sandbox / project maintainer | Preserve both receipts, use the documented six-check gate, and distinguish this environment-specific timeout from a code failure; do not weaken checks or infer the old timeout's cause. |
-| B-08 | Historical pre-start failures remain unexplained; their alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine official contexts, PR #78 head `8c8f862` passed six observed jobs, PR #79 head `b5c1bcc` passed its applicable jobs, PR #80 head `e6a28ac` passed eight observed jobs across five workflows, PR #81 head `41e6db8` passed nine applicable jobs across five workflows, and PR #82 head `f6fa2ed` passed 12 exact-head checks, including coverage, strict retrieval typing, container smoke and CodeQL. Two guarded jobs (deploy and release rehearsal) were skipped by conditions; one non-blocking Node.js 20 deprecation warning was reported. PR #82 merged at `c31ecd6`; these PR-head results are not claimed for that merge SHA or current main `d41e661`. Zero paid usage and no spending-limit increase remain authorized. No self-hosted runner is needed for the observed PR workflows. | Preserve exact-head evidence; if pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue exact-head GitHub checks and the complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
+| B-08 | Historical pre-start failures remain unexplained; alternative account annotations do not identify a cause. PR #77 head `df7c450` passed nine contexts, #78 head `8c8f862` six observed jobs, #79 head `b5c1bcc` its applicable jobs, #80 head `e6a28ac` eight jobs, #81 head `41e6db8` nine jobs, #82 head `f6fa2ed` 12 checks, and PR #87 exact head `7735ae4` 12 of 14 check-runs. On #87, deploy and release rehearsal were skipped by workflow conditions; all observed applicable checks passed, including container smoke. These results are scoped to their exact PR heads, not merge commits or later `main`. The owner-reported included-allowance exhaustion and zero-paid-spend decision remain; public standard `ubuntu-latest` runners are documented as free, but account billing was not inspected. | Preserve exact-head evidence; if a pre-start failure recurs, inspect annotations/run state without inferring a billing cause. | GitHub account owner / repository administrator | Continue the exact-head check-run query and complementary local six-check gate; do not spend, raise limits, register a runner, change protections, bypass checks or weaken verifiers. |
 
 ## PR #65 parser-review reconciliation - 2026-11-27
 

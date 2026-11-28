@@ -35,8 +35,12 @@
   modules) and focused Ruff all pass. Exact commit
   `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` passed 1,014 tests, zero skips,
   all six checks and 86.92% coverage; package build and wheel smoke passed.
-  Match every receipt to the final review PR head. The local Docker engine is
-  unavailable and official Actions remain unverified.
+  The exact local gate at `7735ae4c7b4b92e21a6d48146ffe34c3dcbcb6c0` also
+  passed 1,014 tests, zero skips and all six checks. PR #87 is open; its exact
+  head `7735ae4` had 12 successful official check-runs and two jobs skipped by
+  conditions, including successful official container smoke. Re-query after
+  any later push; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Local Docker
+  smoke remains unavailable on this host.
 - PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
   commits. Keep retrieval and its evaluation experimental and fictional.
 - The owner's MM-024 UCI policy is implemented in main: six-digit IDs are
