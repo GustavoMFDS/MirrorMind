@@ -25,6 +25,10 @@ does not attest the tree or cleanliness.
 
 The six-file allowlist excludes source workbooks, arbitrary documentation
 copies, local data, logs, credentials, caches and private engine artifacts.
+
+The landing page provides a keyboard skip link and responsive guide cards.
+Check keyboard navigation and document overflow at narrow and desktop
+viewports; this is not a comprehensive accessibility certification.
 The builder is not a generic file publisher. See the
 [builder](../../examples/build_portfolio_site.py),
 [landing template](../assets/portfolio_site.html),

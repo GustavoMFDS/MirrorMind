@@ -22,6 +22,11 @@ def test_public_site_has_only_explicit_synthetic_files(tmp_path):
     assert sha in home
     assert 'href="demo.html"' in home
     assert "README.pt-BR.md" in home
+    assert 'href="#main-content"' in home
+    assert 'id="main-content" tabindex="-1"' in home
+    assert 'aria-label="Primary"' in home
+    assert 'loading="lazy"' in home
+    assert 'minmax(min(230px,100%),1fr)' in home
     report = (output / "demo.html").read_text(encoding="utf-8")
     payload = re.search(
         r'<script id="workflow-result" type="application/json">(.*?)</script>',
