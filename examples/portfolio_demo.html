@@ -7,7 +7,7 @@
 <title>MirrorMind | Synthetic decision explorer</title>
 <style>
 :root{color-scheme:dark;--bg:#0d1727;--panel:#16243a;--line:#30455f;--text:#f1f6ff;--muted:#a9bbd2;--accent:#6fe0d2}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:36px 24px 64px}h1{font-size:clamp(28px,5vw,44px);line-height:1.12;margin:8px 0}h2{font-size:21px;margin:0 0 12px}h3{font-size:16px;margin:12px 0 6px}p{margin:8px 0;color:var(--muted)}.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700}.notice{border:1px solid #726542;border-radius:10px;background:#2a271e;padding:12px 16px;color:#f7deb0;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:16px 0}.panel,.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}.metric{margin:0}.metric strong{display:block;font-size:24px;color:var(--accent);overflow-wrap:anywhere}.small{font-size:12px;color:var(--muted)}label{font-weight:600}select{font:inherit;background:#22344b;color:var(--text);padding:8px 14px;border:1px solid #647f9f;border-radius:7px;margin:0 8px}select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-variant-numeric:tabular-nums}th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted)}.bar-track{height:12px;border-radius:4px;background:#253850;margin:5px 0 12px;overflow:hidden}.bar{height:100%;background:var(--accent);border-radius:4px}.costrow{display:flex;justify-content:space-between;gap:10px}.chart{display:grid;grid-template-columns:repeat(28,minmax(12px,1fr));gap:3px;align-items:end;height:132px;padding-top:6px}.daybar{min-height:2px;background:#8cacf6;border-radius:3px 3px 0 0}.daylabels{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#101c2e;padding:14px;border-radius:8px;max-height:420px;overflow:auto;color:#d5e3f7;font-size:12px}summary{cursor:pointer;font-weight:600}code{overflow-wrap:anywhere}.error{color:#ffb7ac}footer{color:var(--muted);font-size:12px;margin-top:24px}@media(max-width:650px){main{padding:24px 14px}th,td{padding:8px}.chart{gap:2px;grid-template-columns:repeat(28,minmax(6px,1fr))}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:36px 24px 64px}h1{font-size:clamp(28px,5vw,44px);line-height:1.12;margin:8px 0}h2{font-size:21px;margin:0 0 12px}h3{font-size:16px;margin:12px 0 6px}p{margin:8px 0;color:var(--muted)}.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700}.notice{border:1px solid #726542;border-radius:10px;background:#2a271e;padding:12px 16px;color:#f7deb0;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:12px;margin:16px 0}.panel,.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}.metric{margin:0}.metric strong{display:block;font-size:24px;color:var(--accent);overflow-wrap:anywhere}.small{font-size:12px;color:var(--muted)}label{font-weight:600}select{font:inherit;background:#22344b;color:var(--text);padding:8px 14px;border:1px solid #647f9f;border-radius:7px;margin:0 8px}select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-variant-numeric:tabular-nums}th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted)}.bar-track{height:12px;border-radius:4px;background:#253850;margin:5px 0 12px;overflow:hidden}.bar{height:100%;background:var(--accent);border-radius:4px}.costrow{display:flex;justify-content:space-between;gap:10px}.chart{display:grid;grid-template-columns:repeat(28,minmax(12px,1fr));gap:3px;align-items:end;height:132px;padding-top:6px}.daybar{min-height:0;background:#8cacf6;border-radius:3px 3px 0 0}.daylabels{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#101c2e;padding:14px;border-radius:8px;max-height:420px;overflow:auto;color:#d5e3f7;font-size:12px}summary{cursor:pointer;font-weight:600}code{overflow-wrap:anywhere}.error{color:#ffb7ac}footer{color:var(--muted);font-size:12px;margin-top:24px}.panel,.metric{min-width:0}.scroll{max-width:100%}.scroll:focus-visible,pre:focus-visible{outline:2px solid var(--accent);outline-offset:3px}caption{text-align:left;color:var(--muted);font-size:13px;padding:8px 0}th[scope=row]{font-size:inherit;color:var(--text);font-weight:600}select{max-width:100%}.report-nav{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0}.report-nav a{color:var(--accent);padding-block:6px;text-underline-offset:3px}.report-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media(max-width:650px){main{padding:24px 14px}th,td{padding:8px}.chart{gap:2px;grid-template-columns:repeat(28,minmax(6px,1fr))}}
 </style>
 </head>
 <body>
@@ -17,6 +17,7 @@
 <noscript><p class="error">JavaScript is required to explore this local report. The original result is embedded in the file.</p></noscript>
 <p id="error" class="error" role="alert" hidden></p>
 <div id="report" hidden>
+<nav class="report-nav" aria-label="Report sections"><a href="#simulation-title">Policy comparison</a><a href="#forecast-title">Forecast</a><a href="#evidence-title">Evidence and trace</a></nav>
 <div class="grid">
 <div class="metric"><span class="small">As-of date</span><strong id="asof"></strong></div>
 <div class="metric"><span class="small">Forecast horizon</span><strong id="horizon"></strong></div>
@@ -28,7 +29,7 @@
 <p>Same fictional demand streams and explicit assumptions. Choose an already-computed lead-time case; no new simulation runs in the browser.</p>
 <label for="lead-time">Lead time</label><select id="lead-time"></select><span id="case-label" class="small" aria-live="polite"></span>
 <h3>Mean cost (synthetic units)</h3><div id="cost-bars"></div>
-<div class="scroll"><table><thead><tr><th>Policy</th><th>Mean cost</th><th>Fill rate</th><th>Ending stock</th><th>Mean orders</th><th>Stockout days / run</th></tr></thead><tbody id="policy-rows"></tbody></table></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable policy comparison"><table><caption>Policy metrics for the selected lead time</caption><thead><tr><th scope="col">Policy</th><th scope="col">Mean cost</th><th scope="col">Fill rate</th><th scope="col">Ending stock</th><th scope="col">Mean orders</th><th scope="col">Stockout days / run</th></tr></thead><tbody id="policy-rows"></tbody></table></div>
 <p class="small">No selection is authorized. Cost, inventory and order frequency are conditional trade-offs, not causal or business evidence.</p>
 <details><summary>Simulation assumptions</summary><pre id="assumptions"></pre></details>
 </section>
@@ -40,7 +41,7 @@
 </section>
 <section class="panel" aria-labelledby="evidence-title">
 <h2 id="evidence-title">Evidence and traceability</h2><p>Fixture declarations are not authenticated source evidence.</p>
-<div class="scroll"><table><thead><tr><th>Observed date</th><th>Units</th><th>Fact ID</th><th>Evidence references</th></tr></thead><tbody id="fact-rows"></tbody></table></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable evidence table"><table><caption>Observed fictional facts and their evidence references</caption><thead><tr><th scope="col">Observed date</th><th scope="col">Units</th><th scope="col">Fact ID</th><th scope="col">Evidence references</th></tr></thead><tbody id="fact-rows"></tbody></table></div>
 <details><summary>Declared evidence receipt</summary><pre id="receipt"></pre></details>
 <details><summary>Missing evidence and modeling assumptions</summary><pre id="gaps"></pre></details>
 <h3>Selected engine</h3><pre id="engine"></pre>
@@ -63,8 +64,10 @@ const labels = {
   reorder_point_fixed_quantity: "Reorder point / fixed quantity",
   forecast_aware_order_up_to: "Forecast-aware order-up-to"
 };
-function cell(row, value) {
-  const td = document.createElement("td"); td.textContent = String(value); row.append(td);
+function cell(row, value, header = false) {
+  const td = document.createElement(header ? "th" : "td");
+  if (header) td.scope = "row";
+  td.textContent = String(value); row.append(td);
 }
 function renderCase(cases, lead) {
   const scenario = cases.find(c => c.lead_time_days === Number(lead));
@@ -77,8 +80,10 @@ function renderCase(cases, lead) {
     const m = p.mean_metrics_per_replication;
     const label = labels[p.policy_id] || p.policy_id;
     const row = document.createElement("tr");
-    [label, m.total_cost_units, (m.fill_rate_basis_points / 100) + "%",
-      m.ending_on_hand_units, m.order_count, m.stockout_days_per_replication].forEach(v => cell(row,v));
+    cell(row, label, true);
+    const fillRate = m.fill_rate_basis_points === null ? "Not available" : (m.fill_rate_basis_points / 100) + "%";
+    [m.total_cost_units, fillRate, m.ending_on_hand_units, m.order_count,
+      m.stockout_days_per_replication].forEach(v => cell(row,v));
     el("policy-rows").append(row);
     const group = document.createElement("div"), title = document.createElement("div");
     title.className = "costrow"; title.textContent = label + " - " + m.total_cost_units;

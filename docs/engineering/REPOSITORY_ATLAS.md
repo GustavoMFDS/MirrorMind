@@ -1092,6 +1092,19 @@ forecast claims or cross-repository changes.
 
 - [REX quality floor change](changes/REX_QUALITY_FLOOR.md): bounded coverage and type-narrowing follow-up.
 
+## M2-03 bounded local tool orchestration
+
+- [Package boundary](../../src/mirrormind/modules/agents/__init__.py): no import-time provider or route.
+- [Typed contracts](../../src/mirrormind/modules/agents/contracts.py): bounded provider, tool and report values.
+- [Immutable tool registry](../../src/mirrormind/modules/agents/registry.py): exact input/output validation and digest receipts.
+- [Synthetic tool adapters](../../src/mirrormind/modules/agents/synthetic_tools.py): existing fictional retrieval and M1F-02 workflow only.
+- [Bounded orchestrator](../../src/mirrormind/modules/agents/orchestrator.py): sequential scripted-provider control loop; revalidates exact provider turns from plain data so nested Pydantic `model_copy(update=...)` changes fail closed before dispatch.
+- [Reproducible example](../../examples/m2_bounded_tool_orchestration.py): local deterministic CLI.
+- [Unit regressions](../../tests/unit/test_bounded_tool_orchestration.py): failure paths, budgets, scope, prompt injection, receipt limits and nested provider-turn revalidation.
+- [CLI integration regression](../../tests/integration/test_m2_tool_orchestration_cli.py): output minimization and deterministic replay.
+- [Technical and learning walkthrough](M2_TOOL_ORCHESTRATION.md): architecture, contracts, data flow, security, tests and exercises.
+- [Scoped change request](changes/M2_03_BOUNDED_TOOL_ORCHESTRATION.md): acceptance criteria and impact map.
+
 - [Public dependency input](../../requirements/public-dev.in), [hash lock](../../requirements/public-dev.txt), [input drift checker](../../scripts/check_public_lock.py): reproducible public developer environment.
 
 - [Public lock tests](../../tests/unit/test_public_lock.py): input drift and private-source exclusion.

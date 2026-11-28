@@ -1,8 +1,128 @@
 # Local quality gate and historical Actions fallback
 
-## Current baseline and recent merged PR heads - 2026-11-27
+## Current continuation - 2026-11-28
 
-Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
+Latest `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`; its 11 official
+check-runs succeeded on that exact SHA. PR #87's exact candidate state and
+current gate receipt/check status are maintained in the live PR body. The
+previous published candidate
+`b931bbe2279dd0865f535e0f56e5165ed402ef96` passed the local gate and all
+applicable official checks, but independent review reproduced a provider-turn
+validation bypass via Pydantic `model_copy(update=...)`. The current candidate
+revalidates from plain data and adds nested-model/missing-payload regressions.
+Its exact gate and checks were queried separately; none of the earlier results
+below transfer to it. Re-query after any later push. No workflow, required
+check, protection, runner or spending setting was changed.
+
+## Historical main and exact-head gate status - 2026-11-27
+
+Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following the
+normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, the
+typing-debt/public-coverage-floor follow-up at `128c266`, a public dependency
+lock/evaluation-type follow-up at `c8b93da`, and the whole-package typing-gate
+change at `d41e661`. PR #82's final exact head
+`f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips,
+six local checks and 12 official exact-head checks; those results do not
+transfer to the merge SHA or later `main`. The M2-03 branch is ancestry-synced
+with that baseline. Checkpoint `a27027e` passed before the latest main merge
+and is historical; later synchronized candidate gates are recorded below.
+The owner-authorized temporary local gate remains separate from official CI.
+Do not infer official status for a SHA without querying that exact commit.
+
+### M2-03 PR #87 official checks — exact head `2d71d393`
+
+The exact PR #87 head `2d71d3931cff494ddf0788f663de89efc2bc649f` returned 14
+GitHub check-runs: 12 concluded `success` and two concluded `skipped` under
+their workflow conditions. Successful checks were `test`, compatibility for
+Python 3.12 and 3.13, `quality`, `package`, `container-smoke`,
+`symbol-catalog`, `build-site`, `benchmark`, `CodeQL`, and `Analyze (actions)` /
+`Analyze (python)`. The skipped checks were the main-only `deploy` and manual
+`release-rehearsal`. Run records: [test and compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46096644655),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46096644633),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46096644618),
+[site build and guarded deploy](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46096644615),
+[benchmark and guarded release rehearsal](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46096644679),
+[CodeQL](https://github.com/GustavoMFDS/MirrorMind/runs/140829522714), and
+[Actions/Python analysis](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46096641537).
+
+This head ran on the public repository's `ubuntu-latest` standard runners.
+GitHub's billing documentation lists standard hosted runners for public
+repositories as free ([billing and usage](https://docs.github.com/en/actions/concepts/billing-and-usage),
+[runner selection](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job?apiVersion=2022-11-28)).
+No spending setting or service was changed, and the account billing state was
+not inspected. This observed execution does not establish a cause for the
+historical pre-start failures or supersede the owner's zero-paid-spend limit.
+The local six-check receipt remains a separate result; local container smoke
+is unavailable because this host has no Docker engine, although the official
+container check succeeded for this exact head. A commit-status API query for
+`2d71d39` returned `pending` with no status entries while the check-run API
+returned the 14 completed results; use the check-run collection for these
+workflow claims.
+PR #87 remains open and unmerged. Any later PR head needs its own check query.
+
+The synchronized M2-03 worktree initially failed the newly required
+whole-package mypy check with 25 diagnostics in three files. Those diagnostics
+are resolved without changing runtime contracts. Focused M2-03 validation now
+passes 21 tests, `mypy --warn-unused-ignores src/mirrormind` (71 modules),
+`mypy --strict src/mirrormind/modules/retrieval` (five modules), and focused
+Ruff. These are worktree checks, not an exact committed gate. Coverage and the
+owner-authorized six-check gate were subsequently run on the exact committed
+SHA below.
+
+### M2-03 typing correction — exact commit `77c9d359`
+
+On exact commit `77c9d359cda75bddcaca40e7912b13c693614af9`, the temporary
+local gate passed **1,014 tests, zero skips and all six checks** (pytest, Ruff,
+catalog, atlas, evidence and capability ledger). One existing
+Starlette/httpx deprecation warning appeared. Receipt:
+`results/local-quality-gate-77c9d359cda75bddcaca40e7912b13c693614af9-workspace.json`.
+WorldKernel `0.0.1` remained installed from reviewed commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. The CI-equivalent coverage run
+passed all 1,014 tests with **86.92% combined coverage** against the 85% floor;
+whole-package mypy passed 71 modules and strict retrieval mypy passed five.
+
+The source distribution and wheel built with `build 1.6.1`, existing
+`setuptools 84.2.1` and `wheel 0.48.0` using `--no-isolation`. Isolated build
+dependency installation was unavailable because DNS/network access to the
+package index failed; no build source step had run in that attempt. The built
+wheel was installed to a temporary target and smoke-tested from outside the
+checkout with already installed `.venv` runtime dependencies: license/version,
+API import and the non-authorizing synthetic decision workflow passed. The
+The Docker client is installed, but its Linux engine pipe is absent, so
+container smoke was not run locally. At this historical checkpoint, official
+Actions was not queried. The owner reports the included allowance exhausted;
+the later exact PR #87 check-run observation is recorded above. These local
+results remain scoped to this SHA.
+
+### M2-03 documentation evidence sync — exact commit `07a6cdc0`
+
+The documentation follow-up on exact commit
+`07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` also passed the temporary six-check
+gate: **1,014 tests, zero skips and all six checks**, with one existing
+Starlette/httpx deprecation warning. Receipt:
+`results/local-quality-gate-07a6cdc0f3e1e04a92956027e1aa087d4afe0cca-workspace.json`.
+The exact-SHA CI-equivalent coverage run passed 1,014 tests at **86.92%**;
+whole-package mypy passed all 71 modules and strict retrieval mypy passed five.
+No source code changed after `77c9d35`; wheel build and external-checkout smoke
+results above therefore cover the same package contents. This remains local
+evidence, not GitHub Actions or container-smoke evidence.
+
+### M2-03 pre-`d41e661` checkpoint — `a27027e`
+
+On exact commit `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a`, the complete local
+gate passed **1,011 tests, zero skips and all six checks**: pytest, Ruff, symbol
+catalog, repository atlas, evidence map and capability ledger. The run used
+WorldKernel `0.0.1` from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Pytest reported one existing
+Starlette/httpx deprecation warning. The exact receipt is
+`results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`;
+it is a local ignored artifact and explicitly records that official GitHub
+Actions status was not checked by the gate. This checkpoint predates the
+`d41e661` main merge and later documentation updates; it is historical evidence
+only. Later exact-head validation is recorded above; do not transfer this
+receipt to a newer commit.
+
+The preceding main before PR #82 was `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
 [PR #81](https://github.com/GustavoMFDS/MirrorMind/pull/81) after
 [PR #80](https://github.com/GustavoMFDS/MirrorMind/pull/80) and
 [PR #79](https://github.com/GustavoMFDS/MirrorMind/pull/79) at
@@ -81,7 +201,7 @@ Both are local-only evidence, not GitHub Actions. Run a new receipt for the
 final PR head after any subsequent tracked changes, and verify that PR's
 official checks independently.
 
-PR #82 opened at exact head
+PR #82 initial candidate opened at exact head
 `d542e5e129e091dc649e1a187c96e18c59ccc695`. Diagnostics pinned all results to
 that head. Its local gate passed 989 tests, zero skips and all six checks with
 the reviewed WorldKernel pin; receipt:
@@ -103,10 +223,12 @@ The CodeQL check reported no new alerts
 ([check details](https://github.com/GustavoMFDS/MirrorMind/runs/140782041800)).
 The quality workflow completed coverage measurement and strict retrieval
 typing. One non-blocking annotation warns that Actions using Node.js 20 are
-being forced onto Node.js 24; it did not fail a check. These are initial
-exact-head PR results only; any later PR head needs its own checks.
+being forced onto Node.js 24; it did not fail a check. These are historical
+PR-head results only; PR #82 later merged at `c31ecd6`. They do not establish
+checks on the merge commit, current main or current M2-03 candidate. Any later
+PR head needs its own exact checks.
 
-## Current public CI baseline - 2026-11-27
+## PR #77 public CI baseline - 2026-11-27
 
 PR #77 merged normally as `540c47411898cc820ac651c19430017ecd8c20fe` over
 main `51c90d2`; reviewed PR head was
@@ -628,3 +750,75 @@ commit on PR #61 requires a fresh exact-head gate. GitHub Actions was not
 checked by these local runs. No runner, paid usage, workflow change or
 protection bypass was used. The independent #62 review also recommends keeping
 the Census changes separate and retaining #52–#59 as ancestors of the merge.
+
+## PR #87 latest-main synchronization - 2026-11-28
+
+PR #88 merged cryptography 50 dependency-lock update into `main` at
+`00e6cf11ac05a94055242573fd3cfc18086bad10`. The M2-03 branch incorporates
+that exact commit with ancestry preserved by merge
+`66b591317b375a270b5d0ed682c94e161d52a956`; the merge was conflict-free.
+
+The first attempt at the exact six-check gate in the restricted sandbox
+stopped producing output during the API `TestClient` startup and was
+interrupted before the configured per-check timeout. It emitted no receipt
+and is not counted as a test result. The same unchanged command, exact clean
+SHA and all six checks then passed in the authorized local environment with
+loopback access:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/local_quality_gate.py `
+  --expected-head 66b591317b375a270b5d0ed682c94e161d52a956 `
+  --receipt results/local-quality-gate-66b591317b375a270b5d0ed682c94e161d52a956-workspace.json
+```
+
+Result at `2026-11-28T02:33:41Z`: 1,014 tests passed, zero skips, and Ruff,
+catalog, atlas, evidence and capability checks passed. Runtime was 34.21
+seconds. One existing Starlette/httpx TestClient deprecation warning remains.
+Receipt:
+`results/local-quality-gate-66b591317b375a270b5d0ed682c94e161d52a956-workspace.json`;
+status `local_gate_passed_not_official_ci`.
+
+This `66b5913` receipt was created while the local venv had
+`cryptography 46.0.7`. After PR #88 merged, the local venv was upgraded to
+`50.0.0` from public PyPI at no cost; no tracked project file changed. Keep
+the receipt above scoped to its original environment. The live PR description
+records the gate for its documentation-inclusive head and its current exact
+check-run status. Require a fresh gate and check query after every later head;
+never transfer the `00e6cf1` or `66b5913` results to it. Exact-main commit
+`00e6cf1` separately has 11 successful official check-runs. Local and official
+evidence remain distinct.
+
+### PR #87 published head `b931bbe` — pre-correction review candidate
+
+On exact SHA `b931bbe2279dd0865f535e0f56e5165ed402ef96`, the owner-authorized
+temporary gate passed **1,014 tests, zero skips and all six checks** under
+`cryptography 50.0.0`. One existing Starlette/httpx TestClient deprecation
+warning appeared. Receipt:
+`results/local-quality-gate-b931bbe2279dd0865f535e0f56e5165ed402ef96-cryptography50-workspace.json`.
+This exact SHA's check-run query returned 14 jobs: 12 `success` and two
+workflow-conditional `skipped` (`deploy`, `release-rehearsal`). See the live
+PR body for run links. These checks show that Actions executed for that SHA;
+they do not establish why earlier runs failed before job startup or identify a
+billing cause.
+
+An independent review of the same source path reproduced that exact-type
+checking an `AgentTurn` was insufficient because `model_copy(update=...)`
+skips validation for nested drafts and tool calls. The previous implementation
+could emit an empty abstention summary, raise on missing citations/payloads,
+or assert on a missing final payload. The current candidate reconstructs the
+turn from plain data before use. Run a fresh exact-head gate and exact-SHA
+check query for that correction; the receipt and status live in the PR body.
+
+### PR #87 provider-turn correction — exact commit `48e7efe`
+
+The full owner-authorized local gate passed on exact commit
+`48e7efe98aae2df3811302fbf7875a2bd8a48dc4`: **1,019 tests, zero skips and
+all six checks** (pytest, Ruff, symbol catalog, atlas, evidence map and
+capability ledger). Receipt:
+`results/local-quality-gate-48e7efe98aae2df3811302fbf7875a2bd8a48dc4-workspace.json`.
+One existing Starlette/httpx TestClient deprecation warning remains. The
+focused M2-03 unit suite passed 25 tests; whole-package mypy passed all 71
+source modules. The receipt records official Actions as not checked by the
+local script. Query the live PR for the exact current published SHA and its
+separate official check runs; neither this local receipt nor earlier Actions
+results transfer to another head.

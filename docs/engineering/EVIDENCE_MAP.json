@@ -1,5 +1,103 @@
 [
   {
+    "id": "MM-AGENT-001",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_scripted_provider_runs_fixed_synthetic_tool_sequence",
+    "limitation": "The scripted provider invokes the existing fictional retriever and M1F-02 workflow with bounded local contracts; it proves neither live-provider behavior, authenticated permissions, semantic citation support, production isolation nor a business action."
+  },
+  {
+    "id": "MM-AGENT-002",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_injection_like_evidence_cannot_expand_the_tool_registry",
+    "limitation": "The regression shows that a scripted provider cannot register or invoke an absent private-data tool from injection-like fictional text; it does not prove a live model will ignore hostile instructions or that allowed tools are semantically safe."
+  },
+  {
+    "id": "MM-AGENT-003",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_unobserved_citation_is_refused_as_unsupported_evidence",
+    "limitation": "Citation-reference membership is checked against prior fictional retrieval output; the check does not prove entailment, source authenticity, relevance or truth of the provider draft."
+  },
+  {
+    "id": "MM-AGENT-004",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_mode_inspection_failure_is_sanitized_and_fails_closed",
+    "limitation": "An unreadable provider-mode property is refused without exposing its exception; the accepted test-double mode remains self-declared and is not cryptographic identity, live-provider approval or process isolation."
+  },
+  {
+    "id": "MM-AGENT-005",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_tool_registry_fields_cannot_be_reassigned_or_deleted",
+    "limitation": "The registry rejects ordinary attribute reassignment/deletion and exposes a read-only name map in this process; Python object encapsulation is not an adversarial isolation boundary and no public route accepts caller registries."
+  },
+  {
+    "id": "MM-AGENT-006",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_registry_rejects_tool_input_over_the_canonical_json_byte_budget",
+    "limitation": "The registry rejects canonical serialized input above its 8 KiB budget before handler invocation; this does not bound all Python object allocations or provide process isolation."
+  },
+  {
+    "id": "MM-AGENT-007",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_registry_rejects_validated_output_over_the_utf8_byte_budget",
+    "limitation": "The registry rejects serialized output above 16 KiB before provider delivery; it does not constrain memory allocated inside a tool handler."
+  },
+  {
+    "id": "MM-AGENT-008",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_registry_sanitizes_handler_exception_details",
+    "limitation": "The local registry returns a fixed refusal code without handler exception text; it offers no worker isolation, timeout or cancellation for tool execution."
+  },
+  {
+    "id": "MM-AGENT-009",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_tool_call_rejects_cyclic_and_oversized_nested_json_containers",
+    "limitation": "The validator rejects cyclic and oversized exact built-in containers in local request objects; it does not guarantee containment of arbitrary Python objects or bound all transient memory use."
+  },
+  {
+    "id": "MM-AGENT-010",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_revalidates_nested_draft_fields_before_consumption",
+    "limitation": "A provider draft corrupted with Pydantic model_copy(update=...) is refused after plain-data reconstruction; this verifies one local field-bypass path, not provider isolation or semantic evidence support."
+  },
+  {
+    "id": "MM-AGENT-011",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_revalidates_nested_status_and_citation_invariants",
+    "limitation": "A review draft without citations is refused after nested model validation; matching citations still do not prove that provider prose is semantically supported."
+  },
+  {
+    "id": "MM-AGENT-012",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_revalidates_nested_tool_call_before_dispatch",
+    "limitation": "One malformed nested tool-call field is refused before execution in the in-process registry; Python provider code is not sandboxed."
+  },
+  {
+    "id": "MM-AGENT-013",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_with_missing_matching_payload_fails_closed",
+    "limitation": "A missing final payload created by model_copy(update=...) returns a fixed refusal; this does not cover every malformed object graph."
+  },
+  {
+    "id": "MM-AGENT-014",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_provider_turn_with_missing_tool_payload_fails_closed",
+    "limitation": "A missing tool-call payload created by model_copy(update=...) returns a fixed refusal before dispatch; this does not provide process isolation."
+  },
+  {
     "id": "MM-ANCHOR-001",
     "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
     "test": "tests/unit/test_head_checkpoints.py",
