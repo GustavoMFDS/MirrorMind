@@ -1115,3 +1115,38 @@ reject rehashed forgery and scoring before commitment.
 Run `python -m pytest -q tests/integration/test_census_network_bayes_study.py`.
 See [change request](changes/M1C_04_CENSUS_NETWORK_BAYES.md).
 Independent review pending.
+
+## Bounded modular exact network queries
+The [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
+accepts 24 or 48 immutable observed binary states over 2..12 axes,
+a complete disjoint partition into modules of 1..6 axes, and at
+most 24 directed cross-module candidate ports. Each child may
+choose zero, one or two lag-one parents from its own module and
+incoming port sources. Uniform subset prior by default; balanced
+mode allocates equal mass to available parent-set sizes. Context
+parameters have independent Beta(1,1) priors. The graph and
+parameters persist through each hypothetical trajectory.
+
+The public query returns the exact sorted rational PMF of
+cumulative future states (excluding the observed start) on 1..4
+ordered distinct axes, plus the enumerated first-step axes.
+At horizon two the first-step scope is the union of queried axes
+and their allowed parents; other first-step outcomes can be
+integrated out exactly because local predictive laws factor given
+the observed history. Hypothetical updates for queried children
+preserve graph/parameter uncertainty. Local candidate scopes and
+first-step closure are each limited to eight axes. Larger requests
+fail closed, not approximately. Horizon 1..2 only. The result is
+an in-process Fraction contract, not a wire or decimal encoding.
+
+Proposed MM-CEN-043: `test_modular_graph_oracle` independently
+enumerates sixteen graphs and two-step trajectories with sequential
+Beta-Bernoulli evidence, both priors and both history lengths.
+Additional checks cover projection, disconnected products, port
+orientation, twelve-axis scope, singleton priors and malformed
+inputs. Run `python -m pytest -q tests/unit/test_census_modular.py`.
+See [change request](changes/M1C_04_CENSUS_MODULAR.md).
+
+Candidate ports are supplied, not learned or causal. No empirical
+skill, calibration, scalability beyond bounds, deployment or
+authority. Independent review pending.

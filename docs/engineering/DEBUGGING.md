@@ -599,3 +599,9 @@ Use observed history lengths 8 or 24 and horizons 1..3. Hypothetical
 updates are branch-local. Actual future states must not enter fitting.
 At one step integrated and frozen coincide; later they need not.
 Verify retained commitment and canonical receipt before interpretation.
+
+### Modular exact queries
+Use complete disjoint modules, directed candidate ports and ordered
+distinct query axes. Closure errors mean the bounded exact contract
+cannot answer; do not silently prune allowed parents or substitute
+marginal means. Fraction results are local, not wire payloads.

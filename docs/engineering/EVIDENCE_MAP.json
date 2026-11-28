@@ -574,6 +574,13 @@
     "limitation": "Fixed fictional exploratory fixture reuse and canonical local replay; no independent registration, holdout, statistical superiority, calibration, causal claims or authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-043",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_modular.py",
+    "function": "test_modular_graph_oracle",
+    "limitation": "Bounded synthetic independent local graph/parameter priors and explicit candidate ports; exact two-step graph oracle only, no empirical skill, causal identification, automatic port admission or arbitrary scalability. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

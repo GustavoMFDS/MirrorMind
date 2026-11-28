@@ -222,3 +222,8 @@ Bounded persistent Bayesian prediction integrates graph and parameter
 uncertainty over at most three hypothetical steps. The fixed study
 reuses exploratory fixtures; no independent confirmation, calibrated
 inference, causal effect, empirical skill or authority is established.
+
+Modular exact queries compose explicitly supplied candidate scopes
+over 2..12 binary axes and at most two future steps. They do not
+identify causal connections or establish empirical forecast skill.
+Queries beyond declared closure bounds are rejected.

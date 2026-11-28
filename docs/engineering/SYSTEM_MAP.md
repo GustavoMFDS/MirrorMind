@@ -437,3 +437,8 @@ integrates hypothetical paths under persistent uncertain graph/parameter
 assumptions. The [fixed study](../../examples/m1_census_network_bayes_study.py)
 compares frozen means, MAP and oracle with local replay.
 No ingestion, storage, API or authority.
+
+### Modular exact posterior queries
+The [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
+consolidates bounded exact subset prediction across explicitly
+partitioned binary axes and candidate ports. No new API or storage.

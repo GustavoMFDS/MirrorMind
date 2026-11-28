@@ -252,6 +252,20 @@ Static imports (including inside functions): `__future__`, `datetime`, `fraction
 | `compare_census_models` | function | `def compare_census_models(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str) -> dict[str, object]` | Compare only the validation partition under a retained model commitment. | [L119](../../../src/mirrormind/domains/retail/census_models.py#L119) |
 | `verify_census_model_comparison` | function | `def verify_census_model_comparison(records: tuple[CensusVintageRecord, ...], *, plan: CensusOriginSchedule, spec: CensusExperimentSpec, expected_comparison_sha256: str, declared_code_revision: str, submitted: bytes) -> str` | Verify bounded complete canonical receipt by local replay; no admission. | [L227](../../../src/mirrormind/domains/retail/census_models.py#L227) |
 
+## `mirrormind.domains.retail.census_modular`
+
+Source: [`src/mirrormind/domains/retail/census_modular.py`](../../../src/mirrormind/domains/retail/census_modular.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `fractions`, `itertools`, `math`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_validate` | function | `def _validate(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, balanced: bool) -> tuple[Scope, State]` | — | [L23](../../../src/mirrormind/domains/retail/census_modular.py#L23) |
+| `_prepare` | function | `def _prepare(history: History, scope: Scope, children: State, balanced: bool) -> dict[int, LocalRow]` | — | [L93](../../../src/mirrormind/domains/retail/census_modular.py#L93) |
+| `_positive` | function | `def _positive(row: LocalRow, prev: State \| dict[int, int], *, observed_prev: State \| None=None, child: int \| None=None) -> Fraction` | — | [L121](../../../src/mirrormind/domains/retail/census_modular.py#L121) |
+| `_law` | function | `def _law(positive: tuple[Fraction, ...]) -> PMF` | — | [L147](../../../src/mirrormind/domains/retail/census_modular.py#L147) |
+| `predict_modular` | function | `def predict_modular(history: History, modules: Modules, ports: Ports, axes: State, horizon: int, *, balanced: bool=False) -> tuple[PMF, State]` | Return exact cumulative subset PMF and enumerated first-step axes. | [L160](../../../src/mirrormind/domains/retail/census_modular.py#L160) |
+
 ## `mirrormind.domains.retail.census_network3`
 
 Source: [`src/mirrormind/domains/retail/census_network3.py`](../../../src/mirrormind/domains/retail/census_network3.py)

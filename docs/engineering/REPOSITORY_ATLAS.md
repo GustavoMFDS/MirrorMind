@@ -1280,3 +1280,10 @@ forecast claims or cross-repository changes.
 | [tests/unit/test_census_network_bayes.py](../../tests/unit/test_census_network_bayes.py) | Persistent graph oracle and input bounds |
 | [tests/integration/test_census_network_bayes_study.py](../../tests/integration/test_census_network_bayes_study.py) | Report replay and commitment |
 | [docs/engineering/changes/M1C_04_CENSUS_NETWORK_BAYES.md](changes/M1C_04_CENSUS_NETWORK_BAYES.md) | Scoped acceptance and impact map |
+
+### Modular exact network research
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_modular.py](../../src/mirrormind/domains/retail/census_modular.py) | Exact modular subset PMFs and bounded closure |
+| [tests/unit/test_census_modular.py](../../tests/unit/test_census_modular.py) | Independent graph oracle and composition/projection |
+| [docs/engineering/changes/M1C_04_CENSUS_MODULAR.md](changes/M1C_04_CENSUS_MODULAR.md) | Scoped acceptance and impact map |
