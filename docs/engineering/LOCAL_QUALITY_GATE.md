@@ -8,10 +8,24 @@ typing-debt/public-coverage-floor follow-up at `128c266`, and a public
 dependency lock/evaluation-type follow-up. PR #82's final exact head
 `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips,
 six local checks and 12 official exact-head checks; those results do not
-transfer to the merge SHA or later `main`. The current M2-03 branch is being
-reconciled with that baseline; its final exact-head six-check gate is pending.
-The owner-authorized temporary local gate remains separate from official CI.
+transfer to the merge SHA or later `main`. The M2-03 branch is ancestry-synced
+with that baseline; synchronized checkpoint `a27027e` passed the local gate as
+recorded below. This evidence update requires a fresh exact-head gate before
+review. The owner-authorized temporary local gate remains separate from official CI.
 Do not infer official status for a SHA without querying that exact commit.
+
+### M2-03 synchronized checkpoint — `a27027e`
+
+On exact commit `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a`, the complete local
+gate passed **1,011 tests, zero skips and all six checks**: pytest, Ruff, symbol
+catalog, repository atlas, evidence map and capability ledger. The run used
+WorldKernel `0.0.1` from reviewed source commit
+`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Pytest reported one existing
+Starlette/httpx deprecation warning. The exact receipt is
+`results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`;
+it is a local ignored artifact and explicitly records that official GitHub
+Actions status was not checked by the gate. Any later tracked change requires
+a new exact-head gate before review.
 
 The preceding main before PR #82 was `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
 [PR #81](https://github.com/GustavoMFDS/MirrorMind/pull/81) after

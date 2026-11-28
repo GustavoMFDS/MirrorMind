@@ -15,9 +15,13 @@
   strict contracts, an immutable registry and a scripted test double. The
   receipt is query-free; drafts remain untrusted, require human review and
   cannot authorize writes or actions. No live model, HTTP route, persistence,
-  authenticated identity or semantic-entailment check exists. The six-check
-  exact-head gate is pending after this merge; re-run focused and full checks on
-  the final clean commit before opening the separate review PR.
+  authenticated identity or semantic-entailment check exists. The merged
+  checkpoint `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a` passed the local gate:
+  1,011 tests, zero skips and all six checks with WorldKernel pinned at
+  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Its receipt is
+  `results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`.
+  Re-run the exact gate after this evidence update and before opening the
+  separate review PR; the receipt is local-only, not official CI.
 - PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
   commits. Keep retrieval and its evaluation experimental and fictional.
 - The owner's MM-024 UCI policy is implemented in main: six-digit IDs are
