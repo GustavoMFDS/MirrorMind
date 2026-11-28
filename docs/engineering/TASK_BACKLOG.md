@@ -2,10 +2,10 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `c8b93da2c60442e680280aa232a9620fa2279f11`, following PR #82's
+Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following PR #82's
 normal merge at `c31ecd6dbf3f68be8726bdba2b23a813226c2618` and the subsequent
-typing-debt/public-coverage-floor commit `128c266` and public dependency-lock
-commit `c8b93da`. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
+typing-debt/public-coverage-floor commit `128c266`, public dependency-lock
+commit `c8b93da` and package-typing gate commit `d41e661`. PR #79 merged at `5100ebf42265e01b65856e7ba91b659ff1b487c7`
 with the curated portfolio/index update; PR #80 adds bounded synthetic
 benchmarks and read-only release preparation. PR #77 merged normally at
 `540c474`, preserving reviewed head `df7c450523a8f3475e0a8161936f6ac80e705720`;
@@ -60,7 +60,7 @@ Do not retry, chunk, sample or raise the cap under this decision. Preserve
 snapshot deletion by `2026-12-26`. M1 synthetic end-to-end is integrated;
 M1 empirical and production acceptance remain incomplete.
 
-**Baseline:** main `c8b93da2c60442e680280aa232a9620fa2279f11`. PR #52–#59 were
+**Baseline:** main `d41e661d298255957979779691c2f9f4dbf36461`. PR #52–#59 were
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 #77–#81 are integrated. The portfolio/index, synthetic benchmark/release
 preparation and developer-onboarding updates are present. Merged branches
@@ -75,8 +75,8 @@ preserve ancestry and must not be replayed. See [PROJECT_STATUS](PROJECT_STATUS.
 | PR #78 / MM-024 UCI policy | Merged normally at `291562a`; final head `8c8f862` passed 968 tests, zero skips, six local checks and six observed official jobs. | Preserve the no-reread/no-partition/no-cap-increase stop and snapshot deletion deadline. |
 | UCI empirical pilot | Blocked after the approved call stopped above 250,000 product-day groups; no projection, complete exclusion counts or metrics. | Requires a separately reviewed evaluation design and explicit owner/model-review approval before changing the call strategy or bounds. Keep tests synthetic and snapshot deletion deadline. |
 | B-01/B-02 Census lane | Metadata/protocol preparation only; no Census or FRED/ALFRED values acquired. | Continue no-byte due diligence; artifact-specific rights review and owner approval are required before acquiring Census bytes. FRED/ALFRED remains NO-GO absent written permission and series rights. |
-| M2-02 retrieval evaluation / PR #82 | Merged normally at `c31ecd6` into main `c8b93da`. Exact PR head `f6fa2ed` passed 989 local tests, zero skips, six checks and 12 official head checks; two guarded jobs were skipped. | M2-02 slice delivered as fictional/experimental. Preserve exact-head evidence; do not infer a check result for the merge SHA or later main. |
-| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127` and ancestry-synced with main `c8b93da`. Focused unit/CLI suite passed 19 tests; full checkpoint `a27027e` passed 1,011 tests, zero skips and all six local checks with the reviewed WorldKernel pin. | Repeat the exact clean gate after this documentation update; then prepare a separate review PR. No live provider, route, persistence or action authority. |
+| M2-02 retrieval evaluation / PR #82 | Merged normally at `c31ecd6` into main `d41e661`. Exact PR head `f6fa2ed` passed 989 local tests, zero skips, six checks and 12 official head checks; two guarded jobs were skipped. | M2-02 slice delivered as fictional/experimental. Preserve exact-head evidence; do not infer a check result for the merge SHA or later main. |
+| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through main `d41e661`. Current focused unit/CLI suite passes 21 tests; whole-package mypy passes all 71 modules, strict retrieval mypy passes five modules and focused Ruff passes. | The prior `a27027e` receipt is historical. Run current coverage and exact integrated gate before preparing the separate review PR. No live provider, route, persistence or action authority. |
 | G-02 offline continuity work | Existing fictional/local scope remains available; deployment, live credentials and external services are not authorized. | Continue a bounded implementation slice only where it satisfies an existing backlog criterion; record tests and operational limits. |
 
 ## Historical queue reconciliation — 2026-11-26
@@ -258,7 +258,7 @@ coverage/selection diagnostic modules merely because they are local.
 | --- | --- | --- | --- | --- |
 | M2-01 | P1 | integrated (experimental) | M1F-01 | PR #60 capability merged through PR #66: strict typed query/result contracts and bounded in-memory fictional retrieval, filters caller-declared scope before ranking, binds exact excerpts to digests and labels all retrieved text untrusted. No route, identity or real-source permission. |
 | M2-02 | P1 | integrated (experimental) | M2-01 | PR #82 merged at `c31ecd6`: bounded synthetic evaluation with citation support, abstention, lineage and scope regressions; no real-corpus quality claim. |
-| M2-03 | P1 | in progress | M1F-02, M2-01 | Current branch implements a typed tool registry and bounded local orchestration over fixed synthetic evidence and decision tools; includes scripted test double, invalid-tool/input/output and prompt-injection regressions, immutable registry and justified no-framework choice. The synchronized checkpoint gate passed; final documentation-inclusive exact-head gate and independent review remain pending. |
+| M2-03 | P1 | in progress | M1F-02, M2-01 | Current branch implements a typed tool registry and bounded local orchestration over fixed synthetic evidence and decision tools; includes scripted test double, invalid-tool/input/output, nested-JSON and prompt-injection regressions, immutable registry and justified no-framework choice. Whole-package typing now passes after the `d41e661` sync; the synchronized integrated gate and independent review remain pending. |
 | M2-04 | P1 | planned | M2-02, M2-03 | Real provider evaluation only with B-05 approval; trace tool calls, model/call budgets, evidence refs, limitations and human confirmation; no unsupported numeric claims. |
 | M2-05 | P1 | planned | M1F-02, M2-03 | Usable local/API/UI decision workflow with status, reproducible reports, uncertainty and review; demonstrate normal and failure paths. |
 | M2-06 | P1 | planned | M1F-03, M2-04, M2-05 | Reviewed applied-AI acceptance with approved data, grounded comparison and explicit human approval. |

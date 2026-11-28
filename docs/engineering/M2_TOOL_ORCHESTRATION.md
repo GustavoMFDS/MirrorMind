@@ -156,6 +156,14 @@ workflow digest. It omits per-day observations and the full trace body.
 The summary is validated from the actual M1F-02 output. The provider cannot
 substitute its own forecast or simulation values through either tool.
 
+The adapter declares the consumed M1F-02 result shape with private `TypedDict`
+types. They describe an existing in-process return value for static checking;
+they do not parse or trust external JSON. The adapter still constructs and
+validates `DecisionTraceV2` and `SyntheticDecisionToolOutput` at runtime, and
+the registry validates that exact output model again before exposing it to a
+provider. This keeps the shape declaration aligned with the source workflow
+without adding a second runtime schema or copying the workflow algorithm.
+
 ### `orchestrator.py`
 
 `run_bounded_tool_orchestration` validates the exact request and registry
@@ -236,15 +244,18 @@ the same JSON; the digests make byte changes visible.
 | `...::test_tool_registry_fields_cannot_be_reassigned_or_deleted` | The immutable registry rejects ordinary reassignment and deletion of its name map and definition tuple | Python encapsulation is not an isolation boundary; no HTTP caller can supply a registry |
 | `...::test_registry_rejects_wrong_exact_output_contract` | Registry refuses a handler returning an untyped output | Does not prove arbitrary native-code containment |
 | `...::test_registry_rejects_tool_input_over_the_canonical_json_byte_budget` | Canonical UTF-8 tool arguments over 8 KiB are refused before input-model validation or handler execution | Byte accounting covers canonical JSON, not every transient Python allocation |
+| `tests/unit/test_bounded_tool_orchestration.py::test_tool_call_recursively_accepts_bounded_builtin_json_containers` and `...::test_tool_call_rejects_cyclic_and_oversized_nested_json_containers` | Nested exact built-in JSON lists and dictionaries are walked; cycles and containers above 64 items are rejected | Does not constrain arbitrary custom Python objects or every transient allocation |
 | `...::test_registry_rejects_validated_output_over_the_utf8_byte_budget` | A valid declared output model over 16 KiB is refused before creating a provider observation | Does not impose process memory isolation or measure the handler's intermediate allocations |
 | `...::test_registry_sanitizes_handler_exception_details` | Handler failure produces `tool_failed` without copying exception text to the caller | No worker-process containment, cancellation or timeout is provided |
+| `tests/unit/test_bounded_tool_orchestration.py::test_scripted_provider_runs_fixed_synthetic_tool_sequence` plus `mypy --warn-unused-ignores src/mirrormind` | Exercises the existing M1F-02 response through the adapter and checks all 71 package modules against the declared source shape | Static typing does not validate an arbitrary runtime response; Pydantic contracts remain the runtime boundary |
 | `tests/integration/test_m2_tool_orchestration_cli.py::test_bounded_tool_orchestration_cli_replays_minimized_receipt` | Documented command runs end-to-end and does not echo query or excerpt | One process, generated data and local execution only |
 | `tests/integration/test_api.py::test_live_api_claims_equal_reviewed_capability_ledger` | Public capability status set matches the reviewed ledger | Structural/status parity is not semantic feature proof |
 
 All cited tests must be run separately; a selector's existence is not a
 passing result. The reviewed selectors and limitations are recorded as
 `MM-AGENT-001`, `MM-AGENT-002`, `MM-AGENT-003`, `MM-AGENT-004`,
-`MM-AGENT-005`, `MM-AGENT-006`, `MM-AGENT-007` and `MM-AGENT-008` in the
+`MM-AGENT-005`, `MM-AGENT-006`, `MM-AGENT-007`, `MM-AGENT-008` and
+`MM-AGENT-009` in the
 [`EVIDENCE_MAP.json`](EVIDENCE_MAP.json).
 
 ## 7. Learning exercises

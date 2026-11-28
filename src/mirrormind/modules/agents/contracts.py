@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import math
 from hashlib import sha256
-from typing import Annotated, Literal, Protocol
+from typing import Annotated, Literal, Protocol, cast
 
 from pydantic import (
     BaseModel,
@@ -98,19 +98,25 @@ class ToolCall(_AgentModel):
                 if len(item) > 8_192:
                     raise ValueError("tool string argument exceeds the size bound")
                 return
-            if type(item) in (list, dict):
+            if type(item) is list:
+                list_values = cast(list[object], item)
                 identity = id(item)
-                if identity in ancestors or len(item) > 64:
+                if identity in ancestors or len(list_values) > 64:
                     raise ValueError("tool JSON arguments contain a cycle or oversized container")
                 next_ancestors = ancestors | {identity}
-                if type(item) is list:
-                    for child in item:
-                        inspect(child, depth + 1, next_ancestors)
-                else:
-                    for key, child in item.items():
-                        if type(key) is not str or len(key) > 128:
-                            raise ValueError("tool JSON object keys must be bounded strings")
-                        inspect(child, depth + 1, next_ancestors)
+                for child in list_values:
+                    inspect(child, depth + 1, next_ancestors)
+                return
+            if type(item) is dict:
+                dict_values = cast(dict[object, object], item)
+                identity = id(item)
+                if identity in ancestors or len(dict_values) > 64:
+                    raise ValueError("tool JSON arguments contain a cycle or oversized container")
+                next_ancestors = ancestors | {identity}
+                for key, child in dict_values.items():
+                    if type(key) is not str or len(key) > 128:
+                        raise ValueError("tool JSON object keys must be bounded strings")
+                    inspect(child, depth + 1, next_ancestors)
                 return
             raise ValueError("tool arguments must contain only JSON values")
 
@@ -253,17 +259,19 @@ class AgentRunReport(_AgentModel):
     def require_consistent_run_state(self) -> AgentRunReport:
         if len(self.tool_receipts) > self.tool_call_count:
             raise ValueError("successful tool receipts cannot exceed call attempts")
+        draft = self.draft
         if self.status == "refused":
-            if self.draft is not None or self.refusal_code is None:
+            if draft is not None or self.refusal_code is None:
                 raise ValueError("refused runs require a refusal code and no draft")
-        elif self.refusal_code is not None or self.draft is None:
-            raise ValueError("completed and abstained runs require one final draft")
-        elif self.draft_trust_label != "untrusted_provider_draft":
-            raise ValueError("provider drafts must remain explicitly untrusted")
-        if self.status == "completed" and self.draft.status != "draft_for_human_review":
-            raise ValueError("completed status requires a review draft")
-        if self.status == "abstained" and self.draft.status != "insufficient_evidence":
-            raise ValueError("abstained status requires an insufficient-evidence response")
+        else:
+            if self.refusal_code is not None or draft is None:
+                raise ValueError("completed and abstained runs require one final draft")
+            if self.draft_trust_label != "untrusted_provider_draft":
+                raise ValueError("provider drafts must remain explicitly untrusted")
+            if self.status == "completed" and draft.status != "draft_for_human_review":
+                raise ValueError("completed status requires a review draft")
+            if self.status == "abstained" and draft.status != "insufficient_evidence":
+                raise ValueError("abstained status requires an insufficient-evidence response")
         return self
 
 

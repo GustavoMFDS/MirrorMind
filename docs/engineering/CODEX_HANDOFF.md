@@ -2,12 +2,14 @@
 
 ## Current continuation - 2026-11-27
 
-- Current `main` is `c8b93da2c60442e680280aa232a9620fa2279f11`, after PR #82
+- Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, after PR #82
   merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #82's exact
   head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed its 989-test local
   six-check gate and 12 official checks; those remain exact-PR-head evidence,
   not a claim about the merge SHA or newer main. Main then added a public
-  dependency hash lock and narrowed evaluation types at `c8b93da`. See
+  dependency hash lock and narrowed evaluation types at `c8b93da`; `d41e661`
+  closes remaining package typing diagnostics and gates whole-package typing.
+  Do not infer a check result for `main` without exact-SHA evidence. See
   [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
 - The active branch `codex/m2-03-tool-orchestration-20261127` now contains a
   bounded local M2-03 implementation on top of the merged M2-02 baseline.
@@ -16,12 +18,22 @@
   receipt is query-free; drafts remain untrusted, require human review and
   cannot authorize writes or actions. No live model, HTTP route, persistence,
   authenticated identity or semantic-entailment check exists. The merged
-  checkpoint `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a` passed the local gate:
+  pre-`d41e661` checkpoint `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a` passed
+  the local gate:
   1,011 tests, zero skips and all six checks with WorldKernel pinned at
   `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Its receipt is
   `results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`.
-  Re-run the exact gate after this evidence update and before opening the
-  separate review PR; the receipt is local-only, not official CI.
+  That receipt predates the latest main merge and is not evidence for the
+  current candidate. Re-run the exact gate after this merge and before opening
+  the separate review PR; the receipt is local-only, not official CI.
+- The new `d41e661` package typing gate exposed 25 M2-03 diagnostics. The
+  current worktree resolves them using precise nested-container types, explicit
+  registry attribute declarations and a static M1F-02 result shape while
+  retaining runtime Pydantic validation. Two focused regressions now exercise
+  nested built-in JSON acceptance and cycle/size refusal. Current focused
+  checks: 21 tests, whole-package mypy (71 modules), strict retrieval mypy (five
+  modules) and focused Ruff all pass. Final coverage and the exact integrated
+  six-check gate are still pending on the committed candidate.
 - PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
   commits. Keep retrieval and its evaluation experimental and fictional.
 - The owner's MM-024 UCI policy is implemented in main: six-digit IDs are

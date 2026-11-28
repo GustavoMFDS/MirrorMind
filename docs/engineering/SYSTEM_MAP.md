@@ -1,6 +1,6 @@
 # MirrorMind — system map
 
-Updated against current `main` `c8b93da2c60442e680280aa232a9620fa2279f11` on 2026-11-27. PR #82 merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, adding M2-02's bounded fictional retrieval evaluator. Its exact PR head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips and six local checks plus 12 official exact-head checks; these results do not transfer to the merge or later main. Current branch `codex/m2-03-tool-orchestration-20261127` contains the separate M2-03 local orchestration slice; synchronized checkpoint `a27027e` passed 1,011 tests, zero skips and all six local checks; repeat the exact-head gate after documentation updates and obtain independent review. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
+Updated against current `main` `d41e661d298255957979779691c2f9f4dbf36461` on 2026-11-27. PR #82 merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, adding M2-02's bounded fictional retrieval evaluator. Its exact PR head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips and six local checks plus 12 official exact-head checks; these results do not transfer to the merge or later main. Current branch `codex/m2-03-tool-orchestration-20261127` contains the separate M2-03 local orchestration slice. Its `a27027e` gate passed before the `d41e661` sync and is historical. Current typing corrections pass 21 focused tests, whole-package mypy (71 modules), strict retrieval typing (five modules) and focused Ruff; the integrated exact-head gate remains pending. The approved UCI source call stopped above the unchanged 250,000 product-day-group ceiling without a projection or metric. No authenticated RBAC, public agent route, live provider, production data permission, deployment or empirical forecast is claimed.
 
 
 
@@ -23,6 +23,9 @@ The local M2-03 orchestration path is separate from HTTP: a strict request
 enters a bounded synchronous loop, admits only the fixed scripted test-double
 mode, invokes an immutable registry of fictional retrieval and M1F-02 decision
 tools, and emits digest-only receipts plus an untrusted draft for human review.
+The adapter statically describes the internal M1F-02 fields it consumes;
+Pydantic contracts continue to validate the trace and provider-visible result
+at runtime.
 Prompt-like retrieved text remains untrusted data; it cannot extend the
 registry. This path has no network provider, persistent state, public route,
 write capability or business-action authority. Citation validation checks

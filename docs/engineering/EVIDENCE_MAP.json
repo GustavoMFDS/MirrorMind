@@ -56,6 +56,13 @@
     "limitation": "The local registry returns a fixed refusal code without handler exception text; it offers no worker isolation, timeout or cancellation for tool execution."
   },
   {
+    "id": "MM-AGENT-009",
+    "guide": "docs/engineering/M2_TOOL_ORCHESTRATION.md",
+    "test": "tests/unit/test_bounded_tool_orchestration.py",
+    "function": "test_tool_call_rejects_cyclic_and_oversized_nested_json_containers",
+    "limitation": "The validator rejects cyclic and oversized exact built-in containers in local request objects; it does not guarantee containment of arbitrary Python objects or bound all transient memory use."
+  },
+  {
     "id": "MM-ANCHOR-001",
     "guide": "docs/engineering/SIGNED_HEAD_CHECKPOINTS.md",
     "test": "tests/unit/test_head_checkpoints.py",

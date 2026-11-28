@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from datetime import date
 from hashlib import sha256
-from typing import Annotated, Literal
+from typing import Annotated, Literal, TypedDict, cast
 
 from pydantic import (
     BaseModel,
@@ -34,6 +34,95 @@ _POLICY_IDS = (
     "reorder_point_fixed_quantity",
     "forecast_aware_order_up_to",
 )
+
+
+class _WorkflowMeanMetrics(TypedDict):
+    total_cost_units: float
+    stockout_days_per_replication: float
+    ending_on_hand_units: float
+    pending_order_units: float
+    order_count: float
+    fill_rate_basis_points: int | None
+
+
+class _WorkflowReplication(TypedDict):
+    demand_stream_sha256: str
+
+
+class _WorkflowPolicy(TypedDict):
+    policy_id: Literal[
+        "fixed_cycle_quantity",
+        "reorder_point_fixed_quantity",
+        "forecast_aware_order_up_to",
+    ]
+    ranking_status: Literal["not_computed"]
+    mean_metrics_per_replication: _WorkflowMeanMetrics
+    replication_results: list[_WorkflowReplication]
+
+
+class _WorkflowScenario(TypedDict):
+    lead_time_days: int
+    is_base_assumption: bool
+    policies: list[_WorkflowPolicy]
+
+
+class _WorkflowComparison(TypedDict):
+    engine_contract_ref: Literal["mirrormind.local.retail_policy_test_double.v1"]
+    engine_execution: Literal["worldkernel_not_invoked"]
+    decision_status: Literal[
+        "comparison_only_no_policy_selection_or_authorization"
+    ]
+    input_status: Literal["caller_supplied_assumptions_not_authenticated"]
+    quantity_unit: Literal["item"]
+    time_unit: Literal["day"]
+    cost_unit: Literal["synthetic_cost_unit"]
+    replications: int
+    seed: int
+    modeling_caveats: list[str]
+    lead_time_sensitivity: list[_WorkflowScenario]
+
+
+class _WorkflowReferenceParity(TypedDict):
+    status: Literal["not_run"]
+
+
+class _WorkflowSimulation(TypedDict):
+    status: Literal["experimental_local_test_double_only"]
+    selected_result_source: Literal["policy_test_double"]
+    reference_parity: _WorkflowReferenceParity
+    result: _WorkflowComparison
+
+
+class _WorkflowForecast(TypedDict):
+    model: Literal["seasonal_naive_lag7"]
+    status: Literal[
+        "experimental_synthetic_profile_not_empirically_validated"
+    ]
+    model_card_ref: str
+    history_start: str
+    history_end: str
+    horizon_days: Literal[28]
+    profile_units: list[int]
+
+
+class _SyntheticWorkflowResult(TypedDict):
+    """Static shape consumed from the existing M1F-02 workflow result."""
+
+    schema_version: Literal["mirrormind.synthetic_retail_decision_workflow.v2"]
+    status: Literal["synthetic_comparison_ready_experimental"]
+    as_of: str
+    source_status: Literal["fictional_fixture_not_authenticated_or_authorized"]
+    decision_status: Literal[
+        "comparison_only_no_policy_selection_or_authorization"
+    ]
+    forecast: _WorkflowForecast
+    simulation: _WorkflowSimulation
+    trace: object
+    trace_sha256: str
+    workflow_result_sha256: str
+    human_review: Literal["not_requested"]
+    action_authorized: Literal[False]
+    writes_performed: Literal[False]
 
 
 class _ToolModel(BaseModel):
@@ -215,7 +304,10 @@ def _summarize_workflow(request: SyntheticDecisionToolInput) -> SyntheticDecisio
         replications=request.replications,
         seed=request.seed,
     )
-    result = run_synthetic_decision_workflow(workflow_request)
+    result = cast(
+        _SyntheticWorkflowResult,
+        run_synthetic_decision_workflow(workflow_request),
+    )
     if result.get("status") != "synthetic_comparison_ready_experimental":
         raise ValueError("the fixed synthetic workflow did not produce a comparison")
     trace = DecisionTraceV2.model_validate(result["trace"])
@@ -263,16 +355,13 @@ def _summarize_workflow(request: SyntheticDecisionToolInput) -> SyntheticDecisio
         forecast=SyntheticForecastSummary.model_validate_json(
             json.dumps(
                 {
-                key: result["forecast"][key]
-                for key in (
-                    "model",
-                    "status",
-                    "model_card_ref",
-                    "history_start",
-                    "history_end",
-                    "horizon_days",
-                    "profile_units",
-                )
+                    "model": result["forecast"]["model"],
+                    "status": result["forecast"]["status"],
+                    "model_card_ref": result["forecast"]["model_card_ref"],
+                    "history_start": result["forecast"]["history_start"],
+                    "history_end": result["forecast"]["history_end"],
+                    "horizon_days": result["forecast"]["horizon_days"],
+                    "profile_units": result["forecast"]["profile_units"],
                 },
                 allow_nan=False,
                 ensure_ascii=False,

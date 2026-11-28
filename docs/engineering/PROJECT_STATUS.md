@@ -2,36 +2,27 @@
 
 ## Current review reconciliation - 2026-11-27
 
-Current `main` is `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, the normal
-PR #81 merge after PR #80's synthetic benchmark/release preparation and PR
-#79's curated portfolio/index update. PR #77
-integrated at `540c47411898cc820ac651c19430017ecd8c20fe` over PR #65 merge
-`51c90d2601b2fba16b03a13a8723df0a54437d92`. PR #77
-(`df7c450523a8f3475e0a8161936f6ac80e705720`) adds measured public
-coverage, strict typing for retrieval, wheel build/install smoke checks and
-repository quality CI; it also reconciles MM-009 with accepted decision MM-023.
-All nine observed official contexts on that exact PR head succeeded: `test`,
-compatibility 3.12/3.13, `symbol-catalog`, `Analyze (actions)`,
-`Analyze (python)`, `quality`, `package` and `CodeQL` (runs
-[46066734014](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734014),
-[46066733925](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066733925),
-[46066734009](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066734009),
-[46066732130](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46066732130)
-and [140733898759](https://github.com/GustavoMFDS/MirrorMind/runs/140733898759)).
-This evidence applies to the PR head; the combined-status query for merge
-commit `540c474` returned no individual entries, so no exact-merge official
-result is claimed here. PR #77 merged normally; no protection or required check
-was bypassed, and no paid services were used.
+Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following PR #82's
+normal merge at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, coverage/typing
+floor at `128c266`, public dependency lock at `c8b93da`, and the whole-package
+typing gate at `d41e661`. PR #82's exact head
+`f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests and 12
+official checks; its results remain scoped to that PR head. No exact-current-
+main CI result is inferred. The quality workflow now includes an 85% public
+coverage floor, whole-package mypy and strict retrieval typing. This branch
+contains M2-03 and is ancestry-synced through `d41e661`; the previous complete
+local gate at `a27027e` predates the latest sync and does not validate this
+candidate. See [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
 
-The PR #77 exact-head report records a separate local gate of 968 tests, zero
-skips and six local checks, alongside its coverage, typing and package results;
-see [REX-09/10](REX_QUALITY_PACKAGING.md) and
-[LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). The pre-PR #77 exact-main gate at
-`51c90d2` also passed 968 tests, zero skips and six checks with reviewed
-WorldKernel `0.0.1` at source commit
-`9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. These historical receipts do not
-validate the current M2-02 branch; its exact-head gate must be run before
-publication and recorded in that PR's review evidence.
+The new whole-package typing gate found 25 diagnostics in the M2-03 contracts,
+registry and M1F-02 adapter. The candidate now resolves these with explicit
+built-in-container narrowing, declared registry fields and a static result
+shape that retains the existing runtime Pydantic validators. Two nested-JSON
+regressions were added. Focused M2-03 validation currently passes 21 tests,
+whole-package mypy across 71 modules, strict retrieval mypy across five modules
+and focused Ruff. Coverage and the exact integrated six-check gate remain
+pending on the final clean candidate; no current PR or official Actions result
+is claimed.
 
 The bounded UCI reader and MM-024 classification are already implemented in
 main with synthetic regressions. The approved source call stopped above the
@@ -88,7 +79,7 @@ unavailable for that authoring run, so only the official CI container-smoke
 job is evidence. Combined-status queries for the exact PR head and merge SHA
 returned no individual entries.
 
-**Current main:** `c8b93da2c60442e680280aa232a9620fa2279f11`, after PR #82 merged
+**Current main:** `d41e661d298255957979779691c2f9f4dbf36461`, after PR #82 merged
 normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #52–#59 remain
 incorporated through #62; #60/#61/#64 through #66; Census #63 through #67;
 PRs #68–#81 through their existing merges, including MM-024 (#78), the curated
@@ -96,9 +87,11 @@ portfolio/index (#79), synthetic benchmarks/read-only release preparation
 (#80), and developer onboarding/container smoke (#81). PR #82 adds the bounded
 fictional M2-02 retrieval evaluator. The later `128c266` commit reduces typing
 debt and establishes a public coverage floor; `c8b93da` locks public
-development dependencies and narrows evaluation types. WorldKernel and dataset
-terms remain separate. No combined-status or exact-main gate result is
-inferred from PR-head checks.
+development dependencies and narrows evaluation types. Commit `d41e661` closes
+remaining package typing diagnostics and adds whole-package typing to the
+quality workflow; no exact-current-main check result is asserted here.
+WorldKernel and dataset terms remain separate. No combined-status or exact-main
+gate result is inferred from PR-head checks.
 The exact #62 post-merge receipt and review remain in
 [comments 7181452369](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181452369)
 and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-7181477141).
@@ -114,7 +107,7 @@ and [7181477141](https://github.com/GustavoMFDS/MirrorMind/pull/62#issuecomment-
 | PR #80 / REX-13/14 | Merged normally at `7efced5`; exact head `e6a28ac` passed 976 tests, six local checks and eight observed successful jobs across five workflows; two guarded main-only jobs were skipped. | Synthetic timing only; release bundle is non-authorizing preparation. No tag, release or production benchmark claim. |
 | PR #81 / REX-15 | Merged normally at `10b94c9`; exact head `41e6db8` passed 977 tests, six local checks and nine applicable official jobs across five workflows. Deployment and release rehearsal were skipped by conditions. | Public onboarding and CI container smoke only; no claim of local Docker validation or production deployment. |
 | PR #82 / M2-02 retrieval evaluation | Merged normally at `c31ecd6` into current main. Exact PR head `f6fa2ed` passed 989 local tests, zero skips and six checks; 12 official exact-head checks passed, with deploy and release rehearsal skipped by conditions. | Evidence is scoped to the PR head. Synthetic retrieval remains experimental; no live source or production retrieval claim. |
-| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127` and ancestry-synced with main `c8b93da`; checkpoint `a27027e` passed 1,011 tests, zero skips and all six local checks with the reviewed WorldKernel pin. | Re-run the exact-head gate after this documentation update, then prepare independent review. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
+| M2-03 bounded tool orchestration | Implemented on `codex/m2-03-tool-orchestration-20261127`, ancestry-synced through `d41e661`. After typing corrections, focused tests pass 21/21, whole-package mypy passes 71 modules, strict retrieval mypy passes five modules, and focused Ruff passes. | The `a27027e` receipt predates current main. Final coverage and exact integrated gate remain pending. Provider is scripted test double only; fixed fictional tools, no route, writes or action authority. |
 
 Metadata-first Census due diligence on 2026-11-27 proposes direct MARTS
 original release files for one verified national seasonally adjusted

@@ -2,19 +2,29 @@
 
 ## Current main and exact-head gate status - 2026-11-27
 
-Current `main` is `c8b93da2c60442e680280aa232a9620fa2279f11`, following the
+Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, following the
 normal merge of PR #82 at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`, the
-typing-debt/public-coverage-floor follow-up at `128c266`, and a public
-dependency lock/evaluation-type follow-up. PR #82's final exact head
+typing-debt/public-coverage-floor follow-up at `128c266`, a public dependency
+lock/evaluation-type follow-up at `c8b93da`, and the whole-package typing-gate
+change at `d41e661`. PR #82's final exact head
 `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed 989 local tests, zero skips,
 six local checks and 12 official exact-head checks; those results do not
 transfer to the merge SHA or later `main`. The M2-03 branch is ancestry-synced
-with that baseline; synchronized checkpoint `a27027e` passed the local gate as
-recorded below. This evidence update requires a fresh exact-head gate before
-review. The owner-authorized temporary local gate remains separate from official CI.
+with that baseline. Checkpoint `a27027e` passed before the latest main merge,
+as recorded below; it does not validate the current candidate. Re-run the
+exact-head gate after synchronization and before review. The owner-authorized
+temporary local gate remains separate from official CI.
 Do not infer official status for a SHA without querying that exact commit.
 
-### M2-03 synchronized checkpoint — `a27027e`
+The synchronized M2-03 worktree initially failed the newly required
+whole-package mypy check with 25 diagnostics in three files. Those diagnostics
+are resolved without changing runtime contracts. Focused M2-03 validation now
+passes 21 tests, `mypy --warn-unused-ignores src/mirrormind` (71 modules),
+`mypy --strict src/mirrormind/modules/retrieval` (five modules), and focused
+Ruff. These are worktree checks, not an exact committed gate. Coverage and the
+owner-authorized six-check gate remain pending for the final clean SHA.
+
+### M2-03 pre-`d41e661` checkpoint — `a27027e`
 
 On exact commit `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a`, the complete local
 gate passed **1,011 tests, zero skips and all six checks**: pytest, Ruff, symbol
@@ -24,8 +34,10 @@ WorldKernel `0.0.1` from reviewed source commit
 Starlette/httpx deprecation warning. The exact receipt is
 `results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`;
 it is a local ignored artifact and explicitly records that official GitHub
-Actions status was not checked by the gate. Any later tracked change requires
-a new exact-head gate before review.
+Actions status was not checked by the gate. This checkpoint predates the
+`d41e661` main merge and later documentation updates; it is historical evidence
+only. The synchronized current candidate needs a new exact-head gate before
+review.
 
 The preceding main before PR #82 was `10b94c9d7b01bc7072a18d8124cbc8090a6b1925`, normal merge of
 [PR #81](https://github.com/GustavoMFDS/MirrorMind/pull/81) after

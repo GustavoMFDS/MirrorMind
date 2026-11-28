@@ -5,7 +5,7 @@ import json
 from typing import Literal
 
 import pytest
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from mirrormind.modules.agents.contracts import (
     MAX_TOOL_OUTPUT_BYTES,
@@ -384,6 +384,37 @@ def test_duplicate_provider_call_id_is_refused_before_second_invocation() -> Non
     assert result.refusal_code == "duplicate_tool_call_id"
     assert result.tool_call_count == 2
     assert len(result.tool_receipts) == 1
+
+
+def test_tool_call_recursively_accepts_bounded_builtin_json_containers() -> None:
+    arguments = {"filters": [{"category": "retail", "limit": 2}]}
+
+    call = ToolCall(
+        call_id="nested-json",
+        tool_name="search_synthetic_evidence",
+        arguments=arguments,
+    )
+
+    assert call.arguments == arguments
+
+
+def test_tool_call_rejects_cyclic_and_oversized_nested_json_containers() -> None:
+    cyclic_values: list[object] = []
+    cyclic_values.append(cyclic_values)
+
+    with pytest.raises(ValidationError, match="cycle or oversized container"):
+        ToolCall(
+            call_id="cyclic-json",
+            tool_name="search_synthetic_evidence",
+            arguments={"filters": cyclic_values},
+        )
+
+    with pytest.raises(ValidationError, match="cycle or oversized container"):
+        ToolCall(
+            call_id="oversized-nested-json",
+            tool_name="search_synthetic_evidence",
+            arguments={"filters": {str(index): index for index in range(65)}},
+        )
 
 
 def test_tool_registry_fields_cannot_be_reassigned_or_deleted() -> None:

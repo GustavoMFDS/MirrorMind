@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from hashlib import sha256
 from types import MappingProxyType
@@ -68,6 +68,8 @@ class ToolRegistry:
     """Read-only map of reviewed local functions; no run-time registration API."""
 
     __slots__ = ("_by_name", "_definitions")
+    _definitions: tuple[ToolDefinition[Any, Any], ...]
+    _by_name: Mapping[str, ToolDefinition[Any, Any]]
 
     def __init__(self, definitions: tuple[ToolDefinition[Any, Any], ...]) -> None:
         if type(definitions) is not tuple or not 1 <= len(definitions) <= MAX_TOOL_DEFINITIONS:

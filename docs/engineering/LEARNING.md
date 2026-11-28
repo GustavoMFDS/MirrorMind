@@ -935,6 +935,9 @@ Explain which boundary each regression proves and why neither proves that a
 live model follows instructions or that a citation semantically entails a
 summary. Then inspect the provider-mode failure test, attempt to mutate the
 registry, and run `python -m examples.m2_bounded_tool_orchestration` twice to
-compare query-free receipts. The exercise uses fictional inputs and establishes
-no identity, provider attestation, approval, network isolation or action
-authority.
+compare query-free receipts. Inspect the private `_SyntheticWorkflowResult`
+`TypedDict` against the M1F-02 return construction. Explain why it assists
+static checking but does not add runtime validation, and locate the Pydantic
+checks that still define the runtime contract. The exercise uses fictional
+inputs and establishes no identity, provider attestation, approval, network
+isolation or action authority.

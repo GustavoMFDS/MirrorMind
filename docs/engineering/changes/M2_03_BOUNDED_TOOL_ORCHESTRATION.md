@@ -65,6 +65,8 @@ contracts cannot provide.
 - [ ] Forecast and policy numbers come only from the existing M1F-02 service;
   the provider cannot replace numeric computation. The report is synthetic,
   query-free, non-persisting, human-review-required and non-authorizing.
+- [ ] The adapter's consumed M1F-02 result shape passes whole-package mypy
+  without replacing or bypassing its runtime Pydantic contract validation.
 - [ ] The CLI example replays deterministically with the scripted provider;
   unit and integration regressions cover normal and adverse paths.
 - [ ] Source walkthrough, architecture map, debugging guide, learning
@@ -78,7 +80,7 @@ contracts cannot provide.
 | Contracts | `src/mirrormind/modules/agents/contracts.py` | Add strict run, provider-turn, tool-call, observation and report models | Unit validation and bounds tests |
 | Registry | `src/mirrormind/modules/agents/registry.py` | Add immutable code-owned registry, exact input/output validation and digest receipts | Unknown-tool, invalid-input/output, duplicate and size regressions |
 | Composition | `src/mirrormind/modules/agents/orchestrator.py` | Add synchronous bounded provider loop and citation-reference check | Unit tests for success, refusal, abstention, budgets and provider failures |
-| Tool adapters | `src/mirrormind/modules/agents/synthetic_tools.py` | Wrap existing M2-01 search and M1F-02 workflow; no copied algorithms | Service-output parity and scope/injection tests |
+| Tool adapters | `src/mirrormind/modules/agents/synthetic_tools.py` | Wrap existing M2-01 search and M1F-02 workflow; declare the consumed internal response shape for static checking; no copied algorithms | Service-output parity and scope/injection tests; whole-package mypy |
 | Demo | `examples/m2_bounded_tool_orchestration.py` | Add fixed scripted provider and query-free deterministic receipt CLI | CLI replay integration test |
 | API capability | `src/mirrormind/api/routes/system.py` | Advertise only the local experimental capability; no orchestration route | Capability parity and status regression |
 | Tests | `tests/unit/test_bounded_tool_orchestration.py`; `tests/integration/test_m2_tool_orchestration_cli.py`; `tests/integration/test_api.py` | Add behavior and adverse-case evidence | Named pytest selectors in `EVIDENCE_MAP.json` |
@@ -109,17 +111,28 @@ requires B-05 approval and a separate security/evaluation review.
 
 ## 6. Evidence after implementation
 
-- Commit / PR: pending implementation.
-- Modified symbols and files: pending implementation.
-- Tests executed, result, environment: pending exact-head gate.
-- Claim IDs and cited test path/function: pending tests.
+- Commit / PR: implementation checkpoint `0922c72`; current candidate commit
+  and separate review PR remain pending.
+- Modified symbols and files: `modules/agents/contracts.py`,
+  `modules/agents/registry.py`, `modules/agents/synthetic_tools.py`, the
+  focused unit test, and source walkthrough/learning/debugging/evidence docs.
+- Tests executed, result, environment: focused suite passes 21 tests; current
+  exact integrated gate and public coverage remain pending.
+- Claim IDs and cited test path/function: `MM-AGENT-001` through
+  `MM-AGENT-009` in `EVIDENCE_MAP.json`.
 - Evidence/provenance/cutoff and uncertainty: fictional fixtures; M1F-02
   retains its existing as-of and model-card contracts.
 - Scope of human review and approval: no human approval is simulated; every
   draft requires later review.
 - New or changed contracts: local provider-turn, tool-call and result models;
   no public route or persisted schema.
-- Docs updated: pending implementation.
+- Docs updated: M2-03 walkthrough, learning exercise, debugging guide,
+  change request, system map, status, backlog, handoff, local gate and evidence
+  map; final exact gate receipt is pending.
 - Known limitations / follow-up: no live provider or semantic entailment
   checking; M2-04 and M2-05 remain separate.
-- Independent explanation: pending implementation.
+- Independent explanation: this increment aligns the previously delivered M2-03
+  code with main's new whole-package typing gate. Exact built-in containers are
+  still traversed recursively and bounded; type annotations and casts are
+  static only. Runtime trace/output validation remains Pydantic-based, and the
+  fixed tool registry and no-action behavior are unchanged.
