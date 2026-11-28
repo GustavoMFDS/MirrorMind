@@ -878,3 +878,30 @@ See [change request](changes/M1C_04_CENSUS_BIVARIATE_STUDY.md).
 Independent review pending.
 
 Run `python -m pytest -q tests/integration/test_census_bivariate_study.py`.
+
+## Offline multivariate research observatory
+The [bivariate observatory](../../examples/m1_census_bivariate_observatory.py)
+renders a freshly executed and fully replayed fixed bivariate study.
+
+    python -m examples.m1_census_bivariate_observatory --revision REV --output ABSOLUTE_HTML
+
+Separate scenario and horizon tables include exact rational joint Brier,
+reference excess, both marginal CRPS scores, event Brier, predicted and
+observed simultaneous-positive event rates and covariance. Fixed examples
+(path 0, origin 52, horizon six) show joint matrices with explicit axes
+and numeric probability labels, exact cell fractions in titles, and
+marginal tables with visible exact fractions. A common probability
+intensity scale is used across all matrices. The examples do not add
+independent observations. The oracle is privileged. Provenance includes
+study, report and group transcript digests, and declared revision.
+Self-generated demo commitment only; no imported records, network,
+scripts, storage, overwrite or operational authority.
+
+Proposed evidence MM-CEN-034:
+`test_bivariate_observatory_replayed_report_and_matrices` checks
+actual replayed metrics, matrix counts, provenance and internal links.
+Other tests verify exact cell mass, exclusive output and no output
+after a replay mismatch.
+Run `python -m pytest -q tests/integration/test_census_bivariate_observatory.py`.
+See [change request](changes/M1C_04_CENSUS_BIVARIATE_OBSERVATORY.md).
+Independent review pending; markup checks are not accessibility certification.

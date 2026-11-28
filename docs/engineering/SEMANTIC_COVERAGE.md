@@ -353,3 +353,7 @@ or empirical calibration.
 The [bivariate study](../../examples/m1_census_bivariate_study.py)
 has guided exact fictional comparison and receipt replay in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not empirical skill.
+
+The [bivariate observatory](../../examples/m1_census_bivariate_observatory.py)
+has guided offline report behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not operational forecasting.

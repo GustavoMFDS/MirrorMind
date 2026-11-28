@@ -390,3 +390,8 @@ The [bivariate study](../../examples/m1_census_bivariate_study.py)
 uses the exact joint core, fixed counter-hash scenarios, matched
 marginals, exact joint scores and full local receipt replay. No new
 API, persistence, source or authority.
+
+### Multivariate research observatory
+The [offline bivariate report](../../examples/m1_census_bivariate_observatory.py)
+renders fixed-study metrics after full replay and regenerates fixed
+joint and marginal examples. No new API, storage or authority.

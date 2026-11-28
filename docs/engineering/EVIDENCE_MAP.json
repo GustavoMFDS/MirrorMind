@@ -511,6 +511,13 @@
     "limitation": "Fixed synthetic bivariate study and local replay only; no independent registration, causal effects, serial dependence, empirical calibration or statistical winner. Independent review pending."
   },
   {
+    "id": "MM-CEN-034",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/integration/test_census_bivariate_observatory.py",
+    "function": "test_bivariate_observatory_replayed_report_and_matrices",
+    "limitation": "Offline replayed fixed bivariate report and example matrices only; no empirical calibration, accessibility certification, causal effects or operational forecasting. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

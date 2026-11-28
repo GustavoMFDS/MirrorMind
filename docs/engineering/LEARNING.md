@@ -1069,3 +1069,9 @@ Run the [bivariate study](../../examples/m1_census_bivariate_study.py).
 Compare matched marginal CRPS, joint Brier and reference excess under
 stable association, independence and a change in dependence. Discuss
 why the oracle is privileged and why association is not causal effect.
+
+### Exercise: inspect joint versus marginal predictions
+Generate the [bivariate observatory](../../examples/m1_census_bivariate_observatory.py).
+Compare joint matrices and the exact marginal tables of the matched
+independent and joint methods. Equal marginals need not imply equal
+joint events or covariance. No causal conclusion follows.

@@ -546,3 +546,8 @@ Check the declared revision and retained design digest. Verify exact
 canonical receipt bytes, not a rehashed altered report. Compare joint
 and matched product within each scenario and horizon; equal marginal
 scores are expected, not evidence of equal joint predictions.
+
+### Bivariate observatory
+Use a new absolute HTML output path. Replay mismatch prevents output.
+The matrices use a common probability scale and exact fractions;
+missing cells are zero probability, not missing observations.

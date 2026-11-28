@@ -184,3 +184,7 @@ The fixed fictional bivariate study estimates contemporaneous dependence
 from observed pairs and compares matched independent forecasts. It uses
 independent-in-time increments and a privileged reference; no causal
 effects, empirical calibration, holdout or statistical winner.
+
+The bivariate observatory visualizes a freshly replayed fixed study and
+preselected joint examples, not an operational model or independent
+calibration or causal evidence.
