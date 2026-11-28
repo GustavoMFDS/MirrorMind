@@ -609,6 +609,20 @@
     "limitation": "Fixed-seed paired simulation compared to exact conditional model marginals on bounded fixtures; no general variance reduction, cross-world identification, empirical calibration or authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-048",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_counterfactual.py",
+    "function": "test_counterfactual_exogenous_oracle",
+    "limitation": "Exact bounded supplied synthetic mechanisms with complete factual history and independent response types; not learned causal structure or empirical identification. Independent review pending."
+  },
+  {
+    "id": "MM-CEN-049",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_counterfactual.py",
+    "function": "test_counterfactual_nonidentification",
+    "limitation": "Constructive synthetic equal-likelihood nonidentification and sharp contrast bounds for specified response-type class only; no universal SCM bounds, empirical causal claim or authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

@@ -1301,3 +1301,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_modular_interventions.py](../../src/mirrormind/domains/retail/census_modular_interventions.py) | Exact mechanism replacement and paired contrasts |
 | [tests/unit/test_census_modular_interventions.py](../../tests/unit/test_census_modular_interventions.py) | Forced-update and exact marginal reference checks |
 | [docs/engineering/changes/M1C_04_CENSUS_MODULAR_INTERVENTIONS.md](changes/M1C_04_CENSUS_MODULAR_INTERVENTIONS.md) | Scoped acceptance and impact map |
+
+### Structural counterfactual research
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_counterfactual.py](../../src/mirrormind/domains/retail/census_counterfactual.py) | Conditional alternatives and scoped exact sensitivity bounds |
+| [tests/unit/test_census_counterfactual.py](../../tests/unit/test_census_counterfactual.py) | Exogenous oracle and nonidentification checks |
+| [docs/engineering/changes/M1C_04_CENSUS_COUNTERFACTUAL.md](changes/M1C_04_CENSUS_COUNTERFACTUAL.md) | Scoped acceptance and impact map |

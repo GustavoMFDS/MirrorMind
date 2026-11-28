@@ -453,3 +453,9 @@ No automatic fallback, external API, storage or action authority.
 The [intervention engine](../../src/mirrormind/domains/retail/census_modular_interventions.py)
 adds explicit model-implied schedules and paired event contrasts to
 the bounded modular posterior engines. No API, storage or authority.
+
+### Supplied structural counterfactuals
+The [counterfactual engine](../../src/mirrormind/domains/retail/census_counterfactual.py)
+computes exact retrospective conditional alternatives and bounded
+response-type sensitivity for supplied synthetic graphs. No API,
+storage, learned causal mechanism or operational authority.

@@ -618,3 +618,9 @@ values. Forced values must not update local posterior evidence.
 Compare empty schedules with exact observational predictions.
 Paired contrast intervals cover only conditional simulation error
 under ideal iid pairs and a single fixed look.
+
+### Structural counterfactuals
+Supply a canonical three-child graph and complete natural factual
+trajectory. Distinguish retrospective factual conditioning from
+prospective prediction. An ambiguous interval does not authorize
+a directional claim. Exact bounds apply only to the stated class.

@@ -1226,3 +1226,42 @@ schedules, forced long paths, integer radius and invalid schedules.
 Run `python -m pytest -q tests/unit/test_census_modular_interventions.py`.
 See [change request](changes/M1C_04_CENSUS_MODULAR_INTERVENTIONS.md).
 Independent review pending.
+
+## Supplied structural counterfactuals and sensitivity bounds
+The [counterfactual engine](../../src/mirrormind/domains/retail/census_counterfactual.py)
+accepts a known canonical three-child lag-one graph (zero to two
+parents per child), a fully observed natural factual trajectory of
+one to three transitions, ordered distinct axes and explicit
+alternative schedules. Parent contexts are sign products. For
+children with parents the positive marginals are 1/4 at negative
+sign and 3/4 at positive sign. No-parent children use a shared
+constant response. Independent response types across occurrences
+are abducted conditional on the natural factual trajectory; the
+alternative replaces selected mechanisms while preserving compatible
+response types. The likelihood is conditional on the initial state.
+Flip and threshold laws have identical observational transition
+laws but can have different individual conditional predictions.
+
+Sensitivity bounds parameterize the response-type masses for
+(--,-+,+-,++) as (theta,3/4-theta,1/4-theta,theta),
+0 <= theta <= 1/4, independently for each child and time with parents.
+First-step coupling is immaterial because initial contexts coincide.
+The factual likelihood is invariant and the conditional event
+contrast is multi-affine in the remaining parameters. Enumerate
+at most 64 vertices to obtain exact extrema and witness configurations.
+Return strict positive/negative, exact zero or ambiguous direction.
+Bounds are sharp only for this supplied response-type class, not
+all SCMs, common stationary coupling, correlated disturbances,
+unknown mechanisms or missing factual data. This is a retrospective
+conditional query, not a forecast using future observations.
+
+Proposed MM-CEN-048: `test_counterfactual_exogenous_oracle`
+independently enumerates compatible discrete disturbances.
+Proposed MM-CEN-049: `test_counterfactual_nonidentification`
+constructively demonstrates equal factual likelihood and distinct
+conditional alternatives, with exact contrast bounds.
+Additional tests cover endpoint containment, identical schedules,
+factual consistency, invalid graphs and inputs.
+Run `python -m pytest -q tests/unit/test_census_counterfactual.py`.
+See [change request](changes/M1C_04_CENSUS_COUNTERFACTUAL.md).
+Independent review pending. No empirical identification or authority.
