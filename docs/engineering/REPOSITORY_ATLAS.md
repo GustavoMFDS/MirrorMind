@@ -1091,3 +1091,7 @@ forecast claims or cross-repository changes.
 - [Docker context allowlist](../../.dockerignore): restricted local image inputs.
 
 - [REX quality floor change](changes/REX_QUALITY_FLOOR.md): bounded coverage and type-narrowing follow-up.
+
+- [Public dependency input](../../requirements/public-dev.in), [hash lock](../../requirements/public-dev.txt), [input drift checker](../../scripts/check_public_lock.py): reproducible public developer environment.
+
+- [Public lock tests](../../tests/unit/test_public_lock.py): input drift and private-source exclusion.

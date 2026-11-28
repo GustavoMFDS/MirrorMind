@@ -36,7 +36,7 @@ separate worktree.
 ## Remaining maintenance debt
 
 - Branch deletion requires a separate decision and refreshed preservation checks.
-- Full-package typing reduced from 62 to 49 errors in candidate; 85% public coverage floor candidate; dependency locking remains open.
+- Full-package typing reduced from 62 to 49 errors via PR #83; second candidate reports 18. Public coverage floor 85% integrated via PR #83. Hash-verified public developer lock candidate; private engine and other workflows remain separate.
 - Portal is a curated index; full rendered documentation is deferred.
 - Benchmarks are observational; no regression threshold or new release is authorized.
 - See [developer quick start](DEVELOPER_QUICK_START.md) and the integration PR for acceptance.
