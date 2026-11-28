@@ -1121,3 +1121,9 @@ Run the [persistent study](../../examples/m1_census_network_bayes_study.py).
 Compare hypothetical posterior updates with repeated mean rows.
 Explain the independent priors and why overlapping synthetic
 targets do not establish statistical superiority.
+
+### Exercise: modular posterior projection
+Use the [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
+to compare a disconnected module product with a joint query.
+Explain why first-step ancestor pruning is exact under independent
+local priors and why a candidate port is not a proven causal edge.

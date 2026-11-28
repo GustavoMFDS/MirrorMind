@@ -389,3 +389,8 @@ and [fixed study](../../examples/m1_census_network_bayes_study.py)
 have guided bounded exact prediction/replay in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not arbitrary graph
 inference, causal discovery or empirical skill.
+
+The [modular engine](../../src/mirrormind/domains/retail/census_modular.py)
+has guided exact bounded graph integration, composition and projection
+in [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not automatic
+port discovery, arbitrary-horizon scalability or empirical skill.
