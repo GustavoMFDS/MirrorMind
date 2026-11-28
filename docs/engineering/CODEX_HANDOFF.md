@@ -1,59 +1,51 @@
 # Agent handoff — continuous engineering and documentation standard
 
-## Current continuation - 2026-11-27
+## Current continuation - 2026-11-28
 
-- Current `main` is `d41e661d298255957979779691c2f9f4dbf36461`, after PR #82
-  merged normally at `c31ecd6dbf3f68be8726bdba2b23a813226c2618`. PR #82's exact
-  head `f6fa2edd80b38b42c3374813816929c2c9d8b2cc` passed its 989-test local
-  six-check gate and 12 official checks; those remain exact-PR-head evidence,
-  not a claim about the merge SHA or newer main. Main then added a public
-  dependency hash lock and narrowed evaluation types at `c8b93da`; `d41e661`
-  closes remaining package typing diagnostics and gates whole-package typing.
-  Do not infer a check result for `main` without exact-SHA evidence. See
-  [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
-- The active branch `codex/m2-03-tool-orchestration-20261127` now contains a
-  bounded local M2-03 implementation on top of the merged M2-02 baseline.
-  It composes only fixed fictional retrieval and M1F-02 decision tools through
-  strict contracts, an immutable registry and a scripted test double. The
-  receipt is query-free; drafts remain untrusted, require human review and
-  cannot authorize writes or actions. No live model, HTTP route, persistence,
-  authenticated identity or semantic-entailment check exists. The merged
-  pre-`d41e661` checkpoint `a27027e835d157b0ea24ef1ae0d6fc1f94cb864a` passed
-  the local gate:
-  1,011 tests, zero skips and all six checks with WorldKernel pinned at
-  `9b133ef873f2b6a7206c9c5742d40df4fccdb04a`. Its receipt is
-  `results/local-quality-gate-a27027e835d157b0ea24ef1ae0d6fc1f94cb864a-workspace.json`.
-  That receipt predates the latest main merge and is not evidence for the
-  synchronized candidate. Later exact local gates are recorded below; that
-  receipt remains local-only, not official CI.
-- The new `d41e661` package typing gate exposed 25 M2-03 diagnostics. The
-  current worktree resolves them using precise nested-container types, explicit
-  registry attribute declarations and a static M1F-02 result shape while
-  retaining runtime Pydantic validation. Two focused regressions now exercise
-  nested built-in JSON acceptance and cycle/size refusal. Current focused
-  checks: 21 tests, whole-package mypy (71 modules), strict retrieval mypy (five
-  modules) and focused Ruff all pass. Exact commit
-  `07a6cdc0f3e1e04a92956027e1aa087d4afe0cca` passed 1,014 tests, zero skips,
-  all six checks and 86.92% coverage; package build and wheel smoke passed.
-  The exact local gate at `2d71d3931cff494ddf0788f663de89efc2bc649f` also
-  passed 1,014 tests, zero skips and all six checks. PR #87 is open; its exact
-  head `2d71d39` had 12 successful official check-runs and two jobs skipped by
-  conditions, including successful official container smoke. Re-query after
-  any later push; see [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md). Local Docker
-  smoke remains unavailable on this host.
-- PR #82 / M2-02 is incorporated through merge `c31ecd6`; do not replay its
-  commits. Keep retrieval and its evaluation experimental and fictional.
-- The owner's MM-024 UCI policy is implemented in main: six-digit IDs are
-  normal; uppercase `C` plus six digits means cancellation; other single ASCII
-  letters plus six digits are excluded before aggregation as one unverified
-  class; unsupported formats fail closed. The approved source call stopped
-  above 250,000 product-day groups, yielding no complete projection or metric.
-  Do not reread, chunk, sample or raise the cap. Preserve deletion by
-  `2026-12-26`.
-- M1's synthetic vertical slice remains integrated. Empirical data use,
-  production acceptance, live provider access and external WorldKernel changes
-  remain blocked by their existing decisions. Keep automated fixtures
-  synthetic, paid-service spend at zero, and all main protections/checks intact.
+- Remote `main` is `00e6cf11ac05a94055242573fd3cfc18086bad10`, merged through
+  PR #88. Its cryptography 50 constraint and lock update has 11 successful
+  official check-runs on that exact SHA. This does not explain historical
+  pre-start failures or disclose billing state; keep paid-service spend at
+  zero and preserve all protections.
+- PR #87 / M2-03 was open and unmerged at published head
+  `48fc51db949cf5626b50d3f97b5304388a9b1076` when synchronization began; no
+  review submissions or inline threads were present when queried. The local
+  branch includes latest `main` through ancestry-preserving merge
+  `66b591317b375a270b5d0ed682c94e161d52a956`.
+  That exact merge checkpoint passed 1,014 tests, zero skips and all six local
+  checks, with one existing Starlette/httpx deprecation warning. The final
+  documentation-inclusive gate and current exact-head check status are
+  recorded in the live PR. The first restricted sandbox attempt
+  stalled in `test_health`, was interrupted before timeout, and produced no
+  receipt. The unchanged gate passed on the same SHA with loopback permitted;
+  see [B-07](BLOCKERS.md) and [LOCAL_QUALITY_GATE](LOCAL_QUALITY_GATE.md).
+- The exact `66b5913` local gate ran before the venv update and used
+  `cryptography 46.0.7`. The local venv is now aligned to `50.0.0`, matching
+  PR #88's project constraint. Do not reuse that checkpoint receipt as
+  evidence for the new runtime; use the live PR body for the final
+  documentation-inclusive gate and current exact-head checks. PR #88's
+  exact-main official checks remain separate evidence. Re-query after any
+  later publication.
+- M2-03 remains a local-only orchestration experiment: fixed fictional
+  retrieval and M1F-02 decision tools, immutable registry, strict contracts,
+  scripted provider test double and minimized digest receipts. Drafts are
+  untrusted and require human review. No live model, route, persistence,
+  authenticated identity, semantic-entailment check, write tool or business
+  action authority exists. Keep this PR bounded and reviewable.
+- PR #82 / M2-02 is already incorporated; do not replay its commits. Keep
+  retrieval and evaluation fictional and experimental.
+- The owner's MM-024 UCI policy is implemented: six-digit transaction numbers
+  are accepted, uppercase `C` plus six digits means cancellation, other
+  single-ASCII-letter prefixes plus six digits are excluded under an
+  aggregate-only unverified class, and other formats fail closed. The approved
+  source call stopped above 250,000 product-day groups; there is no complete
+  projection or metric. Do not reread, chunk, sample or raise the cap. Preserve
+  deletion by `2026-12-26`.
+- M1's synthetic vertical slice remains integrated. Real-source evaluation
+  remains gated by B-01/B-02 and service acceptance by B-04. After PR #87 is
+  reviewed and integrated, prioritize M2-05's usable local/API/UI decision
+  workflow. M2-04 live-provider work remains gated on B-05. Keep fixtures
+  synthetic, paid spend at zero, and all main protections/checks intact.
 
 
 ## Historical review reconciliation - 2026-11-27

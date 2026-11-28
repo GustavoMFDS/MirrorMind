@@ -736,3 +736,40 @@ commit on PR #61 requires a fresh exact-head gate. GitHub Actions was not
 checked by these local runs. No runner, paid usage, workflow change or
 protection bypass was used. The independent #62 review also recommends keeping
 the Census changes separate and retaining #52–#59 as ancestors of the merge.
+
+## PR #87 latest-main synchronization - 2026-11-28
+
+PR #88 merged cryptography 50 dependency-lock update into `main` at
+`00e6cf11ac05a94055242573fd3cfc18086bad10`. The M2-03 branch incorporates
+that exact commit with ancestry preserved by merge
+`66b591317b375a270b5d0ed682c94e161d52a956`; the merge was conflict-free.
+
+The first attempt at the exact six-check gate in the restricted sandbox
+stopped producing output during the API `TestClient` startup and was
+interrupted before the configured per-check timeout. It emitted no receipt
+and is not counted as a test result. The same unchanged command, exact clean
+SHA and all six checks then passed in the authorized local environment with
+loopback access:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/local_quality_gate.py `
+  --expected-head 66b591317b375a270b5d0ed682c94e161d52a956 `
+  --receipt results/local-quality-gate-66b591317b375a270b5d0ed682c94e161d52a956-workspace.json
+```
+
+Result at `2026-11-28T02:33:41Z`: 1,014 tests passed, zero skips, and Ruff,
+catalog, atlas, evidence and capability checks passed. Runtime was 34.21
+seconds. One existing Starlette/httpx TestClient deprecation warning remains.
+Receipt:
+`results/local-quality-gate-66b591317b375a270b5d0ed682c94e161d52a956-workspace.json`;
+status `local_gate_passed_not_official_ci`.
+
+This `66b5913` receipt was created while the local venv had
+`cryptography 46.0.7`. After PR #88 merged, the local venv was upgraded to
+`50.0.0` from public PyPI at no cost; no tracked project file changed. Keep
+the receipt above scoped to its original environment. The live PR description
+records the gate for its documentation-inclusive head and its current exact
+check-run status. Require a fresh gate and check query after every later head;
+never transfer the `00e6cf1` or `66b5913` results to it. Exact-main commit
+`00e6cf1` separately has 11 successful official check-runs. Local and official
+evidence remain distinct.

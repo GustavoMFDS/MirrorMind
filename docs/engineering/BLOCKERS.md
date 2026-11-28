@@ -1,5 +1,37 @@
 # Blocker and decision register
 
+## Current B-07/B-08 reconciliation - 2026-11-28
+
+PR #88 merged the cryptography 50 lock update at exact `main` commit
+`00e6cf11ac05a94055242573fd3cfc18086bad10`. Its exact-SHA query returned 11
+completed official check-runs, all successful: [test and Python compatibility](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094517994),
+[quality, package and container smoke](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094518014),
+[symbol catalog](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094517959),
+[CodeQL analyses](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094517866),
+[dependency graph](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094523742),
+and [Dependabot](https://github.com/GustavoMFDS/MirrorMind/actions/runs/46094626219).
+This is evidence for that exact main SHA only. It does not establish billing
+state or explain earlier pre-start failures. Preserve the owner's zero-paid-
+spend limit and do not change protections, workflow checks or runners.
+
+At sync start, PR #87 was open at published head
+`48fc51db949cf5626b50d3f97b5304388a9b1076`. That exact head had 12
+successful check-runs and two conditional skips
+(`deploy`, `release-rehearsal`). The local branch now contains latest `main`
+through merge `66b591317b375a270b5d0ed682c94e161d52a956`; its full local gate
+passed 1,014 tests, zero skips and all six checks. The sync commit was not yet
+published when this checkpoint was recorded. Use the live PR for current
+head/check-run status; never transfer `48fc51d` results to a later head.
+
+On exact local SHA `66b5913`, the restricted sandbox attempt produced no
+output and was interrupted before the local gate's 900-second limit; no
+receipt was emitted, so this attempt is not a pass or a test failure. The
+unchanged full gate then passed on the same clean SHA with loopback permitted
+in the authorized local environment in 34.21 seconds. This is consistent
+with the known `TestClient`/Windows loopback limitation for this run; it does
+not resolve the separate historical `8f906b8` incident. See [B-07 below](#b-07-pr-65-restricted-sandbox-diagnostic---c6c1326)
+and [the gate record](LOCAL_QUALITY_GATE.md).
+
 ## Current B-08 reconciliation - 2026-11-27
 
 GitHub-hosted Actions are operational on reviewed PR head
