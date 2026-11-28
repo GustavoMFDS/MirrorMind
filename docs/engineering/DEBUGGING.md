@@ -503,3 +503,8 @@ split. A stored digest may be syntactically valid but fail explicit replay.
 Do not replace the original receipt or recreate the journal to make replay
 pass. Current code may differ from the declared revision. Unknown fixtures
 are not reconstructed. Use a fresh HTML output path.
+
+### Sensitivity report failure
+Check the fixed grid, declared revision and explicit split. A shared zero
+baseline has one identity; do not count repeated cells as replications.
+Use a new absolute HTML path. No external inputs or automatic retries.

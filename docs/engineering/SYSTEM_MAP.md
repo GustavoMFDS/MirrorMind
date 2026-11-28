@@ -348,3 +348,9 @@ renders a bounded read-only snapshot from
 [census_experiment_journal.py](../../src/mirrormind/domains/retail/census_experiment_journal.py).
 An explicit selected receipt may be reproduced by the current evaluator;
 no default scoring, admission, historical runtime attestation or new schema.
+
+### Fictional sensitivity grid
+The [sensitivity example](../../examples/m1_census_research_sensitivity.py)
+prepares a fixed one-factor grid, deduplicates the shared zero baseline,
+executes and replays the existing experiment contract and emits separate
+per-horizon summaries. Temporary journal; no model or API change.

@@ -323,3 +323,7 @@ no inference or operational acceptance.
 The [history example](../../examples/m1_census_research_history.py) has
 guided read-only metadata and explicit local replay behavior in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md); not trusted audit history.
+
+The [sensitivity example](../../examples/m1_census_research_sensitivity.py)
+has guided fixed fictional sensitivity and replay behavior in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not statistical inference.

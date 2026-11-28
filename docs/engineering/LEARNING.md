@@ -1027,3 +1027,9 @@ Run two fictional experiments in the same caller-owned journal. Generate
 the [history report](../../examples/m1_census_research_history.py) before
 and after explicitly replaying a stored split. Explain why a unique
 commitment is not a count of executions or a timestamp.
+
+### Exercise: one-factor sensitivity
+Compare exact paired mean differences across the fixed trend, volatility
+and shift grids. Explain why a sign change is descriptive, why levels
+across axes are not comparable physical scales, and why this grid cannot
+establish calibration or a universal model winner.

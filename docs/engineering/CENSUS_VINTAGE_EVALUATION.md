@@ -617,3 +617,42 @@ exclusive output. Run
 `python -m pytest -q tests/integration/test_census_research_history.py`.
 See [change request](changes/M1C_04_CENSUS_RESEARCH_HISTORY.md).
 Independent review pending. Read-only SQLite is not hostile-file isolation.
+
+## One-factor fictional sensitivity grid
+The [sensitivity example](../../examples/m1_census_research_sensitivity.py)
+uses a shared base 200 + 3*(i mod 12), the existing 80-month fixture's
+release timing and 30/10/10 schedule. Its fixed axes add:
+- trend: level*i, levels 0, 1, 2, 4, 8;
+- volatility: level*(((37*i*i + 17*i + 11) mod 101) - 50),
+  levels 0, 1, 2, 3, 4;
+- shift: level for i >= 68, levels 0, 20, 40, 80, 120.
+
+The generated month/value marker is a fictional snapshot identifier,
+not an external source digest. Prepare all 15 cells before scoring;
+the three zero cells share one experiment and receipt, so there are
+13 unique commitments. For one explicitly selected split, admit and
+replay each distinct result through a temporary journal. Per-horizon
+summaries include MAE for both fixed baselines, matched count, evaluation
+coverage and exact rational mean paired loss difference (seasonal minus
+trailing). The report has separate manifest, schedule and receipt
+digests for every cell. No pooling, optimization, inference or ranking.
+These designed sequences are not independent random samples. Different
+factor scales preclude a universal ranking of their effects.
+
+    python -m examples.m1_census_research_sensitivity --revision REV
+    python -m examples.m1_census_research_sensitivity --revision REV --split holdout --output ABSOLUTE_HTML
+
+Validation is default; holdout is explicitly selected. JSON stdout or
+exclusive static HTML. No input-file or external source access. Current
+history recognizes only the original four fixtures, not sensitivity cells;
+the temporary journal is not persistent history. All code revisions are
+caller-declared, not attested. B-01/B-02 remain open.
+
+Proposed evidence MM-CEN-027:
+`test_sensitivity_grid_replays_unique_cells_and_preserves_reference`
+checks exact paired summaries, shared baseline and distinct replay.
+Separate tests cover factor isolation, closed grid, prepare-before-score
+and exclusive HTML output. Run
+`python -m pytest -q tests/integration/test_census_research_sensitivity.py`.
+See [change request](changes/M1C_04_CENSUS_RESEARCH_SENSITIVITY.md).
+Independent review pending.
