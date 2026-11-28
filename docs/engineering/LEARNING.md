@@ -1107,3 +1107,11 @@ Trace each initial axis through a bijective changing parent map and
 compare convolved cumulative-vector laws with full joint propagation.
 Explain why shared parents break conditional lineage independence.
 Compare exact distributions before measuring performance.
+
+### Exercise: uncertain predictive structures
+Run the [structure tests](../../tests/unit/test_census_network_structure.py).
+Compare sequential Beta-Bernoulli evidence and closed-form
+likelihood, then compare the factored one-step mixture to enumeration
+of all 64 parent graphs. Explain why the one-step identity does not
+justify repeated posterior-averaged transitions as exact multistep
+Bayesian prediction.

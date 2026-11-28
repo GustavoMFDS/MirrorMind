@@ -553,6 +553,13 @@
     "limitation": "Exact bounded three-axis supplied transition schedules and bijective lineage parity only; no graph learning, general speed guarantee, causal effects, empirical calibration or authority. Independent review pending."
   },
   {
+    "id": "MM-CEN-040",
+    "guide": "docs/engineering/CENSUS_VINTAGE_EVALUATION.md",
+    "test": "tests/unit/test_census_network_structure.py",
+    "function": "test_parent_average_complete_graph_mixture",
+    "limitation": "Exact bounded local parent evidence and one-step integration under independent priors only; no causal identification, multistep Bayesian integration, empirical calibration or authority. Independent review pending."
+  },
+  {
     "id": "MM-CON-001",
     "guide": "docs/engineering/CONTRACT_WALKTHROUGH.md",
     "test": "tests/unit/test_contracts.py",

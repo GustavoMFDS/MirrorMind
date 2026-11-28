@@ -379,3 +379,7 @@ The [network3 engine](../../src/mirrormind/domains/retail/census_network3.py)
 has guided exact bounded joint/lineage propagation in
 [Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not graph discovery
 or arbitrary network inference.
+
+The [local structure module](../../src/mirrormind/domains/retail/census_network_structure.py)
+has guided exact bounded parent evidence and one-step integration in
+[Census evaluation](CENSUS_VINTAGE_EVALUATION.md), not causal discovery.

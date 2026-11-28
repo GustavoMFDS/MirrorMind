@@ -424,3 +424,9 @@ The [network3 module](../../src/mirrormind/domains/retail/census_network3.py)
 provides exact bounded joint and bijective-lineage propagation with
 a common immutable integer PMF contract. It does not change existing
 bivariate modules, API, persistence, ingestion or authority.
+
+### Experimental local parent estimators
+The [network structure module](../../src/mirrormind/domains/retail/census_network_structure.py)
+estimates local parent posteriors, fixed graph candidates and
+one-step predictive averages, reusing the three-axis matrix/PMF
+contracts without changing ingestion, API, storage or authority.

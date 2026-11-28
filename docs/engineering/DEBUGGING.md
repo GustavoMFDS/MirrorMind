@@ -585,3 +585,11 @@ eight nonempty integer rows for joint matrices, or bijective parents
 and three binary conditional laws for lineage propagation. Zero
 transitions are valid, all-zero rows are not. Expand a factor step
 with factor_matrix and compare canonical output. No automatic dispatch.
+
+### Local parent estimation
+Use exact tuples of eight or 24 binary triples, with graph labels
+None or integer axes 0..2. Boolean or float axes are invalid.
+Equal evidence ties resolve to the first label in fixed order.
+The conservative evidence rule is not an empirical confidence level.
+Averaging integrates one future state only, not a persistent random
+graph or parameter trajectory over multiple steps.

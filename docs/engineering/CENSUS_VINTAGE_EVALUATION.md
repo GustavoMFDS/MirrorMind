@@ -1048,3 +1048,30 @@ Run `python -m pytest -q tests/unit/test_census_network3.py`.
 See [change request](changes/M1C_04_CENSUS_NETWORK3.md).
 Independent review pending. Performance depends on schedule and
 implementation; no general speed or scalability guarantee.
+
+## Bounded local parent learning
+The [structure estimators](../../src/mirrormind/domains/retail/census_network_structure.py)
+accept exactly eight or 24 observed binary triples. Each child has
+four candidate parent labels (none, 0, 1, 2) with equal prior.
+Independent Beta(1,1) context priors yield exact integrated
+Bernoulli likelihoods, normalized per child. MAP uses fixed tie
+order; conservative accepts a parent only if its evidence exceeds
+twice no-parent evidence and every alternative strictly. This
+threshold is a fixed exploratory rule, not calibrated confidence.
+Explicit graph fitting uses one pseudocount per binary outcome and
+returns a canonical row-weight joint matrix; shared parents allowed.
+One-step posterior averaging integrates the local parent/parameter
+posterior under independent priors and the supplied history.
+Uniform parent averaging is a separate control. Both return exact
+immutable integer PMFs; no multistep Bayesian integration, causal
+identification, authenticated observations, empirical calibration
+or automatic candidate promotion. No public cache.
+
+Proposed evidence MM-CEN-040:
+`test_parent_average_complete_graph_mixture` compares exact
+one-step local averaging to explicit enumeration of all 64 graphs
+for both history lengths and weighting modes. Sequential evidence,
+ties, shared parents and invalid input boundaries have additional
+tests. Run `python -m pytest -q tests/unit/test_census_network_structure.py`.
+See [change request](changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md).
+Independent review pending.

@@ -1264,3 +1264,10 @@ forecast claims or cross-repository changes.
 | [src/mirrormind/domains/retail/census_network3.py](../../src/mirrormind/domains/retail/census_network3.py) | Exact bounded joint and lineage propagation |
 | [tests/unit/test_census_network3.py](../../tests/unit/test_census_network3.py) | Path oracle, cross-engine parity and input rejection |
 | [docs/engineering/changes/M1C_04_CENSUS_NETWORK3.md](changes/M1C_04_CENSUS_NETWORK3.md) | Scoped acceptance and impact map |
+
+### Bounded local parent estimation
+| Path | Responsibility |
+|---|---|
+| [src/mirrormind/domains/retail/census_network_structure.py](../../src/mirrormind/domains/retail/census_network_structure.py) | Exact local evidence, graph fitting and one-step averaging |
+| [tests/unit/test_census_network_structure.py](../../tests/unit/test_census_network_structure.py) | Sequential evidence, graph-mixture oracle and invalid inputs |
+| [docs/engineering/changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md](changes/M1C_04_CENSUS_NETWORK_STRUCTURE.md) | Scoped acceptance and impact map |

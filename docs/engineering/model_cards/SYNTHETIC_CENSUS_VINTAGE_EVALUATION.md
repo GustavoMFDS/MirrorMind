@@ -212,3 +212,8 @@ Experimental three-axis propagation adds exact conditional joint
 distributions for bounded supplied schedules, including an alternative
 for bijective parent laws. It does not establish graph learning,
 arbitrary-dimensional scalability, causal effects or empirical skill.
+
+Experimental local parent posteriors and fixed graph candidates
+support one-step predictive integration under explicit independent
+priors. They do not establish causal effects, calibrated confidence,
+multistep Bayesian predictions or empirical skill.

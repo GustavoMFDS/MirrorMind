@@ -270,6 +270,23 @@ Static imports (including inside functions): `__future__`, `collections`, `itert
 | `factor_matrix` | function | `def factor_matrix(step: FactorStep) -> Matrix3` | Expand a validated factor law into an equivalent joint matrix. | [L116](../../../src/mirrormind/domains/retail/census_network3.py#L116) |
 | `propagate_lineages3` | function | `def propagate_lineages3(start: State3, schedule: tuple[FactorStep, ...]) -> PMF3` | Exact lineage decomposition for bijective parents at each step. | [L129](../../../src/mirrormind/domains/retail/census_network3.py#L129) |
 
+## `mirrormind.domains.retail.census_network_structure`
+
+Source: [`src/mirrormind/domains/retail/census_network_structure.py`](../../../src/mirrormind/domains/retail/census_network_structure.py)
+
+Static imports (including inside functions): `__future__`, `collections`, `fractions`, `itertools`, `math`, `mirrormind.domains.retail.census_network3`
+
+| Symbol | Kind | Signature | Docstring first line | Source |
+| --- | --- | --- | --- | --- |
+| `_history` | function | `def _history(history: tuple[State3, ...]) -> None` | — | [L19](../../../src/mirrormind/domains/retail/census_network_structure.py#L19) |
+| `_context` | function | `def _context(state: State3, parent: Parent) -> int \| None` | — | [L34](../../../src/mirrormind/domains/retail/census_network_structure.py#L34) |
+| `_counts` | function | `def _counts(history: tuple[State3, ...], child: int, parent: Parent) -> Counter[tuple[int \| None, int]]` | — | [L38](../../../src/mirrormind/domains/retail/census_network_structure.py#L38) |
+| `_evidence` | function | `def _evidence(history: tuple[State3, ...], child: int, parent: Parent) -> Fraction` | — | [L44](../../../src/mirrormind/domains/retail/census_network_structure.py#L44) |
+| `parent_posterior` | function | `def parent_posterior(history: tuple[State3, ...]) -> Posterior` | Equal local structure prior; independent Beta(1,1) context priors. | [L59](../../../src/mirrormind/domains/retail/census_network_structure.py#L59) |
+| `select_parent_graphs` | function | `def select_parent_graphs(history: tuple[State3, ...]) -> tuple[Graph, Graph]` | Fixed MAP and conservative rules; no empirical calibration. | [L71](../../../src/mirrormind/domains/retail/census_network_structure.py#L71) |
+| `fit_parent_matrix` | function | `def fit_parent_matrix(history: tuple[State3, ...], graph: Graph) -> Matrix3` | Smoothed conditional laws for an explicitly supplied local graph. | [L90](../../../src/mirrormind/domains/retail/census_network_structure.py#L90) |
+| `predict_parent_average` | function | `def predict_parent_average(history: tuple[State3, ...], *, uniform: bool=False) -> PMF3` | Integrate local parent choices for exactly one future state. | [L111](../../../src/mirrormind/domains/retail/census_network_structure.py#L111) |
+
 ## `mirrormind.domains.retail.census_probability`
 
 Source: [`src/mirrormind/domains/retail/census_probability.py`](../../../src/mirrormind/domains/retail/census_probability.py)
